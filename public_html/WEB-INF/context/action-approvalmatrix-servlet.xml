@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts config to context mapping files for Approval Matrix
+	</description>
+
+	<bean name="/approval_matrix_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.approvalmatrix.ApprovalMatrixAction">
+    	<property name="nameCommandMap">
+      		<map>
+		        <entry key="AddApprovalMatrixCommand" value-ref="ApprovalMatrixAction.AddApprovalMatrixCommand"/>
+		        <entry key="ApproveApprovalMatrixCommand" value-ref="ApprovalMatrixAction.ApproveApprovalMatrixCommand"/>
+		        <entry key="CloseApprovalMatrixCommand" value-ref="ApprovalMatrixAction.CloseApprovalMatrixCommand"/>
+		        <entry key="CompareApprovalMatrixCommand" value-ref="ApprovalMatrixAction.CompareApprovalMatrixCommand"/>
+		        <entry key="DeleteApprovalMatrixCommand" value-ref="ApprovalMatrixAction.DeleteApprovalMatrixCommand"/>
+		        <entry key="ListApprovalMatrixCommand" value-ref="ApprovalMatrixAction.ListApprovalMatrixCommand"/>
+		        <entry key="ListCompareApprovalMatrixCommand" value-ref="ApprovalMatrixAction.ListCompareApprovalMatrixCommand"/>
+		        <entry key="ListViewApprovalMatrixCommand" value-ref="ApprovalMatrixAction.ListViewApprovalMatrixCommand"/>
+		        <entry key="PaginateApprovalMatrixCommand" value-ref="ApprovalMatrixAction.PaginateApprovalMatrixCommand"/>
+		        <entry key="ReadApprovalMatrixCommand" value-ref="ApprovalMatrixAction.ReadApprovalMatrixCommand"/>
+		        <entry key="RejectApprovalMatrixCommand" value-ref="ApprovalMatrixAction.RejectApprovalMatrixCommand"/>
+		        <entry key="SaveApprovalMatrixCommand" value-ref="ApprovalMatrixAction.SaveApprovalMatrixCommand"/>
+		        <entry key="SubmitApprovalMatrixCommand" value-ref="ApprovalMatrixAction.SubmitApprovalMatrixCommand"/>
+		        <entry key="ReloadMarketableSecValuationProfileCommand" value-ref="CollateralAction.ReloadMarketableSecValuationProfileSingletonCommand"/>
+      		</map>
+    	</property>
+  	</bean>
+
+</beans>

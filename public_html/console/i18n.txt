@@ -1,0 +1,53 @@
+Key areas to take note for supporting i18n characters
+
+
+a) Using encoding filter to handle response, to be defined in web.xml
+
+
+	<filter id="FilterMapping_1045053833781">
+		<filter-name>EncodingFilter</filter-name>
+		<filter-class>com.integrosys.base.uiinfra.common.EncodingFilter</filter-class>
+		...
+		...
+
+
+Ordering of defining filter is important!
+
+Since encoding filter is to use for all resources in the web application, it MUST be defined first.
+Any other filter to come after it. 
+
+
+	<filter-mapping id="FilterMapping_1045053833781">
+		<filter-name>EncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter-mapping id="FilterMapping_1045053833782">
+		<filter-name>TraceFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+
+
+
+
+b) Setting encoding
+
+
+For example:
+
+	<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+
+For Weblogic, the order of setting context type is not incremental. 
+if a call to the API does not includes all the properties required, it will overwrite all previous settings.
+
+	i.e.
+	<% response.setContentType("text/html; charset=UTF-8"); %>	this will support UTF-8
+
+
+if we have another line in the JSP:
+
+	<% response.setContentType("text/html"); %>			this will remove support for UTF-8
+
+

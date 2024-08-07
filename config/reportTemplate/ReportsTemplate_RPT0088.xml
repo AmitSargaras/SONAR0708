@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+	SELECT 
+DISTINCT 	 ROW_NUMBER()   OVER (ORDER BY LMT_ID) AS sr_no,
+party.LSP_LE_ID AS PARTY_ID,
+party.LSP_SHORT_NAME AS PARTY_NAME,
+lmt.LMT_ID AS FACILITY_ID, 
+lmt.FACILITY_CAT  AS FACILITY_CATEGORY,
+lmt.FACILITY_NAME AS FACILITY_NAME ,
+lmt.FACILITY_TYPE AS FACILITY_TYPE , 
+lmt.FACILITY_SYSTEM AS SYSTEM, 
+lmt.LMT_CRRNCY_ISO_CODE AS CURRENCY,
+lmt.CMS_REQ_SEC_COVERAGE AS SANCTIONED_AMT,
+lmt.RELEASABLE_AMOUNT AS RELEASABLE_AMOUNT,
+lmt.TOTAL_RELEASED_AMOUNT as RELEASED,
+lmt.ADHOC_FACILITY AS ADHOC_FACILITY , 
+TO_CHAR(TO_TIMESTAMP(lmt.ADHOC_LAST_AVAIL_DT ),'DD/MM/YYYY') AS ADHOC_LAST_AVAIL_DT , 
+lmt.MULTI_DRAWDOWN_ALLOW AS MULTI_DRAWDOWN_ALLOW, 
+lmt.ADHOC_TENOR AS ADHOC_TENOR, 
+TO_CHAR(TO_TIMESTAMP(lmt.ADHOC_FACILITY_EXP_DT),'DD/MM/YYYY')AS ADHOC_FACILITY_EXP_DT
+
+from SCI_LE_SUB_PROFILE party , SCI_LSP_LMT_PROFILE cam ,SCI_LSP_APPR_LMTS lmt
+  		</query>
+		<whereClause>
+			<mandatoryClause>
+			 cam.CMS_CUSTOMER_ID (+) =party.CMS_LE_SUB_PROFILE_ID
+              AND lmt.CMS_LIMIT_PROFILE_ID(+) =cam.CMS_LSP_LMT_PROFILE_ID
+              AND lmt.ADHOC_FACILITY='Y'
+			</mandatoryClause>
+		
+			<orderAndGroupByClause>
+ 				ORDER BY lmt.LMT_ID
+ 			</orderAndGroupByClause>		
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			
+			<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Sr No</header>
+				</reportColumn>			
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>System</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Sanctioned Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Releasable Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Released</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Adhoc Facility</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Adhoc Last Availability Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>5</width>
+					<format>textFormat</format>
+					<header>Multiple Drawdown Allowed</header>
+				</reportColumn>
+				<reportColumn>
+					<width>3</width>
+					<format>textFormat</format>
+					<header>Adhoc Tenor (In Month)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Adhoc Facility Expiry Date</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Adhoc Facility Report
+			</reportName>
+		</reportParamters>
+	</report>
+</reports>

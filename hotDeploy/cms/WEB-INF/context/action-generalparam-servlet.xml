@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts config to context mapping files for manual feeds
+	</description>
+  	
+  	<bean name="/general_param_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.generalparam.GeneralParamListAction">
+    	<property name="nameCommandMap">
+      		<map>
+		        <entry key="AddGeneralParamListCommand" value-ref="GeneralParamListAction.AddGeneralParamListCommand"/>
+		        <entry key="ApproveGeneralParamListCommand" value-ref="GeneralParamListAction.ApproveGeneralParamListCommand"/>
+		        <entry key="CloseGeneralParamListCommand" value-ref="GeneralParamListAction.CloseGeneralParamListCommand"/>
+		        <entry key="CompareGeneralParamListCommand" value-ref="GeneralParamListAction.CompareGeneralParamListCommand"/>
+		        <entry key="DeleteGeneralParamListCommand" value-ref="GeneralParamListAction.DeleteGeneralParamListCommand"/>
+		        <entry key="ListGeneralParamListCommand" value-ref="GeneralParamListAction.ListGeneralParamListCommand"/>
+		        <entry key="ListCompareGeneralParamListCommand" value-ref="GeneralParamListAction.ListCompareGeneralParamListCommand"/>
+		        <entry key="ListViewGeneralParamListCommand" value-ref="GeneralParamListAction.ListViewGeneralParamListCommand"/>
+		        <entry key="PaginateGeneralParamListCommand" value-ref="GeneralParamListAction.PaginateGeneralParamListCommand"/>
+		        <entry key="ReadGeneralParamListCommand" value-ref="GeneralParamListAction.ReadGeneralParamListCommand"/>
+		        <entry key="RejectGeneralParamListCommand" value-ref="GeneralParamListAction.RejectGeneralParamListCommand"/>
+		        <entry key="SaveGeneralParamListCommand" value-ref="GeneralParamListAction.SaveGeneralParamListCommand"/>
+		        <entry key="SubmitGeneralParamListCommand" value-ref="GeneralParamListAction.SubmitGeneralParamListCommand"/>
+		        <entry key="ReloadMarketableSecValuationProfileCommand" value-ref="CollateralAction.ReloadMarketableSecValuationProfileSingletonCommand"/>
+      		</map>
+    	</property>
+  	</bean>
+
+	<!--<bean name="/feed_mutual_funds_item" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.mutualfunds.item.GeneralParamItemAction">
+  		<property name="nameCommandMap">
+      		<map>
+        		<entry key="PrepareGeneralParamItemCommand" value-ref="GeneralParamItemAction.PrepareGeneralParamItemCommand"/>
+        		<entry key="SaveGeneralParamItemCommand" value-ref="GeneralParamItemAction.SaveGeneralParamItemCommand"/>
+				<entry key="SaveCurWorkingGeneralParamCmd" value-ref="GeneralParamItemAction.SaveCurWorkingGeneralParamCmd"/>
+      		</map>
+    	</property>
+  	</bean>
+
+--></beans>

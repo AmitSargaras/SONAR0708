@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="FacilitydetailsUploadForm" type="com.integrosys.cms.ui.facilitydetailsupload.FacilitydetailsUploadForm">
+        </form-bean>
+
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/Facilitydetailsupload" type="com.integrosys.cms.ui.facilitydetailsupload.FacilitydetailsUploadAction" name="FacilitydetailsUploadForm" validate="false" scope="request">
+            <forward name="excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/upload_facilitydetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward>
+            <forward name="facilitydetailsupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/list_facilitydetails_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward>
+            
+             <forward name="downloadReport" path="/file/popup.jsp" />
+             <forward name="checker_approve_create_facilitydetails" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/chk_approve_facilitydetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward> 
+            <forward name="checker_reject_create_facilitydetails" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/checker_reject_create_facilitydetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward> 
+            <forward name="maker_prepare_facilitydetails_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/maker_prepare_facilitydetails_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward> 
+            <forward name="checker_process_create_facilitydetails" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/checker_process_create_facilitydetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward> 
+            <forward name="error_reject_facilitydetails" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/checker_process_create_facilitydetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward> 
+            <forward name="maker_close_facilitydetails_file" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/maker_close_facilitydetails_file.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward> 
+            <forward name="error_excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/upload_facilitydetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.facilitydetailsupload"/>
+            </forward> 
+             <forward name="rejected_delete_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facilitydetailsupload/process_facilitydetails_file.jsp"/>
+                <set-property property="title" value="menu.maual_feeds.file_upload"/>
+            </forward>
+            
+            
+        </action>
+		
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+</struts-config>

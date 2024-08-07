@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+
+  <bean id="CollateralTrx.CheckerRejectUpdateCollateralOperation" class="com.integrosys.cms.app.collateral.trx.CheckerRejectUpdateCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.ReadCollateralByColIDOperation" class="com.integrosys.cms.app.collateral.trx.ReadCollateralByColIDOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.CheckerApproveDeleteCollateralOperation" class="com.integrosys.cms.app.collateral.trx.CheckerApproveDeleteCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.MakerDeleteCollateralOperation" class="com.integrosys.cms.app.collateral.trx.MakerDeleteCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.CheckerApproveUpdateCollateralOperation" class="com.integrosys.cms.app.collateral.trx.CheckerApproveUpdateCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+    <property name="shareSecurityJdbcDao" ref="shareSecurityJdbcDao" />
+  </bean>
+
+  <bean id="CollateralTrx.MakerCancelCollateralOperation" class="com.integrosys.cms.app.collateral.trx.MakerCancelCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.PartDeleteCollateralOperation" class="com.integrosys.cms.app.collateral.trx.PartDeleteCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.SystemUpdateCollateralOperation" class="com.integrosys.cms.app.collateral.trx.SystemUpdateCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.FullDeleteCollateralOperation" class="com.integrosys.cms.app.collateral.trx.FullDeleteCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.ReadCollateralByTrxIDOperation" class="com.integrosys.cms.app.collateral.trx.ReadCollateralByTrxIDOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+    <property name="onlineValuationTypeList">
+        <list>
+            <value>CS</value>
+            <value>GT</value>
+            <value>MS</value>
+        </list>
+    </property>
+  </bean>
+
+  <bean id="CollateralTrx.HostUpdateCollateralOperation" class="com.integrosys.cms.app.collateral.trx.HostUpdateCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+    <property name="retainedFromStateStatus" value="REJECTED,PENDING_PERFECTION" />
+  </bean>
+
+  <bean id="CollateralTrx.MakerSaveCollateralOperation" class="com.integrosys.cms.app.collateral.trx.MakerSaveCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+  
+  <bean id="CollateralTrx.MakerCreateCollateralOperation" class="com.integrosys.cms.app.collateral.trx.MakerCreateCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.MakerUpdateCollateralOperation" class="com.integrosys.cms.app.collateral.trx.MakerUpdateCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.SubscribeCreateCollateralOperation" class="com.integrosys.cms.app.collateral.trx.SubscribeCreateCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.CheckerRejectDeleteCollateralOperation" class="com.integrosys.cms.app.collateral.trx.CheckerRejectDeleteCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.SystemCancelCollateralOperation" class="com.integrosys.cms.app.collateral.trx.SystemCancelCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.SystemApproveCollateralOperation" class="com.integrosys.cms.app.collateral.trx.SystemApproveCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralTrx.SystemRejectCollateralOperation" class="com.integrosys.cms.app.collateral.trx.SystemUpdateCollateralOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+    <property name="operationName" value="SYSTEM_REJECT" />
+  </bean>
+  
+  <bean id="CollateralTrx.CheckerApproveDeleteCollateralStpPassedOperation" class="com.integrosys.cms.app.collateral.trx.CheckerApproveDeleteCollateralStpPassedOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+	<property name="shareSecurityJdbcDao" ref="shareSecurityJdbcDao" />
+  </bean>
+  
+  <bean id="CollateralTrx.CheckerApproveUpdateCollateralStpFailedOperation" class="com.integrosys.cms.app.collateral.trx.CheckerApproveUpdateCollateralStpFailedOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+    <property name="shareSecurityJdbcDao" ref="shareSecurityJdbcDao" />
+  </bean>
+
+  <bean id="CollateralTrx.CheckerApproveUpdateCollateralStpPassedOperation" class="com.integrosys.cms.app.collateral.trx.CheckerApproveUpdateCollateralStpPassedOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+    <property name="shareSecurityJdbcDao" ref="shareSecurityJdbcDao" />
+  </bean>  
+
+  <bean id="collateralReadController" class="com.integrosys.cms.app.collateral.trx.CollateralReadController">
+    <property name="nameTrxOperationMap">
+      <map>
+        <entry key="ReadCollateralByColIDOperation" value-ref="CollateralTrx.ReadCollateralByColIDOperation"/>
+        <entry key="ReadCollateralByTrxIDOperation" value-ref="CollateralTrx.ReadCollateralByTrxIDOperation"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean id="collateralTrxController" class="com.integrosys.cms.app.collateral.trx.CollateralTrxController">
+    <property name="nameTrxOperationMap">
+      <map>
+        <entry key="CheckerRejectUpdateCollateralOperation" value-ref="CollateralTrx.CheckerRejectUpdateCollateralOperation"/>
+        <entry key="CheckerApproveDeleteCollateralOperation" value-ref="CollateralTrx.CheckerApproveDeleteCollateralOperation"/>
+        <entry key="MakerDeleteCollateralOperation" value-ref="CollateralTrx.MakerDeleteCollateralOperation"/>
+        <entry key="CheckerApproveUpdateCollateralOperation" value-ref="CollateralTrx.CheckerApproveUpdateCollateralOperation"/>
+        <entry key="MakerCancelCollateralOperation" value-ref="CollateralTrx.MakerCancelCollateralOperation"/>
+        <entry key="MakerCreateCollateralOperation" value-ref="CollateralTrx.MakerCreateCollateralOperation" />
+        <entry key="PartDeleteCollateralOperation" value-ref="CollateralTrx.PartDeleteCollateralOperation"/>
+        <entry key="SystemUpdateCollateralOperation" value-ref="CollateralTrx.SystemUpdateCollateralOperation"/>
+        <entry key="FullDeleteCollateralOperation" value-ref="CollateralTrx.FullDeleteCollateralOperation"/>
+        <entry key="HostUpdateCollateralOperation" value-ref="CollateralTrx.HostUpdateCollateralOperation"/>
+        <entry key="MakerSaveCollateralOperation" value-ref="CollateralTrx.MakerSaveCollateralOperation"/>
+        <entry key="MakerUpdateCollateralOperation" value-ref="CollateralTrx.MakerUpdateCollateralOperation"/>
+        <entry key="SubscribeCreateCollateralOperation" value-ref="CollateralTrx.SubscribeCreateCollateralOperation"/>
+        <entry key="CheckerRejectDeleteCollateralOperation" value-ref="CollateralTrx.CheckerRejectDeleteCollateralOperation"/>
+        <entry key="SystemCancelCollateralOperation" value-ref="CollateralTrx.SystemCancelCollateralOperation"/>
+        <entry key="SystemApproveCollateralOperation" value-ref="SystemApproveCollateralOperationAspect"/>
+        <entry key="SystemRejectCollateralOperation" value-ref="CollateralTrx.SystemRejectCollateralOperation"/>
+		<entry key="CheckerApproveDeleteCollateralStpPassedOperation" value-ref="CheckerApproveDeleteCollateralStpPassedOperationAspect" />
+		<entry key="CheckerApproveUpdateCollateralStpFailedOperation" value-ref="CollateralTrx.CheckerApproveUpdateCollateralStpFailedOperation" />
+		<entry key="CheckerApproveUpdateCollateralStpPassedOperation" value-ref="CheckerApproveUpdateCollateralStpPassedOperationAspect" />
+		<entry key="MakerCreateLienOperation" value-ref="MakerCreateLienOperation"/>
+		
+      </map>
+    </property>
+	<property name="sourceIdsStpAllowedUponApproval">
+		<value>CMS,SIBS,RLOS,CLOS</value>
+	</property>
+	<property name="exceptionSourceIdsStpAllowedForEmptyHostCollateralId" value="SMF" />
+    <property name="processTrxManager" ref="processTrxManager" />
+    <property name="accessStpSystem" value="${has.access.stp.system}" />
+  </bean>
+
+  <bean id="CheckerApproveDeleteCollateralStpPassedOperationAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+	<property name="interceptorNames" value="stpTrxOpMethodInterceptor"/>
+	<property name="target" ref="CollateralTrx.CheckerApproveDeleteCollateralStpPassedOperation"/>
+  </bean>
+
+  <bean id="CheckerApproveUpdateCollateralStpPassedOperationAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+	<property name="interceptorNames" value="stpTrxOpMethodInterceptor"/>
+	<property name="target" ref="CollateralTrx.CheckerApproveUpdateCollateralStpPassedOperation"/>
+  </bean>
+  <!-- plug out limitProfileCompleteTrxOperationInterceptor interceptor from CollateralTrx.SystemApproveCollateralOperation -->
+  <bean id="SystemApproveCollateralOperationAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+	<property name="interceptorNames" value="tatTrxOperationMethodInterceptor"/>
+	<property name="target" ref="CollateralTrx.SystemApproveCollateralOperation"/>
+  </bean>
+
+	
+<bean id="MakerCreateLienOperation" class="com.integrosys.cms.app.collateral.trx.MakerCreateLienOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+  
+
+</beans>

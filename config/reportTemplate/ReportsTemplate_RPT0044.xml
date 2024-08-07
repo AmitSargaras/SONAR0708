@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT  	distinct users.login_id                     AS userId,
+                    'Smart Lender CLIMS'           AS systemName,
+				  	users.login_id                     AS employeeCode,
+				  	users.user_name                    AS employeeName,
+				  	sysbranch.system_bank_branch_name  AS Branch_Name,
+				  	teammembership.membership_name     AS Role1,
+				  	'' AS Role2,
+				  	TO_CHAR(trans.creation_date,'DD-Mon-YYYY') AS creationDate,
+				  	trans.user_info                           AS reqApprovedBy,
+            CASE
+						WHEN UPPER(users.status) = 'A'
+							THEN 'Active'
+						WHEN UPPER(users.status) = 'D'
+							THEN 'Deleted'
+						WHEN UPPER(users.status) = 'T'
+							THEN 'Terminated'
+						WHEN UPPER(users.status) = 'I'
+							THEN 'Deleted'
+						WHEN UPPER(users.status) = 'N'
+							THEN 'New'
+						WHEN UPPER(users.status) = 'O'
+							THEN 'Active'
+						WHEN UPPER(users.status) = 'S'
+							THEN 'Suspended'
+						WHEN UPPER(users.status) = 'L'
+							THEN 'Active'	
+                       WHEN UPPER(users.status) = 'R'
+                            THEN 'Deleted'	
+                       WHEN UPPER(users.status) = 'NR'
+                            THEN 'Deleted'	
+					   END   AS IDStatus,
+                      
+				  	'Named' AS IDType
+		  	
+		    FROM CMS_USER users
+					LEFT JOIN COMMON_CODE_CATEGORY_ENTRY CC_DEPT
+					ON CC_DEPT.ENTRY_CODE = users.DEPARTMENT ,
+				  	transaction trans,
+				  	cms_system_bank_branch sysBranch,
+				  	cms_team_type_membership teamMembership,
+            	    CMS_AUTHENTICATION AUTHENTICATE
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				sysbranch.system_bank_branch_code=users.branch_code
+                AND CC_DEPT.CATEGORY_CODE       =	'HDFC_DEPARTMENT'
+				AND trans.REFERENCE_ID                    =users.user_id
+				AND teammembership.team_type_membership_id=users.team_type_membership_id
+				AND upper(trans.transaction_type)         ='USER' 
+                AND AUTHENTICATE.LOGIN_ID       	= 	users.LOGIN_ID
+			</mandatoryClause>
+			</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Employee Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Employee Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Role 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Role 2</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Creation Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Request Approved By</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>ID Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>ID Type</header>
+				</reportColumn>
+						
+			</reportColumns>
+			<reportName>UAM Report for IDMS Upload</reportName>
+		</reportParamters>
+	</report>
+</reports>

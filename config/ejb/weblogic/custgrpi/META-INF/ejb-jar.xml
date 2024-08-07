@@ -1,0 +1,1155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN"
+        "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar>
+    <display-name>customergroup</display-name>
+    <enterprise-beans>
+        <session id="session_SBCustGrpIdentifierProxy">
+            <ejb-name>SBCustGrpIdentifierProxy</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.proxy.SBCustGrpIdentifierProxyHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.proxy.SBCustGrpIdentifierProxy</remote>
+            <ejb-class>com.integrosys.cms.app.custgrpi.proxy.SBCustGrpIdentifierProxyBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session id="session_SBCustGrpIdentifierBusManager">
+            <ejb-name>SBCustGrpIdentifierBusManager</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.SBCustGrpIdentifierBusManagerHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.SBCustGrpIdentifierBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.SBCustGrpIdentifierBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifier_EBStagingGroupSubLimit">
+                <ejb-ref-name>EBStagingGroupSubLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+                <ejb-link>EBStagingGroupSubLimit</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifier_EBGroupSubLimit">
+                <ejb-ref-name>EBGroupSubLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+                <ejb-link>EBGroupSubLimit</ejb-link>
+            </ejb-local-ref>
+
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifier_EBStagingGroupMember">
+                <ejb-ref-name>EBStagingGroupMemberLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+                <ejb-link>EBStagingGroupMember</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifier_EBGroupMember">
+                <ejb-ref-name>EBGroupMemberLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+                <ejb-link>EBGroupMember</ejb-link>
+            </ejb-local-ref>
+
+
+             <ejb-local-ref id="ejblocalref_SBCustGrpIdentifier_EBStagingGroupCreditGrade">
+                <ejb-ref-name>EBStagingGroupCreditGradeLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+                <ejb-link>EBStagingGroupCreditGrade</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifier_EBGroupCreditGrade">
+                <ejb-ref-name>EBGroupCreditGradeLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+                <ejb-link>EBGroupCreditGrade</ejb-link>
+            </ejb-local-ref>
+
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifier_EBStagingGroupOtrLimit">
+                <ejb-ref-name>EBStagingGroupOtrLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+                <ejb-link>EBStagingGroupOtrLimit</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifier_EBGroupOtrLimit">
+                <ejb-ref-name>EBGroupOtrLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+                <ejb-link>EBGroupOtrLimit</ejb-link>
+            </ejb-local-ref>
+
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        <session id="session_SBCustGrpIdentifierBusManagerStaging">
+            <ejb-name>SBCustGrpIdentifierBusManagerStaging</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.SBCustGrpIdentifierBusManagerHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.SBCustGrpIdentifierBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.SBCustGrpIdentifierBusManagerStagingBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifierStage_EBStagingGroupSubLimit">
+                <ejb-ref-name>EBStagingGroupSubLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+                <ejb-link>EBStagingGroupSubLimit</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifierStage_EBGroupSubLimit">
+                <ejb-ref-name>EBGroupSubLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+                <ejb-link>EBGroupSubLimit</ejb-link>
+            </ejb-local-ref>
+
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifierStage_EBStagingGroupMember">
+                <ejb-ref-name>EBStagingGroupMemberLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+                <ejb-link>EBStagingGroupMember</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifierStage_EBGroupMember">
+                <ejb-ref-name>EBGroupMemberLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+                <ejb-link>EBGroupMember</ejb-link>
+            </ejb-local-ref>
+
+
+
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifierStage_EBStagingGroupCreditGrade">
+                    <ejb-ref-name>EBStagingGroupCreditGradeLocalHome</ejb-ref-name>
+                    <ejb-ref-type>Entity</ejb-ref-type>
+                    <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+                    <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+                    <ejb-link>EBStagingGroupCreditGrade</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifierStage_EBGroupCreditGrade">
+                <ejb-ref-name>EBGroupCreditGradeLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+                <ejb-link>EBGroupCreditGrade</ejb-link>
+            </ejb-local-ref>
+            
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifierStage_EBStagingGroupOtrLimit">
+                <ejb-ref-name>EBStagingGroupOtrLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+                <ejb-link>EBStagingGroupOtrLimit</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_SBCustGrpIdentifierStage_EBGroupOtrLimit">
+                <ejb-ref-name>EBGroupOtrLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+                <ejb-link>EBGroupOtrLimit</ejb-link>
+            </ejb-local-ref>
+
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <entity id="entity_EBCustGrpIdentifier">
+            <ejb-name>EBCustGrpIdentifier</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifierHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifier</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifierLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifierLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifierBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCustGrpIdentifier</abstract-schema-name>
+            <cmp-field>
+                <field-name>cMPGrpID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupName</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupType</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>accountMgmt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupCounty</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupCurrency</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>businessUnit</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGroupAccountMgrID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>lastReviewDt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupRemarks</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPInternalLmt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGroupLmt</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>approvedBy</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPMasterGroupInd</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGrpIDRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGrpNo</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGroupAccountMgrCode</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPIsBGEL</field-name>
+            </cmp-field>
+            <primkey-field>cMPGrpID</primkey-field>
+
+            <ejb-local-ref id="ejblocalref_EBCustGrpIdentifier_EBStagingGroupSubLimit">
+                <ejb-ref-name>EBStagingGroupSubLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+                <ejb-link>EBStagingGroupSubLimit</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_EBCustGrpIdentifier_EBGroupSubLimit">
+                <ejb-ref-name>EBGroupSubLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+                <ejb-link>EBGroupSubLimit</ejb-link>
+            </ejb-local-ref>
+
+            <ejb-local-ref id="ejblocalref_EBCustGrpIdentifier_EBStagingGroupMember">
+                <ejb-ref-name>EBStagingGroupMemberLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+                <ejb-link>EBStagingGroupMember</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_EBCustGrpIdentifier_EBGroupMember">
+                <ejb-ref-name>EBGroupMemberLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+                <ejb-link>EBGroupMember</ejb-link>
+            </ejb-local-ref>
+
+             <ejb-local-ref id="ejblocalref_EBCustGrpIdentifier_EBStagingGroupCreditGrade">
+                <ejb-ref-name>EBStagingGroupCreditGradeLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+                <ejb-link>EBStagingGroupCreditGrade</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_EBCustGrpIdentifier_EBGroupCreditGrade">
+                <ejb-ref-name>EBGroupCreditGradeLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+                <ejb-link>EBGroupCreditGrade</ejb-link>
+            </ejb-local-ref>
+
+            <ejb-local-ref id="ejblocalref_EBCustGrpIdentifier_EBStagingGroupOtrLimit">
+                <ejb-ref-name>EBStagingGroupOtrLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+                <ejb-link>EBStagingGroupOtrLimit</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_EBCustGrpIdentifier_EBGroupOtrLimit">
+                <ejb-ref-name>EBGroupOtrLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+                <ejb-link>EBGroupOtrLimit</ejb-link>
+            </ejb-local-ref>
+
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+			<query>
+				<query-method>
+					<method-name>findByInternalLimitType</method-name>
+					<method-params>
+						<method-param>java.lang.String</method-param>
+					</method-params>
+				</query-method>
+				<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCustGrpIdentifier o WHERE o.cMPInternalLmt = ?1 AND o.cMPStatus <> 'DELETED']]></ejb-ql>
+			</query>  	
+		
+        </entity>
+        <entity id="entity_EBCustGrpIdentifierStaging">
+            <ejb-name>EBCustGrpIdentifierStaging</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifierHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifier</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifierLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifierLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBCustGrpIdentifierStagingBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCustGrpIdentifierStaging</abstract-schema-name>
+
+            <cmp-field >
+                <field-name>cMPGrpID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupName</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupType</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>accountMgmt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupCounty</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupCurrency</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>businessUnit</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGroupAccountMgrID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>lastReviewDt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>groupRemarks</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPInternalLmt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGroupLmt</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>approvedBy</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPMasterGroupInd</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGrpIDRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGrpNo</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGroupAccountMgrCode</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPIsBGEL</field-name>
+            </cmp-field>
+            <primkey-field>cMPGrpID</primkey-field>
+
+
+            <ejb-local-ref id="ejblocal_EBCustGrpIdentifierStaging_EBStagingGroupSubLimit">
+                <ejb-ref-name>EBStagingGroupSubLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+                <ejb-link>EBStagingGroupSubLimit</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocal_EBCustGrpIdentifierStaging_EBGroupSubLimit">
+                <ejb-ref-name>EBGroupSubLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+                <ejb-link>EBGroupSubLimit</ejb-link>
+            </ejb-local-ref>
+
+            <ejb-local-ref id="ejblocal_EBCustGrpIdentifierStaging_EBStagingGroupMember">
+                <ejb-ref-name>EBStagingGroupMemberLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+                <ejb-link>EBStagingGroupMember</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocal_EBCustGrpIdentifierStaging_EBGroupMember">
+                <ejb-ref-name>EBGroupMemberLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+                <ejb-link>EBGroupMember</ejb-link>
+            </ejb-local-ref>
+
+             <ejb-local-ref id="ejblocalref_EBCustGrpIdentifierStaging_EBStagingGroupCreditGrade">
+                <ejb-ref-name>EBStagingGroupCreditGradeLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+                <ejb-link>EBStagingGroupCreditGrade</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocalref_EBCustGrpIdentifierStaging_EBGroupCreditGrade">
+                <ejb-ref-name>EBGroupCreditGradeLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+                <ejb-link>EBGroupCreditGrade</ejb-link>
+            </ejb-local-ref>
+
+            <ejb-local-ref id="ejblocal_EBCustGrpIdentifierStaging_EBStagingGroupOtrLimit">
+                <ejb-ref-name>EBStagingGroupOtrLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+                <ejb-link>EBStagingGroupOtrLimit</ejb-link>
+            </ejb-local-ref>
+            <ejb-local-ref id="ejblocal_EBCustGrpIdentifierStaging_EBGroupOtrLimit">
+                <ejb-ref-name>EBGroupOtrLimitLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+                <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+                <ejb-link>EBGroupOtrLimit</ejb-link>
+            </ejb-local-ref>
+            
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+			
+			<query>
+				<query-method>
+					<method-name>findByInternalLimitType</method-name>
+					<method-params>
+						<method-param>java.lang.String</method-param>
+					</method-params>
+				</query-method>
+				<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCustGrpIdentifierStaging o WHERE o.cMPInternalLmt = ?1 AND o.cMPStatus <> 'DELETED']]></ejb-ql>
+			</query>  
+        </entity>
+
+
+        <entity id="entity_EBGroupSubLimit">
+            <ejb-name>EBGroupSubLimit</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimit</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBGroupSubLimit</abstract-schema-name>
+            <cmp-field>
+                <field-name>cMPGroupSubLimitID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>subLimitTypeCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>remarks</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPGrpID</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPGroupSubLimitIDRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>lastReviewedDt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>description</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>currencyCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPLimitAmt</field-name>
+            </cmp-field>
+
+            <primkey-field>cMPGroupSubLimitID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+        <entity id="entity_EBStagingGroupSubLimit">
+            <ejb-name>EBStagingGroupSubLimit</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimit</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBGroupSubLimitStagingBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingGroupSubLimit</abstract-schema-name>
+
+            <cmp-field>
+                <field-name>cMPGroupSubLimitID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>subLimitTypeCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>remarks</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPGrpID</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPGroupSubLimitIDRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>lastReviewedDt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>description</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>currencyCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPLimitAmt</field-name>
+            </cmp-field>
+
+
+            <primkey-field>cMPGroupSubLimitID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+
+
+        <entity id="entity_EBGroupCreditGrade">
+            <ejb-name>EBGroupCreditGrade</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGrade</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBGroupCreditGrade</abstract-schema-name>
+            <cmp-field>
+                <field-name>cMPGroupCreditGradeID</field-name>
+            </cmp-field>
+           <cmp-field>
+                <field-name>typeCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>ratingCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>ratingDt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>expectedTrendRating</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>reason</field-name>
+            </cmp-field>
+              <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGroupCreditGradeIDRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGrpID</field-name>
+            </cmp-field>
+
+            <primkey-field>cMPGroupCreditGradeID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+        <entity id="entity_EBStagingGroupCreditGrade">
+            <ejb-name>EBStagingGroupCreditGrade</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGrade</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBGroupCreditGradeStagingBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingGroupCreditGrade</abstract-schema-name>
+            <cmp-field>
+                <field-name>cMPGroupCreditGradeID</field-name>
+            </cmp-field>
+           <cmp-field>
+                <field-name>typeCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>ratingCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>ratingDt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>expectedTrendRating</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>reason</field-name>
+            </cmp-field>
+              <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGroupCreditGradeIDRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPGrpID</field-name>
+            </cmp-field>
+            <primkey-field>cMPGroupCreditGradeID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+
+
+        <entity id="entity_EBGroupMember">
+            <ejb-name>EBGroupMember</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBGroupMember</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBGroupMember</abstract-schema-name>
+            <cmp-field>
+                <field-name>cMPGroupMemberID</field-name>
+            </cmp-field>
+             <cmp-field>
+			    <field-name>cMPEntityID</field-name>
+            </cmp-field>
+             <cmp-field>
+			    <field-name>entityType</field-name>
+            </cmp-field>
+             <cmp-field>
+			    <field-name>relationName</field-name>
+            </cmp-field>
+             <cmp-field>
+			    <field-name>percentOwned</field-name>
+            </cmp-field>
+             <cmp-field>
+			    <field-name>relBorMemberName</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+
+            <cmp-field>
+			    <field-name>cMPGrpID</field-name>
+            </cmp-field>
+
+            <cmp-field>
+			    <field-name>cMPGroupMemberIDRef</field-name>
+            </cmp-field>
+
+            <primkey-field>cMPGroupMemberID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+        <entity id="entity_EBStagingGroupMember">
+            <ejb-name>EBStagingGroupMember</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBGroupMember</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBGroupMemberStagingBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingGroupMember</abstract-schema-name>
+            <cmp-field>
+                <field-name>cMPGroupMemberID</field-name>
+            </cmp-field>
+            <cmp-field>
+			    <field-name>cMPEntityID</field-name>
+            </cmp-field>
+            <cmp-field>
+			    <field-name>entityType</field-name>
+            </cmp-field>
+            <cmp-field>
+			    <field-name>relationName</field-name>
+            </cmp-field>
+            <cmp-field>
+			    <field-name>percentOwned</field-name>
+            </cmp-field>
+            <cmp-field>
+			    <field-name>relBorMemberName</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+
+            <cmp-field>
+			    <field-name>cMPGrpID</field-name>
+            </cmp-field>
+
+            <cmp-field>
+			    <field-name>cMPGroupMemberIDRef</field-name>
+            </cmp-field>
+
+            <primkey-field>cMPGroupMemberID</primkey-field>
+
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+
+        <entity id="entity_EBGroupOtrLimit">
+            <ejb-name>EBGroupOtrLimit</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimit</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBGroupOtrLimit</abstract-schema-name>
+            <cmp-field>
+                <field-name>cMPGroupOtrLimitID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>otrLimitTypeCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>remarks</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPGrpID</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPGroupOtrLimitIDRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>lastReviewedDt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>description</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>currencyCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPLimitAmt</field-name>
+            </cmp-field>
+
+            <primkey-field>cMPGroupOtrLimitID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+        <entity id="entity_EBStagingGroupOtrLimit">
+            <ejb-name>EBStagingGroupOtrLimit</ejb-name>
+            <home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitHome</home>
+            <remote>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimit</remote>
+            <local-home>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitLocal</local>
+            <ejb-class>com.integrosys.cms.app.custgrpi.bus.EBGroupOtrLimitStagingBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingGroupOtrLimit</abstract-schema-name>
+
+            <cmp-field>
+                <field-name>cMPGroupOtrLimitID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>otrLimitTypeCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>remarks</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPGrpID</field-name>
+            </cmp-field>
+
+            <cmp-field>
+                <field-name>cMPGroupOtrLimitIDRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPStatus</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>lastReviewedDt</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>description</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>currencyCD</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cMPLimitAmt</field-name>
+            </cmp-field>
+
+
+            <primkey-field>cMPGroupOtrLimitID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+        
+    </enterprise-beans>
+    <relationships>
+
+        <ejb-relation>
+            <ejb-relation-name>CustGrpIdentifier-GroupSubLimit</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>CustGrpIdentifier-has-GroupSubLimit</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBCustGrpIdentifier</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>groupSubLimitCMR</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>GroupSubLimit-BelongsTo-CustGrpIdentifier</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBGroupSubLimit</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>
+        <ejb-relation>
+            <ejb-relation-name>CustGrpIdentifier-GroupSubLimit-Stage</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>CustGrpIdentifier-has-GroupSubLimit-stage</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBCustGrpIdentifierStaging</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>groupSubLimitCMR</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>GroupSubLimit-BelongsTo-CustGrpIdentifier-Stage</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBStagingGroupSubLimit</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>
+
+
+          <ejb-relation>
+            <ejb-relation-name>CustGrpIdentifier-GroupCreditGrade</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>CustGrpIdentifier-has-GroupCreditGrade</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBCustGrpIdentifier</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>groupCreditGradeCMR</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>GroupCreditGrade-BelongsTo-CustGrpIdentifier</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBGroupCreditGrade</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>
+
+          <ejb-relation>
+            <ejb-relation-name>CustGrpIdentifier-GroupMember</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>CustGrpIdentifier-has-GroupMember</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBCustGrpIdentifier</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>groupMemberCMR</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>GroupMember-BelongsTo-CustGrpIdentifier</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBGroupMember</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>
+        <ejb-relation>
+            <ejb-relation-name>CustGrpIdentifier-GroupMember-Stage</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>CustGrpIdentifier-has-GroupMember-stage</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBCustGrpIdentifierStaging</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>groupMemberCMR</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>GroupMember-BelongsTo-CustGrpIdentifier-Stage</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBStagingGroupMember</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>
+
+
+        <ejb-relation>
+            <ejb-relation-name>CustGrpIdentifier-GroupCreditGrade-Stage</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>CustGrpIdentifier-has-GroupCreditGrade-stage</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBCustGrpIdentifierStaging</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>groupCreditGradeCMR</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>GroupCreditGrade-BelongsTo-CustGrpIdentifier-Stage</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBStagingGroupCreditGrade</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>
+        
+        <ejb-relation>
+            <ejb-relation-name>CustGrpIdentifier-GroupOtrLimit</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>CustGrpIdentifier-has-GroupOtrLimit</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBCustGrpIdentifier</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>groupOtrLimitCMR</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>GroupOtrLimit-BelongsTo-CustGrpIdentifier</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBGroupOtrLimit</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>
+
+        <ejb-relation>
+            <ejb-relation-name>CustGrpIdentifier-GroupOtrLimit-Stage</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>CustGrpIdentifier-has-GroupOtrLimit-stage</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBCustGrpIdentifierStaging</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>groupOtrLimitCMR</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>GroupOtrLimit-BelongsTo-CustGrpIdentifier-Stage</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBStagingGroupOtrLimit</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>
+    </relationships>
+
+    <assembly-descriptor>
+        <container-transaction>
+            <method>
+                <ejb-name>SBCustGrpIdentifierProxy</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBCustGrpIdentifierBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBCustGrpIdentifierBusManagerStaging</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBCustGrpIdentifier</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBCustGrpIdentifierStaging</ejb-name>
+                <method-name>*</method-name>
+            </method>
+
+            <method>
+                <ejb-name>EBGroupSubLimit</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBStagingGroupSubLimit</ejb-name>
+                <method-name>*</method-name>
+            </method>
+
+             <method>
+                <ejb-name>EBGroupMember</ejb-name>
+                <method-name>*</method-name>
+            </method>
+
+             <method>
+                <ejb-name>EBStagingGroupMember</ejb-name>
+                <method-name>*</method-name>
+            </method>
+
+            <method>
+                <ejb-name>EBGroupCreditGrade</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBStagingGroupCreditGrade</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>EBGroupOtrLimit</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBStagingGroupOtrLimit</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

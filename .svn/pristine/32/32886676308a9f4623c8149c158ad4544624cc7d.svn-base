@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+					SELECT 
+						PARTYID,               
+						PARTYNAME,             
+						SEGMENTNAME,           
+						POLICYNO,              
+						INSURANCECOMPANY,      
+						UPPER(TYPENAME),
+						 Collateral_name,
+						INSUREDAMT,            
+						CURR,                  
+						RECEIVEDDATE,          
+						STARTDATE,             
+						EXPIRYDATE,            
+						RM,
+						REGION,
+						IC1,
+						IC2,
+						IC3,
+						IC4
+                       
+					FROM
+					  ( SELECT DISTINCT sp.LSP_LE_ID	     AS partyId,
+						sp.LSP_SGMNT_CODE_VALUE		     AS LSP_SGMNT_CODE_VALUE,
+						sp.CMS_LE_SUB_PROFILE_ID		     AS CMS_LE_SUB_PROFILE_ID ,
+						sp.LSP_SHORT_NAME			     AS partyName,
+						ce.ENTRY_NAME			     AS segmentName,
+						ip.POLICY_NO			     AS policyNo,
+						ic.COMPANY_NAME			     AS insuranceCompany,
+						cs.TYPE_NAME
+						||'-'
+						||cs.SUBTYPE_NAME                        AS typeName,
+                        colMaster.new_collateral_description as collateral_name,
+						ip.INSURED_AMT                           AS insuredAmt,
+						ip.CURRENCY_CODE                         AS curr,
+						TO_CHAR(ip.received_date,'DD/Mon/YYYY')  AS Receiveddate,
+						TO_CHAR(ip.EFFECTIVE_DATE,'DD/Mon/YYYY') AS StartDate,
+						TO_CHAR(ip.EXPIRY_DATE,'DD/Mon/YYYY')    AS Expirydate,
+						(SELECT rm.rm_mgr_name
+						FROM cms_relationship_mgr rm
+						WHERE rm.id = sp.relation_mgr
+						) AS RM,
+						(SELECT region_name FROM cms_region WHERE ID = addr.lra_region
+						) AS region,
+						(SELECT ENTRY_NAME
+						FROM COMMON_CODE_CATEGORY_ENTRY
+						WHERE ENTRY_CODE  = ip.type_of_perils1
+						AND category_code = 'INSURANCE_COMPANY_CATEGORY'
+						) AS IC1,
+						(SELECT ENTRY_NAME
+						FROM COMMON_CODE_CATEGORY_ENTRY
+						WHERE ENTRY_CODE  = ip.type_of_perils2
+						AND category_code = 'INSURANCE_COMPANY_CATEGORY'
+						) AS IC2,
+						(SELECT ENTRY_NAME
+						FROM COMMON_CODE_CATEGORY_ENTRY
+						WHERE ENTRY_CODE  = ip.type_of_perils3
+						AND category_code = 'INSURANCE_COMPANY_CATEGORY'
+						) AS IC3,
+						(SELECT ENTRY_NAME
+						FROM COMMON_CODE_CATEGORY_ENTRY
+						WHERE ENTRY_CODE  = ip.type_of_perils4
+						AND category_code = 'INSURANCE_COMPANY_CATEGORY'
+						) AS IC4
+                        
+					  FROM CMS_LIMIT_SECURITY_MAP lsm,
+						SCI_LSP_APPR_LMTS lmts,
+						SCI_LSP_LMT_PROFILE pf,
+						SCI_LE_SUB_PROFILE sp,
+						CMS_SECURITY cs,
+						CMS_INSURANCE_POLICY ip,
+						CMS_INSURANCE_COVERAGE ic,
+						COMMON_CODE_CATEGORY_ENTRY ce,
+						SCI_LE_REG_ADDR addr,
+                        cms_collateral_new_master colMaster
+					  WHERE cs.CMS_COLLATERAL_ID    = lsm.CMS_COLLATERAL_ID
+					  AND cs.CMS_COLLATERAL_ID      = ip.CMS_COLLATERAL_ID
+					  AND sp.CMS_LE_SUB_PROFILE_ID  = pf.CMS_CUSTOMER_ID
+					  AND pf.CMS_LSP_LMT_PROFILE_ID = lmts.CMS_LIMIT_PROFILE_ID
+					  AND lmts.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+					  AND (lsm.UPDATE_STATUS_IND   != 'D'
+					  OR lsm.UPDATE_STATUS_IND     IS NULL)
+					  AND ip.INSURER_NAME           = ic.id(+)
+					  AND sp.LSP_SGMNT_CODE_VALUE   = ce.ENTRY_CODE
+					  AND ce.CATEGORY_CODE          = 'HDFC_SEGMENT'
+					  AND TRUNC(ip.EXPIRY_DATE)     &lt; TRUNC(sysdate)
+					  AND sp.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+					  AND addr.LRA_TYPE_VALUE       = 'CORPORATE'
+					  AND SP.status                != 'INACTIVE'
+                      AND colMaster.new_collateral_code         = cs.collateral_code
+					  UNION
+					  SELECT DISTINCT sp.LSP_LE_ID   AS partyId,
+						sp.LSP_SGMNT_CODE_VALUE      AS LSP_SGMNT_CODE_VALUE,
+						sp.CMS_LE_SUB_PROFILE_ID     AS CMS_LE_SUB_PROFILE_ID ,
+						sp.LSP_SHORT_NAME            AS partyName,
+						ce.entry_name                as segmentname,
+					--	stockDet.INSURANCE_POLICY_NO AS policyNo,
+          ins.ins_policy_no    AS policyNo,
+						ic.COMPANY_NAME              AS insuranceCompany,
+						cs.TYPE_NAME
+						||'-'
+						||cs.SUBTYPE_NAME                                        AS typeName,
+                        colmaster.new_collateral_description as collateral_name,
+					--	stockDet.INSURED_AMOUNT                                  AS insuredAmt,
+          ins.insured_amount AS insuredAmt,
+						ins.ins_currency                                                   as curr,
+						--TO_CHAR(stockDet.INSURANCE_RECIVED_DATE,'DD/Mon/YYYY')   AS Receiveddate,
+						--TO_CHAR(stockDet.INSURANCE_EFFECTIVE_DATE,'DD/Mon/YYYY') AS StartDate,
+						--TO_CHAR(stockDet.INSURANCE_EXPIRY_DATE,'DD/Mon/YYYY')    AS Expirydate,
+            to_char(ins.received_date,'DD/Mon/YYYY')   as receiveddate,
+						to_char(ins.effective_date,'DD/Mon/YYYY') as startdate,
+						TO_CHAR(ins.expiry_date,'DD/Mon/YYYY')    AS Expirydate,
+						(SELECT rm.rm_mgr_name
+						FROM cms_relationship_mgr rm
+						WHERE rm.id = sp.relation_mgr
+						) AS RM,
+						(SELECT region_name FROM cms_region WHERE ID = addr.lra_region
+						) AS region,
+						(SELECT ENTRY_NAME
+						FROM COMMON_CODE_CATEGORY_ENTRY
+						WHERE ENTRY_CODE  = ins.ins_coverage_type
+						AND category_code = 'INSURANCE_COMPANY_CATEGORY'
+						)  AS IC1,
+						'' AS IC2,
+						'' AS IC3,
+						'' AS IC4
+                        
+					  FROM CMS_LIMIT_SECURITY_MAP lsm,
+						SCI_LSP_APPR_LMTS lmts,
+						SCI_LSP_LMT_PROFILE pf,
+						SCI_LE_SUB_PROFILE sp,
+						CMS_SECURITY cs,
+						cms_asset_gc_det det,
+						cms_asset_gc_STOCK_det stockDet,
+						CMS_INSURANCE_COVERAGE ic,
+						COMMON_CODE_CATEGORY_ENTRY ce,
+						sci_le_reg_addr addr,
+            cms_collateral_new_master colmaster,
+            cms_gc_insurance ins
+					  WHERE cs.CMS_COLLATERAL_ID                = lsm.CMS_COLLATERAL_ID
+					  AND sp.CMS_LE_SUB_PROFILE_ID              = pf.CMS_CUSTOMER_ID
+					  AND pf.CMS_LSP_LMT_PROFILE_ID             = lmts.CMS_LIMIT_PROFILE_ID
+					  AND lmts.CMS_LSP_APPR_LMTS_ID             = lsm.CMS_LSP_APPR_LMTS_ID
+					  AND cs.CMS_COLLATERAL_ID                  = det.CMS_COLLATERAL_ID
+					--  AND det.doc_code                          =latest_gc_doccode(cs.CMS_COLLATERAL_ID)
+					 AND det.due_date   =
+              (SELECT MAX(due_date)
+              FROM cms_asset_gc_det
+              where cms_collateral_id =  det.cms_collateral_id
+              )
+					  AND det.gc_det_id                         =stockDet.gc_det_id
+					--  AND stockDet.has_Insurance                ='Y'
+					  AND (lsm.UPDATE_STATUS_IND               != 'D'
+					  or lsm.update_status_ind                 is null)
+					 -- AND stockDet.INSURANCE_COMPANY_NAME       = ic.id(+)
+           and ins.ins_company = ic.insurance_coverage_code(+)
+           and ins.cms_collateral_id =  cs.CMS_COLLATERAL_ID    
+            and ins.deprecated = 'N'
+					  AND sp.LSP_SGMNT_CODE_VALUE               = ce.ENTRY_CODE
+					  and ce.category_code                      = 'HDFC_SEGMENT'
+					  AND TRUNC(ins.expiry_date) &lt; TRUNC(sysdate)
+					  AND sp.CMS_LE_MAIN_PROFILE_ID             = addr.CMS_LE_MAIN_PROFILE_ID
+					  AND addr.LRA_TYPE_VALUE                   = 'CORPORATE'
+					  AND SP.status                            != 'INACTIVE'
+            and colmaster.new_collateral_code         = cs.collateral_code
+					  ) temp 
+			</query>
+		<whereClause>
+			<mandatoryClause>				
+					1=1
+			</mandatoryClause>			
+			<param>
+				<name>segment</name>
+				<condition> AND LSP_SGMNT_CODE_VALUE = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>					
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			    <reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance policy Number</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Insurance company Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Security Description</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Collateral Name</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Insurance Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Received Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Start Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Coverage Type 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Coverage Type 2</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Coverage Type 3</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Coverage Type 4</header>
+				</reportColumn>	
+			</reportColumns>
+			<reportName>LSS Insurance expiry Tracker</reportName>
+		</reportParamters>
+	</report>
+</reports>

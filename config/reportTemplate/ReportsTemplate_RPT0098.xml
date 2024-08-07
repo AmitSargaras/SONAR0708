@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select distinct
+			il.PARTYID,
+			mp.LMP_LONG_NAME as PARTYNAME,
+			lmts.LMT_ID as FACILITY_ID,
+			lmts.FACILITY_NAME,
+			lmts.LINE_NO,
+			x.SERIAL_NO,
+			udf.UDF98 as COMMODITY_BORROWER_FLAG,
+			fac.NEW_FACILITY_SYSTEM as SYSTEM_ID,
+			lmts.LMT_TYPE_VALUE as SUB_LIMIT,
+			il.STATUS as ECBF_INTERFACE_STATUS,
+			il.ERRORMESSAGE as ECBF_INTERFACE_FAILED_REASON,
+			TO_CHAR(il.REQUESTDATETIME,'DD/Mon/YYYY') as REQUESTDATETIME,
+			TO_CHAR(il.RESPONSEDATETIME,'DD/Mon/YYYY') as RESPONSEDATETIME,
+			x.STATUS as LINE_STATUS,
+      		x.CORE_STP_REJECTED_REASON as LINE_REJECT_REASON
+			from
+			CMS_ECBF_LMT_INTERFACE_LOG il,
+			SCI_LE_MAIN_PROFILE mp,
+			SCI_LSP_APPR_LMTS lmts,
+			SCI_LSP_SYS_XREF x,
+			SCI_LE_UDF udf,
+			SCI_LSP_LMTS_XREF_MAP xrefmap,
+			CMS_FACILITY_NEW_MASTER fac
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				mp.LMP_LE_ID=il.PARTYID
+				AND lmts.CMS_LSP_APPR_LMTS_ID = il.LMTID
+				AND x.LINE_NO=lmts.LINE_NO
+				<!-- AND lmts.cms_limit_status='ACTIVE' -->
+				AND udf.CMS_LE_MAIN_PROFILE_ID = mp.CMS_LE_MAIN_PROFILE_ID
+				AND lmts.CMS_LSP_APPR_LMTS_ID = xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				AND x.CMS_LSP_SYS_XREF_ID = xrefmap.CMS_LSP_SYS_XREF_ID
+				AND lmts.LMT_FAC_CODE = fac.NEW_FACILITY_CODE
+				AND udf.UDF98              = 'Yes'
+			</mandatoryClause>
+
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(REQUESTDATETIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Serial No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Commodity Borrower Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>System ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Sub Limit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>ECBF Interface Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>ECBF Interface Failed Reason</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Request Date and Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Response Date and Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line Reject Reason</header>
+				</reportColumn>			
+			</reportColumns>
+			<reportName>Line Interface with ECBF</reportName>
+		</reportParamters>
+	</report>
+</reports>

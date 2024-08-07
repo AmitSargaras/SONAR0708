@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="GenerateSCCForm" type="com.integrosys.cms.ui.genscc.GenerateSCCForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/GenerateSCC" type="com.integrosys.cms.ui.genscc.GenerateSCCAction"
+            name="GenerateSCCForm" validate="false" scope="request">
+            <forward name="after_generate_scc" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genscc/generate_scc.jsp"/>
+                <!--<set-property property="leftFrame" value="/template/cpc_maker_leftframe.jsp"/>-->
+                <set-property property="leftFrame" value="/template/ssc_maker_leftframe.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="wip" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <!--<set-property property="leftFrame" value="/template/cpc_maker_leftframe.jsp"/>-->
+                <set-property property="leftFrame" value="/template/ssc_maker_leftframe.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="info" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genscc/info.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_submit" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <!--<set-property property="leftFrame" value="/template/cpc_maker_leftframe.jsp"/>-->
+                <set-property property="leftFrame" value="/template/ssc_maker_leftframe.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genscc/chk_generate_scc.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_approve" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genscc/ack_approve.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_reject" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="view_outer_limit_bca" path="/template/common_frame_template.jsp">
+		    	<set-property property="rightFrame" value="/common/view_outer_limit_bca.jsp"/>
+		    	<set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+		    	<set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_close_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genscc/generate_scc_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="checker_view_outer_limit_bca" path="/template/common_view_template.jsp">
+		    	<set-property property="rightFrame" value="/common/view_outer_limit_bca.jsp"/>
+		    	<set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="na" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genscc/na.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            
+            <!-- wf -->
+            <forward name="wip_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_edit_staging_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genscc/generate_scc.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_close_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genscc/generate_scc_view.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_close_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_process_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genscc/chk_generate_scc.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_approve_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genscc/ack_approve.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_reject_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_submit_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="after_generate_scc_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genscc/generate_scc.jsp"/>
+                <set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="view_outer_limit_bca_WF" path="/template/common_view_template.jsp">
+		     	<set-property property="rightFrame" value="/common/view_outer_limit_bca.jsp"/>
+		     	<set-property property="title" value="title.generate.scc"/>
+            </forward>
+            <forward name="checker_view_outer_limit_bca_WF" path="/template/common_view_template.jsp">
+		    	<set-property property="rightFrame" value="/common/view_outer_limit_bca.jsp"/>
+		    	<set-property property="title" value="title.generate.scc"/>
+            </forward>
+            
+            <forward name="after_print_doc" path="/genscc/print_scc.jsp"/>
+            <forward name="after_print_doc_WF" path="/genscc/print_scc.jsp"/>            
+        </action>
+    
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-generatescc"/>-->
+</struts-config>

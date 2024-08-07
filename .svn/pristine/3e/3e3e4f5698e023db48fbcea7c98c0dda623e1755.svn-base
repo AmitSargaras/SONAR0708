@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+    	<!-- Forms for customer / AA module -->
+        <form-bean name="CustomerSearchForm" type="com.integrosys.cms.ui.customer.CustomerSearchForm">
+        </form-bean>        
+                
+        <form-bean name="ProcessDetailsCustomerForm" type="com.integrosys.cms.ui.customer.ProcessDetailsCustomerForm">
+        </form-bean>        
+        
+        <!-- Forms for limit module -->
+        <form-bean name="LimitsForm" type="com.integrosys.cms.ui.limit.LimitsForm">
+        </form-bean>        
+        
+        <form-bean name="LimitAccountForm" type="com.integrosys.cms.ui.limit.limitaccount.LimitAccountForm">
+        </form-bean>        
+        
+        <form-bean name="ViewLimitsForm" type="com.integrosys.cms.ui.limit.ViewLimitsForm">
+        </form-bean>
+        <form-bean name="CustomerViewForm" type="com.integrosys.cms.ui.customer.viewdetails.CustomerViewForm"/>
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/CustomerSearch" type="com.integrosys.cms.ui.customer.CustomerSearchAction" name="CustomerSearchForm" validate="false" scope="request">
+            <forward name="after_list" path="/template/common_template.jsp">
+                <set-property property="title" value="title.customer.search"/>
+                <set-property property="rightFrame" value="/customer/CustomerList.jsp"/>
+            </forward>
+            <forward name="after_return" path="/template/common_template.jsp">
+                <set-property property="title" value="title.customer.search"/>
+                <set-property property="rightFrame" value="/customer/CustomerList.jsp"/>
+            </forward>
+            <forward name="after_prepare" path="/template/common_template.jsp">
+                <set-property property="title" value="title.customer.search"/>
+                <set-property property="rightFrame" value="/customer/CustomerSearch.jsp"/>
+            </forward>
+        </action>
+
+        <action path="/CustomerProcess" type="com.integrosys.cms.ui.customer.CustomerProcessDetailsAction" name="ProcessDetailsCustomerForm" validate="false" scope="request">
+            <forward name="after_viewsecurities" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/customer/CustomerViewSecurities.jsp"/>
+                <set-property property="title" value="title.customer.viewsecurities"/>
+            </forward>
+            
+            <forward name="view_borrower_list" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/customer/view_borrower_list.jsp"/>
+                <set-property property="title" value="title.customer.view"/>
+            </forward>
+            
+            <forward name="after_viewLimitProfile" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/customer/ViewLimitProfile.jsp"/>
+                <set-property property="title" value="title.customer.view"/>
+            </forward>
+      
+            <forward name="after_editLimitProfile" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/customer/EditLimitProfile.jsp"/>
+                <set-property property="title" value="title.customer.process"/>
+            </forward>
+            <forward name="after_updateLimitProfile" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.common.confirmation"/>
+            </forward>
+            <forward name="after_chkLimitProfileList" path="/customer/ChkLimitProfileList.jsp">
+            </forward>
+            <forward name="after_chkLimitProfileApRej" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/customer/chkLimitProfileApRej.jsp"/>
+                <set-property property="title" value="title.customer.process"/>
+            </forward>
+            <forward name="after_approve" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.common.confirmation"/>
+            </forward>
+            <forward name="after_reject" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.common.confirmation"/>
+            </forward>
+            <forward name="after_resubmit" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/customer/ChkLimitProfileReSub.jsp"/>
+                <set-property property="title" value="title.customer.process"/>
+            </forward>
+            <forward name="after_close" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/customer/close_limitProfile.jsp"/>
+                <set-property property="title" value="title.customer.process"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/customer/close_limitProfile.jsp"/>
+                <set-property property="title" value="title.customer.process"/>
+            </forward>
+            <forward name="after_chkLimitProfileListSub" path="/customer/ChkLimitProfileList_Sub.jsp">
+            </forward>
+            <forward name="after_submit" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.common.confirmation"/>
+            </forward>
+            <forward name="after_cancel" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.common.confirmation"/>
+            </forward>
+            <forward name="wip" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.common.wip"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+            </forward>
+          	<forward name="listMainBorrower" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/customer/mainBorrowerList.jsp"/>
+                <set-property property="title" value="title.customer.view"/>
+            </forward>
+            <!-- Start: Uma Khot: Phase 3 CR:Customer details(summary Detail with CAM) -->
+             <forward name="view_cam_image_list" path="/template/common_template.jsp">
+				<set-property property="title" value="title.manualinput.aa"/>
+				<set-property property="rightFrame" value="/customer/view_cam_image_list.jsp"/>
+			</forward>
+			    <forward name="print_image" path="/customer/print_image_page.jsp"/>
+				<forward name="downloadImage" path="/customer/popup.jsp" />
+                <forward name="image_gallary" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/customer/image_gallary.jsp"/>
+                 	<set-property property="title" value="title.manualinput.aa"/>
+            	</forward>
+			 <!-- End: Uma Khot: Phase 3 CR:Customer details(summary Detail with CAM) -->
+        </action>
+
+        <action path="/Limits" type="com.integrosys.cms.ui.limit.LimitsAction" name="LimitsForm" validate="false" scope="request">
+            <forward name="viewlimits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.viewlimits"/>
+                <set-property property="rightFrame" value="/limit/CustomerViewLimits.jsp"/>
+            </forward>
+            <forward name="view_limit_details" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/ViewLimitDetails.jsp"/>
+            </forward>
+            <forward name="prepare_update_limit" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/EditLimitDetails.jsp"/>
+            </forward>            
+            <forward name="prepare_edit_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/CustomerEditLimits.jsp"/>
+            </forward>
+            <forward name="cancel_edit_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/CustomerEditLimits.jsp"/>
+            </forward>
+            <forward name="edit_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="checker_read_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/checker_view_limit.jsp"/>
+            </forward>
+            <forward name="approve" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            </forward>
+            <forward name="reject" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            </forward>
+            <forward name="view_co_borrower_limit_details" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/ViewCoBorrowerLimitDetails.jsp"/>
+            </forward>
+            <forward name="prepare_edit_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/edit_coborrower_detail.jsp"/>
+            </forward>
+            <forward name="cancel_edit_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/CustomerEditCoBorrowerLimits.jsp"/>
+            </forward>
+            <forward name="edit_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="submit" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>            
+            <forward name="checker_read_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/chk_coborrower_approve_reject.jsp"/>
+            </forward>
+            <forward name="checker_approve_update_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            </forward>
+            <forward name="checker_reject_update_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            </forward>  
+            <forward name="re_process_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/EditLimitDetails.jsp"/>
+            </forward>                     
+            <forward name="re_process_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/edit_coborrower_detail.jsp"/>
+            </forward>   
+            <forward name="prepare_close_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/ViewLimitDetails.jsp"/>
+            </forward>     
+            <forward name="prepare_close_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/ViewCoBorrowerLimitDetails.jsp"/>
+            </forward> 
+            <forward name="close_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+            </forward>             
+            <forward name="close_co_borrower_limits" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+            </forward> 
+            <forward name="to_track" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/ViewLimitDetails.jsp"/>
+            </forward> 
+            <forward name="to_track_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/close_coborrower_detail.jsp"/>
+            </forward>                         
+            <forward name="working_in_progress" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+            </forward>
+	    	<forward name="working_in_progress_different_country" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/wip_different_country.html"/>
+            </forward>
+            <forward name="maker_update_coborrower_limit" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward> 
+            <forward name="prepare_update_account" path="/LimitAccount.do?event=prepare_update"/>
+            <forward name="prepare_add_account" path="/LimitAccount.do?event=prepare"/>
+        </action>
+
+		<action path="/LimitRedirect" type="com.integrosys.cms.ui.limit.LimitRedirectAction" name="LimitsForm" validate="false" scope="request">                
+             <forward name="MANUAL" path="/MILimit.do"/>
+             <forward name="NORMAL_process" path="/Limits.do?event=checker_read_limits"/>
+             <forward name="NORMAL_process_update" path="/Limits.do?event=re_process_limits"/>
+             <forward name="NORMAL_prepare_close" path="/Limits.do?event=prepare_close_limits"/>
+        </action>
+
+		<action path="/LimitProfileRedirect" type="com.integrosys.cms.ui.customer.LimitProfileRedirectAction" name="LimitsForm" validate="false" scope="request">                
+             <forward name="MANUAL_process" path="/MIAADetail.do?event=checker_edit_aadetail"/>
+             <forward name="MANUAL_process_update" path="/MIAADetail.do?event=maker_edit_aadetail_reject"/>
+             <forward name="MANUAL_process_delete" path="/MIAADetail.do?event=maker_delete_aadetail_reject"/>
+             <forward name="MANUAL_close" path="/MIAADetail.do?event=maker_close_aadetail"/>
+             <forward name="NORMAL_process" path="/CustomerProcess.do?event=chkLimitProfileApRej"/>
+             <forward name="NORMAL_process_update" path="/CustomerProcess.do?event=resubmit"/>
+             <forward name="NORMAL_close" path="/CustomerProcess.do?event=close"/>
+        </action>
+
+        <action path="/LimitAccount" type="com.integrosys.cms.ui.limit.limitaccount.LimitAccountAction" name="LimitAccountForm" validate="false" scope="request">
+	    	<forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/update_limit_account.jsp"/>
+            </forward>      
+            <forward name="return" path="/Limits.do?event=update_return"/>  
+            <forward name="refresh" path="/manualinput/limit/systemlist.jsp"/>  
+        </action>
+
+        <action path="/ViewLimits" type="com.integrosys.cms.ui.limit.ViewLimitsAction" name="ViewLimitsForm" validate="false" scope="request">
+
+            <forward name="after_chkLimitList" path="/limit/ChkLimitList.jsp">
+            </forward>
+            <forward name="after_chkLimitListSub" path="/limit/ChkLimitList_Sub.jsp">
+            </forward>
+            <forward name="after_view" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.viewlimits"/>
+                <set-property property="rightFrame" value="/limit/ViewLimitDetails.jsp"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/limit/close_limit_detail.jsp"/>
+                <set-property property="title" value="title.limit.viewlimits"/>
+            </forward>
+            <forward name="after_close" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.viewlimits"/>
+                <set-property property="rightFrame" value="/limit/close_limit_detail.jsp"/>
+            </forward>
+            <forward name="after_chkLimitApRej" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.viewlimits"/>
+                <set-property property="rightFrame" value="/limit/ChkLimitApRej.jsp"/>
+            </forward>
+            <forward name="after_resubmit" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/ChkLimitReSub.jsp"/>
+            </forward>
+            <forward name="after_submit" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="after_cancel" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+
+            <forward name="after_edit" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.editlimits"/>
+                <set-property property="rightFrame" value="/limit/EditLimitDetails.jsp"/>
+            </forward>
+            <forward name="after_save" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="after_reject" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            </forward>
+            <forward name="after_approve" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            </forward>
+            <forward name="after_limitprofile" path="/limit/LimitProfile.jsp">
+            </forward>
+            <forward name="after_view_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.viewcoborrower"/>
+                <set-property property="rightFrame" value="/limit/view_coborrower_detail.jsp"/>
+            </forward>
+            <forward name="after_to_track_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.viewcoborrower"/>
+                <set-property property="rightFrame" value="/limit/close_coborrower_detail.jsp"/>
+            </forward>
+            <forward name="after_edit_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.editcoborrower"/>
+                <set-property property="rightFrame" value="/limit/edit_coborrower_detail.jsp"/>
+            </forward>
+            <forward name="after_save_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="after_close_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.limit.viewcoborrower"/>
+                <set-property property="rightFrame" value="/limit/close_coborrower_detail.jsp"/>
+            </forward>
+            <forward name="after_chk_coborrower_approve_reject" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.viewcoborrower"/>
+                <set-property property="rightFrame" value="/limit/chk_coborrower_approve_reject.jsp"/>
+            </forward>
+            <forward name="after_approve_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            </forward>
+            <forward name="after_reject_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            </forward>
+            <forward name="after_resubmit_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.editcoborrower"/>
+                <set-property property="rightFrame" value="/limit/edit_coborrower_detail.jsp"/>
+            </forward>
+
+            <forward name="after_cancel_coborrower" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.confirmation"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="wip" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.common.wip"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+            </forward>
+        </action>
+
+       <action path="/customerView" type="com.integrosys.cms.ui.customer.viewdetails.CustomerViewAction" name="CustomerViewForm" validate="false" scope="request">
+            <forward name="view_customer_details" path="/customer/viewdetails/ViewLimitProfile.jsp"/>
+            <forward name="error_page" path="/customer/viewdetails/ViewLimitProfile.jsp"/>
+      </action>
+                                                    
+    </action-mappings>
+    <message-resources key="message-customeraalimit" parameter="ApplicationResources-customeraalimit"/>
+</struts-config>    

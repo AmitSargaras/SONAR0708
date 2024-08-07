@@ -1,0 +1,3121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				select 
+ sp.LSP_LE_ID  as ptyid,
+       sp.LSP_SHORT_NAME as PtyName,
+        (select entry_name from common_code_category_entry where entry_code = sp.ENTITY AND CATEGORY_CODE = 'Entity')       as PtyEntity,
+         addr.LRA_POST_CODE                as PtyPincode,
+      addr.LRA_TELEPHONE_TEXT    as    PtyTel1,
+       addr.LRA_TELEX_TEXT      as PtyTel2,
+                            <!-- sp.BANKING_METHOD as BankMethod, -->
+                            ( SELECT get_banking_method(SP.LSP_LE_ID) AS BANKING_METHOD
+     					FROM   CMS_BANKING_METHOD_CUST WHERE ROWNUM = 1)  As BankMethod,
+                            addr.lra_addr_line_1 ||' '||addr.lra_addr_line_2||' '||addr.lra_addr_line_3 as PtyAddress,
+                           CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =34
+	   THEN  sudf.udf34
+	   WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =35
+	   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'PROCESSING FEES (RS)') =50
+    			   THEN  sudf.udf50
+             
+              end as PROCESSING_FEES,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'GOLD DEPOSIT CHG (RS)') =50
+    			   THEN  sudf.udf50
+             
+              end as GoLd_Deposit_Chg,
+                    
+                            sp.RBI_IND_CODE as RBIIndId,
+                            sp.MAIN_BRANCH as branchcd,
+                            --sp.MAIN_BRANCH as branchcd1,
+                           (select rm_mgr_name from cms_relationship_mgr where id = sp.relation_mgr) as RMName,
+                            
+                           (select city_name from cms_city where id = addr.lra_city_text) as city
+                           ,
+                            sp.IND_NM as IndId,                            
+                            cc_industry.entry_name AS industryName,
+                         lmt.releasable_amount as Releasable,
+						 sys.cms_le_other_sys_cust_id as systemId,
+                         cc_rbi.entry_name AS rbi,
+                      cam.LLP_BCA_REF_APPR_DATE    as camdate,
+                    cam.LLP_NEXT_ANNL_RVW_DATE      as ExpiryDate,
+                    lmt.CMS_REQ_SEC_COVERAGE          as Sanctioned,
+                        --sys.CMS_LE_SYSTEM_NAME                       as system_name,
+                        -- sys.CMS_LE_OTHER_SYS_CUST_ID                      as systemid,
+                          lmt.FACILITY_NAME    as facilityname,
+                          
+                          CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA CODE') =50
+    			   THEN  sudf.udf50
+             
+              end as DSA_CODE,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'DSA NAME') =50
+    			   THEN  sudf.udf50
+             
+              end as DSA_NAME,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 18 K') =50
+    			   THEN  sudf.udf50
+             
+              end as Net_GOLD_18_K,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 19 K') =50
+    			   THEN  sudf.udf50
+             
+              end as Net_GOLD_19_K,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 20 K') =50
+    			   THEN  sudf.udf50
+             
+              end as Net_GOLD_20_K ,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 21 K') =50
+    			   THEN  sudf.udf50
+             
+              end as Net_GOLD_21_K ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 22 K') =50
+    			   THEN  sudf.udf50
+             
+              end as Net_GOLD_22_k ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 23 K') =50
+    			   THEN  sudf.udf50
+             
+              end as Net_GOLD_23_k ,
+              
+               CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'NET GOLD 24 K') =50
+    			   THEN  sudf.udf50
+             
+              end as Net_GOLD_24_k ,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'CHANNEL NAME') =50
+    			   THEN  sudf.udf50
+             
+              end as Channel_Name ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'SOURCE NAME') =50
+    			   THEN  sudf.udf50
+             
+              end as Source_Name ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'TSE CODE') =50
+    			   THEN  sudf.udf50
+             
+              end as TSE_code ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'SE CODE') =50
+    			   THEN  sudf.udf50
+             
+              end as SE_code ,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'MARGIN % (LTV)') =50
+    			   THEN  sudf.udf50
+             
+              end as PER_OF_MARGIN_LTV ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'INTEREST_RATE') =50
+    			   THEN  sudf.udf50
+             
+              end as INTEREST_RATE ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'INDEX_CARD_NO') =50
+    			   THEN  sudf.udf50
+             
+              end as INDEX_CARD_NO ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'GROSS_GOLD_WT') =50
+    			   THEN  sudf.udf50
+             
+              end as GROSS_GOLD_WT ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'TL CODE') =50
+    			   THEN  sudf.udf50
+             
+              end as TL_code ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'COEX CODE') =50
+    			   THEN  sudf.udf50
+             
+              end as COEX_code ,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_CODE') =50
+    			   THEN  sudf.udf50
+             
+              end as VALUER_CODE ,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'SM CODE') =50
+    			   THEN  sudf.udf50
+             
+              end as SM_code ,
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'SALES PRAMOTION CODE') =50
+    			   THEN  sudf.udf50
+             
+              end as SALES_PROMOTION_CODE ,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'Priority Sector') =50
+    			   THEN  sudf.udf50
+             
+              end as PRIORITY_SECTOR ,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'TYPE') =50
+    			   THEN  sudf.udf50
+             
+              end as TYPE ,
+              
+              CASE
+    			   WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =1
+    			   THEN  sudf.udf1
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =2
+    			   THEN  sudf.udf2
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =3
+    			   THEN  sudf.udf3
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =4
+    			   THEN  sudf.udf4
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =5
+    			   THEN  sudf.udf5
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =6
+    			   THEN  sudf.udf6
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =7
+    			   THEN  sudf.udf7
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =8
+    			   THEN  sudf.udf8
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =9
+    			   THEN  sudf.udf9
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =10
+    			   THEN  sudf.udf10
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =11
+    			   THEN  sudf.udf11
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =12
+    			   THEN  sudf.udf12
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =13
+    			   THEN  sudf.udf13
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =14
+    			   THEN  sudf.udf14
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =15
+    			   THEN  sudf.udf15
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =16
+    			   THEN  sudf.udf16
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =17
+    			   THEN  sudf.udf17
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =18
+    			   THEN  sudf.udf18
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =19
+    			   THEN  sudf.udf19
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =20
+    			   THEN  sudf.udf20
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =21
+    			   THEN  sudf.udf21
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =22
+    			   THEN  sudf.udf22
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =23
+    			   THEN  sudf.udf23
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =24
+    			   THEN  sudf.udf24
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =25
+    			   THEN  sudf.udf25
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =26
+    			   THEN  sudf.udf26
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =27
+    			   THEN  sudf.udf27
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =28
+    			   THEN  sudf.udf28
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =29
+    			   THEN  sudf.udf29
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =30
+    			   THEN  sudf.udf30
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =31
+    			   THEN  sudf.udf31
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =32
+    			   THEN  sudf.udf32
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =33
+    			   THEN  sudf.udf33
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =34
+    			   THEN  sudf.udf34
+    			   WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =35
+    			   THEN  sudf.udf35
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =36
+    			   THEN  sudf.udf36
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =37
+    			   THEN  sudf.udf37
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =38
+    			   THEN  sudf.udf38
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =39
+    			   THEN  sudf.udf39
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =40
+    			   THEN  sudf.udf40
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =41
+    			   THEN  sudf.udf41
+             WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =42
+    			   THEN  sudf.udf42
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =43
+    			   THEN  sudf.udf43
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =44
+    			   THEN  sudf.udf44
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =45
+    			   THEN  sudf.udf45
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =46
+    			   THEN  sudf.udf46
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =47
+    			   THEN  sudf.udf47
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =48
+    			   THEN  sudf.udf48
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =49
+    			   THEN  sudf.udf49
+              WHEN  (select sequence from cms_udf where fieldname like 'VALUER_NAME') =50
+    			   THEN  sudf.udf50
+             
+              end as VALUER_NAME 
+			   
+           
+		   
+		   from 
+				 SCI_LE_REG_ADDR addr,
+				 SCI_LE_MAIN_PROFILE mpf,
+				 
+				 SCI_LSP_APPR_LMTS  lmt,
+				SCI_LSP_LMT_PROFILE  cam,
+				SCI_LE_UDF sudf,
+				 sci_le_other_system sys,
+				SCI_LE_SUB_PROFILE sp
+
+			LEFT JOIN common_code_category_entry cc_industry
+								ON sp.ind_nm = cc_industry.entry_code
+								LEFT JOIN common_code_category_entry cc_rbi
+								ON sp.rbi_ind_code = cc_rbi.entry_code
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				  sp.CMS_LE_MAIN_PROFILE_ID = mpf.CMS_LE_MAIN_PROFILE_ID
+				  AND sp.CMS_LE_MAIN_PROFILE_ID = sudf.CMS_LE_MAIN_PROFILE_ID
+				  AND sp.cms_le_main_profile_id = addr.cms_le_main_profile_id  
+				  AND cam.cms_lsp_lmt_profile_id = lmt.CMS_LIMIT_PROFILE_ID
+				  AND sp.cms_le_sub_profile_id  = cam.cms_customer_id 
+				  AND sp.cms_le_main_profile_id = sys.cms_le_main_profile_id
+                  and lmt.facility_system = sys.cms_le_system_name
+				  AND cc_industry.category_code = 	'HDFC_INDUSTRY'
+				  AND cc_rbi.category_code = 	'HDFC_RBI_CODE'
+				  AND addr.lra_type_value =	'CORPORATE' 
+				  AND lmt.CMS_LIMIT_STATUS = 'ACTIVE'
+				  AND sp.lsp_sgmnt_code_value = 'SEG0000021'
+				  AND sp.status != 'INACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> and sp.cms_le_sub_profile_id = </condition>
+			</param>
+			
+ 			<orderAndGroupByClause>
+ 				ORDER BY sp.LSP_LE_ID
+ 			</orderAndGroupByClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Entity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>6</width>
+					<format>textFormat</format>
+					<header>Pin Code </header>
+				</reportColumn>
+				<reportColumn>
+					<width>15</width>
+					<format>textFormat</format>
+					<header>Telephone 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>15</width>
+					<format>textFormat</format>
+					<header>Telephone 2</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Banking Method</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Party Address</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Processing Fees</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>GoLd_Deposit_Chg</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBIIndId</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>branch Code-Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Industry Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Industry Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Releasable Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>SYSTEM_ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Industry Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Sanctioned Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>DSA Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>DSA Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net GOLD 18 K</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net GOLD 19 K</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net GOLD 20 K</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net GOLD 21 K</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net GOLD 22 K</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net GOLD 23 K</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net GOLD 24 K</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Channel Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Source Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>TSE Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>SE Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Per Of Margin LTV</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Interest Rate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Index Card No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>GROSS_GOLD_WT</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>TL_code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>COEX_code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>VALUER_CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>SM_code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>SALES_PROMOTION_CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PRIORITY_SECTOR</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>TYPE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>VALUER_NAME</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>Gold Loan Disbursed OD </reportName>
+		</reportParamters>
+	</report>
+</reports>

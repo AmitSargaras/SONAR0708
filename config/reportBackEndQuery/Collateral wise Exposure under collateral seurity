@@ -1,0 +1,79 @@
+SELECT row_number() over (partition BY securityId order by securityId) AS "Serial No",
+  securityId AS "Security ID",
+  secNature AS "Security Nature",
+  SecuritySubType AS "Security Sub-Type",
+  collateral_name AS "Collateral Name",
+  secPriority AS "Security Priority",
+  currCode AS "Currency Code",
+  secAmount AS "Security Amount",
+  PartyID AS "Party ID",
+  PartyName AS "Party Name",
+  segment AS "Segment Name",
+  RMName AS "RM Name",
+  Region AS "Region",
+  system AS "System Name",
+  FacilityID AS "Facility ID",
+  FacilityName AS "Facility Name",
+  LineNo AS "Line Number",
+  totalSanctionedAmount AS "Sanctioned Amount",
+  ReleasedAmount AS "Released Amount",
+  securityCoverage AS "Security Coverage"
+FROM
+  (SELECT DISTINCT secdetail.cms_collateral_id        AS securityId,
+    secdetail.type_name                               AS secNature,
+    secdetail.subtype_name                            AS SecuritySubType,
+    colMaster.new_collateral_description              AS collateral_name,
+    find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+    secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+    (case when secDetail.security_sub_type_id ='CS202'
+    Then 'FD'
+    When secDetail.security_sub_type_id ='AB100' 
+    Then 'GC'
+    else to_char(secDetail.cmv) end)                        AS secAmount,
+
+    sub_profile.lsp_le_id                             AS PartyID,
+    sub_profile.lsp_short_name                        AS PartyName,
+    cc_segment.entry_name                             AS segment,
+    rm.rm_mgr_name                                    AS RMName,
+    reg.region_name                                   AS Region,
+    lmts.facility_system                              AS system,
+    lmts.lmt_id                                       AS FacilityID,
+    lmts.facility_name                                AS FacilityName,
+    xref.line_no                                      AS LineNo,
+    lmts.CMS_REQ_SEC_COVERAGE                         AS totalSanctionedAmount,
+    lmts.total_released_amount                        AS ReleasedAmount,
+    lsm.lmt_security_coverage                         AS securityCoverage
+  FROM CMS_LIMIT_SECURITY_MAP lsm,
+    SCI_LSP_APPR_LMTS lmts,
+    SCI_LSP_LMT_PROFILE pf,
+    SCI_LE_SUB_PROFILE sub_profile,
+    (SELECT entry_name,
+      entry_code
+    FROM common_code_category_entry
+    WHERE category_code = 'HDFC_SEGMENT'
+    ) cc_segment,
+    CMS_SECURITY secDetail,
+    cms_relationship_mgr rm ,
+    SCI_LE_REG_ADDR addr,
+    CMS_REGION reg,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    cms_collateral_new_master colMaster
+  WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+  AND colMaster.new_collateral_code       = secDetail.collateral_code
+  AND lmts.CMS_LSP_APPR_LMTS_ID           = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID           = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND cc_segment.entry_code(+)            = sub_profile.lsp_sgmnt_code_value
+  AND sub_profile.cms_le_main_profile_id  = addr.cms_le_main_profile_id
+  AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+  AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+  AND (lsm.update_status_ind             <> 'D'
+  OR lsm.update_status_ind               IS NULL)
+  AND secdetail.cms_collateral_id         = LSM.CMS_COLLATERAL_ID
+  AND rm.id                               = sub_profile.relation_mgr
+  AND reg.id                              = addr.lra_region
+  AND addr.lra_type_value                 = 'CORPORATE'
+  AND sub_profile.status                 != 'INACTIVE'
+  AND lmts.cms_limit_status              <> 'DELETED'
+  ORDER BY secdetail.cms_collateral_id
+  ) ;

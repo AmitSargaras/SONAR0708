@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<description>
+		Transaction Plugin context files, mainly deal with 'autoProxyCreator', to intercept ORM/JDBC-based DAOs.
+	</description>
+
+	<bean id="matchAllTxInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
+				<property name="nameMap">
+					<map>
+						<entry key="get*"  value="PROPAGATION_REQUIRED" />
+						<entry key="retrieve*"  value="PROPAGATION_REQUIRED" />
+						<entry key="load*"  value="PROPAGATION_REQUIRED" />
+						<entry key="find*"  value="PROPAGATION_REQUIRED" />
+						<entry key="search*"  value="PROPAGATION_REQUIRED" />
+						<entry key="*"  value="PROPAGATION_REQUIRED,-com.integrosys.base.techinfra.exception.OFACheckedException" />
+					</map>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="autoProxyCreator"
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="processTrxManager" />
+			</list>
+		</property>
+	</bean>
+</beans>

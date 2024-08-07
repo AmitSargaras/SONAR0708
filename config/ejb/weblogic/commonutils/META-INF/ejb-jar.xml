@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
+<ejb-jar>
+<display-name>CommonUtils</display-name>
+
+    <enterprise-beans>
+
+         <session id="session_SBCommonManager">        
+            <ejb-name>SBCommonManager</ejb-name>
+            <home>com.integrosys.base.businfra.contact.SBCommonManagerHome</home>
+            <remote>com.integrosys.base.businfra.contact.SBCommonManager</remote>
+            <ejb-class>com.integrosys.base.businfra.contact.SBCommonManagerBean </ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+		
+        <entity id="entity_EBCurrency">
+            <ejb-name>EBCurrency</ejb-name>
+            <home>com.integrosys.base.businfra.currency.EBCurrencyHome</home>
+            <remote>com.integrosys.base.businfra.currency.EBCurrency</remote>
+            <ejb-class>com.integrosys.base.businfra.currency.EBCurrencyBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.String</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCurrency</abstract-schema-name>
+    	    <cmp-field id="cmp_EBCurrency_currencyCode">
+                <field-name>currencyCode</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCurrency_decimalPlace">
+                <field-name>decimalPlace</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCurrency_countryCode">
+                <field-name>countryCode</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCurrency_currencyDescription">
+                <field-name>currencyDescription</field-name>
+            </cmp-field>
+            <primkey-field>currencyCode</primkey-field>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+            <query>
+            	<query-method>
+                	<method-name>findAllCurrencies</method-name>
+                    <method-params>
+                    </method-params>
+		</query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(c) FROM EBCurrency c]]></ejb-ql>
+	    </query>
+         </entity>
+         
+       <entity id="entity_EBCountry">
+            <ejb-name>EBCountry</ejb-name>
+            <home>com.integrosys.base.businfra.contact.EBCountryHome</home>
+            <remote>com.integrosys.base.businfra.contact.EBCountry</remote>
+            <!--local-home>com.integrosys.base.businfra.contact.EBCountryLocalHome</local-home-->
+            <!--local>com.integrosys.base.businfra.contact.EBCountryLocal</local-->
+            <ejb-class>com.integrosys.base.businfra.contact.EBCountryBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.String</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCountry</abstract-schema-name>
+            <cmp-field id="cmp_EBCountry_countryCode">
+                <field-name>countryCode</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCountry_countryName">
+                <field-name>countryName</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCountry_regionName">
+                <field-name>regionName</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBCountry_currencyCode">
+                <field-name>currencyCode</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBCountry_swiftCode">
+                <field-name>swiftCode</field-name>
+            </cmp-field>  
+            <primkey-field>countryCode</primkey-field>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+          
+            <query>
+            	<query-method>
+                	<method-name>findAllCountries</method-name>
+                    <method-params>
+                    </method-params>
+		</query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(c) FROM EBCountry c]]></ejb-ql>
+	</query>
+         </entity>         
+         
+    </enterprise-beans>
+
+    <assembly-descriptor>
+        <container-transaction>
+            <method>
+                <ejb-name>SBCommonManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+           <method>
+                <ejb-name>EBCurrency</ejb-name>
+                <method-name>*</method-name>
+            </method>            
+          <method>
+                <ejb-name>EBCountry</ejb-name>
+                <method-name>*</method-name>
+            </method>                        
+            <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

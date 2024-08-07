@@ -1,0 +1,111 @@
+SET DEFINE OFF;
+
+delete FROM cms_function_access WHERE ACTION IN ('MILimitCovenant','MILineCovenant','goodsMaster');
+
+delete FROM tr_state_matrix WHERE STATEINS = 'GOODS_MASTER';
+
+delete FROM CMS_TRX_TOTRACK where TRANSACTION_TYPE = 'GOODS_MASTER';
+
+delete FROM CMS_STATEMATRIX_ACTION where URL like '%goodsMaster%';
+
+delete FROM transaction_type_name where TRANSACTION_TYPE = 'GOODS_MASTER';
+
+delete FROM CMS_MODULE_ACCESS where MODULE_ID = (select module_id from cms_user_module where module_name='Goods Master');
+
+delete FROM CMS_USER_MODULE WHERE MODULE_NAME = 'Goods Master';
+
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_ENTRY' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='BUYER_RATING_COV');
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_TYPE' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='BUYER_RATING_COV');
+
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_ENTRY' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='BUYERS_RATING_COVENANT');
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_TYPE' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='BUYERS_RATING_COVENANT');
+
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_ENTRY' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='RUNNING_ACC_COVENANT');
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_TYPE' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='RUNNING_ACC_COVENANT');
+
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_ENTRY' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='COMMITMENT_TENOR_COV');
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_TYPE' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='COMMITMENT_TENOR_COV');
+
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_ENTRY' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='SPECIFIC_COVENANT');
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_TYPE' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='SPECIFIC_COVENANT');
+
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_ENTRY' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='RESTRICTED_TYPE');
+delete FROM TRANSACTION where TRANSACTION_TYPE = 'COMMON_CODE_TYPE' AND REFERENCE_ID =
+(SELECT CATEGORY_ID FROM common_code_category WHERE CATEGORY_CODE='RESTRICTED_TYPE');
+
+delete from STAGE_COMMON_CODE_ENTRY where CATEGORY_CODE_ID=
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='RESTRICTED_TYPE' and active_status = 'A');
+delete FROM common_code_category_entry where CATEGORY_CODE_ID = 
+(Select Category_Id From Common_Code_Category Where Category_Code='RESTRICTED_TYPE' And Active_Status = 'A');
+
+delete from STAGE_COMMON_CODE_ENTRY where CATEGORY_CODE_ID=
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='SPECIFIC_COVENANT' and active_status = 'A');
+delete FROM common_code_category_entry where CATEGORY_CODE_ID = 
+(Select Category_Id From Common_Code_Category Where Category_Code='SPECIFIC_COVENANT' And Active_Status = 'A');
+
+delete from STAGE_COMMON_CODE_ENTRY where CATEGORY_CODE_ID=
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='COMMITMENT_TENOR_COV' and active_status = 'A');
+delete FROM common_code_category_entry where CATEGORY_CODE_ID = 
+(Select Category_Id From Common_Code_Category Where Category_Code='COMMITMENT_TENOR_COV' And Active_Status = 'A');
+
+delete from STAGE_COMMON_CODE_ENTRY where CATEGORY_CODE_ID=
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='RUNNING_ACC_COVENANT' and active_status = 'A');
+delete FROM common_code_category_entry where CATEGORY_CODE_ID = 
+(Select Category_Id From Common_Code_Category Where Category_Code='RUNNING_ACC_COVENANT' And Active_Status = 'A');
+
+delete from STAGE_COMMON_CODE_ENTRY where CATEGORY_CODE_ID=
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='BUYERS_RATING_COVENANT' and active_status = 'A');
+delete FROM common_code_category_entry where CATEGORY_CODE_ID = 
+(Select Category_Id From Common_Code_Category Where Category_Code='BUYERS_RATING_COVENANT' And Active_Status = 'A');
+
+delete from STAGE_COMMON_CODE_ENTRY where CATEGORY_CODE_ID=
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='BUYER_RATING_COV' and active_status = 'A');
+delete FROM common_code_category_entry where CATEGORY_CODE_ID = 
+(Select Category_Id From Common_Code_Category Where Category_Code='BUYER_RATING_COV' And Active_Status = 'A');
+
+
+delete FROM COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = 'RPT0087';
+
+delete FROM common_code_category where CATEGORY_CODE = 'BUYER_RATING_COV';
+delete FROM stage_common_code_category where CATEGORY_CODE = 'BUYER_RATING_COV';
+delete FROM common_code_category WHERE CATEGORY_CODE = 'BUYERS_RATING_COVENANT';
+delete FROM stage_common_code_category WHERE CATEGORY_CODE = 'BUYERS_RATING_COVENANT';
+delete FROM common_code_category WHERE CATEGORY_CODE = 'RUNNING_ACC_COVENANT';
+delete FROM stage_common_code_category WHERE CATEGORY_CODE = 'RUNNING_ACC_COVENANT';  
+delete FROM common_code_category WHERE CATEGORY_CODE = 'COMMITMENT_TENOR_COV';
+delete FROM stage_common_code_category WHERE CATEGORY_CODE = 'COMMITMENT_TENOR_COV'; 
+
+delete FROM common_code_category WHERE CATEGORY_CODE = 'SPECIFIC_COVENANT';
+delete FROM stage_common_code_category WHERE CATEGORY_CODE = 'SPECIFIC_COVENANT'; 
+delete FROM common_code_category WHERE CATEGORY_CODE = 'RESTRICTED_TYPE';
+delete FROM stage_common_code_category WHERE CATEGORY_CODE = 'RESTRICTED_TYPE'; 
+
+delete FROM common_code_category where CATEGORY_CODE = 'BUYER_RATING_COV';
+delete FROM stage_common_code_category where CATEGORY_CODE = 'BUYER_RATING_COV';
+
+delete from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE IN ('SPECIFIC_COVENANT','RESTRICTED_TYPE','COMMITMENT_TENOR_COV','RUNNING_ACC_COVENANT',
+'BUYERS_RATING_COVENANT','BUYER_RATING_COV') ;
+
+delete FROM STAGE_COMMON_CODE_ENTRY where CATEGORY_CODE IN ('SPECIFIC_COVENANT','RESTRICTED_TYPE','COMMITMENT_TENOR_COV','RUNNING_ACC_COVENANT',
+'BUYERS_RATING_COVENANT','BUYER_RATING_COV') ;
+
+SET DEFINE ON;
+COMMIT;
+
+
+
+
+
+
+

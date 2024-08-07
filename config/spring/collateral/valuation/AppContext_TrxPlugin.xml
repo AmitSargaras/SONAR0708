@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="matchValuationHandlerMethodTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean
+				class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
+				<property name="nameMap">
+					<map>
+                        <entry key="performSystemValuation*" value="PROPAGATION_REQUIRED,+com.integrosys.cms.app.collateral.bus.valuation.ValuationException" />					
+                    </map>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="valuationDaoJdbcProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="cashValuationJdbc" />
+				<idref bean="goldValuationJdbc" />
+				<idref bean="guaranteeValuationJdbc" />
+                <idref bean="cgcValuationJdbc" />
+				<idref bean="insuranceValuationJdbc" />
+				<idref bean="marketableValuationJdbc" />
+				<idref bean="pdcValuationJdbc" />
+				<idref bean="propertyValuationJdbc" />
+				<idref bean="straightLineValuationJdbc" />
+				<idref bean="vehicleValuationJdbc" />
+                <idref bean="valuationMainJdbc" />
+                
+                <!-- added by Dattatray Thorat -->
+                <idref bean="bhavCopyDao" />
+                <idref bean="stockDao" />
+                <idref bean="stockExchangeJdbc" />
+                <!-- added by Dattatray Thorat -->
+			</list>
+		</property>
+	</bean>
+
+	<bean id="valuationTxProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchValuationHandlerMethodTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="valuationHandler" />
+			</list>
+		</property>
+	</bean>
+</beans>

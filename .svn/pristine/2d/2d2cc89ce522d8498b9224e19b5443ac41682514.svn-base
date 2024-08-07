@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CommodityUOMListForm" type="com.integrosys.cms.ui.commodityglobal.commodityuom.list.CommodityUOMListForm">
+        </form-bean>
+
+        <form-bean name="CommodityUOMItemForm" type="com.integrosys.cms.ui.commodityglobal.commodityuom.item.CommodityUOMItemForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	    <action path="/CommodityUOMList"
+	        type="com.integrosys.cms.ui.commodityglobal.commodityuom.list.CommodityUOMListAction"
+	        name="CommodityUOMListForm" validate="false" scope="request">
+	        <forward name="select" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityuom/list/select.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityuom/list/update_commodityuom_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="process" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityuom/list/chk_view_commodityuom_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="prepare_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityuom/list/view_commodityuom_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="read" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityuom/list/view_commodityuom_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="to_track" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityuom/list/view_commodityuom_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="submit" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="approve" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="reject" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="wip" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/wip.html"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="prepare_add" path="/CommodityUOMItem.do?event=prepare_add"></forward>
+	        <forward name="edit_item" path="/CommodityUOMItem.do?event=prepare"></forward>
+	    </action>
+	
+	    <action path="/CommodityUOMItem"
+	        type="com.integrosys.cms.ui.commodityglobal.commodityuom.item.CommodityUOMItemAction"
+	        name="CommodityUOMItemForm" validate="false" scope="request">
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityuom/item/update_commodityuom_item.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityuom"/>
+	        </forward>
+	        <forward name="return" path="/CommodityUOMList.do?event=return"></forward>
+	    </action>
+        
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-param-commodity-uom"/>-->
+</struts-config>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <bean id="CollateralAssetLifeTrx.ReadCollateralAssetLifeByTrxIDOperation" class="com.integrosys.cms.app.collateral.trx.assetlife.ReadCollateralAssetLifeByTrxIDOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralAssetLifeTrx.CheckerApproveUpdateCollateralAssetLifeOperation" class="com.integrosys.cms.app.collateral.trx.assetlife.CheckerApproveUpdateCollateralAssetLifeOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralAssetLifeTrx.MakerSaveCollateralAssetLifeOperation" class="com.integrosys.cms.app.collateral.trx.assetlife.MakerSaveCollateralAssetLifeOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralAssetLifeTrx.ReadCollateralAssetLifeOperation" class="com.integrosys.cms.app.collateral.trx.assetlife.ReadCollateralAssetLifeOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralAssetLifeTrx.MakerCancelUpdateCollateralAssetLifeOperation" class="com.integrosys.cms.app.collateral.trx.assetlife.MakerCancelUpdateCollateralAssetLifeOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralAssetLifeTrx.MakerUpdateCollateralAssetLifeOperation" class="com.integrosys.cms.app.collateral.trx.assetlife.MakerUpdateCollateralAssetLifeOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+  
+  <bean id="CollateralAssetLifeTrx.CheckerRejectUpdateCollateralAssetLifeOperation" class="com.integrosys.cms.app.collateral.trx.assetlife.CheckerRejectUpdateCollateralAssetLifeOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="collateralAssetLifeTrxController" class="com.integrosys.cms.app.collateral.trx.assetlife.CollateralAssetLifeTrxController">
+    <property name="nameTrxOperationMap">
+      <map>
+        <entry key="CheckerApproveUpdateCollateralAssetLifeOperation" value-ref="CollateralAssetLifeTrx.CheckerApproveUpdateCollateralAssetLifeOperation"/>
+        <entry key="MakerSaveCollateralAssetLifeOperation" value-ref="CollateralAssetLifeTrx.MakerSaveCollateralAssetLifeOperation"/>
+        <entry key="MakerCancelUpdateCollateralAssetLifeOperation" value-ref="CollateralAssetLifeTrx.MakerCancelUpdateCollateralAssetLifeOperation"/>
+        <entry key="MakerUpdateCollateralAssetLifeOperation" value-ref="CollateralAssetLifeTrx.MakerUpdateCollateralAssetLifeOperation"/>
+        <entry key="CheckerRejectUpdateCollateralAssetLifeOperation" value-ref="CollateralAssetLifeTrx.CheckerRejectUpdateCollateralAssetLifeOperation"/>
+      </map>
+    </property>
+    <property name="processTrxManager" ref="processTrxManager" />
+  </bean>
+  
+  <bean id="collateralAssetLifeReadController" class="com.integrosys.cms.app.collateral.trx.assetlife.CollateralAssetLifeReadController">
+    <property name="nameTrxOperationMap">
+      <map>
+        <entry key="ReadCollateralAssetLifeByTrxIDOperation" value-ref="CollateralAssetLifeTrx.ReadCollateralAssetLifeByTrxIDOperation"/>
+        <entry key="ReadCollateralAssetLifeOperation" value-ref="CollateralAssetLifeTrx.ReadCollateralAssetLifeOperation"/>
+      </map>
+    </property>
+  </bean>
+</beans>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT sub_profile.LSP_LE_ID AS partyid,
+				  sub_profile.lsp_short_name AS party_name,
+				  profiles.lsp_short_name    AS guarantor_name,
+				  addr.lra_addr_line_1
+				  || ' '
+				  || addr.lra_addr_line_2
+				  || ' '
+				  || addr.lra_addr_line_3 AS address,
+				  country.country_name    AS country,
+				  manager.rm_mgr_name     AS rmName,
+				  cc_segment.entry_name as Segment,
+				  cri.customer_ram_id,
+				  (guarantor_systemid.cms_le_system_name
+				  || '-'
+				  || guarantor_systemid.CMS_LE_OTHER_SYS_CUST_ID ) AS borrowerid ,
+				  (systemid.cms_le_system_name
+				  || '-'
+				  || systemid.CMS_LE_OTHER_SYS_CUST_ID ) AS borrowerid ,
+				  reg.region_name                   AS Region
+			FROM SCI_LE_SUB_PROFILE sub_profile ,
+				  SCI_LE_REG_ADDR address ,
+				  sci_le_other_system systemid,
+				  sci_le_other_system guarantor_systemid,
+				  cms_country country,
+				  transaction trans,
+				  SCI_LE_SUB_PROFILE profiles,
+				  sci_le_subline subline,
+				  SCI_LE_REG_ADDR addr,
+				  cms_relationship_mgr manager,
+				  sci_le_cri cri,
+				  CMS_REGION reg,
+          		  (SELECT entry_name,entry_code FROM common_code_category_entry WHERE category_code = 'HDFC_SEGMENT' ) cc_segment
+
+			</query>
+		<whereClause>
+			<mandatoryClause>
+					sub_profile.cms_le_main_profile_id = address.cms_le_main_profile_id
+					AND sub_profile.cms_le_main_profile_id   = systemid.cms_le_main_profile_id
+					AND trans.reference_id                   = sub_profile.cms_le_sub_profile_id
+					AND address.lra_type_value               = 'CORPORATE'
+					AND country.id                           = address.lra_cntry_iso_code
+					AND sub_profile.sub_line                 = 'OPEN'
+					AND profiles.cms_le_sub_profile_id       = subline.cms_le_subline_party_id
+					AND profiles.cms_le_main_profile_id      = guarantor_systemid.cms_le_main_profile_id
+					AND subline.cms_le_main_profile_id       = sub_profile.cms_le_main_profile_id
+					AND profiles.CMS_LE_MAIN_PROFILE_ID      = addr.CMS_LE_MAIN_PROFILE_ID
+					AND addr.LRA_TYPE_VALUE                  = 'CORPORATE'
+					AND manager.id                           = profiles.relation_mgr
+					AND sub_profile.cms_le_main_profile_id   = subline.cms_le_main_profile_id
+					AND sub_profile.cms_le_main_profile_id   = cri.cms_le_main_profile_id
+					AND addr.LRA_TYPE_VALUE                  = 'CORPORATE'
+					AND reg.id                               = addr.lra_region
+					AND addr.LRA_TYPE_VALUE                  = 'CORPORATE'
+					AND reg.id                               = addr.lra_region
+          			AND cc_segment.entry_code                = sub_profile.lsp_sgmnt_code_value 
+          			AND sub_profile.status                 !=   'INACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>
+			<param>
+				<name>transDate</name>
+				<condition> and TRUNC(trans.transaction_date) = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantor Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Address</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Country</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM ID</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Guarantor Id</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Borrower Id</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>	
+			</reportColumns>
+			<reportName>Corporate Guarantors</reportName>
+		</reportParamters>
+	</report>
+</reports>

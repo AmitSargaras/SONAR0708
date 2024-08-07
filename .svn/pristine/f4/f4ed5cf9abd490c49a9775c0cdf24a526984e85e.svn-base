@@ -1,0 +1,17 @@
+<binding name="sibs_dealer_req">
+    <include path="sibs_header_req.xml" />
+    <mapping name="Definition" class="com.integrosys.simulator.host.SIBS.DealerInq.OBSIBSDealerInqRes" extends="com.integrosys.simulator.host.SIBS.OBMessageHeader"> 
+        <structure name="HeaderDefinition">
+	        <structure map-as="com.integrosys.simulator.host.SIBS.OBMessageHeader"/> 
+	        <collection field="responseFixList">
+	        	<structure name="ColumnField" type="com.integrosys.simulator.host.SIBS.DealerInq.OBSIBSDealerInqRes">
+		        	<value name="FixColumn" field="dealerNumber"/>
+		        	<value name="FixColumn" field="dealerLimit"/>
+			        <value name="FixColumn" field="dealerAmountUtilised"/>
+			        <value name="FixColumn" field="dealerTakeUpLimit"/>
+			        <value name="FixColumn" field="dealerExpiryDate" format="dateFmt"/>
+			     </structure>
+		     </collection>
+	     </structure>
+    </mapping> 	
+</binding>

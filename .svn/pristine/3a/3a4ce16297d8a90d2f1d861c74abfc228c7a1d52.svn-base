@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class  entity-name="tempOBImageUpload" name="com.integrosys.cms.app.image.bus.OBImageUploadAdd" table="CMS_TEMP_IMAGE_UPLOAD" lazy="false">
+		<id name="imgId" column="IMG_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">IMG_UPLOAD_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="imgFileName" column="IMG_FILENAME"/>
+		<property name="imgSize" column="IMG_SIZE"/>
+		<property name="imgDepricated" column="IMG_DEPRICATED"/>
+		<property name="custId" column="CUST_ID"/>
+		<property name="custName" column="CUST_NAME"/>
+		<property name="category" column="CATEGORY"/>
+		<property name="hasSubfolder" column="HAS_SUBFOLDER"/>
+		<property name="subfolderName" column="SUBFOLDER_NAME"/>
+		<property name="imageFilePath" column="IMG_PATH"/>
+		<property name="imageApprId" column="IMG_APPR_ID"/>
+		<property name="sendForAppFlag" column="IMG_SEND_FOR_APP"/>
+		<property name="status" column="STATUS" type="long"/>
+		<property name="error" column="ERROR"/>
+		<property name="createBy" column="CREATE_BY"/>
+        <property name="creationDate" column="CREATION_DATE" type="timestamp"/>
+        <property name="documentName" column="DOCUMENT_NAME"/>
+        <property name="fromServer" column="FROM_SERVER"/>
+         <!-- Added by Uma Khot: Start: Phase 3 CR:tag scanned images of Annexure II  -->
+        <property name="bank" column="BANK_NAME"/> 
+        <!-- Added by Uma Khot: End: Phase 3 CR:tag scanned images of Annexure II  -->
+        <property name="HCPFileName" column="HCP_FILENAME"/> 
+        <property name="HCPStatus" column="HCP_STATUS"/> 
+        <property name="HCPMoveDate" column="HCP_MOVE_DATE"/> 
+        <property name="HCPStatusCode" column="HCP_CODE_DESC"/> 
+        
+        <!-- Added By Prachit For Image upload -->
+        <property name="typeOfDocument" column="TYPE_OF_DOC"/>
+        <property name="facilityName" column="FACILITY_NAME"/>
+        <property name="facilityDocName" column="FACILITY_DOC_NAME"/>
+        <property name="otherDocName" column="OTHER_FACILITY_DOC_NAME"/>
+        <!-- <property name="securityNameId" column="SECURITY_NAME_ID"/> -->
+        <property name="securityIdi" column="SECURITY_NAME_ID"/>
+        <property name="securityDocName" column="SECURITY_DOC_NAME"/>
+        <property name="otherSecDocName" column="OTHER_SECURITY_DOC_NAME"/>
+        <property name="hasCam" column="CAM_NUMBER"/>
+        <property name="statementTyped" column="STATEMENT_TYPE"/>
+        <property name="statementDocName" column="STATEMENT_DOC_NAME"/>
+       <!--  <property name="camName" column="CAM_NAME"/> -->
+        <property name="camDocName" column="CAM_DOC_NAME"/>
+        <property name="othersDocsName" column="OTHER_DOC_NAME"/>
+        <property name="subTypeSecurity" column="SECURITY_SUB_TYPE"/>
+	</class>
+	<class  entity-name="stgeTempOBImageUpload" name="com.integrosys.cms.app.image.bus.OBImageUploadAdd" table="STGE_TEMP_IMAGE_UPLOAD" lazy="false">
+		<id name="imgId" column="IMG_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STGE_IMG_UPLOAD_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="imgFileName" column="IMG_FILENAME"/>
+		<property name="imgSize" column="IMG_SIZE"/>
+		<property name="imgDepricated" column="IMG_DEPRICATED"/>
+		<property name="custId" column="CUST_ID"/>
+		<property name="custName" column="CUST_NAME"/>
+		<property name="hasSubfolder" column="HAS_SUBFOLDER"/>
+		<property name="subfolderName" column="SUBFOLDER_NAME"/>
+		<property name="imageFilePath" column="IMG_PATH"/>
+		<property name="imageApprId" column="IMG_APPR_ID"/>
+		<property name="sendForAppFlag" column="IMG_SEND_FOR_APP"/>
+		<property name="status" column="STATUS" type="long"/>
+		<property name="error" column="ERROR"/>
+		<property name="createBy" column="CREATE_BY"/>
+        <property name="creationDate" column="CREATION_DATE" type="timestamp"/>
+        <property name="documentName" column="DOCUMENT_NAME"/>
+        <property name="fromServer" column="FROM_SERVER"/>
+	</class>	
+	<class  entity-name="actualUploadedImages" name="com.integrosys.cms.app.image.bus.OBImageUploadAdd" table="CMS_UPLOADED_IMAGES" lazy="false">
+		<id name="imgId" column="IMG_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_UPLOADED_IMAGES_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="imgFileName" column="IMG_FILENAME"/>
+		<property name="imgSize" column="IMG_SIZE"/>
+		<property name="imgDepricated" column="IMG_DEPRICATED"/>
+		<property name="custId" column="CUST_ID"/>
+		<property name="custName" column="CUST_NAME"/>
+		<property name="category" column="CATEGORY"/>
+		<property name="hasSubfolder" column="HAS_SUBFOLDER"/>
+		<property name="subfolderName" column="SUBFOLDER_NAME"/>
+		<property name="imageFilePath" column="IMG_PATH"/>
+		<property name="imageApprId" column="IMG_APPR_ID"/>
+		<property name="sendForAppFlag" column="IMG_SEND_FOR_APP"/>
+		<property name="status" column="STATUS" type="long"/>
+		<property name="error" column="ERROR"/>
+		<property name="createBy" column="CREATE_BY"/>
+        <property name="creationDate" column="CREATION_DATE" type="timestamp"/>
+        <property name="documentName" column="DOCUMENT_NAME"/>
+        <property name="fromServer" column="FROM_SERVER"/>
+        <!-- Added by Uma Khot: Start: Phase 3 CR:tag scanned images of Annexure II  -->
+        <property name="bank" column="BANK_NAME"/> 
+        <property name="HCPFileName" column="HCP_FILENAME"/> 
+        <property name="HCPStatus" column="HCP_STATUS"/> 
+        <property name="HCPMoveDate" column="HCP_MOVE_DATE"/> 
+        <property name="HCPStatusCode" column="HCP_CODE_DESC"/>
+        <!-- Added by Uma Khot: End: Phase 3 CR:tag scanned images of Annexure II  -->
+        <!-- Added By Prachit For Image upload -->
+        <property name="typeOfDocument" column="TYPE_OF_DOC"/>
+        <property name="facilityName" column="FACILITY_NAME"/>
+        <property name="facilityDocName" column="FACILITY_DOC_NAME"/>
+        <property name="otherDocName" column="OTHER_FACILITY_DOC_NAME"/>
+       <!--  <property name="securityNameId" column="SECURITY_NAME_ID"/> -->
+        <property name="securityIdi" column="SECURITY_NAME_ID"/>
+        <property name="securityDocName" column="SECURITY_DOC_NAME"/>
+        <property name="otherSecDocName" column="OTHER_SECURITY_DOC_NAME"/>
+        <property name="hasCam" column="CAM_NUMBER"/>
+        <property name="statementTyped" column="STATEMENT_TYPE"/>
+        <property name="statementDocName" column="STATEMENT_DOC_NAME"/>
+       <!--  <property name="camName" column="CAM_NAME"/> -->
+        <property name="camDocName" column="CAM_DOC_NAME"/>
+        <property name="othersDocsName" column="OTHER_DOC_NAME"/>
+        <property name="subTypeSecurity" column="SECURITY_SUB_TYPE"/>
+	</class>
+	<!-- below table mapping are not in use  as Maker/Checker is disabled -->	
+	<!-- 
+	<class  entity-name="actualOBImageUpload" name="com.integrosys.cms.app.image.bus.OBImageUploadAdd" table="CMS_IMAGE_UPLOAD" lazy="false">
+
+		<id name="imgId" column="IMG_ID" type="long">
+				
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="imgFileName" column="IMG_FILENAME"/>
+		<property name="imgSize" column="IMG_SIZE"/>
+		<property name="imgDepricated" column="IMG_DEPRICATED"/>
+		<property name="custId" column="CUST_ID"/>
+		<property name="custName" column="CUST_NAME"/>
+		<property name="imageFilePath" column="IMG_PATH"/>
+	</class>
+	
+	<class  entity-name="stageOBImageUpload" name="com.integrosys.cms.app.image.bus.OBImageUploadAdd" table="CMS_STAGE_IMAGE_UPLOAD" lazy="false">
+
+		<id name="imgId" column="IMG_ID" type="long">
+				<generator class="increment"></generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="imgFileName" column="IMG_FILENAME"/>
+		<property name="imgSize" column="IMG_SIZE"/>
+		<property name="imgDepricated" column="IMG_DEPRICATED"/>
+		<property name="custId" column="CUST_ID"/>
+		<property name="custName" column="CUST_NAME"/>
+		<property name="imageFilePath" column="IMG_PATH"/>
+		<property name="imageApprId" column="IMG_APPR_ID"/>
+		<property name="sendForAppFlag" column="IMG_SEND_FOR_APP"/>
+	</class>
+ -->	
+	
+	<class  entity-name="actualOBImageUploadDetails" name="com.integrosys.cms.app.image.bus.OBImageUploadDetails" table="CMS_IMAGE_UPLOAD_DETAILS" lazy="false">
+
+		<id name="id" column="ID" type="long">
+				<generator class="increment"></generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+	
+		<property name="custId" column="CUST_ID"/>
+		
+		<property name="legalName" column="LEGAL_NAME"/>
+	</class>
+	<class  entity-name="stageOBImageUploadDetails" name="com.integrosys.cms.app.image.bus.OBImageUploadDetails" table="CMS_STAGE_IMAGE_UPLOAD_DETAILS" lazy="false">
+
+		<id name="id" column="ID" type="long">
+				<generator class="increment"></generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+	
+		<property name="custId" column="CUST_ID"/>
+		
+		<property name="legalName" column="LEGAL_NAME"/>
+	</class>
+		<class  entity-name="actualOBImageUploadMap" name="com.integrosys.cms.app.image.bus.OBImageUploadDetailsMap" table="CMS_IMAGE_UPLOAD_MAP" lazy="false">
+
+		<id name="uploadId" column="UPLOAD_ID" type="long">
+			
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="imageId" column="IMAGE_ID"/>
+	</class>
+	<class  entity-name="stageOBImageUploadMap" name="com.integrosys.cms.app.image.bus.OBImageUploadDetailsMap" table="CMS_STAGE_IMAGE_UPLOAD_MAP" lazy="false">
+
+		<id name="uploadId" column="UPLOAD_ID" type="long">
+			
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="imageId" column="IMAGE_ID"/>
+	</class>
+	
+</hibernate-mapping>

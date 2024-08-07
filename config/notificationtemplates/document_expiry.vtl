@@ -1,0 +1,119 @@
+<html>
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Collateral Management System</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<!-- InstanceBeginEditable name="Cssstyle" -->
+<link href="css/smartlender.css" rel="stylesheet" type="text/css" />
+<link href="css/smartlender-print.css" media="print" rel="stylesheet" type="text/css" />
+<!-- InstanceBeginEditable name="Content" -->
+<table width="70%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+  <thead>
+    <tr>
+      <td><h3>Notification - $!{ob.subject}</h3></td>
+    </tr>
+    <tr>
+      <td><hr /></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblInfo">
+          <tbody>
+            <tr>
+              <td width="20%" class="fieldname">To</td>
+
+          <td width="30%" class="odd">$!{ob.receipient}</td>
+              <td width="20%" class="fieldname">Date</td>
+              <td width="30%" class="odd">$!{DateUtil.formatDate("dd/MMM/yyyy", ${ob.notificationDate})}</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Customer Legal Name</td>
+              <td>$!{ob.leName}</td>
+              <td class="fieldname">CIF / ID No.</td>
+              <td>$!{ob.leID}</td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname">Subject</td>
+              <td colspan="3">$!{ob.subject}</td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+          <thead>
+          </thead>
+          #set($docType = "PRESET")          
+          #set($docType = $!{ob.documentType})
+          #set($securityID = $!{ob.sciSecurityID})
+          #set($docDate = $DateUtil.formatDate("dd/MMM/yyyy", ${ob.documentDate}))
+          #set($expiryDate = $DateUtil.formatDate("dd/MMM/yyyy", ${ob.expiryDate}))
+          #set($deferExpiryDate = $DateUtil.formatDate("dd/MMM/yyyy", ${ob.docDefferalExpiryDate}))
+          #set($secMaturityDate = $DateUtil.formatDate("dd/MMM/yyyy", ${ob.securityMaturityDate}))
+          <tbody>
+          	<tr class="even"><td class="fieldname">Doc Type</td>
+          	<td>$!{ob.docType}</td></tr>
+          	#if ($securityID && $securityID != "")
+          	<tr class="odd"><td class="fieldname">Security ID</td><td>$securityID</td></tr>
+          	<tr class="even"><td class="fieldname">Type/SubType of Security</td><td>$!{ob.securitySubType}</td></tr>
+          	<tr class="odd"><td class="fieldname">Security Maturity Date</td>
+          	<td>#if (!$secMaturityDate || $secMaturityDate == "") - #else $secMaturityDate #end &nbsp;</td></tr>
+          	#end
+            <tr class="even">
+              <td class="fieldname">Description</td>
+              <td>
+              #if (!$docType || $docType == "" || $docType == "PRESET")
+                    -
+              #else
+                    $docType
+              #end
+              </td>
+            </tr>
+            <tr class="odd"><td class="fieldname">Document Code</td>
+            <td>#if ($!{ob.documentCode}) $!{ob.documentCode} #else - #end </td></tr>
+            <tr class="even"><td class="fieldname">Document No</td>
+            <td>$!{ob.checkListItemRef}</td></tr>
+            <tr class="odd"><td class="fieldname">Doc Ref</td>
+            <td>$!{ob.docRef}</td></tr>
+            <tr class="even"><td class="fieldname">Doc Deferral Expiry Date</td>
+            <td>
+            #if (!$deferExpiryDate || $deferExpiryDate == "") - #else $deferExpiryDate #end
+            </td></tr>
+            <tr class="odd">
+              <td class="fieldname">Date of Document</td>
+              <td>
+               #if (!$docDate || $docDate == "")
+                   -
+               #else
+                   $docDate
+               #end
+              </td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Expiry Date of Document</td>
+              <td>
+                  #if (!$expiryDate || $expiryDate == "")
+                    -
+                  #else
+                    $expiryDate
+                  #end
+              </td>
+            </tr>
+            <tr class="odd">
+                #if (${ob.daysDue} < 0)
+                    <td class="fieldname">Days Document Due to Expire</td>
+                #else
+                    <td class="fieldname">Days Past Expiry Date</td>
+                #end
+                <td>$!{VelocityUtil.abs(${ob.daysDue})}</td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT ROW_NUMBER() OVER (ORDER BY DIARY.LE_ID ) AS SN,
+			DIARY.DIARY_NUMBER ,
+			DIARY.LE_ID AS PARTY_ID,
+			DIARY.CUSTOMER_NAME AS
+			PARTY_NAME ,
+			DIARY.CUSTOMER_SEGMENT AS SEGMENT_NAME ,
+			DIARY.REGION ,
+			TO_CHAR(DIARY.ITEM_DUE_DATE,'DD/MON/YYYY HH:MM:SS AM')  AS TARGATE_DATE ,
+			DIARY.DROP_LINE_OD AS
+			DROPLINE_OD_YES_NO ,
+			(SELECT COUNT(*)
+			FROM CMS_DIARY_SCHEDULE_DATA OD
+			WHERE OD.DIARY_NUMBER=DIARY.DIARY_NUMBER
+			) AS TOTAL_SUB_ACTIVITY ,
+			(SELECT COUNT(*)
+			FROM CMS_DIARY_SCHEDULE_DATA OD
+			WHERE
+			OD.DIARY_NUMBER=DIARY.DIARY_NUMBER
+			AND OD.IS_CLOSED ='N'
+			) AS
+			PENDING_SUB_ACTIVITY ,
+			DIARY.FACILITY_BOARD_CATEGORY ,
+			DIARY.FACILITY_LINE_NO ,
+			DIARY.FACILITY_SERIAL_NO ,
+			TO_CHAR(DIARY.NEXT_TARGET_DATE,'DD/MON/YYYY HH:MM:SS AM') AS NEXT_TARGET_DATE ,
+			DIARY.DESCRIPTION AS REMARK ,
+			DIARY.MAKER_ID ,
+			TO_CHAR(DIARY.MAKER_DATE_TIME,'DD/MON/YYYY HH:MM:SS AM') AS MAKER_DATE_TIME ,
+			DIARY.STATUS ,
+			DIARY.CLOSED_BY ,
+			DIARY.CLOSED_DATE_TIME
+			FROM CMS_DIARY_ITEM DIARY
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				1=1
+			</mandatoryClause>
+			<param>
+				<name>userId</name>
+				<condition> AND DIARY.MAKER_ID = </condition>
+			</param>
+			<param>
+				<name>status</name>
+				<condition> AND DIARY.STATUS = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> AND DIARY.CUSTOMER_SEGMENT = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(DIARY.MAKER_DATE_TIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>10</width>
+					<format>textFormat</format>
+					<header>S/N</header>
+				</reportColumn>
+				<reportColumn>
+					<width>19</width>
+					<format>textFormat</format>
+					<header>Diary Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>15</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Target Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>10</width>
+					<format>textFormat</format>
+					<header>Dropline OD (Yes/No)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>10</width>
+					<format>textFormat</format>
+					<header>Total sub activity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>10</width>
+					<format>textFormat</format>
+					<header>Pending sub activity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility Broad Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility Line Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility Serial Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Next Target Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Remarks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Maker ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker Date and time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Closed by</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Closed Date and Time</header>
+				</reportColumn>
+
+			</reportColumns>
+			<reportName>Diary Item Status Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

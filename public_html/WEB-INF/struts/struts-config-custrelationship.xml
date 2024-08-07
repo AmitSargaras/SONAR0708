@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CRCustSearchForm" type="com.integrosys.cms.ui.custrelationship.customer.CRCustSearchForm"/>
+		<form-bean name="CustRelationshipListForm" type="com.integrosys.cms.ui.custrelationship.list.CustRelationshipListForm"/>
+		<form-bean name="ShareHolderListForm" type="com.integrosys.cms.ui.custrelationship.shareholder.ShareHolderListForm"/>      
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/CRCustomerSearch" type="com.integrosys.cms.ui.custrelationship.customer.CRCustomerSearchAction" name="CRCustSearchForm"
+              validate="false" scope="request">
+         <forward name="customer_search" path="/template/common_template.jsp">
+             <set-property property="rightFrame" value="/custrelationship/customer/search.jsp"/>
+             <set-property property="title" value="title.customer.detail.search"/>
+         </forward>
+         <forward name="search_customer_result" path="/template/common_template.jsp">
+             <set-property property="rightFrame" value="/custrelationship/customer/search_result.jsp"/>
+             <set-property property="title" value="title.customer.detail.search"/>
+         </forward>
+		 <forward name="add_customer_search_result" path="/template/common_template.jsp">
+             <set-property property="rightFrame" value="/custrelationship/customer/search_select.jsp"/>
+             <set-property property="title" value="title.customer.detail.search"/>
+         </forward>
+		 <forward name="customer_search_frame" path="/template/common_frame_template.jsp">
+		 <set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+             <set-property property="rightFrame" value="/custrelationship/customer/search.jsp"/>
+             <set-property property="title" value="title.customer.detail.search"/>
+         </forward>
+        
+         <forward name="view_cust_details" path="/template/common_frame_template.jsp">
+         	<set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+             <set-property property="rightFrame" value="/custrelationship/customer/view_customer_list.jsp"/>
+             <set-property property="title" value="title.customer.view"/>
+         </forward>
+         
+         <forward name="customer_add" path="/template/common_frame_template.jsp">
+		 <set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+             <set-property property="rightFrame" value="/custrelationship/customer/search.jsp"/>
+             <set-property property="title" value="title.customer.detail.search"/>
+         </forward>
+         <forward name="add_customer_search_result_frame" path="/template/common_frame_template.jsp">
+		 <set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+             <set-property property="rightFrame" value="/custrelationship/customer/search_select.jsp"/>
+             <set-property property="title" value="title.customer.detail.search"/>
+         </forward>
+         <forward name="add_customer_search_select" path="/CustRelationship.do?event=add_new" />
+         <forward name="add_cust_search_sh_select" path="/CRShareHolder.do?event=add_new" />
+		 
+		<forward name="return_page" path="/template/common_template.jsp">
+             <set-property property="rightFrame" value="/custrelationship/customer/search_result.jsp"/>
+             <set-property property="title" value="title.customer.detail.search"/>
+         </forward>
+      </action>
+	  
+       <action path="/CustRelationship" type="com.integrosys.cms.ui.custrelationship.list.CustRelationshipListAction"
+                name="CustRelationshipListForm" validate="false" scope="request">
+
+            <forward name="list" path="/template/common_frame_template.jsp">
+            	<set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+                <set-property property="rightFrame" value="/custrelationship/list/list.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+             
+            <forward name="add" path="/CRCustomerSearch.do?event=customer_add"/>
+            <forward name="add_frame" path="/CRCustomerSearch.do?event=customer_add_frame"/>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="list2ForChecker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custrelationship/list/list2.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="listForMaker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custrelationship/list/list.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="workInProgress" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="view" path="/template/common_frame_template.jsp">
+            	<set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+                <set-property property="rightFrame" value="/custrelationship/list/view.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="view_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custrelationship/list/view.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custrelationship/list/track.jsp"/>
+                <set-property property="title" value="title.cust.relationship.info"/>
+            </forward>
+            <forward name="viewLimitProfile" path="/template/common_frame_template.jsp">
+            	<set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+                <set-property property="rightFrame" value="/custrelationship/customer/viewLimitProfile.jsp"/>
+                <set-property property="title" value="title.custdetails"/>
+            </forward>
+        </action>
+
+       <action path="/CRShareHolder" type="com.integrosys.cms.ui.custrelationship.shareholder.ShareHolderListAction"
+                name="ShareHolderListForm" validate="false" scope="request">
+
+            <forward name="view" path="/template/common_frame_template.jsp">
+            	<set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+                <set-property property="rightFrame" value="/custrelationship/shareholder/view.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="list" path="/template/common_frame_template.jsp">
+            	<set-property property="leftFrame" value="/template/lms_am_leftframe.jsp"/>
+                <set-property property="rightFrame" value="/custrelationship/shareholder/list.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="add" path="/CRCustomerSearch.do?event=cust_shareholder_add"/>
+            <forward name="add_frame" path="/CRCustomerSearch.do?event=cust_shareholder_add_frame"/>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="list2ForChecker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custrelationship/shareholder/list2.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="listForMaker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custrelationship/shareholder/list.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>            
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="workInProgress" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="view_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custrelationship/shareholder/view.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custrelationship/shareholder/track.jsp"/>
+                <set-property property="title" value="title.shareholder.info"/>
+            </forward>
+        </action>
+    </action-mappings>
+    
+    <message-resources key="message-custrelationship" parameter="ApplicationResources-custrelationship"/>
+</struts-config>

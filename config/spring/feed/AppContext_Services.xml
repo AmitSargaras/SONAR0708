@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<!-- Stock Index -->
+	
+	<bean id="stockIndexFeedBusManager" class="com.integrosys.cms.app.feed.bus.stockindex.StockIndexFeedBusManagerImpl">
+		<property name="stockIndexDao" ref="stockIndexDao" />
+	</bean>
+	
+	<bean id="stagingStockIndexFeedBusManager" class="com.integrosys.cms.app.feed.bus.stockindex.StockIndexFeedBusManagerStagingImpl">
+		<property name="stockIndexDao" ref="stockIndexDao" />
+	</bean>
+
+	<bean id="stockIndexFeedProxy" class="com.integrosys.cms.app.feed.proxy.stockindex.StockIndexFeedProxyImpl">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+		<property name="trxControllerFactory" ref="stockIndexTrxControllerFactory" />
+	</bean>
+	
+	<!-- Stock -->
+	
+	<bean id="stockFeedBusManager" class="com.integrosys.cms.app.feed.bus.stock.StockFeedBusManagerImpl">
+		<property name="stockDao" ref="stockDao" />
+		<property name="stockExchangeJdbc" ref="stockExchangeJdbc" />
+	</bean>
+	
+	<bean id="stagingStockFeedBusManager" class="com.integrosys.cms.app.feed.bus.stock.StockFeedBusManagerStagingImpl">
+		<property name="stockDao" ref="stockDao" />
+		<property name="stockExchangeJdbc" ref="stockExchangeJdbc" />
+	</bean>
+
+	<bean id="stockFeedProxy" class="com.integrosys.cms.app.feed.proxy.stock.StockFeedProxyImpl">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+		<property name="trxControllerFactory" ref="stockTrxControllerFactory" />
+	</bean>
+	
+	<!-- Bond -->
+	
+	<bean id="bondFeedBusManager" class="com.integrosys.cms.app.feed.bus.bond.BondFeedBusManagerImpl">
+		<property name="bondDao" ref="bondDao" />
+	</bean>
+	
+	<bean id="stagingBondFeedBusManager" class="com.integrosys.cms.app.feed.bus.bond.BondFeedBusManagerStagingImpl">
+		<property name="bondDao" ref="bondDao" />
+	</bean>
+	<!-- File Upload(Bond) -->
+		<bean id="stagingBondFeedFileMapperIdBusManager" class="com.integrosys.cms.app.feed.bus.bond.FileMapperIdBusManagerStagingImpl">
+			<property name="bondDao" ref="bondDao" />
+		</bean>
+		<bean id="bondFeedFileMapperIdBusManager" class="com.integrosys.cms.app.feed.bus.bond.FileMapperIdBusManagerImpl">
+			<property name="bondDao" ref="bondDao" />
+		</bean>
+		<!-- End File Upload(Bond) -->
+	
+	<bean id="bondFeedProxy" class="com.integrosys.cms.app.feed.proxy.bond.BondFeedProxyImpl">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="stagingbondFeedBusManager" ref="stagingBondFeedBusManager" />
+		<property name="trxControllerFactory" ref="bondTrxControllerFactory" />
+		<property name="stagingBondFeedFileMapperIdBusManager" ref="stagingBondFeedFileMapperIdBusManager" />
+		<property name="bondFeedFileMapperIdBusManager" ref="bondFeedFileMapperIdBusManager" />
+	</bean>
+	
+	
+	
+	<!-- Forex -->
+	
+	<bean id="forexFeedBusManager" class="com.integrosys.cms.app.feed.bus.forex.ForexFeedBusManagerImpl" >
+		<property name="forexDao" ref="forexDao" />
+	</bean>
+	
+	<bean id="stagingForexFeedBusManager" class="com.integrosys.cms.app.feed.bus.forex.ForexFeedBusManagerStagingImpl" >
+		<property name="forexDao" ref="forexDao" />
+	</bean>
+		<!-- File Upload(Forex) -->
+		<bean id="stagingForexFeedFileMapperIdBusManager" class="com.integrosys.cms.app.feed.bus.forex.FileMapperIdBusManagerStagingImpl">
+			<property name="forexDao" ref="forexDao" />
+		</bean>
+		<bean id="forexFeedFileMapperIdBusManager" class="com.integrosys.cms.app.feed.bus.forex.FileMapperIdBusManagerImpl">
+			<property name="forexDao" ref="forexDao" />
+		</bean>
+		<!-- End File Upload(Forex) -->
+		
+	
+	<bean id="forexFeedProxy" class="com.integrosys.cms.app.feed.proxy.forex.ForexFeedProxyImpl">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager" />
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager" />
+		<property name="trxControllerFactory" ref="forexTrxControllerFactory" />
+		<property name="stagingForexFeedFileMapperIdBusManager" ref="stagingForexFeedFileMapperIdBusManager" />
+		<property name="forexFeedFileMapperIdBusManager" ref="forexFeedFileMapperIdBusManager" />
+	</bean>
+	
+	<!-- Gold -->
+	
+	<bean id="goldFeedBusManager" class="com.integrosys.cms.app.feed.bus.gold.GoldFeedBusManagerImpl" >
+		<property name="goldDao" ref="goldDao" />
+	</bean>
+	
+	<bean id="stagingGoldFeedBusManager" class="com.integrosys.cms.app.feed.bus.gold.GoldFeedBusManagerStagingImpl" >
+		<property name="goldDao" ref="goldDao" />
+	</bean>
+	
+	<bean id="goldFeedProxy" class="com.integrosys.cms.app.feed.proxy.gold.GoldFeedProxyImpl">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager" />
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager" />
+		<property name="trxControllerFactory" ref="goldTrxControllerFactory" />
+	</bean>
+	
+	<!-- Unit Trust -->
+	
+	<bean id="unitTrustFeedBusManager" class="com.integrosys.cms.app.feed.bus.unittrust.UnitTrustFeedBusManagerImpl">
+		<property name="unitTrustDao" ref="unitTrustDao" />
+	</bean>
+	
+	<bean id="stagingunitTrustFeedBusManager" class="com.integrosys.cms.app.feed.bus.unittrust.UnitTrustFeedBusManagerStagingImpl">
+		<property name="unitTrustDao" ref="unitTrustDao" />
+	</bean>
+	
+	<bean id="unitTrustFeedProxy" class="com.integrosys.cms.app.feed.proxy.unittrust.UnitTrustFeedProxyImpl">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="stagingunitTrustFeedBusManager" ref="stagingunitTrustFeedBusManager" />
+		<property name="trxControllerFactory" ref="unitTrustTrxControllerFactory" />
+	</bean>
+	
+	
+	
+	<!-- Mutual Funds -->
+	
+	<bean id="mutualFundsFeedBusManager" class="com.integrosys.cms.app.feed.bus.mutualfunds.MutualFundsFeedBusManagerImpl">
+		<property name="mutualFundsDao" ref="mutualFundsDao" />
+	</bean>
+	
+	<bean id="stagingMutualFundsFeedBusManager" class="com.integrosys.cms.app.feed.bus.mutualfunds.MutualFundsFeedBusManagerStagingImpl">
+		<property name="mutualFundsDao" ref="mutualFundsDao" />
+	</bean>
+	<!-- File Upload(MutualFunds) -->
+		<bean id="stagingMutualFundsFeedFileMapperIdBusManager" class="com.integrosys.cms.app.feed.bus.mutualfunds.FileMapperIdBusManagerStagingImpl">
+			<property name="mutualFundsDao" ref="mutualFundsDao" />
+		</bean>
+		<bean id="mutualfundsFeedFileMapperIdBusManager" class="com.integrosys.cms.app.feed.bus.mutualfunds.FileMapperIdBusManagerImpl">
+			<property name="mutualFundsDao" ref="mutualFundsDao" />
+		</bean>
+		<!-- End File Upload(MutualFunds) -->
+
+	<bean id="mutualFundsFeedProxy" class="com.integrosys.cms.app.feed.proxy.mutualfunds.MutualFundsFeedProxyImpl">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="stagingMutualFundsFeedBusManager" ref="stagingMutualFundsFeedBusManager" />
+		<property name="trxControllerFactory" ref="mutualFundsTrxControllerFactory" />
+		<!-- Govind S:File Upload(mutual funds) -->
+		<property name="stagingMutualFundsFeedFileMapperIdBusManager" ref="stagingMutualFundsFeedFileMapperIdBusManager" />
+		<property name="mutualfundsFeedFileMapperIdBusManager" ref="mutualfundsFeedFileMapperIdBusManager" />
+		<!-- Govind S:End File Upload (mutual funds) -->
+	</bean>
+</beans>

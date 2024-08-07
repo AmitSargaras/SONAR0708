@@ -1,0 +1,526 @@
+#-----------------------------------------------------------------------------------------------------------------------
+# Properties for Event Monitoring and Notification Generation
+#
+# Event Listener
+# 1. integrosys.event.eventlistener.[number].class
+# 2. integrosys.event.eventlistener.[number].eventid
+#
+# Notification
+# 1. cms.eventmonitor.eventnotification.subject.[eventid]
+# 2. cms.eventmonitor.eventnotification.recipient.[eventid]
+#	(can be multiple values, separated by comma ',', eg. COU, SA, GAM)
+# 3. cms.eventmonitor.eventnotification.template.[eventid]
+#
+# Rule Parameter
+# 1. cms.eventmonitor.ruleparam.R_[eventid_without_EV_prefix].num_of_days(.[index])
+# 2. cms.eventmonitor.ruleparam.R_[eventid_without_EV_prefix].document_code(.[index])
+# 3. cms.eventmonitor.ruleparam.R_[eventid_without_EV_prefix].elapsedDaysFromExpiry(.[index])
+#
+# Recipient
+# 1. cms.notification.recipient.teamtypelist.[recipient]
+#
+# Legend:
+# a. [eventid] is the value in integrosys.event.eventlistener.[number].eventid
+# b. (.[index]) meaning can be optional
+# c. [eventid_without_EV_prefix] is the value in integrosys.event.eventlistener.[number].eventid without 'EV_' prefix
+# d. [recipient] is the value in cms.eventmonitor.eventnotification.recipient.[eventid] 
+#
+# Introduction:
+#
+# At first use of com.integrosys.base.techinfra.event.EventManager (fired from monitor batch job),
+# It will scan through all the avaiable integrosys.event.eventlistener.[number]. Then event id and listener instance
+# will be put into a Map (key is the event id, value is the listener instance)
+#
+# Then event id value will be passed from Monitor Batch Job into com.integrosys.base.techinfra.event.EventManager, 
+# then corresponding Listener will be fired.
+#
+# Afterwhich, notification will be generated, template used will be the one in
+# cms.eventmonitor.eventnotification.template.[eventid], supplied by the eventid value mentioned above.
+# 
+# Only the template filename shall be given, the VelocityEngine will search through the class path or a folder to
+# grab the template and generate notification accordingly.
+#
+# Prefer way to register listener is to inject it's instance into IMonitor instance. Instead of normal EventManager
+# firing. see /config/spring/eventmonitor/AppContext_Services.xml on the listener bean declaration.
+# 
+# Others element for Notification, Rule Parameter, Recipient can remain here.
+#
+#----------------------------------------------------------------------------------------------------------------------
+
+
+# for debugging purpose
+#cms.eventmonitor.equalcomparator=>
+
+# listeners
+integrosys.event.eventlistener.1.class=com.integrosys.cms.app.eventmonitor.bflacceptanceexpiry.BFLAcceptanceExpiryListener
+integrosys.event.eventlistener.1.eventid=EV_BFL_ACCEPTANCE_EXPIRY
+integrosys.event.eventlistener.2.class=com.integrosys.cms.app.eventmonitor.cleantypebfldue.CleanTypeBFLDueListener
+integrosys.event.eventlistener.2.eventid=EV_CLEAN_TYPE_BFL_DUE
+integrosys.event.eventlistener.3.class=com.integrosys.cms.app.eventmonitor.collaborationtask.CollaborationTaskListener
+integrosys.event.eventlistener.3.eventid=EV_COLLABORATION_TASK
+integrosys.event.eventlistener.4.class=com.integrosys.cms.app.eventmonitor.collateralevaluationdue.EvaluationDueListener
+integrosys.event.eventlistener.4.eventid=EV_EVALUATION_DUE
+integrosys.event.eventlistener.5.class=com.integrosys.cms.app.eventmonitor.collateralmaturity.CollateralMaturityListener
+integrosys.event.eventlistener.5.eventid=EV_COLLATERAL_MATURITY
+integrosys.event.eventlistener.6.class=com.integrosys.cms.app.eventmonitor.ddndue.DDNDueListener
+integrosys.event.eventlistener.6.eventid=EV_DDN_DUE
+integrosys.event.eventlistener.7.class=com.integrosys.cms.app.eventmonitor.ddnexpired.DDNExpiredListener
+integrosys.event.eventlistener.7.eventid=EV_DDN_EXPIRED
+integrosys.event.eventlistener.8.class=com.integrosys.cms.app.eventmonitor.ddnexpiry.DDNExpiryListener
+integrosys.event.eventlistener.8.eventid=EV_DDN_EXPIRY
+integrosys.event.eventlistener.9.class=com.integrosys.cms.app.eventmonitor.documentexpiry.DocExpiryListener
+integrosys.event.eventlistener.9.eventid=EV_DOC_EXP
+integrosys.event.eventlistener.10.class=com.integrosys.cms.app.eventmonitor.draftbfldue.DraftBFLDueListener
+integrosys.event.eventlistener.10.eventid=EV_DRAFT_BFL_EXPIRY
+integrosys.event.eventlistener.11.class=com.integrosys.cms.app.eventmonitor.fulldocreview.FullDocReviewListener
+integrosys.event.eventlistener.11.eventid=EV_FULL_DOC_REVIEW
+integrosys.event.eventlistener.12.class=com.integrosys.cms.app.eventmonitor.guarantornotice.GuarantorNoticeListener
+integrosys.event.eventlistener.12.eventid=EV_GUARANTOR_NOTICE
+integrosys.event.eventlistener.13.class=com.integrosys.cms.app.eventmonitor.insuranceexpiry.InsuranceExpiryListener
+integrosys.event.eventlistener.13.eventid=EV_INSURANCE_EXPIRY
+integrosys.event.eventlistener.14.class=com.integrosys.cms.app.eventmonitor.marketindex.MarketIndexListener
+integrosys.event.eventlistener.14.eventid=EV_MARKET_INDEX
+integrosys.event.eventlistener.15.class=com.integrosys.cms.app.eventmonitor.marketindex.MarketIndexListener
+integrosys.event.eventlistener.15.eventid=EV_MARKET_INDEX_DOWN
+integrosys.event.eventlistener.16.class=com.integrosys.cms.app.eventmonitor.riskparamexceed.RiskParamExceedListener
+integrosys.event.eventlistener.16.eventid=EV_RISK_PARAM_EXCEED
+integrosys.event.eventlistener.17.class=com.integrosys.cms.app.eventmonitor.coverageexcess.CoverageListener
+integrosys.event.eventlistener.17.eventid=EV_COVERAGE_EXCESS
+integrosys.event.eventlistener.18.class=com.integrosys.cms.app.eventmonitor.coverageexcess.CoverageListener
+integrosys.event.eventlistener.18.eventid=EV_COVERAGE_SHORTFALL
+integrosys.event.eventlistener.19.class=com.integrosys.cms.app.eventmonitor.securityfsv.SecurityFsvListener
+integrosys.event.eventlistener.19.eventid=EV_SECURITY_FSV
+integrosys.event.eventlistener.20.class=com.integrosys.cms.app.eventmonitor.dealapproval.DealApprovalListener
+integrosys.event.eventlistener.20.eventid=EV_CREATE_DEAL_APPROVAL
+integrosys.event.eventlistener.21.class=com.integrosys.cms.app.eventmonitor.commoditylimitlevel.CommodityLimitLevelListener
+integrosys.event.eventlistener.21.eventid=EV_COMMODITY_LIMITLEVEL
+integrosys.event.eventlistener.22.class=com.integrosys.cms.app.eventmonitor.commoditydeallevel.CommodityDealLevelListener
+integrosys.event.eventlistener.22.eventid=EV_COMMODITY_DEALLEVEL
+integrosys.event.eventlistener.23.class=com.integrosys.cms.app.eventmonitor.dealapproval.DealApprovalListener
+integrosys.event.eventlistener.23.eventid=EV_CREATE_DEAL_REJECTION
+integrosys.event.eventlistener.24.class=com.integrosys.cms.app.eventmonitor.waiverdeferral.WaiverDeferralListener
+integrosys.event.eventlistener.24.eventid=EV_WAIVER_DEFERRAL_APPROVAL
+integrosys.event.eventlistener.25.class=com.integrosys.cms.app.eventmonitor.waiverdeferral.WaiverDeferralListener
+integrosys.event.eventlistener.25.eventid=EV_WAIVER_DEFERRAL_REJECTION
+integrosys.event.eventlistener.26.class=com.integrosys.cms.app.eventmonitor.dealapproval.DealApprovalListener
+integrosys.event.eventlistener.26.eventid=EV_UPDATE_DEAL_APPROVAL
+integrosys.event.eventlistener.27.class=com.integrosys.cms.app.eventmonitor.dealapproval.DealApprovalListener
+integrosys.event.eventlistener.27.eventid=EV_UPDATE_DEAL_REJECTION
+integrosys.event.eventlistener.28.class=com.integrosys.cms.app.eventmonitor.dealapproval.DealApprovalListener
+integrosys.event.eventlistener.28.eventid=EV_CLOSE_DEAL_APPROVAL
+integrosys.event.eventlistener.29.class=com.integrosys.cms.app.eventmonitor.dealapproval.DealApprovalListener
+integrosys.event.eventlistener.29.eventid=EV_CLOSE_DEAL_REJECTION
+integrosys.event.eventlistener.30.class=com.integrosys.cms.app.eventmonitor.reversalcustodian.ReversalCustodianListener
+integrosys.event.eventlistener.30.eventid=EV_REVERSAL_CUSTODIAN
+integrosys.event.eventlistener.31.class=com.integrosys.cms.app.eventmonitor.enableDisableUser.MonEnableDisableUser
+integrosys.event.eventlistener.31.eventid=EV_ENABLE_DISABLE_USER
+
+integrosys.event.eventlistener.31.class=com.integrosys.cms.app.eventmonitor.feedue.FeeDueListener
+integrosys.event.eventlistener.31.eventid=EV_FEE_DUE
+
+integrosys.event.eventlistener.32.class=com.integrosys.cms.app.eventmonitor.annualreview.AnnualReviewListener
+integrosys.event.eventlistener.32.eventid=EV_ANNUAL_REVIEW
+
+# subject
+
+cms.eventmonitor.eventnotification.subject.EV_BFL_ACCEPTANCE_EXPIRY=Monitor TAT Expiry - BFL Acceptance Due
+cms.eventmonitor.eventnotification.recipient.EV_BFL_ACCEPTANCE_EXPIRY=SAC, FAM
+cms.eventmonitor.eventnotification.template.EV_BFL_ACCEPTANCE_EXPIRY=bfl_draft_overdue.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_CLEAN_TYPE_BFL_DUE=Monitor TAT Expiry - Clean Type BFL Due
+cms.eventmonitor.eventnotification.recipient.EV_CLEAN_TYPE_BFL_DUE=SAC, FAM
+cms.eventmonitor.eventnotification.template.EV_CLEAN_TYPE_BFL_DUE=clean_type_bfl_due.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COLLABORATION_TASK=Cross Country Security Documentation Perfection
+cms.eventmonitor.eventnotification.recipient.EV_COLLABORATION_TASK=SAC
+cms.eventmonitor.eventnotification.template.EV_COLLABORATION_TASK=collaboration_task.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COL_CHECKLIST_COMPLETION=Cross Country Security Documentation Completed
+cms.eventmonitor.eventnotification.recipient.EV_COL_CHECKLIST_COMPLETION=SAC
+cms.eventmonitor.eventnotification.template.EV_COL_CHECKLIST_COMPLETION=sc_chklist_doc.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_CC_CHECKLIST_COMPLETION=Cross Country C/C Documentation Completed
+cms.eventmonitor.eventnotification.recipient.EV_CC_CHECKLIST_COMPLETION=SAC
+cms.eventmonitor.eventnotification.template.EV_CC_CHECKLIST_COMPLETION=cc_chklist_doc.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COL_CHECKLIST_STATUS_CHANGE=Cross Country Security Collaboration Task, Checklist Status Change
+cms.eventmonitor.eventnotification.recipient.EV_COL_CHECKLIST_STATUS_CHANGE=SAC
+cms.eventmonitor.eventnotification.template.EV_COL_CHECKLIST_STATUS_CHANGE=sc_chklist_doc.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_CC_CHECKLIST_STATUS_CHANGE=Cross Country C/C Document Collaboration Task, Checklist Status Change
+cms.eventmonitor.eventnotification.recipient.EV_CC_CHECKLIST_STATUS_CHANGE=SAC
+cms.eventmonitor.eventnotification.template.EV_CC_CHECKLIST_STATUS_CHANGE=cc_chklist_doc.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COL_CHECKLIST_DELETION_READY=Cross Country Security Checklist Deleted
+cms.eventmonitor.eventnotification.recipient.EV_COL_CHECKLIST_DELETION_READY=SAC
+cms.eventmonitor.eventnotification.template.EV_COL_CHECKLIST_DELETION_READY=sc_chklist_doc.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_CC_CHECKLIST_DELETION_READY=Cross Country C/C Checklist Deleted
+cms.eventmonitor.eventnotification.recipient.EV_CC_CHECKLIST_DELETION_READY=SAC
+cms.eventmonitor.eventnotification.template.EV_CC_CHECKLIST_DELETION_READY=cc_chklist_doc.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COL_TASK_CREATION=Cross Country Security Documentation Collaboration Task
+cms.eventmonitor.eventnotification.recipient.EV_COL_TASK_CREATION=SAC
+cms.eventmonitor.eventnotification.template.EV_COL_TASK_CREATION=collaboration_task.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_CC_TASK_CREATION=Cross Country C/C Documentation Collaboration Task
+cms.eventmonitor.eventnotification.recipient.EV_CC_TASK_CREATION=SAC
+cms.eventmonitor.eventnotification.template.EV_CC_TASK_CREATION=cc_collaboration_task.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_CC_TASK_REJECTION=Rejection of Collaboration Task by Out Country
+cms.eventmonitor.eventnotification.recipient.EV_CC_TASK_REJECTION=SAC
+cms.eventmonitor.eventnotification.template.EV_CC_TASK_REJECTION=cc_collaboration_task.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COL_TASK_REJECTION=Rejection of Collaboration Task by Out Country
+cms.eventmonitor.eventnotification.recipient.EV_COL_TASK_REJECTION=SAC
+cms.eventmonitor.eventnotification.template.EV_COL_TASK_REJECTION=collaboration_task.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_CC_ITEM_WAIVE_DEFER_DELETE=Cross Country C/C Document Collaboration Task, Document Waive/Defer/Delete
+cms.eventmonitor.eventnotification.recipient.EV_CC_ITEM_WAIVE_DEFER_DELETE=SAC
+cms.eventmonitor.eventnotification.template.EV_CC_ITEM_WAIVE_DEFER_DELETE=cc_coltask_waive_defer_delete.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COL_ITEM_WAIVE_DEFER_DELETE=Cross Country Security Document Collaboration Task, Document Waive/Defer/Delete
+cms.eventmonitor.eventnotification.recipient.EV_COL_ITEM_WAIVE_DEFER_DELETE=SAC
+cms.eventmonitor.eventnotification.template.EV_COL_ITEM_WAIVE_DEFER_DELETE=col_coltask_waive_defer_delete.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_EVALUATION_DUE=Security Evaluation Expiry
+cms.eventmonitor.eventnotification.recipient.EV_EVALUATION_DUE=COU
+cms.eventmonitor.eventnotification.template.EV_EVALUATION_DUE=security_evaluation_expiry.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COLLATERAL_MATURITY=Security Maturity
+cms.eventmonitor.eventnotification.recipient.EV_COLLATERAL_MATURITY=COU
+cms.eventmonitor.eventnotification.template.EV_COLLATERAL_MATURITY=security_maturity.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_DDN_DUE=DDN Overdue for Issuance
+cms.eventmonitor.eventnotification.recipient.EV_DDN_DUE=SAC, FAM
+cms.eventmonitor.eventnotification.template.EV_DDN_DUE=ddn_due.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_DDN_EXPIRED=DDN Expired
+cms.eventmonitor.eventnotification.recipient.EV_DDN_EXPIRED=SAC
+cms.eventmonitor.eventnotification.template.EV_DDN_EXPIRED=ddn_due.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_DDN_EXPIRY=DDN Expiry
+cms.eventmonitor.eventnotification.recipient.EV_DDN_EXPIRY=SAC, FAM
+cms.eventmonitor.eventnotification.template.EV_DDN_EXPIRY=document_expiry.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_DOC_EXP=Documentation Expiry
+cms.eventmonitor.eventnotification.recipient.EV_DOC_EXP=SAC, FAM
+cms.eventmonitor.eventnotification.template.EV_DOC_EXP=document_expiry.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_DRAFT_BFL_EXPIRY=Monitor TAT Expiry - Draft BFL Due
+cms.eventmonitor.eventnotification.recipient.EV_DRAFT_BFL_EXPIRY=SAC, FAM
+cms.eventmonitor.eventnotification.template.EV_DRAFT_BFL_EXPIRY=bfl_draft_overdue.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_FULL_DOC_REVIEW=Full Documentation not Reviewed for Accounts downgraded to CG12, CG13 and CG14
+cms.eventmonitor.eventnotification.recipient.EV_FULL_DOC_REVIEW=SAC, FAM, SCO
+cms.eventmonitor.eventnotification.template.EV_FULL_DOC_REVIEW=full_doc_review.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_GUARANTOR_NOTICE=Notice to Guarantors
+cms.eventmonitor.eventnotification.recipient.EV_GUARANTOR_NOTICE=SAC
+cms.eventmonitor.eventnotification.template.EV_GUARANTOR_NOTICE=guarantornoticeinfo.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_INSURANCE_EXPIRY=Insurance Expiry
+cms.eventmonitor.eventnotification.recipient.EV_INSURANCE_EXPIRY=SAC
+cms.eventmonitor.eventnotification.template.EV_INSURANCE_EXPIRY=document_expiry.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_MARKET_INDEX=Market Index Rise
+cms.eventmonitor.eventnotification.recipient.EV_MARKET_INDEX=COU
+cms.eventmonitor.eventnotification.template.EV_MARKET_INDEX=market_index_rise.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_MARKET_INDEX_DOWN=Market Index Dropped
+cms.eventmonitor.eventnotification.recipient.EV_MARKET_INDEX_DOWN=COU
+cms.eventmonitor.eventnotification.template.EV_MARKET_INDEX_DOWN=market_index_drop.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_RISK_PARAM_EXCEED=Country CRP Exceeds Global CRP
+cms.eventmonitor.eventnotification.recipient.EV_RISK_PARAM_EXCEED=SCO
+cms.eventmonitor.eventnotification.template.EV_RISK_PARAM_EXCEED=risk_param_exceed.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COL_RISK_PARAM_EXCEED=Security CRP Exceeds Country CRP
+cms.eventmonitor.eventnotification.recipient.EV_COL_RISK_PARAM_EXCEED=SAC, SCO
+cms.eventmonitor.eventnotification.template.EV_COL_RISK_PARAM_EXCEED=col_risk_param_exceed.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COVERAGE_EXCESS=Security Coverage Exception - Coverage Excess
+cms.eventmonitor.eventnotification.recipient.EV_COVERAGE_EXCESS=COU
+cms.eventmonitor.eventnotification.template.EV_COVERAGE_EXCESS=security_coverage.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_COVERAGE_SHORTFALL=Security Coverage Exception - Coverage Shortfall
+cms.eventmonitor.eventnotification.recipient.EV_COVERAGE_SHORTFALL=COU
+cms.eventmonitor.eventnotification.template.EV_COVERAGE_SHORTFALL=security_coverage.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_SECURITY_FSV=Security FSV falls short of Minimal FSV Requirement
+cms.eventmonitor.eventnotification.recipient.EV_SECURITY_FSV=SAC, FAM, SCO
+cms.eventmonitor.eventnotification.template.EV_SECURITY_FSV=security_fsv.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_CREATE_DEAL_APPROVAL=Commodities Deal Creation Approval
+cms.eventmonitor.eventnotification.recipient.EV_CREATE_DEAL_APPROVAL=FAM, CMT, SCO, RCO, GAM
+cms.eventmonitor.eventnotification.template.EV_CREATE_DEAL_APPROVAL=commodities_deal.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_CREATE_DEAL_REJECTION=Commodities Deal Creation Rejection
+cms.eventmonitor.eventnotification.recipient.EV_CREATE_DEAL_REJECTION=CMT, SCO, RCO, GAM
+cms.eventmonitor.eventnotification.template.EV_CREATE_DEAL_REJECTION=commodities_deal.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_UPDATE_DEAL_APPROVAL=Commodities Deal Modification Approval
+cms.eventmonitor.eventnotification.recipient.EV_UPDATE_DEAL_APPROVAL=FAM, CMT, SCO, RCO, GAM
+cms.eventmonitor.eventnotification.template.EV_UPDATE_DEAL_APPROVAL=commodities_deal.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_UPDATE_DEAL_REJECTION=Commodities Deal Modification Rejection
+cms.eventmonitor.eventnotification.recipient.EV_UPDATE_DEAL_REJECTION=CMT, SCO, RCO, GAM
+cms.eventmonitor.eventnotification.template.EV_UPDATE_DEAL_REJECTION=commodities_deal.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_CLOSE_DEAL_APPROVAL=Commodities Deal Closure Approval
+cms.eventmonitor.eventnotification.recipient.EV_CLOSE_DEAL_APPROVAL=FAM, CMT, SCO, RCO, GAM
+cms.eventmonitor.eventnotification.template.EV_CLOSE_DEAL_APPROVAL=commodities_deal.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_CLOSE_DEAL_REJECTION=Commodities Deal Closure Rejection
+cms.eventmonitor.eventnotification.recipient.EV_CLOSE_DEAL_REJECTION=CMT, SCO, RCO, GAM
+cms.eventmonitor.eventnotification.template.EV_CLOSE_DEAL_REJECTION=commodities_deal.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_COMMODITY_LIMITLEVEL=Security Coverage Exception - Commodity at Limit Level
+cms.eventmonitor.eventnotification.recipient.EV_COMMODITY_LIMITLEVEL=FAM, CMT
+cms.eventmonitor.eventnotification.template.EV_COMMODITY_LIMITLEVEL=commodity_limitlevel.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_COMMODITY_DEALLEVEL=Security Coverage Exception - Commodity Deal
+cms.eventmonitor.eventnotification.recipient.EV_COMMODITY_DEALLEVEL=FAM, CMT
+cms.eventmonitor.eventnotification.template.EV_COMMODITY_DEALLEVEL=commodity_deallevel.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_WAIVER_DEFERRAL_APPROVAL=Document Checklist Waiver/Deferral Approved
+cms.eventmonitor.eventnotification.recipient.EV_WAIVER_DEFERRAL_APPROVAL=FAM, SCO, RCO, GAM, SAC
+cms.eventmonitor.eventnotification.template.EV_WAIVER_DEFERRAL_APPROVAL=deferral_waiver_approval.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_WAIVER_DEFERRAL_REJECTION=Document Checklist Waiver/Deferral Rejection
+cms.eventmonitor.eventnotification.recipient.EV_WAIVER_DEFERRAL_REJECTION=SCO, RCO, GAM, SAC
+cms.eventmonitor.eventnotification.template.EV_WAIVER_DEFERRAL_REJECTION=deferral_waiver_rejection.vtl
+#
+cms.eventmonitor.eventnotification.subject.EV_REVERSAL_CUSTODIAN=Reversal Transaction By Custodian 
+cms.eventmonitor.eventnotification.recipient.EV_REVERSAL_CUSTODIAN=SAC
+cms.eventmonitor.eventnotification.template.EV_REVERSAL_CUSTODIAN=reversal_custodian.vtl
+#
+
+cms.eventmonitor.eventnotification.subject.EV_COL_CHARGE_TYPE=Security Charge Type Modified From Specific to General
+cms.eventmonitor.eventnotification.recipient.EV_COL_CHARGE_TYPE=SAC
+cms.eventmonitor.eventnotification.template.EV_COL_CHARGE_TYPE=col_charge_type.vtl
+
+#
+cms.eventmonitor.eventnotification.subject.EV_COL_CHARGE_TYPE_REVERT=Security Securing Single Outer Limit, Charge type can be Modified to Specific
+cms.eventmonitor.eventnotification.recipient.EV_COL_CHARGE_TYPE_REVERT=SAC
+cms.eventmonitor.eventnotification.template.EV_COL_CHARGE_TYPE_REVERT=col_charge_type.vtl
+
+# Update Custodian
+cms.eventmonitor.ruleparam.R_UPDATE_CUSTODIAN.num_of_days=1
+cms.eventmonitor.ruleparam.R_UPDATE_CUSTODIAN.elapsedDaysFromExpiry=30
+
+#
+cms.eventmonitor.eventnotification.subject.EV_UPDATE_CUSTODIAN=Lodgement/Withdrawal Pending at Custodian Checker before Maker can process
+cms.eventmonitor.eventnotification.recipient.EV_UPDATE_CUSTODIAN=CPC Custodian Maker
+cms.eventmonitor.eventnotification.template.EV_UPDATE_CUSTODIAN=update_custodian.vtl
+
+#Reminder for payment of CGC Fees
+cms.eventmonitor.eventnotification.subject.EV_FEE_DUE=Reminder for Payment of CGC Fees
+cms.eventmonitor.eventnotification.recipient.EV_FEE_DUE=SAC
+cms.eventmonitor.eventnotification.template.EV_FEE_DUE=fee_due.vtl
+cms.eventmonitor.ruleparam.R_FEE_DUE.num_of_days=30
+cms.eventmonitor.ruleparam.R_FEE_DUE.elapsedDaysFromExpiry=30
+
+#Reminder for annual review of facilities/investments
+cms.eventmonitor.eventnotification.subject.EV_ANNUAL_REVIEW=Reminder for Annual Review of facilities/investments
+cms.eventmonitor.eventnotification.recipient.EV_ANNUAL_REVIEW=SAC
+cms.eventmonitor.eventnotification.template.EV_ANNUAL_REVIEW=annual_review.vtl
+cms.eventmonitor.ruleparam.R_ANNUAL_REVIEW.elapsedDaysFromExpiry=30
+
+#
+# rule parameters
+# BFL Acceptance
+cms.eventmonitor.ruleparam.R_BFL_ACCEPTANCE_EXPIRY.num_of_days=1
+cms.eventmonitor.ruleparam.R_BFL_ACCEPTANCE_EXPIRY.elapsedDaysFromExpiry=30
+# Clean type BFL
+cms.eventmonitor.ruleparam.R_CLEAN_TYPE_BFL_DUE.num_of_days=1
+cms.eventmonitor.ruleparam.R_CLEAN_TYPE_BFL_DUE.elapsedDaysFromExpiry=30
+# Collaboration task
+cms.eventmonitor.ruleparam.R_COLLABORATION_TASK.elapsedDaysFromExpiry=30
+# Collateral/CC CheckList Perfection
+cms.eventmonitor.ruleparam.R_CHECKLIST_COMPLETION.elapsedDaysFromExpiry=30
+# Collateral/CC CheckList Status Change
+cms.eventmonitor.ruleparam.R_CHECKLIST_STATUS_CHANGE.elapsedDaysFromExpiry=30
+# Collateral/CC CheckList Deletion
+cms.eventmonitor.ruleparam.R_CHECKLIST_DELETION.elapsedDaysFromExpiry=60
+# CheckList item waive/defer/delete
+cms.eventmonitor.ruleparam.R_CHECKLIST_ITEM_WAIVE_DEFER_DELETE.elapsedDaysFromExpiry=30
+# Collateral Collaboration task creation
+cms.eventmonitor.ruleparam.R_COL_TASK_CREATION.elapsedDaysFromExpiry=30
+# Collateral Collaboration task creation
+cms.eventmonitor.ruleparam.R_CC_TASK_CREATION.elapsedDaysFromExpiry=30
+# Waiver Deferral Approval
+cms.eventmonitor.ruleparam.R_WAIVER_DEFER_APPROVAL.elapsedDaysFromExpiry=30
+# Waiver Deferral Rejection
+cms.eventmonitor.ruleparam.R_WAIVER_DEFER_REJECTION.elapsedDaysFromExpiry=30
+# Collateral evaluation due
+cms.eventmonitor.ruleparam.R_EVALUATION_DUE.num_of_days=-90
+cms.eventmonitor.ruleparam.R_EVALUATION_DUE.elapsedDaysFromExpiry=90
+# Collateral maturity
+# Collateral Commodity approval
+cms.eventmonitor.ruleparam.R_CREATE_DEAL_APPROVAL.elapsedDaysFromExpiry=30
+cms.eventmonitor.ruleparam.R_CREATE_DEAL_REJECTION.elapsedDaysFromExpiry=30
+
+cms.eventmonitor.ruleparam.R_UPDATE_DEAL_APPROVAL.elapsedDaysFromExpiry=30
+cms.eventmonitor.ruleparam.R_UPDATE_DEAL_REJECTION.elapsedDaysFromExpiry=30
+
+cms.eventmonitor.ruleparam.R_CLOSE_DEAL_APPROVAL.elapsedDaysFromExpiry=30
+cms.eventmonitor.ruleparam.R_CLOSE_DEAL_REJECTION.elapsedDaysFromExpiry=30
+
+# - marketable securities
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.num_of_days.0=-30
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.num_of_days.1=-7
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.elapsedDaysFromExpiry.0=30
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.elapsedDaysFromExpiry.1=30
+# - non marketable securities
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.num_of_days.2=-30
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.num_of_days.3=-7
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.elapsedDaysFromExpiry.2=30
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.elapsedDaysFromExpiry.3=30
+# - non marketable securities
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.num_of_days.4=-30
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.num_of_days.5=-7
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.elapsedDaysFromExpiry.4=30
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.elapsedDaysFromExpiry.5=30
+# - non marketable securities
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.num_of_days.6=-30
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.num_of_days.7=-7
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.elapsedDaysFromExpiry.6=30
+cms.eventmonitor.ruleparam.R_COLLATERAL_MATURITY.elapsedDaysFromExpiry.7=30
+
+# DDN Due
+cms.eventmonitor.ruleparam.R_DDN_DUE.num_of_days=1
+cms.eventmonitor.ruleparam.R_DDN_DUE.elapsedDaysFromExpiry=1
+# DDN Expiry
+cms.eventmonitor.ruleparam.R_DDN_EXPIRY.num_of_days.0=-7
+cms.eventmonitor.ruleparam.R_DDN_EXPIRY.num_of_days.1=-1
+cms.eventmonitor.ruleparam.R_DDN_EXPIRY.elapsedDaysFromExpiry.0=6
+cms.eventmonitor.ruleparam.R_DDN_EXPIRY.elapsedDaysFromExpiry.1=14
+# DDN Expired
+cms.eventmonitor.ruleparam.R_DDN_EXPIRED.num_of_days=1
+cms.eventmonitor.ruleparam.R_DDN_EXPIRED.elapsedDaysFromExpiry=14
+# Document expiry
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.0=0
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.1=-14
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.2=-1
+# cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.3=0
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.3=-30
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.4=-14
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.5=-1
+# cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.7=0
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.6=-30
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.7=-14
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.8=-1
+cms.eventmonitor.ruleparam.R_DOC_EXP.num_of_days.9=0
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.0=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.1=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.2=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.3=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.4=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.5=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.6=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.7=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.8=30
+cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.9=30
+#cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.10=30
+#cms.eventmonitor.ruleparam.R_DOC_EXP.elapsedDaysFromExpiry.11=30
+# Draft BFL Due
+cms.eventmonitor.ruleparam.R_DRAFT_BFL_DUE.num_of_days=1
+cms.eventmonitor.ruleparam.R_DRAFT_BFL_DUE.elapsedDaysFromExpiry=30
+# Full Doc Review and accounts downgraded
+# - none required
+# Guarantor Notice
+cms.eventmonitor.ruleparam.R_GUARANTOR_NOTICE.num_of_days=730
+cms.eventmonitor.ruleparam.R_GUARANTOR_NOTICE.elapsedDaysFromExpiry=14
+#
+# Insurance and premium receipt
+# - Insurance
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.num_of_days.0=-30
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.num_of_days.1=-14
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.num_of_days.2=-1
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.document_code.0=1234
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.document_code.1=1234
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.document_code.2=1234
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.0=16
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.1=13
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.2=7
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.0=16
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.1=13
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.2=7
+
+# - Premium receipt
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.num_of_days.3=-30
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.num_of_days.4=-14
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.num_of_days.5=-1
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.document_code.0=4321
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.document_code.1=4321
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.document_code.2=4321
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.3=16
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.4=13
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.5=7
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.0=16
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.1=13
+cms.eventmonitor.ruleparam.R_INSURANCE_EXPIRY.elapsedDaysFromExpiry.2=7
+# Market index
+# - market index up
+cms.eventmonitor.ruleparam.R_MARKET_INDEX.percent=5
+cms.eventmonitor.ruleparam.R_MARKET_INDEX.elapsedDaysFromExpiry=30
+# - market index down
+cms.eventmonitor.ruleparam.R_MARKET_INDEX_DOWN.percent=5
+cms.eventmonitor.ruleparam.R_MARKET_INDEX_DOWN.elapsedDaysFromExpiry=30
+
+# Full doc coverage
+cms.eventmonitor.ruleparam.R_FULL_DOC_REVIEW.elapsedDaysFromExpiry=30
+
+# Risk Parameter Exceed
+cms.eventmonitor.ruleparam.R_RISK_PARAM_EXCEED.elapsedDaysFromExpiry=30
+
+# Security Risk Parameter Exceed Country CRP
+cms.eventmonitor.ruleparam.R_COL_RISK_PARAM_EXCEED.elapsedDaysFromExpiry=30
+
+# Security Coverage Excess and Shortfall
+cms.eventmonitor.ruleparam.R_COVERAGE_EXCESS.elapsedDaysFromExpiry=30
+cms.eventmonitor.ruleparam.R_COVERAGE_SHORTFALL.elapsedDaysFromExpiry=30
+
+cms.eventmonitor.ruleparam.R_COMMODITY_DEALLEVEL.elapsedDaysFromExpiry=30
+cms.eventmonitor.ruleparam.R_COMMODITY_LIMITLEVEL.elapsedDaysFromExpiry=30
+
+# Waiver and Deferal 
+cms.eventmonitor.ruleparam.R_WAIVER_DEFERRAL_APPROVAL.elapsedDaysFromExpiry=30
+cms.eventmonitor.ruleparam.R_WAIVER_DEFERRAL_REJECTION.elapsedDaysFromExpiry=30
+
+# Security FSV
+cms.eventmonitor.ruleparam.R_SECURITY_FSV.elapsedDaysFromExpiry=30
+
+# Reversal Custodian
+cms.eventmonitor.ruleparam.R_REVERSAL_CUSTODIAN.num_of_days=1
+cms.eventmonitor.ruleparam.R_REVERSAL_CUSTODIAN.elapsedDaysFromExpiry=30
+
+# Collateral Charge Type Changed from Specific to General
+cms.eventmonitor.ruleparam.R_COL_CHARGE_TYPE.elapsedDaysFromExpiry=30
+
+# Only Single Limit - Sec Map Left
+cms.eventmonitor.ruleparam.R_COL_CHARGE_TYPE_REVERT.elapsedDaysFromExpiry=30
+
+
+# CO - CPC and Custodian
+cms.notification.recipient.teamtypelist.CPC=10
+# FAM
+cms.notification.recipient.teamtypelist.FAM=5
+cms.notification.recipient.teamtypelist.COU=1
+# cms.notification.recipient.teamtypelist.CPCChecker=10
+cms.notification.recipient.teamtypelist.SCO=7
+# RCO - what is this??
+cms.notification.recipient.teamtypelist.RCO=13
+cms.notification.recipient.teamtypelist.GAM=6
+#CMT
+cms.notification.recipient.teamtypelist.CMT=12

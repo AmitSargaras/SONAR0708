@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <description>
+        Transaction Manager, DataSource, Hibernate goes here. Take notes of 'ofaPool' and 'txManager',
+        which might be different implementation used for development and production
+    </description>
+
+    <bean id="ofaPool" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/CMSPool"/>
+        <property name="lookupOnStartup" value="false"/>
+        <property name="cache" value="true"/>
+        <property name="proxyInterface" value="javax.sql.DataSource"/>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.transaction.jta.WebLogicJtaTransactionManager"/>
+
+    <bean id="taskExecutor"
+          class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="10" />
+        <property name="waitForTasksToCompleteOnShutdown" value="true" />
+    </bean>
+
+    <aop:config>
+        <aop:pointcut id="pointcut2" expression="execution(* *..*DaoImpl.*(..))"/>
+        <aop:pointcut id="pointcut3" expression="execution(* *..*DAOImpl.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut2"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut3"/>
+    </aop:config>
+
+    <tx:advice id="txAdvice" transaction-manager="txManager" >
+        <tx:attributes>
+            <tx:method name="*" read-only="false"/>
+        </tx:attributes>
+    </tx:advice>
+    <bean id="ofaSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="ofaPool"/>
+        <property name="configLocations">
+            <list>
+                <value>classpath:hibernate.cfg.xml</value>
+            </list>
+        </property>
+    </bean>   
+</beans>

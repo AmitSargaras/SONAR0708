@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.segmentWiseEmail.bus">
+	<class  entity-name="actualSegmentWiseEmail" name="OBSegmentWiseEmail" table="CMS_DIARY_EMAIL_MAP" lazy="false">
+		<id name="ID" column="ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">DIARY_EMAIL_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="segment" column="SEGMENTS"/>
+		<property name="email" column="EMAIL"/>
+		<property name="status" column="STATUS"/>
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createdBy" column="CREATED_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdatedBy" column="LAST_UPDATED_BY" />
+	</class>
+	<class  entity-name="stageCreateSegmentWiseEmail" name="OBSegmentWiseEmail" table="STAGE_DIARY_EMAIL_MAP" lazy="false">
+		<id name="ID" column="ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STAGE_DIARY_EMAIL_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="segment" column="SEGMENTS"/>
+		<property name="email" column="EMAIL"/>
+		<property name="status" column="STATUS"/>
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createdBy" column="CREATED_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdatedBy" column="LAST_UPDATED_BY" />
+	</class>
+</hibernate-mapping>

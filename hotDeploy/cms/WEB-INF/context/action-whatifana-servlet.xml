@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts configuration to context mapping files for report module
+	</description>
+
+	<bean name="/WhatIfCond" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.whatifana.WhatIfCondReportAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="WhatIfCondReportPrepareCmd" value-ref="WhatIfCondReportAction.WhatIfCondReportPrepareCmd"/>
+				<entry key="WhatIfCondReportGenerateNewCmd" value-ref="WhatIfCondReportAction.WhatIfCondReportGenerateNewCmd"/>
+				<entry key="WhatIfCondReportSampleCmd" value-ref="WhatIfCondReportAction.WhatIfCondReportSampleCmd"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="/WhatIfCondReportSearch" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.whatifana.WhatIfCondReportSearchAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="SearchWhatIfCondReportCommand" value-ref="WhatIfCondReportSearchAction.SearchWhatIfCondReportCommand"/>
+				<entry key="GetWhatIfCondReportCommand" value-ref="WhatIfCondReportSearchAction.GetWhatIfCondReportCommand"/>
+			</map>
+		</property>
+	</bean>
+
+</beans>

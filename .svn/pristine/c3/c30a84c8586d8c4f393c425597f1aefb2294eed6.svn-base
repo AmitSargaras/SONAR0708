@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<syncMasterTemplateOut>
+		<query>
+		SELECT *
+		FROM
+		  (SELECT Ccentry.Entry_Id,
+		    Ccentry.Entry_Name,
+		    Ccentry.Active_Status,
+		    CASE
+		      WHEN ((UPPER(Ccentry.EOD_SYNC_STATUS) = 'INSERT_SENT') 
+		      OR UPPER(Ccentry.EOD_SYNC_STATUS) = 'INSERT_FAILED' 
+		      OR (TRUNC(Ccentry.Creation_Date)      = TRUNC(Ccentry.Last_Update_Date)))
+		      THEN 'I'
+		      WHEN ((Upper(Ccentry.Eod_Sync_Status) = 'UPDATE_SENT')
+		      OR (TRUNC(Ccentry.Creation_Date)     !=TRUNC(Ccentry.Last_Update_Date)))
+		      THEN 'U'
+		      ELSE 'U'
+		    END AS action
+		  FROM Common_Code_Category_Entry Ccentry,
+		    Trans_History Trxh
+		  WHERE trxh.Transaction_Type LIKE 'COMMON_CODE_ENTRY'
+		  AND trxh.Reference_Id           = Ccentry.Category_Code_Id
+		  AND TRUNC(Trxh.Transaction_Date)=TRUNC(Ccentry.Last_Update_Date)
+		  AND Trxh.Tr_History_Id          =
+		    (SELECT MAX(Tr_History_Id)
+		    FROM Trans_History Th
+		    WHERE TO_CHAR(th.transaction_date,'DD-MON-YY') =
+		      (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+		      FROM Cms_General_Param
+		      WHERE Param_Code = 'LAST_EOD_DATE'
+		      )
+		    AND th.Transaction_Type LIKE 'COMMON_CODE_ENTRY'
+		    AND th.Reference_Id =
+		      (SELECT Category_Id
+		      FROM Common_Code_Category
+		      WHERE Category_Code = 'STATEMENT_TYPE'
+		      )
+		    AND Th.Status='ACTIVE'
+		    )
+		  UNION
+		  SELECT Ccentry.Entry_Id,
+		    Ccentry.Entry_Name,
+		    Ccentry.Active_Status,
+		    CASE
+		      WHEN UPPER(Ccentry.EOD_SYNC_STATUS) = 'INSERT_SENT'
+		      THEN 'I'
+		      WHEN Upper(Ccentry.EOD_SYNC_STATUS) = 'UPDATE_SENT'
+		      THEN 'U'
+		    END AS Action
+		  FROM Common_Code_Category_Entry Ccentry
+		  WHERE Ccentry.Category_Code_Id IN
+		    (SELECT Category_Id
+		    FROM Common_Code_Category
+		    WHERE Category_Code = 'STATEMENT_TYPE'
+		    )
+		  AND TRUNC(Ccentry.Last_Update_Date)!=
+		    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+		    FROM Cms_General_Param
+		    WHERE Param_Code = 'LAST_EOD_DATE'
+		    )
+		  AND Ccentry.Eod_Sync_Status IN ('INSERT_SENT','UPDATE_SENT')
+		  ) 
+		</query>
+	<whereClause>
+		<mandatoryClause>
+				1=1
+		</mandatoryClause>
+	</whereClause>
+	<reportType>TXT</reportType>
+	<delimiter>|||</delimiter>
+	<secondaryDelimiter>~~~</secondaryDelimiter>
+	
+	<reportParamters>
+		<reportColumns>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>ENTRY_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>Entry_Name</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ACTIVE_STATUS</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ACTION</header>
+			</reportColumn>
+		</reportColumns>
+		<reportName>CLIMS_StatementType_Mst</reportName>
+	</reportParamters>
+	</syncMasterTemplateOut>

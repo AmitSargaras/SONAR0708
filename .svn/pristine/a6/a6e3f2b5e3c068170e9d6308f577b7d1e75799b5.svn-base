@@ -1,0 +1,41 @@
+Step 1 :
+
+--If table exists it will get dropped
+
+DROP TABLE SCI_LE_UDF_SCM_10Jun;
+DROP TABLE STAGE_SCI_LE_UDF_SCM_10Jun;
+DROP TABLE PARTY_SCM_10Jun;
+
+Create table SCI_LE_UDF_SCM_10Jun select * from SCI_LE_UDF;
+
+Create table STAGE_SCI_LE_UDF_SCM_10Jun as select * from STAGE_SCI_LE_UDF;
+
+CREATE TABLE PARTY_SCM_10Jun
+   (	
+    CMS_LE_MAIN_PROFILE_ID varchar2(50),
+	partyId varchar2(25)
+	);
+  
+Step 2 :- Run the insert script named 'insert_party_data.sql'  
+
+Step 3 :- Execute the below sripts and approve the transaction those are pending.
+
+select cur_trx_history_id,status,reference_id from transaction
+where reference_id in (select CMS_LE_SUB_PROFILE_ID from sci_le_sub_profile where  Status = 'ACTIVE') and 
+TRANSACTION_TYPE='CUSTOMER' and status <> 'ACTIVE' ;
+
+Step 4:- Execute the below script once there are no transactions pending for approval
+
+update SCI_LE_UDF set udf96 = 'Yes' where CMS_LE_MAIN_PROFILE_ID 
+in (select CMS_LE_MAIN_PROFILE_ID from party_scm_1006);
+
+update STAGE_SCI_LE_UDF set udf96 = 'Yes' where CMS_LE_MAIN_PROFILE_ID 
+in (select CMS_LE_MAIN_PROFILE_ID from party_scm_1006);
+
+commit;
+
+update SCI_LE_UDF set udf96 = 'No' where udf96 is null;
+
+update STAGE_SCI_LE_UDF set udf96 = 'No' where udf96 is null;
+
+commit;

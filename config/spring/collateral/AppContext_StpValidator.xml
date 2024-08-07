@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<!-- asset based -->
+  	<bean id="assetAircraftStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetaircraft.AssetAircraftStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="assetGenChargeStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetgencharge.AssetGenChargeStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="assetPostDatedChqsStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.AssetPostDatedChqsStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="assetRecOpenStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetrecopen.AssetRecOpenStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="assetRecSpecNonAgentStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetrecspecnonagent.AssetRecSpecNonAgentStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="assetSpecGoldStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetspecgold.AssetSpecGoldStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="assetSpecOtherStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetspecother.AssetSpecOtherStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="assetSpecPlantStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetspecplant.AssetSpecPlantStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+        <property name="collateralCodeRequireCMV">
+            <list>
+                <value>F70</value>
+                <value>F71</value>
+                <value>F72</value>
+                <value>F73</value>
+            </list>
+        </property>
+	</bean>
+  	<bean id="assetSpecVehiclesStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetspecvehicles.AssetSpecVehiclesStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+        <property name="collateralCodeRequireCMV">
+            <list>
+                <value>F74</value>
+                <value>F75</value>
+                <value>F76</value>
+            </list>
+        </property>
+	</bean>
+  	<bean id="assetVesselStpValidator" class="com.integrosys.cms.ui.collateral.assetbased.assetvessel.AssetVesselStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+	<!-- deposit -->
+  	<bean id="cashCashStpValidator" class="com.integrosys.cms.ui.collateral.cash.cashcash.CashCashStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="cashFdStpValidator" class="com.integrosys.cms.ui.collateral.cash.cashfd.CashFdStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="cashRepoStpValidator" class="com.integrosys.cms.ui.collateral.cash.cashrepo.CashRepoStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+	<!-- Document -->
+  	<bean id="docAgreementStpValidator" class="com.integrosys.cms.ui.collateral.document.docagreement.DocAgreementStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+        <property name="collateralCodeRequireBuyBackVal">
+            <list>
+                <value>L02</value>
+            </list>
+        </property>
+	</bean>
+  	<bean id="docComfortStpValidator" class="com.integrosys.cms.ui.collateral.document.doccomfort.DocComfortStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="docDeedSubStpValidator" class="com.integrosys.cms.ui.collateral.document.docdeedsub.DocDeedSubStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="docDervIsdStpValidator" class="com.integrosys.cms.ui.collateral.document.docdervisd.DocDervIsdStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="docDervNetStpValidator" class="com.integrosys.cms.ui.collateral.document.docdervnet.DocDervNetStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="docDoaStpValidator" class="com.integrosys.cms.ui.collateral.document.docdoa.DocDoaStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="docGenCreditStpValidator" class="com.integrosys.cms.ui.collateral.document.docgencredit.DocGenCreditStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="docLoiStpValidator" class="com.integrosys.cms.ui.collateral.document.docloi.DocLoiStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="docLouStpValidator" class="com.integrosys.cms.ui.collateral.document.doclou.DocLouStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="docPledgeStpValidator" class="com.integrosys.cms.ui.collateral.document.docpledge.DocPledgeStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+	<!-- Guarantees -->
+  	<bean id="gteBankSameStpValidator" class="com.integrosys.cms.ui.collateral.guarantees.gtebanksame.GteBankSameStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="gteCorp3rdStpValidator" class="com.integrosys.cms.ui.collateral.guarantees.gtecorp3rd.GteCorp3rdStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="gteGovtStpValidator" class="com.integrosys.cms.ui.collateral.guarantees.gtegovt.GteGovtStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="gteGovtLinkStpValidator" class="com.integrosys.cms.ui.collateral.guarantees.gtegovtlink.GteGovtLinkStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="gteIndemStpValidator" class="com.integrosys.cms.ui.collateral.guarantees.gteindem.GteIndemStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="gteIndivStpValidator" class="com.integrosys.cms.ui.collateral.guarantees.gteindiv.GteIndivStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="gteInwardLcStpValidator" class="com.integrosys.cms.ui.collateral.guarantees.gteinwardlc.GteInwardLcStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="gteSLCSameStpValidator" class="com.integrosys.cms.ui.collateral.guarantees.gteslcsame.GteSLCSameStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+	<!-- insurance -->
+  	<bean id="insCrdtStpValidator" class="com.integrosys.cms.ui.collateral.insprotection.inscrdt.InsCrdtStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="insCrdtDerivStpValidator" class="com.integrosys.cms.ui.collateral.insprotection.inscrdtderiv.InsCrdtDerivStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="insKeyManStpValidator" class="com.integrosys.cms.ui.collateral.insprotection.inskeyman.InsKeyManStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="insSwapStpValidator" class="com.integrosys.cms.ui.collateral.insprotection.insswap.InsSwapStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+	<!-- securities -->
+  	<bean id="markSecBillStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecbill.MarkSecBillStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="markSecBondForeignStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecbondforeign.MarkSecBondForeignStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="markSecBondLocalStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecbondlocal.MarkSecBondLocalStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="markSecGovtForeignSameStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecgovtforeignsame.MarkSecGovtForeignSameStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="markSecMainForeignStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecmainforeign.MarkSecMainForeignStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="markSecMainLocalStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecmainlocal.MarkSecMainLocalStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="markSecNonListedLocalStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecnonlistedlocal.MarkSecNonListedLocalStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="markSecOtherListedForeignStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecotherlistedforeign.MarkSecOtherListedForeignStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="markSecOtherListedLocalStpValidator" class="com.integrosys.cms.ui.collateral.marketablesec.marksecotherlistedlocal.MarkSecOtherListedLocalStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+	<!-- no collateral -->
+  	<bean id="noCollateralaStpValidator" class="com.integrosys.cms.ui.collateral.nocollateral.nocollateral.NoCollateralaStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+	<!-- others -->
+  	<bean id="othersaStpValidator" class="com.integrosys.cms.ui.collateral.others.othersa.OthersaStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+	<!-- Property -->
+  	<bean id="propAgriStpValidator" class="com.integrosys.cms.ui.collateral.property.propagri.PropAgriStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="propCommGeneralStpValidator" class="com.integrosys.cms.ui.collateral.property.propcommgeneral.PropCommGeneralStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+<!--  	<bean id="propCommServiceAptStpValidator" class="com.integrosys.cms.ui.collateral.property.propcommserviceapt.PropCommServiceAptStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="propCommShopStpValidator" class="com.integrosys.cms.ui.collateral.property.propcommshop.PropCommShopStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean> -->
+  	<bean id="propIndusStpValidator" class="com.integrosys.cms.ui.collateral.property.propindus.PropIndusStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="propLandUrbanStpValidator" class="com.integrosys.cms.ui.collateral.property.proplandurban.PropLandUrbanStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="propResStdStpValidator" class="com.integrosys.cms.ui.collateral.property.propresstd.PropResStdStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="propSpHotelStpValidator" class="com.integrosys.cms.ui.collateral.property.propsphotel.PropSpHotelStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+  	<bean id="propRuralStpValidator" class="com.integrosys.cms.ui.collateral.property.proprural.PropRuralStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>	
+  	<bean id="propSpOtherStpValidator" class="com.integrosys.cms.ui.collateral.property.propspother.PropSpOtherStpValidator">
+  		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+
+</beans>

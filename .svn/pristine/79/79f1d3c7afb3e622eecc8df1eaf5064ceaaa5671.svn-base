@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+
+	<bean id="recurrentBusManager" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean">
+	  <property name="jndiName" value="SBRecurrentBusManagerHome" />
+	  <property name="businessInterface" value="com.integrosys.cms.app.recurrent.bus.SBRecurrentBusManager" />
+	  <property name="lookupHomeOnStartup" value="false" />
+	</bean>
+
+	<bean id="stagingRecurrentBusManager" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean">
+	  <property name="jndiName" value="SBStagingRecurrentBusManagerHome" />
+	  <property name="businessInterface" value="com.integrosys.cms.app.recurrent.bus.SBRecurrentBusManager" />
+	  <property name="lookupHomeOnStartup" value="false" />
+	</bean>
+
+	<bean id="recurrentProxy" class="com.integrosys.cms.app.recurrent.proxy.RecurrentProxyManagerImpl">
+		<property name="recurrentBusManager" ref="recurrentBusManager" />
+		<property name="stagingRecurrentBusManager" ref="stagingRecurrentBusManager" />
+		<property name="recurrentTrxController" ref="recurrentCheckListTrxController" />
+		<property name="recurrentReadController" ref="recurrentCheckListReadController" />
+		<property name="annexureTrxController" ref="annexureTrxController" />
+		<property name="annexureReadController" ref="annexureReadController" />
+	</bean>
+
+</beans>

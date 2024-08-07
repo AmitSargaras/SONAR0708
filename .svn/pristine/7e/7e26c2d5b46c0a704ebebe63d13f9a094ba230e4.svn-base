@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select PARTY.lsp_le_id,PARTY.LSP_SHORT_NAME,
+			(select entry_name from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE ='SYSTEM' and ACTIVE_STATUS = '1' and entry_code = FAC.FACILITY_SYSTEM) system
+			,fac.lmt_id, 
+			(select entry_name from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE ='FACILITY_CATEGORY' and ACTIVE_STATUS = '1' and entry_code = FAC.FACILITY_CAT) FACILITY_CAT
+			,FAC.FACILITY_NAME,
+			FAC.FACILITY_TYPE,
+			(select entry_name from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE ='BANKING_ARRANGEMENT' and ACTIVE_STATUS = '1' and entry_code = FAC.BANKING_ARRANGEMENT) 
+			FAC_BANKING_ARRANGEMENT
+			,(select entry_name from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE ='CLAUSE_AS_PER_POLICY' and ACTIVE_STATUS = '1' and entry_code = FAC.CLAUSE_AS_PER_POLICY) 
+			FAC_CLAUSE_AS_PER_POLICY,
+			LINE.FACILITY_SYSTEM_ID,LINE.LINE_NO,LINE.SERIAL_NO,
+			(select entry_name from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE ='BANKING_ARRANGEMENT' and ACTIVE_STATUS = '1' and entry_code = LINE.BANKING_ARRANGEMENT) 
+			LINE_BANKING_ARRANGEMENT
+			from SCI_LSP_APPR_LMTS fac
+			inner join SCI_LSP_LMT_PROFILE cam on CAM.CMS_LSP_LMT_PROFILE_ID = fac.cms_limit_profile_id
+			inner join SCI_LE_SUB_PROFILE party on PARTY.CMS_LE_SUB_PROFILE_ID = CAM.CMS_CUSTOMER_ID 
+			left join sci_lsp_lmts_xref_map linkage on FAC.CMS_LSP_APPR_LMTS_ID = LINKAGE.CMS_LSP_APPR_LMTS_ID
+			left join sci_lsp_sys_xref line on line.CMS_LSP_SYS_XREF_ID = LINKAGE.CMS_LSP_SYS_XREF_ID
+		</query>
+		<whereClause>
+			<mandatoryClause>
+ 				FAC.CMS_LIMIT_STATUS = 'ACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition>and PARTY.LSP_LE_ID =</condition>
+			</param>
+			<param>
+				<name>uploadSystem</name>
+				<condition>and fac.FACILITY_SYSTEM =</condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PARTY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PARTY NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Banking Arrangement</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Clause as per Policy</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>System ID (On Release Line details)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line No (On Release Line details)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Serial No (On Release Line details)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Banking Arrangement (On Release Line details)</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Banking Arrangement on Facility and Line level Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

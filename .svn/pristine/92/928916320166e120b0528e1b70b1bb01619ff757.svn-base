@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT sub_profile.lsp_short_name,
+  checklistitem.doc_description AS DocumentName,
+  (SELECT th.login_id
+  FROM 	TRANS_HISTORY th,
+    	TRANSACTION tr
+  WHERE tr_history_id IN
+    (SELECT MAX(tr_history_id)
+    FROM TRANS_HISTORY
+    WHERE TRANSACTION_SUBTYPE IN ('FAC_CHECKLIST_REC','COL_CHECKLIST_REC' ,'LAD_CHECKLIST_REC')
+    AND STATUS NOT            IN( 'ACTIVE','REJECTED')
+    AND TRANS_HISTORY.transaction_id = tr.transaction_id
+   -- GROUP BY transaction_id
+    )
+  AND th.transaction_id = tr.transaction_id
+  AND tr.reference_id   = checklist.checklist_id
+  ) AS Maker_id,
+  (SELECT region_name FROM cms_region WHERE id = addr.lra_region
+  )                     AS Region,
+  cc_segment.entry_name AS segment
+FROM SCI_LE_SUB_PROFILE sub_profile ,
+  sci_lsp_lmt_profile lmt_profile ,
+  cms_checklist_item checklistItem ,
+  cms_checklist checklist,
+  SCI_LE_REG_ADDR addr,
+  common_code_category_entry cc_segment
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				sub_profile.lsp_le_id            =lmt_profile.llp_le_id
+AND checklist.cms_lsp_lmt_profile_id   =lmt_profile.CMS_LSP_LMT_PROFILE_ID
+AND checklistitem.checklist_id         =checklist.checklist_id
+AND sub_profile.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+AND addr.lra_type_value                = 'CORPORATE'
+AND sub_profile.LSP_SGMNT_CODE_VALUE   = cc_segment.entry_code(+)
+AND (cc_segment.category_code          = 'HDFC_SEGMENT'
+OR cc_segment.category_code           IS NULL)
+AND checklistitem.doc_item_id NOT     IN
+  (SELECT doc_desc
+  FROM cms_image_tag_details
+  WHERE cust_id     =sub_profile.lsp_le_id
+  AND Doc_type NOT IN ('CAM_NOTE','RECURRENTDOC_DOC')
+  )
+AND sub_profile.status     != 'INACTIVE'
+AND checklist.category IN ('S','F','LAD')
+and checklistitem.is_deleted = 'N'
+AND checklistitem.Documentstatus = 'ACTIVE'
+AND checklistitem.status    = 'RECEIVED'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Document Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker_id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>segment</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Image Not Tag Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

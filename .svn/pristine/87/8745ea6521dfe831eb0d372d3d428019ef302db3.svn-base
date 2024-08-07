@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+					SELECT party_id,
+				    party_name,
+				    segmentName,
+				    rmRegion,
+				    rmname,
+				    CAMType,
+				    RAMRating,
+				    statementType,
+				    status FROM (
+				  (SELECT temp.party_id,
+				    temp.party_name,
+				    temp.segmentName,
+				    temp.rmRegion,
+				    temp.rmname,
+				    temp.CAMType,
+				    temp.RAMRating,
+             ( select entry_name from common_code_category_entry where 
+           entry_code=  temp.statementType and category_code='STATEMENT_TYPE') as statementType,				  
+				    temp.status,
+				    -------------------------------------------------------------------
+				    glb.document_code,
+				    temp.transaction_date,
+				    temp.profile_id,
+				     temp.relation_mgr,
+				    temp.entry_code
+				  FROM cms_document_globallist glb,
+				    ((SELECT
+				    ------------------------------------------------------------------
+				    sub_profile.lsp_le_id      AS party_id,
+				    sub_profile.lsp_short_name AS party_name,
+				    cc_segment.entry_name      AS segmentName,
+				    -- reg.region_name            AS rmRegion,
+				    (
+				    SELECT region_name
+				    FROM CMS_REGION
+				    WHERE id = sub_profile.rm_region
+				    ) AS rmRegion,
+				    -- rm.rm_mgr_name             AS rmname,
+				    (
+				    SELECT rm_mgr_name
+				    FROM cms_relationship_mgr
+				    WHERE id= sub_profile.relation_mgr
+				    )                         AS rmname,
+				    pf.cam_type               AS CAMType,
+				    pf.cms_appr_officer_grade AS RAMRating,
+				    chklist.statement_type    AS statementType,
+				    chklist.status            AS status,
+				    -------------------------------------------------------------------
+				    --glb.document_code,
+				    chklist.document_code,
+				    trx.transaction_date,
+				    sub_profile.relation_mgr,
+				    cc_segment.entry_code,
+				    sub_profile.cms_le_sub_profile_id AS profile_id
+				    -------------------------------------------------------------------
+				  FROM --cms_document_globallist glb,
+				    cms_checklist checklist,
+				    (SELECT DISTINCT item.document_code,
+				      item.statement_type,
+				      chk.checklist_id,
+				      item.status
+				    FROM cms_checklist_item item,
+				      cms_checklist chk
+				    WHERE item.checklist_id = chk.checklist_id
+				    AND chk.checklist_id    = item.checklist_id
+				    AND item.is_deleted     = 'N'
+				    and to_char(item.expiry_date,'YYYY')  = (select to_char(sysdate,'YYYY') from dual)
+				      -- and chk.checklist_id = 20140224000003317
+				    GROUP BY item.document_code,
+				      item.statement_type,
+				      chk.checklist_id,
+				      item.status
+				    )chklist,
+				    SCI_LSP_LMT_PROFILE pf,
+				    SCI_LE_SUB_PROFILE sub_profile,
+				    (SELECT entry_name,
+				      entry_code
+				    FROM common_code_category_entry
+				    WHERE category_code = 'HDFC_SEGMENT'
+				    ) cc_segment,
+				    --  cms_relationship_mgr rm ,
+				    SCI_LE_REG_ADDR addr,
+				    --  CMS_REGION reg,
+				    transaction trx
+				  WHERE
+				    --  glb.document_code IN
+				    --    (SELECT item.document_code
+				    --    FROM cms_checklist_item item
+				    --    WHERE item.checklist_id = chklist.checklist_id
+				    --    )
+				    --  AND
+				    checklist.checklist_id = chklist.checklist_id
+				    -- AND glb.category                       = 'REC'
+				    -- AND glb.statement_type                 = chklist.statement_type
+				    -- AND glb.deprecated                     = 'N'
+				  AND sub_profile.cms_le_sub_profile_id     = pf.cms_customer_id(+)
+				  AND checklist.cms_lsp_lmt_profile_id      = pf.cms_lsp_lmt_profile_id
+				  AND checklist.checklist_id                = trx.reference_id(+)
+				  AND (trx.transaction_type                 ='CHECKLIST'
+				  OR trx.transaction_type                  IS NULL)
+				  AND cc_segment.entry_code(+)              = sub_profile.lsp_sgmnt_code_value
+				  AND sub_profile.cms_le_main_profile_id(+) = addr.cms_le_main_profile_id
+				    -- AND rm.id(+)                          = sub_profile.relation_mgr
+				    --  AND reg.id(+)                          = sub_profile.rm_region
+				  AND addr.lra_type_value = 'CORPORATE'
+				  AND sub_profile.status != 'INACTIVE'
+				  and checklist.category = 'REC'
+				    --AND glb.document_code                  = chklist.document_code(+)
+				    -- and checklist.checklist_id = 20140224000003317
+				  )) temp
+				  WHERE glb.document_code = temp.document_code
+				  AND glb.category        = 'REC'
+				  AND glb.statement_type  = temp.statementType
+				  AND glb.deprecated      = 'N'
+				  and glb.expiry_date > '31-DEC-13'
+				  )
+				UNION ALL
+				  (SELECT temp1.party_id,
+				    temp1.party_name,
+				    temp1.segmentName,
+				    temp1.rmRegion,
+				    temp1.rmname,
+				    temp1.CAMType,
+				    temp1.RAMRating,
+				    ( select entry_name from common_code_category_entry where 
+           entry_code=  temp1.statementType and category_code='STATEMENT_TYPE') as statementType,	
+				    'Not Maintained' AS status,
+				    -------------------------------------------------------------------
+				    glb1.document_code,
+				    temp1.transaction_date,
+				    temp1.profile_id,
+				     temp1.relation_mgr,
+				    temp1.entry_code
+				  FROM cms_document_globallist glb1,
+				    ((SELECT
+				    ------------------------------------------------------------------
+				    sub_profile.lsp_le_id      AS party_id,
+				    sub_profile.lsp_short_name AS party_name,
+				    cc_segment.entry_name      AS segmentName,
+				    -- reg.region_name            AS rmRegion,
+				    (
+				    SELECT region_name
+				    FROM CMS_REGION
+				    WHERE id = sub_profile.rm_region
+				    ) AS rmRegion,
+				    -- rm.rm_mgr_name             AS rmname,
+				    (
+				    SELECT rm_mgr_name
+				    FROM cms_relationship_mgr
+				    WHERE id= sub_profile.relation_mgr
+				    )                         AS rmname,
+				    pf.cam_type               AS CAMType,
+				    pf.cms_appr_officer_grade AS RAMRating,
+				    chklist.statement_type    AS statementType,
+				    chklist.status            AS status,
+				    -------------------------------------------------------------------
+				    --glb.document_code,
+				    chklist.document_code,
+				    trx.transaction_date,
+				    sub_profile.relation_mgr,
+				    cc_segment.entry_code,
+				    sub_profile.cms_le_sub_profile_id AS profile_id
+				    -------------------------------------------------------------------
+				  FROM --cms_document_globallist glb,
+				    cms_checklist checklist,
+				    (SELECT DISTINCT item.document_code,
+				      item.statement_type,
+				      chk.checklist_id,
+				      item.status
+				    FROM cms_checklist_item item,
+				      cms_checklist chk
+				    WHERE item.checklist_id = chk.checklist_id
+				    AND chk.checklist_id    = item.checklist_id
+				    AND item.is_deleted     = 'N'
+				    and to_char(item.expiry_date,'YYYY')  = (select to_char(sysdate,'YYYY') from dual)
+				      -- and chk.checklist_id = 20140224000003317
+				    GROUP BY item.document_code,
+				      item.statement_type,
+				      chk.checklist_id,
+				      item.status
+				    )chklist,
+				    SCI_LSP_LMT_PROFILE pf,
+				    SCI_LE_SUB_PROFILE sub_profile,
+				    (SELECT entry_name,
+				      entry_code
+				    FROM common_code_category_entry
+				    WHERE category_code = 'HDFC_SEGMENT'
+				    ) cc_segment,
+				    --  cms_relationship_mgr rm ,
+				    SCI_LE_REG_ADDR addr,
+				    --  CMS_REGION reg,
+				    transaction trx
+				  WHERE
+				    --  glb.document_code IN
+				    --    (SELECT item.document_code
+				    --    FROM cms_checklist_item item
+				    --    WHERE item.checklist_id = chklist.checklist_id
+				    --    )
+				    --  AND
+				    checklist.checklist_id = chklist.checklist_id
+				    -- AND glb.category                       = 'REC'
+				    -- AND glb.statement_type                 = chklist.statement_type
+				    -- AND glb.deprecated                     = 'N'
+				  AND sub_profile.cms_le_sub_profile_id     = pf.cms_customer_id(+)
+				  AND checklist.cms_lsp_lmt_profile_id      = pf.cms_lsp_lmt_profile_id
+				  AND checklist.checklist_id                = trx.reference_id(+)
+				  AND (trx.transaction_type                 ='CHECKLIST'
+				  OR trx.transaction_type                  IS NULL)
+				  AND cc_segment.entry_code(+)              = sub_profile.lsp_sgmnt_code_value
+				  AND sub_profile.cms_le_main_profile_id(+) = addr.cms_le_main_profile_id
+				    -- AND rm.id(+)                          = sub_profile.relation_mgr
+				    --  AND reg.id(+)                          = sub_profile.rm_region
+				  AND addr.lra_type_value = 'CORPORATE'
+				  AND sub_profile.status != 'INACTIVE'
+				  and checklist.category = 'REC'
+				    --AND glb.document_code                  = chklist.document_code(+)
+				    -- and checklist.checklist_id = 20140224000003317
+				  )) temp1
+				  WHERE glb1.document_code &lt;&gt; temp1.document_code
+				  AND glb1.category         = 'REC'
+				  AND glb1.statement_type   = temp1.statementType
+				  AND glb1.deprecated       = 'N'  
+				  and glb1.expiry_date > '31-DEC-13'
+				  ) )
+			</query>
+		<whereClause>
+			<mandatoryClause>
+         			1=1
+
+			</mandatoryClause>
+			
+			<param>
+				<name>party</name>
+				<condition> and PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and ENTRY_CODE = </condition>
+			</param>
+			<param>
+				<name>relationManager</name>
+				<condition> and RELATION_MGR = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and TRUNC(TRANSACTION_DATE) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Type</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM Rating</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Mandatory Recurrent Statement</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status Of Tracking</header><!-- 9 -->
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>Recurrent Statement Tracking</reportName>
+		</reportParamters>
+	</report>
+</reports>

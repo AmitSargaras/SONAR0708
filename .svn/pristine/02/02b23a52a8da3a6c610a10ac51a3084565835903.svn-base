@@ -1,0 +1,1449 @@
+create or replace PROCEDURE SP_CMS_BASEL_MONTHLY_NPA_TRACK
+AS
+  v_property_valuation_date DATE;
+  v_Stock_valuation_date    DATE;
+  v_date                    DATE;
+  app_date                  DATE;
+  CURSOR Cr_FD
+  IS
+    SELECT CASH_DEPOSIT_ID
+    FROM cms_cash_deposit
+    WHERE status='ACTIVE'
+    AND active  ='active';
+type ty_rc_fd
+IS
+  TABLE OF Cr_FD%rowtype;
+  rc_fd ty_rc_fd;
+  CURSOR CR_FD_DETAILS(V_FDNUM NUMBER)
+  IS
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      NULL                                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      (SELECT DISTINCT
+        --  sysdate-1   AS REPORTING_DATE,
+        --  'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID AS PARTY_ID,
+        ln.LIEN_ID     AS lien_id,
+        --'CSH'                             AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS Collateral_Type, --New Master changes
+        -- NULL                              AS Valuation_Date,    -- Blank for FD
+        NVL(ln.LIEN_AMOUNT,0) AS Valuation_Amt_INR1, -- total of lien
+        ''                    AS Original_Value,     -- Blank
+        ''                    AS Start_Date,         -- Blank
+        ''                    AS MATURITY_DATE       --Blank
+      FROM CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY SEC,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        -- SCI_LE_MAIN_PROFILE MAN,
+        (
+        SELECT *
+        FROM cms_cash_deposit
+        WHERE status = 'ACTIVE'
+        AND ACTIVE   = 'active'
+        ) dp,
+      CMS_LIEN LN,
+      SCI_LSP_SYS_XREF b,
+      SCI_LSP_LMTS_XREF_MAP c
+    WHERE SUB.SECURITY_SUB_TYPE_ID = 'CS202'
+    AND SEC.SECURITY_SUB_TYPE_ID   = SUB.SECURITY_SUB_TYPE_ID
+    AND (MAPS.update_status_ind   <> 'D'
+    OR MAPS.update_status_ind     IS NULL)
+    AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+    AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+    AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+    AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+      --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+    AND sec.CMS_COLLATERAL_ID  = dp.cms_collateral_id
+    AND DP.CASH_DEPOSIT_ID     = LN.CASH_DEPOSIT_ID(+)
+    AND spro.status            = 'ACTIVE'
+    AND SEC.CMS_COLLATERAL_ID IN
+      (SELECT CMS_COLLATERAL_ID FROM CMS_CASH_DEPOSIT
+      )
+    AND MAPS.CHARGE_ID IN
+      (SELECT MAX(MAPS2.CHARGE_ID)
+      FROM cms_limit_security_map maps2
+      WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+      AND maps2.cms_collateral_id      =sec.cms_collateral_id
+      )
+    AND MAPS.UPDATE_STATUS_IND = 'I'
+    AND MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+    AND MSTR.STATUS            = 'ACTIVE'
+    AND c.CMS_LSP_APPR_LMTS_ID = SCI.CMS_LSP_APPR_LMTS_ID
+    AND c.CMS_LSP_SYS_XREF_ID  = b.CMS_LSP_SYS_XREF_ID
+    AND b.FACILITY_SYSTEM      = dp.SYSTEM_NAME
+    AND b.FACILITY_SYSTEM_ID   = dp.SYSTEM_ID
+    AND b.LINE_NO              = LN.LIEN_NUMBER
+    AND b.SERIAL_NO            = LN.SERIAL_NO
+    AND DP.CASH_DEPOSIT_ID     =V_FDNUM
+      --  GROUP BY SPRO.LSP_LE_ID,
+      --    MSTR.NPA_TRAQ_CODE
+      )
+    GROUP BY PARTY_ID,
+      COLLATERAL_TYPE;
+    -- )
+  type ty_CR_FD_DETAILS
+IS
+  TABLE OF CR_FD_DETAILS%ROWtype;
+  RC_FD_DETAILS ty_CR_FD_DETAILS;
+BEGIN
+  EXECUTE immediate 'truncate table CMS_BASEL_NPA_TRACK';
+  SELECT add_months( TRUNC(to_date (param_value,'dd-MON-yyyy')), -12*3 )
+  INTO v_property_valuation_date
+  FROM cms_general_param
+  WHERE param_code = 'APPLICATION_DATE';
+  SELECT add_months( TRUNC(to_date (param_value,'dd-MON-yyyy')), -3 )
+  INTO v_Stock_valuation_date
+  FROM cms_general_param
+  WHERE param_code = 'APPLICATION_DATE';
+  
+  SELECT TRUNC(to_date (param_value,'dd-MON-yyyy'))
+  INTO app_date
+  FROM cms_general_param
+  WHERE param_code = 'APPLICATION_DATE';
+  -- FD
+  OPEN Cr_FD;
+  LOOP
+    FETCH Cr_FD bulk collect INTO rc_fD limit 10000;
+    EXIT
+  WHEN rc_fD.count=0;
+    FOR fd IN 1..rc_fD.count
+    LOOP
+      OPEN CR_FD_DETAILS(rc_fD(fd).CASH_DEPOSIT_ID);
+      FETCH CR_FD_DETAILS bulk collect INTO RC_FD_DETAILS ;
+      FOR R1 IN 1..RC_FD_DETAILS.count
+      --            FOR r1 IN
+      --  -------------------------------------------------new--------------------------------------------
+      --  (
+      --  SELECT sysdate-1   AS REPORTING_DATE,
+      --    'CLIMS'        AS SYSTEM,
+      --    Spro.LSP_LE_ID AS PARTY_ID,
+      --    --sec.CMS_COLLATERAL_ID as security_id,
+      --    --'CSH'                             AS Collateral_Type,   --as per new table mapping
+      --    MSTR.NPA_TRAQ_CODE                AS Collateral_Type,   --New Master changes
+      --    NULL                              AS Valuation_Date,    -- Blank for FD
+      --    NVL(SUM(NVL(ln.LIEN_AMOUNT,0)),0) AS Valuation_Amt_INR, -- total of lien
+      --    ''                                AS Original_Value,    -- Blank
+      --    ''                                AS Start_Date,        -- Blank
+      --    ''                                AS MATURITY_DATE      --Blank
+      --  FROM CMS_NPA_TRAQ_CODE_MASTER MSTR,
+      --    CMS_SECURITY SEC,
+      --    CMS_SECURITY_SUB_TYPE SUB,
+      --    SCI_LSP_APPR_LMTS SCI,
+      --    CMS_LIMIT_SECURITY_MAP MAPS,
+      --    SCI_LSP_LMT_PROFILE PF,
+      --    SCI_LE_SUB_PROFILE SPRO ,
+      --    -- SCI_LE_MAIN_PROFILE MAN,
+      --    (
+      --    SELECT *
+      --    FROM cms_cash_deposit
+      --    WHERE status = 'ACTIVE'
+      --    AND ACTIVE   = 'active'
+      --    ) dp,
+      --    CMS_LIEN LN,
+      --    SCI_LSP_SYS_XREF b,
+      --    SCI_LSP_LMTS_XREF_MAP c
+      --  WHERE SUB.SECURITY_SUB_TYPE_ID = 'CS202'
+      --  AND SEC.SECURITY_SUB_TYPE_ID   = SUB.SECURITY_SUB_TYPE_ID
+      --  AND (MAPS.update_status_ind   <> 'D'
+      --  OR MAPS.update_status_ind     IS NULL)
+      --  AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      --  AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      --  AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      --  AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+      --    --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      --  AND sec.CMS_COLLATERAL_ID  = dp.cms_collateral_id
+      --  AND DP.CASH_DEPOSIT_ID     = LN.CASH_DEPOSIT_ID(+)
+      --  AND spro.status            = 'ACTIVE'
+      --  AND SEC.CMS_COLLATERAL_ID IN
+      --    (SELECT CMS_COLLATERAL_ID FROM CMS_CASH_DEPOSIT
+      --    ) AND MAPS.CHARGE_ID IN
+      --    (SELECT MAX(MAPS2.CHARGE_ID)
+      --    FROM cms_limit_security_map maps2
+      --    WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+      --    AND maps2.cms_collateral_id      =sec.cms_collateral_id
+      --    )
+      --  AND MAPS.UPDATE_STATUS_IND = 'I'
+      --  AND MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      --  AND MSTR.STATUS            = 'ACTIVE'
+      --  AND c.CMS_LSP_APPR_LMTS_ID = SCI.CMS_LSP_APPR_LMTS_ID
+      --  AND c.CMS_LSP_SYS_XREF_ID  = b.CMS_LSP_SYS_XREF_ID
+      --  AND b.FACILITY_SYSTEM      = dp.SYSTEM_NAME
+      --  AND b.FACILITY_SYSTEM_ID   = dp.SYSTEM_ID
+      --  AND b.LINE_NO              = LN.LIEN_NUMBER
+      --  AND b.SERIAL_NO            = LN.SERIAL_NO
+      --  GROUP BY SPRO.LSP_LE_ID,
+      --    MSTR.NPA_TRAQ_CODE
+      --  )
+      LOOP
+        INSERT
+        INTO cms_basel_NPA_TRACK
+          (
+            REPORTING_DATE,
+            SYSTEM,
+            PARTY_ID,
+            Collateral_Type,
+            Valuation_Date,
+            Valuation_Amt_INR,
+            Original_Value,
+            Start_Date,
+            Maturity_date
+          )
+          VALUES
+          (
+            RC_FD_DETAILS(r1).REPORTING_DATE,
+            RC_FD_DETAILS(r1).SYSTEM,
+            RC_FD_DETAILS(r1).PARTY_ID,
+            RC_FD_DETAILS(r1).Collateral_Type,
+            RC_FD_DETAILS(r1).Valuation_Date,
+            RC_FD_DETAILS(r1).Valuation_Amt_INR,
+            RC_FD_DETAILS(r1).Original_Value,
+            RC_FD_DETAILS(r1).Start_Date,
+            RC_FD_DETAILS(r1).MATURITY_DATE
+          );
+      END LOOP; --CR_FD_DETAILS;
+      CLOSE CR_FD_DETAILS;
+    END LOOP;--CR_fd
+  END LOOP;
+  CLOSE CR_fd;
+  --COMMIT;
+  ---------- guarantee Null control  -'GT406','GT408','GT405'----------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      NULL                                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      (SELECT DISTINCT
+        -- sysdate-1   AS REPORTING_DATE,
+        --  'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID        AS PARTY_ID,
+        sec.CMS_COLLATERAL_ID AS security_id,
+        --'GUAR'                     AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS Collateral_Type, --New Master changes
+        --   NULL                       AS Valuation_Date,    -- Blank for FD
+        --  NVL(SUM(NVL(sec.cmv,0)),0) AS Valuation_Amt_INR, -- total of lien
+        NVL(sec.cmv,0) AS Valuation_Amt_INR1,
+        ''             AS Original_Value, -- Blank
+        ''             AS Start_Date,     -- Blank
+        ''             AS Maturity_date   --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        --SCI_LE_MAIN_PROFILE MAN,
+        cms_guarantee grnte
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND sec.CMS_COLLATERAL_ID     = grnte.CMS_COLLATERAL_ID(+)
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('GT406','GT408','GT405')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_GUARANTEE
+        )
+      AND (MAPS.UPDATE_STATUS_IND <> 'D'
+      OR MAPS.UPDATE_STATUS_IND   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND    = 'I'
+      AND (grnte.GUARANTEE_AMT     <> 0
+      OR sec.cmv                   <> 0
+      OR grnte.SECURED_PORTION     <> 0
+      OR grnte.UNSECURED_PORTION   <> 0
+      OR grnte.TELEPHONE_NUMBER    <> 0
+      OR grnte.TELEPHONE_AREA_CODE <> 0
+      OR GRNTE.RAMID               <> 0
+      OR GRNTE.COUNTRY             IS NOT NULL)
+        --    GROUP BY Spro.LSP_LE_ID,
+        --      MSTR.NPA_TRAQ_CODE
+        --      ,sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      COLLATERAL_TYPE
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        R1.MATURITY_DATE
+      );
+  END LOOP;
+  --COMMIT;
+  -- GUARANTEE SBSL SBBG GT400 GT402
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      NULL                                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      (SELECT DISTINCT
+        -- sysdate-1   AS REPORTING_DATE,
+        --  'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID        AS PARTY_ID,
+        sec.CMS_COLLATERAL_ID AS security_id,
+        --'GUAR'                     AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS Collateral_Type, --New Master changes
+        NULL               AS Valuation_Date,  -- Blank for FD
+        --  NVL(SUM(NVL(sec.cmv,0)),0) AS Valuation_Amt_INR, -- total of lien
+        NVL(sec.cmv,0) AS Valuation_Amt_INR1,
+        ''             AS Original_Value, -- Blank
+        ''             AS Start_Date,     -- Blank
+        ''             AS Maturity_date   --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        --SCI_LE_MAIN_PROFILE MAN,
+        cms_guarantee grnte
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND sec.CMS_COLLATERAL_ID     = grnte.CMS_COLLATERAL_ID(+)
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('GT400','GT402')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_GUARANTEE
+        )
+      AND (MAPS.UPDATE_STATUS_IND <> 'D'
+      OR MAPS.UPDATE_STATUS_IND   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND    = 'I'
+      AND (grnte.GUARANTEE_AMT     <> 0
+      OR sec.cmv                   IS NOT NULL
+      OR grnte.SECURED_PORTION     <> 0
+      OR grnte.UNSECURED_PORTION   <> 0
+      OR grnte.TELEPHONE_NUMBER    <> 0
+      OR grnte.TELEPHONE_AREA_CODE <> 0
+      OR grnte.RAMID               <> 0 )
+        -- GROUP BY Spro.LSP_LE_ID ,
+        --  MSTR.NPA_TRAQ_CODE)
+      )
+    GROUP BY PARTY_ID,
+      COLLATERAL_TYPE
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  --COMMIT;
+  --------- property Null control --------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  --------- property Null control --------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      MAX(Valuation_Date1)                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      (SELECT DISTINCT Spro.LSP_LE_ID AS PARTY_ID,
+        sec.CMS_COLLATERAL_ID         AS security_id,
+        MSTR.NPA_TRAQ_CODE            AS Collateral_Type, --New Master changes
+        prty.VALUATION_DATE           AS Valuation_Date1,
+        NVL(sec.cmv,0)                AS Valuation_Amt_INR1
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        cms_property prty
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND prty.cms_collateral_id(+)    = sec.cms_collateral_id
+      AND spro.status                  = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID     = 'PT701'
+      AND MSTR.SECURITY_SUB_TYPE       =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS                  = 'ACTIVE'
+      AND MSTR.PROPERTY_TYPE_CODE_DESC = prty.PROPERTY_TYPE
+      AND sec.cms_collateral_id       IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_PROPERTY
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND = 'I'
+        --AND prty.VALUATION_DATE >= (select   add_months( trunc(to_date (param_value,'dd/mm/yyyy hh24:mi')), -12*3 )
+        --      from cms_general_param where param_code = 'APPLICATION_DATE')
+      AND prty.VALUATION_DATE     >= v_property_valuation_date
+      AND ( prty.IS_PHY_INSPECT   <>'N'
+      OR prty.PHY_INSPECT_FREQ    <> 0
+      OR prty.LAND_AREA           <> 0
+      OR prty.TENURE              <> 0
+      OR prty.REMAINING_TENURE    <> 0
+      OR prty.QUIT_RENT_PAID      <> '-1'
+      OR prty.BUILTUP_AREA        <> 0
+      OR prty.SALE_PURCHASE_VALUE <> '-1'
+      OR prty.STD_QUIT_RENT       <> 'N'
+      OR prty.NON_STD_QUIT_RENT   <> 'N'
+      OR prty.QUIT_RENT_RECEIPT   <> 'N'
+      OR prty.ASSESSMENT          <> 'N'
+      OR prty.COMBINED_VALUE_AMT  <> 0
+      OR prty.VALUE_NUMBER        <> 0
+      OR PRTY.ASSESSMENT_PERIOD   <>0
+      OR PRTY.ASSUMPTION          <> 'N'
+      OR PRTY.PROPERTY_TYPE       IS NOT NULL
+      OR PRTY.MARGAGE_TYPE        IS NOT NULL )
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  --COMMIT;
+  -------gold-- Asset Null control --------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      NULL                                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      (SELECT DISTINCT Spro.LSP_LE_ID AS PARTY_ID,
+        --sec.CMS_COLLATERAL_ID as security_id,
+        --'GOLD'                     AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS Collateral_Type, --New Master changes
+        -- NULL                       AS Valuation_Date,    -- Blank for FD
+        NVL(sec.cmv,0) AS Valuation_Amt_INR1, -- total of lien
+        ''             AS Original_Value,     -- Blank
+        ''             AS Start_Date,         -- Blank
+        ''             AS Maturity_date       --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        --  SCI_LE_MAIN_PROFILE MAN,
+        CMS_ASSET AST
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND AST.cms_collateral_id(+)  = SEC.CMS_COLLATERAL_ID
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('AB110')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_ASSET
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND = 'I'
+        --    GROUP BY Spro.LSP_LE_ID,
+        --      MSTR.NPA_TRAQ_CODE --,sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  --COMMIT;
+  --- Plant and machi----
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      NULL                                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      ( SELECT DISTINCT
+        --    sysdate-1   AS REPORTING_DATE,
+        --      'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID AS PARTY_ID,
+        --sec.CMS_COLLATERAL_ID as security_id,
+        --'REC'                      AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS COLLATERAL_TYPE, --New Master changes
+        -- NULL                       AS Valuation_Date,    -- Blank for FD
+        NVL(sec.cmv,0) AS Valuation_Amt_INR1, -- total of lien
+        ''             AS Original_Value,     -- Blank
+        ''             AS Start_Date,         -- Blank
+        ''             AS Maturity_date       --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        -- SCI_LE_MAIN_PROFILE MAN,
+        CMS_ASSET AST
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND AST.cms_collateral_id(+)  = SEC.CMS_COLLATERAL_ID
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('AB101')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_ASSET
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+      AND ( AST.PHY_INSPECTION_FREQ <> '-1'
+      OR AST.MANUFACTURE_YEAR       <> 0
+      OR AST.LAST_USED_ID_IDX_STOCK <> 0
+      OR AST.LAST_USED_ID_IDX_FAO   <> 0
+      OR AST.LAST_USED_ID_IDX_INSR  <> 0
+      OR AST.RESIDUAL_ASSET_LIFE    <> 0
+      OR AST.DOC_PERFECT_AGE        <> 0
+      OR AST.REPOSSESSION_AGE       <> 0
+      OR sec.cmv                    IS NOT NULL )
+        --    GROUP BY Spro.LSP_LE_ID,
+        --      MSTR.NPA_TRAQ_CODE
+        --,    sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  --COMMIT;
+  -----------------vehical and specific asset ----------------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      NULL                                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      ( SELECT DISTINCT
+        --  sysdate-1   AS REPORTING_DATE,
+        --  'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID AS PARTY_ID,
+        --sec.CMS_COLLATERAL_ID as security_id,
+        --'REC'                      AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS Collateral_Type, --New Master changes
+        --   NULL                       AS Valuation_Date,    -- Blank for FD
+        NVL(sec.cmv,0) AS Valuation_Amt_INR1, -- total of lien
+        ''             AS Original_Value,     -- Blank
+        ''             AS Start_Date,         -- Blank
+        ''             AS Maturity_date       --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        -- SCI_LE_MAIN_PROFILE MAN,
+        CMS_ASSET AST
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND AST.cms_collateral_id(+)  = SEC.CMS_COLLATERAL_ID
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('AB102','AB109')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_ASSET
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+      AND ( AST.PHY_INSPECTION_FREQ <>'-1'
+      OR AST.MANUFACTURE_YEAR       <> 0
+      OR AST.PHY_INSPECTION_DONE    <> 'N'
+      OR AST.LAST_USED_ID_IDX_STOCK <> 0
+      OR AST.LAST_USED_ID_IDX_FAO   <> 0
+      OR AST.LAST_USED_ID_IDX_INSR  <> 0
+      OR AST.RESIDUAL_ASSET_LIFE    <> 0
+      OR AST.DOC_PERFECT_AGE        <> 0
+      OR AST.REPOSSESSION_AGE       <> 0
+      OR sec.cmv                    IS NOT NULL )
+        --    GROUP BY Spro.LSP_LE_ID,
+        --      MSTR.NPA_TRAQ_CODE
+        --,    sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  --COMMIT;
+  --------- Insurance Null control --------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      NULL                                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      ( SELECT DISTINCT
+        --  sysdate-1   AS REPORTING_DATE,
+        --    'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID AS PARTY_ID,
+        --sec.CMS_COLLATERAL_ID as security_id,
+        --'LI'                       AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS Collateral_Type, --New Master changes
+        --   NULL                       AS Valuation_Date,    -- Blank for FD
+        NVL(sec.cmv,0) AS Valuation_Amt_INR1, -- total of lien
+        ''             AS Original_Value,     -- Blank
+        ''             AS Start_Date,         -- Blank
+        ''             AS Maturity_date       --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        -- SCI_LE_MAIN_PROFILE MAN,
+        CMS_INSURANCE INS
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND INS.CMS_COLLATERAL_ID (+) = SEC.CMS_COLLATERAL_ID
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID  = 'IN501'
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_INSURANCE
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND        = 'I'
+      AND ( INS.BANK_RISK_CONFIRMATION <>'N'
+      OR INS.BANK_INT_NOTED            <> 'N'
+      OR INS.INSURED_AMOUNT            <> 0
+      OR INS.INSURANCE_PREMIUM         <> 0
+      OR INS.POLICY_NO                 IS NOT NULL
+      OR sec.cmv                       IS NOT NULL )
+        --    GROUP BY Spro.LSP_LE_ID,
+        --      MSTR.NPA_TRAQ_CODE
+        --,    sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  --COMMIT;
+  --------- PDC security migreted pri control  --------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      NULL                                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      ( SELECT DISTINCT
+        --  sysdate-1   AS REPORTING_DATE,
+        --  'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID AS PARTY_ID,
+        --sec.CMS_COLLATERAL_ID as security_id,
+        --'REC'                      AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS Collateral_Type, --New Master changes
+        --   NULL                       AS Valuation_Date,    -- Blank for FD
+        NVL(sec.cmv,0) AS Valuation_Amt_INR1, -- total of lien
+        ''             AS Original_Value,     -- Blank
+        ''             AS Start_Date,         -- Blank
+        ''             AS Maturity_date       --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        -- SCI_LE_MAIN_PROFILE MAN,
+        CMS_ASSET AST
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND AST.cms_collateral_id(+)  = SEC.CMS_COLLATERAL_ID
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('AB108')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_ASSET
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND       = 'I'
+      AND( AST.LAST_USED_ID_IDX_STOCK <> 0
+      OR AST.LAST_USED_ID_IDX_FAO     <> 0
+      OR AST.LAST_USED_ID_IDX_INSR    <> 0
+      OR AST.INTEREST_RATE            <> 0
+      OR sec.cmv                      IS NOT NULL )
+        --    GROUP BY Spro.LSP_LE_ID,
+        --      MSTR.NPA_TRAQ_CODE
+        --,    sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  -- COMMIT;
+  ---------- GC Null control -----------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      MAX(Valuation_Date1)                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      ( SELECT DISTINCT
+        --sysdate-1   AS REPORTING_DATE,
+        --   'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID        AS PARTY_ID,
+        sec.CMS_COLLATERAL_ID AS security_id,
+        --'REC'                                                                           AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE AS Collateral_Type, --New Master changes
+        --   MAX(det.due_date)                                                               AS Valuation_Date,    -- Blank for FD
+        det.due_date                                                               AS Valuation_Date1,    -- Blank for FD
+        NVL(NVL((GC.COMPONENT_AMOUNT * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100),0),0) AS Valuation_Amt_INR1, -- total of lien
+        ''                                                                         AS Original_Value,     -- Blank
+        ''                                                                         AS Start_Date,         -- Blank
+        ''                                                                         AS Maturity_date       --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        --SCI_LE_MAIN_PROFILE MAN,
+        (
+        SELECT *
+        FROM CMS_ASSET_GC_STOCK_DET gc1 ,
+          CMS_COMPONENT cm
+        WHERE gc1.STOCK_TYPE IN ('CurrentAsset','ValueDebtors')
+        AND cm.component_type = 'Current_Asset'
+        AND cm.component_code = gc1.component
+        AND cm.status         = 'ACTIVE'
+        AND (( cm.debtors     = 'Y'
+        AND cm.age            < 365)
+        OR (cm.debtors        = 'N'))
+        ) GC,
+        CMS_ASSET_GC_DET DET,
+        CMS_ASSET AST
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND GC.GC_DET_ID (+)         = DET.GC_DET_ID
+      AND SEC.CMS_COLLATERAL_ID    = det.cms_collateral_id(+)
+      AND AST.cms_collateral_id(+) = SEC.CMS_COLLATERAL_ID
+      AND spro.status              = 'ACTIVE'
+      AND det.due_date             =
+        (SELECT MAX(sh.due_date)
+        FROM cms_asset_gc_det sh
+        WHERE sh.cms_collateral_id=DET.cms_collateral_id
+        )
+      AND SUB.SECURITY_SUB_TYPE_ID = 'AB100'
+      AND MSTR.SECURITY_SUB_TYPE   =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS              = 'ACTIVE'
+      AND component NOT LIKE 'DUMMY%'
+      AND sec.cms_collateral_id IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_ASSET
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND = 'I'
+        --and det.due_date >= (select   add_months( trunc(to_date (param_value,'dd/mm/yyyy hh24:mi')), -3 )
+        --       from cms_general_param where param_code = 'APPLICATION_DATE')
+      AND det.due_date              >= v_Stock_valuation_date
+      AND ( AST.PHY_INSPECTION_FREQ <> '0'
+      OR AST.PHY_INSPECTION_DONE    <> 'N'
+      OR AST.LAST_USED_ID_IDX_STOCK <> 0
+      OR AST.LAST_USED_ID_IDX_FAO   <> 0
+      OR AST.LAST_USED_ID_IDX_INSR  <> 0
+      OR GC.COMPONENT               IS NOT NULL )
+        --GROUP BY Spro.LSP_LE_ID,
+        -- MSTR.NPA_TRAQ_CODE
+        -- ,    sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  --COMMIT;
+  -------Markatable Security --------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      MIN(Valuation_Date1)                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      ( SELECT DISTINCT
+        -- sysdate-1   AS REPORTING_DATE,
+        --  'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID AS PARTY_ID,
+        --sec.CMS_COLLATERAL_ID as security_id,
+        --DECODE(SUB.SECURITY_SUB_TYPE_ID, 'MS600','UCT','MS605','EQUITIESLISTED','MS610','BONDS') AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE                AS Collateral_Type,    --New Master changes
+        CHEKERDATE(sec.CMS_COLLATERAL_ID) AS Valuation_Date1,    -- Blank for FD
+        NVL(sec.cmv,0)                    AS Valuation_Amt_INR1, -- total of lien
+        ''                                AS Original_Value,     -- Blank
+        ''                                AS Start_Date,         -- Blank
+        ''                                AS Maturity_date       --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        --  SCI_LE_MAIN_PROFILE MAN,
+        CMS_PORTFOLIO_ITEM port
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND port.cms_collateral_id(+) = SEC.CMS_COLLATERAL_ID
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('MS605','MS600','MS610')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_PORTFOLIO_ITEM
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND = 'I'
+        --    GROUP BY Spro.LSP_LE_ID,
+        --      MSTR.NPA_TRAQ_CODE --,sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  --COMMIT;
+  -------All other Security --------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      MIN(Valuation_Date1)                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      ( SELECT DISTINCT
+        --    sysdate-1   AS REPORTING_DATE,
+        --      'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID AS PARTY_ID,
+        --sec.CMS_COLLATERAL_ID as security_id,
+        --'OTH'                      AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE          AS Collateral_Type, --New Master changes
+        sec.VALUATIOIN_DATE         AS Valuation_Date1, -- Blank for FD
+        NVL(sec.VALUATION_AMOUNT,0) AS Valuation_Amt_INR1,
+        ''                          AS Original_Value, -- Blank
+        ''                          AS Start_Date,     -- Blank
+        ''                          AS Maturity_date   --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        --  SCI_LE_MAIN_PROFILE MAN,
+        CMS_OTHERS oth
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND oth.cms_collateral_id(+)  = SEC.CMS_COLLATERAL_ID
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('OT900')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_OTHERS
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND = 'I'
+        --    GROUP BY Spro.LSP_LE_ID,
+        --      MSTR.NPA_TRAQ_CODE --,sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  -- COMMIT;
+  -------Intangible --------
+  FOR r1 IN
+  -------------------------------------------------new--------------------------------------------
+  (
+    SELECT sysdate-1 AS REPORTING_DATE,
+      'CLIMS'        AS SYSTEM,
+      PARTY_ID,
+      Collateral_Type,
+      MIN(Valuation_Date1)                  AS Valuation_Date,
+      NVL(SUM(NVL(Valuation_Amt_INR1,0)),0) AS Valuation_Amt_INR,
+      ''                                    AS Original_Value, -- Blank
+      ''                                    AS Start_Date,     -- Blank
+      ''                                    AS Maturity_date   --Blank
+    FROM
+      ( SELECT DISTINCT
+        -- sysdate-1   AS REPORTING_DATE,
+        -- 'CLIMS'        AS SYSTEM,
+        Spro.LSP_LE_ID AS PARTY_ID,
+        --sec.CMS_COLLATERAL_ID as security_id,
+        --'REC'                      AS Collateral_Type,   --as per new table mapping
+        MSTR.NPA_TRAQ_CODE          AS Collateral_Type, --New Master changes
+        sec.VALUATIOIN_DATE         AS Valuation_Date1, -- Blank for FD
+        NVL(sec.VALUATION_AMOUNT,0) AS Valuation_Amt_INR1,
+        ''                          AS Original_Value, -- Blank
+        ''                          AS Start_Date,     -- Blank
+        ''                          AS Maturity_date   --Blank
+      FROM CMS_SECURITY SEC,
+        CMS_NPA_TRAQ_CODE_MASTER MSTR,
+        CMS_SECURITY_SUB_TYPE SUB,
+        SCI_LSP_APPR_LMTS SCI,
+        CMS_LIMIT_SECURITY_MAP MAPS,
+        SCI_LSP_LMT_PROFILE PF,
+        SCI_LE_SUB_PROFILE SPRO ,
+        --  SCI_LE_MAIN_PROFILE MAN,
+        CMS_ASSET AST
+      WHERE SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      AND SEC.CMS_COLLATERAL_ID      = MAPS.CMS_COLLATERAL_ID
+      AND MAPS.CMS_LSP_APPR_LMTS_ID  = SCI.CMS_LSP_APPR_LMTS_ID
+      AND SCI.CMS_LIMIT_PROFILE_ID   = PF.CMS_LSP_LMT_PROFILE_ID
+      AND PF.CMS_CUSTOMER_ID         = Spro.CMS_LE_SUB_PROFILE_ID
+        --AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+      AND AST.cms_collateral_id(+)  = SEC.CMS_COLLATERAL_ID
+      AND spro.status               = 'ACTIVE'
+      AND SUB.SECURITY_SUB_TYPE_ID IN('AB103')
+      AND MSTR.SECURITY_SUB_TYPE    =SUB.SECURITY_SUB_TYPE_ID --New Master changes
+      AND MSTR.STATUS               = 'ACTIVE'
+      AND sec.cms_collateral_id    IN
+        (SELECT CMS_COLLATERAL_ID FROM CMS_ASSET
+        )
+      AND (MAPS.update_status_ind <> 'D'
+      OR MAPS.update_status_ind   IS NULL)
+      AND MAPS.CHARGE_ID          IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MAPS.UPDATE_STATUS_IND = 'I'
+        --  GROUP BY Spro.LSP_LE_ID,
+        --   MSTR.NPA_TRAQ_CODE --,sec.CMS_COLLATERAL_ID
+      )
+    GROUP BY PARTY_ID,
+      Collateral_Type
+  )
+  LOOP
+    INSERT
+    INTO cms_basel_NPA_TRACK
+      (
+        REPORTING_DATE,
+        SYSTEM,
+        PARTY_ID,
+        Collateral_Type,
+        Valuation_Date,
+        Valuation_Amt_INR,
+        Original_Value,
+        Start_Date,
+        Maturity_date
+      )
+      VALUES
+      (
+        r1.REPORTING_DATE,
+        r1.SYSTEM,
+        r1.PARTY_ID,
+        r1.Collateral_Type,
+        r1.Valuation_Date,
+        r1.Valuation_Amt_INR,
+        r1.Original_Value,
+        r1.Start_Date,
+        r1.Maturity_date
+      );
+  END LOOP;
+  COMMIT;
+   UPDATE cms_basel_NPA_TRACK
+     SET ERROSION_NPA_TRACK=0;
+  IF TRUNC(TRUNC(app_date) , 'MM') <>TRUNC(app_date) THEN
+    v_date                        :=TRUNC(app_date);
+  ELSE
+    v_date :=add_months(TRUNC(app_date),-1);
+  END IF;
+  
+  FOR obj IN
+  (SELECT DISTINCT PARTY_ID,ERROSION_NPA_TRACK FROM cms_basel_NPA_TRACK
+  )
+  LOOP
+    BEGIN
+      SELECT ERROSION_NPA_TRACK
+      INTO obj.ERROSION_NPA_TRACK
+      FROM CLMS_TRQ_PRON_RPT_CUST_FAC
+      WHERE LSP_LE_ID=obj.PARTY_ID
+      AND TRN_DATE   =trunc (to_date(v_date))
+      AND rownum     =1;
+      UPDATE cms_basel_NPA_TRACK
+      SET ERROSION_NPA_TRACK=obj.ERROSION_NPA_TRACK
+      WHERE PARTY_ID        =obj.PARTY_ID;
+--      UPDATE cms_basel_NPA_TRACK
+--      SET ERROSION_NPA_TRACK=0
+--      WHERE PARTY_ID        <> obj.PARTY_ID;
+    EXCEPTION
+    WHEN OTHERS THEN
+      NULL;
+    END;
+  END LOOP;
+  COMMIT;
+END;

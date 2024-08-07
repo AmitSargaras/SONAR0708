@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+    
+    <!-- ############################ Relationship Manager ############################### -->
+
+    <bean id="InsuranceCoverageTrx.ReadInsuranceCoverageOperation" 
+    	class="com.integrosys.cms.app.insurancecoverage.trx.ReadInsuranceCoverageOperation">
+        <property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager"/>
+        <property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager"/>
+    </bean>
+    
+    <bean id="InsuranceCoverageTrx.ReadInsuranceCoverageIDOperation" 
+    	class="com.integrosys.cms.app.insurancecoverage.trx.ReadInsuranceCoverageIDOperation">
+        <property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager"/>
+        <property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager"/>
+    </bean>
+	<bean id="InsuranceCoverageTrx.MakerUpdateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerUpdateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	<bean id="InsuranceCoverageTrx.MakerCreateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerCreateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.MakerDeleteInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerDeleteInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	<bean id="InsuranceCoverageTrx.MakerEditRejectedUpdateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerEditRejectedUpdateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	<bean id="InsuranceCoverageTrx.MakerEditRejectedDeleteInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerEditRejectedDeleteInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	<bean id="InsuranceCoverageTrx.MakerCloseRejectedCreateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerCloseRejectedCreateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	<bean id="InsuranceCoverageTrx.MakerCloseRejectedUpdateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerCloseRejectedUpdateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	<bean id="InsuranceCoverageTrx.CheckerApproveUpdateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.CheckerApproveUpdateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.CheckerApproveDeleteInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.CheckerApproveDeleteInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.CheckerApproveCreateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.CheckerApproveCreateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	<bean id="InsuranceCoverageTrx.CheckerRejectInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.CheckerRejectInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.MakerCloseRejectedDeleteInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerCloseRejectedDeleteInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.MakerEditRejectedCreateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerEditRejectedCreateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.MakerSaveCreateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerSaveCreateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.MakerSubmitSaveCreateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerSubmitSaveCreateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.MakerCloseDraftCreateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerCloseDraftCreateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.MakerSubmitSaveUpdateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerSubmitSaveUpdateInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+	<bean id="InsuranceCoverageTrx.MakerUpdateSaveInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerUpdateSaveInsuranceCoverageOperation">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+	</bean>
+	
+    <bean id="insuranceCoverageReadController" class="com.integrosys.cms.app.insurancecoverage.trx.InsuranceCoverageReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.ReadInsuranceCoverageOperation"/>
+                 <entry key="ReadInsuranceCoverageIDOperation" value-ref="InsuranceCoverageTrx.ReadInsuranceCoverageIDOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="insuranceCoverageTrxController" class="com.integrosys.cms.app.insurancecoverage.trx.InsuranceCoverageTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerCreateInsuranceCoverageOperation"/>
+            	  
+            	  <entry key="MakerSaveCreateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerSaveCreateInsuranceCoverageOperation"/>
+            	  <entry key="MakerSubmitSaveCreateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerSubmitSaveCreateInsuranceCoverageOperation"/>
+            	  <entry key="MakerCloseDraftCreateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerCloseDraftCreateInsuranceCoverageOperation"/>
+            	  <entry key="MakerSubmitSaveUpdateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerSubmitSaveUpdateInsuranceCoverageOperation"/>
+            	  <entry key="MakerUpdateSaveInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerUpdateSaveInsuranceCoverageOperation"/>
+            	  	
+				  <entry key="MakerUpdateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerUpdateInsuranceCoverageOperation"/>
+				  <entry key="MakerDeleteInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerDeleteInsuranceCoverageOperation"/>
+            	  <entry key="MakerEditRejectedCreateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerEditRejectedCreateInsuranceCoverageOperation"/>
+            	  <entry key="MakerEditRejectedUpdateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerEditRejectedUpdateInsuranceCoverageOperation"/>
+            	  <entry key="MakerEditRejectedDeleteInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerEditRejectedDeleteInsuranceCoverageOperation"/>
+            	  <entry key="MakerCloseRejectedCreateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerCloseRejectedCreateInsuranceCoverageOperation"/>
+                  <entry key="MakerCloseRejectedUpdateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerCloseRejectedUpdateInsuranceCoverageOperation"/>
+                  <entry key="MakerCloseRejectedDeleteInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.MakerCloseRejectedDeleteInsuranceCoverageOperation"/>
+
+                  <entry key="CheckerRejectInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.CheckerRejectInsuranceCoverageOperation"/>
+                  <entry key="CheckerApproveUpdateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.CheckerApproveUpdateInsuranceCoverageOperation"/>
+                  <entry key="CheckerApproveCreateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.CheckerApproveCreateInsuranceCoverageOperation"/>
+                  <entry key="CheckerApproveDeleteInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.CheckerApproveDeleteInsuranceCoverageOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+	
+	
+	<bean id="InsuranceCoverageTrx.MakerInsuranceCoverageInsertFileOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerInsuranceCoverageInsertFileOperation">
+		 <property name="insuranceCoverageFileMapperIdBusManager" ref="insuranceCoverageFileMapperIdBusManager"/>
+        <property name="stagingInsuranceCoverageFileMapperIdBusManager" ref="stagingInsuranceCoverageFileMapperIdBusManager"/>
+	</bean>
+	<bean id="InsuranceCoverageTrx.CheckerApproveInsertMasterOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.CheckerApproveInsertMasterOperation">
+		 <property name="insuranceCoverageFileMapperIdBusManager" ref="insuranceCoverageFileMapperIdBusManager"/>
+        <property name="stagingInsuranceCoverageFileMapperIdBusManager" ref="stagingInsuranceCoverageFileMapperIdBusManager"/>
+	</bean>
+	<bean id="InsuranceCoverageTrx.CheckerRejectInsertMasterOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.CheckerRejectInsertMasterOperation">
+		 <property name="insuranceCoverageFileMapperIdBusManager" ref="insuranceCoverageFileMapperIdBusManager"/>
+        <property name="stagingInsuranceCoverageFileMapperIdBusManager" ref="stagingInsuranceCoverageFileMapperIdBusManager"/>
+	</bean>
+	<bean id="InsuranceCoverageTrx.FileInsertReadOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.FileInsertReadOperation">
+		<property name="insuranceCoverageFileMapperIdBusManager" ref="insuranceCoverageFileMapperIdBusManager"/>
+        <property name="stagingInsuranceCoverageFileMapperIdBusManager" ref="stagingInsuranceCoverageFileMapperIdBusManager"/>
+	</bean>
+	<bean id="InsuranceCoverageTrx.MakerCloseRejectedInsertMasterOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.MakerCloseRejectedInsertMasterOperation">
+		 <property name="insuranceCoverageFileMapperIdBusManager" ref="insuranceCoverageFileMapperIdBusManager"/>
+        <property name="stagingInsuranceCoverageFileMapperIdBusManager" ref="stagingInsuranceCoverageFileMapperIdBusManager"/>
+	</bean>
+	<bean id="InsuranceCoverageTrx.CheckerCreateInsuranceCoverageOperation"
+		class="com.integrosys.cms.app.insurancecoverage.trx.CheckerCreateInsuranceCoverageOperation">
+		<property name="insuranceCoverageFileMapperIdBusManager" ref="insuranceCoverageFileMapperIdBusManager"/>
+        <property name="stagingInsuranceCoverageFileMapperIdBusManager" ref="stagingInsuranceCoverageFileMapperIdBusManager"/>
+	</bean>
+    
+    <bean id="insuranceCoverageInsertFileTrxController" class="com.integrosys.cms.app.insurancecoverage.trx.InsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>        	 
+                  <entry key="MakerInsuranceCoverageInsertFileOperation" value-ref="InsuranceCoverageTrx.MakerInsuranceCoverageInsertFileOperation" />
+                  <entry key="CheckerApproveInsertMasterOperation" value-ref="InsuranceCoverageTrx.CheckerApproveInsertMasterOperation" />
+                  <entry key="CheckerRejectInsertMasterOperation" value-ref="InsuranceCoverageTrx.CheckerRejectInsertMasterOperation" />
+                  <entry key="MakerCloseRejectedInsertMasterOperation" value-ref="InsuranceCoverageTrx.MakerCloseRejectedInsertMasterOperation"/>
+                   <entry key="CheckerCreateInsuranceCoverageOperation" value-ref="InsuranceCoverageTrx.CheckerCreateInsuranceCoverageOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    <bean id="readInsuranceCoverageInsertFileTrxController" class="com.integrosys.cms.app.insurancecoverage.trx.ReadInsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="FileInsertReadOperation" value-ref="InsuranceCoverageTrx.FileInsertReadOperation"/>                   
+            </map>
+        </property>
+    </bean>
+	
+	
+	
+    <bean id="insuranceCoverageTrxControllerFactory" class="com.integrosys.cms.app.insurancecoverage.trx.InsuranceCoverageTrxControllerFactory">
+        <property name="insuranceCoverageReadController" ref="insuranceCoverageReadController"/>
+        <property name="insuranceCoverageTrxController" ref="insuranceCoverageTrxController"/>
+        <property name="insuranceCoverageInsertFileTrxController" ref="insuranceCoverageInsertFileTrxController"/>
+        <property name="readInsuranceCoverageInsertFileTrxController" ref="readInsuranceCoverageInsertFileTrxController"/>
+    </bean>
+</beans>

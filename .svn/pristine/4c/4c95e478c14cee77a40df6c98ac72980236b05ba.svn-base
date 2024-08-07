@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+
+			select FILE_NAME,
+			PARTYID,FAC_CATEGORY ,FAC_NAME , DUMMY_REF_ID,
+FACILITY_SYSTEM,GRADE, LMT_CRRNCY_ISO_CODE ,
+IS_RELEASED ,IS_ADHOC,ADHOC_LMT_AMOUNT ,
+SANCTIONED_AMT,RELEASABLE_AMOUNT,SYSTEM_ID ,
+LINE_NO,SERIAL_NO,LIAB_BRANCH,RELEASED_AMOUNT,
+LIMIT_START_DATE  AS limitStartDate,
+AVAILABLE,REVOLVING_LINE,
+SENDTOFILE,
+DATE_OF_RESET  AS limitExpirytDate,
+FREEZE,SEGMENT_1,
+IS_CAPITAL_MARKET_EXPOSER,IS_REALESTATE_EXPOSER,RULE_ID,
+IS_PRIORITY_SECTOR,PRIORITY_SECTOR ,UNCONDI_CANCL,
+INTEREST_RATE_TYPE,INT_RATE_FIX,ESTATE_TYPE,
+COMM_REAL_ESTATE_TYPE,LIMIT_TENOR_DAYS,
+INTERNAL_REMARKS,
+TO_CHAR(UPLOAD_DATE, 'DD/Mon/YYYY')  AS uploadDate,
+STATUS,REASON
+ from CMS_CREATE_FACLINE_UPLOAD 
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				1=1
+			</mandatoryClause>
+		<param>
+				<name>fromDate</name>
+				<condition> and TRUNC(UPLOAD_DATE) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>File name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>60</width>
+					<format>textFormat</format>
+					<header>Facility Category</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Dummy ref id</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Grade</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Release</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Adhoc</header><!-- 1 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Adhoc Limit Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Sanction Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Releasable Amount</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System ID</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Line Number</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Serial Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Liab Branch</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Released Amount</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Limit Start Date</header><!-- 1 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Available</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Revolving Line</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Send to file</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Limit Expiry Date</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Freeze</header><!-- 1 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Capital Market exposure</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Real estate exposure</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Rule Id</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PSL Flag - Y/N</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PSL Value - code</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Uncondi cancl commitment</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Interest rate (fixed)</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Rate Value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Exposure type</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>commercial real estate</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Limit (tenor days)</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Remark</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Upload Date</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>15</width>
+					<format>textFormat</format>
+					<header>Status</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Reason</header><!-- 1 -->
+				</reportColumn>	 	 		  	 		
+			</reportColumns>
+			<reportName>Success/Fail upload for Facility/Line Creation</reportName>
+		</reportParamters>
+	</report>
+</reports>

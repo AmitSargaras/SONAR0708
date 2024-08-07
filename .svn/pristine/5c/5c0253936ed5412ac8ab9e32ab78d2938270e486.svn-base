@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>Shared Security Mapping - SS001I</description>
+
+	<include href="common.cm.xml" /> 
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.security.sharedsecurity.SharedSecurityInquiryMsgBody" >
+		<map-to xml="MsgBody"/>
+		<field name="SharedSecuritySearch" type="com.integrosys.cms.host.eai.security.sharedsecurity.bus.SharedSecuritySearch">
+			<bind-xml name="SecuritySearch"/>
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.security.sharedsecurity.bus.SharedSecuritySearch">
+		<map-to xml="SecuritySearch"/>
+		<field name="SecurityType" type="com.integrosys.cms.host.eai.StandardCode"/>
+		<field name="SecuritySubType" type="com.integrosys.cms.host.eai.StandardCode"/>
+		<field name="Country" type="string"/>
+		<field name="PledgorLegalName" type="string"/>
+		<field name="IdNumber" type="string"/>
+		<field name="Property" type="com.integrosys.cms.host.eai.security.bus.property.PropertySecurity"/>
+		<field name="Vehicle" type="com.integrosys.cms.host.eai.security.sharedsecurity.bus.VehicleDetailSearchItem"/>
+		<field name="Aircraft" type="com.integrosys.cms.host.eai.security.sharedsecurity.bus.AirCraftDetailSearchItem"/>
+		<field name="Vessel" type="com.integrosys.cms.host.eai.security.sharedsecurity.bus.VesselDetailSearchItem"/>
+		<field name="PlantEquip" type="com.integrosys.cms.host.eai.security.sharedsecurity.bus.PlantEquipDetailSearchItem"/>
+	</class>
+
+	<include href="sharedsecurity-securitytypes.cm.xml" />
+	
+</mapping>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+
+	<bean id="startupDeleteSessionService" class="com.integrosys.base.uiinfra.common.StartupDeleteSession" >
+		<property name="sessionJdbcDao" ref="sessionJdbcDao" />
+	</bean>
+	
+	<bean id="sessionIntegrityWorkflowTypeEventsMap" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map key-type="java.lang.String" value-type="java.lang.String[]">
+				<entry key="COL" 
+					value="submit,delete,close,update,approve,reject" />
+
+				<entry key="FACILITY" 
+					value="submit,submit_no_frame,close,update,approve,reject,
+						   save_whole_obj,save_whole_obj_no_frame" />
+
+				<entry key="CHECKLIST" 
+					value="submit,submit_delete,save,close,update,update_delete,
+						   approve_checklist_item,reject_checklist_item" />
+
+				<entry key="RECURRENT_CHECKLIST" 
+					value="submit,close,approve,reject,save,approve_checklist_item,
+						   reject_checklist_item" />
+
+				<entry key="LIMIT" 
+					value="submit,approve,reject,checker_approve_update_limits,
+						   checker_reject_update_limits,close_limits" />
+
+				<entry key="TAT_DOC" 
+					value="submit,submit_todo,save,save_todo,delete,close,approve,reject" />
+			</map>
+		</property>
+	</bean>
+
+</beans>

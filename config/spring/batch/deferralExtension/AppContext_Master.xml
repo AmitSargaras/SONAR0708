@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+	</description>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="deferralExtensionFileTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="deferralExtensionFileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="deferralExtensionFileJobDetail" />
+		<property name="cronExpression" value="0 0/10 * * * ?" />
+	</bean>
+	
+	<bean id="deferralExtensionFileJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="deferralExtensionJob" />
+		<property name="targetMethod" value="execute" />
+		
+	</bean>
+	
+	<bean name="deferralExtensionJob" class="com.integrosys.cms.batch.deferralExtension.schedular.DeferralExtensionJob">
+	</bean>
+	
+</beans>

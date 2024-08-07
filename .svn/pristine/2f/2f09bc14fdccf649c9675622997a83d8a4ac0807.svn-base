@@ -1,0 +1,860 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.batch.sibs.parameter.obj">
+    <!-- CIF Related -->
+    <class entity-name="paramAddressType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF100" lazy="false">
+        <id name="entryCode" column="ADD_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="ADD_TYPE_DESC"/>
+    </class>
+
+    <class entity-name="paramState" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF102" lazy="false">
+        <id name="entryCode" column="STATE_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="STATE_NAME"/>
+        <property name="country" column="COUNTRY_CODE"/>
+    </class>
+
+    <class entity-name="paramVip" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF103" lazy="false">
+        <id name="entryCode" column="VIP_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="VIP_DESC"/>
+    </class>
+
+    <class entity-name="paramDesignation" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF104" lazy="false">
+        <id name="entryCode" column="JOB_DESIG_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="JOB_DESIG_DESC"/>
+    </class>
+
+    <class entity-name="paramIdType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF105" lazy="false">
+        <id name="entryCode" column="ID_NUM_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="ID_NUM_DESC"/>
+    </class>
+
+    <class entity-name="paramInsider" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF106" lazy="false">
+        <id name="entryCode" column="INSIDER_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="INSIDER_DESC"/>
+    </class>
+
+    <class entity-name="paramElectronicAddressCode" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF107" lazy="false">
+        <id name="entryCode" column="ELEC_ADDR_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="ELEC_ADDR_DESC"/>
+    </class>
+
+    <!--<class entity-name="paramSalutation" name="OBCommonCodeEntryWrapper" table="CFPARK" lazy="false">-->
+        <!--<id name="entryCode" column="CFSALC" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="CFSALD"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBumiList" name="OBCommonCodeEntryWrapper" table="CFPARL" lazy="false">-->
+        <!--<id name="entryCode" column="CFBUMI" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="CFBUMD"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramMaritalStatus" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF108" lazy="false">
+        <id name="entryCode" column="MARITAL_STAT_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="MARITAL_DESC"/>
+    </class>
+
+    <!--<class entity-name="paramEmploymentStatus" name="OBCommonCodeEntryWrapper" table="CFEMPS" lazy="false">-->
+        <!--<id name="entryCode" column="CFEMST" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="CFEMSD"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramNatureOfBiz" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF109" lazy="false">
+        <id name="entryCode" column="BUSINESS_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="STD_IND_NAME"/>
+    </class>
+
+    <class entity-name="paramOccupation" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF109" lazy="false">
+        <id name="entryCode" column="BUSINESS_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="STD_IND_NAME"/>
+    </class>
+
+    <class entity-name="paramBranch" name="OBCommonCodeEntryIgnoreRefEntryWrapper" table="HP_TEMP_PF110" lazy="false">
+           <!--where="JDOPN6 &lt;&gt; 999999 and JDBR &gt; 0 and NOT(JDBR &gt; 800 and JDBR &lt; 1000)"-->
+        <id name="entryCode" column="BRANCH_NUM" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="BANK_BRANCH_NAME"/>
+        <property name="country" column="COUNTRY_CODE" />
+    </class>
+
+    <!--<class entity-name="paramRcBranch" name="OBCommonCodeEntryIgnoreRefEntryWrapper" table="SSDATA" lazy="false" >-->
+        <!--<id name="entryCode" column="JDBR" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="JDNAME"/>-->
+        <!--<property name="country" column="JDCOUN" />-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramCity" name="OBCommonCodeEntryWrapper" table="CFPAR2" lazy="false">-->
+        <!--<composite-id>-->
+            <!--<key-property name="entryCode" column="CP2CID" />-->
+            <!--<key-property name="refEntryCode" column="CP2STA" />-->
+        <!--</composite-id>-->
+        <!--<property name="entryName" column="CP2CTY"/>-->
+        <!--<property name="country" column="CP2COU" />-->
+    <!--</class>-->
+
+    <!-- Facility Related -->
+    <class entity-name="paramRank" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF112" lazy="false">
+        <id name="entryCode" column="LPCCOD" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="LPCCOD" insert="false" update="false"/>
+    </class>
+
+    <class entity-name="paramFacilityType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF113" lazy="false">
+        <id name="entryCode" column="FACILITY_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramLoanProductType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF114" lazy="false">
+        <id name="entryCode" column="LOAN_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="TYPE_DESC"/>
+    </class>
+
+    <class entity-name="paramLoanPurpose" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF115" lazy="false">
+        <id name="entryCode" column="PURPOSE_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="PURPOSE_DESC"/>
+    </class>
+
+    <class entity-name="paramApproveBy" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF116" lazy="false">
+        <id name="entryCode" column="DESIG_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramCancelRejectCode" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF117" lazy="false">
+        <id name="entryCode" column="CALCEL_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+        <!--<property name="refEntryCode" column="REASON_CODE"/>-->
+    </class>
+
+    <class entity-name="paramOfficer" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF118" lazy="false">
+        <id name="entryCode" column="OFFICER_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="OFFICER_NAME"/>
+        <property name="refEntryCode" column="BRANCH_NUM" />
+    </class>
+
+    <class entity-name="paramLimitStatus" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF119" lazy="false">
+        <id name="entryCode" column="LMT_STATUS" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="LMT_STATUS_DESC"/>
+    </class>
+
+    <class entity-name="paramFacRate" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF120" lazy="false">
+        <id name="entryCode" column="RATE_NUM" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="RATE_DESC"/>
+        <property name="refEntryCode" column="CURR_RATE" />
+    </class>
+
+    <class entity-name="paramDealer" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF121" lazy="false">
+        <id name="entryCode" column="DEALER_NUM" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DEALER_NAME"/>
+        <property name="refEntryCode" column="DEALER_GRP"/>
+    </class>
+
+    <class entity-name="paramAppSource" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF122" lazy="false">
+        <id name="entryCode" column="SRC_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramSolicitor" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF123" lazy="false">
+        <id name="entryCode" column="LAWY_ID_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="LAWY_NAME"/>
+    </class>
+
+    <!--<class entity-name="paramProductPackage" name="OBCommonCodeEntryWrapper" table="LNPCKC" lazy="false">-->
+        <!--<id name="entryCode" column="PCKCOD" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="PCDESC"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramDepartment" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF124" lazy="false">
+        <id name="entryCode" column="DEPT_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DEPT_DESC"/>
+    </class>
+
+    <class entity-name="paramRefinanceBank" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF125" lazy="false">
+        <id name="entryCode" column="BANK_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="BANK_DESC"/>
+    </class>
+
+    <class entity-name="paramAccRelationship" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF126" lazy="false">
+        <id name="entryCode" column="REL_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="TEXT"/>
+    </class>
+
+    <class entity-name="paramBnmIndustry" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF127" lazy="false">
+        <id name="entryCode" column="CUST_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="ECON_SECT_DESC"/>
+        <property name="refEntryCode" column="SUMM_O_DETAIL"/>
+    </class>
+
+    <class entity-name="paramBnmSector" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF128" lazy="false">
+        <id name="entryCode" column="CUST_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="CUST_DESC"/>
+        <property name="refEntryCode" column="SUMM_O_DETAIL"/>
+    </class>
+
+    <class entity-name="paramBnmState" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF129" lazy="false">
+        <id name="entryCode" column="STATE_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="STATE_DESC"/>
+    </class>
+
+    <class entity-name="paramBnmBumiNrcc" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF130" lazy="false">
+        <id name="entryCode" column="DFT_BUMI_NRCC_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <!--<class entity-name="paramBnmSmlScale" name="OBCommonCodeEntryWrapper" table="BNPARE" lazy="false">-->
+        <!--<id name="entryCode" column="CRSCAL" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BNDESC"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBnmPrescribeRate" name="OBCommonCodeEntryWrapper" table="BNPARF" lazy="false">-->
+        <!--<id name="entryCode" column="CRPSRT" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BNDESC"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBnmRelationship" name="OBCommonCodeEntryWrapper" table="BNPARG" lazy="false">-->
+        <!--<id name="entryCode" column="CRRELC" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BNDESC"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBnmGoodFinance1" name="OBCommonCodeEntryWrapper" table="BNPARH" lazy="false">-->
+        <!--<id name="entryCode" column="CRGDF1" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BNDESC"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBnmGoodFinance2" name="OBCommonCodeEntryWrapper" table="BNPARI" lazy="false">-->
+        <!--<id name="entryCode" column="CRGDF2" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BNDESC"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBnmExemptCode" name="OBCommonCodeEntryWrapper" table="LNEXEM" lazy="false">-->
+        <!--<id name="entryCode" column="LEXEMP" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="LEXDES"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBnmPurpose" name="OBCommonCodeEntryWrapper" table="BMPPUR" lazy="false">-->
+        <!--<id name="entryCode" column="BNPURP" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BNPCDS"/>-->
+        <!--<property name="refEntryCode" column="BNDORS"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramJointGuarantorRelationship" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF134" lazy="false">
+        <id name="entryCode" column="REL_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramOfficerType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF135" lazy="false">
+        <id name="entryCode" column="OFFICER_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="TYPE_DESC"/>
+        <property name="refEntryCode" column="OFFICER_IND" />
+    </class>
+
+    <class entity-name="paramOfficerTypeLosMap" name="OBCommonCodeEntryIgnoreRefEntryWrapper" table="HP_TEMP_PF135" lazy="false">
+        <id name="entryCode" column="OFFICER_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="TYPE_DESC"/>
+    </class>
+
+    <class entity-name="paramInsuranceType" name="OBCommonCodeEntryIgnoreRefEntryWrapper" table="HP_TEMP_PF136" lazy="false">
+        <id name="entryCode" column="TYPE_INS_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramInsurerName" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF137" lazy="false">
+        <id name="entryCode" column="INS_NUM" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="INS_NAME"/>
+    </class>
+
+    <class entity-name="paramHoldMail" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF138" lazy="false">
+        <id name="entryCode" column="HOLD_MAIL_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="HOLD_MAIL_DESC"/>
+    </class>
+
+    <class entity-name="paramOfficerRelationship" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF139" lazy="false">
+        <id name="entryCode" column="OFFICER_REL_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="OFFICER_RELL_DESC"/>
+    </class>
+
+    <class entity-name="paramCollateralProductType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF140" lazy="false">
+        <id name="entryCode" column="DEP_TYPE_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="TYPE_DESC"/>
+    </class>
+
+    <!--<class entity-name="paramTradeFinanceProductType" name="OBCommonCodeEntryWrapper" table="TFPAR2" lazy="false">-->
+        <!--<id name="entryCode" column="PDPDTP" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="PDDESC"/>-->
+    <!--</class>-->
+
+
+    <class entity-name="paramEthnic" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF144" lazy="false">
+        <id name="entryCode" column="ETH_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="ETH_DESC"/>
+    </class>
+
+    <class entity-name="paramReimbursementBank" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF145" lazy="false">
+        <id name="entryCode" column="TRANS_ROUT_NUM" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="BANK_NAME"/>
+    </class>
+
+    <!--<class entity-name="paramInsurerTag" name="OBCommonCodeEntryWrapper" table="LNCYCD" lazy="false">-->
+        <!--<id name="entryCode" column="CCITAG" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="CCITWF"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramGoldGrade" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF146" lazy="false">
+        <id name="entryCode" column="GOLD_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="GRADE"/>
+    </class>
+
+    <class entity-name="paramGoldType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF147" lazy="false">
+        <id name="entryCode" column="ITEM_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="ITEM_DESC"/>
+    </class>
+
+    <!--<class entity-name="paramSourceSecType" name="OBCommonCodeEntryWrapper" table="LNPAR8" lazy="false">-->
+        <!--<id name="entryCode" column="LP8COL" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="LP8DES"/>-->
+        <!--<property name="refEntryCode" column="LP8CAT" />-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramSourceCmsSecTypeMap" name="OBCommonCodeEntryWrapper" table="LNPAR8" lazy="false">-->
+        <!--<id name="entryCode" column="LP8COL" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="LP8DES"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramVehicleType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF148" lazy="false">
+        <id name="entryCode" column="TYPE_UNIT" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramPlantEquip" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF148" lazy="false">
+        <id name="entryCode" column="TYPE_UNIT" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramPropertyType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF149" lazy="false">
+        <id name="entryCode" column="PROP_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="PROP_TYPE_DESC"/>
+    </class>
+
+    <class entity-name="paramEndorsement" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF150" lazy="false">
+        <id name="entryCode" column="LPECOD" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="LPEDSC"/>
+    </class>
+
+    <!--<class entity-name="paramLeaseType" name="OBCommonCodeEntryWrapper" table="LNPR01" lazy="false">-->
+        <!--<id name="entryCode" column="L01TYP" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="L01DSC"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramUnitTrustFund" name="OBCommonCodeEntryWrapper" table="LNUNTR" lazy="false">-->
+        <!--<id name="entryCode" column="LTFNAM" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="LTFDES"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramVehicleBrand" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF151" lazy="false">
+        <id name="entryCode" column="MAKE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="MAKE" insert="false" update="false"/>
+    </class>
+
+    <class entity-name="paramModel" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF151" lazy="false">
+        <composite-id>
+            <key-property name="entryCode" column="MODEL_NUM"/>
+            <key-property name="refEntryCode" column="MAKE"/>
+        </composite-id>
+        <!--<id name="entryCode" column="LPMODN" type="java.lang.String"><generator class="native"/></id>-->
+        <property name="entryName" column="MODEL_NUM" insert="false" update="false"/>
+        <!--<property name="refEntryCode" column="LPMAKE" />-->
+    </class>
+
+    <class entity-name="paramModelYearMap" name="OBCommonCodeEntryCombineRefEntryWrapper" table="HP_TEMP_PF151" lazy="false">
+        <composite-id>
+            <key-property name="entryCode" column="YEAR_MANUF"/>
+            <key-property name="refEntryCode_1" column="MAKE"/>
+            <key-property name="refEntryCode_2" column="MODEL_NUM"/>
+        </composite-id>
+        <property name="entryName" column="YEAR_MANUF" insert="false" update="false"/>
+    </class>    
+
+    <!--<class entity-name="paramLandUseCategory" name="OBCommonCodeEntryWrapper" table="LNPTYB" lazy="false">-->
+        <!--<id name="entryCode" column="LPTCOD" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="LPTDSC"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramDeveloperCode" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF153" lazy="false">
+        <id name="entryCode" column="DEALER_GRP" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramValuer" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF156" lazy="false">
+        <id name="entryCode" column="VALUER_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="VALUER_NAME"/>
+    </class>
+
+    <!--<class entity-name="paramCentre" name="OBCommonCodeEntryIgnoreRefEntryWrapper" table="SSMCBR" lazy="false" where="SSMIND = 'Y' and SSMCENTER = 'CAC'">-->
+        <!--<id name="entryCode" column="SSMHUB" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="SSMNAME"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramCentreTypeMap" name="OBCommonCodeEntryWrapper" table="SSMCBR" lazy="false" where="SSMIND = 'Y' and SSMCENTER in ('CAC', 'HPC', 'RCC', 'SAB', 'MSC', 'HO', 'ABC')">-->
+        <!--<composite-id>-->
+            <!--<key-property name="entryCode" column="SSMHUB"/>-->
+            <!--<key-property name="refEntryCode" column="SSMCENTER"/>-->
+        <!--</composite-id>-->
+        <!--&lt;!&ndash;<id name="entryCode" column="SSMHUB" type="java.lang.String"><generator class="native"/></id>&ndash;&gt;-->
+        <!--<property name="entryName" column="SSMNAME"/>-->
+        <!--&lt;!&ndash;<property name="refEntryCode" column="SSMCENTER" />&ndash;&gt;-->
+    <!--</class>-->
+
+    <class entity-name="paramFacProductMap" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF157" lazy="false">
+        <composite-id>
+            <key-property name="entryCode" column="LOAN_TYPE" />
+            <key-property name="entryName" column="CURR_TYPE"/>
+            <key-property name="refEntryCode" column="FAC_NAME" />
+        </composite-id>
+    </class>
+
+    <!--<class entity-name="paramCgcScheme" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF159" lazy="false">-->
+        <!--<id name="entryCode" column="SCHEME" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="DESCRIPTION"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramLegalConstitution" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF111" lazy="false">
+        <id name="entryCode" column="CLASS_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="CLASS_DESC"/>
+    </class>    
+
+    <class entity-name="paramCarCode" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF141" lazy="false">
+        <id name="entryCode" column="CAR_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramMessageType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF142" lazy="false">
+        <id name="entryCode" column="MSG_TYPE_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="MSG_TEXT"/>
+    </class>
+
+    <class entity-name="paramMessageSeverity" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF143" lazy="false">
+        <id name="entryCode" column="MSG_SEVERITY" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <!--<class entity-name="paramBaselIrb" name="OBCommonCodeEntryWrapper" table="BSMPAR3" lazy="false">-->
+        <!--<id name="entryCode" column="BSSIRB" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BSIRBD"/>-->
+        <!--<property name="refEntryCode" column="BSFLAG"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBaselSaFinalist" name="OBCommonCodeEntryWrapper" table="BSMPAR6" lazy="false">-->
+        <!--<id name="entryCode" column="BSSEGC" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BSDESC"/>-->
+        <!--<property name="refEntryCode" column="BSAFLG"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramRequestReason" name="OBCommonCodeEntryWrapper" table="LNPINC" lazy="false">-->
+        <!--<id name="entryCode" column="INREQ1" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="INREQD"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramBaselSaConcept" name="OBCommonCodeEntryWrapper" table="BSMPAR1" lazy="false">-->
+        <!--<id name="entryCode" column="BSSEGC" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="entryName" column="BSDESC"/>-->
+    <!--</class>-->
+
+    <!-- Mapping for CMS tables other than common code: comes in a pair (Remote, Local) -->
+
+    <class entity-name="paramCountry" name="OBCountry" table="HP_TEMP_PF101" lazy="false">
+        <id name="countryCode" column="COUNTRY_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="countryName" column="COUNTRY_NAME"/>
+    </class>
+
+    <!--<class entity-name="paramHostBranch" name="OBHostBranch" table="SSMCBR" lazy="false" where="SSMCENTER in ('CAC', 'HPC', 'RCC', 'SAB', 'MSC', 'HO', 'ABC')">-->
+        <!--<composite-id>-->
+            <!--<key-property name="branchNumber" column="SSMBRN" />-->
+            <!--<key-property name="centreType" column="SSMCENTER"/>-->
+        <!--</composite-id>-->
+        <!--&lt;!&ndash;<id name="branchNumber" column="SSMBRN" type="java.lang.String"><generator class="native"/></id>&ndash;&gt;-->
+        <!--<property name="centreCode" column="SSMHUB"/>-->
+        <!--&lt;!&ndash;<property name="centreType" column="SSMCENTER"/>&ndash;&gt;-->
+    <!--</class>-->
+
+    <class entity-name="paramHostFacilityType" name="OBHostFacilityType" table="HP_TEMP_PF113" lazy="false">
+        <id name="facilityCode" column="FACILITY_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="loanType" column="LOAN_TYPE"/>
+        <property name="currency" column="CURRENCY" />
+        <property name="revolvingIndicator" column="REVOLVING_IND"/>
+        <property name="revOsBalOrgamt" column="REV_OS_BAL_ORGAMT"/>
+        <property name="description" column="DESCRIPTION"/>
+        <property name="accountType" column="ACCONT_TYPE"/>
+    </class>
+
+    <class entity-name="paramHostLoanProductType" name="OBHostLoanProductType" table="HP_TEMP_PF114" lazy="false">
+        <composite-id>
+            <key-property name="loanType" column="LOAN_TYPE"/>
+            <key-property name="currency" column="CURRENCY_TYPE"/>
+        </composite-id>
+        <!--<id name="loanType" column="PTYPE" type="java.lang.String"><generator class="native"/></id>-->
+        <property name="description" column="TYPE_DESC"/>
+        <property name="groupCode" column="GRP_CODE" />
+        <property name="groupDescription" column="GRP_DESC"/>
+        <property name="commericalRetailIndicator" column="COMM_RETAIL"/>
+        <!--<property name="currency" column="PCURTY"/>-->
+        <property name="minInterestRate" column="MIN_INT_RATE" type="big_decimal"/>
+        <property name="maxInterestRate" column="MAX_INT_RATE" type="big_decimal"/>
+        <property name="rateFloor" column="RATE_FLOOR" type="big_decimal"/>
+        <property name="rateCeiling" column="RATE_CEILING" type="big_decimal"/>
+        <property name="staffIndicator" column="STAFF_IND"/>
+        <property name="accountIndicator" column="ACT_IND"/>
+        <property name="tierLoanIndicator" column="TIER_LOAN"/>
+        <property name="sptfLoanType" column="SPTF_LOAD_TYPE"/>
+        <property name="primeRateNumber" column="DEF_PRIME_RATE"/>
+        <!--<property name="maxLoanTenure" column="MAX_LOAN_TENU" type="int"/>-->
+        <!--<property name="minLoanTenure" column="MIN_LOAN_TENU" type="int"/>-->
+        <property name="interestBase" column="INTEREST_BASE"/>
+        <property name="conceptCode" column="CONCEPT_CODE"/>
+        <property name="productGroup" column="PROD_GRP"/>
+        <property name="dealerProductIndicator" column="DEALER_PROD"/>
+        <property name="productLimit" column="PROD_LIMIT" type="big_decimal"/>
+        <property name="productExpiryDateStr" column="PROD_EXP_DATE"/>
+        <property name="productAgeLimit" column="PROD_AGE_LMT" type="int"/>
+        <property name="paymentFrequency" column="PAYMENT_FREQ" type="int"/>
+        <property name="paymentFrequencyCode" column="PAYMENT_FREQ_CODE"/>
+        <property name="paymentCode" column="PAYMENT_CODE" type="int"/>
+        <!--<property name="gratuityFinancing" column="GRAT_FINANCING"/>-->
+        <property name="rebateMethodBank" column="REBATE_METHOD_BANK"/>
+        <!--<property name="promoPackageCode" column="PROMO_PACKAGE_CODE"/>-->
+    </class>
+
+    <class entity-name="paramHostDealer" name="OBHostDealer" table="HP_TEMP_PF121" lazy="false">
+        <id name="dealerNumber" column="DEALER_NUM" type="java.lang.String">
+            <generator class="native"/>
+        </id>
+        <property name="dealerName" column="DEALER_NAME"/>
+        <property name="dealerShortName" column="DEALER_SHORT_NAME" />
+        <property name="formattedShortName" column="FMT_SHORT_NAME"/>
+        <property name="cif" column="DEALER_CIF_NUM"/>
+        <property name="addressLine1" column="DEALER_ADD1"/>
+        <property name="addressLine2" column="DEALER_ADD2"/>
+        <property name="addressLine3" column="DEALER_ADD3"/>
+        <property name="phone1" column="DEALER_PHONE" />
+        <property name="phone2" column="DEALER_PHONE2"/>
+        <property name="limitAmount" column="DEALER_LMT" type="big_decimal"/>
+        <property name="reserveAmount" column="DEALER_RSV_AMT" type="big_decimal"/>
+        <property name="amountUtilised" column="DEALER_AMT_UTL" type="big_decimal"/>
+        <property name="dealerPlan" column="DEALER_PLAN"/>
+        <property name="dealerGroup" column="DEALER_GRP"/>
+        <property name="officerCode" column="OFFICER_CODE"/>
+        <property name="expiryDateStr" column="DEALER_EXP_DATE"/>
+        <!--<property name="expiryDate2Str" column="LDEXP7"/>-->
+        <property name="revolvingIndicator" column="REVOLVING_IND" />
+        <property name="accrualPercent" column="DEALER_ACC_PERC" type="big_decimal"/>
+        <property name="dealerStatus" column="DEALER_STATUS" />
+        <property name="dateRecruitedStr" column="DATE_RECR"/>
+        <!--<property name="dateRecruited2Str" column="LDRDT7"/>-->
+        <property name="minIntDay" column="MIN_INT_DAY" type="int"/>
+        <property name="intSubsidyDays" column="INT_SUB_DAY" type="int"/>
+        <property name="productGroup" column="PRODUCT_GRP" />
+        <property name="branchServed" column="BRANCH_SERV" />
+        <property name="grossDevValue" column="GRO_DEV_VAL" type="big_decimal"/>
+        <property name="grossDevCost" column="GRO_DEV_COST" type="big_decimal" />
+        <property name="securityValue" column="SEC_VAL" type="big_decimal" />
+        <property name="underLimitFbr" column="UND_LIM_FBR" type="big_decimal" />
+        <property name="underLimitFbt" column="UND_LIM_FBT" type="big_decimal" />
+        <property name="recondIndicator" column="RECOND" />
+        <property name="usedIndicator" column="USED" />
+        <property name="newIndicator" column="NEW" />
+        <property name="newNational" column="NEW_NTL" />
+        <property name="dealerStatus2" column="DEALER_STATUS2" />
+        <property name="dealerStatusDateStr" column="DEALER_STATUS_DATE"/>
+        <!--<property name="dealerStatusDate2Str" column="LDSTA7"/>-->
+        <property name="rescheduleIndicator" column="RESCHDL_IND" />
+        <property name="deliquencyRate" column="DEL_RATE" type="big_decimal"/>
+        <property name="fisMemberIndicator" column="FIS_MEMBER" />
+        <property name="fisDealerCode" column="FIS_DEALER_CODE" />
+        <property name="remarks" column="REMARKS" />
+        <!--<property name="type" column="DEALER_PROJECT_TYPE"/>-->
+    </class>
+
+    <class entity-name="paramHostLawyer" name="OBHostLawyer" table="HP_TEMP_PF123" lazy="false">
+        <id name="lawyerCode" column="LAWY_ID_CODE" type="java.lang.String">
+            <generator class="native"/>
+        </id>
+        <property name="lawyerType" column="LAWY_TYPE"/>
+        <property name="lawyerReferenceNumber" column="LAWY_REF_NUM" />
+        <property name="lawyerName" column="LAWY_NAME"/>
+        <property name="status" column="LAWY_STATUS"/>
+        <property name="remarks" column="REMARKS" />
+    </class>
+
+    <!--<class entity-name="paramHostProductPackage" name="OBHostProductPackage" table="LNPCKC" lazy="false">-->
+        <!--<id name="packageCode" column="PCKCOD" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="description" column="PCDESC"/>-->
+        <!--<property name="expiryDateStr" column="PCEPD7"/>-->
+        <!--<property name="effectiveDateStr" column="PCEFD7"/>-->
+        <!--<property name="fundAllocated" column="PCFUND" type="big_decimal"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramHostInsuranceCompany" name="OBHostInsuranceCompany" table="HP_TEMP_PF137" lazy="false">
+        <id name="insNumber" column="INS_NUM" type="java.lang.String"><generator class="native"/></id>
+        <property name="insName" column="INS_NAME"/>
+        <property name="insAddress" column="INS_ADDR" />
+        <property name="insCityState" column="INS_CITY_STATE"/>
+        <property name="insPhone" column="INS_CO_PHONE_NUM"/>
+        <property name="reservePercent" column="RSV_PERC" type="big_decimal"/>
+        <property name="panelIndicator" column="PANEL_IND" />
+    </class>
+
+    <class entity-name="paramHostCollateralProductType" name="OBHostCollateralProductType" table="HP_TEMP_PF140" lazy="false">
+        <composite-id>
+            <key-property name="loanType" column="DEP_TYPE_CODE"/>
+            <key-property name="currency" column="CURR_TYPE"/>
+        </composite-id>
+        <property name="sptfLoanType" column="INT_FREE_BANKING"/>
+        <property name="description" column="TYPE_DESC"/>
+        <property name="groupCode" column="GROUP_CODE" />
+    </class>
+
+    <!--<class entity-name="paramHostTradeFinanceProductType" name="OBHostTradeFinanceProductType" table="TFPAR2" lazy="false">-->
+        <!--<composite-id>-->
+            <!--<key-property name="loanType" column="PDPDTP"/>-->
+            <!--<key-property name="currency" column="PDDCUR"/>-->
+        <!--</composite-id>-->
+        <!--&lt;!&ndash;<id name="loanType" column="PDPDTP" type="java.lang.String"><generator class="native"/></id>&ndash;&gt;-->
+        <!--<property name="description" column="PDDESC"/>-->
+        <!--<property name="sptfLoanType" column="PDSPTF"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramForex" name="OBForexWrapper" table="SSFXRT" lazy="false">-->
+        <!--<composite-id>-->
+            <!--<key-property name="sellCurrency" column="JFXBKC" />-->
+            <!--<key-property name="buyCurrency" column="JFXCOD"/>-->
+        <!--</composite-id>-->
+        <!--<property name="sellUnit" column="JFXCUN"/>-->
+        <!--<property name="sellRate" column="JFXSRT"/>-->
+        <!--<property name="buyRate" column="JFXBRT"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramCurrency" name="OBCurrencyWrapper" table="SSFXRT" lazy="false">-->
+        <!--<id name="currencyCode" column="JFXCOD" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="currencyDescription" column="JFXDSC"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramWorkingDay" name="OBWorkingDay" table="HP_TEMP_PF155" lazy="false">
+        <!--where="CJDATE &gt;= BIGINT(TRIM(CHAR(YEAR( current_timestamp ))) concat '001') and CJDATE &lt;= BIGINT(TRIM(CHAR(YEAR( current_timestamp + 1 year ))) concat '366')">-->
+        <composite-id>
+            <key-property name="processingDayStr" column="CURR_PROC_JULI"/>
+            <key-property name="branch" column="CAL_BRANCH"/>
+        </composite-id>
+        <property name="bizDayFlag" column="BUSI_DAY_FLAG"/>
+    </class>
+
+    <class entity-name="paramPublicHoliday" name="OBPublicHoliday" table="HP_TEMP_PF154" lazy="false">
+        <composite-id>
+            <key-property name="holidayDateStr" column="HOL_DATE"/>
+            <key-property name="countryCode" column="COUNTRY_CODE"/>
+            <key-property name="stateCode" column="STATE_CODE"/>
+        </composite-id>
+        <property name="description" column="HOL_DESC"/>
+    </class>
+
+    <!--<class entity-name="paramHostCentre" name="OBHostCentre" table="SSMCBR" lazy="false" where="SSMIND = 'Y' and SSMCENTER in ('CAC', 'HPC', 'RCC', 'SAB', 'MSC', 'HO', 'ABC')">-->
+        <!--<composite-id>-->
+            <!--<key-property name="centreType" column="SSMCENTER"/>-->
+            <!--<key-property name="centreCode" column="SSMHUB"/>-->
+        <!--</composite-id>-->
+        <!--<property name="centreName" column="SSMNAME"/>-->
+        <!--&lt;!&ndash;<property name="hasBranchStr" column="BRFLAG"/>&ndash;&gt;-->
+    <!--</class>-->
+
+    <class entity-name="paramHostCustomerLimit" name="OBHostCustomerLimit" table="HP_TEMP_PF158" lazy="false">
+        <id name="bankNumber" column="BANK_NUM" type="java.lang.String"><generator class="native"/></id>
+        <property name="capitalFund" column="CAP_FUND" type="big_decimal"/>
+        <property name="lastMaintenanceDateStr" column="DATE_LAST_MAINT"/>
+        <!--<property name="isclSecuredLoan" column="ISCL_SEC_LOAN" type="big_decimal"/>-->
+        <!--<property name="isclUnsecuredLoan" column="ISCL_UNSEC_LOAN" type="big_decimal"/>-->
+        <!--<property name="securedIndividual" column="SEC_INDV" type="big_decimal"/>-->
+        <!--<property name="unsecuredIndividual" column="UNSEC_INDV" type="big_decimal"/>-->
+    </class>
+
+
+    <!-- Mapping for dependency updating -->
+    <!--<class entity-name="paramBranchRefIdDependency" name="OBCommonCodeRefIdDependency" table="SSMCBR" lazy="false" where="SSMCENTER='CAC'">-->
+        <!--<composite-id>-->
+            <!--<key-property name="entryCode" column="SSMBRN" />-->
+            <!--<key-property name="refEntryCode" column="SSMHUB"/>-->
+        <!--</composite-id>-->
+    <!--</class>-->
+    
+    <!--<class entity-name="paramRcBranchRefIdDependency" name="OBCommonCodeRefIdDependency" table="SSMCBR" lazy="false" where="SSMCENTER='RC'">-->
+        <!--<composite-id>-->
+            <!--<key-property name="entryCode" column="SSMBRN" />-->
+            <!--<key-property name="refEntryCode" column="SSMHUB"/>-->
+        <!--</composite-id>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramHostBranchRCDependency" name="OBHostBranchRCDependency" table="SSMCBR" lazy="false" where="SSMCENTER='RC'">-->
+        <!--<id name="branchNumber" column="SSMBRN" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="rcCode" column="SSMHUB"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramHostBranchCACDependency_CAC" name="OBHostBranchCacDependency" table="SSDATA" lazy="false" >-->
+        <!--<id name="branchNumber" column="JDBR" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="branchName" column="JDNAME"/>-->
+        <!--<property name="bankBranchId" column="JDTAXN"/>-->
+        <!--<property name="sptfBranchId" column="JDTAX2"/>-->
+        <!--<property name="branchOpeningDateStr" column="JDOPN7"/>-->
+        <!--<property name="country" column="JDCOUN"/>-->
+        <!--<property name="state" column="JDSTAT"/>-->
+        <!--<property name="fisBranchId" column="JDFISB"/>-->
+        <!--<property name="masbTagging" column="JDMASB"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramHostBranchCACDependency_HPC" name="OBHostBranchCacDependency" table="SSDATA" lazy="false" >-->
+        <!--<id name="branchNumber" column="JDBR" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="branchName" column="JDNAME"/>-->
+        <!--<property name="bankBranchId" column="JDTAXN"/>-->
+        <!--<property name="sptfBranchId" column="JDTAX2"/>-->
+        <!--<property name="branchOpeningDateStr" column="JDOPN7"/>-->
+        <!--<property name="country" column="JDCOUN"/>-->
+        <!--<property name="state" column="JDSTAT"/>-->
+        <!--<property name="fisBranchId" column="JDFISB"/>-->
+        <!--<property name="masbTagging" column="JDMASB"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramHostBranchCACDependency_RCC" name="OBHostBranchCacDependency" table="SSDATA" lazy="false" >-->
+        <!--<id name="branchNumber" column="JDBR" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="branchName" column="JDNAME"/>-->
+        <!--<property name="bankBranchId" column="JDTAXN"/>-->
+        <!--<property name="sptfBranchId" column="JDTAX2"/>-->
+        <!--<property name="branchOpeningDateStr" column="JDOPN7"/>-->
+        <!--<property name="country" column="JDCOUN"/>-->
+        <!--<property name="state" column="JDSTAT"/>-->
+        <!--<property name="fisBranchId" column="JDFISB"/>-->
+        <!--<property name="masbTagging" column="JDMASB"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramHostBranchCACDependency_SAB" name="OBHostBranchCacDependency" table="SSDATA" lazy="false" >-->
+        <!--<id name="branchNumber" column="JDBR" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="branchName" column="JDNAME"/>-->
+        <!--<property name="bankBranchId" column="JDTAXN"/>-->
+        <!--<property name="sptfBranchId" column="JDTAX2"/>-->
+        <!--<property name="branchOpeningDateStr" column="JDOPN7"/>-->
+        <!--<property name="country" column="JDCOUN"/>-->
+        <!--<property name="state" column="JDSTAT"/>-->
+        <!--<property name="fisBranchId" column="JDFISB"/>-->
+        <!--<property name="masbTagging" column="JDMASB"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramHostBranchCACDependency_MSC" name="OBHostBranchCacDependency" table="SSDATA" lazy="false" >-->
+        <!--<id name="branchNumber" column="JDBR" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="branchName" column="JDNAME"/>-->
+        <!--<property name="bankBranchId" column="JDTAXN"/>-->
+        <!--<property name="sptfBranchId" column="JDTAX2"/>-->
+        <!--<property name="branchOpeningDateStr" column="JDOPN7"/>-->
+        <!--<property name="country" column="JDCOUN"/>-->
+        <!--<property name="state" column="JDSTAT"/>-->
+        <!--<property name="fisBranchId" column="JDFISB"/>-->
+        <!--<property name="masbTagging" column="JDMASB"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramHostBranchCACDependency_HO" name="OBHostBranchCacDependency" table="SSDATA" lazy="false" >-->
+        <!--<id name="branchNumber" column="JDBR" type="java.lang.String"><generator class="native"/></id>-->
+        <!--<property name="branchName" column="JDNAME"/>-->
+        <!--<property name="bankBranchId" column="JDTAXN"/>-->
+        <!--<property name="sptfBranchId" column="JDTAX2"/>-->
+        <!--<property name="branchOpeningDateStr" column="JDOPN7"/>-->
+        <!--<property name="country" column="JDCOUN"/>-->
+        <!--<property name="state" column="JDSTAT"/>-->
+        <!--<property name="fisBranchId" column="JDFISB"/>-->
+        <!--<property name="masbTagging" column="JDMASB"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramHostBranchDependency" name="OBHostBranchCacDependency" table="HP_TEMP_PF110" lazy="false" >
+        <id name="branchNumber" column="BRANCH_NUM" type="java.lang.String"><generator class="native"/></id>
+        <property name="branchName" column="BANK_BRANCH_NAME"/>
+        <property name="bankBranchId" column="BANK_BRANCH_ID_NUM"/>
+        <property name="sptfBranchId" column="SPTF_BRANCH_ID_NUM"/>
+        <property name="branchOpeningDateStr" column="BRANCH_OPEN_DATE"/>
+        <property name="country" column="COUNTRY_CODE"/>
+        <property name="state" column="STATE_CODE"/>
+        <property name="fisBranchId" column="FIS_BRANCH_ID"/>
+        <!--<property name="masbTagging" column="MASB_TAG"/>-->
+    </class>
+
+    <!--Newly Inserted For ARBS Host Parameter Mapping by Chee Hong-->
+    <class entity-name="paramLoanSecureMix" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF131" lazy="false">
+        <id name="entryCode" column="LOAN_SEC_MIX" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>    
+    </class>
+
+    <class entity-name="paramCollateralType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF132" lazy="false">
+        <id name="entryCode" column="COLL_TYPE_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>    
+    </class>
+
+    <class entity-name="paramCollateralIssuer" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF133" lazy="false">
+        <id name="entryCode" column="COLL_ISSUER_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>    
+    </class>
+
+    <class entity-name="paramCappedPrice" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF152" lazy="false">
+        <id name="entryCode" column="SHARE_COUNT" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>    
+    </class>
+
+    <class entity-name="paramInterestRateType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF159" lazy="false">
+        <id name="entryCode" column="RATE_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="RATE_TYPE_DESC"/>
+    </class>
+
+    <class entity-name="paramLateChargeType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF160" lazy="false">
+        <id name="entryCode" column="PEN_INT_TYPE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+    </class>
+
+    <class entity-name="paramTerritoryCode" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF161" lazy="false">
+        <id name="entryCode" column="TERR_CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="TERR_DESC"/>
+    </class>
+
+    <class entity-name="paramExtOfProductType" name="OBExtOfProductType" table="HP_TEMP_PF162" lazy="false">
+        <composite-id>
+            <key-property name="loanType" column="LOAN_TYPE"/>
+            <key-property name="currency" column="CURR_TYPE"/>
+        </composite-id>
+        <property name="varRate" column="HP_AITAB_VAR_RATE"/>
+    </class>
+
+    <!--Newly Inserted For TSPR Parameter Mapping by Chee Hong-->
+    <class entity-name="paramTSPRBaseRateType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF200" lazy="false">
+        <id name="entryCode" column="CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+        <property name="isDel" column="IS_DELETED"/>
+    </class>
+
+    <class entity-name="paramTSPRFacilityID" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF201" lazy="false">
+        <id name="entryCode" column="CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+        <property name="isDel" column="IS_DELETED"/>
+    </class>
+
+    <class entity-name="paramTSPRLSMCode" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF202" lazy="false">
+        <id name="entryCode" column="CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+        <property name="isDel" column="IS_DELETED"/>
+    </class>
+
+    <class entity-name="paramTSPRRBSPurposeCode" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF203" lazy="false">
+        <id name="entryCode" column="CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+        <property name="isDel" column="IS_DELETED"/>
+    </class>
+
+    <class entity-name="paramTSPRLimitDescription" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF204" lazy="false">
+        <id name="entryCode" column="CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+        <property name="isDel" column="IS_DELETED"/>
+    </class>
+
+    <class entity-name="paramTSPRProductType" name="OBCommonCodeEntryWrapper" table="HP_TEMP_PF205" lazy="false">
+        <id name="entryCode" column="CODE" type="java.lang.String"><generator class="native"/></id>
+        <property name="entryName" column="DESCRIPTION"/>
+        <property name="isDel" column="IS_DELETED"/>
+    </class>
+
+</hibernate-mapping>

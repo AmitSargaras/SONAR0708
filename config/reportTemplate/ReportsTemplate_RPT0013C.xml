@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT segmentName,
+					  rmname,
+					  region,
+					  document_code,
+					  RBI_asset,
+					  partyName,
+					  documentName,
+					  originalTargetdate,
+					  DUE_DATE ,
+					  status,
+					  activityDate,
+					  remarks
+					FROM
+					  (SELECT (select entry_name from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = main_profile.LSP_SGMNT_CODE_VALUE and category_code = 'HDFC_SEGMENT')  AS segmentName,
+					    checlist.category           AS category,
+					    --   rm.rm_mgr_name              AS rmname,
+              (select rm_mgr_name from cms_relationship_mgr where id = main_profile.relation_mgr)  AS rmname,
+					    (SELECT region_name FROM cms_region WHERE id=main_profile.rm_region
+					    )                          AS region,
+					    checlistitem.document_code AS document_code,
+					    (SELECT entry_name
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Asset,
+					    (SELECT entry_code
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Code,
+					    main_profile.lsp_short_name                            AS partyName,
+					    checListItem.DOC_DESCRIPTION                           AS documentName,
+					    TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY') AS originalTargetdate,
+					    CASE
+					      WHEN (checListItem.status = 'AWAITING')
+					      THEN TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY')
+					      WHEN (checListItem.status = 'DEFERRED')
+					      THEN TO_CHAR(checListItem.expected_return_date,'DD/Mon/YYYY')
+					    END                                                  AS DUE_DATE,
+					    checListItem.STATUS                                  AS status,
+					    TO_CHAR(checListItem.LAST_UPDATE_DATE,'DD/Mon/YYYY') AS activityDate,
+					    checListItem.remarks,
+					    main_profile.CMS_LE_SUB_PROFILE_ID,
+					    main_profile.LSP_SGMNT_CODE_VALUE,
+					   main_profile.relation_mgr
+					  FROM SCI_LE_SUB_PROFILE main_profile,
+					   -- common_code_category_entry cc_segment,
+					 --   cms_relationship_mgr rm,
+					    cms_checklist checList,
+					    cms_checklist_item checListItem,
+					    SCI_LSP_LMT_PROFILE limit_profile
+					  WHERE --main_profile.lsp_sgmnt_code_value  =cc_segment.entry_code(+)
+					--  AND rm.id(+)                             = main_profile.relation_mgr
+					 -- AND 
+            LIMIT_PROFILE.CMS_CUSTOMER_ID        = main_profile.cms_le_sub_profile_id
+					  AND limit_profile.CMS_LSP_LMT_PROFILE_ID = checList.cms_lsp_lmt_profile_id(+)
+					  AND checListItem.checklist_id(+)         = checList.checklist_id
+					  AND Upper(checListItem.status)          IN ('AWAITING','DEFERRED')
+					  AND (checlist.category                   ='LAD'
+					  AND main_profile.cycle_nm                ='LAD')
+					  AND main_profile.status                  = 'ACTIVE'
+					  AND checlistitem.is_deleted              ='N'
+					  AND checlistitem.DOCUMENTSTATUS          ='ACTIVE' 
+					  AND checlist.checklist_id NOT IN('20200718001981789')         
+             UNION ALL
+					 SELECT   (select entry_name from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = main_profile.LSP_SGMNT_CODE_VALUE and category_code = 'HDFC_SEGMENT')  AS segmentName,
+					    checlist.category           AS category,
+					    --   rm.rm_mgr_name              AS rmname,
+              (select rm_mgr_name from cms_relationship_mgr where id = main_profile.relation_mgr)  AS rmname,
+					    (SELECT region_name FROM cms_region WHERE id=main_profile.rm_region
+					    )                          AS region,
+					    checlistitem.document_code AS document_code,
+					    (SELECT entry_name
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Asset,
+					      (SELECT entry_code
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Code,
+					    main_profile.lsp_short_name                            AS partyName,
+					    checListItem.DOC_DESCRIPTION                           AS documentName,
+					    TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY') AS originalTargetdate,
+					    CASE
+					      WHEN (checListItem.status = 'AWAITING')
+					      THEN TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY')
+					      WHEN (checListItem.status = 'DEFERRED')
+					      THEN TO_CHAR(checListItem.expected_return_date,'DD/Mon/YYYY')
+					    END                                                  AS DUE_DATE,
+					    checListItem.STATUS                                  AS status,
+					    TO_CHAR(checListItem.LAST_UPDATE_DATE,'DD/Mon/YYYY') AS activityDate,
+					    checListItem.remarks,
+					    main_profile.CMS_LE_SUB_PROFILE_ID,
+					   main_profile.LSP_SGMNT_CODE_VALUE,
+					   main_profile.relation_mgr
+					  FROM SCI_LE_SUB_PROFILE main_profile,
+					   -- common_code_category_entry cc_segment,
+					  --  cms_relationship_mgr rm,
+					    cms_checklist checList,
+					    cms_checklist_item checListItem,
+					    SCI_LSP_LMT_PROFILE limit_profile
+					  WHERE
+            --main_profile.lsp_sgmnt_code_value  =cc_segment.entry_code(+)
+					  --AND rm.id(+)                             = main_profile.relation_mgr
+					 -- AND 
+            LIMIT_PROFILE.CMS_CUSTOMER_ID        = main_profile.cms_le_sub_profile_id
+					  AND limit_profile.CMS_LSP_LMT_PROFILE_ID = checList.cms_lsp_lmt_profile_id(+)
+					  AND checListItem.checklist_id(+)         = checList.checklist_id
+					  AND Upper(checListItem.status)          IN ('AWAITING','DEFERRED')
+					  AND checlist.category                    ='O'
+					  AND main_profile.status                  = 'ACTIVE'
+					  AND checlistitem.is_deleted              ='N'
+					  AND checlistitem.DOCUMENTSTATUS          ='ACTIVE'            
+					  UNION ALL
+					  SELECT (select entry_name from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = main_profile.LSP_SGMNT_CODE_VALUE and category_code = 'HDFC_SEGMENT')  AS segmentName,
+					    checlist.category           AS category,
+					    --   rm.rm_mgr_name              AS rmname,
+              (select rm_mgr_name from cms_relationship_mgr where id = main_profile.relation_mgr)  AS rmname,
+					    (SELECT region_name FROM cms_region WHERE id=main_profile.rm_region
+					    )                          AS region,
+					    checlistitem.document_code AS document_code,
+					    (SELECT entry_name
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Asset,
+					      (SELECT entry_code
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Code,
+					    main_profile.lsp_short_name                            AS partyName,
+					    checListItem.DOC_DESCRIPTION                           AS documentName,
+					    TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY') AS originalTargetdate,
+					    CASE
+					      WHEN (checListItem.status = 'AWAITING')
+					      THEN TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY')
+					      WHEN (checListItem.status = 'DEFERRED')
+					      THEN TO_CHAR(checListItem.expected_return_date,'DD/Mon/YYYY')
+					    END                                                  AS DUE_DATE,
+					    checListItem.STATUS                                  AS status,
+					    TO_CHAR(checListItem.LAST_UPDATE_DATE,'DD/Mon/YYYY') AS activityDate,
+					    checListItem.remarks,
+					    main_profile.CMS_LE_SUB_PROFILE_ID,
+					   main_profile.LSP_SGMNT_CODE_VALUE,
+					   main_profile.relation_mgr
+					  FROM SCI_LE_SUB_PROFILE main_profile,
+					   -- common_code_category_entry cc_segment,
+					    --cms_relationship_mgr rm,
+					    cms_checklist checList,
+					    cms_checklist_item checListItem,
+					    SCI_LSP_LMT_PROFILE limit_profile
+					  WHERE 
+            --main_profile.lsp_sgmnt_code_value  =cc_segment.entry_code(+)
+					  --AND rm.id(+)                             = main_profile.relation_mgr
+					  --AND 
+            LIMIT_PROFILE.CMS_CUSTOMER_ID        = main_profile.cms_le_sub_profile_id
+					  AND limit_profile.CMS_LSP_LMT_PROFILE_ID = checList.cms_lsp_lmt_profile_id(+)
+					  AND checListItem.checklist_id(+)         = checList.checklist_id
+					  AND Upper(checListItem.status)          IN ('AWAITING','DEFERRED')
+					  AND checlist.category                    ='CAM'
+					  AND main_profile.status                  = 'ACTIVE'
+					  AND checlistitem.is_deleted              ='N'
+					  AND checlistitem.DOCUMENTSTATUS          ='ACTIVE'
+					    --AND limit_profile.CMS_BCA_STATUS         ='ACTIVE'
+					  AND checlist.is_latest = 'Y'            
+					  UNION ALL
+					   SELECT (select entry_name from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = main_profile.LSP_SGMNT_CODE_VALUE and category_code = 'HDFC_SEGMENT')  AS segmentName,
+					    checlist.category           AS category,
+					    --   rm.rm_mgr_name              AS rmname,
+              (select rm_mgr_name from cms_relationship_mgr where id = main_profile.relation_mgr)  AS rmname,
+					    (SELECT region_name FROM cms_region WHERE id=main_profile.rm_region
+					    )                          AS region,
+					    checlistitem.document_code AS document_code,
+					    (SELECT entry_name
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Asset,
+					      (SELECT entry_code
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Code,
+					    main_profile.lsp_short_name                            AS partyName,
+					    checListItem.DOC_DESCRIPTION                           AS documentName,
+					    TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY') AS originalTargetdate,
+					    CASE
+					      WHEN (checListItem.status = 'AWAITING')
+					      THEN TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY')
+					      WHEN (checListItem.status = 'DEFERRED')
+					      THEN TO_CHAR(checListItem.expected_return_date,'DD/Mon/YYYY')
+					    END                                                  AS DUE_DATE,
+					    checListItem.STATUS                                  AS status,
+					    TO_CHAR(checListItem.LAST_UPDATE_DATE,'DD/Mon/YYYY') AS activityDate,
+					    checListItem.remarks,
+					    main_profile.CMS_LE_SUB_PROFILE_ID,
+					    main_profile.LSP_SGMNT_CODE_VALUE,
+					   main_profile.relation_mgr
+					  FROM SCI_LE_SUB_PROFILE main_profile,
+					   --common_code_category_entry cc_segment,
+					   -- cms_relationship_mgr rm,
+					    cms_checklist checList,
+					    cms_checklist_item checListItem,
+					    SCI_LSP_LMT_PROFILE limit_profile,
+					    SCI_LSP_APPR_LMTS SCI
+					  WHERE --main_profile.lsp_sgmnt_code_value  =cc_segment.entry_code(+)
+					 -- AND rm.id(+)                             = main_profile.relation_mgr
+					 -- AND 
+            LIMIT_PROFILE.CMS_CUSTOMER_ID        = main_profile.cms_le_sub_profile_id
+					  AND limit_profile.CMS_LSP_LMT_PROFILE_ID = checList.cms_lsp_lmt_profile_id(+)
+					  AND checListItem.checklist_id(+)         = checList.checklist_id
+					  AND Upper(checListItem.status)          IN ('AWAITING','DEFERRED')
+					  AND checlist.category                    ='F'
+					  AND main_profile.status                  = 'ACTIVE'
+					  AND checlistitem.is_deleted              ='N'
+					  AND checlistitem.DOCUMENTSTATUS          ='ACTIVE'
+					 -- AND limit_profile.CMS_BCA_STATUS         ='ACTIVE'
+					  AND limit_profile.CMS_BCA_STATUS        &lt;&gt; 'DELETED'
+					  AND SCI.CMS_LIMIT_PROFILE_ID             = limit_profile.CMS_LSP_LMT_PROFILE_ID
+					  AND sci.cms_limit_status                 ='ACTIVE'
+					  AND sci.cms_lsp_appr_lmts_id = checlist.cms_collateral_id          
+            UNION ALL
+					   SELECT (select entry_name from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = main_profile.LSP_SGMNT_CODE_VALUE and category_code = 'HDFC_SEGMENT')  AS segmentName,
+					    checlist.category           AS category,
+					    --   rm.rm_mgr_name              AS rmname,
+              (select rm_mgr_name from cms_relationship_mgr where id = main_profile.relation_mgr)  AS rmname,
+					    (SELECT region_name FROM cms_region WHERE id=main_profile.rm_region
+					    )                          AS region,
+					    checlistitem.document_code AS document_code,
+					    (SELECT entry_name
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Asset,
+					      (SELECT entry_code
+					    FROM common_code_category_entry
+					    WHERE entry_code =limit_profile.rbi_asset_classification
+					    AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+					    )                                                      AS RBI_Code,
+					    main_profile.lsp_short_name                            AS partyName,
+					    checListItem.DOC_DESCRIPTION                           AS documentName,
+					    TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY') AS originalTargetdate,
+					    CASE
+					      WHEN (checListItem.status = 'AWAITING')
+					      THEN TO_CHAR(checListItem.originaltargetdate,'DD/Mon/YYYY')
+					      WHEN (checListItem.status = 'DEFERRED')
+					      THEN TO_CHAR(checListItem.expected_return_date,'DD/Mon/YYYY')
+					    END                                                  AS DUE_DATE,
+					    checListItem.STATUS                                  AS status,
+					    TO_CHAR(checListItem.LAST_UPDATE_DATE,'DD/Mon/YYYY') AS activityDate,
+					    checListItem.remarks,
+					    main_profile.CMS_LE_SUB_PROFILE_ID,
+					    main_profile.LSP_SGMNT_CODE_VALUE,
+					   main_profile.relation_mgr
+					  FROM SCI_LE_SUB_PROFILE main_profile,
+					   -- common_code_category_entry cc_segment,
+					  --  cms_relationship_mgr rm,
+					    cms_checklist checList,
+					    cms_checklist_item checListItem,
+					    SCI_LSP_LMT_PROFILE limit_profile,
+					    SCI_LSP_APPR_LMTS SCI,
+					    CMS_LIMIT_SECURITY_MAP MAPS,
+					    CMS_SECURITY SEC
+					  WHERE --main_profile.lsp_sgmnt_code_value  =cc_segment.entry_code(+)
+					  --AND rm.id(+)                             = main_profile.relation_mgr
+					 -- AND 
+            LIMIT_PROFILE.CMS_CUSTOMER_ID        = main_profile.cms_le_sub_profile_id
+					  AND limit_profile.CMS_LSP_LMT_PROFILE_ID = checList.cms_lsp_lmt_profile_id(+)
+					  AND checListItem.checklist_id(+)         = checList.checklist_id
+					  AND Upper(checListItem.status)          IN ('AWAITING','DEFERRED')
+					  AND checlist.category                    ='S'
+					  AND main_profile.status                  = 'ACTIVE'
+					  AND checlistitem.is_deleted              ='N'
+					  AND checlistitem.DOCUMENTSTATUS          ='ACTIVE'
+					  --AND limit_profile.CMS_BCA_STATUS         ='ACTIVE'
+					  AND limit_profile.CMS_BCA_STATUS        &lt;&gt; 'DELETED'
+					  AND SCI.CMS_LIMIT_PROFILE_ID             = limit_profile.CMS_LSP_LMT_PROFILE_ID
+					  AND sci.cms_limit_status                 ='ACTIVE'
+					  AND SEC.CMS_COLLATERAL_ID                = MAPS.CMS_COLLATERAL_ID
+					  AND MAPS.CMS_LSP_APPR_LMTS_ID            = SCI.CMS_LSP_APPR_LMTS_ID
+					  AND sec.status                           ='ACTIVE'
+					  )
+			</query>
+		<whereClause>
+			<mandatoryClause>
+          		 1=1
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and relation_mgr = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> and CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and LSP_SGMNT_CODE_VALUE = </condition>
+			</param>
+			<param>
+				<name>rbiAsset</name>
+				<condition> and RBI_Code = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Doc Code</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Asset Classification</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Document Name</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Original Target Date</header><!-- 8 -->
+				</reportColumn>					
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Due Date</header><!-- 9 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Activity Date</header><!-- 11 -->
+				</reportColumn>			
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header><!-- 12 -->
+				</reportColumn>			
+
+			</reportColumns>
+			<reportName>Deferral Report -Document not Received</reportName>
+		</reportParamters>
+	</report>
+</reports>

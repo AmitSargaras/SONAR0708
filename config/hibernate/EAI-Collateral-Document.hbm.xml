@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.integrosys.cms.host.eai.security.bus.document.DocumentSecurity" table="CMS_DOCUMENT" polymorphism="explicit">
+		<id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+		<property name="JDOISDADate" column="ISDA_DATE" type="timestamp" />
+		<component name="ISDAProductDescription" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="ISDA_PROD_DESC" />
+		</component>
+		<property name="JDOIFEMADate" column="IFEMA_DATE" type="timestamp" />
+		<component name="IFEMAProductDescription" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="IFEMA_PROD_DESC" />
+		</component>
+		<property name="JDOICOMDate" column="ICOM_DATE" type="timestamp" />
+		<component name="ICOMProductDescription" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="ICOM_PROD_DESC" />
+		</component>
+		<property name="JDODocumentDate" column="DOCUMENT_DATE" type="timestamp" />
+		<property name="documentReferenceNo" column="DOC_REF_NO" />
+		<property name="documentAmount" column="DOC_AMT" type="double" />
+		<property name="minimumAmt" column="MIN_AMT" type="double" />
+		<property name="maximumAmt" column="MAX_AMT" type="double" />
+		<property name="documentDescription" column="DOC_DESC" />
+		<property name="projectName" column="PROJECT_NAME" />
+		<property name="JDOAwardedDate" column="AWARDED_DATE" type="timestamp" />
+		<property name="letterOfInstructionFlag" column="LETTER_INSTRUCT_FLAG" />
+		<property name="letterOfUndertakingFlag" column="LETTER_UNDERTAKE_FLAG" />
+		<property name="blanketAssignment" column="BLANKET_ASSIGNMENT" />
+		<component name="deedAssignmentType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="DEED_ASSIGNMT_TYPE" />
+		</component>
+		<property name="minimumAmtCcy" column="MIN_AMT_CCY" />
+		<property name="maximumAmtCcy" column="MAX_AMT_CCY" />
+		<property name="documentAmtCcy" column="DOC_AMT_CCY" />
+		<property name="issuer" column="ISSUER" />
+		<component name="leaseType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="LEASE_TYPE" />
+		</component>
+		<property name="leaseRentalAgreement" column="LEASE_RENTAL_AGREEMENT_IND" />
+		<property name="leaseLimitation" column="LEASE_LIMITATION" />
+		<component name="propertyType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="PROPERTY_TYPE" />
+		</component>
+		<property name="lotsLocation" column="LOTS_LOCATION" />
+		<component name="titleType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="TITLE_NUMBER_TYPE" />
+		</component>
+		<property name="titleNumber" column="TITLE_NUMBER" />
+		<property name="buybackValue" column="BUY_BACK_AMT" type="double" />
+		<property name="guaranteeAmount" column="GURANTEE_AMOUNT"
+			type="double" />
+		<property name="contractNumber" column="CONTRACT_NO" />
+		<property name="contractName" column="CONTRACT_NAME" />
+		<property name="contractAmount" column="CONTRACT_AMT" type="double" />
+		<property name="JDOContractDate" column="CONTRACT_DATE" type="timestamp"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.security.bus.document.StageDocumentSecurity" table="CMS_STAGE_DOCUMENT">
+		<id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+		<property name="JDOISDADate" column="ISDA_DATE" type="timestamp" />
+		<component name="ISDAProductDescription" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="ISDA_PROD_DESC" />
+		</component>
+		<property name="JDOIFEMADate" column="IFEMA_DATE" type="timestamp" />
+		<component name="IFEMAProductDescription" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="IFEMA_PROD_DESC" />
+		</component>
+		<property name="JDOICOMDate" column="ICOM_DATE" type="timestamp" />
+		<component name="ICOMProductDescription" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="ICOM_PROD_DESC" />
+		</component>
+		<property name="JDODocumentDate" column="DOCUMENT_DATE" type="timestamp" />
+		<property name="documentReferenceNo" column="DOC_REF_NO" />
+		<property name="documentAmount" column="DOC_AMT" type="double" />
+		<property name="minimumAmt" column="MIN_AMT" type="double" />
+		<property name="maximumAmt" column="MAX_AMT" type="double" />
+		<property name="documentDescription" column="DOC_DESC" />
+		<property name="projectName" column="PROJECT_NAME" />
+		<property name="JDOAwardedDate" column="AWARDED_DATE" type="timestamp" />
+		<property name="letterOfInstructionFlag" column="LETTER_INSTRUCT_FLAG" />
+		<property name="letterOfUndertakingFlag" column="LETTER_UNDERTAKE_FLAG" />
+		<property name="blanketAssignment" column="BLANKET_ASSIGNMENT" />
+		<component name="deedAssignmentType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="DEED_ASSIGNMT_TYPE" />
+		</component>
+		<property name="minimumAmtCcy" column="MIN_AMT_CCY" />
+		<property name="maximumAmtCcy" column="MAX_AMT_CCY" />
+		<property name="documentAmtCcy" column="DOC_AMT_CCY" />
+		<property name="issuer" column="ISSUER" />
+		<component name="leaseType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="LEASE_TYPE" />
+		</component>
+		<property name="leaseRentalAgreement" column="LEASE_RENTAL_AGREEMENT_IND" />
+		<property name="leaseLimitation" column="LEASE_LIMITATION" />
+		<component name="propertyType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="PROPERTY_TYPE" />
+		</component>
+		<property name="lotsLocation" column="LOTS_LOCATION" />
+		<component name="titleType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="TITLE_NUMBER_TYPE" />
+		</component>
+		<property name="titleNumber" column="TITLE_NUMBER" />
+		<property name="buybackValue" column="BUY_BACK_AMT" type="double" />
+		<property name="guaranteeAmount" column="GURANTEE_AMOUNT" type="double" />
+		<property name="contractNumber" column="CONTRACT_NO" />
+		<property name="contractName" column="CONTRACT_NAME" />
+		<property name="contractAmount" column="CONTRACT_AMT" type="double" />
+		<property name="JDOContractDate" column="CONTRACT_DATE" type="timestamp"/>
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.app.maintaintat.bus">
+
+    <class entity-name="tatLimitTrack" name="OBTatLimitTrack" table="CMS_TAT_TRACK" lazy="false">
+        <id name="tatTrackingId" type="long" column="TAT_TRACK_ID">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_TAT_TRACK_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="limitProfileId" column="LMT_PROFILE_ID"/>
+        <property name="preDisbursementRemarks" column="PRE_DISBURSEMENT_REMARKS"/>
+        <property name="disbursementRemarks" column="DISBURSEMENT_REMARKS"/>
+        <property name="postDisbursementRemarks" column="POST_DISBURSEMENT_REMARKS"/>
+        <set name="stageListSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+            <key column="TAT_TRACK_ID" not-null="true" />
+            <one-to-many entity-name="tatLimitTrackStage" />
+        </set>
+    </class>
+
+    <class entity-name="tatLimitTrackStage" name="OBTatLimitTrackStage" table="CMS_TAT_TRACK_ITEM" lazy="false">
+        <id name="tatTrackingStageId" type="long" column="TAT_TRACK_STAGE_ID">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_TAT_TRACK_STAGE_SEQ</param>
+            </generator>
+        </id>
+        <property name="tatParamItemId" column="TAT_PARAM_ITEM_ID"/>
+        <property name="startDate" column="START_DATE" type="timestamp"/>
+        <property name="actualDate" column="ACTUAL_DATE" type="timestamp"/>
+        <property name="endDate" column="END_DATE" type="timestamp"/>
+        <property name="reasonExceeding" column="REASON_FOR_EXCEEDING"/>
+        <property name="tatApplicable" column="APPLICABLE_TAT_STAGE_FLAG"/>
+        <property name="stageActive" column="IS_STAGE_ACTIVE"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+
+</hibernate-mapping>

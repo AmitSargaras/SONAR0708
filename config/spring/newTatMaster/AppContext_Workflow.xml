@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+	<bean id="TatTrx.ReadTatMasterOperation"
+	class="com.integrosys.cms.app.newtatmaster.trx.ReadTatMasterOperation">
+		 <property name="tatMasterBusManager" ref="tatMasterBusManager"/>
+        <property name="stagingtatMasterBusManager" ref="stagingtatMasterBusManager"/>
+	</bean> 
+	
+	
+	<bean id="TatTrx.ReadTatMasterIDOperation"
+	class="com.integrosys.cms.app.newtatmaster.trx.ReadTatMasterIDOperation">
+		 <property name="tatMasterBusManager" ref="tatMasterBusManager"/>
+        <property name="stagingtatMasterBusManager" ref="stagingtatMasterBusManager"/>
+	</bean>   
+	
+	<bean id="TatTrx.CheckerApproveUpdateTatMasterOperation"
+	class="com.integrosys.cms.app.newtatmaster.trx.CheckerApproveUpdateTatMasterOperation">
+		 <property name="tatMasterBusManager" ref="tatMasterBusManager"/>
+        <property name="stagingtatMasterBusManager" ref="stagingtatMasterBusManager"/>
+	</bean>  
+			
+			
+	<bean id="TatTrx.MakerUpdateTatMasterOperation"
+	class="com.integrosys.cms.app.newtatmaster.trx.MakerUpdateTatMasterOperation">
+		 <property name="tatMasterBusManager" ref="tatMasterBusManager"/>
+        <property name="stagingtatMasterBusManager" ref="stagingtatMasterBusManager"/>
+	</bean>
+	
+	
+	<bean id="TatTrx.CheckerRejectTatMasterOperation"
+	class="com.integrosys.cms.app.newtatmaster.trx.CheckerRejectTatMasterOperation">
+		 <property name="tatMasterBusManager" ref="tatMasterBusManager"/>
+        <property name="stagingtatMasterBusManager" ref="stagingtatMasterBusManager"/>
+	</bean>
+	
+	<bean id="TatTrx.MakerEditRejectedUpdateTatMasterOperation"
+	class="com.integrosys.cms.app.newtatmaster.trx.MakerEditRejectedUpdateTatMasterOperation">
+		 <property name="tatMasterBusManager" ref="tatMasterBusManager"/>
+        <property name="stagingtatMasterBusManager" ref="stagingtatMasterBusManager"/>
+	</bean>
+	
+	<bean id="TatTrx.MakerCloseRejectedUpdateTatMasterOperation"
+	class="com.integrosys.cms.app.newtatmaster.trx.MakerCloseRejectedUpdateTatMasterOperation">
+		 <property name="tatMasterBusManager" ref="tatMasterBusManager"/>
+        <property name="stagingtatMasterBusManager" ref="stagingtatMasterBusManager"/>
+	</bean>
+			
+			
+			
+	<bean id="tatMasterReadController" class="com.integrosys.cms.app.newtatmaster.trx.TatMasterReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadTatMasterOperation" value-ref="TatTrx.ReadTatMasterOperation"/>
+               <entry key="ReadTatMasterIDOperation" value-ref="TatTrx.ReadTatMasterIDOperation"/>
+                               
+                
+            </map>
+        </property>
+    </bean>
+			
+			
+	 <bean id="tatMasterTrxController" class="com.integrosys.cms.app.newtatmaster.trx.TatMasterTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            <entry key="MakerUpdateTatMasterOperation" value-ref="TatTrx.MakerUpdateTatMasterOperation"/>
+             <entry key="CheckerApproveUpdateTatMasterOperation" value-ref="TatTrx.CheckerApproveUpdateTatMasterOperation"/>
+             <entry key="CheckerRejectTatMasterOperation" value-ref="TatTrx.CheckerRejectTatMasterOperation"/>
+             <entry key="MakerEditRejectedUpdateTatMasterOperation" value-ref="TatTrx.MakerEditRejectedUpdateTatMasterOperation"/>
+             <entry key="MakerCloseRejectedUpdateTatMasterOperation" value-ref="TatTrx.MakerCloseRejectedUpdateTatMasterOperation"/>
+           
+             </map>
+         </property>
+     </bean>		
+			
+			
+	
+	<bean id="tatMasterTrxControllerFactory" class="com.integrosys.cms.app.newtatmaster.trx.TatMasterTrxControllerFactory">
+       
+      <property name="tatMasterTrxController" ref="tatMasterTrxController"/>
+        <property name="tatMasterReadController" ref="tatMasterReadController"/>
+       
+    </bean>
+			
+	
+</beans>

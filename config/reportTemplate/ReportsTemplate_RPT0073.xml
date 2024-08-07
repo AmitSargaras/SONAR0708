@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+
+			SELECT DISTINCT
+			CP.VALUATION_DATE_V1 AS DATE_OF_VALUATION,
+			CP.VAL_CREATION_DATE_V1 AS VALUATION_CREATION_DATE,
+			CASE CP.VALUATION_DATE WHEN NULL THEN '1' 
+   			ELSE '1' END AS VALUATION_NUMBER,
+			CP.VALUATOR_COMPANY_V1 AS VALUATION_COMPANY,
+			CP.TOTAL_PROPERTY_AMOUNT_V1 AS TOTAL_PROPERTY_AMOUNT,
+			CP.SALE_PURCHASE_DATE AS MORTGAGE_CREATION_DATE ,
+			CP.PROPERTY_ADDRESS AS PROPERTY_ADDRESS_1,
+			CP.PROPERTY_ADDRESS_2 AS PROPERTY_ADDRESS_2,
+			CP.PROPERTY_ADDRESS_3 AS PROPERTY_ADDRESS_3,
+			CP.PROPERTY_ADDRESS_4 AS PROPERTY_ADDRESS_4,
+			CP.PROPERTY_ADDRESS_5 AS PROPERTY_ADDRESS_5,
+			CP.PROPERTY_ADDRESS_6 AS PROPERTY_ADDRESS_6,
+			sub_profile.LSP_SHORT_NAME AS PARTY_NAME,
+			CP.CMS_COLLATERAL_ID AS SECURITY_ID,
+			CMS.TYPE_NAME AS SECURITY_TYPE,
+			CMS.SUBTYPE_NAME AS SECURITY_SUBTYPE,
+			CMS.DATE_CERSAI_REGISTERATION,
+			CP.LEGALAUDITDATE AS LEGAL_AUDIT_DATE,
+			CMS.CMV AS FACILITY_SECURED_AMOUNT,
+			CP.TSR_DATE AS DATE_OF_TSR,
+			CMS.SECURITY_ORGANISATION AS BRANCH_NAME,
+			CP.PROPERTY_ID AS PROPERTY_ID,
+			CMS.CHANGE_TYPE AS TYPE_OF_CHARGE,
+			CMS.NEXT_VALUATION_DATE AS NEXT_VALUATION_DATE,
+			CP.DATE_OFRECEIPTTITLEDEED AS DATE_OF_RECEIPT_OF_TITLE_DEED,
+			CP.INTERVEINGPERISEARCHDATE AS INTERVEING_PERI_SEARCH_DATE,
+			CMS.CERSAI_ID AS CERSAI_ID,
+			CP.CATEGORY_OF_LAND_USE_V1 AS CATEGORY_OF_LAND_USE,
+			CP.DEVELOPER_NAME_V1 AS PRESENT_OCCUPANT_NAME,
+			CP.LAND_AREA_V1 AS LAND_AREA,
+			CP.IN_SQFT_LAND_AREA_V1 AS LAND_AREA_SQUARE_FEET,
+			CP.BUILTUP_AREA_V1 AS BUILTUP_AREA,
+			CP.IN_SQFT_BUILTUP_AREA_V1 AS BUILTUP_AREA_SQUARE_FEET,
+			CP.PROPERTY_COMPLETION_STATUS_V1 AS PROPERTY_COMPLETION_STATUS,
+			CP.LAND_VALUE_IRB_V1 AS LAND_VALUE,
+			CP.BUILDING_VALUE_IRB_V1 AS BUILDING_VALUE,
+			CP.RECONSTRUCTION_VALUE_IRB_V1 AS RECONSTRUCT_VAL_OF_BUILD,
+			CP.IS_PHY_INSPECT_V1 AS PHYSICAL_INSPECTION,
+			CP.PHY_INSPECT_FREQ AS FREQUENCY,
+			CP.LAST_PHY_INSPECT_DATE_V1 AS PHYSICAL_INSPECTION_DONE_ON,
+			CP.NEXT_PHY_INSPECT_DATE_V1 AS NXT_PHY_INSPECT_DUE_ON,
+			CP.REMARKS_PROPERTY_V1 AS REMARKS
+
+			FROM CMS_PROPERTY CP,
+			SCI_LE_SUB_PROFILE sub_profile,
+			sci_lsp_lmt_profile LMT,
+			sci_lsp_appr_lmts APPR,
+			cms_limit_security_map MAP,
+			cms_security CMS
+
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				CP.CMS_COLLATERAL_ID = CMS.CMS_COLLATERAL_ID AND
+				CMS.CMS_COLLATERAL_ID = MAP.cms_collateral_id AND
+				APPR.CMS_LSP_APPR_LMTS_ID =MAP.CMS_LSP_APPR_LMTS_ID AND
+				LMT.CMS_LSP_LMT_PROFILE_ID=APPR.CMS_LIMIT_PROFILE_ID AND
+				LMT.LLP_LE_ID=sub_profile.LSP_LE_ID AND
+			</mandatoryClause>
+			<param>
+				<name>securityStatus</name>
+				<condition>CMS.STATUS = </condition>
+			</param>
+			<param>
+				<name>mortgageFromDate</name>
+				<condition></condition>
+			</param>
+			<param>
+				<name>mortgageToDate</name>
+				<condition></condition>
+			</param>
+			<param>
+				<name>partyIdName</name>
+				<condition>sub_profile.LSP_LE_ID = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of Valuation</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Valuation Creation Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Valuations</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Valuation Company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Total Property Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Mortgage Creation/ Extension Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Address 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Property Address 2</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Address 3</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Address 4</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Address 5</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Address 6</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Sub type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Cersai Registration Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Legal Audit Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility / Secured Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of TSR</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Branch Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Type of Charge</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Next Valuation Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of receipt of title deed</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Intervening period search date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Cersai Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Category of Land Used</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Present Occupant name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Land Area</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Land Area(Sq.feet)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Built up Area</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Built up Area(Sq.feet)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Completion Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Land Value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Building Value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Reconstruction value of the Building</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Physical Inspection</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Frequency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Physical Inspection Done on</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Next Physical Inspection Due on</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Mortgage valuation report</reportName>
+		</reportParamters>
+	</report>
+</reports>

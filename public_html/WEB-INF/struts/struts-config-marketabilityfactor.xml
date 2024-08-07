@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">		
+		<form-bean name="MFCheckListForm" type="com.integrosys.cms.ui.mfchecklist.MFCheckListForm">
+		</form-bean>
+
+		<form-bean name="MFTemplateForm" type="com.integrosys.cms.ui.systemparameters.marketfactor.MFTemplateForm">
+	 	</form-bean>
+		<form-bean name="MFItemForm" type="com.integrosys.cms.ui.systemparameters.marketfactor.MFItemForm">
+	 	</form-bean>    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+		<action path="/MarketabilityFactor" type="com.integrosys.cms.ui.mfchecklist.MFCheckListAction" name="MFCheckListForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/mfchecklist/view_MFCheckList.jsp"/>
+                <set-property property="title" value="title.mfchecklist"/>
+            </forward>
+			<forward name="track" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/mfchecklist/close_MFCheckList.jsp"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>
+			<forward name="process" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/mfchecklist/process_MFCheckList.jsp"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>
+			<forward name="process_update" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/mfchecklist/view_MFCheckList.jsp"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>
+			<forward name="maker_mfchecklist_confirm" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+				<set-property property="roleDesc" value="role.sac.maker"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>
+			<forward name="checker_approve_mfchecklist" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+				<set-property property="roleDesc" value="role.sac.checker"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>
+			<forward name="checker_reject_mfchecklist" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+				<set-property property="roleDesc" value="role.sac.checker"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>
+			<forward name="wip" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/wip.html"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>	
+			<forward name="maker_close_mfchecklist" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/mfchecklist/close_MFCheckList.jsp"/>
+				<set-property property="roleDesc" value="role.sac.maker"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>
+			<forward name="close" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/ack_close.jsp"/>
+				<set-property property="roleDesc" value="role.sac.maker"/>
+				<set-property property="title" value="title.mfchecklist"/>
+			</forward>
+          
+        </action>	
+    
+		<action path="/MaintainMFTemplate" 
+				type="com.integrosys.cms.ui.systemparameters.marketfactor.MFTemplateAction" 
+				name="MFTemplateForm" 
+				validate="false" scope="request">
+		    <forward name="list" 		path="/template/common_template.jsp">
+	   	  	<set-property property="rightFrame" value="/systemparameters/marketfactor/mftemplate_list.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/> 
+	  	    </forward>	    
+			<forward name="read_page"    path="/template/common_template.jsp" >
+	   	  	<set-property property="rightFrame" value="/systemparameters/marketfactor/mftemplate_read.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+	  	    <forward name="update_page"  path="/template/common_template.jsp" >
+	   	  	<set-property property="rightFrame" value="/systemparameters/marketfactor/mftemplate_update.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+	  	    <forward name="process_page" path="/template/common_template.jsp" >
+	   	  	<set-property property="rightFrame" value="/systemparameters/marketfactor/mftemplate_process.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+	  	    <forward name="close_page"   path="/template/common_template.jsp" >
+	   	  	<set-property property="rightFrame" value="/systemparameters/marketfactor/mftemplate_close.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+		    <forward name="delete_page"  path="/template/common_template.jsp" >
+	   	  	<set-property property="rightFrame" value="/systemparameters/marketfactor/mftemplate_delete.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+		    </forward>		
+		    <forward name="create_item_detail" path="/MaintainMFItem.do?event=prepare_create" />
+	        <forward name="update_item_detail" path="/MaintainMFItem.do?event=prepare_update" />	    
+			<forward name="ack_submit" path="/template/common_template.jsp">
+	   	  	<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+	  	    <forward name="ack_save"   path="/template/common_template.jsp">
+	   	  	<set-property property="rightFrame" value="/common/ack_save.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+	  	    <forward name="ack_approve" path="/template/common_template.jsp">
+	   	  	<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+	  	    <forward name="ack_reject" path="/template/common_template.jsp">
+	   	  	<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+		    <forward name="ack_close" path="/template/common_template.jsp">
+	   	  	<set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	   	  	<set-property property="title" value="title.mftemplate"/>
+	  	    </forward>
+		    <forward name="wip" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/common/wip.html"/>
+		      <set-property property="title" value="title.mftemplate"/>
+		    </forward>	
+		</action>
+		
+		<action path="/MaintainMFItem" type="com.integrosys.cms.ui.systemparameters.marketfactor.MFItemAction" 
+				name="MFItemForm" validate="false" scope="request">
+		    <forward name="read_item" path="/template/common_template.jsp">
+		   	  	<set-property property="rightFrame" value="/systemparameters/marketfactor/mfitem_read.jsp"/>
+		   	  	<set-property property="title" value="title.mfitem"/> 
+	  	    </forward>
+	  	    <forward name="update_item" path="/template/common_template.jsp">
+		   	  	<set-property property="rightFrame" value="/systemparameters/marketfactor/mfitem_update.jsp"/>
+		   	  	<set-property property="title" value="title.mfitem"/>    
+	  	    </forward>
+		    <forward name="read_return" path="/MaintainMFTemplate.do?event=read_return" />
+	  	    <forward name="update_return" path="/MaintainMFTemplate.do?event=update_return" />
+	  	    <forward name="process_return" path="/MaintainMFTemplate.do?event=process_return"/>
+	  	    <forward name="close_return" path="/MaintainMFTemplate.do?event=close_return" />
+	  	    <forward name="track_return" path="/MaintainMFTemplate.do?event=track_return"/>
+		</action>
+    
+    </action-mappings>
+    
+    <message-resources key="message-marketabilityfactor" parameter="ApplicationResources-marketabilityfactor"/>
+</struts-config>

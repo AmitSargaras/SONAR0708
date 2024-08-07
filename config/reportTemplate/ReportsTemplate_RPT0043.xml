@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+					SELECT users.login_id,
+					  users.user_name,
+					  sysbranch.system_bank_branch_name AS Branch_Name,
+					  users.branch_code,
+					  (SELECT city_name FROM cms_city WHERE id=users.city_id
+					  )                                         AS cityName,
+					CASE
+						when upper(users.status ) IN ('R','NR')
+						THEN 'Dormant'
+					END AS status,
+					  TO_CHAR(trans.transaction_date,'DD-Mon-YYYY') AS creationDate,
+					  TO_CHAR(auth.last_login_time,'DD-Mon-YYYY')   AS lastLoginDate,
+					  TO_CHAR(auth.last_login_time,'HH:MI AM')     AS lastLoginTime,
+					  DORMANCY_TYPE( users.status)              AS dormancyType
+					FROM cms_user users,
+						 cms_authentication auth,
+					  transaction trans,
+					  cms_system_bank_branch sysBranch
+			</query>
+		<whereClause>
+			<mandatoryClause>
+					auth.login_id= users.login_id
+					and sysbranch.system_bank_branch_code=users.branch_code
+					AND trans.REFERENCE_ID           =users.user_id
+					AND upper(trans.transaction_type)='USER' 
+					AND users.status IN ('R','NR')
+			</mandatoryClause>
+			<param>
+				<name>fromDate</name>
+				<condition> and TRUNC(trans.transaction_date) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>City</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of Id creation</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of last Login</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Time of Last Login</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Dormancy type</header>
+				</reportColumn>		
+			</reportColumns>
+			<reportName>LSS Dormant User Id report</reportName>
+		</reportParamters>
+	</report>
+</reports>

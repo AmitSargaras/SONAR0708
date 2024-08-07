@@ -1,0 +1,1615 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       	http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <bean id="allocationHeaderAggregator" 
+    	  class="com.integrosys.cms.batch.common.EnhancedFixedLengthLineAggregator"
+          p:columns="1-8" scope="prototype"/>
+       	
+    <bean id="allocationFooterAggregator"
+          class="com.integrosys.cms.batch.common.EnhancedFixedLengthLineAggregator"
+          p:columns="1-15" p:alignment="RIGHT" p:padding="0" scope="prototype"/>
+
+    <!-- CR001 -->                            
+    <bean id="allocationCR001Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-132,133-151,152-170,171-187,188-188,189-196,197-204,205-221,222-222" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR001OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr001.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR001" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							d.IS_OWN_BANK, d.DEPOSIT_REFERENCE_NUMBER, d.DEPOSIT_RECEIPT_NUMBER,
+							d.DEPOSIT_AMOUNT, '+' as deposit_amt_sign, d.ISSUE_DATE, d.DEPOSIT_MATURITY_DATE,
+							(select sum(lsm.CMS_SEC_ALLOCATED_AMT)
+								from cms_limit_security_map lsm
+								where lsm.CMS_COLLATERAL_ID = s.CMS_COLLATERAL_ID
+								and lsm.UPDATE_STATUS_IND <> 'D') as total_allocated_amt,
+							'+' as total_allocated_amt_sign
+						from cms_security s, cms_cash_deposit d
+						where s.cms_collateral_id = d.CMS_COLLATERAL_ID
+						and d.STATUS = 'ACTIVE'
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'DEP'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=string
+    							10=string
+    							11=string    							
+    							12=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							13=string
+    							14=date,DATEFORMAT_ddMMyyyy
+    							15=date,DATEFORMAT_ddMMyyyy
+    							16=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							17=string    							
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="IS_OWN_BANK" />
+								<entry key="10" value="DEPOSIT_REFERENCE_NUMBER" />
+								<entry key="11" value="DEPOSIT_RECEIPT_NUMBER" />
+								<entry key="12" value="DEPOSIT_AMOUNT" />
+								<entry key="13" value="DEPOSIT_AMT_SIGN" />
+								<entry key="14" value="ISSUE_DATE" />
+								<entry key="15" value="DEPOSIT_MATURITY_DATE" />
+								<entry key="16" value="TOTAL_ALLOCATED_AMT" />
+								<entry key="17" value="TOTAL_ALLOCATED_AMT_SIGN" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR001OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR001Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="222"/> 
+	</bean>          
+          
+    <!-- CR002 -->                            
+    <bean id="allocationCR002Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-148,149-149" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR002OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr002.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR002" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							s.CMV, '+' as cmv_sign, s.LAST_REMARGIN_DATE as valuation_date						
+						from cms_security s
+						where s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'GEN'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							10=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="CMV" />
+								<entry key="10" value="CMV_SIGN" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR002OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR002Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="149"/> 
+	</bean>                
+               
+    <!-- CR003 -->
+    <bean id="allocationCR003Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-139,140-147,148-164,165-165,166-184,185-187" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR003OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr003.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR003" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							g.GUARANTEE_DATE, s.SECURITY_MATURITY_DATE, g.GUARANTEE_AMT, '+' as guarantee_amt_sign,
+							p.PLG_LE_ID, p.PLG_REL_TYPE_VALUE
+						from cms_security s, cms_guarantee g, sci_sec_pldgr_map spm, sci_pledgor_dtl p
+						where s.cms_collateral_id = g.cms_collateral_id 
+						and s.cms_collateral_id = spm.CMS_COLLATERAL_ID
+						and spm.CMS_PLEDGOR_DTL_ID = p.CMS_PLEDGOR_DTL_ID
+						and spm.UPDATE_STATUS_IND <> 'D'
+						and p.UPDATE_STATUS_IND <> 'D'
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'LG'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=date,DATEFORMAT_ddMMyyyy	
+    							10=date,DATEFORMAT_ddMMyyyy	
+    							11=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							12=string
+    							13=string
+    							14=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="GUARANTEE_DATE" />
+								<entry key="10" value="SECURITY_MATURITY_DATE" />
+								<entry key="11" value="GUARANTEE_AMT" />
+								<entry key="12" value="GUARANTEE_AMT_SIGN" />
+								<entry key="13" value="PLG_LE_ID" />
+								<entry key="14" value="PLG_REL_TYPE_VALUE" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR003OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR003Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="187"/> 
+	</bean>              
+          
+    <!-- CR004 -->
+    <bean id="allocationCR004Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-148,149-149,150-157" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR004OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr004.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR004" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							s.CMV, '+' as cmv_sign, s.LAST_REMARGIN_DATE as valuation_date						
+						from cms_security s
+						where s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'MISC'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							10=string
+    							11=date,DATEFORMAT_ddMMyyyy							
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="CMV" />
+								<entry key="10" value="CMV_SIGN" />
+								<entry key="11" value="VALUATION_DATE" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR004OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR004Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="157"/> 
+	</bean>              
+          
+    <!-- CR005 -->
+    <bean id="allocationCR005Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-148,149-149,150-166,167-167" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR005OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr005.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR005" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							a.PURCHASE_PRICE, '+' as purchase_price_sign,
+							s.CMV, '+' as cmv_sign							
+						from cms_security s, cms_asset a
+						where s.cms_collateral_id = a.cms_collateral_id
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'GOLD'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							10=string
+    							11=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							12=string    							
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="PURCHASE_PRICE" />
+								<entry key="10" value="PURCHASE_PRICE_SIGN" />								
+								<entry key="11" value="CMV" />
+								<entry key="12" value="CMV_SIGN" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR005OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR005Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="167"/> 
+	</bean>               
+          
+    <!-- CR006 -->
+    <bean id="allocationCR006Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-148,149-149" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR006OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr006.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR006" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							s.CMV, '+' as cmv_sign							
+						from cms_security s
+						where s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'LSAGR'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							10=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="CMV" />
+								<entry key="10" value="CMV_SIGN" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR006OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR006Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="149"/> 
+	</bean>             
+          
+    <!-- CR007 -->
+    <bean id="allocationCR007Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-139,140-147,148-164,165-165" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR007OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr007.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR007" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							g.GUARANTEE_DATE, s.SECURITY_MATURITY_DATE, 
+							s.CMV, '+' as cmv_sign							
+						from cms_security s, cms_guarantee g
+						where s.cms_collateral_id = g.cms_collateral_id
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'LC'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=date,DATEFORMAT_ddMMyyyy
+    							10=date,DATEFORMAT_ddMMyyyy
+    							11=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							12=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="GUARANTEE_DATE" />
+								<entry key="10" value="SECURITY_MATURITY_DATE" />
+								<entry key="11" value="CMV" />
+								<entry key="12" value="CMV_SIGN" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR007OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR007Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="165"/> 
+	</bean>            
+          
+    <!-- CR008 -->
+    <bean id="allocationCR008Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-141,142-158,159-159,160-167,168-175,176-215,216-223,224-240,
+          		241-241,242-258,259-259,260-260,261-261" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR008OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr008.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR008" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, 
+							substr(s.SUBTYPE_NAME, 1, 50) as subtype_name,
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							p.PROPERTY_TYPE, p.SALE_PURCHASE_VALUE, '+' as sale_purchase_sign,
+							p.SALE_PURCHASE_DATE, s.SECURITY_MATURITY_DATE, s.VALUER, 
+							s.LAST_REMARGIN_DATE as valuation_date,							
+							s.CMV, '+' as cmv_sign, s.FSV, '+' as fsv_sign,
+							p.ABANDONED_PROJECT, p.PROPERTY_COMPLETION_STATUS
+						from cms_security s, cms_property p
+						where s.cms_collateral_id = p.cms_collateral_id
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'RE'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=string
+    							10=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							11=string
+    							12=date,DATEFORMAT_ddMMyyyy
+    							13=date,DATEFORMAT_ddMMyyyy
+    							14=string
+    							15=date,DATEFORMAT_ddMMyyyy  							
+    							16=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							17=string
+    							18=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							19=string    							
+    							20=string
+    							21=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="PROPERTY_TYPE" />
+								<entry key="10" value="SALE_PURCHASE_VALUE" />
+								<entry key="11" value="SALE_PURCHASE_SIGN" />
+								<entry key="12" value="SALE_PURCHASE_DATE" />
+								<entry key="13" value="SECURITY_MATURITY_DATE" />
+								<entry key="14" value="VALUER" />
+								<entry key="15" value="VALUATION_DATE" />
+								<entry key="16" value="CMV" />
+								<entry key="17" value="CMV_SIGN" />
+								<entry key="18" value="FSV" />
+								<entry key="19" value="FSV_SIGN" />
+								<entry key="20" value="ABANDONED_PROJECT" />
+								<entry key="21" value="PROPERTY_COMPLETION_STATUS" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR008OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR008Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="261"/> 
+	</bean>               
+          
+    <!-- CR009 -->
+    <bean id="allocationCR009Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,
+          		132-150,151-170,171-190,191-207,208-208,209-225,226-226,227-243,244-244,245-252" 
+          		p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR009OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr009.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR009" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE,  
+							(case when length(p.CDS_NUMBER) >= 19 
+								then substr(p.CDS_NUMBER, length(p.cds_number) - 19 + 1, 19) 
+								else p.cds_number
+							end) as cds_number, 
+							p.RIC, p.ISSUER_NAME, p.NO_OF_UNITS, '+' as no_units_sign,
+							p.UNIT_PRICE, '+' as unit_price_sign,
+							s.CMV, '+' as cmv_sign, s.LAST_REMARGIN_DATE as valuation_date
+						from cms_security s, cms_portfolio_item p
+						where s.cms_collateral_id = p.cms_collateral_id
+						and p.status = 'ACTIVE'
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'STOCK'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=string
+    							10=string
+    							11=string
+    							12=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							13=string
+    							14=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							15=string    							
+    							16=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							17=string
+    							18=date,DATEFORMAT_ddMMyyyy
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="CDS_NUMBER" />
+								<entry key="10" value="RIC" />
+								<entry key="11" value="ISSUER_NAME" />
+								<entry key="12" value="NO_OF_UNITS" />
+								<entry key="13" value="NO_UNITS_SIGN" />
+								<entry key="14" value="UNIT_PRICE" />
+								<entry key="15" value="UNIT_PRICE_SIGN" />
+								<entry key="16" value="CMV" />
+								<entry key="17" value="CMV_SIGN" />
+								<entry key="18" value="VALUATION_DATE" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR009OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR009Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="252"/> 
+	</bean>      
+	          
+    <!-- CR010 -->
+    <bean id="allocationCR010Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,132-151,152-168,
+          		169-169,170-177,178-185,186-202,203-203" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR010OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr010.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR010" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE, d.CONTRACT_NO, d.CONTRACT_AMT, '+' as contract_amt_sign,
+							d.CONTRACT_DATE, s.SECURITY_MATURITY_DATE,
+							s.CMV, '+' as cmv_sign
+						from cms_security s, cms_document d
+						where s.cms_collateral_id = d.cms_collateral_id
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'TRCON'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=string
+    							10=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							11=string
+    							12=date,DATEFORMAT_ddMMyyyy
+    							13=date,DATEFORMAT_ddMMyyyy
+    							14=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							15=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="CONTRACT_NO" />
+								<entry key="10" value="CONTRACT_AMT" />
+								<entry key="11" value="CONTRACT_AMT_SIGN" />
+								<entry key="12" value="CONTRACT_DATE" />
+								<entry key="13" value="SECURITY_MATURITY_DATE" />
+								<entry key="14" value="CMV" />
+								<entry key="15" value="CMV_SIGN" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR010OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR010Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="203"/> 
+	</bean>      
+	          
+    <!-- CR011 -->
+    <bean id="allocationCR011Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,132-151,152-191,
+          		192-208,209-209,210-226,227-227,228-244,245-245" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR011OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr011.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR011" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE, p.ISSUER_NAME, p.LEAD_MANAGER, p.NO_OF_UNITS,
+							'+' as no_units_sign, p.UNIT_PRICE, '+' as unit_price_sign, 
+							s.CMV, '+' as cmv_sign
+						from cms_security s, cms_portfolio_item p
+						where s.cms_collateral_id = p.cms_collateral_id
+						and p.STATUS = 'ACTIVE'
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'UT'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=string
+    							10=string
+    							11=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							12=string
+    							13=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							14=string
+    							15=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							16=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="ISSUER_NAME" />
+								<entry key="10" value="LEAD_MANAGER" />
+								<entry key="11" value="NO_OF_UNITS" />
+								<entry key="12" value="NO_UNITS_SIGN" />
+								<entry key="13" value="UNIT_PRICE" />
+								<entry key="14" value="UNIT_PRICE_SIGN" />
+								<entry key="15" value="CMV" />
+								<entry key="16" value="CMV_SIGN" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR011OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR011Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="245"/> 
+	</bean>       
+	               
+    <!-- CR012 -->
+    <bean id="allocationCR012Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-4,5-23,24-63,64-113,114-114,115-118,119-121,122-131,132-139,140-156,
+          		157-157,158-174,174-175,176-215,216-223" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR012OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr012.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR012" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+						select s.SOURCE_ID, s.SCI_SECURITY_DTL_ID, s.SCI_REFERENCE_NOTE, s.SUBTYPE_NAME, 
+							s.COLLATERAL_STATUS, s.SCI_SECURITY_CURRENCY, s.SOURCE_SECURITY_SUB_TYPE, 
+							s.SOURCE_SECURITY_TYPE, a.REG_DATE, a.PURCHASE_PRICE,
+							'+' as purchase_price_sign, s.CMV, '+' as cmv_sign, s.VALUER, 
+							s.LAST_REMARGIN_DATE as valuation_date
+						from cms_security s, cms_asset a
+						where s.cms_collateral_id = a.cms_collateral_id
+						and s.status = 'ACTIVE'
+						and s.SOURCE_SECURITY_TYPE = 'VEH'
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    							4=string
+    							5=integer
+    							6=string
+    							7=string
+    							8=string
+    							9=date,DATEFORMAT_ddMMyyyy
+    							10=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							11=string
+    							12=bigdecimal,NUMBERPATTERN_000000000000000.00
+    							13=string
+    							14=string
+    							15=date,DATEFORMAT_ddMMyyyy
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="SOURCE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="SCI_REFERENCE_NOTE" />
+								<entry key="4" value="SUBTYPE_NAME" />
+								<entry key="5" value="COLLATERAL_STATUS" />
+								<entry key="6" value="SCI_SECURITY_CURRENCY" />
+								<entry key="7" value="SOURCE_SECURITY_SUB_TYPE" />
+								<entry key="8" value="SOURCE_SECURITY_TYPE" />
+								<entry key="9" value="REG_DATE" />
+								<entry key="10" value="PURCHASE_PRICE" />
+								<entry key="11" value="PURCHASE_PRICE_SIGN" />
+								<entry key="12" value="CMV" />
+								<entry key="13" value="CMV_SIGN" />
+								<entry key="14" value="VALUER" />
+								<entry key="15" value="VALUATION_DATE" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR012OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR012Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="223"/> 
+	</bean>           
+             
+    <!-- CR013 -->
+    <bean id="allocationCR013Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-50,51-69,70-92,93-94,95-97" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR013OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr013.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR013" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+                		select s.SCI_SECURITY_DTL_ID, asm.ASM_EXT_SYS_ACCOUNT_NUM, charge.SECURITY_RANK, 
+                			asm.ALLOCATED_AMT, '001' as RISK_TYPE
+						from cms_security s, CMS_ACCOUNT_SEC_MAP asm, cms_charge_detail charge
+						where s.STATUS = 'ACTIVE'
+						and charge.STATUS = 'ACTIVE'
+						and s.cms_collateral_id = charge.cms_collateral_id
+						and s.cms_collateral_id = asm.CMS_COLLATERAL_ID
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=bigdecimal,NUMBERPATTERN_0000000000000.00000
+    							4=integer
+    							5=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="ASM_EXT_SYS_ACCOUNT_NUM" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="ALLOCATED_AMT" />
+								<entry key="4" value="SECURITY_RANK" />
+								<entry key="5" value="RISK_TYPE" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR013OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR013Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="97"/> 
+	</bean>               
+              	
+    <!-- CR014 -->
+    <bean id="allocationCR014Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-19,20-38,39-61,62-63,64-66" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR014OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr014.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR014" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+                		select lmts.LMT_ID, s.sci_security_dtl_id, lsm.CMS_SEC_ALLOCATED_AMT, 
+                          	charge.SECURITY_RANK, '001' as risk_type
+						from cms_security s, cms_limit_security_map lsm, sci_lsp_appr_lmts lmts, 
+							cms_charge_detail charge
+						where s.cms_collateral_id = lsm.cms_collateral_id
+							and lsm.CMS_LSP_APPR_LMTS_ID = lmts.CMS_LSP_APPR_LMTS_ID
+							and s.cms_collateral_id = charge.CMS_COLLATERAL_ID
+							and s.STATUS = 'ACTIVE'
+							and charge.STATUS = 'ACTIVE'
+							and lsm.UPDATE_STATUS_IND <> 'D'
+							and lsm.CMS_SEC_ALLOCATED_AMT is not null
+							and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=bigdecimal,NUMBERPATTERN_0000000000000.00000
+    							4=integer
+    							5=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="LMT_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="CMS_SEC_ALLOCATED_AMT" />
+								<entry key="4" value="SECURITY_RANK" />
+								<entry key="5" value="RISK_TYPE" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR014OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR014Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="66"/>             
+	</bean>       
+	
+    <!-- CR015 -->
+    <bean id="allocationCR015Aggregator" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-19,20-38,39-41" p:alignment="LEFT" scope="prototype"/>
+
+	<bean id="alloctionCR015OutputFile" class="com.integrosys.cms.batch.common.DateAppenderFileSystemResource" scope="prototype">
+		<constructor-arg value="${resource.allocation.cr015.path}" />
+		<constructor-arg value="MMyyyy" />
+	</bean>                    
+          
+    <bean id="allocationCR015" class="com.integrosys.cms.batch.common.DefaultBatchWriter">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql">
+                	<value><![CDATA[ 
+                		select s.sci_security_dtl_id, p.PLG_LE_ID, p.PLG_REL_TYPE_VALUE
+						from cms_security s, SCI_SEC_PLDGR_MAP spm, SCI_PLEDGOR_DTL p
+						where s.CMS_COLLATERAL_ID = spm.CMS_COLLATERAL_ID
+						and spm.CMS_PLEDGOR_DTL_ID = p.CMS_PLEDGOR_DTL_ID
+						and s.STATUS = 'ACTIVE'
+						and spm.UPDATE_STATUS_IND <> 'D'
+						and p.UPDATE_STATUS_IND <> 'D'
+						and exists (select 1 from cms_limit_security_map lsm 
+							where lsm.cms_collateral_id = s.cms_collateral_id
+							and lsm.UPDATE_STATUS_IND <> 'D'
+							and lsm.CMS_SEC_ALLOCATED_AMT is not null)
+						and s.sci_security_dtl_id is not null
+						]]>
+					</value>
+				</property>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsRowMapper">
+    					<property name="columnMetaInfos">
+    						<value>
+    							1=string
+    							2=string
+    							3=string
+    						</value>
+    					</property>   
+						<property name="columnFieldMap">
+							<map key-type="java.lang.String" value-type="java.lang.String">
+								<entry key="1" value="PLG_LE_ID" />
+								<entry key="2" value="SCI_SECURITY_DTL_ID" />
+								<entry key="3" value="PLG_REL_TYPE_VALUE" />
+							</map>
+						</property>    					         
+                    </bean>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" ref="alloctionCR015OutputFile" />
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>           
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.common.DefaultBatchItemTransformer">
+                <property name="headerAggregator" ref="allocationHeaderAggregator"/>
+                <property name="bodyAggregator" ref="allocationCR015Aggregator"/>
+                <property name="footerAggregator" ref="allocationFooterAggregator"/>
+            </bean>
+        </property>    
+        <property name="headerMetaInfo">
+        	<value>
+        		1=date,DATEFORMAT_ddMMyyyy
+        	</value>
+        </property>   
+        <property name="headerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="current_date" />      
+			</map>  
+        </property>  
+        <property name="footerMetaInfo">
+        	<value>
+        		1=integer
+        	</value>
+        </property>    
+        <property name="footerMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="1" value="total_count" />      
+			</map>  
+        </property>      
+        <property name="fixLengthSize" value="41"/>             
+	</bean>  		
+       	
+</beans>       	

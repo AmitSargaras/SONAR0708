@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT
+			FD_FILE_UPLOAD.DEPOSIT_REFERENCE_NUMBER,TO_CHAR(FD_FILE_UPLOAD.ISSUE_DATE,'DD-MON-YYYY'),
+			TO_CHAR(FD_FILE_UPLOAD.DEPOSIT_MATURITY_DATE,'DD-MON-YYYY'),
+			FD_FILE_UPLOAD.DEPOSIT_INTEREST_RATE,FD_FILE_UPLOAD.STATUS,FD_FILE_UPLOAD.REASON,
+			FILE_UPLOAD.FILENAME, TO_CHAR(FILE_UPLOAD.UPLOADTIME,'HH24:MI:SS')
+			FROM CMS_FILE_UPLOAD FILE_UPLOAD
+			INNER JOIN CMS_FD_FILE_UPLOAD FD_FILE_UPLOAD ON FD_FILE_UPLOAD.FILE_ID =
+			FILE_UPLOAD.ID AND FILE_UPLOAD.FILETYPE   = 'FD_UPLOAD'
+			AND FILE_UPLOAD.UPLOADBY = 'SYSTEM' AND FILE_UPLOAD.APPROVEBY='SYSTEM'
+		</query>
+		<whereClause>
+			<param>
+				<name>fromDate</name>
+				<condition>TRUNC(FILE_UPLOAD.UPLOADTIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deposit Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Date of Deposit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Date of Maturity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Interest Rate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>Reason</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>File Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Upload Time</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>TD194.xls</reportName>
+		</reportParamters>
+	</report>
+</reports>

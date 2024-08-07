@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+	
+	<bean id="InsuranceCoverageAction.ListInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.ListInsuranceCoverageCmd">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.PrepareCreateInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.PrepareCreateInsuranceCoverageCmd">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.SubmitCreateInsuranceCoverageCommand" class="com.integrosys.cms.ui.insurancecoverage.SubmitCreateInsuranceCoverageCommand">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.ViewInsuranceCoverageByIndexCommand" class="com.integrosys.cms.ui.insurancecoverage.ViewInsuranceCoverageByIndexCommand">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.PrepareDeleteInsuranceCoverageCommand" class="com.integrosys.cms.ui.insurancecoverage.PrepareDeleteInsuranceCoverageCommand">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.DeleteInsuranceCoverageCommand" class="com.integrosys.cms.ui.insurancecoverage.MakerSubmitDeleteInsuranceCoverageCommand">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.PrepareEditInsuranceCoverageCommand" class="com.integrosys.cms.ui.insurancecoverage.PrepareEditInsuranceCoverageCommand">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.EditInsuranceCoverageCommand" class="com.integrosys.cms.ui.insurancecoverage.MakerSubmitEditInsuranceCoverageCommand">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.CheckerReadInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.CheckerReadInsuranceCoverageCmd">
+        <property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+    </bean>
+    
+    <bean id="InsuranceCoverageAction.CheckerApproveEditInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.CheckerApproveEditInsuranceCoverageCmd">
+        <property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+    </bean>
+    <bean id="InsuranceCoverageAction.CheckerRejectEditInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.CheckerRejectEditInsuranceCoverageCmd">
+        <property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+    </bean>
+    
+    <bean id="InsuranceCoverageAction.MakerReadInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.MakerReadInsuranceCoverageCmd">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.MakerCloseInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.MakerCloseInsuranceCoverageCmd">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.MakerDraftCloseInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.MakerDraftCloseInsuranceCoverageCmd">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.MakerSubmitDraftInsuranceCoverageCommand" class="com.integrosys.cms.ui.insurancecoverage.MakerSubmitDraftInsuranceCoverageCommand">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.SaveCreateInsuranceCoverageCommand" class="com.integrosys.cms.ui.insurancecoverage.SaveCreateInsuranceCoverageCommand">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	
+	<bean id="InsuranceCoverageAction.MakerUploadInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.MakerUploadInsuranceCoverageCmd">
+		<property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager"/>
+	</bean>
+	
+	<bean id="InsuranceCoverageAction.CheckerReadFileInsertListCmd" class="com.integrosys.cms.ui.insurancecoverage.CheckerReadFileInsertListCmd">
+        <property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager" />
+    </bean>
+    <bean id="InsuranceCoverageAction.CheckerApproveInsertInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.CheckerApproveInsertInsuranceCoverageCmd">
+        <property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager" />
+    </bean>	  
+    <bean id="InsuranceCoverageAction.CheckerRejectInsertInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.CheckerRejectInsertInsuranceCoverageCmd">
+        <property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager" />
+    </bean>
+    <bean id="InsuranceCoverageAction.MakerInsertCloseInsuranceCoverageCmd" class="com.integrosys.cms.ui.insurancecoverage.MakerInsertCloseInsuranceCoverageCmd">
+        <property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager" />
+    </bean>
+    
+    <bean id="PaginateInsuranceCoverageListCommand" class="com.integrosys.cms.ui.insurancecoverage.PaginateInsuranceCoverageListCommand">
+        <property name="insuranceCoverageProxyManager" ref="insuranceCoverageProxyManager" />
+    </bean>
+	
+</beans>

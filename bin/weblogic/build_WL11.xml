@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!-- 
+	Ant build.xml for Weblogic specific tasks, This should be imported into main build.xml in root folder,
+	Which mean, this build.xml cannot be run standalone.
+-->
+
+<project name="aurionPro Solutions HDFC CLIMS - Weblogic 11">
+
+	<target name="deployJSP">
+		<property file="build.properties" />
+		<copy todir="${weblogic.build.dir}/${dirnames.cmsapp}" overwrite="true">
+			<fileset dir="${project.root}/public_html">
+				<include name="**" />
+				<exclude name="#**" />
+				<exclude name="**/vssver.scc" />
+				<exclude name="**/CVS/**" />
+				<exclude name="**/svn/**" />
+				<exclude name="**/${dirnames.tempwardir}/**" />
+				<exclude name="**/classes/com/**" />
+				<include name="**/classes/jasperimages/**" />
+				<include name="**/lib/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copyJars" depends="dist-config-jar">
+		<property file="build.properties" />
+		<copy file="${project.root}/build/dist/cms.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+		<copy file="${project.root}/build/dist/properties.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+		<copy file="${project.root}/build/dist/message-resource.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+		<copy file="${project.root}/build/dist/stp.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+		<copy file="${project.root}/build/dist/spring-context.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+		<copy file="${project.root}/build/dist/hibernate-mapping.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+		<copy file="${project.root}/build/dist/castor-compare.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+		<copy file="${project.root}/build/dist/castor-mapping.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+		<copy file="${project.root}/build/dist/velocity-template.jar" todir="${weblogic.build.dir}/APP-INF/lib" overwrite="true" />
+	</target>
+
+	<target name="wls_hotdeploy" depends="copyJars,deployJSP">
+	</target>
+
+	<target name="wls_hotdeploy_with_compile" depends="dist-cms-jar,copyJars,deployJSP">
+	</target>
+</project>

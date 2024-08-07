@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <bean name="/CCCheckList" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.checklist.cc.CCCheckListAction">
+    <property name="nameCommandMap">
+      <map>
+        <entry key="UpdateDeleteCCCheckListCommand" value-ref="CCCheckListAction.UpdateDeleteCCCheckListCommand"/>
+        <entry key="CloseCCCheckListCommand" value-ref="CCCheckListAction.CloseCCCheckListCommand"/>
+        <entry key="CopyItemCommand" value-ref="CCCheckListAction.CopyItemCommand"/>
+        <entry key="RemoveCCCheckListCommand" value-ref="CCCheckListAction.RemoveCCCheckListCommand"/>
+        <entry key="AddCCCheckListCommand" value-ref="CCCheckListAction.AddCCCheckListCommand"/>
+        <entry key="DispatchCCPageCommand" value-ref="CCCheckListAction.DispatchCCPageCommand"/>
+        <entry key="CopyCCCheckListCommand" value-ref="CCCheckListAction.CopyCCCheckListCommand"/>
+        <entry key="RejectCCCheckListCommand" value-ref="CCCheckListAction.RejectCCCheckListCommand"/>
+        <entry key="ApproveCCCheckListCommand" value-ref="CCCheckListAction.ApproveCCCheckListCommand"/>
+        <entry key="MaintainCCCheckListCommand" value-ref="CCCheckListAction.MaintainCCCheckListCommand"/>
+        <entry key="LinkCCCheckListCommand" value-ref="CCCheckListAction.LinkCCCheckListCommand"/>
+        <entry key="ReplaceItemCommand" value-ref="CCCheckListAction.ReplaceItemCommand"/>
+        <entry key="UpdateCCCheckListCommand" value-ref="CCCheckListAction.UpdateCCCheckListCommand"/>
+        <entry key="SubmitCCCheckListCommand" value-ref="CCCheckListAction.SubmitCCCheckListCommand"/>
+        <entry key="LinkItemCommand" value-ref="CCCheckListAction.LinkItemCommand"/>
+        <entry key="ListCCCheckListCommand" value-ref="CCCheckListAction.ListCCCheckListCommand"/>
+        <entry key="SubmitDeleteCCCheckListCommand" value-ref="CCCheckListAction.SubmitDeleteCCCheckListCommand"/>
+        <entry key="ReplaceCCCheckListCommand" value-ref="CCCheckListAction.ReplaceCCCheckListCommand"/>
+        <entry key="AddCheckListCommand" value-ref="CCCheckListAction.AddCheckListCommand"/>
+        <entry key="ReadStagingCCCheckListCommand" value-ref="CCCheckListAction.ReadStagingCCCheckListCommand"/>
+        <entry key="FrameFlagSetterCommand" value-ref="CCCheckListAction.FrameFlagSetterCommand"/>
+      </map>
+    </property>
+    <property name="maintainChecklistWithoutApproval" value="${checklist.maintain.suppress.checker.approval}" />
+  </bean>
+  
+  <bean name="/SecurityCheckList" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.checklist.security.SecurityCheckListAction">
+    <property name="nameCommandMap">
+      <map>
+        <entry key="UpdateDeleteSecurityCheckListCommand" value-ref="SecurityCheckListAction.UpdateDeleteSecurityCheckListCommand"/>
+        <entry key="ReadStagingSecurityCheckListCommand" value-ref="SecurityCheckListAction.ReadStagingSecurityCheckListCommand"/>
+        <entry key="ReplaceSecurityCheckListCommand" value-ref="SecurityCheckListAction.ReplaceSecurityCheckListCommand"/>
+        <entry key="CopyItemCommand" value-ref="SecurityCheckListAction.CopyItemCommand"/>
+        <entry key="AddSecurityCheckListCommand" value-ref="SecurityCheckListAction.AddSecurityCheckListCommand"/>
+        <entry key="ApproveSecurityCheckListCommand" value-ref="SecurityCheckListAction.ApproveSecurityCheckListCommand"/>
+        <entry key="RemoveSecurityCheckListCommand" value-ref="SecurityCheckListAction.RemoveSecurityCheckListCommand"/>
+        <entry key="UpdateSecurityCheckListCommand" value-ref="SecurityCheckListAction.UpdateSecurityCheckListCommand"/>
+        <entry key="MaintainSecurityCheckListCommand" value-ref="SecurityCheckListAction.MaintainSecurityCheckListCommand"/>
+        <entry key="DisableSecurityColTaskCommand" value-ref="SecurityCheckListAction.DisableSecurityColTaskCommand"/>
+        <entry key="ReplaceItemCommand" value-ref="SecurityCheckListAction.ReplaceItemCommand"/>
+        <entry key="SubmitSecurityCheckListCommand" value-ref="SecurityCheckListAction.SubmitSecurityCheckListCommand"/>
+        <entry key="LinkItemCommand" value-ref="SecurityCheckListAction.LinkItemCommand"/>
+        <entry key="SubmitDeleteSecurityCheckListCommand" value-ref="SecurityCheckListAction.SubmitDeleteSecurityCheckListCommand"/>
+        <entry key="ListSecurityCheckListCommand" value-ref="SecurityCheckListAction.ListSecurityCheckListCommand"/>
+        <entry key="AddCheckListCommand" value-ref="SecurityCheckListAction.AddCheckListCommand"/>
+        <entry key="CloseSecurityCheckListCommand" value-ref="SecurityCheckListAction.CloseSecurityCheckListCommand"/>
+        <entry key="LinkSecurityCheckListCommand" value-ref="SecurityCheckListAction.LinkSecurityCheckListCommand"/>
+        <entry key="RejectSecurityCheckListCommand" value-ref="SecurityCheckListAction.RejectSecurityCheckListCommand"/>
+        <entry key="FrameFlagSetterCommand" value-ref="CCCheckListAction.FrameFlagSetterCommand"/>
+        <entry key="CopySecurityCheckListCommand" value-ref="SecurityCheckListAction.CopySecurityCheckListCommand"/>
+      </map>
+    </property>
+    <property name="maintainChecklistWithoutApproval" value="${checklist.maintain.suppress.checker.approval}" />
+  </bean>
+  
+    <bean name="/CAMCheckList" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.checklist.cam.CAMCheckListAction">
+    <property name="nameCommandMap">
+      <map>
+        <entry key="UpdateDeleteCAMCheckListCommand" value-ref="CAMCheckListAction.UpdateDeleteCAMCheckListCommand"/>
+        <entry key="ReadStagingCAMCheckListCommand" value-ref="CAMCheckListAction.ReadStagingCAMCheckListCommand"/>
+        <entry key="ReplaceCAMCheckListCommand" value-ref="CAMCheckListAction.ReplaceCAMCheckListCommand"/>
+        <entry key="CopyItemCommand" value-ref="CAMCheckListAction.CopyItemCommand"/>
+        <entry key="AddCAMCheckListCommand" value-ref="CAMCheckListAction.AddCAMCheckListCommand"/>
+        <entry key="ApproveCAMCheckListCommand" value-ref="CAMCheckListAction.ApproveCAMCheckListCommand"/>
+        <entry key="RemoveCAMCheckListCommand" value-ref="CAMCheckListAction.RemoveCAMCheckListCommand"/>
+        <entry key="UpdateCAMCheckListCommand" value-ref="CAMCheckListAction.UpdateCAMCheckListCommand"/>
+        <entry key="MaintainCAMCheckListCommand" value-ref="CAMCheckListAction.MaintainCAMCheckListCommand"/>
+        <entry key="DisableCAMColTaskCommand" value-ref="CAMCheckListAction.DisableCAMColTaskCommand"/>
+        <entry key="ReplaceItemCommand" value-ref="CAMCheckListAction.ReplaceItemCommand"/>
+        <entry key="SubmitCAMCheckListCommand" value-ref="CAMCheckListAction.SubmitCAMCheckListCommand"/>
+        <entry key="LinkItemCommand" value-ref="CAMCheckListAction.LinkItemCommand"/>
+        <entry key="SubmitDeleteCAMCheckListCommand" value-ref="CAMCheckListAction.SubmitDeleteCAMCheckListCommand"/>
+        <entry key="ListCAMCheckListCommand" value-ref="CAMCheckListAction.ListCAMCheckListCommand"/>
+        <entry key="AddCheckListCommand" value-ref="CAMCheckListAction.AddCheckListCommand"/>
+        <entry key="CloseCAMCheckListCommand" value-ref="CAMCheckListAction.CloseCAMCheckListCommand"/>
+        <entry key="LinkCAMCheckListCommand" value-ref="CAMCheckListAction.LinkCAMCheckListCommand"/>
+        <entry key="RejectCAMCheckListCommand" value-ref="CAMCheckListAction.RejectCAMCheckListCommand"/>
+        <entry key="FrameFlagSetterCommand" value-ref="CCCheckListAction.FrameFlagSetterCommand"/>
+        <entry key="CopyCAMCheckListCommand" value-ref="CAMCheckListAction.CopyCAMCheckListCommand"/>
+      </map>
+    </property>
+    <property name="maintainChecklistWithoutApproval" value="${checklist.maintain.suppress.checker.approval}" />
+  </bean>
+  
+   <bean name="/FacilityCheckList" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.checklist.facility.FacilityCheckListAction">
+    <property name="nameCommandMap">
+      <map>
+        <entry key="UpdateDeleteFacilityCheckListCommand" value-ref="FacilityCheckListAction.UpdateDeleteFacilityCheckListCommand"/>
+        <entry key="ReadStagingFacilityCheckListCommand" value-ref="FacilityCheckListAction.ReadStagingFacilityCheckListCommand"/>
+        <entry key="ReplaceFacilityCheckListCommand" value-ref="FacilityCheckListAction.ReplaceFacilityCheckListCommand"/>
+        <entry key="CopyItemCommand" value-ref="FacilityCheckListAction.CopyItemCommand"/>
+        <entry key="AddFacilityCheckListCommand" value-ref="FacilityCheckListAction.AddFacilityCheckListCommand"/>
+        <entry key="ApproveFacilityCheckListCommand" value-ref="FacilityCheckListAction.ApproveFacilityCheckListCommand"/>
+        <entry key="RemoveFacilityCheckListCommand" value-ref="FacilityCheckListAction.RemoveFacilityCheckListCommand"/>
+        <entry key="UpdateFacilityCheckListCommand" value-ref="FacilityCheckListAction.UpdateFacilityCheckListCommand"/>
+        <entry key="MaintainFacilityCheckListCommand" value-ref="FacilityCheckListAction.MaintainFacilityCheckListCommand"/>
+        <entry key="DisableFacilityColTaskCommand" value-ref="FacilityCheckListAction.DisableFacilityColTaskCommand"/>
+        <entry key="ReplaceItemCommand" value-ref="FacilityCheckListAction.ReplaceItemCommand"/>
+        <entry key="SubmitFacilityCheckListCommand" value-ref="FacilityCheckListAction.SubmitFacilityCheckListCommand"/>
+        <entry key="LinkItemCommand" value-ref="FacilityCheckListAction.LinkItemCommand"/>
+        <entry key="SubmitDeleteFacilityCheckListCommand" value-ref="FacilityCheckListAction.SubmitDeleteFacilityCheckListCommand"/>
+        <entry key="ListFacilityCheckListCommand" value-ref="FacilityCheckListAction.ListFacilityCheckListCommand"/>
+        <entry key="AddCheckListCommand" value-ref="FacilityCheckListAction.AddCheckListCommand"/>
+        <entry key="CloseFacilityCheckListCommand" value-ref="FacilityCheckListAction.CloseFacilityCheckListCommand"/>
+        <entry key="LinkFacilityCheckListCommand" value-ref="FacilityCheckListAction.LinkFacilityCheckListCommand"/>
+        <entry key="RejectFacilityCheckListCommand" value-ref="FacilityCheckListAction.RejectFacilityCheckListCommand"/>
+        <entry key="FrameFlagSetterCommand" value-ref="CCCheckListAction.FrameFlagSetterCommand"/>
+        <entry key="CopyFacilityCheckListCommand" value-ref="FacilityCheckListAction.CopyFacilityCheckListCommand"/>
+      </map>
+    </property>
+    <property name="maintainChecklistWithoutApproval" value="${checklist.maintain.suppress.checker.approval}" />
+  </bean>
+  
+  
+  <bean name="/OtherCheckList" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.checklist.other.OtherCheckListAction">
+    <property name="nameCommandMap">
+      <map>
+        <entry key="UpdateDeleteOtherCheckListCommand" value-ref="OtherCheckListAction.UpdateDeleteOtherCheckListCommand"/>
+        <entry key="ReadStagingOtherCheckListCommand" value-ref="OtherCheckListAction.ReadStagingOtherCheckListCommand"/>
+        <entry key="ReplaceOtherCheckListCommand" value-ref="OtherCheckListAction.ReplaceOtherCheckListCommand"/>
+        <entry key="CopyItemCommand" value-ref="OtherCheckListAction.CopyItemCommand"/>
+        <entry key="AddOtherCheckListCommand" value-ref="OtherCheckListAction.AddOtherCheckListCommand"/>
+        <entry key="ApproveOtherCheckListCommand" value-ref="OtherCheckListAction.ApproveOtherCheckListCommand"/>
+        <entry key="RemoveOtherCheckListCommand" value-ref="OtherCheckListAction.RemoveOtherCheckListCommand"/>
+        <entry key="UpdateOtherCheckListCommand" value-ref="OtherCheckListAction.UpdateOtherCheckListCommand"/>
+        <entry key="MaintainOtherCheckListCommand" value-ref="OtherCheckListAction.MaintainOtherCheckListCommand"/>
+        <entry key="DisableOtherColTaskCommand" value-ref="OtherCheckListAction.DisableOtherColTaskCommand"/>
+        <entry key="ReplaceItemCommand" value-ref="OtherCheckListAction.ReplaceItemCommand"/>
+        <entry key="SubmitOtherCheckListCommand" value-ref="OtherCheckListAction.SubmitOtherCheckListCommand"/>
+        <entry key="LinkItemCommand" value-ref="OtherCheckListAction.LinkItemCommand"/>
+        <entry key="SubmitDeleteOtherCheckListCommand" value-ref="OtherCheckListAction.SubmitDeleteOtherCheckListCommand"/>
+        <entry key="ListOtherCheckListCommand" value-ref="OtherCheckListAction.ListOtherCheckListCommand"/>
+        <entry key="AddCheckListCommand" value-ref="OtherCheckListAction.AddCheckListCommand"/>
+        <entry key="CloseOtherCheckListCommand" value-ref="OtherCheckListAction.CloseOtherCheckListCommand"/>
+        <entry key="LinkOtherCheckListCommand" value-ref="OtherCheckListAction.LinkOtherCheckListCommand"/>
+        <entry key="RejectOtherCheckListCommand" value-ref="OtherCheckListAction.RejectOtherCheckListCommand"/>
+        <entry key="FrameFlagSetterCommand" value-ref="CCCheckListAction.FrameFlagSetterCommand"/>
+        <entry key="CopyOtherCheckListCommand" value-ref="OtherCheckListAction.CopyOtherCheckListCommand"/>
+      </map>
+    </property>
+    <property name="maintainChecklistWithoutApproval" value="${checklist.maintain.suppress.checker.approval}" />
+  </bean>
+  <bean name="/RecurrentDocCheckList" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.checklist.recurrentDoc.RecurrentDocCheckListAction">
+    <property name="nameCommandMap">
+      <map>
+        <entry key="UpdateDeleteRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.UpdateDeleteRecurrentDocCheckListCommand"/>
+        <entry key="ReadStagingRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.ReadStagingRecurrentDocCheckListCommand"/>
+        <entry key="ReplaceRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.ReplaceRecurrentDocCheckListCommand"/>
+        <entry key="CopyItemCommand" value-ref="RecurrentDocCheckListAction.CopyItemCommand"/>
+        <entry key="AddRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.AddRecurrentDocCheckListCommand"/>
+        <entry key="ApproveRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.ApproveRecurrentDocCheckListCommand"/>
+        <entry key="RemoveRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.RemoveRecurrentDocCheckListCommand"/>
+        <entry key="UpdateRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.UpdateRecurrentDocCheckListCommand"/>
+        <entry key="MaintainRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.MaintainRecurrentDocCheckListCommand"/>
+        <entry key="DisableRecurrentDocColTaskCommand" value-ref="RecurrentDocCheckListAction.DisableRecurrentDocColTaskCommand"/>
+        <entry key="ReplaceItemCommand" value-ref="RecurrentDocCheckListAction.ReplaceItemCommand"/>
+        <entry key="SubmitRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.SubmitRecurrentDocCheckListCommand"/>
+        <entry key="LinkItemCommand" value-ref="RecurrentDocCheckListAction.LinkItemCommand"/>
+        <entry key="SubmitDeleteRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.SubmitDeleteRecurrentDocCheckListCommand"/>
+        <entry key="ListRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.ListRecurrentDocCheckListCommand"/>
+        <entry key="AddCheckListCommand" value-ref="RecurrentDocCheckListAction.AddCheckListCommand"/>
+        <entry key="CloseRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.CloseRecurrentDocCheckListCommand"/>
+        <entry key="LinkRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.LinkRecurrentDocCheckListCommand"/>
+        <entry key="RejectRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.RejectRecurrentDocCheckListCommand"/>
+        <entry key="FrameFlagSetterCommand" value-ref="CCCheckListAction.FrameFlagSetterCommand"/>
+        <entry key="CopyRecurrentDocCheckListCommand" value-ref="RecurrentDocCheckListAction.CopyRecurrentDocCheckListCommand"/>
+      </map>
+    </property>
+    <property name="maintainChecklistWithoutApproval" value="${checklist.maintain.suppress.checker.approval}" />
+  </bean>
+</beans>

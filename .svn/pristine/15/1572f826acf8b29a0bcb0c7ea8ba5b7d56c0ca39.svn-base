@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts config to context mapping files for report module
+	</description>
+
+	<bean name="/conc_report_new" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.report.ConcReportNewAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="ConcReportNewPrepareCmd" value-ref="ConcReportNewAction.ConcReportNewPrepareCmd"/>
+				<entry key="ConcReportNewGenerateCmd" value-ref="ConcReportNewAction.ConcReportNewGenerateCmd"/>
+				<entry key="ConcReportNewSampleCmd" value-ref="ConcReportNewAction.ConcReportNewSampleCmd"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="/SystemReportSearch" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.report.SystemReportSearchAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="PrepareSystemReportSearchCommand" value-ref="SystemReportSearchAction.PrepareSystemReportSearchCommand"/>
+				<entry key="SearchSystemReportCommand" value-ref="SystemReportSearchAction.SearchSystemReportCommand"/>
+				<entry key="GetSystemReportCommand" value-ref="SystemReportSearchAction.GetSystemReportCommand"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="/MISReportSearch" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.report.MISReportSearchAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="PrepareMISReportSearchCommand" value-ref="MISReportSearchAction.PrepareMISReportSearchCommand"/>
+				<entry key="SearchMISReportCommand" value-ref="MISReportSearchAction.SearchMISReportCommand"/>
+				<entry key="GetMISReportCommand" value-ref="MISReportSearchAction.GetMISReportCommand"/>
+				<entry key="MISReportGenDeficiencyRptCmd" value-ref="MISReportSearchAction.MISReportGenDeficiencyRptCmd"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="/ConcentrationReportSearch" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.report.ConcentrationReportSearchAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="SearchConcentrationReportCommand" value-ref="ConcentrationReportSearchAction.SearchConcentrationReportCommand"/>
+				<entry key="GetConcentrationReportCommand" value-ref="ConcentrationReportSearchAction.GetConcentrationReportCommand"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean name="/CCIReportSearch" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.report.CCIReportSearchAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="SearchCCIReportCommand" value-ref="CCIReportSearchAction.SearchCCIReportCommand"/>
+				<entry key="GetCCIReportCommand" value-ref="CCIReportSearchAction.GetCCIReportCommand"/>
+			</map>
+		</property>
+	</bean>
+    
+    <bean name="/GrpExposure" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.custexposure.group.GrpExposureAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="ReadGrpExpReportCommand" value-ref="GrpExposure.ReadGrpExpReportCommand"/>
+            </map>
+        </property>
+    </bean>
+</beans>

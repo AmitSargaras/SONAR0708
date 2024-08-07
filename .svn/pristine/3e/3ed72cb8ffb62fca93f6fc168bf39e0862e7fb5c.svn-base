@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <bean id="MaintainPariPassuCheckListAction.MaintainPariPassuCmd" class="com.integrosys.cms.ui.checklist.paripassu.MaintainPariPassuCmd">
+			<property name="objOtherBranchDao" ref="otherBranchDAO"></property>
+			<property name="systemBankBusManager" ref="systemBankBusManager"></property>
+			<property name="checklistProxyManager" ref="checklistProxy"></property>
+			<property name="objGeneralParamDao" ref="generalParamDao"></property>			
+  </bean>
+  <bean id="MaintainPariPassuCheckListAction.SubmitPariPassuCmd" class="com.integrosys.cms.ui.checklist.paripassu.SubmitPariPassuCmd">
+      		<property name="checklistProxyManager" ref="checklistProxy"/>
+    		<property name="maintainChecklistWithoutApproval" value="${checklist.maintain.suppress.checker.approval}"/>
+  </bean>
+    <bean id="MaintainPariPassuCheckListAction.ListPariPassuCheckListCommand" class="com.integrosys.cms.ui.checklist.paripassu.ListPariPassuCheckListCommand">
+			<property name="checklistProxyManager" ref="checklistProxy"></property>
+ 	 </bean>
+ 	 <bean id="MaintainPariPassuCheckListAction.FrameFlagSetterCommand" class="com.integrosys.cms.ui.checklist.paripassu.FrameFlagSetterCommand" />
+</beans>

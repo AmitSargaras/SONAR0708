@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+	</description>
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				
+				<ref bean="psrLimitFileTrigger" />
+				<ref bean="psrLimitFileDownloadTrigger" /> 
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="psrLimitFileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="psrLimitFileJobDetail" />
+		<property name="cronExpression" value="0 0/15 * * * ?" />
+	</bean>
+	<bean id="psrLimitFileJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="psrLimitFileUploadJob" />
+		<property name="targetMethod" value="execute" />
+		
+	</bean>
+	<bean name="psrLimitFileUploadJob" class="com.integrosys.cms.batch.psrLimitFile.schedular.PSRLimitFileUploadJob">
+		
+	</bean>
+	
+	<bean id="psrLimitFileDownloadTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="psrLimitFileDownloadJobDetail" />
+		<property name="cronExpression" value="0 0/25 * * * ?" />
+	</bean>
+	<bean id="psrLimitFileDownloadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="psrLimitFileDownloadJob" />
+		<property name="targetMethod" value="execute" />
+		
+	</bean>
+	<bean name="psrLimitFileDownloadJob" class="com.integrosys.cms.batch.psrLimitFile.schedular.PSRLimitFileDownloadJob">
+		
+	</bean>
+	
+	
+	
+	
+</beans>

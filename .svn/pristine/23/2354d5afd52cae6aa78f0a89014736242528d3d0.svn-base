@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="AutoupdationLmtsUploadForm" type="com.integrosys.cms.ui.autoupdationlmtsupload.AutoupdationLmtsUploadForm">
+        </form-bean>
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/AutoupdationLmtsupload" type="com.integrosys.cms.ui.autoupdationlmtsupload.AutoupdationLmtsUploadAction" name="AutoupdationLmtsUploadForm" validate="false" scope="request">
+            <forward name="excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/upload_autoupdationlmts.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward>
+            <forward name="autoupdationlmtsupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/list_autoupdationlmts_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward>
+             <forward name="downloadReport" path="/file/popup.jsp" />
+             <forward name="checker_approve_create_autoupdationlmts" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/chk_approve_autoupdationlmts.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward> 
+            <forward name="checker_reject_create_autoupdationlmts" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/checker_reject_create_autoupdationlmts.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward> 
+            <forward name="maker_prepare_autoupdationlmts_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/maker_prepare_autoupdationlmts_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward> 
+            <forward name="checker_process_create_autoupdationlmts" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/checker_process_create_autoupdationlmts.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward> 
+            <forward name="error_reject_autoupdationlmts" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/checker_process_create_autoupdationlmts.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward> 
+            <forward name="maker_close_autoupdationlmts_file" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/maker_close_autoupdationlmts_file.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward> 
+            <forward name="error_excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/upload_autoupdationlmts.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.autoupdationlmtsupload"/>
+            </forward> 
+             <forward name="rejected_delete_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/autoupdationlmtsupload/process_autoupdationlmts_file.jsp"/>
+                <set-property property="title" value="menu.maual_feeds.file_upload"/>
+            </forward> 
+        </action>
+		
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+</struts-config>

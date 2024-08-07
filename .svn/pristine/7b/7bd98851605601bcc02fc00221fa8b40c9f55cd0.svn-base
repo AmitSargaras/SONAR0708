@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><ejb-jar id="ejb_Counter_party_Details">
+   <display-name>Counter party Details</display-name>
+   <enterprise-beans>
+      <session id="session_SBCounterpartyDetailsProxy">
+         <ejb-name>SBCounterpartyDetailsProxy</ejb-name>
+         <home>com.integrosys.cms.app.cci.proxy.SBCounterpartyDetailsProxyHome</home>
+         <remote>com.integrosys.cms.app.cci.proxy.SBCounterpartyDetailsProxy</remote>
+         <ejb-class>com.integrosys.cms.app.cci.proxy.SBCounterpartyDetailsProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCounterpartyDetailsProxy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCCICounterpartyDetailsBusManager">
+         <ejb-name>SBCCICounterpartyDetailsBusManager</ejb-name>
+         <home>com.integrosys.cms.app.cci.bus.SBCCICounterpartyDetailsBusManagerHome</home>
+         <remote>com.integrosys.cms.app.cci.bus.SBCCICounterpartyDetailsBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.cci.bus.SBCCICounterpartyDetailsBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCCICounterpartyDetailsBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCCICounterpartyDetailsBusManagerStaging">
+         <ejb-name>SBCCICounterpartyDetailsBusManagerStaging</ejb-name>
+         <home>com.integrosys.cms.app.cci.bus.SBCCICounterpartyDetailsBusManagerHome</home>
+         <remote>com.integrosys.cms.app.cci.bus.SBCCICounterpartyDetailsBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.cci.bus.SBCCICounterpartyDetailsBusManagerStagingBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCCICounterpartyDetailsBusManagerStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBCCICounterpartyDetails">
+         <ejb-name>EBCCICounterpartyDetails</ejb-name>
+         <home>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetailsHome</home>
+         <remote>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetails</remote>
+         <local-home>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetailsLocalHome</local-home>
+         <local>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetailsLocal</local>
+         <ejb-class>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetailsBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCCICounterpartyDetails</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetails_cMPGroupCCIMapID">
+            <field-name>cMPGroupCCIMapID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetails_cMPGroupCCINo">
+            <field-name>cMPGroupCCINo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetails_cMPGroupCCINoRef">
+            <field-name>cMPGroupCCINoRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetails_cMPSubProfileID">
+            <field-name>cMPSubProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetails_cMPDeletedInd">
+            <field-name>cMPDeletedInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetails_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>cMPGroupCCIMapID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCCICounterpartyDetails">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByGroupCCINo</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCCICounterpartyDetails o WHERE o.cMPGroupCCINo = ?1 ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByByGroupCCINoRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCCICounterpartyDetails o WHERE o.cMPGroupCCINoRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCCICounterpartyDetailsStaging">
+         <ejb-name>EBCCICounterpartyDetailsStaging</ejb-name>
+         <home>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetailsHome</home>
+         <remote>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetails</remote>
+         <local-home>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetailsLocalHome</local-home>
+         <local>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetailsLocal</local>
+         <ejb-class>com.integrosys.cms.app.cci.bus.EBCCICounterpartyDetailsBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCCICounterpartyDetailsStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetailsStaging_cMPGroupCCIMapID">
+            <field-name>cMPGroupCCIMapID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetailsStaging_cMPGroupCCINo">
+            <field-name>cMPGroupCCINo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetailsStaging_cMPGroupCCINoRef">
+            <field-name>cMPGroupCCINoRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetailsStaging_cMPSubProfileID">
+            <field-name>cMPSubProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetailsStaging_cMPDeletedInd">
+            <field-name>cMPDeletedInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCICounterpartyDetailsStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>cMPGroupCCIMapID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCCICounterpartyDetailsStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByGroupCCINo</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCCICounterpartyDetailsStaging o WHERE o.cMPGroupCCINo = ?1 ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByByGroupCCINoRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCCICounterpartyDetailsStaging o WHERE o.cMPGroupCCINoRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBCounterpartyDetailsProxy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCCICounterpartyDetailsBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCCICounterpartyDetailsBusManagerStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCCICounterpartyDetails</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCCICounterpartyDetailsStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <!--End for CounterpartyDetails--><trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

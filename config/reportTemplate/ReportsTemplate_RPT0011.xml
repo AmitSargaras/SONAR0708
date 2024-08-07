@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT distinct
+				lmts.LMT_ID as facility_ID,
+				 sub_profile.lsp_le_id AS party_id,
+			  sub_profile.lsp_short_name          AS party_name,
+			  cc_segment.entry_name               AS segmentName,
+			  lmts.facility_name                  AS facilityName,
+			     lmts.facility_type              AS facilityType,
+			  cat_val.entry_name        AS facilityCat,
+			  (SELECT entry_name
+			  FROM common_code_category_entry
+			  WHERE category_code = 'BANKING_ARRANGEMENT' and 
+			  active_status = '1' and ENTRY_CODE = lmts.BANKING_ARRANGEMENT) AS bankingArrangement,
+			  (SELECT entry_name
+			  FROM common_code_category_entry
+			  WHERE category_code = 'CLAUSE_AS_PER_POLICY' and
+			   active_status = '1' and ENTRY_CODE =  LMTS.CLAUSE_AS_PER_POLICY) AS clauseAsPerPolicy, 
+			  lmts.CMS_REQ_SEC_COVERAGE AS sanctionAmount,	  
+			   
+			  sec.subtype_name          AS secSubType,
+			  (SELECT NEW_COLLATERAL_DESCRIPTION
+			  FROM cms_collateral_new_master
+			  WHERE NEW_COLLATERAL_CODE = sec.collateral_code
+			  )                         AS colName,
+			  reg.region_name           AS Region,
+			  lmts.is_secured           AS securedFlag,
+			  lmts.is_released                AS releasedFlag,
+			  pf.CMS_APPR_OFFICER_GRADE AS riskGraded,
+			  rm.rm_mgr_name            AS rmname,
+			  (SELECT region_name FROM cms_region WHERE id = sub_profile.rm_region
+			  )                        AS rm_region,
+			  lmts.lmt_crrncy_iso_code AS Currency,	
+			   lmts.TOTAL_RELEASED_AMOUNT      AS relesaedAmount,
+			   LMTS.RISK_TYPE AS RISK_TYPE,
+  				LMTS.TENOR AS TENOR,
+  				LMTS.TENOR_DESC AS TENOR_DESC,
+  				LMTS.MARGIN AS MARGIN,
+  				LMTS.PUT_CALL_OPTION AS PUT_CALL_OPTION,
+  				to_char(LMTS.OPTION_DATE,'DD-Mon-YYYY') AS OPTION_DATE,
+  				to_char(LMTS.LOAN_AVAIL_DATE,'DD-Mon-YYYY') AS LOAN_AVAIL_DATE		   
+			  -- lsm.lmt_security_coverage
+			FROM SCI_LSP_APPR_LMTS lmts,
+			  SCI_LSP_LMT_PROFILE pf,
+			  SCI_LE_SUB_PROFILE sub_profile,
+			  CMS_REGION reg,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code = 'FACILITY_CATEGORY'
+			  )cat_val,
+			  SCI_LE_REG_ADDR address ,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code = 'HDFC_SEGMENT'
+			  ) cc_segment ,
+			  cms_relationship_mgr rm,
+			  CMS_LIMIT_SECURITY_MAP lsm,
+			  cms_security sec
+              
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				  sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+					AND sec.cms_collateral_id(+)            = lsm.cms_collateral_id
+					AND cc_segment.entry_code (+)           =sub_profile.lsp_sgmnt_code_value
+					AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+					AND rm.id                               = sub_profile.relation_mgr
+					AND cat_val.entry_code                  =lmts.facility_cat
+					AND lmts.cms_limit_status               ='ACTIVE'
+					AND lsm.update_status_ind               ='I'
+					AND address.lra_region                  = reg.id
+					AND ADDRESS.LRA_TYPE_VALUE              = 'CORPORATE'
+					AND address.CMS_LE_MAIN_PROFILE_ID      =sub_profile.CMS_LE_MAIN_PROFILE_ID
+					AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id(+)
+					AND sub_profile.status                 != 'INACTIVE'
+				</mandatoryClause>
+				<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id =  </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> AND sub_profile.lsp_sgmnt_code_value =  </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Id</header><!-- 1 -->
+				</reportColumn>
+			<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header><!-- 4 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Category</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Banking Arrangement</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Clause as per Policy</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Facility Sanction Limit</header><!-- 6 -->
+				</reportColumn>			
+				
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Security Sub Type</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Collateral Name</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Secured Flag</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Released Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Risk Graded</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM</header><!-- 12 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 13 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Currency</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Released Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Risk Type</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Tenor</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Tenor Description</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Margin</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Put / Call Option</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Option Date</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Loan Availability Date</header><!-- 14 -->
+				</reportColumn>
+			</reportColumns>
+			<reportName>Segment wise Facilities</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="BflTatParametersForm" type="com.integrosys.cms.ui.bfltatparameters.BflTatParametersForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	    <action path="/BflTatParams"
+	        type="com.integrosys.cms.ui.bfltatparameters.BflTatParametersAction"
+	        name="BflTatParametersForm" scope="request">
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/bfltatparameters/search_bfl_tat_param.jsp"/>
+	            <set-property property="title" value="title.bfltatparam"/>
+	        </forward>
+	        <forward name="list" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/bfltatparameters/bfl_tat_param_list.jsp"/>
+	            <set-property property="title" value="title.bfltatparam"/>
+	        </forward>
+	    </action>
+    
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-param-bfltat"/>-->
+</struts-config>

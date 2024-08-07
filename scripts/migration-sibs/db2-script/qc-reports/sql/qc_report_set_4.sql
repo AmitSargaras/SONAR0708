@@ -1,0 +1,171 @@
+-----------------------------
+-- Cleanup
+-----------------------------
+-- DELETE FROM MIG_QC_REPORT;		//Use drop and recreate mig report - much faster
+
+/* ---------------------------  QC 3 ----------------------------   */ 
+-----------------------------
+-- Collateral Related
+-----------------------------
+-- CO015:VL
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV031SIBS', 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Security ID, Error Message', 'SIBS', 'CO015');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CO015' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CO015');    
+
+-- CO016:INS Policy
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV032SIBS', 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Security ID / Policy Number, Error Message', 'SIBS', 'CO016');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CO016' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CO016');    
+
+-- CO017:CD
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV033SIBS', 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Security ID / Application No / Facility Code / Faciltiy Sequence / Ranking of Security, Error Message', 'SIBS', 'CO017');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ' / ' || COALESCE(KEY5_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CO017' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CO017');    
+
+-- CO018:Pledgor
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV034SIBS', 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Security ID / Pledgor CIF ID, Error Message', 'SIBS', 'CO018');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CO018' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CO018');    
+
+-- CO019:Pledge
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV035SIBS', 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Security ID / Limit ID / Application No / Facility Code / Faciltiy Sequence, Error Message', 'SIBS', 'CO019');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ' / ' || COALESCE(KEY5_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CO019' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CO019');    
+
+  
+/* ---------------------------  QC 4 ----------------------------   */ 
+-----------------------------
+-- Collateral Related
+-----------------------------
+-- CO015:VL
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV031SIBS', 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CO015');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CO015' FROM MIG_CO015_VL WHERE IS_VALID = 'Y');    
+
+-- CO016:INS Policy
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV032SIBS', 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CO016');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CO016' FROM MIG_CO016_IN WHERE IS_VALID = 'Y');    
+
+-- CO017:CD
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV033SIBS', 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CO017');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CO017' FROM MIG_CO017_CD WHERE IS_VALID = 'Y');    
+
+-- CO018:Pledgor
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV034SIBS', 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CO018');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CO018' FROM MIG_CO018_PG WHERE IS_VALID = 'Y');    
+
+-- CO019:Pledge
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV035SIBS', 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CO019');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CO019' FROM MIG_CO019_PL WHERE IS_VALID = 'Y');    
+
+
+/* ---------------------------  QC 5 ----------------------------   */ 
+-----------------------------
+-- Collateral Related
+-----------------------------
+-- CO015:VL
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV031SIBS', 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO015');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CO015');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Security,' || CHAR(COUNT(*)), 'SIBS', 'CO015' FROM CMS_VALUATION col, CMS_SECURITY sec, MIG_CO015_VL mig
+		WHERE col.SOURCE_ID = 'SIBS' AND sec.SCI_SECURITY_DTL_ID = mig.SECURITY_ID AND sec.CMS_COLLATERAL_ID = col.CMS_COLLATERAL_ID AND mig.IS_VALID = 'Y');
+
+-- CO016:INS Policy
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV032SIBS', 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO016');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CO016');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Security,' || CHAR(COUNT(*)), 'SIBS', 'CO016' FROM CMS_INSURANCE_POLICY col, MIG_CO016_IN mig
+		WHERE col.SOURCE_ID = 'SIBS' AND col.INSURANCE_POLICY_ID = mig.cms_act_insr_id AND col.CMS_COLLATERAL_ID = mig.CMS_ACT_COL_ID AND mig.IS_VALID = 'Y');
+
+-- CO017:CD
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV033SIBS', 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO017');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CO017');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Security,' || CHAR(COUNT(*)), 'SIBS', 'CO017' FROM CMS_CHARGE_DETAIL col, MIG_CO017_CD mig
+		WHERE col.SOURCE_ID = 'SIBS' AND col.CHARGE_DETAIL_ID = mig.CMS_ACT_CHRG_DTL_ID AND col.CMS_COLLATERAL_ID = mig.CMS_ACT_COL_ID AND mig.IS_VALID = 'Y');
+
+-- CO018:Pledgor
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV034SIBS', 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO018');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CO018');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Security,' || CHAR(COUNT(*)), 'SIBS', 'CO018' FROM SCI_PLEDGOR_DTL col, MIG_CO018_PG mig
+		WHERE col.SOURCE_ID = 'SIBS' AND col.CMS_PLEDGOR_DTL_ID = mig.CMS_PLDGR_ID AND mig.IS_VALID = 'Y');
+
+-- CO019:Pledge
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV035SIBS', 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CO019');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CO019');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Security,' || CHAR(COUNT(*)), 'SIBS', 'CO019' FROM CMS_LIMIT_SECURITY_MAP lsm, MIG_CO019_PL mig
+		WHERE lsm.SOURCE_ID = 'SIBS' AND lsm.CMS_LSP_APPR_LMTS_ID = mig.CMS_ACT_LMT_ID AND lsm.CMS_COLLATERAL_ID = mig.CMS_ACT_COL_ID AND lsm.SCI_LAS_LMT_ID = mig.LIMIT_ID AND lsm.SCI_LAS_SEC_ID = mig.SECURITY_ID AND mig.IS_VALID = 'Y');
+
+ 
+  

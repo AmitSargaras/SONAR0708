@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+					select 
+					activity,
+					user_id,
+					user_name,
+					log.user_role||' - '||team.membership_name,
+					branch_code,
+					department_code,
+					success_reject,
+					reject_reason 
+					from 
+					CMS_SMS_UPLOAD_LOG log,
+          cms_team_type_membership team
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				 log.user_role=team.team_type_membership_id(+)
+			</mandatoryClause>
+		
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Activity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>User Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>User Role</header>
+				</reportColumn>
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>Branch Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>Department Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>Success Reject</header>
+				</reportColumn>
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>Reject Reason</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>SMS Upload Log</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT(SEC.CMS_COLLATERAL_ID) AS SecurityID,
+			  sec.type_name
+			  ||'-'
+			  || sec.subtype_name AS PropertyDescription,
+			  prop.property_address
+			  ||' '
+			  ||prop.property_address_2
+			  ||' '
+			  ||prop.property_address_3
+			  ||' '
+			  ||prop.property_address_4
+			  ||' '
+			  ||prop.property_address_5
+			  ||' '
+			  ||prop.property_address_6 AS propertyaddress,
+			  (SELECT r.country_name FROM cms_country r WHERE r.id= prop.country
+			  ) AS country,
+			  (SELECT state_name FROM cms_state r WHERE r.id= prop.state
+			  ) AS state, --new
+			  (SELECT city_name FROM cms_city c WHERE c.id= prop.nearest_city
+			  )                           AS city,--new
+			  prop.other_city             AS otherCity,
+			  prop.pincode                AS pincode,--new
+			  sp.lsp_le_id                AS partyId,
+			  sp.lsp_short_name           AS partyName,
+			  sbb.SYSTEM_BANK_BRANCH_NAME AS VaultLocation,
+			  cc_segment.entry_name       AS segment,
+			  reg.region_name             AS cusRegion,
+			  (SELECT region_name FROM cms_region r WHERE r.id= sp.rm_region
+			  )              AS rmregion,--new
+			  rm.rm_mgr_name AS RMName,
+			  (
+			  CASE
+			    WHEN sec.sec_priority ='Y'
+			    THEN 'Primary'
+			    WHEN sec.sec_priority ='N'
+			    THEN 'Secondary'
+			    ELSE '-'
+			  END ) AS securityPriority,
+			  (
+			  CASE
+			    WHEN sec.monitor_process ='Y'
+			    THEN 'Yes'
+			    WHEN sec.monitor_process ='N'
+			    THEN 'No'
+			    ELSE '-'
+			  END ) AS monitorProcCol,
+			  (SELECT ENTRY_NAME
+			  FROM common_code_category_entry
+			  WHERE category_code='FREQUENCY' and  active_status='1'
+			  AND entry_code     = sec.monitor_frequency
+			  )                           AS monitorProcColFreq,
+			  sbb.SYSTEM_BANK_BRANCH_NAME AS VaultLocation,
+			  sbb.custodian1              AS VaultCustodian1,
+			  sbb.custodian2              AS VaultCustodian2,
+			  (SELECT ENTRY_NAME
+			  FROM COMMON_CODE_CATEGORY_ENTRY
+			  WHERE ENTRY_CODE  = prop.margage_type and  active_status='1'
+			  AND CATEGORY_CODE = 'MORTGAGE_TYPE'
+			  )                                              AS MORTGAGE_TYPE,
+			  TO_CHAR(prop.SALE_PURCHASE_DATE,'DD/Mon/YYYY') AS DateOfMortgage,
+			 COALESCE ((SELECT BANK_NAME  FROM cms_other_bank  WHERE deprecated='N'  AND status='ACTIVE'  AND id=prop.morgage_created_by),
+ 				( SELECT SYSTEM_BANK_NAME  FROM cms_system_bank  WHERE deprecated='N'  AND status='ACTIVE'  AND id =prop.morgage_created_by )) AS mortgageCreatedBy,
+			  prop.mortage_registered_ref  AS mortgageRegdRef,
+			  prop.developer_group_company AS propertyownername,
+			  prop.property_id,
+			  (SELECT ENTRY_NAME
+			  FROM common_code_category_entry
+			  WHERE category_code = 'PROPERTY_TYPE' and  active_status='1'
+			  AND ENTRY_CODE      = prop.property_type
+			  )                                          AS property_type, --new
+			  TO_CHAR(prop.valuation_date,'DD/MON/YYYY') AS ValuationDate, --new
+			  (SELECT entry_name
+			  FROM common_code_category_entry
+			  WHERE entry_code=sec.reval_freq and  active_status='1'
+			  )                                              AS revalFreq,
+			  TO_CHAR(sec.next_valuation_date,'DD/MON/YYYY') AS nextValDate,
+			  prop.total_property_amount,--new
+			  (SELECT valuation_agency_name
+			  FROM cms_valuation_agency
+			  WHERE id=prop.valuator_company
+			  ) AS valuationCmpny,
+			  (
+			  CASE
+			    WHEN prop.builtup_area=0
+			    THEN '-'
+			    ELSE prop.builtup_area
+			      ||' '
+			      ||
+			      (SELECT entry_name
+			      FROM common_code_category_entry
+			      WHERE entry_code=prop.builtup_area_uom and  active_status='1'
+			      )
+			  END )AS built_up_area,--new
+			  (
+			  CASE
+			    WHEN prop.land_area=0
+			    THEN '-'
+			    ELSE prop.land_area
+			      ||' '
+			      ||
+			      (SELECT entry_name
+			      FROM common_code_category_entry
+			      WHERE entry_code=prop.land_area_uom and  active_status='1'
+			      )
+			  END)AS land_area,--new
+			  (SELECT entry_name
+			  FROM common_code_category_entry
+			  WHERE ENTRY_ID = (SELECT MAX (ENTRY_ID) FROM common_code_category_entry WHERE  category_code = 'ADV_NAME' and  active_status='1'
+			  AND entry_code      = prop.advocate_lawyer_name
+			  ) AS advocate_name,   --new
+			  prop.remarks_property,--new
+			  prop.lot_no AS LOTNo,
+			  (
+			  CASE
+			    WHEN prop.is_phy_inspect ='Y' or prop.is_phy_inspect ='1'
+			    THEN 'Yes'
+			    WHEN prop.is_phy_inspect ='N' or prop.is_phy_inspect ='0'
+			    THEN 'No'
+			    ELSE '-'
+			  END ) AS phyVerifOfCol,
+			  -- prop.is_phy_inspect AS phyVerifOfCol,
+			  (
+			  SELECT ENTRY_NAME
+			  FROM common_code_category_entry
+			  WHERE category_code='FREQUENCY' and  active_status='1'
+			  AND entry_code     = prop.phy_inspect_freq_unit
+			  )                                                  AS phyVerifOfColFreq,
+			  TO_CHAR(prop.last_phy_inspect_date,'DD/MON/YYYY')  AS phyVerifDoneOn,
+			  TO_CHAR(prop.next_phy_inspect_date ,'DD/MON/YYYY') AS nxtPhyVerifDueOn,
+			  (
+			  CASE
+			    WHEN prop.claim ='Y'
+			    THEN 'Yes'
+			    WHEN prop.claim ='N'
+			    THEN 'No'
+			    ELSE '-'
+			  END ) AS priorClaim,
+			  (
+			  CASE
+			    WHEN prop.claim_type ='LITIGATION'
+			    THEN 'Litigation'
+			    WHEN prop.claim_type ='PROPERTY_TAX'
+			    THEN 'Property Tax'
+			    WHEN prop.claim_type ='OTHERS_CLAIM'
+			    THEN 'Others'
+			    ELSE '-'
+			  END ) AS typeOfClaim,
+			  (SELECT ENTRY_NAME
+			  FROM common_code_category_entry
+			  WHERE category_code='TYPE_CHARGE' and  active_status='1'
+			  AND entry_code     = sec.change_type
+			  ) AS typeOfCharge,
+			  (
+			  CASE
+			    WHEN sec.other_bank_charge IS NULL
+			    THEN '-'
+			    WHEN sec.other_bank_charge IS NOT NULL
+			    THEN sec.other_bank_charge
+			      ||'%'
+			  END ) AS pectFstChgByBank,
+			  (
+			  CASE
+			    WHEN prop.env_risky_status ='Y'
+			    THEN 'Yes'
+			    WHEN prop.env_risky_status ='N'
+			    THEN 'No'
+			    WHEN prop.env_risky_status ='NA'
+			    THEN 'Not Applicable'
+			    ELSE '-'
+			  END ) AS secEnvRisky,
+			  TO_CHAR(prop.TSR_DATE,'DD/MON/YYYY') TSR_DATE,
+              (select entry_name from common_code_category_entry where category_code='FREQUENCY' and entry_code=prop.TSR_FREQUENCY) TSR_freq,
+              TO_CHAR(prop.NEXT_TSR_DATE,'DD/MON/YYYY') NXT_TSR_DATE,
+              DECODE(prop.CERSIA_REG_DATE,NULL,NULL,TO_CHAR(prop.CERSIA_REG_DATE,'DD/MON/YYYY')) CERSIA_DATE,
+              prop.LAND_VALUE_IRB as LAND_VALUE_IRB,
+              prop.BUILDING_VALUE_IRB as BUILDING_VALUE_IRB,
+              prop.RECONSTRUCTION_VALUE_IRB as RECONSTRUCTION_VALUE_IRB
+              
+			FROM CMS_SECURITY sec,
+			  CMS_LIMIT_SECURITY_MAP lsm,
+			  SCI_LSP_APPR_LMTS lmts,
+			  SCI_LSP_LMT_PROFILE pf,
+			  SCI_LE_SUB_PROFILE sp,
+			  CMS_SYSTEM_BANK_BRANCH sbb,
+			  SCI_LE_REG_ADDR addr,
+			  CMS_REGION reg,
+			  CMS_PROPERTY prop,
+			  cms_relationship_mgr rm ,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code = 'HDFC_SEGMENT' and  active_status='1'
+			  ) cc_segment,
+			  transaction trans
+			</query>
+		<whereClause>
+			<mandatoryClause>
+			         sec.cms_collateral_id   = prop.cms_collateral_id
+					AND cc_segment.entry_code(+)  = sp.lsp_sgmnt_code_value
+					AND sp.cms_le_main_profile_id = addr.cms_le_main_profile_id
+					AND SEC.CMS_COLLATERAL_ID     = LSM.CMS_COLLATERAL_ID
+					AND sp.cms_le_sub_profile_id  = pf.cms_customer_id
+					AND pf.cms_lsp_lmt_profile_id = lmts.CMS_LIMIT_PROFILE_ID
+					AND lmts.cms_lsp_appr_lmts_id = lsm.cms_lsp_appr_lmts_id
+					AND rm.id                     = sp.relation_mgr
+					AND (lsm.update_status_ind   &lt;&gt; 'D'
+					OR lsm.update_status_ind     IS NULL)
+					AND sec.security_sub_type_id  = 'PT701'
+					AND reg.id                    = addr.lra_region
+					AND addr.lra_type_value       = 'CORPORATE'
+					AND sec.SECURITY_ORGANISATION = sbb.SYSTEM_BANK_BRANCH_CODE(+)
+					AND trans.reference_id        = sp.cms_le_sub_profile_id
+					AND sp.status                != 'INACTIVE'
+					AND lmts.cms_limit_status    &lt;&gt; 'DELETED'
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> and sp.cms_le_sub_profile_id =  </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> AND sp.LSP_SGMNT_CODE_value =  </condition>
+			</param>			
+			<param>
+				<name>transactionDate</name>
+				<condition> and TRUNC(trans.transaction_date) = </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security ID</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Borrower’s Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Property Address</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Country</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>State</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Other City</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Pin Code</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header><!-- 8(a) -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Vault Location</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Customer Region</header><!-- 12 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 13 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Priority</header><!-- 15 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Monitoring Process Of Collateral's(Yes/No)</header><!-- 16 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Monitoring Process Of Collateral's Frequency</header><!-- 17 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Vault Location</header><!-- 18 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Vault Custodian 1</header><!-- 19 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Vault Custodian 2</header><!-- 20 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Type Of Mortgage</header><!-- 21 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date Of Mortgage</header><!-- 22 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Mortgage Created By</header><!-- 23 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Mortgage Registered Reference</header><!-- 24 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Owner Name</header><!-- 25 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Id</header><!-- 26 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Property Type</header><!-- 27 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Valuation Date</header><!-- 28 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Revaluation Frequency</header><!-- 29 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Next Valuation Date</header><!-- 30 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Total Property Amount</header><!-- 31 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Valuation Company</header><!-- 32 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Built-up Area</header><!-- 33 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Land Area</header><!-- 34 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Advocate/Lawyer Name</header><!-- 35 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header><!-- 36 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Cersai ID</header><!-- 37 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Physical Verification Of Collateral(Yes/No)</header><!-- 38 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Physical Verification Of Collateral Frequency</header><!-- 39 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Physical Verification Done On</header><!-- 40 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Next Physical Verification Due On</header><!-- 41 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Prior Claim</header><!-- 42 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Type Of Claim</header><!-- 43 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Type Of Charge</header><!-- 44 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>% Of First Charge By Other Bank</header><!-- 45 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Environmentally Risk</header><!-- 46 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of TSR</header><!-- 47 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>TSR Frequency</header><!-- 48 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Next TSR Date</header><!-- 49 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of CERSAI Registration</header><!-- 50 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Land Value</header><!-- 51 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Building Value</header><!-- 52 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Reconstruction Value</header><!-- 53 -->
+				</reportColumn>
+			</reportColumns>
+			<reportName>Customer wise Property Master</reportName>
+		</reportParamters>
+	</report>
+</reports>

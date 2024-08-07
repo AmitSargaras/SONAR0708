@@ -1,0 +1,77 @@
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+<mapping>
+	<description>AA Listing Response - CA002R</description>
+	
+	<include href="common-response.cm.xml" /> 
+	
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.limit.inquiry.listing.CreditApplicationListingResponseMessageBody">
+		<map-to xml="MsgBody" />
+		<field name="CreditApplications" type="com.integrosys.cms.host.eai.limit.inquiry.listing.CreditApplication" collection="arraylist">
+			<bind-xml name="CreditApplication" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.inquiry.listing.CreditApplication">
+		<map-to xml="CreditApplication" />
+		<field name="HostAANumber" type="string">
+			<bind-xml name="HostAANumber" />
+		</field>
+		<field name="LosAANumber" type="string" >
+			<bind-xml name="LOSAANumber" />
+		</field>
+		<field name="ApplicationSource" type="string">
+			<bind-xml name="AASource" />
+		</field>
+		<field name="ApplicationType" type="string">
+			<bind-xml name="AAType" />
+		</field>
+		<field name="ApplicationLawType" type="string">
+			<bind-xml name="AALawType" />
+		</field>
+		<field name="ApplicationApproveDate" type="string">
+			<bind-xml name="AAApproveDate" />
+		</field>
+		<field name="ApplicationStatus" type="string">
+			<bind-xml name="AAStatus" />
+		</field>
+		<field name="OriginatingBookingLocation" type="com.integrosys.cms.host.eai.OriginatingBookingLocation">
+			<bind-xml name="OriginatingBookingLocation" />
+		</field>
+		<field name="MainProfile" type="com.integrosys.cms.host.eai.customer.bus.MainProfile">
+			<bind-xml name="MainProfile" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.customer.bus.MainProfile">
+		<map-to xml="MainProfile" />
+		<field name="CIFId" type="string">
+			<bind-xml name="CIFId" />
+		</field>
+		<field name="source" type="string" >
+			<bind-xml name="CIFSource" />
+		</field>
+		<field name="CustomerNameLong" type="string">
+			<bind-xml name="CustomerNameLong" />
+		</field>
+		<field name="CustomerNameShort" type="string">
+			<bind-xml name="CustomerNameShort" />
+		</field>
+		<field name="IdInfo1" type="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo">
+			<bind-xml name="PrimaryIDInfo" />
+		</field>
+	</class>
+	
+	<class name="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo">
+		<map-to xml="PrimaryIDInfo" />
+		<field name="IdNumber" type="string">
+			<bind-xml name="IdNumber" />
+		</field>
+		<field name="IdType" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="IdType" />
+		</field>
+		<field name="CountryIssued" type="string">
+			<bind-xml name="CountryIssued" />
+		</field>
+	</class>
+
+</mapping>

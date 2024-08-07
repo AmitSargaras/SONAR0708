@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CreatefacilitylineUploadForm" type="com.integrosys.cms.ui.createfacupload.CreatefacilitylineUploadForm">
+        </form-bean>
+
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/Createfacilitylineupload" type="com.integrosys.cms.ui.createfacupload.CreateFacilityLineUploadAction" name="CreatefacilitylineUploadForm" validate="false" scope="request">
+            <forward name="excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/createfacilitylineupload/upload_createfacilityline.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.createfacilitylineupload"/>
+            </forward>
+            <forward name="createfacilitylineupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/createfacilitylineupload/list_createfacilityline_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.createfacilitylineupload"/>
+            </forward>
+              <forward name="error_excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/createfacilitylineupload/upload_createfacilityline.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.createfacilitylineupload"/>
+            </forward> 
+       
+            
+            
+        </action>
+		
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+</struts-config>

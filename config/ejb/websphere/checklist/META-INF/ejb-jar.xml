@@ -1,0 +1,967 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_CheckList">
+   <display-name>CheckList</display-name>
+   <enterprise-beans>
+      <session id="session_SBCheckListProxyManager">
+         <ejb-name>SBCheckListProxyManager</ejb-name>
+         <home>com.integrosys.cms.app.checklist.proxy.SBCheckListProxyManagerHome</home>
+         <remote>com.integrosys.cms.app.checklist.proxy.SBCheckListProxyManager</remote>
+         <ejb-class>com.integrosys.cms.app.checklist.proxy.SBCheckListProxyManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCheckListProxyManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCheckListBusManager">
+         <ejb-name>SBCheckListBusManager</ejb-name>
+         <home>com.integrosys.cms.app.checklist.bus.SBCheckListBusManagerHome</home>
+         <remote>com.integrosys.cms.app.checklist.bus.SBCheckListBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.checklist.bus.SBCheckListBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBCheckListBusManager_EBCheckListItem">
+            <ejb-ref-name>EBCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocal</local>
+            <ejb-link>EBCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCheckListBusManager_EBCheckList">
+            <ejb-ref-name>EBCheckListLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBCheckListLocal</local>
+            <ejb-link>EBCheckList</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBCheckListBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBStagingCheckListBusManager">
+         <ejb-name>SBStagingCheckListBusManager</ejb-name>
+         <home>com.integrosys.cms.app.checklist.bus.SBCheckListBusManagerHome</home>
+         <remote>com.integrosys.cms.app.checklist.bus.SBCheckListBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.checklist.bus.SBStagingCheckListBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBStagingCheckListBusManager_EBStagingCheckListItem">
+            <ejb-ref-name>EBStagingCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocal</local>
+            <ejb-link>EBStagingCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBStagingCheckListBusManager_EBStagingCheckList">
+            <ejb-ref-name>EBStagingCheckListLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBCheckListLocal</local>
+            <ejb-link>EBStagingCheckList</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBStagingCheckListBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBDocumentshare">
+         <ejb-name>EBDocumentshare</ejb-name>
+         <home>com.integrosys.cms.app.checklist.bus.EBDocumentshareHome</home>
+         <remote>com.integrosys.cms.app.checklist.bus.EBDocumentshare</remote>
+         <local-home>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocalHome</local-home>
+         <local>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocal</local>
+         <ejb-class>com.integrosys.cms.app.checklist.bus.EBDocumentshareBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBDocumentshare</abstract-schema-name>
+         <cmp-field id="cmpfield_EBDocumentshare_cMPDocShareId">
+            <field-name>cMPDocShareId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_cMPCheckListItemID">
+            <field-name>cMPCheckListItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_checkListId">
+            <field-name>checkListId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_profileId">
+            <field-name>profileId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_subProfileId">
+            <field-name>subProfileId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_pledgorDtlId">
+            <field-name>pledgorDtlId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_collateralId">
+            <field-name>collateralId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_details">
+            <field-name>details</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_statusStr">
+            <field-name>statusStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBDocumentshare_docShareIdRef">
+            <field-name>docShareIdRef</field-name>
+         </cmp-field>
+         <primkey-field>cMPDocShareId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBDocumentshare">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCheckListID</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBDocumentshare o WHERE o.checkListId = ?1 AND (o.statusStr IS NULL OR o.statusStr <> 'DELETED') ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingDocumentshare">
+         <ejb-name>EBStagingDocumentshare</ejb-name>
+         <local-home>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocalHome</local-home>
+         <local>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocal</local>
+         <ejb-class>com.integrosys.cms.app.checklist.bus.EBStgDocumentshareBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingDocumentshare</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_cMPDocShareId">
+            <field-name>cMPDocShareId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_cMPCheckListItemID">
+            <field-name>cMPCheckListItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_checkListId">
+            <field-name>checkListId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_profileId">
+            <field-name>profileId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_subProfileId">
+            <field-name>subProfileId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_pledgorDtlId">
+            <field-name>pledgorDtlId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_collateralId">
+            <field-name>collateralId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_details">
+            <field-name>details</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_statusStr">
+            <field-name>statusStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingDocumentshare_docShareIdRef">
+            <field-name>docShareIdRef</field-name>
+         </cmp-field>
+         <primkey-field>cMPDocShareId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBStagingDocumentshare">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCheckListID</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingDocumentshare o WHERE o.checkListId = ?1 AND (o.statusStr IS NULL OR o.statusStr <> 'DELETED') ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCheckList">
+         <ejb-name>EBCheckList</ejb-name>
+         <home>com.integrosys.cms.app.checklist.bus.EBCheckListHome</home>
+         <remote>com.integrosys.cms.app.checklist.bus.EBCheckList</remote>
+         <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListLocalHome</local-home>
+         <local>com.integrosys.cms.app.checklist.bus.EBCheckListLocal</local>
+         <ejb-class>com.integrosys.cms.app.checklist.bus.EBCheckListBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCheckList</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCheckList_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_checkListType">
+            <field-name>checkListType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_subCategory">
+            <field-name>subCategory</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_cMPTemplateID">
+            <field-name>cMPTemplateID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_cMPPledgerID">
+            <field-name>cMPPledgerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_cMPBorrowerID">
+            <field-name>cMPBorrowerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_cMPCollateralID">
+            <field-name>cMPCollateralID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_checkListStatus">
+            <field-name>checkListStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_lastDocReceivedDate">
+            <field-name>lastDocReceivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_legalFirm">
+            <field-name>legalFirm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_lawFirmPanelFlag">
+            <field-name>lawFirmPanelFlag</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_lawyerReferenceNumber">
+            <field-name>lawyerReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_lawyerInCharge">
+            <field-name>lawyerInCharge</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_lawFirmAddress">
+            <field-name>lawFirmAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_lawFirmContactNumber">
+            <field-name>lawFirmContactNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_lawyerEmail">
+            <field-name>lawyerEmail</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_valuerFirm">
+            <field-name>valuerFirm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_valuerFirmPanelFlag">
+            <field-name>valuerFirmPanelFlag</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_valuerReferenceNumber">
+            <field-name>valuerReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_valuerInCharge">
+            <field-name>valuerInCharge</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_valuerFirmAddress">
+            <field-name>valuerFirmAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_valuerFirmContactNumber">
+            <field-name>valuerFirmContactNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_valuerEmail">
+            <field-name>valuerEmail</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_insurerFirm">
+            <field-name>insurerFirm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_insurerFirmPanelFlag">
+            <field-name>insurerFirmPanelFlag</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_insurerReferenceNumber">
+            <field-name>insurerReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_insurerInCharge">
+            <field-name>insurerInCharge</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_insurerFirmAddress">
+            <field-name>insurerFirmAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_insurerFirmContactNumber">
+            <field-name>insurerFirmContactNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_insurerEmail">
+            <field-name>insurerEmail</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_countryCode">
+            <field-name>countryCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_orgCode">
+            <field-name>orgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_deficiencyDate">
+            <field-name>deficiencyDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_nextActionDate">
+            <field-name>nextActionDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_cMPAllowDeleteInd">
+            <field-name>cMPAllowDeleteInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_cMPDisableCollaborationInd">
+            <field-name>cMPDisableCollaborationInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_applicationType">
+            <field-name>applicationType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckList_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>cMPCheckListID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCheckList_EBCheckListItem">
+            <ejb-ref-name>EBCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocal</local>
+            <ejb-link>EBCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCheckList_EBDocumentshare">
+            <ejb-ref-name>EBDocumentshareLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocal</local>
+            <ejb-link>EBDocumentshare</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCheckList">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileIDAndCollateralID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCheckList o WHERE o.cMPLimitProfileID = ?1 AND o.cMPCollateralID = ?2 AND o.checkListStatus <> 'OBSOLETE']]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCheckListItem">
+         <ejb-name>EBCheckListItem</ejb-name>
+         <home>com.integrosys.cms.app.checklist.bus.EBCheckListItemHome</home>
+         <remote>com.integrosys.cms.app.checklist.bus.EBCheckListItem</remote>
+         <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.checklist.bus.EBCheckListItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCheckListItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCheckListItem_cMPCheckListItemID">
+            <field-name>cMPCheckListItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_isLockedIndStr">
+            <field-name>isLockedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_isMandatoryIndStr">
+            <field-name>isMandatoryIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_isInVaultIndStr">
+            <field-name>isInVaultIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_isExtCustIndStr">
+            <field-name>isExtCustIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_isAuditIndStr">
+            <field-name>isAuditIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_isInheritedIndStr">
+            <field-name>isInheritedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_itemStatus">
+            <field-name>itemStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_cMPItemCode">
+            <field-name>cMPItemCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_cMPItemDesc">
+            <field-name>cMPItemDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_expiryDate">
+            <field-name>expiryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_cMPMonitorType">
+            <field-name>cMPMonitorType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_checkListItemRef">
+            <field-name>checkListItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_parentItemID">
+            <field-name>parentItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_actionParty">
+            <field-name>actionParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_creditApprover">
+            <field-name>creditApprover</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_docRef">
+            <field-name>docRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_formNo">
+            <field-name>formNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_docDate">
+            <field-name>docDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_deferExpiryDate">
+            <field-name>deferExpiryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_deferExtendedDate">
+            <field-name>deferExtendedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_identifyDate">
+            <field-name>identifyDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_docCompletionDate">
+            <field-name>docCompletionDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_lastUpdateDate">
+            <field-name>lastUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_cPCCustodianStatus">
+            <field-name>cPCCustodianStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_cPCCustodianStatusUpdateDate">
+            <field-name>cPCCustodianStatusUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_cPCCustodianStatusLastUpdateDate">
+            <field-name>cPCCustodianStatusLastUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_parentCheckListItemRef">
+            <field-name>parentCheckListItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_effectiveDate">
+            <field-name>effectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_sharedStr">
+            <field-name>sharedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_isPreApproveStr">
+            <field-name>isPreApproveStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_receivedDate">
+            <field-name>receivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_completedDate">
+            <field-name>completedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_expectedReturnDate">
+            <field-name>expectedReturnDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_waivedDate">
+            <field-name>waivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_lodgedDate">
+            <field-name>lodgedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_tempUpliftedDate">
+            <field-name>tempUpliftedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCheckListItem_permUpliftedDate">
+            <field-name>permUpliftedDate</field-name>
+         </cmp-field>
+         <primkey-field>cMPCheckListItemID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCheckListItem_EBDocumentshare">
+            <ejb-ref-name>EBDocumentshareLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocal</local>
+            <ejb-link>EBDocumentshare</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCheckListItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCheckListItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCheckListItem o WHERE o.checkListItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingCheckList">
+         <ejb-name>EBStagingCheckList</ejb-name>
+         <home>com.integrosys.cms.app.checklist.bus.EBCheckListHome</home>
+         <remote>com.integrosys.cms.app.checklist.bus.EBCheckList</remote>
+         <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListLocalHome</local-home>
+         <local>com.integrosys.cms.app.checklist.bus.EBCheckListLocal</local>
+         <ejb-class>com.integrosys.cms.app.checklist.bus.EBStgCheckListBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingCheckList</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingCheckList_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_checkListType">
+            <field-name>checkListType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_subCategory">
+            <field-name>subCategory</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_cMPTemplateID">
+            <field-name>cMPTemplateID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_cMPPledgerID">
+            <field-name>cMPPledgerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_cMPBorrowerID">
+            <field-name>cMPBorrowerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_cMPCollateralID">
+            <field-name>cMPCollateralID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_checkListStatus">
+            <field-name>checkListStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_lastDocReceivedDate">
+            <field-name>lastDocReceivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_legalFirm">
+            <field-name>legalFirm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_lawFirmPanelFlag">
+            <field-name>lawFirmPanelFlag</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_lawyerReferenceNumber">
+            <field-name>lawyerReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_lawyerInCharge">
+            <field-name>lawyerInCharge</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_lawFirmAddress">
+            <field-name>lawFirmAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_lawFirmContactNumber">
+            <field-name>lawFirmContactNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_lawyerEmail">
+            <field-name>lawyerEmail</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_valuerFirm">
+            <field-name>valuerFirm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_valuerFirmPanelFlag">
+            <field-name>valuerFirmPanelFlag</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_valuerReferenceNumber">
+            <field-name>valuerReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_valuerInCharge">
+            <field-name>valuerInCharge</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_valuerFirmAddress">
+            <field-name>valuerFirmAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_valuerFirmContactNumber">
+            <field-name>valuerFirmContactNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_valuerEmail">
+            <field-name>valuerEmail</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_insurerFirm">
+            <field-name>insurerFirm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_insurerFirmPanelFlag">
+            <field-name>insurerFirmPanelFlag</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_insurerReferenceNumber">
+            <field-name>insurerReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_insurerInCharge">
+            <field-name>insurerInCharge</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_insurerFirmAddress">
+            <field-name>insurerFirmAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_insurerFirmContactNumber">
+            <field-name>insurerFirmContactNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_insurerEmail">
+            <field-name>insurerEmail</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_countryCode">
+            <field-name>countryCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_orgCode">
+            <field-name>orgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_deficiencyDate">
+            <field-name>deficiencyDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_nextActionDate">
+            <field-name>nextActionDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_cMPAllowDeleteInd">
+            <field-name>cMPAllowDeleteInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_cMPDisableCollaborationInd">
+            <field-name>cMPDisableCollaborationInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_applicationType">
+            <field-name>applicationType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckList_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>cMPCheckListID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingCheckList_EBStagingCheckListItem">
+            <ejb-ref-name>EBStagingCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocal</local>
+            <ejb-link>EBStagingCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBStagingCheckList_EBCheckListItem">
+            <ejb-ref-name>EBCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocal</local>
+            <ejb-link>EBCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBStagingCheckList_EBStagingDocumentshare">
+            <ejb-ref-name>EBStagingDocumentshareLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocal</local>
+            <ejb-link>EBStagingDocumentshare</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingCheckList">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileIDAndCollateralID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCheckList o WHERE o.cMPLimitProfileID = ?1 AND o.cMPCollateralID = ?2 AND o.checkListStatus <> 'OBSOLETE']]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingCheckListItem">
+         <ejb-name>EBStagingCheckListItem</ejb-name>
+         <local-home>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.checklist.bus.EBCheckListItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.checklist.bus.EBStgCheckListItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingCheckListItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_cMPCheckListItemID">
+            <field-name>cMPCheckListItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_isLockedIndStr">
+            <field-name>isLockedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_isMandatoryIndStr">
+            <field-name>isMandatoryIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_isInVaultIndStr">
+            <field-name>isInVaultIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_isExtCustIndStr">
+            <field-name>isExtCustIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_isAuditIndStr">
+            <field-name>isAuditIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_isInheritedIndStr">
+            <field-name>isInheritedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_itemStatus">
+            <field-name>itemStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_cMPItemCode">
+            <field-name>cMPItemCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_cMPItemDesc">
+            <field-name>cMPItemDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_expiryDate">
+            <field-name>expiryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_cMPMonitorType">
+            <field-name>cMPMonitorType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_checkListItemRef">
+            <field-name>checkListItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_parentItemID">
+            <field-name>parentItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_actionParty">
+            <field-name>actionParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_creditApprover">
+            <field-name>creditApprover</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_docRef">
+            <field-name>docRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_formNo">
+            <field-name>formNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_docDate">
+            <field-name>docDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_deferExpiryDate">
+            <field-name>deferExpiryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_deferExtendedDate">
+            <field-name>deferExtendedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_identifyDate">
+            <field-name>identifyDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_docCompletionDate">
+            <field-name>docCompletionDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_lastUpdateDate">
+            <field-name>lastUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_cPCCustodianStatus">
+            <field-name>cPCCustodianStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_cPCCustodianStatusUpdateDate">
+            <field-name>cPCCustodianStatusUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_cPCCustodianStatusLastUpdateDate">
+            <field-name>cPCCustodianStatusLastUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_parentCheckListItemRef">
+            <field-name>parentCheckListItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_effectiveDate">
+            <field-name>effectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_sharedStr">
+            <field-name>sharedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_isPreApproveStr">
+            <field-name>isPreApproveStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_receivedDate">
+            <field-name>receivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_completedDate">
+            <field-name>completedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_expectedReturnDate">
+            <field-name>expectedReturnDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_waivedDate">
+            <field-name>waivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_lodgedDate">
+            <field-name>lodgedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_tempUpliftedDate">
+            <field-name>tempUpliftedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCheckListItem_permUpliftedDate">
+            <field-name>permUpliftedDate</field-name>
+         </cmp-field>
+         <primkey-field>cMPCheckListItemID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingCheckListItem_EBStagingDocumentshare">
+            <ejb-ref-name>EBStagingDocumentshareLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocalHome</local-home>
+            <local>com.integrosys.cms.app.checklist.bus.EBDocumentshareLocal</local>
+            <ejb-link>EBStagingDocumentshare</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingCheckListItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCheckListItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCheckListItem o WHERE o.checkListItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_CheckList-CheckListItem">
+         <ejb-relation-name>CheckList-CheckListItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CheckList-Has-CheckListItem">
+            <ejb-relationship-role-name>CheckList-Has-CheckListItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCheckList</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCheckListItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_CheckListItem-BelongsTo-CheckList">
+            <ejb-relationship-role-name>CheckListItem-BelongsTo-CheckList</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCheckListItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_CheckListItem-Documentshare">
+         <ejb-relation-name>CheckListItem-Documentshare</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CheckListItem-Has-Documentshare">
+            <ejb-relationship-role-name>CheckListItem-Has-Documentshare</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCheckListItem</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRShareCheckList</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_Documentshare-BelongsTo-CheckListItem">
+            <ejb-relationship-role-name>Documentshare-BelongsTo-CheckListItem</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBDocumentshare</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingCheckListItem-StagingDocumentshare">
+         <ejb-relation-name>StagingCheckListItem-StagingDocumentshare</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingCheckListItem-Has-StagingDocumentshare">
+            <ejb-relationship-role-name>StagingCheckListItem-Has-StagingDocumentshare</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingCheckListItem</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRShareCheckList</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingDocumentshare-BelongsTo-StagingCheckListItem">
+            <ejb-relationship-role-name>StagingDocumentshare-BelongsTo-StagingCheckListItem</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingDocumentshare</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingCheckList-StagingCheckListItem">
+         <ejb-relation-name>StagingCheckList-StagingCheckListItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingCheckList-Has-StagingCheckListItem">
+            <ejb-relationship-role-name>StagingCheckList-Has-StagingCheckListItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingCheckList</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCheckListItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingCheckListItem-BelongsTo-StagingCheckList">
+            <ejb-relationship-role-name>StagingCheckListItem-BelongsTo-StagingCheckList</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingCheckListItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBCheckListProxyManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCheckListBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCheckList</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingCheckList</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCheckListItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingCheckListItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <!--  Start  for cr-17  --><method>
+            <ejb-name>EBDocumentshare</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingDocumentshare</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <!--  End  for cr17  --><trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

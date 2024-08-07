@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		To be used for ICommand instances. 'id' naming recommended
+		to be 'Action.Command'.
+		All the ICommand instances will be injected
+		into 'nameCommandMap' property of Action class.
+		Injecting is done in
+		'action-[module]-servlet.xml' context file, resided in
+		/WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse
+		or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+   <bean
+		id="ManualInputCustomerAction.ManualInputPrepareEditCustomerCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ManualInputPrepareEditCustomerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		<property name="valuationAgencyProxy" ref="valuationAgencyProxy" />
+		<property name="otherBankProxyManager" ref="otherBankProxyManager" />
+		<property name="cityProxy" ref="cityProxy" />
+	    <property name="rbiCategoryProxy" ref="rbiCategoryProxy" />
+
+	</bean>
+ <bean
+		id="ManualInputCustomerAction.ManualInputCheckerReadCustomerCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ManualInputCheckerReadCustomerCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+	</bean>
+	 <bean
+		id="ManualInputCustomerAction.ManualInputCustomerSearchCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ManualInputCustomerSearchCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+
+	</bean>
+ <bean
+		id="ManualInputCustomerAction.ManualInputPrepareProcessCustomerCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ManualInputPrepareProcessCustomerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		<property name="valuationAgencyProxy" ref="valuationAgencyProxy" />
+		<property name="otherBankProxyManager" ref="otherBankProxyManager" />
+		<property name="cityProxy" ref="cityProxy" />
+	    <property name="rbiCategoryProxy" ref="rbiCategoryProxy" />
+
+	</bean>
+
+<bean id="ManualInputCustomerAction.ViewOtherBankByIndexCommand" class="com.integrosys.cms.ui.manualinput.customer.ViewOtherBankByIndexCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+
+	<bean
+		id="ManualInputCustomerAction.ManualInputPrepareCreateCustomerCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ManualInputPrepareCreateCustomerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		<property name="valuationAgencyProxy" ref="valuationAgencyProxy" />
+		<property name="otherBankProxyManager" ref="otherBankProxyManager" />
+
+	</bean>
+
+	<bean id="ManualInputCustomerAction.RefreshCityTownCommand"
+		class="com.integrosys.cms.ui.valuationAgency.RefreshCityTownCommand">
+		<property name="valuationAgencyProxy" ref="valuationAgencyProxy" />
+	</bean>
+
+	<bean id="ManualInputCustomerAction.RefreshCountryCommmand"
+		class="com.integrosys.cms.ui.geography.city.RefreshCountryCommmand">
+		<property name="cityProxy" ref="cityProxy" />
+	</bean>
+
+	<bean id="ManualInputCustomerAction.RefreshCityCommmand"
+		class="com.integrosys.cms.ui.geography.city.RefreshCityCommmand">
+		<property name="cityProxy" ref="cityProxy" />
+	</bean>
+
+	<bean id="ManualInputCustomerAction.RefreshRelationshipMgrCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.RefreshRelationshipMgrCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+	</bean>
+
+	<bean id="ManualInputCustomerAction.AddPrepareOtherSystemCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddPrepareOtherSystemCommand">
+	</bean>
+<bean id="ManualInputCustomerAction.AddPrepareDirectorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddPrepareDirectorCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="directorMasterProxy" ref="directorMasterProxy" />
+	</bean>
+
+	<bean id="ManualInputCustomerAction.AddOtherSystemCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddOtherSystemCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+		 <property name="rbiCategoryProxy" ref="rbiCategoryProxy" />
+	</bean>
+
+	<bean id="ManualInputCustomerAction.DisplayBankByNameCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.DisplayBankByNameCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.DisplayBankByIFSCCodeCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.DisplayBankByIFSCCodeCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.RefreshRbiIndustryCodeCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.RefreshRbiIndustryCodeCommand">
+		<property name="rbiCategoryProxy" ref="rbiCategoryProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.AddOtherBankCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager" />
+		<property name="systemBankProxy" ref="systemBankProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.AddPrepareSubLineCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddPrepareSubLineCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.AddPrepareVendorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddPrepareVendorCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.AddNewVendorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddNewVendorCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.CreateCustomerErrorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.CreateCustomerErrorCommand">
+	</bean>
+	
+		<bean id="ManualInputCustomerAction.SaveCustomerErrorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SaveCustomerErrorCommand">
+		  <property name="rbiCategoryProxy" ref="rbiCategoryProxy" />
+		  <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />  
+	</bean>
+	<bean id="ManualInputCustomerAction.DisplayPartyByFacilityCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.DisplayPartyByFacilityCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.AddPartyGroupCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddPartyGroupCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.SavePartyGroupCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SavePartyGroupCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+	</bean>
+	<bean id="ManualInputCustomerAction.SaveDirectorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SaveDirectorCommand">
+		<property name="cityProxy" ref="cityProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.SaveEditedDirectorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SaveEditedDirectorCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.ConfirmDeleteDirectorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ConfirmDeleteDirectorCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.ConfirmDeleteBankingMethodCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ConfirmDeleteBankingMethodCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.SaveEditedPartyGroupCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SaveEditedPartyGroupCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.ConfirmDeletePartyGroupCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ConfirmDeletePartyGroupCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+	</bean>
+	<bean id="ManualInputCustomerAction.DisplaySummaryDetailsCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.DisplaySummaryDetailsCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+		  <property name="rbiCategoryProxy" ref="rbiCategoryProxy" />
+	</bean>
+	<bean id="ManualInputCustomerAction.SaveDirectorErrorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SaveDirectorErrorCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+		  <property name="rbiCategoryProxy" ref="rbiCategoryProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.PrepareEditDirectorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.PrepareEditDirectorCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="directorMasterProxy" ref="directorMasterProxy" />
+	</bean>
+	<bean id="ManualInputCustomerAction.ViewPrepareEditDirectorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ViewPrepareEditDirectorCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="directorMasterProxy" ref="directorMasterProxy" />
+	</bean>
+	<bean id="ManualInputCustomerAction.DisplayCibilDetailsCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.DisplayCibilDetailsCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		 <property name="rbiCategoryProxy" ref="rbiCategoryProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.CopyOfficeToRegisterCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.CopyOfficeToRegisterCommand">
+		<property name="cityProxy" ref="cityProxy" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.PrepareEditSystemCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.PrepareEditSystemCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.SaveEditedSystemCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SaveEditedSystemCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.SystemDeletedCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SystemDeletedCommand">
+		<property name="cityProxy" ref="cityProxy" />
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.PrepareEditSublinePartyCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.PrepareEditSublinePartyCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.PrepareEditVendorCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.PrepareEditVendorCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		
+	</bean>
+	<bean id="ManualInputCustomerAction.SaveVendorNameCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SaveVendorNameCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		
+	</bean>
+	
+	<bean id="ManualInputCustomerAction.PrepareDeleteSublinePartyCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.PrepareDeleteSublinePartyCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		
+	</bean>
+	<bean id="ManualInputCustomerAction.PrepareDeleteVendorPartyCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.PrepareDeleteVendorPartyCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		
+	</bean>
+	<bean id="ManualInputCustomerAction.ConfirmDeleteVendorPartyCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ConfirmDeleteVendorPartyCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+		
+	</bean>
+	<bean id="ManualInputCustomerAction.EditedPartyGroupCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.EditedPartyGroupCommand">
+		<property name="partyGroupProxy" ref="partyGroupProxy" />
+	</bean>
+	<bean id="ManualInputCustomerAction.AddPrepareCriFacilityCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.AddPrepareCriFacilityCommand">
+		<property name="directorMasterProxy" ref="directorMasterProxy" />
+	</bean>
+	<bean id="ManualInputCustomerAction.RefreshLmtFacListCmd"
+		class="com.integrosys.cms.ui.manualinput.customer.RefreshLmtFacListCmd">
+	</bean>
+	<bean id="ManualInputCustomerAction.SaveCriFacilityCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.SaveCriFacilityCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.PrepareRemoveCriFacCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.PrepareRemoveCriFacCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.CheckerUpdateCibilDetailsCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.CheckerUpdateCibilDetailsCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.CreateCheckerCibilDetailsCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.CreateCheckerCibilDetailsCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.ValidatePANNoWithNSDLCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ValidatePANNoWithNSDLCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.ValidateLEICodeWithCCILCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.ValidateLEICodeWithCCILCommand">
+	</bean>
+	<bean id="ManualInputCustomerAction.RefreshSecurityTypeCommand"
+		class="com.integrosys.cms.ui.manualinput.customer.RefreshSecurityTypeCommand">
+	</bean>
+</beans>
+

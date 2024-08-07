@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "c://ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_Manualinput">
+   <display-name>Manualinput</display-name>
+   <enterprise-beans>
+      <session id="session_SBMILmtProxy">
+         <ejb-name>SBMILmtProxy</ejb-name>
+         <home>com.integrosys.cms.app.manualinput.limit.proxy.SBMILmtProxyHome</home>
+         <remote>com.integrosys.cms.app.manualinput.limit.proxy.SBMILmtProxy</remote>
+         <ejb-class>com.integrosys.cms.app.manualinput.limit.proxy.SBMILmtProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBMILmtProxy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBMISecProxy">
+         <ejb-name>SBMISecProxy</ejb-name>
+         <home>com.integrosys.cms.app.manualinput.security.proxy.SBMISecProxyHome</home>
+         <remote>com.integrosys.cms.app.manualinput.security.proxy.SBMISecProxy</remote>
+         <ejb-class>com.integrosys.cms.app.manualinput.security.proxy.SBMISecProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBMISecProxy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBMIAAProxy">
+         <ejb-name>SBMIAAProxy</ejb-name>
+         <home>com.integrosys.cms.app.manualinput.aa.proxy.SBMIAAProxyHome</home>
+         <remote>com.integrosys.cms.app.manualinput.aa.proxy.SBMIAAProxy</remote>
+         <ejb-class>com.integrosys.cms.app.manualinput.aa.proxy.SBMIAAProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBMIAAProxy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+   </enterprise-beans>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBMILmtProxy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBMISecProxy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBMIAAProxy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

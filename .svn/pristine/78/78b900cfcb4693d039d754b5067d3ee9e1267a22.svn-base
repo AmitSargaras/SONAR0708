@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?><ejb-jar id="ejb_CommonData">
+   <display-name>CommonData</display-name>
+   <enterprise-beans>
+      <session id="session_SBCommonDataProxyBean">
+         <ejb-name>SBCommonDataProxyBean</ejb-name>
+         <home>com.integrosys.component.commondata.app.proxy.SBCommonDataProxyHome</home>
+         <remote>com.integrosys.component.commondata.app.proxy.SBCommonDataProxy</remote>
+         <ejb-class>com.integrosys.component.commondata.app.proxy.SBCommonDataProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCommonDataProxyBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCommonDataManagerBean">
+         <ejb-name>SBCommonDataManagerBean</ejb-name>
+         <home>com.integrosys.component.commondata.app.bus.SBCommonDataManagerHome</home>
+         <remote>com.integrosys.component.commondata.app.bus.SBCommonDataManager</remote>
+         <ejb-class>com.integrosys.component.commondata.app.bus.SBCommonDataManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerBean_EBBusinessParameterGroupBean">
+            <ejb-ref-name>EBBusinessParameterGroupLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterGroupLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterGroupLocal</local>
+            <ejb-link>EBBusinessParameterGroupBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerBean_EBBusinessParameterBean">
+            <ejb-ref-name>EBBusinessParameterLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterLocal</local>
+            <ejb-link>EBBusinessParameterBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerBean_EBBusinessParameterGroupStagingBean">
+            <ejb-ref-name>EBBusinessParameterGroupStagingLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterGroupLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterGroupLocal</local>
+            <ejb-link>EBBusinessParameterGroupStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerBean_EBBusinessParameterStagingBean">
+            <ejb-ref-name>EBBusinessParameterStagingLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterLocal</local>
+            <ejb-link>EBBusinessParameterStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerBean_EBCodeCategoryBean">
+            <ejb-ref-name>EBCodeCategoryLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBCodeCategoryLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBCodeCategoryLocal</local>
+            <ejb-link>EBCodeCategoryBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerBean_EBCodeCategoryEntryBean">
+            <ejb-ref-name>EBCodeCategoryEntryLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBCodeCategoryEntryLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBCodeCategoryEntryLocal</local>
+            <ejb-link>EBCodeCategoryEntryBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBCommonDataManagerBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCommonDataManagerStagingBean">
+         <ejb-name>SBCommonDataManagerStagingBean</ejb-name>
+         <home>com.integrosys.component.commondata.app.bus.SBCommonDataManagerHome</home>
+         <remote>com.integrosys.component.commondata.app.bus.SBCommonDataManager</remote>
+         <ejb-class>com.integrosys.component.commondata.app.bus.SBCommonDataManagerStagingBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerStagingBean_EBBusinessParameterGroupBean">
+            <ejb-ref-name>EBBusinessParameterGroupLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterGroupLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterGroupLocal</local>
+            <ejb-link>EBBusinessParameterGroupBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerStagingBean_EBBusinessParameterBean">
+            <ejb-ref-name>EBBusinessParameterLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterLocal</local>
+            <ejb-link>EBBusinessParameterBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerStagingBean_EBBusinessParameterGroupStagingBean">
+            <ejb-ref-name>EBBusinessParameterGroupStagingLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterGroupLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterGroupLocal</local>
+            <ejb-link>EBBusinessParameterGroupStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerStagingBean_EBBusinessParameterStagingBean">
+            <ejb-ref-name>EBBusinessParameterStagingLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterLocal</local>
+            <ejb-link>EBBusinessParameterStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerStagingBean_EBCodeCategoryBean">
+            <ejb-ref-name>EBCodeCategoryLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBCodeCategoryLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBCodeCategoryLocal</local>
+            <ejb-link>EBCodeCategoryBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCommonDataManagerStagingBean_EBCodeCategoryEntryBean">
+            <ejb-ref-name>EBCodeCategoryEntryLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBCodeCategoryEntryLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBCodeCategoryEntryLocal</local>
+            <ejb-link>EBCodeCategoryEntryBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBCommonDataManagerStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBBusinessParameterGroupBean">
+         <ejb-name>EBBusinessParameterGroupBean</ejb-name>
+         <local-home>com.integrosys.component.commondata.app.bus.EBBusinessParameterGroupLocalHome</local-home>
+         <local>com.integrosys.component.commondata.app.bus.EBBusinessParameterGroupLocal</local>
+         <ejb-class>com.integrosys.component.commondata.app.bus.EBBusinessParameterGroupBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.String</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBBusinessParameterGroupBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBBusinessParameterGroupBean_groupCode">
+            <field-name>groupCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterGroupBean_groupName">
+            <field-name>groupName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterGroupBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterGroupBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>groupCode</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBBusinessParameterGroupBean_EBBusinessParameterBean">
+            <ejb-ref-name>EBBusinessParameterLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterLocal</local>
+            <ejb-link>EBBusinessParameterBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBBusinessParameterGroupBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method id="QueryMethod_EBBusinessParameterGroupBean_findAll">
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBBusinessParameterGroupBean o  ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBBusinessParameterBean">
+         <ejb-name>EBBusinessParameterBean</ejb-name>
+         <local-home>com.integrosys.component.commondata.app.bus.EBBusinessParameterLocalHome</local-home>
+         <local>com.integrosys.component.commondata.app.bus.EBBusinessParameterLocal</local>
+         <ejb-class>com.integrosys.component.commondata.app.bus.EBBusinessParameterBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBBusinessParameterBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_parameterPK">
+            <field-name>parameterPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_parameterCode">
+            <field-name>parameterCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_parameterName">
+            <field-name>parameterName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_parameterValue">
+            <field-name>parameterValue</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_entityID">
+            <field-name>entityID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_versionNumber">
+            <field-name>versionNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_versionStatus">
+            <field-name>versionStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_effectiveDate">
+            <field-name>effectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>parameterPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBBusinessParameterBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method id="QueryMethod_EBBusinessParameterBean_findAll">
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBBusinessParameterBean o ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByParameterCode</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBBusinessParameterBean o WHERE o.parameterCode = ?1 AND o.versionStatus='Active' ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBBusinessParameterGroupStagingBean">
+         <ejb-name>EBBusinessParameterGroupStagingBean</ejb-name>
+         <local-home>com.integrosys.component.commondata.app.bus.EBBusinessParameterGroupLocalHome</local-home>
+         <local>com.integrosys.component.commondata.app.bus.EBBusinessParameterGroupLocal</local>
+         <ejb-class>com.integrosys.component.commondata.app.bus.EBBusinessParameterGroupStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.String</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBBusinessParameterGroupStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBBusinessParameterGroupStagingBean_groupCode">
+            <field-name>groupCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterGroupStagingBean_groupName">
+            <field-name>groupName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterGroupStagingBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterGroupStagingBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>groupCode</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBBusinessParameterGroupStagingBean_EBBusinessParameterStagingBean">
+            <ejb-ref-name>EBBusinessParameterStagingLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBBusinessParameterLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBBusinessParameterLocal</local>
+            <ejb-link>EBBusinessParameterStagingBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBBusinessParameterGroupStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method id="QueryMethod_EBBusinessParameterGroupStagingBean_findAll">
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBBusinessParameterGroupStagingBean o ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBBusinessParameterStagingBean">
+         <ejb-name>EBBusinessParameterStagingBean</ejb-name>
+         <local-home>com.integrosys.component.commondata.app.bus.EBBusinessParameterLocalHome</local-home>
+         <local>com.integrosys.component.commondata.app.bus.EBBusinessParameterLocal</local>
+         <ejb-class>com.integrosys.component.commondata.app.bus.EBBusinessParameterStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBBusinessParameterStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_parameterPK">
+            <field-name>parameterPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_parameterCode">
+            <field-name>parameterCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_parameterName">
+            <field-name>parameterName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_parameterValue">
+            <field-name>parameterValue</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_entityID">
+            <field-name>entityID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_versionNumber">
+            <field-name>versionNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_versionStatus">
+            <field-name>versionStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_effectiveDate">
+            <field-name>effectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBBusinessParameterStagingBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>parameterPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBBusinessParameterStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method id="QueryMethod_EBBusinessParameterStagingBean_findAll">
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBBusinessParameterStagingBean o ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByParameterCode</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBBusinessParameterStagingBean o WHERE o.parameterCode = ?1 AND o.versionStatus='Active' ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCodeCategoryBean">
+         <ejb-name>EBCodeCategoryBean</ejb-name>
+         <local-home>com.integrosys.component.commondata.app.bus.EBCodeCategoryLocalHome</local-home>
+         <local>com.integrosys.component.commondata.app.bus.EBCodeCategoryLocal</local>
+         <ejb-class>com.integrosys.component.commondata.app.bus.EBCodeCategoryBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCodeCategoryBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCodeCategoryBean_eBCategoryId">
+            <field-name>eBCategoryId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryBean_categoryCode">
+            <field-name>categoryCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryBean_categoryName">
+            <field-name>categoryName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryBean_categoryType">
+            <field-name>categoryType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryBean_eBVersionTime">
+            <field-name>eBVersionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>eBCategoryId</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCodeCategoryBean_EBCodeCategoryEntryBean">
+            <ejb-ref-name>EBCodeCategoryEntryLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.commondata.bus.EBCodeCategoryEntryLocalHome</local-home>
+            <local>com.integrosys.component.commondata.bus.EBCodeCategoryEntryLocal</local>
+            <ejb-link>EBCodeCategoryEntryBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCodeCategoryBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method id="QueryMethod_EBCodeCategoryBean_findAll">
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCodeCategoryBean o ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCodeCategoryEntryBean">
+         <ejb-name>EBCodeCategoryEntryBean</ejb-name>
+         <local-home>com.integrosys.component.commondata.app.bus.EBCodeCategoryEntryLocalHome</local-home>
+         <local>com.integrosys.component.commondata.app.bus.EBCodeCategoryEntryLocal</local>
+         <ejb-class>com.integrosys.component.commondata.app.bus.EBCodeCategoryEntryBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCodeCategoryEntryBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_eBEntryId">
+            <field-name>eBEntryId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_entryCode">
+            <field-name>entryCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_entryName">
+            <field-name>entryName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_activeStatus">
+            <field-name>activeStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_categoryCode">
+            <field-name>categoryCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_eBCategoryCodeId">
+            <field-name>eBCategoryCodeId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_eBGroupId">
+            <field-name>eBGroupId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_entrySource">
+            <field-name>entrySource</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_country">
+            <field-name>country</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_refEntryCode">
+            <field-name>refEntryCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_eBVersionTime">
+            <field-name>eBVersionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCodeCategoryEntryBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>eBEntryId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCodeCategoryEntryBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method id="QueryMethod_EBCodeCategoryEntryBean_findAll">
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCodeCategoryEntryBean o ]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_BusinessParameterGroup-BusinessParameter">
+         <ejb-relation-name>BusinessParameterGroup-BusinessParameter</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_BusinessParameterGroup-Has-BusinessParameter">
+            <ejb-relationship-role-name>BusinessParameterGroup-Has-BusinessParameter</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_BusinessParameterGroup-BusinessParameter_EBBusinessParameterGroupBean">
+               <ejb-name>EBBusinessParameterGroupBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="businessParameters_CMR">
+               <cmr-field-name>businessParameters_CMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_BusinessParameter-BelongsTo-BusinessParameterGroup">
+            <ejb-relationship-role-name>BusinessParameter-BelongsTo-BusinessParameterGroup</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_EBBusinessParameterBean">
+               <ejb-name>EBBusinessParameterBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_BusinessParameterGroupStaging-BusinessParameterStaging">
+         <ejb-relation-name>BusinessParameterGroupStaging-BusinessParameterStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_BusinessParameterGroupStaging-Has-BusinessParameterStaging">
+            <ejb-relationship-role-name>BusinessParameterGroupStaging-Has-BusinessParameterStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_BusinessParameterGroupStaging-BusinessParameterStaging_EBBusinessParameterGroupStagingBean">
+               <ejb-name>EBBusinessParameterGroupStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="businessParameters_CMR_staging">
+               <cmr-field-name>businessParameters_CMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_BusinessParameterStaging-BelongsTo-BusinessParameterGroupStaging">
+            <ejb-relationship-role-name>BusinessParameterStaging-BelongsTo-BusinessParameterGroupStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_EBBusinessParameterStagingBean">
+               <ejb-name>EBBusinessParameterStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_CodeCategory-CodeCategoryEntry">
+         <ejb-relation-name>CodeCategory-CodeCategoryEntry</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CodeCategory-Has-CodeCategoryEntry">
+            <ejb-relationship-role-name>CodeCategory-Has-CodeCategoryEntry</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_CodeCategory-CodeCategoryEntry_EBCodeCategoryBean">
+               <ejb-name>EBCodeCategoryBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="entriesCMR">
+               <cmr-field-name>entries_CMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_CodeCategoryEntry-BelongsTo-CodeCategory">
+            <ejb-relationship-role-name>CodeCategoryEntry-BelongsTo-CodeCategory</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_EBCodeCategoryEntryBean">
+               <ejb-name>EBCodeCategoryEntryBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction id="MethodTransaction_EBBusinessParameterGroupBean">
+         <description>Transaction attributes for 'EBBusinessParameterGroupBean' methods</description>
+         <method id="MethodElement_EBBusinessParameterGroupBean_ALL">
+            <ejb-name>EBBusinessParameterGroupBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction id="MethodTransaction_EBBusinessParameterBean">
+         <description>Transaction attributes for 'EBBusinessParameterBean' methods</description>
+         <method id="MethodElement_EBBusinessParameterBean_ALL">
+            <ejb-name>EBBusinessParameterBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction id="MethodTransaction_EBBusinessParameterGroupStagingBean">
+         <description>Transaction attributes for 'EBBusinessParameterGroupStagingBean' methods</description>
+         <method id="MethodElement_EBBusinessParameterGroupStagingBean_ALL">
+            <ejb-name>EBBusinessParameterGroupStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction id="MethodTransaction_EBBusinessParameterStagingBean">
+         <description>Transaction attributes for 'EBBusinessParameterStagingBean' methods</description>
+         <method id="MethodElement_EBBusinessParameterStagingBean_ALL">
+            <ejb-name>EBBusinessParameterStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction id="MethodTransaction_EBCodeCategoryBean">
+         <description>Transaction attributes for 'EBCodeCategoryBean' methods</description>
+         <method id="MethodElement_EBCodeCategoryBean_ALL">
+            <ejb-name>EBCodeCategoryBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction id="MethodTransaction_EBCodeCategoryEntryBean">
+         <description>Transaction attributes for 'EBCodeCategoryEntryBean' methods</description>
+         <method id="MethodElement_EBCodeCategoryEntryBean_ALL">
+            <ejb-name>EBCodeCategoryEntryBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction id="MethodTransaction_SBCommonDataManagerBean">
+         <description>Transaction attributes for 'SBCommonDataManagerBean' methods</description>
+         <method>
+            <ejb-name>SBCommonDataManagerBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction id="MethodTransaction_SBCommonDataManagerStagingBean">
+         <description>Transaction attributes for 'SBCommonDataManagerStagingBean' methods</description>
+         <method>
+            <ejb-name>SBCommonDataManagerStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction id="MethodTransaction_SBCommonDataProxyBean">
+         <description>Transaction attributes for 'SBCommonDataProxyBean' methods</description>
+         <method>
+            <ejb-name>SBCommonDataProxyBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

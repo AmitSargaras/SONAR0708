@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="stpDaoJdbcProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="stpTransDao" />
+				<idref bean="stpTransJdbc"/> 
+				<!-- <idref bean="stpTransOracleJdbc"/>-->
+			</list>
+		</property>
+	</bean>
+
+    <bean id="matchStpTrxOpMethodInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean
+				class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
+				<property name="nameMap">
+					<map>
+						<entry key="performProcess*" value="PROPAGATION_REQUIRED" />
+					</map>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="stpTrxOpProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchStpTrxOpMethodInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="CheckerApproveDeleteCollateralStpPassedOperationAspect"/>
+                <idref bean="CheckerApproveUpdateCollateralStpPassedOperationAspect"/>
+                <idref bean="CheckerApproveStpPassedFacilityOperationAspect"/>
+			</list>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" 
+	"http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+	
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="RecurrentCheckListForm" type="com.integrosys.cms.ui.checklist.recurrent.RecurrentCheckListForm">
+        </form-bean>
+        
+        <form-bean name="CheckListReceiptForm" type="com.integrosys.cms.ui.checklist.CheckListReceiptForm">
+        </form-bean>
+                
+        <form-bean name="RecurrentReceiptForm" type="com.integrosys.cms.ui.checklist.recreceipt.RecurrentReceiptForm">
+        </form-bean>
+        
+        <form-bean name="AnnexureForm" type="com.integrosys.cms.ui.checklist.annexure.AnnexureForm">
+        </form-bean>
+        
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/RecurrentCheckList" type="com.integrosys.cms.ui.checklist.recurrent.RecurrentCheckListAction"
+            name="RecurrentCheckListForm" validate="false" scope="request">
+            <forward name="after_list" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/recurrent_list.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="wip" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_prepare_add_covenant" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/add_covenant.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_prepare_add_recurrent" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/add_recurrent.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_view_recurrent_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/recurrent_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_edit_covenant_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/edit_covenant.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_view_covenant_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/covenant_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_close_checklist_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/recurrent_list_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_submit" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_submit_wo_approval" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_process" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/chk_recurrent_list_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_approve_checklist_item" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_reject_checklist_item" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            </forward>            
+			<forward name="after_save" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <!-- without frames -->
+            <forward name="after_process_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/chk_recurrent_list_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_chk_view_covenant" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/chk_covenant_item_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_chk_view_recurrent" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/chk_recurrent_item_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_chk_view_covenant_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/chk_covenant_item_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_chk_view_recurrent_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/chk_recurrent_item_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_approve_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_reject_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_list_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/recurrent_list.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="wip_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_prepare_add_covenant_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/add_covenant.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_prepare_add_recurrent_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/add_recurrent.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_view_recurrent_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/recurrent_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_edit_covenant_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/edit_covenant.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_view_covenant_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/covenant_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_submit_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_submit_wo_approval_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_close_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recurrent/recurrent_list_view.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_close_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+            <forward name="after_save_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.maintain.rec.checklist"/>
+            </forward>
+        </action>
+    
+        <action path="/CheckListReceipt" type="com.integrosys.cms.ui.checklist.CheckListReceiptAction"
+            name="CheckListReceiptForm" validate="false" scope="request">
+            <forward name="maintain_receipt" path="/RecurrentCheckList.do">
+            </forward>
+            <forward name="update_receipt" path="/RecurrentReceipt.do">
+            </forward>
+            
+            <forward name="update_annexure" path="/Annexure.do">
+            </forward>
+        </action>
+        
+        <action path="/RecurrentReceipt" type="com.integrosys.cms.ui.checklist.recreceipt.RecurrentReceiptAction"
+            name="RecurrentReceiptForm" validate="false" scope="request">
+            <forward name="after_list" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_list.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="wip" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="wip_WF" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_edit_covenant" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_covenant.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_edit_recurrent" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_recurrent.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <!-- Added by Anil Start -->
+            <forward name="after_edit_recurrent_dp_recipt" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_dp_receipt_recurrent.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_view_recurrent_dp_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_dp_receipt_recurrent_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <!-- Added by Anil end -->
+            <forward name="after_view_covenant_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_covenant_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_view_recurrent_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_recurrent_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_close_checklist_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_list_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>            
+            <forward name="after_submit" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_save" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_process_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/chk_rec_receipt_view.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_approve_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_reject_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_chk_view_covenant_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/chk_rec_receipt_covenant_view.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_chk_view_recurrent_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/chk_rec_receipt_recurrent_view.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_list_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_list.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_edit_covenant_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_covenant.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_edit_recurrent_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_recurrent.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_submit_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_close_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/recreceipt/rec_receipt_list_view.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_close_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>            
+			<forward name="after_save_WF" path="/template/common_view_template.jsp">
+               <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+               <set-property property="title" value="title.update.rec.checklist"/>
+            </forward>
+            <forward name="after_print_doc" path="/checklist/recreceipt/print_remainder.jsp"/>
+        </action>
+        
+        
+        <action path="/Annexure" type="com.integrosys.cms.ui.checklist.annexure.AnnexureAction"
+            name="RecurrentReceiptForm" validate="false" scope="request">
+            <forward name="after_list" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_annexure_list.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="wip" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="wip_WF" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_edit_covenant" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_receipt_covenant.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_edit_annexure" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/add_annexure.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_view_covenant_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_receipt_covenant_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_view_annexure_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_annexure_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_view_annexure_item_WF" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_annexure_view.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_close_checklist_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_annexure_list_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>            
+            <forward name="after_submit" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_save" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_process_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/chk_annexure_view.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_approve_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_reject_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_chk_view_covenant_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/chk_rec_receipt_covenant_view.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_chk_view_annexure_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/chk_rec_annexure_view.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_list_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_annexure_list.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_edit_covenant_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_receipt_covenant.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_edit_annexure_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_annexure.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_submit_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_close_checklist_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/checklist/annexure/rec_annexure_list_view.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_close_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>            
+			<forward name="after_save_WF" path="/template/common_view_template.jsp">
+               <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+               <set-property property="title" value="title.update.annexure.checklist"/>
+            </forward>
+            <forward name="after_print_doc" path="/checklist/annexure/print_remainder.jsp"/>
+        </action>
+        
+    </action-mappings>
+    
+    <message-resources key="message-checklist-recurrentcovenant" parameter="ApplicationResources-checklist-recurrentcovenant"/> 
+</struts-config>

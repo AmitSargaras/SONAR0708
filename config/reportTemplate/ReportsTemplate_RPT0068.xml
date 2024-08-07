@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+
+			SELECT DISTINCT sub_profile.lsp_le_id as partyid,
+			sub_profile.lsp_short_name as partyname,
+			cc_segment.entry_name AS segmentName,
+			rm.rm_mgr_name AS rmname,
+			CMS.CMS_COLLATERAL_ID As Security_ID,
+			CMS.TYPE_NAME AS SECURITY_NAME,
+			CMS.CERSAI_TRX_REF_NO AS REFER_ID,
+			CMS.CERSAI_SECURITY_INTEREST_ID AS INTEREST_ID,
+			CMS.CERSAI_ASSET_ID AS ASSET_ID,
+			TO_CHAR(CMS.DATE_CERSAI_REGISTERATION,'DD/Mon/YYYY') AS INTEREST_DATE,
+			TO_CHAR(CHECKLIST_ITEM.DOC_DATE,'DD/Mon/YYYY')  AS DATE_OF_DOCUMENT,
+         	TO_CHAR(CHECKLIST_ITEM.RECEIVED_DATE,'DD/Mon/YYYY')  AS RECEIPT_OF_DOCUMENT,
+			CHECKLIST_ITEM.DOC_AMT AS DOCUMENT_AMOUNT
+
+			FROM
+			SCI_LE_SUB_PROFILE sub_profile,
+			common_code_category_entry cc_segment,
+			cms_relationship_mgr rm,
+			sci_lsp_lmt_profile LMT,
+			sci_lsp_appr_lmts APPR,
+			cms_limit_security_map MAP,
+			cms_security CMS,
+			CMS_CHECKLIST_ITEM CHECKLIST_ITEM,
+         	CMS_CHECKLIST CHECKLIST
+			<!-- TRANSACTION TRX -->
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				sub_profile.lsp_sgmnt_code_value =cc_segment.entry_code(+)
+				AND rm.id(+) = sub_profile.relation_mgr
+				<!-- AND SUB_PROFILE.CMS_LE_SUB_PROFILE_ID = TRX.REFERENCE_ID AND -->
+				AND CHECKLIST.CHECKLIST_ID = CHECKLIST_ITEM.CHECKLIST_ID AND
+        		CHECKLIST.CMS_LSP_LMT_PROFILE_ID = LMT.CMS_LSP_LMT_PROFILE_ID
+        		AND CHECKLIST.CMS_COLLATERAL_ID = CMS.CMS_COLLATERAL_ID
+				AND CMS.CMS_COLLATERAL_ID = MAP.cms_collateral_id
+				AND
+				APPR.CMS_LSP_APPR_LMTS_ID =MAP.CMS_LSP_APPR_LMTS_ID
+				AND
+				LMT.CMS_LSP_LMT_PROFILE_ID=APPR.CMS_LIMIT_PROFILE_ID
+				AND
+				LMT.LLP_LE_ID=sub_profile.LSP_LE_ID
+				AND
+			</mandatoryClause>
+			<param>
+				<name>partyId</name>
+				<condition>sub_profile.LSP_LE_ID= </condition>
+			</param>
+			<param>
+				<name>securityId</name>
+				<condition>CMS.CMS_COLLATERAL_ID= </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>60</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security ID</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Name</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CERSAI Transaction Reference Number</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CERSAI Security Interest ID</header><!-- 1 -->
+				</reportColumn>
+
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CERSAI Asset ID</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CERSAI Security Interest Creation Date</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of Document</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of Receipt of the document</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Document amount</header><!-- 1 -->
+				</reportColumn>
+			</reportColumns>
+			<reportName>CERSAI Details</reportName>
+		</reportParamters>
+	</report>
+</reports>

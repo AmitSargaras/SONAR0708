@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+	
+
+    <!-- tat transaction read and trx controller -->
+
+    <bean id="tatDocReadController" class="com.integrosys.cms.app.tatdoc.trx.TatDocReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadTatDocOperation" value-ref="TatDocTrx.ReadTatDocOperation" />
+                <entry key="ReadTatDocTrxIDOperation" value-ref="TatDocTrx.ReadTatDocTrxIDOperation" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="tatDocTrxController" class="com.integrosys.cms.app.tatdoc.trx.TatDocTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="CheckerApproveCreateOperation" value-ref="TatDocTrx.CheckerApproveCreateTatDocOperation" />
+                <entry key="CheckerApproveUpdateOperation" value-ref="TatDocTrx.CheckerApproveUpdateTatDocOperation" />
+                <entry key="CheckerRejectOperation" value-ref="TatDocTrx.CheckerRejectTatDocOperation" />
+                <entry key="MakerCloseOperation" value-ref="TatDocTrx.MakerCloseTatDocOperation" />
+                <entry key="MakerCloseUpdateOperation" value-ref="TatDocTrx.MakerCloseUpdateTatDocOperation" />
+                <entry key="MakerCreateNDOperation" value-ref="TatDocTrx.MakerCreateNDTatDocOperation" />
+                <entry key="MakerCreateOperation" value-ref="TatDocTrx.MakerCreateTatDocOperation" />
+                <entry key="MakerSaveNDOperation" value-ref="TatDocTrx.MakerSaveNDTatDocOperation" />
+                <entry key="MakerSaveOperation" value-ref="TatDocTrx.MakerSaveTatDocOperation" />
+                <entry key="MakerUpdateOperation" value-ref="TatDocTrx.MakerUpdateTatDocOperation" />
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager" />
+    </bean>
+
+
+    <!-- tat transaction operations -->
+    <bean id="TatDocTrx.ReadTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.ReadTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.ReadTatDocTrxIDOperation" class="com.integrosys.cms.app.tatdoc.trx.ReadTatDocTrxIDOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.CheckerApproveCreateTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.CheckerApproveCreateTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.CheckerApproveUpdateTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.CheckerApproveUpdateTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.CheckerRejectTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.CheckerRejectTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.MakerCloseTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.MakerCloseTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.MakerCloseUpdateTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.MakerCloseUpdateTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.MakerCreateNDTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.MakerCreateNDTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.MakerCreateTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.MakerCreateTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.MakerSaveNDTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.MakerSaveNDTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.MakerSaveTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.MakerSaveTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+    <bean id="TatDocTrx.MakerUpdateTatDocOperation" class="com.integrosys.cms.app.tatdoc.trx.MakerUpdateTatDocOperation">
+        <property name="tatDocBusManager" ref="tatDocBusManager" />
+        <property name="stageTatDocBusManager" ref="stageTatDocBusManager" />
+    </bean>
+
+</beans>

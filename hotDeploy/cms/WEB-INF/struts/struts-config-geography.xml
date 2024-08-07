@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+<!-- Mapping for Single Form GeographyForm -->
+    <!--
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="GeographyForm" type="com.integrosys.cms.ui.geography.GeographyForm"></form-bean>    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">    
+        <action path="/Geography" type="com.integrosys.cms.ui.geography.GeographyAction" name="GeographyForm" validate="false" scope="request">        
+        	<forward name="view_geography" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/geography_list.jsp"/>
+                <set-property property="title" value="Geography"/>
+            </forward>
+            <forward name="view_list_continent" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/continent_list.jsp"/>
+                <set-property property="title" value="Continent"/>
+            </forward>
+            
+            <forward name="prepare_list_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/country_list.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+            <forward name="view_list_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/country_list.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+            <forward name="view_country_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/view_country_by_index.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+             <forward name="maker_prepare_create_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_create_country.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+            
+             <forward name="prepare_create_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_create_country.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+            
+            <forward name="maker_create_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+            <forward name="maker_prepare_edit_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_edit_country.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+            <forward name="maker_edit_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+             <forward name="prepare_remove_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="Country"/>
+            </forward>
+            
+            <forward name="view_list_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/region_list.jsp"/>
+                <set-property property="title" value="Region"/>
+            </forward>
+            
+            <forward name="view_region_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/view_region_by_index.jsp"/>
+                <set-property property="title" value="Region"/>
+            </forward>
+            
+            <forward name="prepare_remove_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="Region"/>
+            </forward>
+          
+            <forward name="prepare_list_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/state_list.jsp"/>
+                <set-property property="title" value="State"/>
+            </forward>
+              
+            <forward name="view_list_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/state_list.jsp"/>
+                <set-property property="title" value="State"/>
+            </forward>
+            
+             <forward name="view_state_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/view_state_by_index.jsp"/>
+                <set-property property="title" value="State"/>
+            </forward>
+            
+            <forward name="prepare_remove_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="State"/>
+            </forward>
+            
+            <forward name="prepare_list_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/city_list.jsp"/>
+                <set-property property="title" value="City"/>
+            </forward>            
+            
+            <forward name="view_list_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/city_list.jsp"/>
+                <set-property property="title" value="City"/>
+            </forward>         
+            
+             <forward name="view_city_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/view_city_by_index.jsp"/>
+                <set-property property="title" value="City"/>
+            </forward>    
+            
+            <forward name="prepare_remove_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="City"/>
+            </forward>     
+        </action>    
+    </action-mappings>
+    
+    -->
+
+<!-- Following is the Mapping that have been Segregated into Individual Tables by Sandeep Shinde on 11-04-2011-->    
+    
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CountryForm" type="com.integrosys.cms.ui.geography.country.CountryForm"></form-bean>
+        <form-bean name="RegionForm" type="com.integrosys.cms.ui.geography.region.RegionForm"></form-bean>
+        <form-bean name="StateForm" type="com.integrosys.cms.ui.geography.state.StateForm"></form-bean>
+        <form-bean name="CityForm" type="com.integrosys.cms.ui.geography.city.CityForm"></form-bean>
+    </form-beans>
+    
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">    
+        <action path="/Geography" type="com.integrosys.cms.ui.geography.GeographyAction" name="CountryForm" validate="false" scope="request">        
+        	<forward name="view_geography" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/geography_list.jsp"/>
+                <set-property property="title" value="title.geography.geog"/>
+            </forward>
+            
+            <forward name="checker_view_geography" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/checker_geography_list.jsp"/>
+                <set-property property="title" value="title.geography.geog"/>
+            </forward>
+        </action>
+        
+        <action path="/Country" type="com.integrosys.cms.ui.geography.country.CountryAction" name="CountryForm" validate="false" scope="request">     
+
+            <forward name="view_list_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/country_list.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="checker_view_list_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/checker_country_list.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="view_country_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/view_country_by_index.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="totrack_maker_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/totrack_maker_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="checker_process_create_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/todo_checker_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="checker_approve_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="checker_reject_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="view_country_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/view_country_by_index.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+             <forward name="prepare_create_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_create_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+                        
+            <forward name="maker_create_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_edit_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="maker_edit_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="checker_process_edit_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/todo_checker_edit_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="maker_delete_country_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/prepare_delete_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="maker_delete_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="maker_prepare_activate_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/prepare_activate_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+               
+            <forward name="maker_activate_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+             <forward name="prepare_remove_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_resubmit_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="maker_prepare_close_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_close_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_close_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="maker_confirm_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.geography.country"/>
+	        </forward>
+	        
+	        <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward> 
+            
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward> 
+            
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+             <forward name="work_in_process" path="/template/common_template.jsp">				
+				<set-property property="rightFrame" value="/common/wip.html"/>
+				<set-property property="title" value="title.geography.country"/>
+	  	    </forward>
+	  	    
+	  	      <forward name="maker_save_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <forward name="todo_maker_save_create_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_save_create_country.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+             <forward name="maker_save_edit_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+            
+            <!-- Lines of code added for File Upload -->
+            
+            <forward name="maker_prepare_upload_country" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_upload_country.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.insuranceCoverage"/>
+            </forward>
+            
+            <forward name="checker_country_insert_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/checker_country_insert.jsp"/>
+                <set-property property="title"  value="title.sys.admin.maint.insuranceCoverage"/>
+            </forward>
+             <forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_insert_close_country.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.insuranceCoverage"/>
+            </forward>
+            <forward name="maker_fileupload_country_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_fileupload_country.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.insuranceCoverage"/>
+            </forward>
+            <forward name="maker_view_insert_todo_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/country/maker_view_insert_todo_country.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.insuranceCoverage"/>
+            </forward>
+            
+        </action>    
+        
+        <!--        Region Start	-->
+
+        <action path="/Region" type="com.integrosys.cms.ui.geography.region.RegionAction" name="RegionForm" validate="false" scope="request">     
+            
+            <forward name="view_list_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region_list.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="checker_view_list_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/checker_region_list.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="view_region_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/view_region_by_index.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="totrack_maker_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/totrack_maker_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="checker_process_create_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/todo_checker_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="checker_approve_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="checker_reject_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="view_region_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/view_region_by_index.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>            
+            
+             <forward name="prepare_create_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/maker_create_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+                        
+            <forward name="maker_create_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/maker_edit_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="maker_edit_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="checker_process_edit_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/todo_checker_edit_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="maker_delete_region_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/prepare_delete_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="maker_delete_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="Region"/>
+            </forward>
+            
+            <forward name="maker_prepare_activate_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/prepare_activate_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+               
+            <forward name="maker_activate_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+             <forward name="prepare_remove_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/maker_resubmit_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="maker_prepare_close_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/maker_close_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="maker_confirm_close_region" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.geography.region"/>
+	        </forward>
+	        
+	        <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>      
+            
+            <forward name="work_in_process" path="/template/common_template.jsp">				
+				<set-property property="rightFrame" value="/common/wip.html"/>
+				<set-property property="title" value="title.geography.region"/>
+	  	    </forward>        
+	  	    
+	  	    <forward name="maker_save_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="todo_maker_save_create_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/maker_save_create_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+             <forward name="maker_save_edit_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward> 
+            
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <!-- Lines of code added for File Upload -->
+            
+            <forward name="maker_prepare_upload_region" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/maker_upload_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+            <forward name="checker_region_insert_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/checker_region_insert.jsp"/>
+                <set-property property="title"  value="title.geography.region"/>
+            </forward>
+             <forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/maker_insert_close_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            <forward name="maker_fileupload_region_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/maker_fileupload_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            <forward name="maker_view_insert_todo_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/region/maker_view_insert_todo_region.jsp"/>
+                <set-property property="title" value="title.geography.region"/>
+            </forward>
+            
+        </action>    
+        
+         <!--        State Start	16-04-2011	-->
+
+        <action path="/State" type="com.integrosys.cms.ui.geography.state.StateAction" name="StateForm" validate="false" scope="request">     
+            
+            <forward name="view_list_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state_list.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="checker_view_list_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/checker_state_list.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="view_state_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/view_state_by_index.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="totrack_maker_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/totrack_maker_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="checker_process_create_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/todo_checker_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="checker_approve_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="checker_reject_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="view_state_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/view_state_by_index.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>            
+            
+             <forward name="prepare_create_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/maker_create_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+                        
+            <forward name="maker_create_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/maker_edit_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="maker_edit_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="checker_process_edit_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/todo_checker_edit_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="maker_delete_state_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/prepare_delete_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="maker_delete_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="maker_prepare_activate_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/prepare_activate_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+               
+            <forward name="maker_activate_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+             <forward name="prepare_remove_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/maker_resubmit_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="maker_prepare_close_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/maker_close_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="maker_confirm_close_state" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.geography.state"/>
+	        </forward>
+	        
+	        <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="work_in_process" path="/template/common_template.jsp">				
+				<set-property property="rightFrame" value="/common/wip.html"/>
+				<set-property property="title" value="title.geography.state"/>
+	  	    </forward>     
+	  	    
+	  	    <forward name="prepare_create_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/maker_create_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+           
+           <forward name="maker_save_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="todo_maker_save_create_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/maker_save_create_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+             <forward name="maker_save_edit_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="refresh_region_id" path="/geography/state/refresh_maker_create_state.jsp"/>
+            
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward> 
+            
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <!-- Lines of code added for File Upload -->
+            
+            <forward name="maker_prepare_upload_state" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/maker_upload_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            
+            <forward name="checker_state_insert_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/checker_state_insert.jsp"/>
+                <set-property property="title"  value="title.geography.state"/>
+            </forward>
+             <forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/maker_insert_close_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            <forward name="maker_fileupload_state_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/maker_fileupload_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+            <forward name="maker_view_insert_todo_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/state/maker_view_insert_todo_state.jsp"/>
+                <set-property property="title" value="title.geography.state"/>
+            </forward>
+               
+        </action>
+        
+         <!--        City Start	16-04-2011	-->
+
+        <action path="/City" type="com.integrosys.cms.ui.geography.city.CityAction" name="CityForm" validate="false" scope="request">     
+            <forward name="view_list_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city_list.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="checker_view_list_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/checker_city_list.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="view_city_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/view_city_by_index.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="totrack_maker_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/totrack_maker_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="checker_process_create_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/todo_checker_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="checker_approve_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="checker_reject_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="view_city_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/view_city_by_index.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>            
+            
+             <forward name="prepare_create_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/maker_create_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+                        
+            <forward name="maker_create_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/maker_edit_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="maker_edit_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="checker_process_edit_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/todo_checker_edit_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="maker_delete_city_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/prepare_delete_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+         
+         	<forward name="maker_prepare_activate_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/prepare_activate_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+               
+            <forward name="maker_activate_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="maker_delete_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+             <forward name="prepare_remove_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/maker_resubmit_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="maker_prepare_close_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/maker_close_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="maker_confirm_close_city" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.geography.city"/>
+	        </forward>
+	        
+	        <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>      
+            
+            <forward name="work_in_process" path="/template/common_template.jsp">				
+				<set-property property="rightFrame" value="/common/wip.html"/>
+				<set-property property="title" value="title.geography.city"/>
+	  	    </forward>
+	  	    
+	  	     <forward name="refresh_city_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/maker_create_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+	  	    <forward name="maker_save_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="todo_maker_save_create_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/maker_save_create_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+             <forward name="maker_save_edit_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="refresh_region_id" path="/geography/state/refresh_maker_create_state.jsp"/>
+            
+            <forward name="refresh_state_id" path="/geography/city/refresh_maker_create_city.jsp"/>
+              
+            <!-- Lines of code added for File Upload -->
+            
+            <forward name="maker_prepare_upload_city" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/maker_upload_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            
+            <forward name="checker_city_insert_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/checker_city_insert.jsp"/>
+                <set-property property="title"  value="title.geography.city"/>
+            </forward>
+             <forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/maker_insert_close_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            <forward name="maker_fileupload_city_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/maker_fileupload_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>
+            <forward name="maker_view_insert_todo_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/geography/city/maker_view_insert_todo_city.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>              
+             
+             <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.geography.city"/>
+            </forward>  
+            
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.geography.country"/>
+            </forward>
+        </action>  
+    
+    </action-mappings>
+    
+    <message-resources key="message-geography" parameter="ApplicationResources-geography"/>
+</struts-config>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class entity-name="actualUserModule" 
+		name="com.integrosys.cms.app.userrole.bus.OBUserModule" table="CMS_USER_MODULE" lazy="false">
+            <id name="moduleId" column="MODULE_ID">
+              <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_USER_MODULE_SEQ</param>
+			  </generator>
+            </id>
+            <property name="moduleName" column="MODULE_NAME"/>
+			<property name="moduleType" column="MODULE_TYPE"/>
+			
+    </class>    
+    
+    
+    <class entity-name="actualUserRole" 
+		name="com.integrosys.cms.app.userrole.bus.OBUserRole" table="CMS_MODULE_ACCESS" lazy="false">
+            <id name="accessId" column="ACCESS_ID">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				  <param name="sequence">CMS_MODULE_ACCESS_SEQ</param>
+			    </generator>
+            </id>
+            <property name="roleId" column="ROLE" type="long"/>
+        	<property name="addAccess" column="ADD_ACCESS"/>
+			<property name="editAccess" column="EDIT_ACCESS"/>
+			<property name="deleteAccess" column="DELETE_ACCESS"/>
+			<property name="viewAccess" column="VIEW_ACCESS"/>
+			<property name="approveAccess" column="APPROVE_ACCESS"/>
+			<many-to-one name="moduleId" column="MODULE_ID" entity-name="actualUserModule" lazy="false"/>
+			
+    </class>
+</hibernate-mapping>

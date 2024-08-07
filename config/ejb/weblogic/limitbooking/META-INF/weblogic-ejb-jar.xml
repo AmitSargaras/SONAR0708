@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<!DOCTYPE weblogic-ejb-jar PUBLIC '-//BEA Systems, Inc.//DTD WebLogic 8.1.0 EJB//EN' 'http://www.bea.com/servers/wls810/dtd/weblogic-ejb-jar.dtd'>
+<weblogic-ejb-jar>
+	<weblogic-enterprise-bean>
+		<ejb-name>SBLimitBookingProxy</ejb-name>
+		<reference-descriptor>
+			<resource-description>
+				<res-ref-name>jdbc/CMSPool</res-ref-name>
+				<jndi-name>CMSPool</jndi-name>
+			</resource-description>
+		</reference-descriptor>
+		<jndi-name>SBLimitBookingProxyHome</jndi-name>
+	</weblogic-enterprise-bean>
+	
+	<weblogic-enterprise-bean>
+        <ejb-name>SBLimitBookingBusManager</ejb-name>
+        <reference-descriptor>
+		<resource-description>
+			<res-ref-name>jdbc/CMSPool</res-ref-name>
+			<jndi-name>CMSPool</jndi-name>
+		</resource-description>
+	</reference-descriptor>
+        <jndi-name>SBLimitBookingBusManagerHome</jndi-name>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>SBLimitBookingBusManagerStaging</ejb-name>
+        <reference-descriptor>
+		<resource-description>
+			<res-ref-name>jdbc/CMSPool</res-ref-name>
+			<jndi-name>CMSPool</jndi-name>
+		</resource-description>
+	</reference-descriptor>
+        <jndi-name>SBLimitBookingBusManagerStagingHome</jndi-name>
+    </weblogic-enterprise-bean>
+	
+	<weblogic-enterprise-bean>
+        <ejb-name>EBLimitBooking</ejb-name>
+        <entity-descriptor>
+            <persistence>
+                <persistence-use>
+                    <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+                    <type-version>6.0</type-version>
+                    <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+                </persistence-use>
+            </persistence>
+        </entity-descriptor><reference-descriptor>        
+          <resource-description>            
+            <res-ref-name>jdbc/CMSPool</res-ref-name>          
+                <jndi-name>CMSPool</jndi-name>          
+                </resource-description>     
+           </reference-descriptor>
+        <jndi-name>EBLimitBookingHome</jndi-name>
+        <local-jndi-name>EBLimitBookingLocalHome</local-jndi-name>
+    </weblogic-enterprise-bean>
+
+	<weblogic-enterprise-bean>
+        <ejb-name>EBLimitBookingStaging</ejb-name>
+        <entity-descriptor>
+            <persistence>
+                <persistence-use>
+                    <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+                    <type-version>6.0</type-version>
+                    <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+                </persistence-use>
+            </persistence>
+        </entity-descriptor><reference-descriptor>        
+          <resource-description>            
+            <res-ref-name>jdbc/CMSPool</res-ref-name>          
+                <jndi-name>CMSPool</jndi-name>          
+                </resource-description>     
+           </reference-descriptor>
+        <jndi-name>EBLimitBookingStagingHome</jndi-name>
+        <local-jndi-name>EBLimitBookingStagingLocalHome</local-jndi-name>
+    </weblogic-enterprise-bean>	    
+	
+    <weblogic-enterprise-bean>
+        <ejb-name>EBLimitBookingDetail</ejb-name>
+        <entity-descriptor>
+            <persistence>
+                <persistence-use>
+                    <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+                    <type-version>6.0</type-version>
+                    <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+                </persistence-use>
+            </persistence>
+        </entity-descriptor><reference-descriptor>        
+          <resource-description>            
+            <res-ref-name>jdbc/CMSPool</res-ref-name>          
+                <jndi-name>CMSPool</jndi-name>          
+                </resource-description>     
+           </reference-descriptor>
+        <local-jndi-name>EBLimitBookingDetailLocalHome</local-jndi-name>
+    </weblogic-enterprise-bean>
+	
+	<weblogic-enterprise-bean>
+        <ejb-name>EBLimitBookingDetailStaging</ejb-name>
+        <entity-descriptor>
+            <persistence>
+                <persistence-use>
+                    <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+                    <type-version>6.0</type-version>
+                    <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+                </persistence-use>
+            </persistence>
+        </entity-descriptor><reference-descriptor>        
+          <resource-description>            
+            <res-ref-name>jdbc/CMSPool</res-ref-name>          
+                <jndi-name>CMSPool</jndi-name>          
+                </resource-description>     
+           </reference-descriptor>
+        <local-jndi-name>EBLimitBookingDetailLocalHomeStaging</local-jndi-name>
+    </weblogic-enterprise-bean>
+	
+</weblogic-ejb-jar>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+        All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+        Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+        Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+        Inject proxy(s) into command class
+    </description>
+   
+      <!--    Discrepency Beans Start	-->
+      
+	<bean id="ListDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.ListDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    
+    <bean id="CheckerReadDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.CheckerReadDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    
+    <bean id="MakerReadDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.MakerReadDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    
+    <bean id="MakerEditDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.MakerEditDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    
+    <bean id="CheckerApproveDiscrepencyCommmand" class="com.integrosys.cms.ui.discrepency.CheckerApproveDiscrepencyCommmand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    
+    <bean id="CheckerRejectDiscrepencyCommmand" class="com.integrosys.cms.ui.discrepency.CheckerRejectDiscrepencyCommmand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    
+    <bean id="MakerCloseDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.MakerCloseDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+  
+    <bean id="MakerPrepareCreateDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.MakerPrepareCreateDiscrepencyCommand"/>
+   
+     <bean id="MakerCreateDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.MakerCreateDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    
+    
+     <bean id="MakerCreateTempDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.MakerCreateTempDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    <bean id="MakerCreateBulkDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.MakerCreateBulkDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    <bean id="MakerRemoveDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.MakerRemoveDiscrepencyCommand">
+        
+    </bean>
+    
+     <bean id="CheckerReadBulkDiscrepencyCommand" class="com.integrosys.cms.ui.discrepency.CheckerReadBulkDiscrepencyCommand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    <bean id="CheckerBulkApproveDiscrepencyCommmand" class="com.integrosys.cms.ui.discrepency.CheckerBulkApproveDiscrepencyCommmand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+     <bean id="CheckerBulkRejectDiscrepencyCommmand" class="com.integrosys.cms.ui.discrepency.CheckerBulkRejectDiscrepencyCommmand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+    <bean id="MakerBulkResubmitDiscrepencyCommmand" class="com.integrosys.cms.ui.discrepency.MakerBulkResubmitDiscrepencyCommmand">
+        <property name="discrepencyProxy" ref="discrepencyProxy"/>
+    </bean>
+     <bean id="MakerEditResubmitDiscrepencyCommmand" class="com.integrosys.cms.ui.discrepency.MakerEditResubmitDiscrepencyCommmand">
+      
+    </bean>
+      <bean id="MakerEditTempDiscrepencyCommmand" class="com.integrosys.cms.ui.discrepency.MakerEditTempDiscrepencyCommmand">
+        
+    </bean>
+
+  <!--    Discrepency Beans End	-->  
+</beans>

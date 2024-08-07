@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<!--	Mapping for Master Discrepency by Sandeep Shinde on 03-06-2011	Start	-->
+
+ <class name="com.integrosys.cms.app.discrepency.bus.OBDiscrepency" entity-name="actualDiscrepency" table="CMS_DISCREPENCY" lazy="false" >  
+    <id name="id" column="ID" type="long">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_DISCREPENCY_SEQ</param>
+			</generator>
+    </id>
+    
+    <property name="customerId"				column="CUSTOMER_ID" />
+    <property name="discrepencyType"		column="DISCREPENCY_TYPE" />
+    <property name="creationDate"         	column="CREATION_DATE" />
+    <property name="docRemarks"         	column="DOC_REMARKS" />
+    <property name="recDate"         	column="RECEIVE_DATE" />
+    <property name="deferDate"         	column="DEFER_DATE" />
+    <property name="waiveDate"         	column="WAIVE_DATE" />
+    <property name="creditApprover"         	column="CREDIT_APPROVER" />
+    <property name="status"         	column="STATUS" /> 
+    <property name="acceptedDate"     		column="ACCEPTED_DATE" />
+    <property name="originalTargetDate"     column="ORIGINAL_TARGET_DATE" />
+    <property name="nextDueDate"     		column="NEXT_DUE_DATE" />
+    <property name="critical"     			column="CRITICAL" />
+    <property name="approvedBy"     		column="WAIVED_BY" />
+    <property name="discrepency"     		column="DISCREPENCY" />
+    <property name="counter"    			column="DISCREPENCY_COUNTER" />
+    <property name="discrepencyRemark"     	column="REMARKS" />
+    <property name="totalDeferedDays"     	column="TOTAL_DEFERED_DAYS" />
+    <property name="originalDeferedDays"     	column="ORG_DATE_DEFERED_DAYS" />
+    <property name="transactionStatus"     	column="TRANSACTION_STATUS" />
+    <property name="deferedCounter"     	column="DEFERED_COUNTER" />
+<!-- 	 <set name="facilityList" fetch="select" cascade="save-update, delete-orphan" lazy="false">-->
+<!--            <key column="DISCREPENCY_ID" not-null="true"/>-->
+<!--            <one-to-many entity-name="actualDiscrepencyFacilityList"/>-->
+<!--        </set>-->
+       </class>
+  
+   <class name="com.integrosys.cms.app.discrepency.bus.OBDiscrepencyFacilityList" entity-name="actualDiscrepencyFacilityList" table="CMS_DISC_FACILITY_LIST" lazy="false" >  
+    <id name="idFacility" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_DISC_FACILITY_LIST_SEQ</param>
+			</generator>
+    </id>
+    <property name="facilityName"	column="FACILITY_NAME" />
+    <property name="facilityId"		column="FACILITY_ID"/> 
+    <property name="discrepencyId" 	column="DISCREPENCY_ID" />
+          
+  </class>
+  
+   <class name="com.integrosys.cms.app.discrepency.bus.OBDiscrepency" entity-name="stagingDiscrepency" table="CMS_STAGE_DISCREPENCY" lazy="false" >  
+    <id name="id" column="ID" type="long">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_DISCREPENCY_SEQ</param>
+			</generator>
+    </id>    
+    <property name="customerId"				column="CUSTOMER_ID" /> 
+    <property name="discrepencyType"		column="DISCREPENCY_TYPE" />
+    <property name="creationDate"         	column="CREATION_DATE" />
+    <property name="docRemarks"         	column="DOC_REMARKS" />
+    <property name="recDate"         	column="RECEIVE_DATE" />
+    <property name="deferDate"         	column="DEFER_DATE" />
+    <property name="waiveDate"         	column="WAIVE_DATE" />
+    <property name="creditApprover"         	column="CREDIT_APPROVER" />
+    <property name="status"         	column="STATUS" />
+    <property name="acceptedDate"     		column="ACCEPTED_DATE" />
+    <property name="originalTargetDate"     column="ORIGINAL_TARGET_DATE" />
+    <property name="nextDueDate"     		column="NEXT_DUE_DATE" />
+    <property name="critical"     			column="CRITICAL" />
+    <property name="approvedBy"    			column="WAIVED_BY" />
+    <property name="discrepency"     		column="DISCREPENCY" />
+    <property name="counter"   				column="DISCREPENCY_COUNTER" />
+    <property name="discrepencyRemark"   	column="REMARKS" />
+    <property name="totalDeferedDays"     	column="TOTAL_DEFERED_DAYS" />
+    <property name="originalDeferedDays"     	column="ORG_DATE_DEFERED_DAYS" />
+    <property name="transactionStatus"     	column="TRANSACTION_STATUS" />
+    <property name="deferedCounter"     	column="DEFERED_COUNTER" />
+<!--  	 <set name="facilityList" fetch="select" cascade="save-update, delete-orphan" lazy="false">-->
+<!--           <key column="DISCREPENCY_ID" not-null="true"/>-->
+<!--           <one-to-many entity-name="stagingDiscrepencyFacilityList"/>-->
+<!--       </set>-->
+  </class>
+  
+  <class name="com.integrosys.cms.app.discrepency.bus.OBDiscrepencyFacilityList" entity-name="stagingDiscrepencyFacilityList" table="CMS_STAGE_DISC_FAC_LIST" lazy="false" >  
+    <id name="idFacility" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_DISC_FAC_LIST_SEQ</param>
+			</generator>
+    </id>    
+    <property name="facilityName"	column="FACILITY_NAME" />
+    <property name="facilityId"		column="FACILITY_ID"/>
+    <property name="discrepencyId" 	column="DISCREPENCY_ID" />
+    
+  </class>
+  
+	<!--	Mapping for Master Discrepency	End	-->
+</hibernate-mapping>

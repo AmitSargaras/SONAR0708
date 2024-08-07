@@ -1,0 +1,163 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class entity-name="mainProfile" name="com.integrosys.cms.host.eai.customer.bus.MainProfile" table="SCI_LE_MAIN_PROFILE">
+		<id name="cmsId" type="long" column="CMS_LE_MAIN_PROFILE_ID">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">LEGAL_ENTITY_SEQ</param>
+			</generator>
+		</id>
+		<property name="CIFId" column="LMP_LE_ID" />
+		<property name="customerNameShort" column="LMP_SHORT_NAME" />
+		<property name="customerNameLong" column="LMP_LONG_NAME" />
+		<component name="customerClass" class="com.integrosys.cms.host.eai.StandardCode">
+			<property name="standardCodeNumber" column="LMP_LEGAL_CONST_NUM" />
+			<property name="standardCodeValue" column="LMP_LEGAL_CONST_VALUE" />
+		</component>
+		
+		<component name="customerType" class="com.integrosys.cms.host.eai.StandardCode">
+			<property name="standardCodeNumber" column="LMP_TYPE_NUM" />
+			<property name="standardCodeValue" column="LMP_TYPE_VALUE" />
+		</component>
+
+		<component name="customerSegment" class="com.integrosys.cms.host.eai.StandardCode">
+			<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="LMP_SGMNT_CODE_VALUE" />
+		</component>
+
+		<property name="JDOCustomerStartDate" column="LMP_REL_START_DATE"
+			type="timestamp" />
+		<property name="blacklisted" column="CMS_BLACK_LISTED_IND" />
+		<property name="accountOfficerID" column="LMP_ACC_OFFICER_NUM" />
+		<property name="accountOfficerName" column="LMP_ACC_OFFICER_VALUE" />
+		<property name="source" column="SOURCE_ID" />
+		<property name="leiCode" column="LEI_CODE" />
+		<property name="leiExpDate" column="LEI_EXPIRY_DATE" />
+		<property name="updateStatusIndicator" column="UPDATE_STATUS_IND"
+			type="character" />
+		<property name="changeIndicator" column="CHANGE_IND" type="character" />
+		<component name="idInfo1"
+			class="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo">
+			<property name="idNumber" column="LMP_ID_NUMBER" />
+			<component name="idType" class="com.integrosys.cms.host.eai.StandardCode">
+				<property name="standardCodeNumber" column="LMP_ID_TYPE_NUM" />
+				<property name="standardCodeValue" column="LMP_ID_TYPE_VALUE" />
+			</component>
+			<property name="countryIssued" column="LMP_ID_COUNTRY_ISSUED" />
+			<property name="JDOIdStartDate" column="LMP_ID_STARTDATE"
+				type="timestamp" />
+		</component>
+		<component name="idInfo2"
+			class="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo">
+			<property name="idNumber" column="LMP_SECOND_ID_NUMBER" />
+			<component name="idType" class="com.integrosys.cms.host.eai.StandardCode">
+				<property name="standardCodeNumber" column="LMP_SECOND_ID_TYPE_NUM" />
+				<property name="standardCodeValue" column="LMP_SECOND_ID_TYPE_VALUE" />
+			</component>
+			<property name="countryIssued" column="LMP_SECOND_ID_COUNTRY_ISSUED" />
+			<property name="JDOIdStartDate" column="LMP_SECOND_ID_STARTDATE" />
+		</component>
+		<component name="idInfo3"
+			class="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo">
+			<property name="idNumber" column="LMP_THIRD_ID_NUMBER" />
+			<component name="idType" class="com.integrosys.cms.host.eai.StandardCode">
+				<property name="standardCodeNumber" column="LMP_THIRD_ID_TYPE_NUM" />
+				<property name="standardCodeValue" column="LMP_THIRD_ID_TYPE_VALUE" />
+			</component>
+			<property name="countryIssued" column="LMP_THIRD_ID_COUNTRY_ISSUED" />
+			<property name="JDOIdStartDate" column="LMP_THIRD_ID_STARTDATE"
+				type="timestamp" />
+		</component>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.customer.bus.CustomerNatureOfBiz" table="SCI_LE_ISIC_DTL">
+		<id name="cmsId" type="long" column="CMS_LE_ISIC_DTL_ID">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">ISIC_CODE_SEQ</param>
+			</generator>
+		</id>
+		<property name="CIFId" column="LID_LE_ID" />
+		<property name="cmsMainProfileId" column="CMS_LE_MAIN_PROFILE_ID"
+			type="long" />
+		<component name="NatureOfBiz" class="com.integrosys.cms.host.eai.StandardCode">
+			<property name="standardCodeNumber" column="LID_ISIC_CODE_NUM" />
+			<property name="standardCodeValue" column="LID_ISIC_CODE_VALUE" />
+		</component>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.customer.bus.CustomerAddress" table="SCI_LE_REG_ADDR">
+		<id name="cmsId" type="long" column="CMS_LE_REG_ADDR_ID">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CONTACT_SEQ</param>
+			</generator>
+		</id>
+		<property name="cmsCIFId" column="CMS_LE_MAIN_PROFILE_ID" type="long" />
+		<property name="CIFId" column="LRA_LE_ID" />
+		<component name="addressType" class="com.integrosys.cms.host.eai.StandardCode">
+			<property name="standardCodeNumber" column="LRA_TYPE_NUM" />
+			<property name="standardCodeValue" column="LRA_TYPE_VALUE" />
+		</component>
+		<property name="address1" column="LRA_ADDR_LINE_1" />
+		<property name="address2" column="LRA_ADDR_LINE_2" />
+		<property name="address3" column="LRA_ADDR_LINE_3" />
+		<property name="address4" column="LRA_ADDR_LINE_4" />
+		<property name="address5" column="LRA_ADDR_LINE_5" />
+		<property name="city" column="LRA_CITY_TEXT" />
+		<property name="state" column="LRA_STATE" />
+		<property name="postCode" column="LRA_POST_CODE" />
+		<property name="country" column="LRA_CNTRY_ISO_CODE" />
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.customer.bus.SubProfile" table="SCI_LE_SUB_PROFILE">
+		<id name="cmsId" type="long" column="CMS_LE_SUB_PROFILE_ID">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CUSTOMER_SEQ</param>
+			</generator>
+		</id>
+		<property name="cifId" column="LSP_LE_ID" />
+		<property name="cmsMainProfileId" column="CMS_LE_MAIN_PROFILE_ID"
+			type="long" />
+		<property name="subProfileId" type="long">
+			<column name="LSP_ID" default="0" />
+		</property>
+		<property name="domicileCountry" column="LSP_DMCL_CNTRY_ISO_CODE" />
+		<property name="subProfileName" column="LSP_SHORT_NAME" />
+		<property name="originatingCountry" column="CMS_SUB_ORIG_COUNTRY" />
+		<property name="originatingOrganisation" column="CMS_SUB_ORIG_ORGANISATION" />
+		<property name="nonBorrowerIndicator" column="CMS_NON_BORROWER_IND"
+			type="character" />
+    <!-- <property name="FIIndicator" column="FI_IND" /> -->
+		<property name="updateStatusIndicator" column="UPDATE_STATUS_IND"
+			type="character" />
+		<property name="changeIndicator" column="CHANGE_IND" type="character" />
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.CreditGrade" table="SCI_LE_CREDIT_GRADE">
+		<id name="cmsId" type="long" column="CMS_LE_CREDIT_GRADE_ID">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CREDIT_GRADE_SEQ</param>
+			</generator>
+		</id>
+		<property name="CIFId" column="LCG_LE_ID" />
+		<property name="cmsMainProfileId" column="CMS_MAIN_PROFILE_ID"
+			type="long" />
+		<property name="creditGradeId" column="LCG__ID" type="long" />
+		<component name="creditGradeType" class="com.integrosys.cms.host.eai.StandardCode">
+			<property name="standardCodeNumber" column="LCG_CRDT_GRADE_TYPE_NUM" />
+			<property name="standardCodeValue" column="LCG_CRDT_GRADE_TYPE_VALUE" />
+		</component>
+		<component name="creditGradeCode" class="com.integrosys.cms.host.eai.StandardCode">
+			<property name="standardCodeNumber" column="LCG_CRDT_GRADE_CODE_NUM" />
+			<property name="standardCodeValue" column="LCG_CRDT_GRADE_CODE_VALUE" />
+		</component>
+		<property name="JDOCreditGradeEffectiveDate" column="LCG_CRDT_GRADE_START_DATE"
+			type="timestamp" />
+		<property name="creditGradeReasonForChange" column="LCG_CRDT_GRADE_DESC" />
+		<property name="updateStatusIndicator" column="UPDATE_STATUS_IND" />
+		<property name="changeIndicator" column="CHANGE_IND" />
+		<property name="JDOUpdateDate" column="LAST_UPDATE_DATE"
+			type="timestamp" />
+	</class>
+</hibernate-mapping>

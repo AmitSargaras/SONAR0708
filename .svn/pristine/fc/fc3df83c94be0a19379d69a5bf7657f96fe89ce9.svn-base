@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT distinct partyName,
+				  policyNo,
+				  policyCur,
+				  insuredAmt,
+				  expiryDate,
+				  SecurityAmount,
+				  InsuranceType1,
+				  InsuranceType2,
+				  InsuranceType3,
+				  InsuranceType4,
+				  insuranceCompany,
+				  UPPER(SecurityType),
+                  collateral_name
+				FROM
+				  (SELECT sp.cms_le_sub_profile_id       AS cms_le_sub_profile_id,
+					sp.LSP_SHORT_NAME                    AS partyName,
+					ip.POLICY_NO                         AS policyNo,
+					ip.CURRENCY_CODE                     AS policyCur,
+					ip.INSURED_AMT                       AS insuredAmt,
+					TO_CHAR(ip.EXPIRY_DATE,'DD/Mon/YYYY')AS expiryDate,
+					cs.CMV                               AS SecurityAmount,
+					cc_ins_type1.entry_name              AS InsuranceType1,
+					cc_ins_type2.entry_name              AS InsuranceType2,
+					cc_ins_type3.entry_name              AS InsuranceType3,
+					cc_ins_type4.entry_name              AS InsuranceType4,
+					ic.COMPANY_NAME                      AS insuranceCompany,
+					CS.TYPE_NAME
+					|| '-'
+					||CS.SUBTYPE_NAME AS SecurityType,
+                    colMaster.new_collateral_description as collateral_name
+				  FROM CMS_LIMIT_SECURITY_MAP lsm,
+					SCI_LSP_APPR_LMTS lmts,
+					SCI_LSP_LMT_PROFILE pf,
+					SCI_LE_SUB_PROFILE sp,
+					CMS_SECURITY cs,
+					CMS_INSURANCE_POLICY ip,
+					CMS_INSURANCE_COVERAGE ic,
+					common_code_category_entry cc_ins_type1,
+					common_code_category_entry cc_ins_type2,
+					common_code_category_entry cc_ins_type3,
+					common_code_category_entry cc_ins_type4,
+                    cms_collateral_new_master colMaster
+				  WHERE cs.CMS_COLLATERAL_ID      = lsm.CMS_COLLATERAL_ID
+				  AND cs.CMS_COLLATERAL_ID        = ip.CMS_COLLATERAL_ID
+				  AND sp.CMS_LE_SUB_PROFILE_ID    = pf.CMS_CUSTOMER_ID
+				  AND pf.CMS_LSP_LMT_PROFILE_ID   = lmts.CMS_LIMIT_PROFILE_ID
+				  AND lmts.CMS_LSP_APPR_LMTS_ID   = lsm.CMS_LSP_APPR_LMTS_ID
+				  AND (lsm.UPDATE_STATUS_IND     != 'D'
+				  OR lsm.UPDATE_STATUS_IND       IS NULL)
+				  AND ip.INSURER_NAME             = ic.id(+)
+				  AND ip.EXPIRY_DATE              > SYSDATE
+				  AND ip.TYPE_OF_PERILS1          = cc_ins_type1.entry_code(+)
+				  AND ip.TYPE_OF_PERILS2          = cc_ins_type2.entry_code(+)
+				  AND ip.TYPE_OF_PERILS3          = cc_ins_type3.entry_code(+)
+				  AND ip.TYPE_OF_PERILS4          = cc_ins_type4.entry_code(+)
+				  AND (cc_ins_type1.category_code = 'INSURANCE_COMPANY_CATEGORY'
+				  OR cc_ins_type1.category_code  IS NULL)
+				  AND (cc_ins_type2.category_code = 'INSURANCE_COMPANY_CATEGORY'
+				  OR cc_ins_type2.category_code  IS NULL)
+				  AND (cc_ins_type3.category_code = 'INSURANCE_COMPANY_CATEGORY'
+				  OR cc_ins_type3.category_code  IS NULL)
+				  AND (cc_ins_type4.category_code = 'INSURANCE_COMPANY_CATEGORY'
+				  OR cc_ins_type4.category_code  IS NULL)
+                  AND colMaster.new_collateral_code         = cs.collateral_code
+				  UNION ALL
+				  SELECT sp.cms_le_sub_profile_id                         AS cms_le_sub_profile_id,
+					sp.lsp_short_name                                     as partyname,
+					ins.ins_policy_no                          as policyno,
+					ins.ins_currency                           as policycur,
+					ins.insured_amount                               as insuredamt,
+					TO_CHAR(ins.expiry_date,'DD/Mon/YYYY') AS expiryDate,
+					  det.calculateddp                                       AS SecurityAmount,
+					--stockDet.COMPONENT_AMOUNT                             AS SecurityAmount,
+					cc_ins_type1.entry_name                               AS InsuranceType1,
+					''                                                    AS InsuranceType2,
+					''                                                    AS InsuranceType3,
+					''                                                    AS InsuranceType4,
+					ic.COMPANY_NAME                                       AS insuranceCompany,
+					CS.TYPE_NAME
+					|| '-'
+					||CS.SUBTYPE_NAME AS SecurityType,
+                    colMaster.new_collateral_description as collateral_name
+				  FROM CMS_LIMIT_SECURITY_MAP lsm,
+					SCI_LSP_APPR_LMTS lmts,
+					SCI_LSP_LMT_PROFILE pf,
+					SCI_LE_SUB_PROFILE sp,
+					CMS_SECURITY cs,
+					cms_asset_gc_det det,
+				--	cms_asset_gc_STOCK_det stockDet,
+					CMS_INSURANCE_COVERAGE ic,
+					common_code_category_entry cc_ins_type1,
+          cms_collateral_new_master colmaster,
+          cms_gc_insurance ins
+				  WHERE cs.CMS_COLLATERAL_ID             = lsm.CMS_COLLATERAL_ID
+				  AND sp.CMS_LE_SUB_PROFILE_ID           = pf.CMS_CUSTOMER_ID
+				  AND pf.CMS_LSP_LMT_PROFILE_ID          = lmts.CMS_LIMIT_PROFILE_ID
+				  AND lmts.CMS_LSP_APPR_LMTS_ID          = lsm.CMS_LSP_APPR_LMTS_ID
+				  AND cs.CMS_COLLATERAL_ID               = det.CMS_COLLATERAL_ID
+				--  AND det.doc_code                       =latest_gc_doccode(cs.CMS_COLLATERAL_ID)
+				 AND det.due_date   =
+              (SELECT MAX(due_date)
+              FROM cms_asset_gc_det
+              where cms_collateral_id =  det.cms_collateral_id
+              )
+				--  AND det.gc_det_id                      =stockDet.gc_det_id
+				--  AND stockDet.has_Insurance             ='Y'
+				  AND (lsm.UPDATE_STATUS_IND            != 'D'
+				  or lsm.update_status_ind              is null)
+          and ins.ins_company =  ic.insurance_coverage_code(+)
+          and ins.deprecated = 'N'
+          and ins.expiry_date >  sysdate
+           AND ins.ins_coverage_type= cc_ins_type1.entry_code
+        and ins.cms_collateral_id = cs.CMS_COLLATERAL_ID    
+		--		  AND stockDet.INSURANCE_COMPANY_NAME    = ic.id(+)
+		--		  AND stockDet.INSURANCE_EXPIRY_DATE     > SYSDATE
+		--		  AND stockDet.INSURANCE_COMPANY_CATEGORY= cc_ins_type1.entry_code
+				  AND (cc_ins_type1.category_code        = 'INSURANCE_COMPANY_CATEGORY'
+				  OR cc_ins_type1.category_code         IS NULL)
+                  and colmaster.new_collateral_code         = cs.collateral_code
+				  ) temp
+			</query>
+		<whereClause>
+			<mandatoryClause>
+			1=1
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition>AND CMS_LE_SUB_PROFILE_ID =  </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Policy Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Currency Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Insurance Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Security Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Type1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Type2</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Type3</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Type4</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insurance Company</header>
+				</reportColumn>	
+					<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Type</header>
+				</reportColumn>	
+					<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Collateral Name</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Insurance Live</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><ejb-jar id="ejb_DataProtection">
+   <display-name>DataProtection</display-name>
+   <enterprise-beans>
+      <session id="session_SBDataProtection">
+         <ejb-name>SBDataProtection</ejb-name>
+         <home>com.integrosys.cms.app.dataprotection.proxy.SBDataProtectionHome</home>
+         <remote>com.integrosys.cms.app.dataprotection.proxy.SBDataProtection</remote>
+         <ejb-class>com.integrosys.cms.app.dataprotection.proxy.SBDataProtectionBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBDataProtection">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBCollateralMetaData">
+         <ejb-name>EBCollateralMetaData</ejb-name>
+         <home>com.integrosys.cms.app.dataprotection.bus.EBCollateralMetaDataHome</home>
+         <remote>com.integrosys.cms.app.dataprotection.bus.EBCollateralMetaData</remote>
+         <ejb-class>com.integrosys.cms.app.dataprotection.bus.EBCollateralMetaDataBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.String</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCollateralMetaData</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCollateralMetaData_fieldName">
+            <field-name>fieldName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralMetaData_securitySubTypeId">
+            <field-name>securitySubTypeId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralMetaData_isUpdatable">
+            <field-name>isUpdatable</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralMetaData_applicableCountry">
+            <field-name>applicableCountry</field-name>
+         </cmp-field>
+         <primkey-field>fieldName</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCollateralMetaData">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findBySubType</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCollateralMetaData o WHERE ( ?1 = o.securitySubTypeId )]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBDataProtection</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCollateralMetaData</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

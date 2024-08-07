@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="GenerateDDNForm" type="com.integrosys.cms.ui.genddn.GenerateDDNForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/GenerateDDN" type="com.integrosys.cms.ui.genddn.GenerateDDNAction"
+            name="GenerateDDNForm" validate="false" scope="request">
+            <forward name="after_update_remarks" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genddn/generate_ddn_remarks.jsp"/>
+                <set-property property="leftFrame" value="/template/ssc_maker_leftframe.jsp"/>
+                <!--<set-property property="leftFrame" value="/template/cpc_maker_leftframe.jsp"/>-->
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_generate_ddn" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genddn/generate_ddn.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="info" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genddn/info.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_submit" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="leftFrame" value="/template/ssc_maker_leftframe.jsp"/>
+                <!--<set-property property="leftFrame" value="/template/cpc_maker_leftframe.jsp"/>-->
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_process" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genddn/chk_generate_ddn.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_approve" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genddn/ack_approve.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_reject" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="wip" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="leftFrame" value="/template/ssc_maker_leftframe.jsp"/>
+                <!--<set-property property="leftFrame" value="/template/cpc_maker_leftframe.jsp"/>-->
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="view_outer_limit_bca" path="/template/common_frame_template.jsp">
+		    	<set-property property="rightFrame" value="/common/view_outer_limit_bca.jsp"/>
+		    	<set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+		    	<set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_close_item" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genddn/generate_ddn_view.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>            
+            <forward name="checker_view_outer_limit_bca" path="/template/common_view_template.jsp">
+		    	<set-property property="rightFrame" value="/common/view_outer_limit_bca.jsp"/>
+		    	<set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="na" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/genddn/na.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+             
+            <!-- wf -->
+            <forward name="after_update_remarks_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genddn/generate_ddn_remarks.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>            
+            <forward name="wip_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_edit_staging_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genddn/generate_ddn.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_close_item_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genddn/generate_ddn_view.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_close_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_process_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genddn/chk_generate_ddn.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_approve_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genddn/ack_approve.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_reject_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_submit_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="after_generate_ddn_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/genddn/generate_ddn.jsp"/>
+                <set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="view_outer_limit_bca_WF" path="/template/common_view_template.jsp">
+		     	<set-property property="rightFrame" value="/common/view_outer_limit_bca.jsp"/>
+		     	<set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            <forward name="checker_view_outer_limit_bca_WF" path="/template/common_view_template.jsp">
+		    	<set-property property="rightFrame" value="/common/view_outer_limit_bca.jsp"/>
+		    	<set-property property="title" value="title.generate.ddn"/>
+            </forward>
+            
+            <forward name="after_print_doc" path="/genddn/print_ddn.jsp"/>
+            <forward name="after_print_doc_WF" path="/genddn/print_ddn.jsp"/>
+        </action>
+    
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-generateddn"/>-->
+</struts-config>

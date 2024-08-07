@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="SchemaDetailsUploadForm" type="com.integrosys.cms.ui.mf.schemadetailsupload.SchemaDetailsUploadForm"/>
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/MFSchemaDetailsUpload" type="com.integrosys.cms.ui.mf.schemadetailsupload.SchemaDetailsUploadAction" name="SchemaDetailsUploadForm" validate="false" scope="request">
+            <forward name="prepare_upload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>
+            <forward name="upload_error" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>
+            <forward name="upload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/list_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>
+            <forward name="download_report" path="/file/popup.jsp" />
+            <forward name="checker_prepare_process" path="/template/common_template.jsp">
+            	 <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/checker_prepare_process.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>
+            <forward name="checker_reject_error" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/checker_prepare_process.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>
+	        <forward name="checker_reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/checker_reject.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/maker_prepare_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>
+	        <forward name="maker_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/maker_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>
+            <forward name="checker_approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/mfschemadetailsupload/list_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.mf.schemadetailsupload"/>
+            </forward>                         
+        </action>
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+</struts-config>

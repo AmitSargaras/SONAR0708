@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT PARTY_ID,
+  			PARTY_NAME,
+  			SEGMENT,
+  			CUST_RAM_ID,
+ 			RAM_RATING_OLD,
+  			RAM_RATING_NEW,
+  			RAM_RATING_YEAR_OLD,
+ 		 	RAM_RATING_YEAR_NEW,
+  			RAM_UPLOAD_FILE_NAME,
+  			to_char(DATE_REQUEST) as DATE_REQUEST,
+  			to_char(DATE_PROCESS) as DATE_PROCESS,
+  			STATUS,
+  			FAIL_REASON
+			FROM RAM_RATINGUPLOAD_DETAILS
+		</query>
+		<whereClause>			
+			<param>
+				<name>fromDate</name>
+				<condition>  TRUNC(DATE_PROCESS) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PARTY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>PARTY NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SEGMENT</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CUSTOMER RAM ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RAM RATING OLD</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>RAM RATING NEW</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>RAM RATING YEAR OLD</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>RAM RATING YEAR NEW</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM UPLOAD FILE NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>DATE REQUEST</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>DATE PROCESS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>STATUS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>FAIL REASON</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>RAM Interface upload Status</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,58 @@
+<!-- InstanceBeginEditable name="Content" -->
+<table width="70%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+<thead><tr><td><h3>Notification - $!{ob.subject}</h3></td></tr>
+<tr><td><hr /></td></tr>
+</thead><tbody><tr><td><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblInfo">
+<tbody><tr><td width="20%" class="fieldname">To</td>
+<td width="30%" class="odd">$!{ob.receipient}</td>
+<td width="20%" class="fieldname">Date</td>
+<td width="30%" class="odd">$!{DateUtil.formatDate("dd/MMM/yyyy", ${ob.notificationDate})}</td>
+</tr><tr class="even"><td class="fieldname">Customer Legal Name</td>
+<td>$!{ob.leName}</td><td class="fieldname">CIF / ID No.</td>
+<td>$!{ob.leID}</td></tr>
+<tr class="odd"><td class="fieldname">Subject</td><td colspan="3">$!{ob.subject}</td></tr></tbody>
+</table></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+<tbody><tr class="odd"><td class="fieldname">Customer Category</td>
+<td>$!{ob.customerCategory}</td></tr>
+<tr class="even"><td class="fieldname">Co Borrower/Pledgor ID</td>
+<td>$!{ob.coborrowerPledgorID}&nbsp;</td></tr>
+<tr class="odd"><td class="fieldname">Co Borrower/Pledgor Name</td>
+<td>$!{ob.coborrowerPledgorLeName}&nbsp;</td></tr>
+<tr class="even"><td class="fieldname">Document Originating Location</td>
+<td>$!{VelocityUtil.getCountryName(${ob.domicileCountry})}</td></tr>
+<tr class="odd"><td class="fieldname">Organisation Code</td>
+<td>$!{VelocityUtil.getOrgCodeDesc($!{ob.orgCode})}</td></tr>
+<tr class="even"><td class="fieldname">Governing Law</td>
+<td>$!{ob.governLaw}&nbsp;</td></tr>
+#if (${ob.bcaBkgCountry})
+<tr class="odd"><td class="fieldname">BCA Booking Location </td>
+<td>$!{VelocityUtil.getCountryName(${ob.bcaBkgCountry})}</td></tr>
+#end     
+<tr class="odd"><td class="fieldname">No. of Document Waived</td><td>$!{ob.getNoOfDocumentWaived()}&nbsp;</td></tr>        
+<tr class="even"><td class="fieldname">No. of Document Deferred</td>
+<td>$!{ob.getNoOfDocumentDeferred()}&nbsp;</td></tr>        
+<tr class="odd"><td class="fieldname">No. of Document Deleted</td>
+<td>$!{ob.getNoOfDocumentDeleted()}&nbsp;</td></tr>        
+</tbody></table></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td><table width="100%" border="0" cellpadding="0" cellspacing="0" class="tblinfo" style="margin-top:0">
+<thead><tr><td width="5%">S/N</td>
+<td  width="17%">Document Code</td>
+<td  width="32%">Document No.</td>
+<td width="36%">Description</td>
+<td width="10%">Status</td></tr>
+</thead>
+<tbody>## loop through each item
+#set ($itemList = $VelocityUtil.getCollection(${ob.getItemList()}) )
+#set ($sNo = 1)
+#foreach ($item in $itemList)
+<tr valign="top" class="odd"><td align="left" class="index" >$sNo</td>
+<td align="left" >&nbsp;$!{item.getItemCode()}</td>
+<td align="left" >&nbsp;$!{item.getCheckListItemRef()}</td>
+<td align="left" >&nbsp;$!{item.getItemDesc()}</td>
+<td align="left" >&nbsp;$!{item.getItemStatus()}</td></tr>
+#set ($sNo = $sNo + 1)
+#end   ## end outer loop on deals
+</tbody></table></td></tr></tbody></table>

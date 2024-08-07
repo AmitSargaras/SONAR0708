@@ -1,0 +1,25 @@
+SET DEFINE OFF ;
+
+---Create backup of existing tables using below script--------
+
+create table COMMON_CODE_ENTRY_3007A as
+( select * from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE in (select COMPONENT_CODE from CMS_COMPONENT where status='ACTIVE' and COMPONENT_TYPE='Current_Asset')
+and CATEGORY_CODE='CURRENT_ASSET' and ACTIVE_STATUS='0' );
+
+
+create table COMMON_CODE_ENTRY_3007L as
+( select * from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE in (select COMPONENT_CODE from CMS_COMPONENT where status='ACTIVE' and COMPONENT_TYPE='Current_Liability')
+and CATEGORY_CODE='CURRENT_LIABILITIES' and ACTIVE_STATUS='0' );
+
+
+
+update COMMON_CODE_CATEGORY_ENTRY set ACTIVE_STATUS='1' where ENTRY_CODE in (select COMPONENT_CODE from CMS_COMPONENT where status='ACTIVE' and COMPONENT_TYPE='Current_Asset')
+and CATEGORY_CODE='CURRENT_ASSET' and ACTIVE_STATUS='0';
+
+update COMMON_CODE_CATEGORY_ENTRY set ACTIVE_STATUS='1' where ENTRY_CODE  in (select COMPONENT_CODE from CMS_COMPONENT where status='ACTIVE' and COMPONENT_TYPE='Current_Liability')
+and CATEGORY_CODE='CURRENT_LIABILITIES' and ACTIVE_STATUS='0';
+
+
+
+COMMIT;
+SET DEFINE ON;

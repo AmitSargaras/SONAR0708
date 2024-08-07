@@ -1,0 +1,130 @@
+drop procedure MIG_RUN_IN
+@
+
+CREATE PROCEDURE MIG_RUN_IN
+	LANGUAGE SQL
+BEGIN ATOMIC
+	CALL "MIG_LOG_PROC_TIME"('MIG_RUN_IN', 'MIG', 1);			
+
+	-------------------------------------
+	-- insert into cms_secucrity table
+	-------------------------------------
+	insert into cms_security
+	(cms_collateral_id, sci_security_dtl_id, security_sub_type_id, sci_security_subtype_value,subtype_name, type_name, 
+	security_location, sci_security_currency, sci_orig_security_currency, security_organisation, custodian_type, 
+	security_custodian,	security_maturity_date, security_perfection_date, is_legal_enforce, is_legal_enforce_date, 
+	sci_reference_note, exchange_control_obtained, source_id, is_migrated_ind)
+	(select CMS_COLLATERAL_ID,
+		SECURITY_SUB_TYPE_ID||'-'||SOURCE_SECURITY_ID, SECURITY_SUB_TYPE_ID, SECURITY_SUB_TYPE_ID, 
+		substr(SECURITY_SUB_TYPE, 9, length(security_sub_type)), substr(SECURITY_TYPE, 6, length(SECURITY_TYPE)),
+		SECURITY_LOCATION, SECURITY_CURRENCY, SECURITY_CURRENCY, SECURITY_ORGANISATION_CODE, custodian_type_code,
+		SECURITY_CUSTODIAN_VALUE, SECURITY_MATURITY_DATE, SECURITY_PERFECTION_DATE, LEGAL_ENFORCEABILITY_IND, LEGAL_ENFORCEABILITY_DATE,
+		SECURITY_REF_NOTE, EXCHANGE_CONTROL_OBTAINED, SOURCE_ID, 'Y' 
+	from MIG_IN
+	where valid_ind = 'Y');
+	
+	-------------------------------------------------
+	-- insert into cms_stage_secucrity table
+	-------------------------------------------------	
+	insert into cms_stage_security
+	(cms_collateral_id, sci_security_dtl_id, security_sub_type_id, sci_security_subtype_value,subtype_name, type_name, 
+	security_location, sci_security_currency, sci_orig_security_currency, security_organisation, custodian_type, 
+	security_custodian,	security_maturity_date, security_perfection_date, is_legal_enforce, is_legal_enforce_date, 
+	sci_reference_note, exchange_control_obtained, source_id)
+	(select CMS_COLLATERAL_STG_ID,
+		SECURITY_SUB_TYPE_ID||'-'||SOURCE_SECURITY_ID, SECURITY_SUB_TYPE_ID, SECURITY_SUB_TYPE_ID, 
+		substr(SECURITY_SUB_TYPE, 9, length(security_sub_type)), substr(SECURITY_TYPE, 6, length(SECURITY_TYPE)),
+		SECURITY_LOCATION, SECURITY_CURRENCY, SECURITY_CURRENCY, SECURITY_ORGANISATION_CODE, custodian_type_code,
+		SECURITY_CUSTODIAN_VALUE, SECURITY_MATURITY_DATE, SECURITY_PERFECTION_DATE, LEGAL_ENFORCEABILITY_IND, LEGAL_ENFORCEABILITY_DATE,
+		SECURITY_REF_NOTE, EXCHANGE_CONTROL_OBTAINED, SOURCE_ID
+	from MIG_IN
+	where valid_ind = 'Y');	
+	
+	-----------------------------------------------
+	-- insert into cms_secucrity_source table
+	-----------------------------------------------
+	insert into cms_security_source 
+	(cms_security_source_id, cms_collateral_id, source_security_id, source_id, status)
+	(SELECT CMS_COLLATERAL_ID, CMS_COLLATERAL_ID, SECURITY_SUB_TYPE_ID||'-'||SOURCE_SECURITY_ID, SOURCE_ID, 'ACTIVE' 
+	FROM MIG_IN
+	where valid_ind = 'Y');
+	
+	----------------------------------
+	-- insert into cms_insurance
+	----------------------------------
+	insert into cms_insurance
+	(cms_collateral_id, INSURER_NAME, INSURANCE_TYPE, INSURED_AMT_CURR, INSURED_AMOUNT,
+	 EFFECTIVE_DATE, POLICY_NO, EXT_LEGAL_COUNSEL, ACCELERATION_CLAUSE,
+	 LOCAL_CCY_IN_CM, CORE_MARKET, ISDA_DATE, 
+	 TREASURY_DATE,  BANK_INT_NOTED, EXPIRY_DATE)
+	(SELECT CMS_COLLATERAL_ID, 	INSURER_NAME, INSURANCE_TYPE, INSURED_CURRENCY, INSURED_AMT,
+	 INSURANCE_EFFECTIVE_DATE, POLICY_NUMBER, EXTERNAL_LEGAL_COUNSEL, ACCELERATION_CLAUSE,
+ 	 LOCAL_CCY_IN_LOCAL_MARKETS, CORE_MARKETS_TAG, ISDA_MASTER_AGREEMENT_DATE, 
+	 TREASURY_DOCUMENTATION_DATE, BANK_INTEREST_DULY_NOTED, INSURANCE_EXPIRY_DATE
+	FROM MIG_IN
+	where valid_ind = 'Y');
+	
+	----------------------------------
+	-- insert into cms_insurance
+	----------------------------------	
+	insert into cms_stage_insurance
+	(cms_collateral_id, INSURER_NAME, INSURANCE_TYPE, INSURED_AMT_CURR, INSURED_AMOUNT,
+	 EFFECTIVE_DATE, POLICY_NO, EXT_LEGAL_COUNSEL, ACCELERATION_CLAUSE,
+	 LOCAL_CCY_IN_CM, CORE_MARKET, ISDA_DATE, 
+	 TREASURY_DATE,  BANK_INT_NOTED, EXPIRY_DATE)
+	(SELECT CMS_COLLATERAL_STG_ID, 	INSURER_NAME, INSURANCE_TYPE, INSURED_CURRENCY, INSURED_AMT,
+	 INSURANCE_EFFECTIVE_DATE, POLICY_NUMBER, EXTERNAL_LEGAL_COUNSEL, ACCELERATION_CLAUSE,
+ 	 LOCAL_CCY_IN_LOCAL_MARKETS, CORE_MARKETS_TAG, ISDA_MASTER_AGREEMENT_DATE, 
+	 TREASURY_DOCUMENTATION_DATE, BANK_INTEREST_DULY_NOTED, INSURANCE_EXPIRY_DATE
+	FROM MIG_IN
+	where valid_ind = 'Y');	
+
+	-----------------------------------------
+	-- insert into cms_insurance_cds
+	----------------------------------------	
+	insert into cms_insurance_cds
+	(CDS_ID, CMS_REF_ID, BANK_ENTITY, HEDGE_TYPE, HEDGE_REF, CDS_REF, TRADE_ID, TRADE_DATE, DEAL_DATE,
+	 START_DATE, CDS_MATURITY_DATE, TENOR, TENOR_UNIT, TRADE_CURRENCY, NOTIONAL_HEDGED_AMT, REFERENCE_ENTITY, 
+	 CDS_BOOKING_LOCATION, LOAN_BOND_BOOKING_LOC, REFERENCE_ASSET, ISSUER, ISSUER_ID, ISSUER_DETAILS,
+	 DEALT_PRICE, RESIDUAL_MATURITY, SETTLEMENT, PAR_VALUE, DECLINE_MARKET_VALUE, EVENT_DETERMINATION_DATE,
+	 COMPLIANCE_CERTIFICATE, VALUATION_DATE, VALUATION_CURRENCY, MARGIN, NOMINAL_VALUE, 
+	 VALUATION_CMV, VALUTION_FSV, CMS_COLLATERAL_ID, SOURCE_ID  )
+	 (SELECT CDS_ID, CDS_ID, BANK_ENTITY, HEDGE_TYPE,
+	 HEDGE_REFERENCE, CDS_REFERENCE, TRADE_ID, TRADE_DATE, DEAL_DATE, START_DATE,
+	 CDS_MATURITY_DATE, TENOR_UNIT, TENOR_UOM, TRADE_CURRENCY, NOTIONAL_HEDGED_AMT,
+	 REFERENCE_ENTITY, CDS_BKG_LOCATION, LOAN_BOND_BKG_LOCATION, REFERENCE_ASSET,
+	 ISSUER, ISSUER_ID, ISSUER_DETAIL, DEALT_PRICE, RESIDUAL_MATURITY,
+	 SETTLEMENT, PAR_VALUE, DECLINE_MARKET_VALUE,
+	 EVENT_DETERMINATION_DATE, COMPLIANCE_CERT_OBTAINED,
+	 CDS_VALUATION_DATE, CDS_VALUATION_CCY,
+	 CDS_MARGIN, CDS_NOMINAL_VALUE, CDS_VALUATION_CMV, CDS_VALUATION_FSV, CMS_COLLATERAL_ID, SOURCE_ID
+	FROM MIG_IN
+	where valid_ind = 'Y');
+	
+	-----------------------------------------
+	-- insert into cms_insurance_cds
+	----------------------------------------	
+	insert into cms_stage_insurance_cds
+	(CDS_ID, CMS_REF_ID, BANK_ENTITY, HEDGE_TYPE, HEDGE_REF, CDS_REF, TRADE_ID, TRADE_DATE, DEAL_DATE,
+	 START_DATE, CDS_MATURITY_DATE, TENOR, TENOR_UNIT, TRADE_CURRENCY, NOTIONAL_HEDGED_AMT, REFERENCE_ENTITY, 
+	 CDS_BOOKING_LOCATION, LOAN_BOND_BOOKING_LOC, REFERENCE_ASSET, ISSUER, ISSUER_ID, ISSUER_DETAILS,
+	 DEALT_PRICE, RESIDUAL_MATURITY, SETTLEMENT, PAR_VALUE, DECLINE_MARKET_VALUE, EVENT_DETERMINATION_DATE,
+	 COMPLIANCE_CERTIFICATE, VALUATION_DATE, VALUATION_CURRENCY, MARGIN, NOMINAL_VALUE, 
+	 VALUATION_CMV, VALUTION_FSV, CMS_COLLATERAL_ID,SOURCE_ID  )
+	 (SELECT CDS_ID, CDS_ID, BANK_ENTITY, HEDGE_TYPE,
+	 HEDGE_REFERENCE, CDS_REFERENCE, TRADE_ID, TRADE_DATE, DEAL_DATE, START_DATE,
+	 CDS_MATURITY_DATE, TENOR_UNIT, TENOR_UOM, TRADE_CURRENCY, NOTIONAL_HEDGED_AMT,
+	 REFERENCE_ENTITY, CDS_BKG_LOCATION, LOAN_BOND_BKG_LOCATION, REFERENCE_ASSET,
+	 ISSUER, ISSUER_ID, ISSUER_DETAIL, DEALT_PRICE, RESIDUAL_MATURITY,
+	 SETTLEMENT, PAR_VALUE, DECLINE_MARKET_VALUE,
+	 EVENT_DETERMINATION_DATE, COMPLIANCE_CERT_OBTAINED,
+	 CDS_VALUATION_DATE, CDS_VALUATION_CCY, CDS_MARGIN, CDS_NOMINAL_VALUE, 
+	 CDS_VALUATION_CMV, CDS_VALUATION_FSV, CMS_COLLATERAL_STG_ID, SOURCE_ID
+	FROM MIG_IN
+	where valid_ind = 'Y');	
+	
+	CALL "MIG_LOG_PROC_TIME"('MIG_RUN_IN', 'MIG', 0);
+
+END
+@
+

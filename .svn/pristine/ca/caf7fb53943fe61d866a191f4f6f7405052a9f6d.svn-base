@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+<!--  THIS QUERY JUST FOR REPORT TEMPLATE AS TEMPORARY FLOW OF CODE .. THIS QUERY IS NOT USABLE IN "CERSAI BATCH UPLOAD REPORT"	-->
+		<query>
+			SELECT DISTINCT 
+			CMS.CMS_COLLATERAL_ID AS SECURITY_ID
+			from cms_security CMS,
+			SCI_LE_SUB_PROFILE sub_profile,
+			sci_lsp_lmt_profile LMT,
+			sci_lsp_appr_lmts APPR,
+			cms_limit_security_map MAP
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				CMS.CMS_COLLATERAL_ID = MAP.cms_collateral_id AND
+				APPR.CMS_LSP_APPR_LMTS_ID = MAP.CMS_LSP_APPR_LMTS_ID AND
+				LMT.CMS_LSP_LMT_PROFILE_ID = APPR.CMS_LIMIT_PROFILE_ID AND
+				LMT.LLP_LE_ID = sub_profile.LSP_LE_ID AND
+				Sub_Profile.Status ='CLOSED' AND
+			</mandatoryClause>
+			<param>
+				<name>bankingMethod</name>
+				<condition>sub_profile.banking_method= </condition>
+			</param>
+
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>|</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>CERSAI Batch Upload Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

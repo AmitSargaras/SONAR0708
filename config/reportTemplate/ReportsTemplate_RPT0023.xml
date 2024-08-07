@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			  SELECT sub_profile.lsp_short_name   AS party_name,
+                  cc_segment.entry_name             AS segmentName,
+                  rm.rm_mgr_name                    AS rmname,
+                  lmtProfile.LLP_BCA_REF_NUM        AS camDocNo,
+                  to_char(lmtProfile.LLP_NEXT_ANNL_RVW_DATE,'DD-Mon-YYYY') AS camExpDate,
+                  to_char(lmtProfile.LLP_EXTD_NEXT_RVW_DATE,'DD-Mon-YYYY') AS camExtnDate,
+                  to_char(lmtProfile.RAM_RATING_FINALIZATION_DATE,'DD-Mon-YYYY') as RAM_RATING_FINALIZATION_DATE,
+                  (select region_name from cms_region where ID =  addr.lra_region) as region,
+                  lmtprofile.cam_type                  
+                FROM 
+                  SCI_LE_SUB_PROFILE sub_profile ,
+                  cms_relationship_mgr rm ,
+                  (SELECT entry_name,entry_code FROM common_code_category_entry WHERE category_code = 'HDFC_SEGMENT') cc_segment ,
+                  sci_lsp_lmt_profile lmtProfile,
+                  SCI_LE_REG_ADDR addr
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				 cc_segment.entry_code (+)=sub_profile.lsp_sgmnt_code_value 
+                 	AND rm.id = sub_profile.relation_mgr
+             		AND sub_profile.cms_le_sub_profile_id = lmtProfile.cms_customer_id
+                AND  TRUNC(lmtProfile.LLP_EXTD_NEXT_RVW_DATE) &lt; TRUNC(sysdate)
+                AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = addr.CMS_LE_MAIN_PROFILE_ID
+          		AND addr.LRA_TYPE_VALUE = 'CORPORATE' 
+          		AND sub_profile.status                 !=   'INACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition>  AND sub_profile.lsp_sgmnt_code_value = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CAM Document Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CAM Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Extension Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM Rating Finalization Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Type</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Deferral CAM overdue</reportName>
+		</reportParamters>
+	</report>
+</reports>

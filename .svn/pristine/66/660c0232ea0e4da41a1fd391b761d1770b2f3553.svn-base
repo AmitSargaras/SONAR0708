@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+		SELECT  temp.PARTY_ID,temp.PARTY_NAME,temp.LEI_CODE,temp.LEI_EXPIRY_DATE,temp.CAM_TYPE,
+				temp.CAM_EXP_DATE,temp.Maker,temp.MakerDateTime,temp.Approved_By,temp.CheckerDateTime 
+		FROM
+			(select DISTINCT
+				subprofile.lsp_le_id AS PARTY_ID,
+				subprofile.CMS_LE_SUB_PROFILE_ID AS CMS_LE_SUB_PROFILE_ID,
+				subprofile.lsp_short_name AS PARTY_NAME,
+				subprofile.LEI_CODE AS LEI_CODE,
+				to_char(subprofile.LEI_EXPIRY_DATE,'DD-Mon-YYYY') as LEI_EXPIRY_DATE,
+				lmtprofile.cam_type as CAM_TYPE,
+				to_char(lmtProfile.LLP_NEXT_ANNL_RVW_DATE,'DD-Mon-YYYY') AS CAM_EXP_DATE,
+ 			  CASE
+				WHEN trx.from_state = 'PENDING_CREATE'
+				THEN
+				  (SELECT hist.login_id
+				  FROM trans_history hist
+				  WHERE hist.transaction_id = trx.transaction_id
+				  AND hist.from_state      IN ('ND','DRAFT')
+				  AND hist.to_state         ='PENDING_CREATE'
+				  )
+				WHEN trx.from_state = 'PENDING_UPDATE'
+				THEN
+				  (SELECT hist.login_id
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       = 'ACTIVE'
+					AND to_state         = 'PENDING_UPDATE'
+					)
+				  )
+				WHEN trx.from_state = 'PENDING_DELETE'
+				THEN
+				  (SELECT hist.login_id
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       ='ACTIVE'
+					AND to_state         ='PENDING_DELETE'
+					)
+				  )
+				WHEN trx.from_state = 'ACTIVE'
+				THEN
+				  (SELECT hist.login_id
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       ='ACTIVE'
+					AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+					)
+				  )
+				WHEN trx.from_state = 'REJECTED'
+				THEN
+				  (SELECT hist.login_id
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       = 'REJECTED'
+					AND to_state         ='ACTIVE'
+					)
+				  )
+				WHEN trx.from_state = 'DRAFT'
+				THEN
+				  CASE
+					WHEN trx.status = 'PENDING_UPDATE'
+					THEN
+					  (SELECT hist.login_id
+					  FROM trans_history hist
+					  WHERE hist.TR_HISTORY_ID=
+						(SELECT MAX(TR_HISTORY_ID)
+						FROM trans_history
+						WHERE transaction_id = trx.transaction_id
+						AND from_state       = 'DRAFT'
+						AND to_state         ='PENDING_UPDATE'
+						)
+					  )
+					WHEN trx.status = 'ACTIVE'
+					THEN
+					  (SELECT hist.login_id
+					  FROM trans_history hist
+					  WHERE hist.TR_HISTORY_ID=
+						(SELECT MAX(TR_HISTORY_ID)
+						FROM trans_history
+						WHERE transaction_id = trx.transaction_id
+						AND from_state       = 'DRAFT'
+						AND to_state         ='ACTIVE'
+						)
+					  )
+				  END
+			  END AS Maker,
+			  CASE
+				WHEN trx.from_state = 'PENDING_CREATE'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.transaction_id = trx.transaction_id
+				  AND hist.from_state      IN ('ND','DRAFT')
+				  AND hist.to_state         ='PENDING_CREATE'
+				  )
+				WHEN trx.from_state = 'PENDING_UPDATE'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+					AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+					)
+				  )
+				WHEN trx.from_state = 'PENDING_DELETE'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       ='ACTIVE'
+					AND to_state         ='PENDING_DELETE'
+					)
+				  )
+				WHEN trx.from_state = 'ACTIVE'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       ='ACTIVE'
+					AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+					)
+				  )
+				WHEN trx.from_state = 'REJECTED'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       = 'REJECTED'
+					AND to_state         ='ACTIVE'
+					)
+				  )
+				WHEN trx.from_state = 'DRAFT'
+				THEN
+				  CASE
+					WHEN trx.status = 'PENDING_UPDATE'
+					THEN
+					  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+					  FROM trans_history hist
+					  WHERE hist.TR_HISTORY_ID=
+						(SELECT MAX(TR_HISTORY_ID)
+						FROM trans_history
+						WHERE transaction_id = trx.transaction_id
+						AND from_state       = 'DRAFT'
+						AND to_state         ='PENDING_UPDATE'
+						)
+					  )
+					WHEN trx.status = 'ACTIVE'
+					THEN
+					  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+					  FROM trans_history hist
+					  WHERE hist.TR_HISTORY_ID=
+						(SELECT MAX(TR_HISTORY_ID)
+						FROM trans_history
+						WHERE transaction_id = trx.transaction_id
+						AND from_state       = 'DRAFT'
+						AND to_state         ='ACTIVE'
+						)
+					  )
+				  END
+			  END AS MakerDateTime,
+			  CASE
+				WHEN trx.status = 'PENDING_CREATE'
+				THEN ''
+				WHEN trx.status = 'PENDING_UPDATE'
+				THEN
+				  (SELECT hist.login_id
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+					AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+					)
+				  )
+				WHEN (trx.status != 'PENDING_CREATE'
+				AND trx.status   != 'PENDING_UPDATE')
+				THEN TO_CHAR(trx.login_id)
+			  END AS Approved_By,
+			  CASE
+				WHEN trx.from_state = 'PENDING_CREATE'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.transaction_id = trx.transaction_id
+				  AND hist.from_state       ='PENDING_CREATE'
+				  AND hist.to_state         ='ACTIVE'
+				  )
+				WHEN trx.from_state = 'PENDING_UPDATE'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       ='PENDING_UPDATE'
+					AND to_state         ='ACTIVE'
+					)
+				  )
+				WHEN trx.from_state = 'PENDING_DELETE'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       ='PENDING_DELETE'
+					AND to_state         ='ACTIVE'
+					)
+				  )
+				WHEN trx.from_state = 'ACTIVE'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+					AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+					)
+				  )
+				WHEN trx.from_state = 'REJECTED'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND from_state       ='REJECTED'
+					AND to_state         ='ACTIVE'
+					)
+				  )
+				WHEN trx.from_state = 'DRAFT'
+				THEN
+				  (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+				  FROM trans_history hist
+				  WHERE hist.TR_HISTORY_ID=
+					(SELECT MAX(TR_HISTORY_ID)
+					FROM trans_history
+					WHERE transaction_id = trx.transaction_id
+					AND to_state         ='ACTIVE'
+					)
+				  )
+			  END AS CheckerDateTime,
+			  ROW_NUMBER() OVER (PARTITION BY log.PARTYID ORDER BY log.ID DESC) AS SEQNUM 
+		FROM
+			    TRANSACTION          trx,
+			    sci_le_sub_profile   subprofile,
+			    SCI_LSP_LMT_PROFILE  lmtprofile,
+			    LEI_VALIDATION_LOG	 log	 
+        WHERE   
+				trx.reference_id  					  = subprofile.cms_le_sub_profile_id                       
+                AND subprofile.cms_le_sub_profile_id  = lmtprofile.cms_customer_id
+                AND log.PARTYID 					  = lmtprofile.LLP_LE_ID
+                AND lmtprofile.LLP_LE_ID			  = subprofile.LSP_LE_ID
+				ORDER BY PARTY_ID 
+		)temp		
+  		</query>
+		<whereClause>
+			<mandatoryClause>
+				temp.SEQNUM &lt;6
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> AND temp.CMS_LE_SUB_PROFILE_ID= </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LEI Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LEI Expiry Date</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>CAM Expiry Date</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker Date and Time</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker Date and Time</header>
+				</reportColumn>					
+			</reportColumns>
+			<reportName>LEI Audit Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,198 @@
+SET DEFINE OFF;
+
+-----------------Ad hoc Facility----------------------------------------------------
+
+ALTER TABLE SCI_LSP_APPR_LMTS ADD  ADHOC_FACILITY  CHAR(1) DEFAULT('N');
+ALTER TABLE SCI_LSP_APPR_LMTS ADD  ADHOC_LAST_AVAIL_DT   TIMESTAMP(9);
+ALTER TABLE SCI_LSP_APPR_LMTS ADD  MULTI_DRAWDOWN_ALLOW  CHAR(1);
+ALTER TABLE SCI_LSP_APPR_LMTS ADD  ADHOC_TENOR  NUMBER(3);
+ALTER TABLE SCI_LSP_APPR_LMTS ADD  ADHOC_FACILITY_EXP_DT   TIMESTAMP(9);
+ALTER TABLE SCI_LSP_APPR_LMTS ADD  GEN_PURPOSE_LOAN  CHAR(1);
+
+ALTER TABLE STAGE_LIMIT ADD  ADHOC_FACILITY  CHAR(1) DEFAULT('N');
+ALTER TABLE STAGE_LIMIT ADD  ADHOC_LAST_AVAIL_DT   TIMESTAMP(9);
+ALTER TABLE STAGE_LIMIT ADD  MULTI_DRAWDOWN_ALLOW  CHAR(1);
+ALTER TABLE STAGE_LIMIT ADD  ADHOC_TENOR  NUMBER(3);
+ALTER TABLE STAGE_LIMIT ADD  ADHOC_FACILITY_EXP_DT   TIMESTAMP(9);
+ALTER TABLE STAGE_LIMIT ADD  GEN_PURPOSE_LOAN  CHAR(1);
+
+
+
+ALTER TABLE SCI_LSP_SYS_XREF ADD  ADHOC_LINE  CHAR(1);
+
+ALTER TABLE CMS_STAGE_LSP_SYS_XREF ADD  ADHOC_LINE  CHAR(1);
+
+
+update SCI_LSP_APPR_LMTS  set ADHOC_FACILITY ='N';
+
+update STAGE_LIMIT set ADHOC_FACILITY ='N';
+
+  update COMMON_CODE_CATEGORY_ENTRY set VERSION_TIME='0' where VERSION_TIME is null ;
+  
+  update COMMON_CODE_CATEGORY set VERSION_TIME='0' where VERSION_TIME is null ;
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+INSERT INTO COMMON_CODE_CATEGORY_ENTRY
+  (
+    ENTRY_ID,
+    ENTRY_CODE,
+    ENTRY_NAME,
+    ACTIVE_STATUS,
+    CATEGORY_CODE,
+    CATEGORY_CODE_ID,
+    ENTRY_SOURCE,
+    COUNTRY,
+    GROUP_ID,
+    REF_ENTRY_CODE,
+    VERSION_TIME,
+    STATUS,
+    CREATION_DATE,
+    LAST_UPDATE_DATE,
+    CPS_ID,
+    EOD_SYNC_STATUS
+  )
+  VALUES
+  (
+    (SELECT MAX(ENTRY_ID)+1 FROM COMMON_CODE_CATEGORY_ENTRY
+    )
+    ,
+    'RPT0088',
+    'Adhoc Facility Report',
+    '1',
+    'REPORTS',
+    313,
+    NULL,
+    'IN',
+    NULL,
+    NULL,
+    0,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    'SUCCESSFUL'
+  );
+
+  
+------------------------------------------------------------End Ad hoc Facility-----------------------------------------------------------------
+
+------------------------------------------------------------Master Maintenance------------------------------------------------------------------
+
+ALTER TABLE cms_eodsync_status ADD(
+file_name VARCHAR2(4000),
+ack_file_name VARCHAR2(4000)
+);
+
+ALTER TABLE cms_stage_state ADD(
+cps_id VARCHAR2(100)
+);
+
+ALTER TABLE cms_state ADD(
+cps_id VARCHAR2(100)
+);
+
+ALTER TABLE cms_stage_city ADD(
+cps_id VARCHAR2(100)
+);
+
+ALTER TABLE cms_city ADD(
+cps_id VARCHAR2(100)
+);
+
+--CLIMS-TO-CPS
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CLIMSTOCPS','DOC_CHECKLIST_FACILITY_GLOBAL_EOD','Facility Global Document Checklist',NULL,NULL,'null',NULL,0,0,0,NULL,NULL);
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CLIMSTOCPS','DOC_CHECKLIST_SECURITY_GLOBAL_EOD','Security Global Document Checklist',NULL,NULL,'null',NULL,0,0,0,NULL,NULL);
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CLIMSTOCPS','DOC_CHECKLIST_CAM_EOD','CAM Document Checklist',NULL,NULL,'null',NULL,0,0,0,NULL,NULL);
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CLIMSTOCPS','DOC_CHECKLIST_OTHER_EOD','Other Document Checklist',NULL,NULL,'null',NULL,0,0,0,NULL,NULL);
+
+--CPS-TO-CLIMS
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','CURRENCY_MASTER_EOD_UPLOAD','Currency Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_Currency_Mst.dat','CPS_Currency_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','MINORITY_COMMUNITY_MASTER_EOD_UPLOAD','Minority Community Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_MinorityCommunity_Mst.dat','CPS_MinorityCommunity_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','NBFC_A_MASTER_EOD_UPLOAD','NBFC A Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_NbfcA_Mst.dat','CPS_NbfcA_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','NBFC_B_MASTER_EOD_UPLOAD','NBFC B Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_NbfcB_Mst.dat','CPS_NbfcB_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','RAM_RATING_MASTER_EOD_UPLOAD','Ram Rating Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_RamRating_Mst.dat','CPS_RamRating_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','RBI_ASSET_CLASSIFICATION_MASTER_EOD_UPLOAD','Rbi Asset Classification Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_RbiAssetClassification_Mst.dat','CPS_RbiAssetClassification_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','RELATED_TYPE_MASTER_EOD_UPLOAD','Related type Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_RelatedType_Mst.dat','CPS_RelatedType_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','RATING_TYPE_MASTER_EOD_UPLOAD','Rating type Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_RatingType_Mst.dat','CPS_RatingType_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','RELATIONSHIP_TYPE_MASTER_EOD_UPLOAD','Relation type Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_RelationshipType_Mst.dat','CPS_RelationshipType_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','WEAKER_SECTION_MASTER_EOD_UPLOAD','Weaker Section Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_WeakerSection_Mst.dat','CPS_WeakerSection_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','MSME_CLASSIFICATION_MASTER_EOD_UPLOAD','MSME Classification Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_MsmeClassification_Mst.dat','CPS_MsmeClassification_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name)
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','PSL_MIS_CODE_MASTER_EOD_UPLOAD','PSL MIS Code Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_PslMisCode_Mst.dat','CPS_PslMisCode_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name)
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','INFRASTRUCTURE_FINANCE_MASTER_EOD_UPLOAD','Infrastructure Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_InfrastructureFinance_Mst.dat','CPS_InfrastructureFinance_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name)
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','MARKET_SEGMENT_MASTER_EOD_UPLOAD','Market Segment Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_MarketSegment_Mst.dat','CPS_MarketSegment_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','REGION_MASTER_EOD_UPLOAD','Region Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_Region_Mst.dat','CPS_Region_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','STATE_MASTER_EOD_UPLOAD','State Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_State_Mst.dat','CPS_State_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','BANKING_METHOD_MASTER_EOD_UPLOAD','Banking Method Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_BankingMethod_Mst.dat','CPS_BankingMethod_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','CITY_MASTER_EOD_UPLOAD','City Master',NULL,NULL,NULL,NULL,0,0,0,'CPS_City_Mst.dat','CPS_City_Mst_Ack.dat');
+
+INSERT INTO cms_eodsync_status (ID,version_time,applicationdate,currentdate,syncdirection,processkey,processdesc,processstarttime,processendtime,processstatus,processexception,totalcount,successcount,failedcount,file_name,ack_file_name) 
+VALUES (cms_eodsync_status_seq.NEXTVAL,0,sysdate,sysdate,'CPSTOCLIMS','COUNTRY_MASTER_EOD_UPLOAD','Country master',NULL,NULL,NULL,NULL,0,0,0,'CPS_Country_Mst.dat','CPS_Country_Mst_Ack.dat');
+
+--------------------------------------End Master Maintenance-----------------------------------------------------------------
+  
+
+INSERT INTO COMMON_CODE_CATEGORY_ENTRY
+  (    ENTRY_ID, ENTRY_CODE, ENTRY_NAME, ACTIVE_STATUS,  CATEGORY_CODE,  CATEGORY_CODE_ID, ENTRY_SOURCE,COUNTRY, GROUP_ID,  REF_ENTRY_CODE,  VERSION_TIME,  STATUS, CREATION_DATE,  LAST_UPDATE_DATE,  CPS_ID,  EOD_SYNC_STATUS)
+  VALUES
+  (   (SELECT MAX(ENTRY_ID)+1 FROM COMMON_CODE_CATEGORY_ENTRY   )    ,
+    'RPT0089',    'EOD Sync-up Acknowledgement Report',  '1', 'REPORTS',
+    313, NULL, 'IN', NULL, NULL, 0,NULL,NULL, NULL, NULL, 'SUCCESSFUL' );
+
+
+
+--148--RAM RATING
+Insert into TRANSACTION (TRANSACTION_ID,FROM_STATE,USER_ID,LOGIN_ID,TRANSACTION_TYPE,CREATION_DATE,TRANSACTION_DATE,REFERENCE_ID,STATUS,STAGING_REFERENCE_ID,TEAM_ID,VERSION,TRX_REFERENCE_ID,OPSDESC,LEGAL_NAME,LEGAL_ID,CUSTOMER_NAME,CUSTOMER_ID,TRX_ORIGIN_COUNTRY,TRX_ORIGIN_ORGANISATION,LIMIT_PROFILE_ID,LIMIT_PROFILE_REF_NUM,TRX_SEGMENT,USER_INFO,CUR_TRX_HISTORY_ID,TEAM_TYPE_ID,TRANSACTION_SUBTYPE,TO_GROUP_TYPE_ID,TO_GROUP_ID,TO_USER_ID,DEAL_NO,TEAM_MEMBERSHIP_ID,SYSTEM_DATE,MIN_EMPLOYEE_GRADE) values (TRX_SEQ.NEXTVAL,'PENDING_CREATE',20110707000000427,'CPU_ADM','COMMON_CODE_ENTRY',to_date('23-MAY-23','DD-MON-RR'),to_date('23-MAY-23','DD-MON-RR'),148,'ACTIVE',148,20110623000000034,1,null,'APPROVE_CREATE_CITY',null,null,null,null,null,null,null,null,null,'Cpu admin m ( CPU_ADM )','20120425120001186',102,null,null,null,null,null,20110623000000071,null,null);
+
+---284 ISO_CU
+Insert into TRANSACTION (TRANSACTION_ID,FROM_STATE,USER_ID,LOGIN_ID,TRANSACTION_TYPE,CREATION_DATE,TRANSACTION_DATE,REFERENCE_ID,STATUS,STAGING_REFERENCE_ID,TEAM_ID,VERSION,TRX_REFERENCE_ID,OPSDESC,LEGAL_NAME,LEGAL_ID,CUSTOMER_NAME,CUSTOMER_ID,TRX_ORIGIN_COUNTRY,TRX_ORIGIN_ORGANISATION,LIMIT_PROFILE_ID,LIMIT_PROFILE_REF_NUM,TRX_SEGMENT,USER_INFO,CUR_TRX_HISTORY_ID,TEAM_TYPE_ID,TRANSACTION_SUBTYPE,TO_GROUP_TYPE_ID,TO_GROUP_ID,TO_USER_ID,DEAL_NO,TEAM_MEMBERSHIP_ID,SYSTEM_DATE,MIN_EMPLOYEE_GRADE) values (TRX_SEQ.NEXTVAL,'PENDING_CREATE',20110707000000427,'CPU_ADM','COMMON_CODE_ENTRY',to_date('23-MAY-23','DD-MON-RR'),to_date('23-MAY-23','DD-MON-RR'),284,'ACTIVE',284,20110623000000034,1,null,'APPROVE_CREATE_CITY',null,null,null,null,null,null,null,null,null,'Cpu admin m ( CPU_ADM )','20120425120001186',102,null,null,null,null,null,20110623000000071,null,null);
+
+--297 RATING
+Insert into TRANSACTION (TRANSACTION_ID,FROM_STATE,USER_ID,LOGIN_ID,TRANSACTION_TYPE,CREATION_DATE,TRANSACTION_DATE,REFERENCE_ID,STATUS,STAGING_REFERENCE_ID,TEAM_ID,VERSION,TRX_REFERENCE_ID,OPSDESC,LEGAL_NAME,LEGAL_ID,CUSTOMER_NAME,CUSTOMER_ID,TRX_ORIGIN_COUNTRY,TRX_ORIGIN_ORGANISATION,LIMIT_PROFILE_ID,LIMIT_PROFILE_REF_NUM,TRX_SEGMENT,USER_INFO,CUR_TRX_HISTORY_ID,TEAM_TYPE_ID,TRANSACTION_SUBTYPE,TO_GROUP_TYPE_ID,TO_GROUP_ID,TO_USER_ID,DEAL_NO,TEAM_MEMBERSHIP_ID,SYSTEM_DATE,MIN_EMPLOYEE_GRADE) values (TRX_SEQ.NEXTVAL,'PENDING_CREATE',20110707000000427,'CPU_ADM','COMMON_CODE_ENTRY',to_date('23-MAY-23','DD-MON-RR'),to_date('23-MAY-23','DD-MON-RR'),297,'ACTIVE',297,20110623000000034,1,null,'APPROVE_CREATE_CITY',null,null,null,null,null,null,null,null,null,'Cpu admin m ( CPU_ADM )','20120425120001186',102,null,null,null,null,null,20110623000000071,null,null);
+
+
+SET DEFINE ON;
+COMMIT;

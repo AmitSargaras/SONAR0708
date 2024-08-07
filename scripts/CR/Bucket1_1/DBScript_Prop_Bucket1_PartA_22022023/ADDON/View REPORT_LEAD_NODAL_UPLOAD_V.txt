@@ -1,0 +1,131 @@
+CREATE  VIEW REPORT_LEAD_NODAL_UPLOAD_V AS 
+
+			SELECT  distinct			  sub_profile.lsp_le_id        AS Party_Id,
+			  sub_profile.lsp_short_name           AS party_name ,
+			  sub_profile.mpbf                     AS mpbf ,
+			  sub_profile.total_funded_limit       AS totalfundamount ,
+			  sub_profile.funded_share_percent     AS hdfcfundshare ,
+			  sub_profile.funded_share_limit       AS hdfcfundamount ,
+			  sub_profile.total_non_funded_limit   AS totalnonfunded ,
+			  sub_profile.non_funded_share_percent AS hdfcnonfundedshare ,
+			  sub_profile.non_funded_share_limit   AS hdfcnonfundedamount ,
+        banking_cust.CMS_BANKING_METHOD_NAME as BANKMETHOD,
+			  CASE
+        WHEN  banking_cust.CMS_BANKING_METHOD_NAME = 'SOLE'
+			  THEN '-'
+			  END AS ifsc,
+		    CASE
+        WHEN  banking_cust.CMS_BANKING_METHOD_NAME = 'SOLE'
+			  THEN '-'
+			  END AS BANKNAME,
+			  CASE 
+			  WHEN BANKING.CMS_LE_LEAD ='Y'
+			  THEN '-'
+			  ELSE '-'
+			  END AS LEAD,
+			  CASE 
+			  WHEN BANKING.CMS_LE_NODAL ='Y'
+			  THEN '-'
+			  ELSE '-'
+			  END AS NODAL,  
+      sub_profile.MULTBNK_FUNDBSE_LEADBNK_PER AS MULTBNK_FUNDBSE_LEADBNK_PER,
+			sub_profile.MULTBNK_NONFUNDBSE_LEADBNK_PER AS MULTBNK_NONFUNDBSE_LEADBNK_PER,
+			sub_profile.MULTBNK_FUNDBSE_HDFCBNK_PER AS MULTBNK_FUNDBSE_HDFCBNK_PER,
+			sub_profile.MULTBNK_NONFUNDBSE_HDFCBNK_PER AS MULTBNK_NONFUNDBSE_HDFCBNK_PER,
+			sub_profile.CONSBNK_FUNDBSE_LEADBNK_PER AS CONSBNK_FUNDBSE_LEADBNK_PER,
+			sub_profile.CONSBNK_NONFUNDBSE_LEADBNK_PER AS CONSBNK_NONFUNDBSE_LEADBNK_PER,
+			sub_profile.CONSBNK_FUNDBSE_HDFCBNK_PER AS CONSBNK_FUNDBSE_HDFCBNK_PER,
+			sub_profile.CONSBNK_NONFUNDBSE_HDFCBNK_PER AS CONSBNK_NONFUNDBSE_HDFCBNK_PER,
+			  rm.RM_MGR_NAME ,
+			  reg.region_name                                                       AS Region,
+			  cc_segment.entry_name                                                 AS segment,
+     (sub_profile.total_funded_limit + sub_profile.total_non_funded_limit) AS totalAmount,
+      banking_cust.status
+			FROM 
+			  SCI_LE_SUB_PROFILE sub_profile,
+			  SCI_LE_BANKING_METHOD BANKING,
+			  SCI_LE_REG_ADDR ra ,
+			  CMS_REGION reg,
+        CMS_BANKING_METHOD_CUST banking_cust,
+        CMS_OTHER_BANK OTHERBANK,
+			  (SELECT entry_name,
+				entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code = 'HDFC_SEGMENT'
+			  ) cc_segment,
+			  CMS_RELATIONSHIP_MGR rm 
+        where
+				 BANKING.cms_le_main_profile_id    = sub_profile.cms_le_main_profile_id
+				AND (sub_profile.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+				AND ra.LRA_TYPE_VALUE                   = 'CORPORATE')
+				AND ra.lra_region                       = reg.id
+				AND cc_segment.entry_code(+)            = sub_profile.lsp_sgmnt_code_value
+				AND rm.ID(+)                            = sub_profile.RELATION_MGR
+				AND SUB_PROFILE.status                 != 'INACTIVE'
+				AND banking_cust.STATUS='ACTIVE' and banking_cust.CMS_BANKING_METHOD_NAME='SOLE'
+        AND banking_cust.CMS_LE_SUB_PROFILE_ID =sub_profile.CMS_LE_SUB_PROFILE_ID
+UNION 
+SELECT DISTINCT sub_profile.lsp_le_id  AS Party_Id ,
+							 sub_profile.lsp_short_name           AS party_name ,
+							 sub_profile.mpbf                     AS mpbf ,
+							 sub_profile.total_funded_limit       AS totalfundamount ,
+							 sub_profile.funded_share_percent     AS hdfcfundshare ,
+							 sub_profile.funded_share_limit       AS hdfcfundamount ,
+							 sub_profile.total_non_funded_limit   AS totalnonfunded ,
+							 sub_profile.non_funded_share_percent AS hdfcnonfundedshare ,
+							 sub_profile.non_funded_share_limit   AS hdfcnonfundedamount ,
+							 (SELECT get_banking_method(sub_profile.LSP_LE_ID) AS BANKING_METHOD 
+							 FROM CMS_BANKING_METHOD_CUST   WHERE ROWNUM = 1   ) AS bankmethod, 
+							 CASE     WHEN IFSCBANKBRANCH.IFSC_CODE IS NOT NULL 
+							   AND banking.CMS_LE_BANK_TYPE!  ='S'     THEN IFSCBANKBRANCH.IFSC_CODE 
+							   WHEN OTHER_BANK.BANK_CODE   IS NOT NULL 
+							   AND banking.CMS_LE_BANK_TYPE!='S'     THEN OTHER_BANK.BANK_CODE 
+							   WHEN banking.CMS_LE_BANK_TYPE='S'     THEN '-'   END AS ifsc, 
+							 COALESCE (   (SELECT OTHER_BANK.BANK_NAME     ||'-' 
+							   ||OTHERBANKBRANCH.BRANCH_NAME 
+							 FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,     CMS_OTHER_BANK OTHER_BANK 
+							 WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID 
+							 AND OTHER_BANK.ID            = OTHERBANKBRANCH.OTHER_BANK_CODE 
+							 AND BANKING.CMS_LE_BANK_TYPE = 'O'   ), 
+							 (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME 
+							 FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH 
+							 WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID 
+							 AND BANKING.CMS_LE_BANK_TYPE = 'S'   ) )AS BANKNAME,   CASE 
+							   WHEN BANKING.CMS_LE_LEAD ='Y'     THEN 'YES'     ELSE 'NO' 
+							  END AS LEAD,    CASE      WHEN BANKING.CMS_LE_NODAL ='Y' 
+							    THEN 'YES'      ELSE 'NO' 
+							  END                                        AS NODAL, 
+							  sub_profile.MULTBNK_FUNDBSE_LEADBNK_PER    AS MULTBNK_FUNDBSE_LEADBNK_PER, 
+							  sub_profile.MULTBNK_NONFUNDBSE_LEADBNK_PER AS MULTBNK_NONFUNDBSE_LEADBNK_PER, 
+							  sub_profile.MULTBNK_FUNDBSE_HDFCBNK_PER    AS MULTBNK_FUNDBSE_HDFCBNK_PER, 
+							  sub_profile.MULTBNK_NONFUNDBSE_HDFCBNK_PER AS MULTBNK_NONFUNDBSE_HDFCBNK_PER, 
+							  sub_profile.CONSBNK_FUNDBSE_LEADBNK_PER    AS CONSBNK_FUNDBSE_LEADBNK_PER,
+							  sub_profile.CONSBNK_NONFUNDBSE_LEADBNK_PER AS CONSBNK_NONFUNDBSE_LEADBNK_PER, 
+							  sub_profile.CONSBNK_FUNDBSE_HDFCBNK_PER    AS CONSBNK_FUNDBSE_HDFCBNK_PER, 
+							  sub_profile.CONSBNK_NONFUNDBSE_HDFCBNK_PER AS CONSBNK_NONFUNDBSE_HDFCBNK_PER, 
+							  rm.RM_MGR_NAME , 
+							  reg.region_name                                                       AS Region, 
+							  cc_segment.entry_name                                                 AS segment, 
+							  (sub_profile.total_funded_limit + sub_profile.total_non_funded_limit) AS totalAmount, 
+							  banking_cust.status STATUS  FROM SCI_LE_SUB_PROFILE sub_profile, 
+							  SCI_LE_REG_ADDR ra ,    CMS_REGION reg,    CMS_OTHER_BANK OTHER_BANK, 
+							  CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,    SCI_LE_BANKING_METHOD banking, 
+							  (SELECT entry_name,      entry_code    FROM common_code_category_entry 
+							  WHERE category_code = 'HDFC_SEGMENT'    ) cc_segment, 
+							  CMS_RELATIONSHIP_MGR rm,    CMS_BANKING_METHOD_CUST banking_cust, 
+							  CMS_IFSC_CODE IFSCBANKBRANCH 
+							WHERE (sub_profile.CMS_LE_MAIN_PROFILE_ID    = ra.CMS_LE_MAIN_PROFILE_ID (+) 
+							AND ra.LRA_TYPE_VALUE                        = 'CORPORATE') 
+							AND ra.lra_region                            = reg.id 
+							AND cc_segment.entry_code(+)                 = sub_profile.lsp_sgmnt_code_value 
+							AND rm.ID(+)                                 = sub_profile.RELATION_MGR 
+							AND SUB_PROFILE.status                      != 'INACTIVE' 
+							AND banking.CMS_LE_MAIN_PROFILE_ID           = sub_profile.CMS_LE_MAIN_PROFILE_ID 
+							AND banking_cust.CMS_LE_SUB_PROFILE_ID       =sub_profile.CMS_LE_SUB_PROFILE_ID 
+							AND banking_cust.Status                      ='ACTIVE' 
+							AND banking_cust.CMS_BANKING_METHOD_NAME!    ='SOLE' 
+							AND BANKING.CMS_LE_BANK_ID                   = OTHERBANKBRANCH.ID 
+							AND OTHER_BANK.ID                            = OTHERBANKBRANCH.OTHER_BANK_CODE 
+							AND ( IFSCBANKBRANCH.STATUS                 != 'INACTIVE' 
+							OR IFSCBANKBRANCH.STATUS                    IS NULL) 
+							AND IFSCBANKBRANCH.CMS_LE_MAIN_PROFILE_ID (+)= sub_profile.CMS_LE_SUB_PROFILE_ID ;

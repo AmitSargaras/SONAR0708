@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.digitalLibrary.bus">
+  <class entity-name="actualDigitalLibraryEntry" name="OBDigitalLibraryEntry" table="CMS_DIGITAL_LIBRARY" lazy="false">
+	<id name="digitalLibraryEntryID" type="long" column="DIGITAL_LIBRARY_ID" >
+		<generator class="increment">
+        </generator>
+	</id>
+	<version name="versionTime" column="VERSION_TIME" type="long" />
+    <property name="climsDocCategory" column="CLIMS_DOC_CATEGORY " />
+    <property name="digiLibDocCategory" column="DIGI_DOC_CATEGORY " />
+    <property name="climsDocCategorySeq" column="CLIMS_DOC_CATEGORY_SEQ " />
+	<property name="climsDocCategoryCode" column="CLIMS_CATEGORY_CODE" />
+    <property name="lastUpdatedDate" column="LAST_UPDATE_DATE" />
+    <property name="digitalLibraryEntryRef" column="FEED_REF" type="long"/>
+  </class>
+
+  <class entity-name="actualDigitalLibraryGroup" name="OBDigitalLibraryGroup" table="CMS_FEED_GROUP">
+	<id name="digitalLibraryGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false" order-by="CLIMS_DOC_CATEGORY_SEQ">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="actualDigitalLibraryEntry" />
+	</set>
+  </class>
+
+  <class entity-name="stageDigitalLibraryEntry" name="OBDigitalLibraryEntry" table="CMS_STAGE_DIGITAL_LIBRARY" lazy="false">
+	<id name="digitalLibraryEntryID" type="long" column="DIGITAL_LIBRARY_ID" >
+		<generator class="increment">
+        </generator>
+	</id>
+	<version name="versionTime" column="VERSION_TIME" type="long" />
+    <property name="climsDocCategory" column="CLIMS_DOC_CATEGORY " />
+    <property name="digiLibDocCategory" column="DIGI_DOC_CATEGORY " />
+    <property name="climsDocCategorySeq" column="CLIMS_DOC_CATEGORY_SEQ " />  
+    <property name="lastUpdatedDate" column="LAST_UPDATE_DATE" />
+    <property name="digitalLibraryEntryRef" column="FEED_REF" type="long"/>
+  </class>
+
+  <class entity-name="stageDigitalLibraryGroup" name="OBDigitalLibraryGroup" table="CMS_STAGE_FEED_GROUP">
+	<id name="digitalLibraryGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false" order-by="CLIMS_DOC_CATEGORY_SEQ">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="stageDigitalLibraryEntry" />
+	</set>
+  </class>
+
+</hibernate-mapping>

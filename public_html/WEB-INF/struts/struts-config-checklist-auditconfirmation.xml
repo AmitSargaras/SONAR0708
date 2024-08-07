@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="AuditCheckListForm" type="com.integrosys.cms.ui.checklist.audit.AuditCheckListForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+          <action path="/AuditCheckList" type="com.integrosys.cms.ui.checklist.audit.AuditCheckListAction"
+                    name="AuditCheckListForm" validate="false" scope="request">
+                     <forward name="after_list_date" path="/template/common_frame_template.jsp">
+     	       	    <set-property property="rightFrame" value="/checklist/audit/audit_list_date.jsp"/>
+     	       	    <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+     	       	    <set-property property="title" value="title.audit.confirmation.list"/>
+     		</forward> 
+                    <forward name="after_list" path="/template/common_frame_template.jsp">
+     		   <set-property property="rightFrame" value="/checklist/audit/audit_list.jsp"/>
+     		   <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+     		   <set-property property="title" value="title.audit.confirmation.list"/>
+            		</forward>
+     		<forward name="after_main_borrower_list" path="/template/common_frame_template.jsp">
+     		    <set-property property="rightFrame" value="/checklist/audit/main_borrower_audit_list.jsp"/>
+     		    <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+     		    <set-property property="title" value="title.audit.confirmation.list"/>
+     		</forward>
+     		<forward name="after_non_borrower_list" path="/template/common_frame_template.jsp">
+     		    <set-property property="rightFrame" value="/checklist/audit/non_borrower_audit_list.jsp"/>
+     		    <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+     		    <set-property property="title" value="title.audit.confirmation.list"/>
+     		</forward>
+     		<forward name="after_co_borrower_list" path="/template/common_frame_template.jsp">
+     		    <set-property property="rightFrame" value="/checklist/audit/co_borrower_audit_list.jsp"/>
+     		    <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+     		    <set-property property="title" value="title.audit.confirmation.list"/>
+     		</forward>
+     		<forward name="after_pledgor_list" path="/template/common_frame_template.jsp">
+     		    <set-property property="rightFrame" value="/checklist/audit/pledgor_audit_list.jsp"/>
+     		    <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+     		    <set-property property="title" value="title.audit.confirmation.list"/>
+     		</forward>	
+     		<forward name="after_print_main_borrower_list" path="/checklist/audit/print_main_borrower_audit_list.jsp"/>
+     		<forward name="after_print_non_borrower_list" path="/checklist/audit/print_non_borrower_audit_list.jsp"/>
+     		<forward name="after_print_co_borrower_list" path="/checklist/audit/print_co_borrower_audit_list.jsp"/>
+     		<forward name="after_print_pledgor_list" path="/checklist/audit/print_pledgor_audit_list.jsp"/>        
+	</action>
+    
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-checklist-auditconfirmation"/>-->
+</struts-config>

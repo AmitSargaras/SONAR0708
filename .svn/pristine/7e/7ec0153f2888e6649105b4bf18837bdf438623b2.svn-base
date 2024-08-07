@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_CCCertificate">
+   <display-name>CCCertificate</display-name>
+   <enterprise-beans>
+      <session id="session_SBCCCertificateProxyManager">
+         <ejb-name>SBCCCertificateProxyManager</ejb-name>
+         <home>com.integrosys.cms.app.cccertificate.proxy.SBCCCertificateProxyManagerHome</home>
+         <remote>com.integrosys.cms.app.cccertificate.proxy.SBCCCertificateProxyManager</remote>
+         <ejb-class>com.integrosys.cms.app.cccertificate.proxy.SBCCCertificateProxyManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCCCertificateProxyManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCCCertificateBusManager">
+         <ejb-name>SBCCCertificateBusManager</ejb-name>
+         <home>com.integrosys.cms.app.cccertificate.bus.SBCCCertificateBusManagerHome</home>
+         <remote>com.integrosys.cms.app.cccertificate.bus.SBCCCertificateBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.cccertificate.bus.SBCCCertificateBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCCCertificateBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBStagingCCCertificateBusManager">
+         <ejb-name>SBStagingCCCertificateBusManager</ejb-name>
+         <home>com.integrosys.cms.app.cccertificate.bus.SBCCCertificateBusManagerHome</home>
+         <remote>com.integrosys.cms.app.cccertificate.bus.SBCCCertificateBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.cccertificate.bus.SBStagingCCCertificateBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBStagingCCCertificateBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBCCCertificate">
+         <ejb-name>EBCCCertificate</ejb-name>
+         <home>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateHome</home>
+         <remote>com.integrosys.cms.app.cccertificate.bus.EBCCCertificate</remote>
+         <local-home>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateLocalHome</local-home>
+         <local>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateLocal</local>
+         <ejb-class>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCCCertificate</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCCCertificate_cMPCCCertID">
+            <field-name>cMPCCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_cCCertRef">
+            <field-name>cCCertRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_cMPSubProfileID">
+            <field-name>cMPSubProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_cMPPledgorID">
+            <field-name>cMPPledgorID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_cCCertCategory">
+            <field-name>cCCertCategory</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_dateGenerated">
+            <field-name>dateGenerated</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_creditOfficerName">
+            <field-name>creditOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_creditOfficerSignNo">
+            <field-name>creditOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_creditOfficerCountry">
+            <field-name>creditOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_creditOfficerOrgCode">
+            <field-name>creditOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_seniorOfficerName">
+            <field-name>seniorOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_seniorOfficerSignNo">
+            <field-name>seniorOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_seniorOfficerCountry">
+            <field-name>seniorOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_seniorOfficerOrgCode">
+            <field-name>seniorOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_creditOfficerDt">
+            <field-name>creditOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_seniorOfficerDt">
+            <field-name>seniorOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_famCode">
+            <field-name>famCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_famName">
+            <field-name>famName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_bcaApprovalDate">
+            <field-name>bcaApprovalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_bFLIssuedDate">
+            <field-name>bFLIssuedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_bcaNextReviewDate">
+            <field-name>bcaNextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_bcaExtendedReviewDate">
+            <field-name>bcaExtendedReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_custSegmentCode">
+            <field-name>custSegmentCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_bcaOrigCtry">
+            <field-name>bcaOrigCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_bcaOrigOrg">
+            <field-name>bcaOrigOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_bcaApprovalAuthority">
+            <field-name>bcaApprovalAuthority</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificate_creditGradeCode">
+            <field-name>creditGradeCode</field-name>
+         </cmp-field>
+         <primkey-field>cMPCCCertID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCCCertificate_EBCCCertificateItem">
+            <ejb-ref-name>EBCCCertificateItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemLocal</local>
+            <ejb-link>EBCCCertificateItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCCCertificate">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileAndSubProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCCCertificate o WHERE o.cMPLimitProfileID = ?1 AND o.cCCertCategory = ?2 AND o.cMPSubProfileID = ?3]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileAndPledgor</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCCCertificate o WHERE o.cMPLimitProfileID = ?1 AND o.cCCertCategory = ?2 AND o.cMPPledgorID = ?3]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByCategorySubProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCCCertificate o WHERE o.cCCertCategory = ?1 AND o.cMPSubProfileID = ?2]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCCCertificateItem">
+         <ejb-name>EBCCCertificateItem</ejb-name>
+         <local-home>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCCCertificateItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCCCertificateItem_cMPCCCertItemID">
+            <field-name>cMPCCCertItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_cMPCCCertID">
+            <field-name>cMPCCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_cCCertItemRef">
+            <field-name>cCCertItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_cMPLimitID">
+            <field-name>cMPLimitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_limitType">
+            <field-name>limitType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_activatedAmtCurrency">
+            <field-name>activatedAmtCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_activatedAmt">
+            <field-name>activatedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_approvedLimitAmtCcy">
+            <field-name>approvedLimitAmtCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_approvedLimitAmt">
+            <field-name>approvedLimitAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_approvalDate">
+            <field-name>approvalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_productDesc">
+            <field-name>productDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_bkgLoctnCtry">
+            <field-name>bkgLoctnCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_bkgLoctnOrg">
+            <field-name>bkgLoctnOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_coBorrowerLegalID">
+            <field-name>coBorrowerLegalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_coBorrowerName">
+            <field-name>coBorrowerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_cleanLimitInd">
+            <field-name>cleanLimitInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCCCertificateItem_maturityDate">
+            <field-name>maturityDate</field-name>
+         </cmp-field>
+         <primkey-field>cMPCCCertItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCCCertificateItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCCCertificateItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBCCCertificateItem o WHERE o.cCCertItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingCCCertificate">
+         <ejb-name>EBStagingCCCertificate</ejb-name>
+         <home>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateHome</home>
+         <remote>com.integrosys.cms.app.cccertificate.bus.EBCCCertificate</remote>
+         <local-home>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateLocalHome</local-home>
+         <local>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateLocal</local>
+         <ejb-class>com.integrosys.cms.app.cccertificate.bus.EBStgCCCertificateBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingCCCertificate</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_cMPCCCertID">
+            <field-name>cMPCCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_cCCertRef">
+            <field-name>cCCertRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_cMPSubProfileID">
+            <field-name>cMPSubProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_cMPPledgorID">
+            <field-name>cMPPledgorID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_cCCertCategory">
+            <field-name>cCCertCategory</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_dateGenerated">
+            <field-name>dateGenerated</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_creditOfficerName">
+            <field-name>creditOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_creditOfficerSignNo">
+            <field-name>creditOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_creditOfficerCountry">
+            <field-name>creditOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_creditOfficerOrgCode">
+            <field-name>creditOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_seniorOfficerName">
+            <field-name>seniorOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_seniorOfficerSignNo">
+            <field-name>seniorOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_seniorOfficerCountry">
+            <field-name>seniorOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_seniorOfficerOrgCode">
+            <field-name>seniorOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_creditOfficerDt">
+            <field-name>creditOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_seniorOfficerDt">
+            <field-name>seniorOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_famCode">
+            <field-name>famCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_famName">
+            <field-name>famName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_bcaApprovalDate">
+            <field-name>bcaApprovalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_bFLIssuedDate">
+            <field-name>bFLIssuedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_bcaNextReviewDate">
+            <field-name>bcaNextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_bcaExtendedReviewDate">
+            <field-name>bcaExtendedReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_custSegmentCode">
+            <field-name>custSegmentCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_bcaOrigCtry">
+            <field-name>bcaOrigCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_bcaOrigOrg">
+            <field-name>bcaOrigOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_bcaApprovalAuthority">
+            <field-name>bcaApprovalAuthority</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificate_creditGradeCode">
+            <field-name>creditGradeCode</field-name>
+         </cmp-field>
+         <primkey-field>cMPCCCertID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingCCCertificate_EBStagingCCCertificateItem">
+            <ejb-ref-name>EBStagingCCCertificateItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemLocal</local>
+            <ejb-link>EBStagingCCCertificateItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingCCCertificate">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileAndSubProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCCCertificate o WHERE o.cMPLimitProfileID = ?1 AND o.cCCertCategory = ?2 AND o.cMPSubProfileID = ?3]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileAndPledgor</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCCCertificate o WHERE o.cMPLimitProfileID = ?1 AND o.cCCertCategory = ?2 AND o.cMPPledgorID = ?3]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByCategorySubProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCCCertificate o WHERE o.cCCertCategory = ?1 AND o.cMPSubProfileID = ?2]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingCCCertificateItem">
+         <ejb-name>EBStagingCCCertificateItem</ejb-name>
+         <local-home>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.cccertificate.bus.EBCCCertificateItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingCCCertificateItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_cMPCCCertItemID">
+            <field-name>cMPCCCertItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_cMPCCCertID">
+            <field-name>cMPCCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_cCCertItemRef">
+            <field-name>cCCertItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_cMPLimitID">
+            <field-name>cMPLimitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_limitType">
+            <field-name>limitType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_activatedAmtCurrency">
+            <field-name>activatedAmtCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_activatedAmt">
+            <field-name>activatedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_approvedLimitAmtCcy">
+            <field-name>approvedLimitAmtCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_approvedLimitAmt">
+            <field-name>approvedLimitAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_approvalDate">
+            <field-name>approvalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_productDesc">
+            <field-name>productDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_bkgLoctnCtry">
+            <field-name>bkgLoctnCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_bkgLoctnOrg">
+            <field-name>bkgLoctnOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_coBorrowerLegalID">
+            <field-name>coBorrowerLegalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_coBorrowerName">
+            <field-name>coBorrowerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_cleanLimitInd">
+            <field-name>cleanLimitInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCCCertificateItem_maturityDate">
+            <field-name>maturityDate</field-name>
+         </cmp-field>
+         <primkey-field>cMPCCCertItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBStagingCCCertificateItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCCCertificateItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingCCCertificateItem o WHERE o.cCCertItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_CCCertificate-CCCertificateItem">
+         <ejb-relation-name>CCCertificate-CCCertificateItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CCCertificate-Has-CCCertificateItem">
+            <ejb-relationship-role-name>CCCertificate-Has-CCCertificateItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCCCertificate</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCCCItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_CCCertificateItem-BelongsTo-CCCertificate">
+            <ejb-relationship-role-name>CCCertificateItem-BelongsTo-CCCertificate</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCCCertificateItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingCCCertificate-StagingCCCertificateItem">
+         <ejb-relation-name>StagingCCCertificate-StagingCCCertificateItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingCCCertificate-Has-StagingCCCertificateItem">
+            <ejb-relationship-role-name>StagingCCCertificate-Has-StagingCCCertificateItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingCCCertificate</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCCCItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingCCCertificateItem-BelongsTo-StagingCCCertificate">
+            <ejb-relationship-role-name>StagingCCCertificateItem-BelongsTo-StagingCCCertificate</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingCCCertificateItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBCCCertificateProxyManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCCCertificateBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBStagingCCCertificateBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCCCertificate</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCCCertificateItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingCCCertificate</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingCCCertificateItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

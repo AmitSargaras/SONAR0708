@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejbext:EJBJarExtension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:xmi="http://www.omg.org/XMI"
+                        xmlns:ejbext="ejbext.xmi"
+                        xmlns:ejb="ejb.xmi"
+                        xmlns:commonext.localtran="commonext.localtran.xmi"
+                        xmi:version="2.0"
+                        xmi:id="ejbjarext_ejb_DataProtection">
+   <ejbJar href="META-INF/ejb-jar.xml#ejb_DataProtection"/>
+   <ejbExtensions xmi:id="ejbext_SBDataProtection" xmi:type="ejbext:SessionExtension">
+      <enterpriseBean xmi:type="ejb:Session" href="META-INF/ejb-jar.xml#session_SBDataProtection"/>
+      <structure xmi:id="structure_SBDataProtection" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_SBDataProtection" activateAt="ONCE"/>
+      <localTransaction xmi:id="localtrx_SBDataProtection" resolver="Application"/>
+      <resourceRefExtensions xmi:id="resrefext_SBDataProtection" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_SBDataProtection"/>
+      </resourceRefExtensions>
+   </ejbExtensions>
+   <ejbExtensions xmi:id="ejbext_EBCollateralMetaData"
+                  xmi:type="ejbext:ContainerManagedEntityExtension">
+      <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                      href="META-INF/ejb-jar.xml#entity_EBCollateralMetaData"/>
+      <structure xmi:id="structure_EBCollateralMetaData" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_EBCollateralMetaData" activateAt="TRANSACTION"
+                 loadAt="TRANSACTION"/>
+      <localTransaction xmi:id="localtrx_EBCollateralMetaData" resolver="ContainerAtBoundary"/>
+      <resourceRefExtensions xmi:id="resrefext_EBCollateralMetaData" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralMetaData"/>
+      </resourceRefExtensions>
+      <dataCache xmi:id="datacache_EBCollateralMetaData" lifetimeInCache="0"
+                 lifetimeInCacheUsage="OFF"/>
+   </ejbExtensions>
+   <appliedAccessIntents xmi:id="accessintents_ejb_DataProtection"
+                         accessIntentName="wsPessimisticUpdate-NoCollision">
+      <name xsi:nil="true"/>
+      <description xsi:nil="true"/>
+      <methodElements xmi:id="methodelements_EBCollateralMetaData" name="*" type="Unspecified">
+         <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                         href="META-INF/ejb-jar.xml#entity_EBCollateralMetaData"/>
+      </methodElements>
+   </appliedAccessIntents>
+</ejbext:EJBJarExtension>

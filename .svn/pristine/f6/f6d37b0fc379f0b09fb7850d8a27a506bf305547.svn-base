@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping >
+		<class entity-name="actualRecurrentDoc" name="com.integrosys.cms.app.recurrent.bus.OBRecurrentCheckList"
+		table="CMS_RECURRENT_DOC" lazy="false" >
+		<id name="checkListID" column="RECURRENT_DOC_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">RECURRENT_DOC_SEQ</param>
+			</generator>
+		</id>
+		<property name="subProfileID" column="CMS_LMP_SUB_PROFILE_ID" type="long" />
+		<property name="limitProfileID" column="CMS_LSP_LMT_PROFILE_ID" type="long" />
+		<property name="checkListStatus" column="STATUS" />
+<!--		<set name="itemListSet" inverse="true" table="CMS_RECURRENT_DOC_ITEM">-->
+<!--		<set name="itemListSet" inverse="true" table="CMS_RECURRENT_DOC_ITEM" cascade="all" fetch="select" >-->
+<!--            <key column="RECURRENT_DOC_ID" />-->
+<!--            <one-to-many  entity-name="actualRecurrentDocItem" />-->
+<!--        </set>-->
+	</class>
+	
+   	  
+	<class entity-name="stageRecurrentDoc" name="com.integrosys.cms.app.recurrent.bus.OBRecurrentCheckList"
+		table="STAGE_RECURRENT_DOC" lazy="false" >
+		<id name="checkListID" column="RECURRENT_DOC_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">RECURRENT_DOC_SEQ</param>
+			</generator>
+		</id>
+		<property name="subProfileID" column="CMS_LMP_SUB_PROFILE_ID" type="long" />
+		<property name="limitProfileID" column="CMS_LSP_LMT_PROFILE_ID" type="long" />
+		<property name="checkListStatus" column="STATUS" />
+<!--		<set name="itemListSet" inverse="true"  table="STAGE_RECURRENT_DOC_ITEM">-->
+<!--		<set name="itemListSet" inverse="true"  table="STAGE_RECURRENT_DOC_ITEM" cascade="all" fetch="select" >-->
+<!--            <key column="RECURRENT_DOC_ID" />-->
+<!--            <one-to-many  entity-name="stageRecurrentDocItem"  />-->
+<!--        </set>-->
+	</class>
+	<class entity-name="actualRecurrentDocItem" name="com.integrosys.cms.app.recurrent.bus.OBRecurrentCheckListItem"
+		table="CMS_RECURRENT_DOC_ITEM" lazy="false" >
+		
+		<id name="checkListItemID" column="recurrent_item_id" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">RECURRENT_DOC_SEQ</param>
+			</generator>
+		</id>
+		
+		<property name="checkListItemRef" column="recurrent_item_ref_id" />
+		<property name="freq" column="frequency" />
+		<property name="freqUnit" column="frequency_unit" />
+		<property name="initialDueDate" column="due_date" />
+		<property name="remarks" column="remarks" />
+		<property name="isDeletedInd" column="is_deleted" />
+		<property name="initialDocEndDate" column="doc_end_date" />
+		<property name="gracePeriod" column="grace_period" />
+		<property name="gracePeriodUnit" column="grace_period_unit" />
+		<property name="chaseReminderInd" column="chase_remind_ind" />
+		<property name="isOneOffInd" column="one_off" />
+		<property name="lastDocEntryDate" column="last_doc_entry_date" />
+		<property name="endDateChangedCount" column="end_date_changed_count" />
+		<property name="recurrentDocId" column="recurrent_doc_id" />
+		<property name="recurrentItemDesc" column="recurrent_item_desc" />
+		
+		
+		<!--		<set name="subItemListSet" inverse="true"  table="CMS_RECURRENT_DOC_SUB_ITEM" >-->
+<!--		<set name="subItemListSet" inverse="true"  table="CMS_RECURRENT_DOC_SUB_ITEM" cascade="all" fetch="select" >-->
+<!--            <key column="recurrent_item_id" />-->
+<!--            <one-to-many  entity-name="actualRecurrentDocSubItem" />-->
+<!--        </set>-->
+		
+	</class>
+	<class entity-name="stageRecurrentDocItem" name="com.integrosys.cms.app.recurrent.bus.OBRecurrentCheckListItem"
+		table="STAGE_RECURRENT_DOC_ITEM" lazy="false" >
+		
+		<id name="checkListItemID" column="recurrent_item_id" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">RECURRENT_DOC_SEQ</param>
+			</generator>
+		</id>
+		<property name="checkListItemRef" column="recurrent_item_ref_id" />
+		<property name="freq" column="frequency" />
+		<property name="freqUnit" column="frequency_unit" />
+		<property name="initialDueDate" column="due_date" />
+		<property name="remarks" column="remarks" />
+		<property name="isDeletedInd" column="is_deleted" />
+		<property name="initialDocEndDate" column="doc_end_date" />
+		<property name="gracePeriod" column="grace_period" />
+		<property name="gracePeriodUnit" column="grace_period_unit" />
+		<property name="chaseReminderInd" column="chase_remind_ind" />
+		<property name="isOneOffInd" column="one_off" />
+		<property name="lastDocEntryDate" column="last_doc_entry_date" />
+		<property name="endDateChangedCount" column="end_date_changed_count" />
+		<property name="recurrentDocId" column="recurrent_doc_id" />
+		<property name="recurrentItemDesc" column="recurrent_item_desc" />
+		
+	
+		
+		<!--		<set name="subItemListSet" inverse="true"  table="STAGE_RECURRENT_DOC_SUB_ITEM" >-->
+<!--		<set name="subItemListSet" inverse="true"  table="STAGE_RECURRENT_DOC_SUB_ITEM" cascade="all" fetch="select" >-->
+<!--            <key column="recurrent_item_id" />-->
+<!--            <one-to-many  entity-name="stageRecurrentDocSubItem" />-->
+<!--        </set>-->
+	</class>
+	<class entity-name="actualRecurrentDocSubItem" name="com.integrosys.cms.app.recurrent.bus.OBRecurrentCheckListSubItem"
+		table="CMS_RECURRENT_DOC_SUB_ITEM" lazy="false" >
+		
+		<id name="subItemID" column="sub_item_id" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">RECURRENT_DOC_SEQ</param>
+			</generator>
+		</id>
+		
+		<property name="subItemRef" column="sub_item_ref_id" />
+		<property name="freq" column="frequency" />
+		<property name="freqUnit" column="frequency_unit" />
+		<property name="dueDate" column="due_date" />
+		<property name="remarks" column="remarks" />
+		<property name="isDeletedInd" column="is_deleted_ind" />
+		<property name="docEndDate" column="doc_end_date" />
+		<property name="gracePeriod" column="grace_period" />
+		<property name="gracePeriodUnit" column="grace_period_unit" />
+		<property name="receivedDate" column="rec_date" />
+		<property name="deferredDate" column="deferred_date" />
+		<property name="status" column="status" />
+		<property name="waivedDate" column="waived_date" />
+		<property name="deferredCount" column="deferred_cnt" />
+		<property name="actionParty" column="action_party" />
+
+		
+		
+		
+	</class>
+	<class entity-name="stageRecurrentDocSubItem" name="com.integrosys.cms.app.recurrent.bus.OBRecurrentCheckListSubItem"
+		table="STAGE_RECURRENT_DOC_SUB_ITEM" lazy="false" >
+		
+		<id name="subItemID" column="sub_item_id" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">RECURRENT_DOC_SEQ</param>
+			</generator>
+		</id>
+		
+		<property name="subItemRef" column="sub_item_ref_id" />
+		<property name="freq" column="frequency" />
+		<property name="freqUnit" column="frequency_unit" />
+		<property name="dueDate" column="due_date" />
+		<property name="remarks" column="remarks" />
+		<property name="isDeletedInd" column="is_deleted_ind" />
+		<property name="docEndDate" column="doc_end_date" />
+		<property name="gracePeriod" column="grace_period" />
+		<property name="gracePeriodUnit" column="grace_period_unit" />
+		<property name="receivedDate" column="rec_date" />
+		<property name="deferredDate" column="deferred_date" />
+		<property name="status" column="status" />
+		<property name="waivedDate" column="waived_date" />
+		<property name="deferredCount" column="deferred_cnt" />
+		<property name="actionParty" column="action_party" />
+		<property name="recurrentItemId" column="recurrent_item_id" />
+		
+		
+	</class>
+</hibernate-mapping>

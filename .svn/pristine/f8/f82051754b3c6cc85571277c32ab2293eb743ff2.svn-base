@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>Customer Mapping - CU004</description>
+	<class name="com.integrosys.cms.host.eai.EAIMessage">
+		<map-to xml="Msg"/>
+		<field name="MsgHeader" type="com.integrosys.cms.host.eai.EAIHeader"/>
+		<field name="MsgBody" type="com.integrosys.cms.host.eai.EAIBody"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.EAIHeader">
+		<map-to xml="MsgHeader"/>
+		<field name="MsgNo" type="string"/>
+		<field name="Source" type="string"/>
+		<field name="MsgRefNo" type="string"/>
+		<field name="LogonID" type="string"/>
+		<field name="PAN" type="string"/>
+		<field name="TxnCode" type="string"/>
+		<field name="Dest" type="string"/>
+		<field name="RecLength" type="string"/>
+		<field name="RecNo" type="string"/>
+		<field name="TxnDate" type="string"/>
+		<field name="TxnTime" type="string"/>
+		<field name="DestQM" type="string"/>
+		<field name="DestQ" type="string"/>
+		<field name="RespCode" type="string"/>
+		<field name="SysStat" type="string"/>
+		<field name="ErrMsg" type="string"/>
+	</class>
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.customer.CustomerMessageBody" >
+		<map-to xml="MsgBody"/>
+		<field name="CMSHeader" type="com.integrosys.cms.host.eai.CMSHeader"/>
+		<field name="OldCIFId" type="string"/>
+		<field name="NewCIFId" type="string"/>
+	</class>
+
+    <class name="com.integrosys.cms.host.eai.CMSHeader">
+		<map-to xml="CMSHeader"/>
+		<field name="MessageId" type="string"/>
+		<field name="MessageType" type="string"/>
+		<field name="PublishType" type="string"/>
+		<field name="PublishDate" type="string"/>
+		<field name="Source" type="string"/>
+	</class>
+
+</mapping>

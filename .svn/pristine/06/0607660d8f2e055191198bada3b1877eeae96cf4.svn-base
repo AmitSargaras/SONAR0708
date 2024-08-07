@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+
+		Master context files for batch job module.
+	</description>
+	
+	<bean id="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+	    <property name="customEditors">
+	        <map>
+	            <entry key="int[]" value="org.springframework.batch.support.IntArrayPropertyEditor"/>
+				<entry key="org.springframework.batch.item.file.transform.Range[]" value="org.springframework.batch.item.file.transform.RangeArrayPropertyEditor"/>
+	            <entry key="java.util.Date" value="com.integrosys.cms.batch.common.BatchCustomDateEditor"/>
+				<entry key="com.integrosys.cms.batch.common.mapping.ColumnMetaInfo[]" value="com.integrosys.cms.batch.common.mapping.ColumnMetaInfoArrayPropertyEditor"/>      
+	        </map>
+	    </property>
+	</bean>
+
+	<import resource="AppContext_DaoJdbc.xml" />
+	<import resource="AppContext_Services.xml" />
+	<import resource="AppContext_TrxPlugin.xml" />
+	<import resource="sibs/AppContext_Master.xml" />
+	<import resource="sema/AppContext_Master.xml" />
+	<import resource="mimb/AppContext_Master.xml" />
+	<import resource="feeds/AppContext_Master.xml" />
+	<import resource="vehicle/AppContext_Master.xml" />
+	<import resource="earmark/AppContext_Master.xml" />
+    <import resource="customer/AppContext_Master.xml" />
+    <import resource="allocation/AppContext_Master.xml" />
+    <import resource="limitbooking/AppContext_Master.xml" />
+    <import resource="exposure/AppContext_Master.xml" />
+    <import resource="bhavcopy/AppContext_Master.xml" />
+    <import resource="ubs/AppContext_Master.xml" />
+    <import resource="finware/AppContext_Master.xml" />
+    <import resource="finwarefd/AppContext_Master.xml" />
+    <import resource="partycam/AppContext_Master.xml" /> 
+    <import resource="bulkUDFUpdateUpload/AppContext_Master.xml" /> 
+    <import resource="eod/AppContext_Master.xml" /> 
+    <import resource="contentManger/AppContext_Master.xml" />
+    <import resource="fcubsLimitFile/AppContext_Master.xml" />
+    <import resource="emailbatchjob/AppContext_Master.xml"/>
+    <import resource="fileUpload/AppContext_Master.xml" />
+    <import resource="exchangeRateUpload/AppContext_Master.xml" />
+    <import resource="deferralExtension/AppContext_Master.xml" />
+    <import resource="ramRating/AppContext_Master.xml" />
+    <import resource="releaselinedetails/AppContext_Master.xml" />
+    <import resource="psrLimitFile/AppContext_Master.xml" />
+    <import resource="createfacilityline/AppContext_Master.xml" />
+	<import resource="acknowledgment/AppContext_Master.xml" />
+	<import resource="facilitydetails/AppContext_Master.xml" />
+    <import resource="leidetails/AppContext_Master.xml"/>
+    <import resource="lei/AppContext_Master.xml"/>
+    <import resource="autoupdationlmts/AppContext_Master.xml" />
+	<import resource="npaProvision/AppContext_Master.xml" />
+	<import resource="fccColFdValProcessUpload/AppContext_Master.xml" />
+ 	<import resource="npaDailyStamping/AppContext_Master.xml" /> 	
+	<import resource="ewsStockDeferral/AppContext_Master.xml" />
+	<import resource="sbbgsblcFileUpload/AppContext_Master.xml" />
+	<import resource="mtmValProcessUpload/AppContext_DaoJdbc.xml" />
+	<import resource="mfEquityFileUpload/AppContext_Master.xml" />
+	<import resource="mfSchemadetailsupload/AppContext_Master.xml" />
+	<import resource="stockdetailsupload/AppContext_Master.xml" />
+	<import resource="bonddetailsupload/AppContext_Master.xml" />
+	<import resource="fixedDepositFileUpload/AppContext_Master.xml" />
+	<import resource="scmInterface/AppContext_Master.xml" />
+    <import resource="strc/AppContext_Master.xml" />  
+    <import resource="dfso/AppContext_Master.xml" />
+    <import resource="hrmsFile/AppContext_Master.xml" />
+    <import resource="ecbf/AppContext_Master.xml" /> 
+    <import resource="reportLeadNodalUpload/AppContext_Master.xml" />
+    <import resource="eodIndependentMethods/AppContext_Master.xml" />
+    <import resource="erosion/AppContext_Master.xml" />
+    <import resource="digitalLibraryDocumentSyncUp/AppContext_Master.xml" />
+</beans>

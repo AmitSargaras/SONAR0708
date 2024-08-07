@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select PARTY_NAME,
+				PARTY_ADDRESS,
+				CITY,
+				PINCODE,
+				TELEPHONE,
+				EMAIL,
+				FAX,
+				SEGMENTNAME,
+				PARTYID,
+				RISKGRADE,
+				INDUSTRYNAME,
+				RBI_CODE_CATEGOTY_NAME,
+				ENTITY,
+				RMNAME,
+				PARTYGRPNAME,
+				FACILITYNAME,
+				FACILITYTYPE,
+				FACILITYCAT,
+				(SELECT ENTRY_NAME FROM COMMON_CODE_CATEGORY_ENTRY WHERE 
+				category_code = 'BANKING_ARRANGEMENT' AND ACTIVE_STATUS = '1'
+				 AND entry_code = FAC_BANKING_ARRANGEMENT),
+				 (SELECT ENTRY_NAME FROM COMMON_CODE_CATEGORY_ENTRY WHERE 
+				category_code = 'CLAUSE_AS_PER_POLICY' AND ACTIVE_STATUS = '1'
+				 AND entry_code = FAC_CLAUSE_AS_PER_POLICY),
+				FACILITYAMOUNT,
+				CURRENCY,
+				REGION,
+				IS_SECURED,
+				SECURITYTYPE,
+				SECURITYSUBTYPE,
+				COLLATERALNAME 
+				from(
+				select * from customer_total_limit_MV
+				)
+			</query>
+			<whereClause>
+			<mandatoryClause>
+				1=1
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and relation_mgr = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND cms_le_sub_profile_id = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> AND LSP_SGMNT_CODE_VALUE = </condition>
+			</param>			
+					
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 1 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>Party Address</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>City Name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Pin Code</header><!-- 4 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Telephone</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>E-mail</header><!-- 6 -->
+				</reportColumn>	
+										
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Fax</header><!-- 7 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 8 -->
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Id</header><!-- 9 -->
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Risk Grade</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Industry Name</header><!-- 11 -->
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RBI Code Category/Name</header><!-- 12 -->
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Entity</header><!-- 13 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Group Name</header><!-- 15 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header><!-- 16 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Type</header><!-- 17 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Facility Category</header><!-- 18 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Banking Arrangement</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Clause as per Policy</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Facility Amount</header><!-- 19 -->
+				</reportColumn>
+					<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Currency</header><!-- 20 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Region</header><!-- 21 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Secured Flag(Y/N)</header><!-- 22 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Security Type</header><!-- 23 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Security Sub Type</header><!-- 24 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Collateral Name</header><!-- 25 -->
+				</reportColumn>
+			</reportColumns>
+			<reportName>Customer Total Limit</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	
+  	<!-- Credit Approval -->
+  	<bean id="CreditApprovalAction.ReadCreditApprovalListCommand" class="com.integrosys.cms.ui.creditApproval.ReadCreditApprovalListCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  	</bean>
+  	<bean id="CreditApprovalAction.PrepareCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.PrepareCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+  	</bean>
+  	 <bean id="CreditApprovalAction.MakerSubmitCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.MakerSubmitCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  	</bean>
+  	<bean id="CreditApprovalAction.MakerReadCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.MakerReadCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+  	</bean>
+  	
+  	 <bean id="CreditApprovalAction.CheckerApproveCreateCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.CheckerApproveCreateCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  	</bean>
+  	
+  	<bean id="CreditApprovalAction.RejectCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.RejectCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  	</bean>
+  	
+  	 <bean id="CreditApprovalAction.CloseCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.CloseCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+
+  	</bean>
+  	
+  	<bean id="CreditApprovalAction.MakerReadCreditApprovalByIdCommand" class="com.integrosys.cms.ui.creditApproval.MakerReadCreditApprovalByIdCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+
+  	</bean>
+  	
+  	<bean id="CreditApprovalAction.MakerEditCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.MakerEditCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  	</bean>
+  	
+  	<bean id="CreditApprovalAction.MakerSaveCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.MakerSaveCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+
+  	</bean>
+  	
+  	<bean id="CreditApprovalAction.SearchListCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.SearchListCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  	</bean>
+  	
+  	<bean id="CreditApprovalAction.MakerPrepareUploadCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.MakerPrepareUploadCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  	</bean>
+  	
+  	<bean id="CreditApprovalAction.MakerUploadCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.MakerUploadCreditApprovalCommand">
+  		<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+  	</bean>
+  	
+  	<bean id="CreditApprovalAction.CheckerReadFileInsertListCommand" class="com.integrosys.cms.ui.creditApproval.CheckerReadFileInsertListCommand">
+       <property name="creditApprovalProxy" ref="creditApprovalProxy" />
+    </bean>
+    <bean id="CreditApprovalAction.CheckerApproveInsertCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.CheckerApproveInsertCreditApprovalCommand">
+      <property name="creditApprovalProxy" ref="creditApprovalProxy" />
+    </bean>	  
+    <bean id="CreditApprovalAction.CheckerRejectInsertCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.CheckerRejectInsertCreditApprovalCommand">
+       <property name="creditApprovalProxy" ref="creditApprovalProxy" />
+    </bean>
+    <bean id="CreditApprovalAction.MakerInsertCloseCreditApprovalCommand" class="com.integrosys.cms.ui.creditApproval.MakerInsertCloseCreditApprovalCommand">
+       <property name="creditApprovalProxy" ref="creditApprovalProxy" />
+    </bean>
+  	
+  	<bean id="PaginateCreditApprovalListCommand" class="com.integrosys.cms.ui.creditApproval.PaginateCreditApprovalListCommand">
+       <property name="creditApprovalProxy" ref="creditApprovalProxy" />
+    </bean>
+  	
+  	
+  	
+  	
+  	<!-- End Credit Approval -->
+</beans>

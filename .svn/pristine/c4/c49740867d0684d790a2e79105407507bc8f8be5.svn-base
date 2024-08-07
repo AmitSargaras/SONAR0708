@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ORM/JDBC based Dao having property of 'sessionFactory' or 'dataSource'.
+		All these DAOs have to be intercept by Transaction, set in 'AppContext_TrxPlugin.xml'.
+	</description>
+
+	<bean id="stockIndexDao" class="com.integrosys.cms.app.feed.bus.stockindex.StockIndexDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="unitTrustDao" class="com.integrosys.cms.app.feed.bus.unittrust.UnitTrustDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="forexDao" class="com.integrosys.cms.app.feed.bus.forex.ForexDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="goldDao" class="com.integrosys.cms.app.feed.bus.gold.GoldDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="bondDao" class="com.integrosys.cms.app.feed.bus.bond.BondDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="stockDao" class="com.integrosys.cms.app.feed.bus.stock.StockDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="mutualFundsDao" class="com.integrosys.cms.app.feed.bus.mutualfunds.MutualFundsDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="stockExchangeJdbc" class="com.integrosys.cms.app.feed.bus.stock.StockExchangeJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+	
+</beans>

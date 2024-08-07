@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<description>
+		To be used for Batch Job. Probably inject Services or DAO.
+	</description>
+	
+	<bean id="recurrentDueDateBatchJob" class="com.integrosys.cms.batch.recurrent.RecurrentDueDateMain">
+		<property name="recurrentDueDateDao" ref="recurrentDueDateJdbc" />
+		<property name="recurrentProxyManager" ref="recurrentProxy" />
+	</bean>
+	<!-- Added By Anil -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="recurrentDueDateTrigger" />
+			</list>
+		</property>
+	</bean>
+	<bean id="recurrentDueDateTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="recurrentDueDateJobDetail" />
+		<!-- <property name="cronExpression" value="45 11 ? * MON-FRI" /> -->
+		<property name="cronExpression" value="0 0 23 * * ?" />
+	</bean>
+	<bean id="recurrentDueDateJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="recurrentDueDateJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	<bean name="recurrentDueDateJob" class="com.integrosys.cms.batch.recurrent.RecurrentDueDateJob">
+		<property name="batchJobFactory" ref="batchJobFactory" />
+		<!-- <property name="recurrentDueDateBatchJob" ref="recurrentDueDateBatchJob" /> -->
+	</bean>
+	<!-- Added By Anil -->
+</beans>

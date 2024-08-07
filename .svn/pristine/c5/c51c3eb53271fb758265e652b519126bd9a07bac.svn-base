@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <description>
+        To be used for ORM/JDBC based Dao having property of 'sessionFactory' or 'dataSource'.
+        All these DAOs have to be intercept by Transaction, set in 'AppContext_TrxPlugin.xml'.
+    </description>
+
+    <!--Internal Credit Rating-->
+    <bean id="internalCreditRatingDao"
+          class="com.integrosys.cms.app.creditriskparam.bus.internalcreditrating.InternalCreditRatingDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory"/>
+    </bean>
+
+    <!--Entity Limit-->
+    <bean id="entityLimitDao"
+          class="com.integrosys.cms.app.creditriskparam.bus.entitylimit.EntityLimitDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory"/>
+    </bean>
+
+    <!--Sector Limit-->
+    <bean id="SectorLimitParameterDao"
+          class="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.SectorLimitDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory"/>
+    </bean>
+
+    <bean id="SectorLimitParameterJDBC"
+          class="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.SectorLimitParameterJDBCImpl">
+        <property name="dataSource" ref="ofaPool"/>
+    </bean>
+
+    <!--Internal Limit Parameter-->
+    <bean id="internalLimitParameterDao"
+          class="com.integrosys.cms.app.creditriskparam.bus.internallimit.InternalLimitParameterDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory"/>
+    </bean>
+
+    <!--Product Limit-->
+    <bean id="ProductLimitParameterDao"
+          class="com.integrosys.cms.app.creditriskparam.bus.productlimit.ProductLimitDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory"/>
+    </bean>
+
+    <bean id="ProductLimitParameterJDBC"
+          class="com.integrosys.cms.app.creditriskparam.bus.productlimit.ProductLimitParameterJDBCImpl">
+        <property name="dataSource" ref="ofaPool"/>
+    </bean>
+
+    <!--Bank Entity Branch Param-->
+    <bean id="bankEntityBranchParamDao"
+          class="com.integrosys.cms.app.creditriskparam.bus.bankentitybranch.BankEntityBranchParamDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory"/>
+    </bean>
+
+    <!--Country Limit-->
+    <bean id="countryLimitDao"
+          class="com.integrosys.cms.app.creditriskparam.bus.countrylimit.CountryLimitDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory"/>
+    </bean>
+
+    <!--Country Limit-->
+    <bean id="countryRatingDao"
+          class="com.integrosys.cms.app.creditriskparam.bus.countrylimit.CountryRatingDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory"/>
+    </bean>
+
+</beans>

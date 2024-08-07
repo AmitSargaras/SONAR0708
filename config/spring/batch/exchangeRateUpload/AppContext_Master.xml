@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+	</description>
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="exchangeRateUploadTrigger" />
+			</list>
+		</property>
+	</bean>
+	<!--Exchange Rate File Upload-->
+	<bean id="exchangeRateUploadTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="exchangeRateUploadJobDetail" />
+		<!--<property name="cronExpression" value="0 0/05 * * * ?" />-->
+		<property name="cronExpression" value="${ftp.exchange.rate.upload.schedular.time}" />
+	</bean>
+	
+	<bean id="exchangeRateUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="exchangeRateUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	
+	<bean name="exchangeRateUploadJob" class="com.integrosys.cms.batch.exchangeRateUpload.scheduler.ExchangeRateUploadJob"></bean>
+	
+</beans>

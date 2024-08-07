@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="facilityNewMasterBusManager" class="com.integrosys.cms.app.facilityNewMaster.bus.FacilityNewMasterBusManagerImpl">
+		<property name="facilityNewMasterDao" ref="facilityNewMasterDao" />
+		<property name="facilityNewMasterJdbc" ref="facilityNewMasterJdbc" />
+	</bean>
+
+	<bean id="facilityNewMasterProxy" class="com.integrosys.cms.app.facilityNewMaster.proxy.FacilityNewMasterProxyManagerImpl">
+		<property name="facilityNewMasterBusManager" ref="facilityNewMasterBusManager" />
+		<property name="stagingFacilityNewMasterBusManager" ref="stagingFacilityNewMasterBusManager" />
+		<property name="trxControllerFactory" ref="facilityNewMasterTrxControllerFactory" />
+	</bean>
+	<bean id="stagingFacilityNewMasterBusManager" class="com.integrosys.cms.app.facilityNewMaster.bus.FacilityNewMasterBusManagerStagingImpl">
+		<property name="facilityNewMasterDao" ref="facilityNewMasterDao" />
+		<property name="facilityNewMasterJdbc" ref="facilityNewMasterJdbc" />
+	</bean>
+
+</beans>

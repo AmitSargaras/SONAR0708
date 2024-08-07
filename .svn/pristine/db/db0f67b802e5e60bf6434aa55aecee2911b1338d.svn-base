@@ -1,0 +1,40 @@
+<binding>
+	<mapping name="Definition" class="com.integrosys.simulator.host.transformer.OBTransformDefinition">
+		<collection field="delimiterList" item-type="java.lang.String" type="java.util.ArrayList">
+			<value name="Column"/>
+		</collection>
+		
+		<collection field="fixedColumnList" item-type="java.lang.String" type="java.util.ArrayList">
+			<value name="FixColumn"/>
+		</collection>
+		
+		<structure name="HeaderDefinition" usage="optional">
+			<collection field="headerColumnList" item-type="java.lang.String" type="java.util.ArrayList">
+				<value name="HeaderColumn"/>
+			</collection>
+			<collection field="fixedColumnList" item-type="java.lang.String" type="java.util.ArrayList">
+				<value name="FixColumn"/>
+			</collection>
+		</structure>
+		
+		<structure name="FixedLengths" usage="optional">
+			<collection field="fixedLength">
+				<structure name="FixedLength" type="com.integrosys.simulator.host.transformer.OBFixedLengthDefinition">
+					<value name="code" field="code" style="attribute"/>
+					<value name="totalColumnLength" field="totalColumnLength" style="attribute"/>
+					<collection field="column">
+						<structure name="Column" type="com.integrosys.simulator.host.transformer.OBColumn">
+							<value name="name" field="name" style="attribute"/>
+							<value name="length" field="length" style="attribute"/>
+							<value name="type" field="type" style="attribute" usage="optional"/>
+							<value name="skip" field="skip" style="attribute" usage="optional"/>
+							<value name="align" field="align" style="attribute" usage="optional"/>
+							<value name="decimalPlace" field="decimalPlace" style="attribute" usage="optional"/>
+						</structure>
+					</collection>
+				</structure>
+			</collection>
+		</structure>
+		
+	</mapping>
+</binding>

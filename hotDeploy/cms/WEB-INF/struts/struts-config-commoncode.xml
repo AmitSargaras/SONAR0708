@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="MaintainCommonCodeTypeForm" type="com.integrosys.cms.ui.commoncode.MaintainCommonCodeTypeForm">
+        </form-bean>
+
+        <form-bean name="MaintainCCEntryListForm" type="com.integrosys.cms.ui.commoncodeentry.list.MaintainCCEntryListForm">
+		</form-bean>
+		
+        <form-bean name="MaintainCCEntryForm" type="com.integrosys.cms.ui.commoncodeentry.item.MaintainCCEntryForm">
+		</form-bean>		
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/MaintainCommonCodeTypes"
+            type="com.integrosys.cms.ui.commoncode.MaintainCommonCodeTypeAction"
+            name="MaintainCommonCodeTypeForm" scope="request">
+            <forward name="maker_list_type_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncode/type_maker_list.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="maker_add_edit_type_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncode/type_maker_edit.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="after_prepare_create_common_code_type" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncode/type_maker_create.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="after_create_common_code_type" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncode/type_checker_view.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="type_maker_edit_successful" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="maker_close_type_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncode/type_checker.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="checker_type_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncode/type_checker.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncode/type_maker_view.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncode/type_checker.jsp"/>
+                <set-property property="title" value="title.commoncodetype.edit"/>
+            </forward>
+        </action>
+    
+        <action path="/MaintainCCEntry" 
+                type="com.integrosys.cms.ui.commoncodeentry.item.MaintainCCEntryAction" 
+                name="MaintainCCEntryForm" validate="false" scope="request">  
+            <forward name="prepare_add" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncodeentry/cc_entry_add.jsp"/>
+                <set-property property="title" value="title.common.code.params.edit"/>
+            </forward>
+            <forward name="confirm_add" path="/MaintainCommonCodeParameters.do?event=add_return"/>
+            <forward name="cancel_add" path="/MaintainCommonCodeParameters.do?event=add_return"/>
+		</action>
+		
+        <action path="/SearchCCEntry" 
+                type="com.integrosys.cms.ui.commoncodeentry.search.SearchCCEntryAction" 
+                name="MaintainCCEntryForm" validate="false" scope="request">  
+            <forward name="prepare_search" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncodeentry/cc_entry_search.jsp"/>
+                <set-property property="title" value="title.common.code.params.edit"/>
+            </forward>
+            <forward name="confirm_search" path="/MaintainCommonCodeParameters.do?event=add_return"/>
+            <forward name="cancel_search" path="/MaintainCommonCodeParameters.do?event=add_return"/>
+		</action>
+		
+        <action path="/MaintainCommonCodeParameters" 
+                type="com.integrosys.cms.ui.commoncodeentry.list.MaintainCCEntryListAction" 
+                name="MaintainCCEntryListForm" validate="false" scope="request">                   
+            
+            <forward name="maker_edit_common_code_params_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncodeentry/cc_type_list.jsp"/>
+                <set-property property="title" value="title.common.code.params.edit"/>
+            </forward>
+            
+            <forward name="maker_edit_common_code_params_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncodeentry/cc_entry_maker_edit.jsp"/>
+                <set-property property="title" value="title.common.code.params.edit"/>
+            </forward>
+            
+            <forward name="maker_edit_common_code_params_add" path="/MaintainCCEntry.do?event=prepare_add" redirect="true"/>
+			
+            <forward name="search_cc_entry" path="/SearchCCEntry.do?event=prepare_search" redirect="true"/>
+			
+            <forward name="maker_edit_common_code_params_add" path="/MaintainCCEntry.do?event=prepare_add"/>
+			            
+            <forward name="maker_edit_common_code_params_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.common.code.params.edit"/>
+            </forward>
+            
+            <forward name="maker_edit_common_code_params_update_rejected" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.common.code.params.edit"/>
+            </forward>
+            
+            <forward name="maker_edit_common_code_params_close" path="/template/common_template.jsp">
+		    	<set-property property="rightFrame" value="/common/ack_close.jsp"/>
+		    	<set-property property="title" value="title.common.code.params.edit"/>
+		    </forward>
+	    
+            <forward name="maker_edit_common_code_params_prepare_close" path="/template/common_template.jsp">
+		    	<set-property property="rightFrame" value="/commoncodeentry/cc_entry_view.jsp"/>
+		    	<set-property property="title" value="title.common.code.params.edit"/>
+		    </forward>	    
+
+            <forward name="maker_edit_common_code_params_edit_rejected" path="/template/common_template.jsp">
+		    	<set-property property="rightFrame" value="/commoncodeentry/cc_entry_maker_edit.jsp"/>
+		    	<set-property property="title" value="title.common.code.params.edit"/>
+		    </forward>	   
+	    
+		    <forward name="maker_edit_common_code_params_add_rejected" path="/template/common_template.jsp">
+		    	<set-property property="rightFrame" value="/commoncodeentry/cc_entry_view.jsp"/>
+		    	<set-property property="title" value="title.common.code.params.edit"/>
+		    </forward>	  
+	    
+
+            <forward name="wip" path="/template/common_template.jsp">
+		    	<set-property property="rightFrame" value="/common/wip.html"/>
+		    	<set-property property="title" value="title.common.code.params.edit"/>
+            </forward>
+            
+            <forward name="checker_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/commoncodeentry/cc_entry_checker_process.jsp"/>
+                <set-property property="title" value="title.common.code.params.edit"/>
+            </forward>            
+		    <forward name="checker_approve" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+				<set-property property="title" value="title.common.code.params.edit"/>
+            </forward>            
+            <forward name="checker_reject" path="/template/common_template.jsp">
+		    	<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+		    	<set-property property="title" value="title.common.code.params.edit"/>
+            </forward>            
+            <forward name="to_track" path="/template/common_template.jsp">
+		    	<set-property property="rightFrame" value="/commoncodeentry/cc_entry_view.jsp"/>
+		    	<set-property property="title" value="title.common.code.params.edit"/>
+            </forward> 
+			           
+        </action>     
+        
+    </action-mappings>
+    
+    <message-resources key="message-commoncode" parameter="ApplicationResources-commoncode"/>
+</struts-config>

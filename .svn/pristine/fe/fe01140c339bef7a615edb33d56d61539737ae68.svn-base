@@ -1,0 +1,500 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CustGrpIdentifierForm" type="com.integrosys.cms.ui.custgrpi.CustGrpIdentifierForm"/>
+        <form-bean name="GroupCreditGradeForm" type="com.integrosys.cms.ui.custgrpi.groupcreditgrade.GroupCreditGradeForm"/>
+        <form-bean name="GroupSubLimitForm" type="com.integrosys.cms.ui.custgrpi.groupsublimit.GroupSubLimitForm"/>
+        <form-bean name="GroupOtrLimitForm" type="com.integrosys.cms.ui.custgrpi.groupotrlimit.GroupOtrLimitForm"/>
+        <form-bean name="GroupMemberForm" type="com.integrosys.cms.ui.custgrpi.groupmember.GroupMemberForm"/>     
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        
+        <action path="/CustGrpIdentifier"
+            type="com.integrosys.cms.ui.custgrpi.CustGrpIdentifierAction"
+            name="CustGrpIdentifierForm"
+            validate="false"
+            scope="request">
+
+        <!--Start for Search -->
+        <forward name="prepare" path="/template/common_template.jsp">
+            <set-property property="title" value="title.group.search"/>
+            <set-property property="rightFrame" value="/custgrpi/custgrpi_search.jsp"/>
+        </forward>
+        <forward name="prepare_search" path="/template/common_template.jsp">
+            <set-property property="title" value="title.group.search"/>
+            <set-property property="rightFrame" value="/custgrpi/custgrpi_search.jsp"/>
+        </forward>
+        <forward name="prepare_custGrp_search" path="/template/common_template.jsp">
+            <set-property property="title" value="title.group.search"/>
+            <set-property property="rightFrame" value="/custgrpi/custgrpi_search.jsp"/>
+        </forward>
+        <forward name="after_prepare" path="/template/common_template.jsp">
+            <set-property property="title" value="title.group.search"/>
+            <set-property property="rightFrame" value="/custgrpi/custgrpi_search.jsp"/>
+        </forward>
+        <forward name="search_customer" path="/template/common_template.jsp">
+            <set-property property="title" value="title.group.search"/>
+            <set-property property="rightFrame" value="/custgrpi/custgrpi_search.jsp"/>
+        </forward>
+        <forward name="customer_list" path="/template/common_template.jsp">
+            <set-property property="title" value="title.group.search"/>
+            <set-property property="rightFrame" value="/custgrpi/custgrpi_customer_result.jsp"/>
+        </forward>
+        <forward name="after_list" path="/template/common_template.jsp">
+            <set-property property="title" value="title.group.search"/>
+            <set-property property="rightFrame" value="/custgrpi/custgrpi_customer_list.jsp"/>
+        </forward>
+        <!--End for Search -->
+
+
+        <forward name="add" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="prepare_create" path="/template/common_template.jsp">
+            <set-property property="title" value="title.cgid.search"/>
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+        </forward>
+
+
+        <forward name="prepare_update" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="process_update" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="process2_update" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="prepare2_update" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="maker2_edit_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="process2_update_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="maker2_close_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_close_custgrpi_page.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="maker2_edit_cgid_reject" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="maker2_edit_cgid_reject_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="read" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/view_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="edit" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="after_add" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="remove" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="addNoop" path="/template/common_template.jsp">
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+            <set-property property="rightFrame" value="/custgrpi/custgrpi_customer_result.jsp"/>
+        </forward>
+
+
+        <!--start of Common Page -->
+        <forward name="workInProgress" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/wip.html"/>
+            <set-property property="roleDesc" value="gems.am.maker"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="ack_submit" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="common_approve_page" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="common_reject_page" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="common_close_page" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="ack_save" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <!--End of Common Page -->
+
+
+        <forward name="checker_edit_cgid" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/checker_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="checker_edit_cgid_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/checker_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+        <forward name="checker2_edit_cgid" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/checker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="checker2_edit_cgid__return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/checker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="prepare_delete" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker_delete_custgrpi_page.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="maker_edit_cgid_page" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker_edit_custgrpi_page.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="maker_edit_cgid_reject" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="maker_close_cgid_page" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker_close_custgrpi_page.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="maker2_close_cgid_page" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_close_custgrpi_page.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="maker_close_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker_close_custgrpi_page.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="update_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="update_return_maker2" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="after_to_track" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/to_track_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="maker2_close_cgid_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker2_close_custgrpi_page.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <!--start  for Return Page  -->
+
+        <forward name="process" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/checker_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="track" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/view_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="read_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/view_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="track_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/to_track_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="close_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/view_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <forward name="process_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/checker_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="process2_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/checker2_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <forward name="prepare_delete_return" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/maker_delete_custgrpi_page.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+
+        <!--
+           <forward name="process_return" path="/template/common_template.jsp">
+               <set-property property="rightFrame" value="/custgrpi/checker_edit_custgrpi.jsp"/>
+               <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+           </forward>
+           -->
+
+        <forward name="checker2_edit_cgid_error" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/custgrpi/checker_edit_custgrpi.jsp"/>
+            <set-property property="title" value="title.custgrpi.custgrpIdentifier"/>
+        </forward>
+
+        <!--End  for Return Page  -->
+
+        <forward name="viewLimitProfile" path="/custgrpi/ViewLimitProfile.jsp"/>
+        <forward name="prepare_GROUPCREDITGRADE" path="/GroupCreditGrade.do"/>
+        <forward name="prepare_GROUPSUBLIMIT" path="/GroupSubLimit.do"/>
+        <forward name="prepare_GROUPOTRLIMIT" path="/GroupOtrLimit.do"/>
+        <forward name="prepare_GROUPMEMBER" path="/GroupMember.do"/>
+        <forward name="prepare_GROUPGROUP" path="/GroupMember.do?event=prepare_search_group"/>
+
+        <forward name="view_subgroup" path="/custgrpi/popview_custgrpi.jsp"/>
+
+        <forward name="prepare2_GROUPCREDITGRADE" path="/GroupCreditGrade.do?event=read"/>
+        <forward name="prepare2_GROUPMEMBER" path="/GroupMember.do?event=read"/>
+    </action>
+
+        <!--for GroupSubLimit -->
+        <action path="/GroupSubLimit"
+                type="com.integrosys.cms.ui.custgrpi.groupsublimit.GroupSubLimitAction"
+                name="GroupSubLimitForm"
+                validate="false"
+                scope="request">
+
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custgrpi/groupsublimit/groupsublimit_read.jsp"/>
+                <set-property property="title" value="title.group.sub.limit"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custgrpi/groupsublimit/groupsublimit_create.jsp"/>
+                <set-property property="title" value="title.group.sub.limit"/>
+            </forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custgrpi/groupsublimit/groupsublimit_update.jsp"/>
+                <set-property property="title" value="title.group.sub.limit"/>
+            </forward>
+            <forward name="GROUPSUBLIMIT_update" path="/CustGrpIdentifier.do?event=update_return_sublimit"/>
+        </action>
+
+
+        <!--for GroupOtherLimit -->
+        <action path="/GroupOtrLimit"
+                type="com.integrosys.cms.ui.custgrpi.groupotrlimit.GroupOtrLimitAction"
+                name="GroupOtrLimitForm"
+                validate="false"
+                scope="request">
+
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custgrpi/groupotrlimit/groupotherlimit_read.jsp"/>
+                <set-property property="title" value="title.group.other.limit"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custgrpi/groupotrlimit/groupotherlimit_create.jsp"/>
+                <set-property property="title" value="title.group.other.limit"/>
+            </forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custgrpi/groupotrlimit/groupotherlimit_update.jsp"/>
+                <set-property property="title" value="title.group.other.limit"/>
+            </forward>
+            <forward name="groupotrlimit_update" path="/CustGrpIdentifier.do?event=update_return_otrlimit"/>
+        </action>
+
+    <!--for GroupCreditGrade -->
+	<action path="/GroupCreditGrade"
+		  type="com.integrosys.cms.ui.custgrpi.groupcreditgrade.GroupCreditGradeAction"
+		  name="GroupCreditGradeForm"
+		  validate="false"
+		  scope="request">
+
+	      <forward name="read" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupcreditgrade/groupcreditgrade_read.jsp"/>
+		  <set-property property="title" value="title.group.credit.grades"/>
+	      </forward>
+	      <forward name="prepare" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupcreditgrade/groupcreditgrade_create.jsp"/>
+		 <set-property property="title" value="title.group.credit.grades"/>
+	      </forward>
+	      <forward name="prepare_update" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupcreditgrade/groupcreditgrade_update.jsp"/>
+		 <set-property property="title" value="title.group.credit.grades"/>
+	      </forward>
+	      <forward name="update" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+		  <set-property property="title" value="title.group.credit.grades"/>
+	      </forward>
+
+	      <forward name="refresh_create" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupcreditgrade/groupcreditgrade_create.jsp"/>
+		 <set-property property="title" value="title.group.credit.grades"/>
+	      </forward>
+
+	      <forward name="refresh_update" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupcreditgrade/groupcreditgrade_update.jsp"/>
+		  <set-property property="title" value="title.group.credit.grades"/>
+	      </forward>
+
+	      <forward name="GROUPCREDITGRADE_update" path="/CustGrpIdentifier.do?event=update_return"/>
+	  </action>
+
+	  <!--for GroupMember -->
+	  <action path="/GroupMember"
+		  type="com.integrosys.cms.ui.custgrpi.groupmember.GroupMemberAction"
+		  name="GroupMemberForm"
+		  validate="false"
+		  scope="request">
+
+	      <forward name="read" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupmember/groupmember_read.jsp"/>
+		  <set-property property="title" value="title.group.detail"/>
+	      </forward>
+	      <forward name="prepare" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupmember/ext_search_customer.jsp"/>
+		 <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+	      <forward name="prepare_update" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupmember/groupmember_update.jsp"/>
+		 <set-property property="title" value="title.group.member"/>
+	      </forward>
+	      <forward name="GROUPMEMBER_update" path="/CustGrpIdentifier.do?event=update_return"/>
+
+	      <forward name="ext_search_customer" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custgrpi/groupmember/ext_search_customer.jsp"/>
+                <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+
+	      <forward name="ext_customer_list" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/custgrpi/groupmember/ext_customer_list.jsp"/>
+		      <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+
+	      <forward name="process_customer_list" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/custgrpi/groupmember/ext_customer_list.jsp"/>
+		      <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+
+	      <forward name="addNoop" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/custgrpi/groupmember/ext_customer_list.jsp"/>
+		      <set-property property="title" value="title.group.member.search"/>
+	       </forward>
+
+	      <forward name="error_in_add" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/custgrpi/groupmember/ext_customer_list.jsp"/>
+		      <set-property property="title" value="title.group.member.search"/>
+	       </forward>
+
+	      <forward name="after_ext_customer_list" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/custgrpi/groupmember/ext_customer_list.jsp"/>
+		      <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+
+
+	      <forward name="prepare_ext_search_customer" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/custgrpi/groupmember/ext_search_customer.jsp"/>
+                <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+
+
+	      <forward name="prepare_search_group" path="/template/common_template.jsp">
+		  <set-property property="rightFrame" value="/custgrpi/groupmember/search_group.jsp"/>
+		 <set-property property="title" value="title.group.member"/>
+	      </forward>
+
+	      <forward name="search_group_list" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/custgrpi/groupmember/search_group_list.jsp"/>
+		      <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+
+	      <forward name="process_group_list" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/custgrpi/groupmember/search_group_list.jsp"/>
+		      <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+
+	      <forward name="after_group_list" path="/template/common_template.jsp">
+		      <set-property property="rightFrame" value="/custgrpi/groupmember/search_group_list.jsp"/>
+		      <set-property property="title" value="title.group.member.search"/>
+	      </forward>
+
+	      <forward name="popup_shareholder" path="/custgrpi/groupmember/popup_shareholder_read.jsp"/>
+	  </action>
+	  
+	  <action path="/GrpExposure" type="com.integrosys.cms.ui.custexposure.group.GrpExposureAction" name="CustGrpIdentifierForm"
+			 validate="false" scope="request">
+		     <forward name="view_single_grp_exposure" path="/template/common_template.jsp">
+			 	<set-property property="rightFrame" value="/custexposure/group/view_group_exposure.jsp"/>
+			 	<set-property property="title" value="title.svc.detail"/>
+		     </forward>
+			 <forward name="view_grp_exposure" path="/template/common_template.jsp">
+			 	<set-property property="rightFrame" value="/custexposure/group/view_group_exposure.jsp"/>
+			 	<set-property property="title" value="title.svc.detail"/>
+		     </forward>
+			 <forward name="view_otr_grp_exposure" path="/template/common_template.jsp">
+			 	<set-property property="rightFrame" value="/custexposure/group/view_group_exposure.jsp"/>
+			 	<set-property property="title" value="title.svc.detail"/>
+		     </forward>
+		     <forward name="view_all_group_exposures" path="/template/common_template.jsp">
+			 	<set-property property="rightFrame" value="/custexposure/group/group_exp_view_limit.jsp"/>
+			 	<set-property property="title" value="title.svc.detail"/>
+		     </forward> 
+		     <forward name="grp_exposure_rpt" path="/template/common_template.jsp">
+			 	<set-property property="rightFrame" value="/custexposure/group/grp_exposure_rpt.jsp"/>
+			 	<set-property property="title" value="title.svc.detail"/>
+		     </forward> 
+        </action>
+        
+
+    </action-mappings>
+    
+    <message-resources key="message-custgrpi" parameter="ApplicationResources-custgrpi"/>
+</struts-config>

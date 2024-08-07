@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT sub_profile.lsp_short_name AS party_name,
+				  address.lra_addr_line_1
+				  || address.lra_addr_line_2         AS address,
+				  cty.city_name                      AS city,
+				  address.lra_post_code              AS pincode,
+				  address.lra_telephone_text         AS telephone ,
+				  address.lra_email_text             AS email,
+				  address.lra_fax_num_text           AS fax,
+				  cc_segment.entry_name              AS segmentName,
+				  sub_profile.cms_le_sub_profile_id  AS partyid,
+				  lmt_profile.cms_appr_officer_grade AS Risk_Grade,
+				  cc_industry.entry_name             AS industryName,
+				  cc_rbi.entry_name                  AS rbi,
+				  sub_profile.entity                 AS entity,
+				  rm.rm_mgr_name                     AS rmname,
+				  partygr.party_group_name           AS partydesc,
+				  apprlmts.facility_name,
+				  apprlmts.facility_type,
+				  apprlmts.cms_req_sec_coverage
+				FROM SCI_LE_SUB_PROFILE sub_profile ,
+				  SCI_LE_MAIN_PROFILE main_profile ,
+				  SCI_LE_REG_ADDR address ,
+				  (SELECT entry_name,
+				    entry_code
+				  FROM common_code_category_entry
+				  WHERE category_code = 'HDFC_INDUSTRY'
+				  ) cc_industry ,
+				  (SELECT entry_name,
+				    entry_code
+				  FROM common_code_category_entry
+				  WHERE category_code = 'HDFC_SEGMENT'
+				  ) cc_segment ,
+				  (SELECT entry_name,
+				    entry_code
+				  FROM common_code_category_entry
+				  WHERE category_code = 'HDFC_RBI_CODE'
+				  ) cc_rbi ,
+				  cms_relationship_mgr rm ,
+				  cms_city cty ,
+				  cms_party_group partygr ,
+				  sci_lsp_lmt_profile lmt_profile ,
+				  sci_lsp_appr_lmts apprlmts
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				sub_profile.cms_le_main_profile_id = address.cms_le_main_profile_id
+				AND sub_profile.cms_le_main_profile_id   = main_profile.cms_le_main_profile_id
+				AND cc_industry.entry_code               =sub_profile.ind_nm
+				AND cc_segment.entry_code                =main_profile.lmp_sgmnt_code_value
+				AND cc_rbi.entry_code                    =sub_profile.rbi_ind_code
+				AND address.lra_type_value               ='CORPORATE'
+				AND rm.id                                = sub_profile.relation_mgr
+				AND sub_profile.lsp_le_id                =lmt_profile.llp_le_id
+				AND cty.id                               = address.lra_city_text
+				AND sub_profile.party_grp_nm             = partygr.id
+				AND apprlmts.cms_limit_profile_id        =lmt_profile.cms_lsp_lmt_profile_id
+				and sub_profile.status != 'INACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> AND cc_segment.entry_code = </condition>
+			</param>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Address</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>City Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PIN Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Tel1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Email</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Fax</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Risk Grade</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Industry Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RBI Code Category/Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Entity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Group Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Amount</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>Customer Total limit Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

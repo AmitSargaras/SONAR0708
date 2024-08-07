@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+    <bean id="SystemBankTrx.ReadSystemBankOperation" class="com.integrosys.cms.app.systemBank.trx.ReadSystemBankOperation">
+        <property name="systemBankBusManager" ref="systemBankBusManager"/>
+        <property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager"/>
+    </bean>
+    <bean id="SystemBankTrx.MakerSaveUpdateSystemBankOperation" class="com.integrosys.cms.app.systemBank.trx.MakerSaveUpdateSystemBankOperation">
+        <property name="systemBankBusManager" ref="systemBankBusManager"/>
+        <property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager"/>
+    </bean>
+    
+    <bean id="SystemBankTrx.ReadSystemBankIDOperation" class="com.integrosys.cms.app.systemBank.trx.ReadSystemBankIDOperation">
+        <property name="systemBankBusManager" ref="systemBankBusManager"/>
+        <property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager"/>
+    </bean>
+	<bean id="SystemBankTrx.MakerUpdateSystemBankOperation"
+		class="com.integrosys.cms.app.systemBank.trx.MakerUpdateSystemBankOperation">
+		<property name="systemBankBusManager" ref="systemBankBusManager" />
+		<property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager" />
+	</bean>
+	<bean id="SystemBankTrx.MakerEditRejectedUpdateSystemBankOperation"
+		class="com.integrosys.cms.app.systemBank.trx.MakerEditRejectedUpdateSystemBankOperation">
+		<property name="systemBankBusManager" ref="systemBankBusManager" />
+		<property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager" />
+	</bean>
+	<bean id="SystemBankTrx.MakerCloseRejectedUpdateSystemBankOperation"
+		class="com.integrosys.cms.app.systemBank.trx.MakerCloseRejectedUpdateSystemBankOperation">
+		<property name="systemBankBusManager" ref="systemBankBusManager" />
+		<property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager" />
+	</bean>
+	<bean id="SystemBankTrx.MakerCloseDraftSystemBankOperation"
+		class="com.integrosys.cms.app.systemBank.trx.MakerCloseDraftSystemBankOperation">
+		<property name="systemBankBusManager" ref="systemBankBusManager" />
+		<property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager" />
+	</bean>
+	<bean id="SystemBankTrx.CheckerApproveUpdateSystemBankOperation"
+		class="com.integrosys.cms.app.systemBank.trx.CheckerApproveUpdateSystemBankOperation">
+		<property name="systemBankBusManager" ref="systemBankBusManager" />
+		<property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager" />
+	</bean>
+	<bean id="SystemBankTrx.CheckerRejectSystemBankOperation"
+		class="com.integrosys.cms.app.systemBank.trx.CheckerRejectSystemBankOperation">
+		<property name="systemBankBusManager" ref="systemBankBusManager" />
+		<property name="stagingSystemBankBusManager" ref="stagingSystemBankBusManager" />
+	</bean>
+
+    <bean id="systemBankReadController" class="com.integrosys.cms.app.systemBank.trx.SystemBankReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadSystemBankOperation" value-ref="SystemBankTrx.ReadSystemBankOperation"/>
+                 <entry key="ReadSystemBankIDOperation" value-ref="SystemBankTrx.ReadSystemBankIDOperation"/>
+                
+                
+            </map>
+        </property>
+    </bean>
+
+    <bean id="systemBankTrxController" class="com.integrosys.cms.app.systemBank.trx.SystemBankTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerEditRejectedUpdateSystemBankOperation" value-ref="SystemBankTrx.MakerEditRejectedUpdateSystemBankOperation"/>
+                  <entry key="MakerUpdateSystemBankOperation" value-ref="SystemBankTrx.MakerUpdateSystemBankOperation"/>
+                  <entry key="MakerSaveUpdateSystemBankOperation" value-ref="SystemBankTrx.MakerSaveUpdateSystemBankOperation"/>
+                  <entry key="MakerCloseDraftSystemBankOperation" value-ref="SystemBankTrx.MakerCloseDraftSystemBankOperation"/>
+                  <entry key="MakerCloseRejectedUpdateSystemBankOperation" value-ref="SystemBankTrx.MakerCloseRejectedUpdateSystemBankOperation"/>
+                  <entry key="CheckerApproveUpdateSystemBankOperation" value-ref="SystemBankTrx.CheckerApproveUpdateSystemBankOperation"/>
+                  <entry key="CheckerRejectSystemBankOperation" value-ref="SystemBankTrx.CheckerRejectSystemBankOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="systemBankTrxControllerFactory" class="com.integrosys.cms.app.systemBank.trx.SystemBankTrxControllerFactory">
+        <property name="systemBankReadController" ref="systemBankReadController"/>
+        <property name="systemBankTrxController" ref="systemBankTrxController"/>
+    </bean>
+</beans>

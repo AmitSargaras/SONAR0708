@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select FIC_MIS_DATE,v_f_system_exp_ind,v_f_line_code,n_f_line_serial,v_f_ccy_code,gross_value
+,(CASE when upload_status ='Y' then 'PASS'
+else 'FAIL'
+end) as STATUS
+,(CASE when upload_status ='Y' then 'Combination of Customer_id, Line_no ,Sr_no i.e. ('|| v_f_system_exp_ind ||',' || v_f_line_code ||','||n_f_line_serial ||' ) Matched in CLIMS and updated.'
+else 'Combination of Customer_id, Line_no ,Sr_no i.e. ('|| v_f_system_exp_ind ||',' || v_f_line_code ||','||n_f_line_serial ||') Available in BASEL not in UBS-UPLOAD.'
+end) as REASON
+from CMS_BASEL_MONTHLY_P2 where V_F_MITIGANT_TYPE_CODE='COL0000139'
+		</query>
+			<whereClause>
+			
+			</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>TRANSACTION_DATE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CUSTOMER_ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>LINE_NO</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SERIAL_NO</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CURRENCY</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>UTILIZATION_AMOUNT</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>STATUS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>REASON</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Basel UBS-LIMITS (Upload) to update Gross Value and CMV amount in Monthly Basel and Security CMV</reportName>
+		</reportParamters>
+	</report>
+</reports>

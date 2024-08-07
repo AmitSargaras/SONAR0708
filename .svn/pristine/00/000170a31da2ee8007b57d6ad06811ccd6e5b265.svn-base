@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+
+		WebService context files for WebService module.
+	</description>
+	
+	<bean id="accessChannelForRestAPI" class="com.aurionpro.clims.rest.helper.AccessChannelRestHelper">
+	</bean>	
+	<bean id="camDetailsRestService" class="com.aurionpro.clims.rest.service.CamDetailsRestService">
+		<property name="limitJdbc" ref="limitJdbc"/> 
+		<property name="camDetailsRestDTOMapper" ref="camDetailsRestDTOMapper"/>
+	</bean>	
+	<bean id="camDetailsRestDTOMapper" class="com.aurionpro.clims.rest.mapper.CamDetailsRestDTOMapper">
+			<property name="udfDetailsRestDTOMapper" ref="udfDetailsRestDTOMapper"/>
+	</bean>
+	<bean id="udfDetailsRestDTOMapper" class="com.aurionpro.clims.rest.mapper.UdfDetailsRestDTOMapper">
+	</bean>	
+	<bean id="securityDetailsRestService" class="com.aurionpro.clims.rest.service.SecurityDetailsRestService">
+		<property name="securityDetailsRestDTOMapper" ref="securityDetailsRestDTOMapper"/>
+	</bean>	
+	<bean id="securityDetailsRestDTOMapper" class="com.aurionpro.clims.rest.mapper.SecurityDetailsRestDTOMapper">
+	</bean>		
+</beans>

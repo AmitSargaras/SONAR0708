@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.1//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_1.dtd">
+<taglib>
+	<tlibversion>1.0</tlibversion>
+	<jspversion>1.1</jspversion>
+	<shortname>integro</shortname>
+	<tag>
+		<name>pageindex</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.PageIndexTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>Tag to support page indexing</info>
+		<attribute>
+			<name>pageIndex</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>submitFlag</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>alphaindex</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.AlphaIndexTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>Tag to support page indexing</info>
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>submitFlag</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>currentDate</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.CurrentDateTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>
+            This is will display current date and time
+        </info>
+		<attribute>
+			<name>locale</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>date</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.DateTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>
+            Prints a certain Date based on a specified locale
+        </info>
+		<attribute>
+			<name>object</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<!--
+        		'globalLocale' attribute can be true/false. by default it is 'true'.
+        		true  : the locale will be taken from the session.
+        		false : takes the locale specified in the 'locale' attribute.
+        	-->
+			<name>globalLocale</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>locale</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>dateFormat</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>simpleDateFormat</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>timeFormat</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>currency</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.CurrencyTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>
+            Formats an Amount object into String
+        </info>
+		<attribute>
+			<name>amount</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>param</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>decimal</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+    <tag>
+        <name>amount</name>
+        <tagclass>com.integrosys.base.uiinfra.tag.AmountTag</tagclass>
+        <bodycontent>JSP</bodycontent>
+        <info>
+            Formats an Amount object into String
+        </info>
+        <attribute>
+            <name>amount</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>param</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>decimal</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+	<tag>
+		<!--
+		Converts the given String value into titlecase. (InitChar Upper, remove '_'(underscores) )
+		Ex: input  - "PENDING_UPDATE"
+		    output - "Pending Update"
+	-->
+		<name>trx-status</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.CaseConverterTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<info>Tag to support Displayable Transaction State </info>
+		<attribute>
+			<name>trxState</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!--
+		returns empty if the given object is null.
+	-->
+		<name>empty-if-null</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.EmptyIfNullTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<info>Tag to make empty string if the given object is null</info>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!--	 This tag displays True/False or Yes/No in either
+	capital/smallCaps for a given java boolean value.
+	-->
+		<name>boolean-display</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.BooleanDisplayTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<info>Tag to boolean values</info>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<!-- default is "tf" -->
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!--	 
+		Tag to format a double value.
+		By default, uses the global Locale (the one set in the session with key . com.integrosys.base.uiinfra.common.Constants.GLOBAL_LOCALE_KEY)
+		To specify the locale other than in the session, set 'globalLocale' attribute to 'false'
+	-->
+		<name>number</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.NumberTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<info>Tag to boolean values</info>
+		<attribute>
+			<name>number</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<!--
+        		'globalLocale' attribute can be either 'true' or 'false'. Default is 'true'.
+        		'true'  : the locale will be taken from the session.
+        		'false' : takes the locale specified in the 'locale' attribute.
+        	-->
+			<name>globalLocale</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<!-- The java.util.Locale object. This attribute is used only when 'globalLocale'=='false'.  -->
+			<name>locale</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!-- 
+		The tag wraps the given text value by each line to the specified number of characters.
+		This also converts '\n\r' to '<br> to make is html-complient line-break.
+		for varying line length, specify 'lineLength' attribute which by default is 60(characters).
+	-->
+		<name>wrapper</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.TextAreaWrapperTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<info>Tag wraps the given text</info>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<!-- default lineLength is 60(characters) -->
+			<name>lineLength</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!--
+		The tag wraps the given text value by each line to the specified number of characters.
+		This also converts '\n\r' to '<br> to make is html-complient line-break.
+		for varying line length, specify 'lineLength' attribute which by default is 60(characters).
+	-->
+		<name>htmltext</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.TextTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<info>Tag wraps the given text</info>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<!-- default lineLength is 60(characters) -->
+			<name>lineLength</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<!--
+		The tag display the Yes/No value
+		-->
+		<name>yesno-display</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.YesNoTag</tagclass>
+		<bodycontent>empty</bodycontent>
+		<info>Tag gives Yes No Value</info>
+		<attribute>
+			<name>value</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+    <tag>
+        <!--
+        The tag display empty value if it is invalid (accordingly to ICMSConstant)
+        -->
+        <name>empty-if-invalid</name>
+        <tagclass>com.integrosys.base.uiinfra.tag.EmptyIfInvalidTag</tagclass>
+        <bodycontent>empty</bodycontent>
+        <info>Tag gives Empty Value If Primitive Type contains Invalid Value</info>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>displayForInvalid</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+    	<!-- 
+    	The tag display the top horizontal menu based on role ID
+    	-->
+    	<name>horizontal-menu</name>
+    	<tagclass>com.integrosys.base.uiinfra.tag.HorizontalMenuTag</tagclass>
+    	<bodycontent>empty</bodycontent>
+    	<info>Tag gives the horizontal menu</info>
+    	<attribute>
+    		<name>roleID</name>
+    		<required>true</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    </tag>
+    <tag>
+    	<!--
+    	The tag display or generate the option list of currency supported by the system
+    	-->
+    	<name>currency-list</name>
+    	<tagclass>com.integrosys.cms.ui.common.tag.CurrencyTag</tagclass>
+    	<bodycontent>empty</bodycontent>
+    	<info>Tag gives Currency code description if it is display option, else currency option list</info>
+    	<attribute>
+    		<name>value</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>excludeList</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    	
+    	<attribute>
+    		<name>display</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    	
+    	<attribute>
+    		<name>filter</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>style</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>       	  	
+    	<attribute>
+    		<name>styleClass</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>pleaseSelect</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>        	  	  	
+    </tag>
+    <tag>
+    	<!--
+    	The tag display or generate the option list of country supported by the system
+    	-->
+    	<name>country-list</name>
+    	<tagclass>com.integrosys.cms.ui.common.tag.CountryTag</tagclass>
+    	<bodycontent>empty</bodycontent>
+    	<info>Tag gives Country code description if it is display option, else country option list</info>
+    	<attribute>
+    		<name>value</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>excludeList</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    	
+    	<attribute>
+    		<name>display</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    	
+    	<attribute>
+    		<name>filter</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>style</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>       	  	
+    	<attribute>
+    		<name>styleClass</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>pleaseSelect</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>        	  	  	
+    </tag>    
+    
+    <tag>
+    	<!--
+    	The tag display or generate the option list of common code supported by the system
+    	-->
+    	<name>common-code</name>
+    	<tagclass>com.integrosys.cms.ui.common.tag.CommonCodeTag</tagclass>
+    	<bodycontent>empty</bodycontent>
+    	<info>Tag gives common code description if it is display option, else common code option list</info>
+    	<attribute>
+    		<name>categoryCode</name>
+    		<required>true</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>entryCode</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    
+    	<attribute>
+    		<name>descWithCode</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>      
+    	<attribute>
+    		<name>country</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    
+    	<attribute>
+    		<name>refEntryCode</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>   
+    	<attribute>
+    		<name>source</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>       	   	  			
+    	<attribute>
+    		<name>excludeList</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    	
+    	<attribute>
+    		<name>display</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    	
+    	<attribute>
+    		<name>filter</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>style</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>       	  	
+    	<attribute>
+    		<name>styleClass</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>pleaseSelect</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>      
+    	<attribute>
+    		<name>onlyInitial</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>onlyMatchCountry</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>onlyMatchRefEntry</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>initial</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>   
+    </tag>
+    <tag>
+    	<!--
+    	The tag display or generate the selected option for common code supported by the system
+    	-->
+    	<name>common-code-single</name>
+    	<tagclass>com.integrosys.cms.ui.common.tag.CommonCodeTagSingle</tagclass>
+    	<bodycontent>empty</bodycontent>
+    	<info>Tag gives common code description if it is display option, else common code option list</info>
+    	<attribute>
+    		<name>categoryCode</name>
+    		<required>true</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>entryCode</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    
+    	<attribute>
+    		<name>descWithCode</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>      
+    	<attribute>
+    		<name>country</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    
+    	<attribute>
+    		<name>refEntryCode</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>   
+    	<attribute>
+    		<name>source</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>       	   	  			
+    	<attribute>
+    		<name>excludeList</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    	
+    	<attribute>
+    		<name>display</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>    	
+    	<attribute>
+    		<name>filter</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>style</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>       	  	
+    	<attribute>
+    		<name>styleClass</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>pleaseSelect</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>      
+    	<attribute>
+    		<name>onlyInitial</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>  
+    	<attribute>
+    		<name>onlyMatchCountry</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>     
+    	<attribute>
+    		<name>onlyMatchRefEntry</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>      		
+    </tag>
+    <tag>
+		<!-- The tag display the Yes/No value for a user role-->
+		<name>user-role</name>
+		<tagclass>com.integrosys.base.uiinfra.tag.UserRoleTag</tagclass>
+		<bodycontent>JSP</bodycontent>
+		<info>Tag gives Yes No Value</info>
+		<attribute>
+    		<name>role</name>
+    		<required>true</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>moduleId</name>
+    		<required>true</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+    	<attribute>
+    		<name>operation</name>
+    		<required>true</required>
+    		<rtexprvalue>true</rtexprvalue>
+    	</attribute>
+	</tag>
+</taglib>

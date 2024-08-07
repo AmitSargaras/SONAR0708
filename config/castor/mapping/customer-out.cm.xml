@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>Customer Mapping - CU001 (Out)</description>
+	<class name="com.integrosys.cms.host.eai.EAIMessage">
+		<map-to xml="Msg"/>
+		<field name="MsgHeader" type="com.integrosys.cms.host.eai.EAIHeader">
+            <bind-xml name="MsgHeader"/>
+		</field>
+		<field name="MsgBody" type="com.integrosys.cms.host.eai.EAIBody">
+            <bind-xml name="MsgBody"/>
+		</field>
+	</class>
+
+<!--	<class name="com.integrosys.cms.host.eai.EAIHeader" auto-complete="true">-->
+	<class name="com.integrosys.cms.host.eai.EAIHeader">
+		<map-to xml="MsgHeader"/>
+		<field name="MsgNo" type="string">
+            <bind-xml name="MsgNo" node="element" />
+		</field>
+		<field name="Source" type="string">
+            <bind-xml name="Source" node="element" />
+		</field>
+		<field name="MsgRefNo" type="string">
+            <bind-xml name="MsgRefNo" node="element" />
+		</field>
+		<field name="LogonID" type="string">
+            <bind-xml name="LogonID" node="element" />
+		</field>
+		<field name="PAN" type="string">
+            <bind-xml name="PAN" node="element" />
+		</field>
+		<field name="TxnCode" type="string">
+            <bind-xml name="TxnCode" node="element" />
+		</field>
+		<field name="Dest" type="string">
+            <bind-xml name="Dest" node="element" />
+		</field>
+		<field name="RecLength" type="string">
+            <bind-xml name="RecLength" node="element" />
+		</field>
+		<field name="RecNo" type="string">
+            <bind-xml name="RecNo" node="element" />
+		</field>
+		<field name="TxnDate" type="string">
+            <bind-xml name="TxnDate" node="element" />
+		</field>
+		<field name="TxnTime" type="string">
+            <bind-xml name="TxnTime" node="element" />
+		</field>
+		<field name="DestQM" type="string">
+            <bind-xml name="DestQM" node="element" />
+		</field>
+		<field name="DestQ" type="string">
+            <bind-xml name="DestQ" node="element" />
+		</field>
+		<field name="RespCode" type="string">
+            <bind-xml name="RespCode" node="element" />
+		</field>
+		<field name="SysStat" type="string">
+            <bind-xml name="SysStat" node="element" />
+		</field>
+		<field name="ErrMsg" type="string">
+            <bind-xml name="ErrMsg" node="element" />
+		</field>
+	</class>
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.customer.CustomerMessageBody" >
+		<map-to xml="MsgBody"/>
+		<field name="CMSHeader" type="com.integrosys.cms.host.eai.CMSHeader">
+            <bind-xml name="CMSHeader" />
+		</field>
+		<field name="CIFId" type="string">
+            <bind-xml name="CIFId" node="element" />
+		</field>
+	</class>
+
+    <class name="com.integrosys.cms.host.eai.CMSHeader">
+		<map-to xml="CMSHeader"/>
+		<field name="MessageId" type="string">
+            <bind-xml name="MessageId" node="element" />
+		</field>
+		<field name="MessageType" type="string">
+            <bind-xml name="MessageType" node="element" />
+		</field>
+		<field name="PublishType" type="string">
+            <bind-xml name="PublishType" node="element" />
+		</field>
+		<field name="PublishDate" type="string">
+            <bind-xml name="PublishDate" node="element" />
+		</field>
+		<field name="Source" type="string">
+            <bind-xml name="Source" node="element" />
+		</field>
+	</class>
+
+</mapping>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:logging.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:AppContext_Master.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>propertyFileLocation</param-name>
+        <param-value>
+            menu.properties,
+            reports.properties,
+            eai.properties,
+            eventmonitor.properties,
+            console.properties,
+            stp.properties,
+            trade.properties,
+            documentation.properties,
+            poiReports.properties,
+            emailNotification.properties
+        </param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>EncodingFilter</filter-name>
+        <filter-class>com.integrosys.base.uiinfra.common.EncodingFilter</filter-class>
+        <init-param>
+            <param-name>ENCODING</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>DEBUG_MODE</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>ACTIVE</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter>
+        <filter-name>TraceFilter</filter-name>
+        <filter-class>com.integrosys.base.uiinfra.common.TraceFilter</filter-class>
+    </filter>
+ <filter>
+		<filter-name>cors</filter-name>
+		<filter-class>com.integrosys.base.uiinfra.common.CORSFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>cors</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping> 
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>TraceFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+    <listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.integrosys.base.techinfra.propertyfile.ClassPathPropertyFileLoaderConfigListener
+        </listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.integrosys.base.uiinfra.common.SessionListener</listener-class>
+    </listener>
+    
+    <listener>
+		<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+	</listener>
+
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>
+                /WEB-INF/struts/struts-config.xml,
+                /WEB-INF/struts/struts-config-checklist-recurrentcovenant.xml,
+                /WEB-INF/struts/struts-config-col-assetbased.xml,
+                /WEB-INF/struts/struts-config-col-cash.xml,
+                /WEB-INF/struts/struts-config-col-documentation.xml,
+                /WEB-INF/struts/struts-config-col-guarantee.xml,
+                /WEB-INF/struts/struts-config-col-insurance.xml,
+                /WEB-INF/struts/struts-config-col-marketablesec.xml,
+                /WEB-INF/struts/struts-config-col-nocollateral.xml,
+                /WEB-INF/struts/struts-config-col-others.xml,
+                /WEB-INF/struts/struts-config-col-property.xml,
+                /WEB-INF/struts/struts-config-collateral.xml,
+                /WEB-INF/struts/struts-config-commoncode.xml,
+                /WEB-INF/struts/struts-config-custodian.xml,
+                /WEB-INF/struts/struts-config-customeraalimit.xml,
+                /WEB-INF/struts/struts-config-diary.xml,
+                /WEB-INF/struts/struts-config-documentationchecklist.xml,
+                /WEB-INF/struts/struts-config-documenttemplate.xml,
+                /WEB-INF/struts/struts-config-checklist-documentheld.xml,
+                /WEB-INF/struts/struts-config-liquidation.xml,
+                /WEB-INF/struts/struts-config-manualfeeds.xml,
+                /WEB-INF/struts/struts-config-notification.xml,
+                /WEB-INF/struts/struts-config-param-assetlife.xml,
+                /WEB-INF/struts/struts-config-param-autovaluation.xml,
+                /WEB-INF/struts/struts-config-param-creditrisk.xml,
+                /WEB-INF/struts/struts-config-param-propertyindex.xml,
+                /WEB-INF/struts/struts-config-reports.xml,
+                /WEB-INF/struts/struts-config-securityenvelope.xml,
+                /WEB-INF/struts/struts-config-srp.xml,
+                /WEB-INF/struts/struts-config-tat.xml,
+                /WEB-INF/struts/struts-config-facility.xml,
+                /WEB-INF/struts/struts-config-userteam.xml,
+                /WEB-INF/struts/struts-config-col-pledgor.xml,
+                /WEB-INF/struts/struts-config-col-pledge.xml,
+                /WEB-INF/struts/struts-config-col-loading.xml,
+                /WEB-INF/struts/struts-config-eai.xml,
+                /WEB-INF/struts/struts-config-whatifana.xml,
+                /WEB-INF/struts/struts-config-creditriskparam.xml,
+                /WEB-INF/struts/struts-config-limitbooking.xml,
+                /WEB-INF/struts/struts-config-cci.xml,
+                /WEB-INF/struts/struts-config-custgrpi.xml,
+                /WEB-INF/struts/struts-config-custrelationship.xml,
+                /WEB-INF/struts/struts-config-custexposure.xml,
+                /WEB-INF/struts/struts-config-predealbooking.xml,
+                /WEB-INF/struts/struts-config-marketabilityfactor.xml,
+                /WEB-INF/struts/struts-config-generatepscc.xml,
+                /WEB-INF/struts/struts-config-generateddn.xml,
+                /WEB-INF/struts/struts-config-generateli.xml,              
+                /WEB-INF/struts/struts-config-generatescc.xml,
+                /WEB-INF/struts/struts-config-geography.xml,
+                /WEB-INF/struts/struts-config-systemBank.xml,
+                /WEB-INF/struts/struts-config-systemBankBranch.xml,
+                /WEB-INF/struts/struts-config-holiday.xml,
+                /WEB-INF/struts/struts-config-caseCreation.xml,
+                /WEB-INF/struts/struts-config-facilityNewMaster.xml,
+                /WEB-INF/struts/struts-config-collateralNewMaster.xml,
+                /WEB-INF/struts/struts-config-otherbankbranch.xml,
+                /WEB-INF/struts/struts-config-imageupload.xml,
+                /WEB-INF/struts/struts-config-manualinput.xml,
+                /WEB-INF/struts/struts-config-imagetag.xml,
+                /WEB-INF/struts/struts-config-directorMaster.xml,
+                /WEB-INF/struts/struts-config-relationshipmgr.xml,
+                /WEB-INF/struts/struts-config-insurancecoverage.xml,
+                /WEB-INF/struts/struts-config-insurancecoveragedtls.xml,
+                /WEB-INF/struts/struts-config-creditapproval.xml,
+                /WEB-INF/struts/struts-config-discripency.xml,
+                /WEB-INF/struts/struts-config-valuationAgency.xml,
+                /WEB-INF/struts/struts-config-rbicategory.xml,
+                /WEB-INF/struts/struts-config-generalparam.xml,
+                /WEB-INF/struts/struts-config-approvalmatrix.xml,    
+                /WEB-INF/struts/struts-config-generatelad.xml,              
+                /WEB-INF/struts/struts-config-upload.xml,
+                /WEB-INF/struts/struts-config-finwareupload.xml,
+               	/WEB-INF/struts/struts-config-finwarefdupload.xml,
+               	/WEB-INF/struts/struts-config-checklist-paripassu.xml,
+     			/WEB-INF/struts/struts-config-poiReport.xml, 
+               	/WEB-INF/struts/struts-config-userrole.xml,
+				/WEB-INF/struts/struts-config-udf.xml,
+				/WEB-INF/struts/struts-config-systemHandOff.xml,		
+				/WEB-INF/struts/struts-config-caseCreationUpdate.xml,
+				/WEB-INF/struts/struts-config-caseBranch.xml,
+				/WEB-INF/struts/struts-config-component.xml,
+				/WEB-INF/struts/struts-config-insurancegc.xml,
+				/WEB-INF/struts/struts-config-newTat.xml,
+				/WEB-INF/struts/struts-config-newtatmaster.xml,
+				/WEB-INF/struts/struts-config-basel.xml,
+				/WEB-INF/struts/struts-config-fileUpload.xml,
+				/WEB-INF/struts/struts-config-pincodeMapping.xml,
+				/WEB-INF/struts/struts-config-excludedfacility.xml,
+				/WEB-INF/struts/struts-config-collateralRoc.xml,
+				/WEB-INF/struts/struts-config-partycamupload.xml,
+				/WEB-INF/struts/struts-config-fccBranch.xml,
+				/WEB-INF/struts/struts-config-segmentWiseEmail.xml,
+				/WEB-INF/struts/struts-config-productMaster.xml,
+				/WEB-INF/struts/struts-config-goodsMaster.xml,
+				/WEB-INF/struts/struts-config-cersaiMapping.xml,
+				/WEB-INF/struts/struts-config-acknowledgmentupload.xml,
+				/WEB-INF/struts/struts-config-createfacilitylineupload.xml,
+				/WEB-INF/struts/struts-config-releaselinedetailsupload.xml,
+				/WEB-INF/struts/struts-config-facilitydetailsupload.xml,
+				/WEB-INF/struts/struts-config-leiDateValidation.xml,
+				/WEB-INF/struts/struts-config-leidetailsupload.xml,
+				/WEB-INF/struts/struts-config-valuationAmountAndRating.xml,
+				/WEB-INF/struts/struts-config-autoupdationlmtsupload.xml,
+				/WEB-INF/struts/struts-config-npaTraqCodeMaster.xml,	
+				/WEB-INF/struts/struts-config-bankingArrangementFacExclusion.xml,
+				/WEB-INF/struts/struts-config-mf-schemadetailsupload.xml,
+				/WEB-INF/struts/struts-config-stockdetailsupload.xml,
+				/WEB-INF/struts/struts-config-bonddetailsupload.xml,
+				/WEB-INF/struts/struts-config-bulkudfupload.xml,
+				/WEB-INF/struts/struts-config-limitsOfAuthorityMaster.xml,
+				/WEB-INF/struts/struts-config-riskType.xml,
+				/WEB-INF/struts/struts-config-excLineforstpsrm.xml,
+				/WEB-INF/struts/struts-config-digitalLibrary.xml
+			</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>validate</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>EventMonitorServlet</servlet-name>
+        <servlet-class>com.integrosys.cms.ui.eventmonitor.EventMonitorServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ReportServlet</servlet-name>
+        <servlet-class>com.integrosys.cms.ui.report.ReportServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+	<!-- Added by Anil for image file upload processing -->
+	<!-- start -->
+    <servlet>
+        <servlet-name>ProcessUploadRequestServlet</servlet-name>
+         <servlet-class>com.integrosys.cms.ui.image.ProcessUploadRequestServlet</servlet-class>
+    </servlet>
+    
+    <servlet>
+		<servlet-name>WebServiceEndPoint</servlet-name>
+		<servlet-class>
+			com.sun.xml.ws.transport.http.servlet.WSServlet
+        </servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+    
+	<servlet-mapping>
+        <servlet-name>ProcessUploadRequestServlet</servlet-name>
+        <url-pattern>/ProcessUploadRequestServlet</url-pattern>
+    </servlet-mapping>
+	<!-- end -->
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>EventMonitorServlet</servlet-name>
+        <url-pattern>/EventMonitorServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ReportServlet</servlet-name>
+        <url-pattern>/ReportServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+		<servlet-name>WebServiceEndPoint</servlet-name>
+		<url-pattern>/ws/*</url-pattern>
+	</servlet-mapping>
+	
+	 <servlet>
+        <servlet-name>WholeSaleApi</servlet-name>
+         <servlet-class>com.aurionpro.clims.rest.controller.RestApiRequestServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WholeSaleApi</servlet-name>
+          <url-pattern>/restservice/*</url-pattern>
+    </servlet-mapping>
+	
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <welcome-file-list>
+        <welcome-file>main.jsp</welcome-file>
+    </welcome-file-list>
+
+   <error-page>
+    	<error-code>500</error-code>
+    	<location>error_log_popup_setups.jsp</location>
+	</error-page>
+
+    <!--  Integro Tag Library Descriptors -->
+    <taglib>
+        <taglib-uri>/WEB-INF/IntegroTag.tld</taglib-uri>
+        <taglib-location>/WEB-INF/taglib/IntegroTag.tld</taglib-location>
+    </taglib>
+
+    <!--  Struts Tag Library Descriptors -->
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-bean.tld</taglib-uri>
+        <taglib-location>/WEB-INF/taglib/struts-bean.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-html.tld</taglib-uri>
+        <taglib-location>/WEB-INF/taglib/struts-html.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-logic.tld</taglib-uri>
+        <taglib-location>/WEB-INF/taglib/struts-logic.tld</taglib-location>
+    </taglib>
+    <taglib>
+        <taglib-uri>/WEB-INF/struts-template.tld</taglib-uri>
+        <taglib-location>/WEB-INF/taglib/struts-tiles.tld</taglib-location>
+    </taglib>
+	<taglib>
+        <taglib-uri>/WEB-INF/UdfTag.tld</taglib-uri>
+        <taglib-location>/WEB-INF/taglib/UdfTag.tld</taglib-location>
+    </taglib>
+    <resource-ref>
+        <res-ref-name>jdbc/CMSPool</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+</web-app>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="DiaryItemForm" type="com.integrosys.cms.ui.diaryitem.DiaryItemForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/DiaryItem" type="com.integrosys.cms.ui.diaryitem.DiaryItemAction"
+            name="DiaryItemForm" validate="false" scope="request">
+            
+            <forward name="list_segment_wise" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/view_diary_segment_wise.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+            
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/create_diary_item.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/view_diary_item.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+             <forward name="update_error" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/view_diary_item.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+            <forward name="list_non_expired" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/view_full_diary_listing.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+            <forward name="list_due_items" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/view_today_diary.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit_diary.jsp"/>
+                <set-property property="title" value="title.common.confirmation"/>
+            </forward>
+             <forward name="cancel" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.common.confirmation"/>
+            </forward>
+            <forward name="get_report" path="/reports/display_report.jsp">
+            </forward>
+             <forward name="list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/CustomerList.jsp"/>
+                <set-property property="title" value="title.reports"/>
+            </forward>
+             <forward name="refreshFacilityLine" path="/diaryitem/facilityLineNo.jsp">
+            </forward>
+             <forward name="refreshFacilitySerialNo" path="/diaryitem/facilitySerialNo.jsp">
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete_diary.jsp"/>
+                <set-property property="title" value="title.common.confirmation"/>
+            </forward>
+             <forward name="ODFileError" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/ack_error_report.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+            <forward name="todays_diary" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/view_today_diary_items.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+             <forward name="view_odschedule" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/diaryitem/view_od_schedule.jsp"/>
+                <set-property property="title" value="title.diaryitem"/>
+            </forward>
+        </action>
+    
+    </action-mappings>
+    
+    <message-resources key="message-diary" parameter="ApplicationResources-diary"/>
+</struts-config>

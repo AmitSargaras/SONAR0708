@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT usr.login_id,
+  usr.user_name,
+  CASE
+    WHEN transhis.from_state = 'ND'
+    AND transhis.to_state    = 'PENDING_CREATE'
+    THEN ''
+    WHEN transhis.from_state = 'PENDING_UPDATE'
+    AND transhis.to_state    = 'ACTIVE'
+    THEN
+      CASE
+        WHEN 'REJECTED' = GET_OLD_FROM_STATE(transhis.transaction_id)
+        THEN compare_old_branch_details(
+          (SELECT stguser1.branch_code
+          FROM stage_user stguser1
+          WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+          ), usr.branch_code,transhis.from_state,transhis.to_state)
+        WHEN 'REJECTED' != GET_OLD_FROM_STATE(transhis.transaction_id)
+        THEN
+          (SELECT sysbank.system_bank_branch_code
+          FROM cms_system_bank_branch sysBank
+          WHERE LPAD(sysbank.system_bank_branch_code,4,'0') = compare_old_branch_details(
+            (SELECT stguser1.branch_code
+            FROM stage_user stguser1
+            WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,2)
+            ),usr.branch_code,transhis.from_state,transhis.to_state)
+          )
+      END
+    WHEN transhis.from_state = 'PENDING_UPDATE'
+    AND transhis.to_state    = 'REJECTED'
+    THEN
+      CASE
+        WHEN usr.branch_code = stguser.branch_code
+        THEN ''
+        WHEN usr.branch_code != stguser.branch_code
+        THEN ''
+      END
+    WHEN transhis.from_state = 'ACTIVE'
+    AND transhis.to_state    = 'PENDING_UPDATE'
+    THEN
+      CASE
+        WHEN 'REJECTED' = GET_OLD_FROM_STATE(transhis.transaction_id)
+        THEN compare_old_branch_details(
+          (SELECT stguser1.branch_code
+          FROM stage_user stguser1
+          WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+          ), usr.branch_code,transhis.from_state,transhis.to_state)
+        WHEN 'REJECTED' != GET_OLD_FROM_STATE(transhis.transaction_id)
+        THEN
+          CASE
+            WHEN usr.branch_code = stguser.branch_code
+            THEN ''
+            WHEN usr.branch_code != stguser.branch_code
+            THEN ''
+          END
+      END
+    WHEN transhis.from_state = 'REJECTED'
+    AND transhis.to_state    = 'PENDING_UPDATE'
+    THEN compare_old_branch_details(
+      (SELECT stguser1.branch_code
+      FROM stage_user stguser1
+      WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+      ), usr.branch_code,transhis.from_state,transhis.to_state)
+    WHEN transhis.from_state = 'ACTIVE'
+    AND transhis.to_state    = 'PENDING_DELETE'
+    THEN compare_old_branch_details(
+      (SELECT stguser1.branch_code
+      FROM stage_user stguser1
+      WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,1)
+      ), usr.branch_code,transhis.from_state,transhis.to_state)
+    WHEN transhis.from_state = 'REJECTED'
+    AND transhis.to_state    = 'PENDING_DELETE'
+    THEN
+      (SELECT LPAD(stguser1.branch_code,4,'0')
+      FROM stage_user stguser1
+      WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+      )
+  END AS old_br_code,
+  CASE
+    WHEN transhis.from_state = 'ACTIVE'
+    AND transhis.to_state    = 'PENDING_UPDATE'
+    THEN LPAD(usr.branch_code,4,'0')
+    WHEN transhis.from_state IN ('PENDING_UPDATE','PENDING_CREATE')
+    AND transhis.to_state     = 'ACTIVE'
+    THEN LPAD(usr.branch_code,4,'0')
+    WHEN transhis.from_state = 'PENDING_UPDATE'
+    AND transhis.to_state    = 'REJECTED'
+    THEN
+      CASE
+        WHEN usr.branch_code = stguser.branch_code
+        THEN LPAD(stguser.branch_code,4,'0')
+        WHEN usr.branch_code != stguser.branch_code
+        THEN LPAD(usr.branch_code,4,'0')
+      END
+    WHEN transhis.from_state = 'REJECTED'
+    AND (transhis.to_state   = 'PENDING_UPDATE'
+    OR transhis.to_state     = 'ACTIVE')
+    THEN LPAD(usr.branch_code,4,'0')
+  END AS new_br_code,
+  CASE
+    WHEN transhis.from_state = 'ND'
+    AND transhis.to_state    = 'PENDING_CREATE'
+    THEN ''
+    WHEN transhis.from_state = 'PENDING_UPDATE'
+    AND transhis.to_state    = 'ACTIVE'
+    THEN
+      CASE
+        WHEN 'REJECTED' = GET_OLD_FROM_STATE(transhis.transaction_id)
+        THEN
+          (SELECT sysbank.system_bank_branch_name
+          FROM cms_system_bank_branch sysBank
+          WHERE LPAD(sysbank.system_bank_branch_code,4,'0') = compare_old_branch_details(
+            (SELECT stguser1.branch_code
+            FROM stage_user stguser1
+            WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+            ),usr.branch_code,transhis.from_state,transhis.to_state)
+          )
+        WHEN 'REJECTED' != GET_OLD_FROM_STATE(transhis.transaction_id)
+        THEN
+          (SELECT sysbank.system_bank_branch_name
+          FROM cms_system_bank_branch sysBank
+          WHERE LPAD(sysbank.system_bank_branch_code,4,'0') = compare_old_branch_details(
+            (SELECT stguser1.branch_code
+            FROM stage_user stguser1
+            WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,2)
+            ),usr.branch_code,transhis.from_state,transhis.to_state)
+          )
+      END
+    WHEN transhis.from_state = 'ACTIVE'
+    AND transhis.to_state    = 'PENDING_UPDATE'
+    THEN
+      CASE
+        WHEN 'REJECTED' = GET_OLD_FROM_STATE(transhis.transaction_id)
+        THEN
+          (SELECT sysbank.system_bank_branch_name
+          FROM cms_system_bank_branch sysBank
+          WHERE LPAD(sysbank.system_bank_branch_code,4,'0') = compare_old_branch_details(
+            (SELECT stguser1.branch_code
+            FROM stage_user stguser1
+            WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+            ),usr.branch_code,transhis.from_state,transhis.to_state)
+          )
+        WHEN 'REJECTED' != GET_OLD_FROM_STATE(transhis.transaction_id)
+        THEN
+          CASE
+            WHEN usr.branch_code = stguser.branch_code
+            THEN ''
+            WHEN usr.branch_code != stguser.branch_code
+            THEN ''
+          END
+      END
+    WHEN transhis.from_state = 'REJECTED'
+    AND transhis.to_state    = 'PENDING_UPDATE'
+    THEN
+      (SELECT sysbank.system_bank_branch_name
+      FROM cms_system_bank_branch sysBank
+      WHERE LPAD(sysbank.system_bank_branch_code,4,'0') = (compare_old_branch_details(
+        (SELECT stguser1.branch_code
+        FROM stage_user stguser1
+        WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+        ), usr.branch_code,transhis.from_state,transhis.to_state) )
+      )
+    WHEN transhis.from_state = 'ACTIVE'
+    AND transhis.to_state    = 'PENDING_DELETE'
+    THEN
+      (SELECT sysbank.system_bank_branch_name
+      FROM cms_system_bank_branch sysBank
+      WHERE LPAD(sysbank.system_bank_branch_code,4,'0') = compare_old_branch_details(
+        (SELECT stguser1.branch_code
+        FROM stage_user stguser1
+        WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,1)
+        ),usr.branch_code,transhis.from_state,transhis.to_state)
+      )
+    WHEN transhis.from_state = 'REJECTED'
+    AND transhis.to_state    = 'PENDING_DELETE'
+    THEN
+      (SELECT sysbank.system_bank_branch_name
+      FROM cms_system_bank_branch sysBank
+      WHERE sysbank.system_bank_branch_code =
+        (SELECT stguser1.branch_code
+        FROM stage_user stguser1
+        WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+        )
+      )
+    WHEN transhis.from_state = 'PENDING_UPDATE'
+    AND transhis.to_state    = 'REJECTED'
+    THEN
+      CASE
+        WHEN usr.branch_code = stguser.branch_code
+        THEN ''
+        WHEN usr.branch_code != stguser.branch_code
+        THEN
+          CASE
+            WHEN 'REJECTED' = GET_OLD_FROM_STATE(transhis.transaction_id)
+            THEN ''
+            WHEN 'REJECTED' != GET_OLD_FROM_STATE(transhis.transaction_id)
+            THEN ''
+          END
+      END
+  END AS old_br_name,
+  CASE
+    WHEN transhis.from_state = 'ACTIVE'
+    AND transhis.to_state   IN ('PENDING_UPDATE','PENDING_DELETE')
+    THEN
+      (SELECT sysbank.system_bank_branch_name
+      FROM cms_system_bank_branch sysBank
+      WHERE sysbank.system_bank_branch_code = usr.branch_code
+      )
+    WHEN transhis.from_state = 'REJECTED'
+    AND transhis.to_state   IN ('PENDING_UPDATE','PENDING_DELETE','ACTIVE')
+    THEN
+      (SELECT sysbank.system_bank_branch_name
+      FROM cms_system_bank_branch sysBank
+      WHERE sysbank.system_bank_branch_code = usr.branch_code
+      )
+    WHEN transhis.from_state IN ('PENDING_UPDATE','PENDING_CREATE')
+    AND transhis.to_state     = 'ACTIVE'
+    THEN
+      (SELECT sysbank.system_bank_branch_name
+      FROM cms_system_bank_branch sysBank
+      WHERE LPAD(sysbank.system_bank_branch_code,4,'0') = compare_new_branch_details(stguser.branch_code,usr.branch_code,transhis.from_state,transhis.to_state)
+      )
+    WHEN transhis.from_state = 'PENDING_UPDATE'
+    AND transhis.to_state    = 'REJECTED'
+    THEN
+      CASE
+        WHEN usr.branch_code = stguser.branch_code
+        THEN
+          (SELECT sysbank.system_bank_branch_name
+          FROM cms_system_bank_branch sysBank
+          WHERE sysbank.system_bank_branch_code = stguser.branch_code
+          )
+        WHEN usr.branch_code != stguser.branch_code
+        THEN
+          (SELECT sysbank.system_bank_branch_name
+          FROM cms_system_bank_branch sysBank
+          WHERE sysbank.system_bank_branch_code = usr.branch_code
+          )
+      END
+  END AS new_br_name,
+  CASE
+    WHEN transhis.from_state = 'ND'
+    AND transhis.to_state    = 'PENDING_CREATE'
+    THEN ''
+    WHEN transhis.from_state = 'PENDING_UPDATE'
+    AND transhis.to_state    = 'ACTIVE'
+    THEN
+      CASE
+        WHEN usr.TEAM_TYPE_MEMBERSHIP_ID =
+          (SELECT stguser1.TEAM_TYPE_MEMBERSHIP_ID
+          FROM stage_user stguser1
+          WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,2)
+          )
+        THEN ''
+        WHEN usr.TEAM_TYPE_MEMBERSHIP_ID !=
+          (SELECT stguser1.TEAM_TYPE_MEMBERSHIP_ID
+          FROM stage_user stguser1
+          WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,2)
+          )
+        THEN
+          (SELECT MEMBERSHIP_NAME
+          FROM CMS_TEAM_TYPE_MEMBERSHIP
+          WHERE TEAM_TYPE_MEMBERSHIP_ID =
+            (SELECT stguser1.TEAM_TYPE_MEMBERSHIP_ID
+            FROM stage_user stguser1
+            WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,2)
+            )
+          )
+      END
+    WHEN transhis.from_state IN ('ACTIVE','REJECTED')
+    AND transhis.to_state    IN ('PENDING_UPDATE','PENDING_DELETE')
+    THEN
+      CASE
+        WHEN usr.TEAM_TYPE_MEMBERSHIP_ID = stguser.TEAM_TYPE_MEMBERSHIP_ID
+        THEN ''
+        WHEN usr.TEAM_TYPE_MEMBERSHIP_ID != stguser.TEAM_TYPE_MEMBERSHIP_ID
+        THEN
+          (SELECT MEMBERSHIP_NAME
+          FROM CMS_TEAM_TYPE_MEMBERSHIP
+          WHERE TEAM_TYPE_MEMBERSHIP_ID =
+            (SELECT stguser1.TEAM_TYPE_MEMBERSHIP_ID
+            FROM cms_user stguser1
+            WHERE stguser1.USER_ID = GET_OLD_USER_ID_DETAIL(usr.login_id,3)
+            )
+          )
+      END
+  END AS old_profile_name,
+  CASE
+    WHEN trans.status = 'PENDING_UPDATE'
+    THEN
+      CASE
+        WHEN usr.TEAM_TYPE_MEMBERSHIP_ID = stguser.TEAM_TYPE_MEMBERSHIP_ID
+        THEN team.membership_name
+        WHEN usr.TEAM_TYPE_MEMBERSHIP_ID != stguser.TEAM_TYPE_MEMBERSHIP_ID
+        THEN team.membership_name
+      END
+    WHEN trans.status != 'PENDING_UPDATE'
+    THEN team.membership_name
+    WHEN trans.status != 'PENDING_DELETE'
+    THEN oldteam.membership_name
+  END           AS new_profile_name ,
+  cc.entry_name AS dept,
+  CASE
+    WHEN UPPER(stguser.status)   = 'A'
+    AND UPPER(stguser.is_unlock) = 'Y'
+    THEN 'Unlocked'
+    WHEN UPPER(stguser.status) = 'A'
+    THEN 'Enabled'
+    WHEN UPPER(stguser.status) = 'D'
+    THEN 'Disabled'
+    WHEN UPPER(stguser.status) = 'T'
+    THEN 'Terminate'
+    WHEN UPPER(stguser.status) = 'I'
+    THEN 'Inactive'
+    WHEN UPPER(stguser.status) = 'N'
+    THEN 'Disabled'
+    WHEN UPPER(stguser.status) = 'O'
+    THEN 'Locked'
+    WHEN UPPER(stguser.status) = 'S'
+    THEN 'Suspend '
+    WHEN UPPER(stguser.status) = 'L'
+    THEN 'Leave'
+    WHEN UPPER(stguser.status) = 'R'
+    THEN 'Disabled1'
+    WHEN UPPER(stguser.status) = 'NR'
+    THEN 'Disabled2'
+  END                                                         AS status,
+  GET_ACTIVITY_MESSAGE(transhis.FROM_STATE,transhis.TO_STATE) AS Operation,
+  TO_CHAR(trans.creation_date,'DD-Mon-YYYY')                  AS Creation_date,
+  
+  
+  CASE
+      WHEN USR.REF_NUMBER IS NOT NULL
+      THEN
+        (SELECT ISAC_MAKER_ID
+        FROM CMS_INTERFACE_LOG
+        WHERE ID=
+          (SELECT MAX (ID)
+          FROM CMS_INTERFACE_LOG
+          WHERE ISAC_REFERENCE_NO = usr.REF_NUMBER
+          )
+        )
+      ELSE
+  
+  CASE
+    WHEN trans.from_state = 'PENDING_PERFECTION'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.transaction_id = trans.transaction_id
+      AND hist.from_state       = 'PENDING_PERFECTION'
+      AND hist.to_state         ='DRAFT'
+      )
+    WHEN trans.from_state = 'PENDING_CREATE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.transaction_id = trans.transaction_id
+      AND hist.from_state      IN ('ND','DRAFT')
+      AND hist.to_state         ='PENDING_CREATE'
+      )
+    WHEN trans.from_state = 'PENDING_UPDATE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trans.transaction_id
+        AND from_state      IN ('ACTIVE','DRAFT')
+        AND to_state         = 'PENDING_UPDATE'
+        )
+      )
+    WHEN trans.from_state = 'PENDING_DELETE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trans.transaction_id
+        AND from_state       ='ACTIVE'
+        AND to_state         ='PENDING_DELETE'
+        )
+      )
+    WHEN trans.from_state = 'ACTIVE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trans.transaction_id
+        AND from_state       ='ACTIVE'
+        AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+        )
+      )
+    WHEN trans.from_state = 'REJECTED'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trans.transaction_id
+        AND from_state       = 'REJECTED'
+        AND to_state         ='ACTIVE'
+        )
+      )
+    WHEN trans.from_state = 'DRAFT'
+    THEN
+      CASE
+        WHEN trans.status = 'PENDING_UPDATE'
+        THEN
+          (SELECT hist.login_id
+          FROM trans_history hist
+          WHERE hist.TR_HISTORY_ID=
+            (SELECT MAX(TR_HISTORY_ID)
+            FROM trans_history
+            WHERE transaction_id = trans.transaction_id
+            AND from_state       = 'DRAFT'
+            AND to_state         ='PENDING_UPDATE'
+            )
+          )
+        WHEN trans.status = 'ACTIVE'
+        THEN
+          (SELECT hist.login_id
+          FROM trans_history hist
+          WHERE hist.TR_HISTORY_ID=
+            (SELECT MAX(TR_HISTORY_ID)
+            FROM trans_history
+            WHERE transaction_id = trans.transaction_id
+            AND from_state       = 'DRAFT'
+            AND to_state         ='ACTIVE'
+            )
+          )
+      END
+  END                END                              AS Maker,
+  TO_CHAR(to_timestamp(transhis.transaction_date),'DD-Mon-YYYY HH:MI:SS') AS Modified_On,
+  
+   CASE
+      WHEN USR.REF_NUMBER IS NOT NULL
+      THEN
+        (SELECT ISAC_CHECKER_ID
+        FROM CMS_INTERFACE_LOG
+        WHERE ID=
+          (SELECT MAX (ID)
+          FROM CMS_INTERFACE_LOG
+          WHERE ISAC_REFERENCE_NO = usr.REF_NUMBER
+          )
+        )
+      ELSE
+  CASE
+    WHEN trans.status = 'PENDING_CREATE'
+    OR trans.status   = 'PENDING_UPDATE'
+    THEN ''
+    WHEN trans.status != 'PENDING_CREATE'
+    AND trans.status  != 'PENDING_UPDATE'
+    THEN TO_CHAR(trans.login_id)
+  END END  AS Approved_By,
+   CASE
+      WHEN trans.status = 'PENDING_CREATE'
+      OR trans.status   = 'PENDING_UPDATE'
+      THEN ''
+      WHEN trans.status != 'PENDING_CREATE'
+      AND trans.status  != 'PENDING_UPDATE'
+      THEN TO_CHAR(to_timestamp(transhis.transaction_date),'DD-Mon-YYYY HH:MI:SS')
+    END AS Authorized_Date,
+ CASE
+      WHEN usr.ref_number IS NOT NULL
+      THEN 'ISAC interface'
+      WHEN usr.ref_number IS NULL
+      THEN '0.0.0.0'
+    END AS maker_IPAddress,
+  CASE
+      WHEN usr.ref_number IS NOT NULL
+      THEN 'ISAC interface'
+      WHEN usr.ref_number IS NULL
+      THEN ''
+    END                        AS checker_IPAddress
+FROM transaction trans,
+  stage_user stguser,
+  cms_user usr,
+  CMS_SYSTEM_BANK_BRANCH SYSBRANCH,
+  cms_team_type_membership team,
+  cms_team_type_membership oldteam,
+  trans_history transhis,
+  trans_history transhis1,
+  common_code_category_entry cc,
+  TRANS_HISTORY_IPADDRESS ip
+
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				trans.transaction_type = 'USER'
+AND TRANSHIS.TR_HISTORY_ID  IN
+  (SELECT (transhis1.TR_HISTORY_ID)
+  FROM trans_history transhis1
+  WHERE transhis1.transaction_id = trans.transaction_id
+  )
+AND transhis1.TR_HISTORY_ID        = TRANSHIS.TR_HISTORY_ID
+AND transhis.staging_reference_id  = stguser.user_id
+AND transhis.reference_id          = usr.user_id
+AND team.team_type_membership_id   =usr.team_type_membership_id
+AND oldteam.team_type_membership_id=stguser.team_type_membership_id
+AND cc.entry_code (+)              = usr.department
+AND cc.category_code               = 'HDFC_DEPARTMENT'
+AND ip.tr_history_id               = transhis.tr_history_id
+AND usr.BRANCH_CODE                = TO_CHAR(SYSBRANCH.SYSTEM_BANK_BRANCH_CODE)
+ 
+   
+			</mandatoryClause>
+			<param>
+				<name>userId</name>
+				<condition> AND trans.reference_id  = </condition>
+			</param>
+			<param>
+				<name>branch</name>
+				<condition> AND SYSBRANCH.ID = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and TO_DATE(TRUNC(transhis1.transaction_date)) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>User Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Old Branch Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>New Branch Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Old Branch Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>New Branch Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Old Profile</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>New Profile</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Department Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Exact Activity carried out</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Creation Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Maker</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Modified on</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Authorized by</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Authorized Date and Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker IP Address</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker IP Address</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>User Admin Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

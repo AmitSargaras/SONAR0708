@@ -1,0 +1,81 @@
+
+------------------------------------------------
+-- DDL Statements for table "ABCLIMS "."CMS_STAGE_RBI_CATEGORY"
+------------------------------------------------
+CREATE TABLE cms_stage_rbi_category (
+  STAGE_RBI_CATEGORY_ID NUMBER(38,0)  NOT NULL,
+  INDUSTRY_NAME_ID VARCHAR2(100) NOT NULL,
+  VERSION_TIME      NUMBER(38,0)  NOT NULL,
+  CREATE_BY         VARCHAR2(20)  NOT NULL,
+  CREATION_DATE     DATE          NOT NULL,
+  LAST_UPDATE_BY    VARCHAR2(20)  NOT NULL,
+  LAST_UPDATE_DATE  DATE          NOT NULL,
+  DEPRECATED        CHAR(1)       NOT NULL,
+  STATUS            VARCHAR2(60)  NOT NULL
+);
+
+ALTER TABLE CMS_STAGE_RBI_CATEGORY
+	ADD CONSTRAINT PK_STAGE_RBI_CATEGORY PRIMARY KEY
+		(STAGE_RBI_CATEGORY_ID);		
+		
+------------------------------------------------
+-- DDL Statements for table "ABCLIMS "."CMS_STAGE_INDUSTRY_NAME"
+------------------------------------------------
+ CREATE TABLE cms_industry_name_stage (
+  ID NUMBER(38,0)  NOT NULL,
+  STAGE_RBI_CATEGORY_ID NUMBER(38,0)  NOT NULL,
+  RBI_CODE_CATEGORY_ID VARCHAR2(100) NOT NULL,
+  VERSION_TIME NUMBER(38,0)  NOT NULL
+);
+ 
+
+
+-- DDL Statements for primary key on Table "ABCLIMS "."CMS_STAGE_INDUSTRY_NAME"
+
+ALTER TABLE CMS_STAGE_INDUSTRY_NAME
+	ADD CONSTRAINT PK_STAGE_INDUSTRY_NAME PRIMARY KEY
+		(ID);
+
+
+	
+------------------------------------------------
+-- DDL Statements for table "ABCLIMS "."CMS_RBI_CATEGORY"
+------------------------------------------------
+CREATE TABLE CMS_RBI_CATEGORY (
+  STAGE_RBI_CATEGORY_ID NUMBER(38,0)  NOT NULL,
+  INDUSTRY_NAME_ID VARCHAR2(100) NOT NULL,
+  VERSION_TIME      NUMBER(38,0)  NOT NULL,
+  CREATE_BY         VARCHAR2(20)  NOT NULL,
+  CREATION_DATE     DATE          NOT NULL,
+  LAST_UPDATE_BY    VARCHAR2(20)  NOT NULL,
+  LAST_UPDATE_DATE  DATE          NOT NULL,
+  DEPRECATED        CHAR(1)       NOT NULL,
+  STATUS            VARCHAR2(60)  NOT NULL
+); 
+
+
+
+-- DDL Statements for primary key on Table "ABCLIMS "."CMS_RBI_CATEGORY"
+
+ALTER TABLE CMS_RBI_CATEGORY
+	ADD CONSTRAINT "PK_CMS_RBI_CATEGORY" PRIMARY KEY
+		(RBI_CATEGORY_ID);
+
+		
+------------------------------------------------
+-- DDL Statements for table "ABCLIMS "."CMS_INDUSTRY_NAME"
+------------------------------------------------
+  CREATE TABLE CMS_INDUSTRY_NAME_ACTUAL (
+  ID NUMBER(38,0)  NOT NULL,
+  STAGE_RBI_CATEGORY_ID NUMBER(38,0)  NOT NULL,
+  RBI_CODE_CATEGORY_ID VARCHAR2(100) NOT NULL,
+  VERSION_TIME NUMBER(38,0)  NOT NULL
+);
+
+
+
+-- DDL Statements for primary key on Table "ABCLIMS "."CMS_INDUSTRY_NAME"
+
+ALTER TABLE CMS_INDUSTRY_NAME
+	ADD CONSTRAINT PK_INDUSTRY_NAME PRIMARY KEY
+		(ID);

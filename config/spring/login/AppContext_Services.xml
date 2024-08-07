@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+
+	<bean id="authenticator" class="com.integrosys.component.login.app.SMEUserLoginModule" />
+	
+	<bean id="persistentBroker" class="com.integrosys.component.login.app.DBPersistentBroker" />
+
+	<bean id="authenticationManager" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean">
+	  <property name="jndiName" value="SBSMEAuthenticationManager" />
+	  <property name="businessInterface" value="com.integrosys.base.businfra.login.SBAuthenticationManager" />
+	  <property name="lookupHomeOnStartup" value="false" />
+	</bean>
+	
+	<bean id="passwordManager" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean">
+	  <property name="jndiName" value="SBPasswordManager" />
+	  <property name="businessInterface" value="com.integrosys.component.login.app.SBPasswordManager" />
+	  <property name="lookupHomeOnStartup" value="false" />
+	</bean>
+
+	<bean id="cmsAuthenticationManager" class="com.integrosys.base.businfra.authentication.CMSAuthenticationManager">
+	<!--	<property name="authenticator" ref="authenticator" /> -->
+		<property name="authenticator" ref="ADAuthenticator" />
+	</bean>
+
+	<bean id="ADAuthenticator" class="com.integrosys.cms.app.login.ADAuthenticator" />
+	<!--<bean id="as400AuthenticationManager" class="com.integrosys.base.businfra.authentication.AS400AuthenticationManager">
+		<property name="as400system">
+			<bean class="com.ibm.as400.access.AS400">
+				<property name="systemName" value="${authentication.as400.system.name}" />
+			</bean>
+		</property>
+		<property name="persistentBroker" ref="persistentBroker" />
+	</bean>-->
+
+	<bean id="loginManager" class="com.integrosys.cms.ui.login.InitCMSLoginManager" >
+		<property name="authenticationManager" ref="${authentication.manager.bean.name}" />
+		<property name="cmsTeamProxy" ref="cmsTeamProxy" />
+		<property name="authenticationJdbcTemplate">
+			<bean class="org.springframework.jdbc.core.JdbcTemplate" >
+				<property name="dataSource" ref="ofaPool" />
+			</bean>
+		</property>
+		<property name="teamFunctionGrpProxy" ref="teamFunctionGrpProxy" />
+		<property name="userProxy" ref="userProxy" />
+		<property name="requiredVerifyForcePasswordChange" value="${authentication.verify.force.password.change}" />
+	</bean>
+
+</beans>

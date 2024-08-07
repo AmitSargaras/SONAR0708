@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CaseCreationForm" type="com.integrosys.cms.ui.caseCreation.CaseCreationForm">
+        </form-bean>
+
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/CaseCreation" type="com.integrosys.cms.ui.caseCreation.CaseCreationAction" name="CaseCreationForm" validate="false" scope="request">
+            <forward name="common_submit_page" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                 <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.caseCreation"/>
+            </forward>
+            
+           
+            <forward name="view_case_page" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/caseCreation/view_case_creation.jsp"/>
+                 <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.caseCreation"/>
+            </forward>
+            <forward name="refresh_coordinator_detail" path="/caseCreation/coordinatordetaillist.jsp" />
+        </action>
+		
+    </action-mappings>
+    
+</struts-config>

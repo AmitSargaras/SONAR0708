@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.app.feed.bus.gold">
+	
+	<class entity-name="actualGoldFeedEntry" name="OBGoldFeedEntry" table="CMS_GOLD_FEED" lazy="false">
+	<id name="goldFeedEntryID" type="long" column="GOLD_FEED_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_GOLD_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="goldGradeNum" column="GOLD_GRADE_CODE_NUM" />
+    <property name="unitMeasurementNum" column="GOLD_UOM_CODE_NUM" />
+    <property name="currencyCode" column="CURRENCY" />
+    <property name="unitPrice" column="PRICE" type="big_decimal" />
+    <property name="lastUpdatedDate" column="LAST_UPDATED_DATE" type="timestamp" />
+    <property name="goldFeedEntryRef" column="CMS_REF_ID" type="long" />
+    <property name="goldFeedGroupId" column="FEED_GROUP_ID" type="long" insert="false" update="false"/>
+  </class>
+
+  <class entity-name="actualGoldFeedGroup" name="OBGoldFeedGroup" table="CMS_FEED_GROUP">
+	<id name="goldFeedGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="actualGoldFeedEntry" />
+	</set>
+  </class>
+  
+  <class entity-name="stageGoldFeedEntry" name="OBGoldFeedEntry" table="CMS_STAGE_GOLD_FEED" lazy="false">
+	<id name="goldFeedEntryID" type="long" column="GOLD_FEED_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_GOLD_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="goldGradeNum" column="GOLD_GRADE_CODE_NUM" />
+    <property name="unitMeasurementNum" column="GOLD_UOM_CODE_NUM" />
+    <property name="currencyCode" column="CURRENCY" />
+    <property name="unitPrice" column="PRICE" type="big_decimal" />
+    <property name="lastUpdatedDate" column="LAST_UPDATED_DATE" type="timestamp" />
+    <property name="goldFeedEntryRef" column="CMS_REF_ID" type="long" />
+    <property name="goldFeedGroupId" column="FEED_GROUP_ID" type="long" insert="false" update="false"/>
+  </class>
+
+  <class entity-name="stageGoldFeedGroup" name="OBGoldFeedGroup" table="CMS_STAGE_FEED_GROUP">
+	<id name="goldFeedGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="stageGoldFeedEntry" />
+	</set>
+  </class>
+  
+</hibernate-mapping>

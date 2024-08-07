@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE weblogic-ejb-jar PUBLIC '-//BEA Systems, Inc.//DTD WebLogic 8.1.0 EJB//EN' 'http://www.bea.com/servers/wls810/dtd/weblogic-ejb-jar.dtd'>
+<weblogic-ejb-jar>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>SBInterestRateProxy</ejb-name>
+        <reference-descriptor>
+		<resource-description>
+			<res-ref-name>jdbc/CMSPool</res-ref-name>
+			<jndi-name>CMSPool</jndi-name>
+		</resource-description>
+	</reference-descriptor>
+        <jndi-name>SBInterestRateProxyHome</jndi-name>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>SBInterestRateBusManager</ejb-name>
+        <reference-descriptor>
+		<resource-description>
+			<res-ref-name>jdbc/CMSPool</res-ref-name>
+			<jndi-name>CMSPool</jndi-name>
+		</resource-description>
+	</reference-descriptor>
+        <jndi-name>SBInterestRateBusManagerHome</jndi-name>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>SBInterestRateBusManagerStaging</ejb-name>
+        <reference-descriptor>
+		<resource-description>
+			<res-ref-name>jdbc/CMSPool</res-ref-name>
+			<jndi-name>CMSPool</jndi-name>
+		</resource-description>
+	</reference-descriptor>
+        <jndi-name>SBInterestRateBusManagerStagingHome</jndi-name>
+    </weblogic-enterprise-bean>
+    
+ 
+    <weblogic-enterprise-bean>
+        <ejb-name>EBInterestRate</ejb-name>
+        <entity-descriptor>
+            <persistence>
+                <persistence-use>
+                    <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+                    <type-version>6.0</type-version>
+                    <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+                </persistence-use>
+            </persistence>
+        </entity-descriptor>
+        <reference-descriptor>          
+		<resource-description>              
+		<res-ref-name>jdbc/CMSPool</res-ref-name>              
+	        <jndi-name>CMSPool</jndi-name>          
+		</resource-description>      
+        </reference-descriptor>
+        <jndi-name>EBInterestRateHome</jndi-name>
+        <local-jndi-name>EBInterestRateLocalHome</local-jndi-name>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>EBInterestRateStaging</ejb-name>
+        <entity-descriptor>
+            <persistence>
+                <persistence-use>
+                    <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+                    <type-version>6.0</type-version>
+                    <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+                </persistence-use>
+            </persistence>
+        </entity-descriptor><reference-descriptor>          
+        <resource-description>              
+        <res-ref-name>jdbc/CMSPool</res-ref-name>              
+        <jndi-name>CMSPool</jndi-name>          
+        </resource-description>      
+        </reference-descriptor>
+        <jndi-name>EBInterestRateStagingHome</jndi-name>
+        <local-jndi-name>EBInterestRateStagingLocalHome</local-jndi-name>
+    </weblogic-enterprise-bean>
+
+</weblogic-ejb-jar>

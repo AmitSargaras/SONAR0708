@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+	<bean id="FileUploadTrx.MakerCreateFileUploadOperation"	class="com.integrosys.cms.app.fileUpload.trx.MakerCreateFileUploadOperation">
+		 <property name="fileUploadBusManager" ref="fileUploadBusManager"/>
+        <property name="stagingfileUploadBusManager" ref="stagingfileUploadBusManager"/>
+	</bean>
+	
+	<bean id="FileUploadTrx.CheckerApproveCreateFileUploadOperation"	class="com.integrosys.cms.app.fileUpload.trx.CheckerApproveCreateFileUploadOperation">
+		 <property name="fileUploadBusManager" ref="fileUploadBusManager"/>
+        <property name="stagingfileUploadBusManager" ref="stagingfileUploadBusManager"/>
+	</bean>
+	
+	<bean id="FileUploadTrx.CheckerRejectFileUploadOperation"	class="com.integrosys.cms.app.fileUpload.trx.CheckerRejectFileUploadOperation">
+		 <property name="fileUploadBusManager" ref="fileUploadBusManager"/>
+        <property name="stagingfileUploadBusManager" ref="stagingfileUploadBusManager"/>
+	</bean>
+	
+	
+	<bean id="FileUploadTrx.ReadFileUploadIDOperation"	class="com.integrosys.cms.app.fileUpload.trx.ReadFileUploadIDOperation">
+		 <property name="fileUploadBusManager" ref="fileUploadBusManager"/>
+        <property name="stagingfileUploadBusManager" ref="stagingfileUploadBusManager"/>
+	</bean>
+	
+	<bean id="FileUploadTrx.MakerCloseRejectedCreateFileUploadOperation"	class="com.integrosys.cms.app.fileUpload.trx.MakerCloseRejectedCreateFileUploadOperation">
+		 <property name="fileUploadBusManager" ref="fileUploadBusManager"/>
+        <property name="stagingfileUploadBusManager" ref="stagingfileUploadBusManager"/>
+	</bean>
+			
+			
+			
+			
+	<bean id="fileUploadReadController" class="com.integrosys.cms.app.fileUpload.trx.FileUploadReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <!--<entry key="ReadComponentOperation" value-ref="ComponentTrx.ReadComponentOperation"/>
+                 --><entry key="ReadFileUploadIDOperation" value-ref="FileUploadTrx.ReadFileUploadIDOperation"/>
+                               
+                
+            </map>
+        </property>
+    </bean>
+			
+			
+	 <bean id="fileUploadTrxController" class="com.integrosys.cms.app.fileUpload.trx.FileUploadTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            <entry key="MakerCreateFileUploadOperation" value-ref="FileUploadTrx.MakerCreateFileUploadOperation"/>
+             <entry key="CheckerApproveCreateFileUploadOperation" value-ref="FileUploadTrx.CheckerApproveCreateFileUploadOperation"/>
+             <entry key="CheckerRejectFileUploadOperation" value-ref="FileUploadTrx.CheckerRejectFileUploadOperation"/>
+             <entry key="MakerCloseRejectedCreateFileUploadOperation" value-ref="FileUploadTrx.MakerCloseRejectedCreateFileUploadOperation"/>
+            
+             </map>
+         </property>
+     </bean>		
+			
+			
+	<bean id="fileUploadTrxControllerFactory" class="com.integrosys.cms.app.fileUpload.trx.FileUploadTrxControllerFactory">
+       
+        <property name="fileUploadTrxController" ref="fileUploadTrxController"/>
+        <property name="fileUploadReadController" ref="fileUploadReadController"/>
+       
+    </bean>
+			
+	
+</beans>

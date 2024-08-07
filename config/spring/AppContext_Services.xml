@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+
+   	<bean id="propertyPlaceHolderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+   		<property name="locations">
+   			<list>
+   				<value>classpath:ofa_env.properties</value>
+   				<value>classpath:ofa.properties</value>
+   				<value>classpath:batch.properties</value>
+   				<value>classpath:eai.properties</value>
+   				<value>classpath:documentation.properties</value>
+                <value>classpath:stp.properties</value>
+                <value>classpath:mq.properties</value>
+                <value>classpath:trade.properties</value>
+   			</list>
+   		</property>
+   	</bean>
+
+   	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="resourceLoaderPath" value="classpath:,file:${integrosys.notification.template.path}"/>
+		<property name="preferFileSystemAccess" value="false" />
+ 		<property name="velocityProperties">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="input.encoding" value="UTF-8" />
+				<entry key="output.encoding" value="UTF-8" />
+				<entry key="string.resource.loader.class" value="org.apache.velocity.runtime.resource.loader.StringResourceLoader" />
+			</map>
+        </property>
+	</bean>
+<!-- For DB2 -->
+   	<!--<bean id="paginationUtil" class="com.integrosys.cms.app.common.bus.PaginationUtilDB2" />-->
+   	<!-- For Oracle -->
+   	<bean id="paginationUtil" class="com.integrosys.cms.app.common.bus.PaginationUtilOracle" />
+
+</beans>

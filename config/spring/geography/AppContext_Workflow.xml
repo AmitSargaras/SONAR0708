@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+   <!--    Country Beans Start	By Sandeep Shinde	-->
+       
+ 	<bean id="countryTrxController" class="com.integrosys.cms.app.geography.country.trx.CountryTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateCountryOperation" value-ref="MakerCreateCountryOperation"/>	
+				  <entry key="MakerUpdateCountryOperation" value-ref="MakerUpdateCountryOperation"/>
+				  <entry key="MakerDeleteCountryOperation" value-ref="MakerDeleteCountryOperation"/>
+				  
+            	  <entry key="MakerEditRejectedCreateCountryOperation" value-ref="MakerEditRejectedCreateCountryOperation"/>
+            	  <entry key="MakerEditRejectedUpdateCountryOperation" value-ref="MakerEditRejectedUpdateCountryOperation"/>
+            	  <entry key="MakerEditRejectedDeleteCountryOperation" value-ref="MakerEditRejectedDeleteCountryOperation"/>
+            	  <entry key="MakerCloseRejectedCreateCountryOperation" value-ref="MakerCloseRejectedCreateCountryOperation"/>
+                  <entry key="MakerCloseRejectedUpdateCountryOperation" value-ref="MakerCloseRejectedUpdateCountryOperation"/>
+                  <entry key="MakerCloseRejectedDeleteCountryOperation" value-ref="MakerCloseRejectedDeleteCountryOperation"/>
+				  <entry key="MakerCloseRejectedInActivateCountryOperation" value-ref="MakerCloseRejectedInActivateCountryOperation"/>
+				  <entry key="MakerEditRejectedInActivateCountryOperation" value-ref="MakerEditRejectedInActivateCountryOperation"/>
+
+                  <entry key="CheckerApproveUpdateCountryOperation" value-ref="CheckerApproveUpdateCountryOperation"/>
+                  <entry key="CheckerApproveCreateCountryOperation" value-ref="CheckerApproveCreateCountryOperation"/>
+                  <entry key="CheckerRejectCountryOperation" value-ref="CheckerRejectCountryOperation"/>
+                  <entry key="CheckerApproveDeleteCountryOperation" value-ref="CheckerApproveDeleteCountryOperation"/>
+				  <entry key="MakerActivateDeletedCountryOperation" value-ref="MakerActivateDeletedCountryOperation"/>
+				  <entry key="CheckerApproveActivateCountryOperation" value-ref="CheckerApproveActivateCountryOperation"/>
+				                    
+                  <entry key="MakerSaveCreateCountryOperation" value-ref="MakerSaveCreateCountryOperation"/>
+                  <entry key="MakerSaveUpdateCountryOperation" value-ref="MakerSaveUpdateCountryOperation"/>
+                  <entry key="MakerSaveUpdateCountryOperation" value-ref="MakerSaveUpdateCountryOperation"/>
+                  <entry key="MakerCreateSavedCountryOperation" value-ref="MakerCreateSavedCountryOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    <!-- Mapping added for File Upload -->
+    
+    <bean id="MakerCountryInsertFileOperation"
+		class="com.integrosys.cms.app.geography.country.trx.MakerCountryInsertFileOperation">
+		 <property name="countryFileMapperIdBusManager" ref="countryFileMapperIdBusManager"/>
+        <property name="stagingCountryFileMapperIdBusManager" ref="stagingCountryFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerApproveInsertCountryMasterOperation"
+		class="com.integrosys.cms.app.geography.country.trx.CheckerApproveInsertMasterOperation">
+		 <property name="countryFileMapperIdBusManager" ref="countryFileMapperIdBusManager"/>
+        <property name="stagingCountryFileMapperIdBusManager" ref="stagingCountryFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerRejectInsertCountryMasterOperation"
+		class="com.integrosys.cms.app.geography.country.trx.CheckerRejectInsertMasterOperation">
+		 <property name="countryFileMapperIdBusManager" ref="countryFileMapperIdBusManager"/>
+        <property name="stagingCountryFileMapperIdBusManager" ref="stagingCountryFileMapperIdBusManager"/>
+	</bean>
+	<bean id="FileInsertCountryReadOperation"
+		class="com.integrosys.cms.app.geography.country.trx.FileInsertReadOperation">
+		<property name="countryFileMapperIdBusManager" ref="countryFileMapperIdBusManager"/>
+        <property name="stagingCountryFileMapperIdBusManager" ref="stagingCountryFileMapperIdBusManager"/>
+	</bean>
+	<bean id="MakerCloseRejectedInsertCountryMasterOperation"
+		class="com.integrosys.cms.app.geography.country.trx.MakerCloseRejectedInsertMasterOperation">
+		 <property name="countryFileMapperIdBusManager" ref="countryFileMapperIdBusManager"/>
+        <property name="stagingCountryFileMapperIdBusManager" ref="stagingCountryFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerCreateCountryOperation"
+		class="com.integrosys.cms.app.geography.country.trx.CheckerCreateCountryOperation">
+		<property name="countryFileMapperIdBusManager" ref="countryFileMapperIdBusManager"/>
+        <property name="stagingCountryFileMapperIdBusManager" ref="stagingCountryFileMapperIdBusManager"/>
+	</bean>
+    
+    <bean id="countryInsertFileTrxController" class="com.integrosys.cms.app.geography.country.trx.InsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>        	 
+                  <entry key="MakerCountryInsertFileOperation" value-ref="MakerCountryInsertFileOperation" />
+                  <entry key="CheckerApproveInsertCountryMasterOperation" value-ref="CheckerApproveInsertCountryMasterOperation" />
+                  <entry key="CheckerRejectInsertCountryMasterOperation" value-ref="CheckerRejectInsertCountryMasterOperation" />
+                  <entry key="MakerCloseRejectedInsertCountryMasterOperation" value-ref="MakerCloseRejectedInsertCountryMasterOperation"/>
+                   <entry key="CheckerCreateCountryOperation" value-ref="CheckerCreateCountryOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    <bean id="readCountryInsertFileTrxController" class="com.integrosys.cms.app.geography.country.trx.ReadInsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="FileInsertCountryReadOperation" value-ref="FileInsertCountryReadOperation"/>                   
+            </map>
+        </property>
+    </bean>
+    
+     <bean id="countryTrxControllerFactory" class="com.integrosys.cms.app.geography.country.trx.CountryTrxControllerFactory">
+        <property name="countryReadController" ref="countryReadController"/>
+        <property name="countryTrxController" ref="countryTrxController"/>
+        <property name="countryInsertFileTrxController" ref="countryInsertFileTrxController" />
+        <property name="readCountryInsertFileTrxController" ref="readCountryInsertFileTrxController" />
+    </bean>
+                
+    <bean id="countryReadController" class="com.integrosys.cms.app.geography.country.trx.CountryReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadCountryOperation" value-ref="ReadCountryOperation"/>
+                 <entry key="ReadCountryIDOperation" value-ref="ReadCountryIDOperation"/>
+            </map>
+        </property>
+    </bean>
+  
+    <bean id="ReadCountryOperation" class="com.integrosys.cms.app.geography.country.trx.ReadCountryOperation">
+        <property name="countryBusManager" ref="countryBusManager"/>
+        <property name="stagingCountryBusManager" ref="stagingCountryBusManager"/>
+    </bean>
+    
+    <bean id="ReadCountryIDOperation" class="com.integrosys.cms.app.geography.country.trx.ReadCountryIDOperation">
+        <property name="countryBusManager" ref="countryBusManager"/>
+        <property name="stagingCountryBusManager" ref="stagingCountryBusManager"/>
+    </bean>
+
+    
+    <bean id="MakerCreateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerCreateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveCreateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.CheckerApproveCreateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectCountryOperation" class="com.integrosys.cms.app.geography.country.trx.CheckerRejectCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="MakerUpdateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerUpdateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+			
+	<bean id="MakerDeleteCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerDeleteCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+		
+	<bean id="MakerEditRejectedCreateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerEditRejectedCreateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedUpdateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerEditRejectedUpdateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedDeleteCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerEditRejectedDeleteCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedCreateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerCloseRejectedCreateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedUpdateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerCloseRejectedUpdateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveUpdateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.CheckerApproveUpdateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectUpdateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.CheckerRejectUpdateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedDeleteCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerCloseRejectedDeleteCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedInActivateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerCloseRejectedInActivateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>	
+
+	<bean id="MakerEditRejectedInActivateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerEditRejectedInActivateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>	
+		
+	<bean id="MakerActivateDeletedCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerActivateDeletedCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>	
+	
+	<bean id="CheckerApproveActivateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.CheckerApproveActivateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveDeleteCountryOperation" class="com.integrosys.cms.app.geography.country.trx.CheckerApproveDeleteCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>		
+	
+	<bean id="MakerSaveCreateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerSaveCreateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>	
+	
+	<bean id="MakerSaveUpdateCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerSaveUpdateCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	
+	<bean id="MakerCreateSavedCountryOperation" class="com.integrosys.cms.app.geography.country.trx.MakerCreateSavedCountryOperation">
+		<property name="countryBusManager" ref="countryBusManager" />
+		<property name="stagingCountryBusManager" ref="stagingCountryBusManager" />
+	</bean>
+	<!--    Country Beans End	-->
+	
+	<!--    Region Beans Start	By Sandeep Shinde on 14-04-2011	-->
+	
+	<bean id="regionTrxController" class="com.integrosys.cms.app.geography.region.trx.RegionTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateRegionOperation" value-ref="MakerCreateRegionOperation"/>	
+				  <entry key="MakerUpdateRegionOperation" value-ref="MakerUpdateRegionOperation"/>
+				  <entry key="MakerDeleteRegionOperation" value-ref="MakerDeleteRegionOperation"/>
+				  
+            	  <entry key="MakerEditRejectedCreateRegionOperation" value-ref="MakerEditRejectedCreateRegionOperation"/>
+            	  <entry key="MakerEditRejectedUpdateRegionOperation" value-ref="MakerEditRejectedUpdateRegionOperation"/>
+            	  <entry key="MakerEditRejectedDeleteRegionOperation" value-ref="MakerEditRejectedDeleteRegionOperation"/>
+            	  <entry key="MakerCloseRejectedCreateRegionOperation" value-ref="MakerCloseRejectedCreateRegionOperation"/>
+                  <entry key="MakerCloseRejectedUpdateRegionOperation" value-ref="MakerCloseRejectedUpdateRegionOperation"/>
+                  <entry key="MakerCloseRejectedDeleteRegionOperation" value-ref="MakerCloseRejectedDeleteRegionOperation"/>
+                  <entry key="MakerCloseRejectedInActivateRegionOperation" value-ref="MakerCloseRejectedInActivateRegionOperation"/>
+                  <entry key="MakerEditRejectedInActivateRegionOperation" value-ref="MakerEditRejectedInActivateRegionOperation"/>
+
+                  <entry key="CheckerApproveUpdateRegionOperation" value-ref="CheckerApproveUpdateRegionOperation"/>
+                  <entry key="CheckerApproveCreateRegionOperation" value-ref="CheckerApproveCreateRegionOperation"/>
+                  <entry key="CheckerRejectRegionOperation" value-ref="CheckerRejectRegionOperation"/>
+                  <entry key="CheckerApproveDeleteRegionOperation" value-ref="CheckerApproveDeleteRegionOperation"/>                  
+                  <entry key="MakerActivateDeletedRegionOperation" value-ref="MakerActivateDeletedRegionOperation"/>
+                  <entry key="CheckerApproveActivateRegionOperation" value-ref="CheckerApproveActivateRegionOperation"/>
+                  
+                  <entry key="MakerSaveCreateRegionOperation" value-ref="MakerSaveCreateRegionOperation"/>
+                  <entry key="MakerSaveUpdateRegionOperation" value-ref="MakerSaveUpdateRegionOperation"/>
+                  <entry key="MakerCreateSavedRegionOperation" value-ref="MakerCreateSavedRegionOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    
+    <!-- Mapping added for File Upload -->
+    
+    <bean id="MakerRegionInsertFileOperation"
+		class="com.integrosys.cms.app.geography.region.trx.MakerRegionInsertFileOperation">
+		 <property name="regionFileMapperIdBusManager" ref="regionFileMapperIdBusManager"/>
+        <property name="stagingRegionFileMapperIdBusManager" ref="stagingRegionFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerApproveInsertMasterRegionOperation"
+		class="com.integrosys.cms.app.geography.region.trx.CheckerApproveInsertMasterOperation">
+		 <property name="regionFileMapperIdBusManager" ref="regionFileMapperIdBusManager"/>
+        <property name="stagingRegionFileMapperIdBusManager" ref="stagingRegionFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerRejectInsertMasterRegionOperation"
+		class="com.integrosys.cms.app.geography.region.trx.CheckerRejectInsertMasterOperation">
+		 <property name="regionFileMapperIdBusManager" ref="regionFileMapperIdBusManager"/>
+        <property name="stagingRegionFileMapperIdBusManager" ref="stagingRegionFileMapperIdBusManager"/>
+	</bean>
+	<bean id="FileInsertReadRegionOperation"
+		class="com.integrosys.cms.app.geography.region.trx.FileInsertReadOperation">
+		<property name="regionFileMapperIdBusManager" ref="regionFileMapperIdBusManager"/>
+        <property name="stagingRegionFileMapperIdBusManager" ref="stagingRegionFileMapperIdBusManager"/>
+	</bean>
+	<bean id="MakerCloseRejectedInsertMasterRegionOperation"
+		class="com.integrosys.cms.app.geography.region.trx.MakerCloseRejectedInsertMasterOperation">
+		 <property name="regionFileMapperIdBusManager" ref="regionFileMapperIdBusManager"/>
+        <property name="stagingRegionFileMapperIdBusManager" ref="stagingRegionFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerCreateRegionOperation"
+		class="com.integrosys.cms.app.geography.region.trx.CheckerCreateRegionOperation">
+		<property name="regionFileMapperIdBusManager" ref="regionFileMapperIdBusManager"/>
+        <property name="stagingRegionFileMapperIdBusManager" ref="stagingRegionFileMapperIdBusManager"/>
+	</bean>
+    
+    <bean id="regionInsertFileTrxController" class="com.integrosys.cms.app.geography.region.trx.InsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>        	 
+                  <entry key="MakerRegionInsertFileOperation" value-ref="MakerRegionInsertFileOperation" />
+                  <entry key="CheckerApproveInsertMasterRegionOperation" value-ref="CheckerApproveInsertMasterRegionOperation" />
+                  <entry key="CheckerRejectInsertMasterRegionOperation" value-ref="CheckerRejectInsertMasterRegionOperation" />
+                  <entry key="MakerCloseRejectedInsertMasterRegionOperation" value-ref="MakerCloseRejectedInsertMasterRegionOperation"/>
+                   <entry key="CheckerCreateRegionOperation" value-ref="CheckerCreateRegionOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    <bean id="readRegionInsertFileTrxController" class="com.integrosys.cms.app.geography.region.trx.ReadInsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="FileInsertReadRegionOperation" value-ref="FileInsertReadRegionOperation"/>                   
+            </map>
+        </property>
+    </bean>
+    
+    
+     <bean id="regionTrxControllerFactory" class="com.integrosys.cms.app.geography.region.trx.RegionTrxControllerFactory">
+        <property name="regionReadController" ref="regionReadController"/>
+        <property name="regionTrxController" ref="regionTrxController"/>
+        <property name="regionInsertFileTrxController" ref="regionInsertFileTrxController"/>
+        <property name="readRegionInsertFileTrxController" ref="readRegionInsertFileTrxController"/>
+    </bean>
+                 
+    <bean id="regionReadController" class="com.integrosys.cms.app.geography.region.trx.RegionReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadRegionOperation" value-ref="ReadRegionOperation"/>
+                 <entry key="ReadRegionIDOperation" value-ref="ReadRegionIDOperation"/>
+            </map>
+        </property>
+    </bean>
+  
+    <bean id="ReadRegionOperation" class="com.integrosys.cms.app.geography.region.trx.ReadRegionOperation">
+        <property name="regionBusManager" ref="regionBusManager"/>
+        <property name="stagingRegionBusManager" ref="stagingRegionBusManager"/>
+    </bean>
+    
+    <bean id="ReadRegionIDOperation" class="com.integrosys.cms.app.geography.region.trx.ReadRegionIDOperation">
+        <property name="regionBusManager" ref="regionBusManager"/>
+        <property name="stagingRegionBusManager" ref="stagingRegionBusManager"/>
+    </bean>
+
+    
+    <bean id="MakerCreateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerCreateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveCreateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.CheckerApproveCreateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectRegionOperation" class="com.integrosys.cms.app.geography.region.trx.CheckerRejectRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerUpdateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerUpdateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+			
+	<bean id="MakerDeleteRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerDeleteRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+		
+	<bean id="MakerEditRejectedCreateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerEditRejectedCreateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedUpdateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerEditRejectedUpdateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedDeleteRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerEditRejectedDeleteRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedCreateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerCloseRejectedCreateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedUpdateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerCloseRejectedUpdateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveUpdateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.CheckerApproveUpdateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectUpdateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.CheckerRejectUpdateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedDeleteRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerCloseRejectedDeleteRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>	
+		
+	<bean id="MakerCloseRejectedInActivateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerCloseRejectedInActivateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedInActivateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerEditRejectedInActivateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>	
+	
+	<bean id="CheckerApproveDeleteRegionOperation" class="com.integrosys.cms.app.geography.region.trx.CheckerApproveDeleteRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>		
+	
+	<bean id="MakerActivateDeletedRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerActivateDeletedRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveActivateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.CheckerApproveActivateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerSaveCreateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerSaveCreateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>	
+	
+	<bean id="MakerSaveUpdateRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerSaveUpdateRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	
+	<bean id="MakerCreateSavedRegionOperation" class="com.integrosys.cms.app.geography.region.trx.MakerCreateSavedRegionOperation">
+		<property name="regionBusManager" ref="regionBusManager" />
+		<property name="stagingRegionBusManager" ref="stagingRegionBusManager" />
+	</bean>
+	<!--    Region Beans End	-->
+	
+	<!--    State Beans Start	By Sandeep Shinde on 14-04-2011	-->
+	
+	<bean id="stateTrxController" class="com.integrosys.cms.app.geography.state.trx.StateTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateStateOperation" value-ref="MakerCreateStateOperation"/>	
+				  <entry key="MakerUpdateStateOperation" value-ref="MakerUpdateStateOperation"/>
+				  <entry key="MakerDeleteStateOperation" value-ref="MakerDeleteStateOperation"/>
+				  
+            	  <entry key="MakerEditRejectedCreateStateOperation" value-ref="MakerEditRejectedCreateStateOperation"/>
+            	  <entry key="MakerEditRejectedUpdateStateOperation" value-ref="MakerEditRejectedUpdateStateOperation"/>
+            	  <entry key="MakerEditRejectedDeleteStateOperation" value-ref="MakerEditRejectedDeleteStateOperation"/>
+            	  <entry key="MakerCloseRejectedCreateStateOperation" value-ref="MakerCloseRejectedCreateStateOperation"/>
+                  <entry key="MakerCloseRejectedUpdateStateOperation" value-ref="MakerCloseRejectedUpdateStateOperation"/>
+                  <entry key="MakerCloseRejectedDeleteStateOperation" value-ref="MakerCloseRejectedDeleteStateOperation"/>
+                  <entry key="MakerCloseRejectedInActivateStateOperation" value-ref="MakerCloseRejectedInActivateStateOperation"/>
+                  <entry key="MakerEditRejectedInActivateStateOperation" value-ref="MakerEditRejectedInActivateStateOperation"/>
+                  
+
+                  <entry key="CheckerApproveUpdateStateOperation" value-ref="CheckerApproveUpdateStateOperation"/>
+                  <entry key="CheckerApproveCreateStateOperation" value-ref="CheckerApproveCreateStateOperation"/>
+                  <entry key="CheckerRejectStateOperation" value-ref="CheckerRejectStateOperation"/>
+                  <entry key="CheckerApproveDeleteStateOperation" value-ref="CheckerApproveDeleteStateOperation"/>                  
+                  <entry key="MakerActivateDeletedStateOperation" value-ref="MakerActivateDeletedStateOperation"/>
+                  <entry key="CheckerApproveActivateStateOperation" value-ref="CheckerApproveActivateStateOperation"/>
+                  
+                  <entry key="MakerSaveCreateStateOperation" value-ref="MakerSaveCreateStateOperation"/>
+                  <entry key="MakerSaveUpdateStateOperation" value-ref="MakerSaveUpdateStateOperation"/>
+                  <entry key="MakerCreateSavedStateOperation" value-ref="MakerCreateSavedStateOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+     <bean id="stateTrxControllerFactory" class="com.integrosys.cms.app.geography.state.trx.StateTrxControllerFactory">
+        <property name="stateReadController" ref="stateReadController"/>
+        <property name="stateTrxController" ref="stateTrxController"/>
+        <property name="stateInsertFileTrxController" ref="stateInsertFileTrxController"/>
+        <property name="readStateInsertFileTrxController" ref="readStateInsertFileTrxController"/>
+    </bean>
+                 
+    <bean id="stateReadController" class="com.integrosys.cms.app.geography.state.trx.StateReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadStateOperation" value-ref="ReadStateOperation"/>
+                 <entry key="ReadStateIDOperation" value-ref="ReadStateIDOperation"/>
+            </map>
+        </property>
+    </bean>
+  
+    <bean id="ReadStateOperation" class="com.integrosys.cms.app.geography.state.trx.ReadStateOperation">
+        <property name="stateBusManager" ref="stateBusManager"/>
+        <property name="stagingStateBusManager" ref="stagingStateBusManager"/>
+    </bean>
+    
+    <bean id="ReadStateIDOperation" class="com.integrosys.cms.app.geography.state.trx.ReadStateIDOperation">
+        <property name="stateBusManager" ref="stateBusManager"/>
+        <property name="stagingStateBusManager" ref="stagingStateBusManager"/>
+    </bean>
+
+    
+    <bean id="MakerCreateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerCreateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveCreateStateOperation" class="com.integrosys.cms.app.geography.state.trx.CheckerApproveCreateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectStateOperation" class="com.integrosys.cms.app.geography.state.trx.CheckerRejectStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerUpdateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerUpdateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+			
+	<bean id="MakerDeleteStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerDeleteStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+		
+	<bean id="MakerEditRejectedCreateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerEditRejectedCreateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedUpdateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerEditRejectedUpdateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedDeleteStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerEditRejectedDeleteStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedCreateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerCloseRejectedCreateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedUpdateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerCloseRejectedUpdateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveUpdateStateOperation" class="com.integrosys.cms.app.geography.state.trx.CheckerApproveUpdateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectUpdateStateOperation" class="com.integrosys.cms.app.geography.state.trx.CheckerRejectUpdateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedDeleteStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerCloseRejectedDeleteStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>	
+	
+	
+	<bean id="MakerCloseRejectedInActivateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerCloseRejectedInActivateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedInActivateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerEditRejectedInActivateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveDeleteStateOperation" class="com.integrosys.cms.app.geography.state.trx.CheckerApproveDeleteStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>		
+	
+	<bean id="MakerActivateDeletedStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerActivateDeletedStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>			
+	
+	<bean id="CheckerApproveActivateStateOperation" class="com.integrosys.cms.app.geography.state.trx.CheckerApproveActivateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerSaveCreateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerSaveCreateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>	
+	
+	<bean id="MakerSaveUpdateStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerSaveUpdateStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	<bean id="MakerCreateSavedStateOperation" class="com.integrosys.cms.app.geography.state.trx.MakerCreateSavedStateOperation">
+		<property name="stateBusManager" ref="stateBusManager" />
+		<property name="stagingStateBusManager" ref="stagingStateBusManager" />
+	</bean>
+	
+	
+	<!-- Mapping added for File Upload -->
+    
+    <bean id="MakerStateInsertFileOperation"
+		class="com.integrosys.cms.app.geography.state.trx.MakerStateInsertFileOperation">
+		 <property name="stateFileMapperIdBusManager" ref="stateFileMapperIdBusManager"/>
+        <property name="stagingStateFileMapperIdBusManager" ref="stagingStateFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerApproveInsertMasterStateOperation"
+		class="com.integrosys.cms.app.geography.state.trx.CheckerApproveInsertMasterOperation">
+		 <property name="stateFileMapperIdBusManager" ref="stateFileMapperIdBusManager"/>
+        <property name="stagingStateFileMapperIdBusManager" ref="stagingStateFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerRejectInsertMasterStateOperation"
+		class="com.integrosys.cms.app.geography.state.trx.CheckerRejectInsertMasterOperation">
+		 <property name="stateFileMapperIdBusManager" ref="stateFileMapperIdBusManager"/>
+        <property name="stagingStateFileMapperIdBusManager" ref="stagingStateFileMapperIdBusManager"/>
+	</bean>
+	<bean id="FileInsertReadStateOperation"
+		class="com.integrosys.cms.app.geography.state.trx.FileInsertReadOperation">
+		<property name="stateFileMapperIdBusManager" ref="stateFileMapperIdBusManager"/>
+        <property name="stagingStateFileMapperIdBusManager" ref="stagingStateFileMapperIdBusManager"/>
+	</bean>
+	<bean id="MakerCloseRejectedInsertMasterStateOperation"
+		class="com.integrosys.cms.app.geography.state.trx.MakerCloseRejectedInsertMasterOperation">
+		 <property name="stateFileMapperIdBusManager" ref="stateFileMapperIdBusManager"/>
+        <property name="stagingStateFileMapperIdBusManager" ref="stagingStateFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerCreateStateOperation"
+		class="com.integrosys.cms.app.geography.state.trx.CheckerCreateStateOperation">
+		<property name="stateFileMapperIdBusManager" ref="stateFileMapperIdBusManager"/>
+        <property name="stagingStateFileMapperIdBusManager" ref="stagingStateFileMapperIdBusManager"/>
+	</bean>
+    
+    <bean id="stateInsertFileTrxController" class="com.integrosys.cms.app.geography.state.trx.InsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>        	 
+                  <entry key="MakerStateInsertFileOperation" value-ref="MakerStateInsertFileOperation" />
+                  <entry key="CheckerApproveInsertMasterStateOperation" value-ref="CheckerApproveInsertMasterStateOperation" />
+                  <entry key="CheckerRejectInsertMasterStateOperation" value-ref="CheckerRejectInsertMasterStateOperation" />
+                  <entry key="MakerCloseRejectedInsertMasterStateOperation" value-ref="MakerCloseRejectedInsertMasterStateOperation"/>
+                   <entry key="CheckerCreateStateOperation" value-ref="CheckerCreateStateOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    <bean id="readStateInsertFileTrxController" class="com.integrosys.cms.app.geography.state.trx.ReadInsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="FileInsertReadStateOperation" value-ref="FileInsertReadStateOperation"/>                   
+            </map>
+        </property>
+    </bean>
+	
+	<!--    State Beans End	-->		
+	
+	<!--    City Beans Start	By Sandeep Shinde on 14-04-2011	-->
+	
+	<bean id="cityTrxController" class="com.integrosys.cms.app.geography.city.trx.CityTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateCityOperation" value-ref="MakerCreateCityOperation"/>	
+				  <entry key="MakerUpdateCityOperation" value-ref="MakerUpdateCityOperation"/>
+				  <entry key="MakerDeleteCityOperation" value-ref="MakerDeleteCityOperation"/>
+				  
+            	  <entry key="MakerEditRejectedCreateCityOperation" value-ref="MakerEditRejectedCreateCityOperation"/>
+            	  <entry key="MakerEditRejectedUpdateCityOperation" value-ref="MakerEditRejectedUpdateCityOperation"/>
+            	  <entry key="MakerEditRejectedDeleteCityOperation" value-ref="MakerEditRejectedDeleteCityOperation"/>
+            	  <entry key="MakerCloseRejectedCreateCityOperation" value-ref="MakerCloseRejectedCreateCityOperation"/>
+                  <entry key="MakerCloseRejectedUpdateCityOperation" value-ref="MakerCloseRejectedUpdateCityOperation"/>
+                  <entry key="MakerCloseRejectedDeleteCityOperation" value-ref="MakerCloseRejectedDeleteCityOperation"/>
+                  <entry key="MakerCloseRejectedInActivateCityOperation" value-ref="MakerCloseRejectedInActivateCityOperation"/>
+                  <entry key="MakerEditRejectedInActivateCityOperation" value-ref="MakerEditRejectedInActivateCityOperation"/>
+
+                  <entry key="CheckerApproveUpdateCityOperation" value-ref="CheckerApproveUpdateCityOperation"/>
+                  <entry key="CheckerApproveCreateCityOperation" value-ref="CheckerApproveCreateCityOperation"/>
+                  <entry key="CheckerRejectCityOperation" value-ref="CheckerRejectCityOperation"/>
+                  <entry key="CheckerApproveDeleteCityOperation" value-ref="CheckerApproveDeleteCityOperation"/>
+                  <entry key="MakerActivateDeletedCityOperation" value-ref="MakerActivateDeletedCityOperation"/>
+                  <entry key="CheckerApproveActivateCityOperation" value-ref="CheckerApproveActivateCityOperation"/>
+                  
+                  <entry key="MakerSaveCreateCityOperation" value-ref="MakerSaveCreateCityOperation"/>
+                  <entry key="MakerSaveUpdateCityOperation" value-ref="MakerSaveUpdateCityOperation"/>
+                  <entry key="MakerCreateSavedCityOperation" value-ref="MakerCreateSavedCityOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+     <bean id="cityTrxControllerFactory" class="com.integrosys.cms.app.geography.city.trx.CityTrxControllerFactory">
+        <property name="cityReadController" ref="cityReadController"/>
+        <property name="cityTrxController" ref="cityTrxController"/>
+        <property name="cityInsertFileTrxController" ref="cityInsertFileTrxController"/>
+        <property name="readCityInsertFileTrxController" ref="readCityInsertFileTrxController"/>
+    </bean>
+                 
+    <bean id="cityReadController" class="com.integrosys.cms.app.geography.city.trx.CityReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadCityOperation" value-ref="ReadCityOperation"/>
+                 <entry key="ReadCityIDOperation" value-ref="ReadCityIDOperation"/>
+            </map>
+        </property>
+    </bean>
+  
+    <bean id="ReadCityOperation" class="com.integrosys.cms.app.geography.city.trx.ReadCityOperation">
+        <property name="cityBusManager" ref="cityBusManager"/>
+        <property name="stagingCityBusManager" ref="stagingCityBusManager"/>
+    </bean>
+    
+    <bean id="ReadCityIDOperation" class="com.integrosys.cms.app.geography.city.trx.ReadCityIDOperation">
+        <property name="cityBusManager" ref="cityBusManager"/>
+        <property name="stagingCityBusManager" ref="stagingCityBusManager"/>
+    </bean>
+
+    
+    <bean id="MakerCreateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerCreateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveCreateCityOperation" class="com.integrosys.cms.app.geography.city.trx.CheckerApproveCreateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectCityOperation" class="com.integrosys.cms.app.geography.city.trx.CheckerRejectCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerUpdateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerUpdateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+			
+	<bean id="MakerDeleteCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerDeleteCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+		
+	<bean id="MakerEditRejectedCreateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerEditRejectedCreateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedUpdateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerEditRejectedUpdateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedDeleteCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerEditRejectedDeleteCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedCreateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerCloseRejectedCreateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedUpdateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerCloseRejectedUpdateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveUpdateCityOperation" class="com.integrosys.cms.app.geography.city.trx.CheckerApproveUpdateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectUpdateCityOperation" class="com.integrosys.cms.app.geography.city.trx.CheckerRejectUpdateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedDeleteCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerCloseRejectedDeleteCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>	
+	
+	<bean id="MakerCloseRejectedInActivateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerCloseRejectedInActivateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedInActivateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerEditRejectedInActivateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveDeleteCityOperation" class="com.integrosys.cms.app.geography.city.trx.CheckerApproveDeleteCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerActivateDeletedCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerActivateDeletedCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveActivateCityOperation" class="com.integrosys.cms.app.geography.city.trx.CheckerApproveActivateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	<bean id="MakerSaveCreateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerSaveCreateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>	
+	
+	<bean id="MakerSaveUpdateCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerSaveUpdateCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>		
+	
+	<bean id="MakerCreateSavedCityOperation" class="com.integrosys.cms.app.geography.city.trx.MakerCreateSavedCityOperation">
+		<property name="cityBusManager" ref="cityBusManager" />
+		<property name="stagingCityBusManager" ref="stagingCityBusManager" />
+	</bean>
+	
+	
+	<!-- Mapping added for File Upload -->
+    
+    <bean id="MakerCityInsertFileOperation"
+		class="com.integrosys.cms.app.geography.city.trx.MakerCityInsertFileOperation">
+		 <property name="cityFileMapperIdBusManager" ref="cityFileMapperIdBusManager"/>
+        <property name="stagingCityFileMapperIdBusManager" ref="stagingCityFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerApproveInsertMasterCityOperation"
+		class="com.integrosys.cms.app.geography.city.trx.CheckerApproveInsertMasterOperation">
+		 <property name="cityFileMapperIdBusManager" ref="cityFileMapperIdBusManager"/>
+        <property name="stagingCityFileMapperIdBusManager" ref="stagingCityFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerRejectInsertMasterCityOperation"
+		class="com.integrosys.cms.app.geography.city.trx.CheckerRejectInsertMasterOperation">
+		 <property name="cityFileMapperIdBusManager" ref="cityFileMapperIdBusManager"/>
+        <property name="stagingCityFileMapperIdBusManager" ref="stagingCityFileMapperIdBusManager"/>
+	</bean>
+	<bean id="FileInsertReadCityOperation"
+		class="com.integrosys.cms.app.geography.city.trx.FileInsertReadOperation">
+		<property name="cityFileMapperIdBusManager" ref="cityFileMapperIdBusManager"/>
+        <property name="stagingCityFileMapperIdBusManager" ref="stagingCityFileMapperIdBusManager"/>
+	</bean>
+	<bean id="MakerCloseRejectedInsertMasterCityOperation"
+		class="com.integrosys.cms.app.geography.city.trx.MakerCloseRejectedInsertMasterOperation">
+		 <property name="cityFileMapperIdBusManager" ref="cityFileMapperIdBusManager"/>
+        <property name="stagingCityFileMapperIdBusManager" ref="stagingCityFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerCreateCityOperation"
+		class="com.integrosys.cms.app.geography.city.trx.CheckerCreateCityOperation">
+		<property name="cityFileMapperIdBusManager" ref="cityFileMapperIdBusManager"/>
+        <property name="stagingCityFileMapperIdBusManager" ref="stagingCityFileMapperIdBusManager"/>
+	</bean>
+    
+    <bean id="cityInsertFileTrxController" class="com.integrosys.cms.app.geography.city.trx.InsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>        	 
+                  <entry key="MakerCityInsertFileOperation" value-ref="MakerCityInsertFileOperation" />
+                  <entry key="CheckerApproveInsertMasterCityOperation" value-ref="CheckerApproveInsertMasterCityOperation" />
+                  <entry key="CheckerRejectInsertMasterCityOperation" value-ref="CheckerRejectInsertMasterCityOperation" />
+                  <entry key="MakerCloseRejectedInsertMasterCityOperation" value-ref="MakerCloseRejectedInsertMasterCityOperation"/>
+                   <entry key="CheckerCreateCityOperation" value-ref="CheckerCreateCityOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    <bean id="readCityInsertFileTrxController" class="com.integrosys.cms.app.geography.city.trx.ReadInsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="FileInsertReadCityOperation" value-ref="FileInsertReadCityOperation"/>                   
+            </map>
+        </property>
+    </bean>
+	
+	<!--    City Beans End	-->		
+</beans>

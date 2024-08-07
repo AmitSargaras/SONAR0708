@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="InsKeymanForm" type="com.integrosys.cms.ui.collateral.insprotection.inskeyman.InsKeymanForm">
+        </form-bean>
+
+        <form-bean name="InsCrdtForm" type="com.integrosys.cms.ui.collateral.insprotection.inscrdt.InsCrdtForm">
+        </form-bean>
+
+        <form-bean name="InsCrdtDerivForm" type="com.integrosys.cms.ui.collateral.insprotection.inscrdtderiv.InsCrdtDerivForm">
+        </form-bean>
+
+        <form-bean name="InsSwapForm" type="com.integrosys.cms.ui.collateral.insprotection.insswap.InsSwapForm">
+        </form-bean>
+
+        <form-bean name="CDSItemForm" type="com.integrosys.cms.ui.collateral.insprotection.insswap.cds.CDSItemForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/InsKeymanCollateral" type="com.integrosys.cms.ui.collateral.insprotection.inskeyman.InsKeymanAction" name="InsKeymanForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inskeyman/InsKeyman_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/InsSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/InsSecurityApportionment.do"/>  
+			<forward name="search_pledgor_prepare" path="/InsurancePledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/InsurancePledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/InsurancePledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/InsurancePledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/InsurancePledge.do?event=view"/>     
+            
+            <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+            
+            <forward name="refresh_city_id" path="/collateral/common/refresh_maker_create_city.jsp"/>               
+        </action>
+    
+        <action path="/InsCrdtCollateral" type="com.integrosys.cms.ui.collateral.insprotection.inscrdt.InsCrdtAction" name="InsCrdtForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdt/InsCrdt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/InsSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/InsSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/InsurancePledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/InsurancePledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/InsurancePledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/InsurancePledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/InsurancePledge.do?event=view"/>    
+        </action>
+        
+        <action path="/InsCrdtDerivCollateral" type="com.integrosys.cms.ui.collateral.insprotection.inscrdtderiv.InsCrdtDerivAction" name="InsCrdtDerivForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/inscrdtderiv/InsCrdtDeriv_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/InsSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/InsSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/InsurancePledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/InsurancePledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/InsurancePledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/InsurancePledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/InsurancePledge.do?event=view"/>
+        </action>
+        
+        <action path="/InsSwapCollateral" type="com.integrosys.cms.ui.collateral.insprotection.insswap.InsSwapAction" name="InsSwapForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_CDS" path="/CDSItem.do"/>
+            <forward name="prepare_CDS" path="/CDSItem.do"/>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/InsSwap_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/InsSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/InsSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/InsurancePledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/InsurancePledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/InsurancePledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/InsurancePledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/InsurancePledge.do?event=view"/>
+        </action>
+
+        <action path="/CDSItem" type="com.integrosys.cms.ui.collateral.insprotection.insswap.cds.CDSItemAction"
+        	name="CDSItemForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/cds/cdsItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/cds/cdsItem_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/cds/cdsItem_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/insprotection/insswap/cds/cdsItem_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="update_return" path="/InsSwapCollateral.do?event=update_return"/>
+            <forward name="return_read" path="/InsSwapCollateral.do?event=read_return"/>
+            <forward name="return_process" path="/InsSwapCollateral.do?event=process_return"/>
+            <forward name="return_close" path="/InsSwapCollateral.do?event=close_return"/>
+            <forward name="return_track" path="/InsSwapCollateral.do?event=track_return"/>
+        </action>
+                
+      <action path="/InsSecurityApportionment" type="com.integrosys.cms.ui.collateral.insprotection.SecApportionmentAction"
+      name="SecurityApportionmentDtlForm" scope="request">
+        <forward name="read" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare_update_sub" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="refresh" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="process" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        
+        <forward name="InsKeyman_update" path="/InsKeymanCollateral.do?event=update_return"/>
+        <forward name="InsKeyman_read" path="/InsKeymanCollateral.do?event=read_return"/>
+        <forward name="InsKeyman_process" path="/InsKeymanCollateral.do?event=process_return"/>
+        <forward name="InsKeyman_close" path="/InsKeymanCollateral.do?event=close_return"/>
+        <forward name="InsKeyman_track" path="/InsKeymanCollateral.do?event=track_return"/>
+
+        <forward name="InsCrdt_update" path="/InsCrdtCollateral.do?event=update_return"/>
+        <forward name="InsCrdt_read" path="/InsCrdtCollateral.do?event=read_return"/>
+        <forward name="InsCrdt_process" path="/InsCrdtCollateral.do?event=process_return"/>
+        <forward name="InsCrdt_close" path="/InsCrdtCollateral.do?event=close_return"/>
+        <forward name="InsCrdt_track" path="/InsCrdtCollateral.do?event=track_return"/>
+
+        <forward name="InsCrdtDeriv_update" path="/InsCrdtDerivCollateral.do?event=update_return"/>
+        <forward name="InsCrdtDeriv_read" path="/InsCrdtDerivCollateral.do?event=read_return"/>
+        <forward name="InsCrdtDeriv_process" path="/InsCrdtDerivCollateral.do?event=process_return"/>
+        <forward name="InsCrdtDeriv_close" path="/InsCrdtDerivCollateral.do?event=close_return"/>
+        <forward name="InsCrdtDeriv_track" path="/InsCrdtDerivCollateral.do?event=track_return"/>
+
+        <forward name="InsSwap_update" path="/InsSwapCollateral.do?event=update_return"/>
+        <forward name="InsSwap_read" path="/InsSwapCollateral.do?event=read_return"/>
+        <forward name="InsSwap_process" path="/InsSwapCollateral.do?event=process_return"/>
+        <forward name="InsSwap_close" path="/InsSwapCollateral.do?event=close_return"/>
+        <forward name="InsSwap_track" path="/InsSwapCollateral.do?event=track_return"/>      
+      </action>
+        
+    </action-mappings>
+    
+    <message-resources key="message-col-insurance" parameter="ApplicationResources-col-insurance"/>
+</struts-config>

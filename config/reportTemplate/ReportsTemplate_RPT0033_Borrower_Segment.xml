@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT sub_profile. lsp_le_id AS partyid,
+			  sub_profile.main_branch ,
+			  SUB_PROFILE.BORROWER_DUNS_NO AS DUNSNUMBER,
+			  SUB_PROFILE.LSP_SHORT_NAME   AS PARTY_NAME,
+			  (
+			  CASE
+			    WHEN sub_profile.party_consent='Y'
+			    THEN 'Y'
+			    WHEN sub_profile.party_consent='N'
+			    THEN '0'
+			    ELSE '-'
+			  END)                       AS borrowerOffLocType,
+			  ADDRESS.LRA_ADDR_LINE_1    AS AddressLine1,
+			  ADDRESS.LRA_ADDR_LINE_2    AS AddressLine2,
+			  ADDRESS.LRA_ADDR_LINE_3    AS AddressLine3,
+			  CTY.CITY_NAME              AS CITY,
+			  STATE.STATE_NAME           AS STATE,
+			  ADDRESS.LRA_POST_CODE      AS PINCODE,
+			  address.lra_telephone_text AS telephone,
+			  address.lra_std_code_tel   AS std_code ,
+			  address.lra_telex_text     AS fax,
+			  address.lra_std_code_telex AS std_code_fax ,
+			  SUB_PROFILE.PAN            AS PAN_NUMBER,
+			  (SELECT entry_name
+			  FROM common_code_category_entry
+			  WHERE entry_code=sub_profile.entity and category_code='Entity'
+			  ) AS borrowerlegalconstitution,
+			  sub_profile.class_activity_1,
+			  sub_profile.class_activity_2,
+			  address.lra_email_text, --where lra_addr_type = 'REGISTERED'
+			  (SELECT entry_name
+			  FROM common_code_category_entry
+			  WHERE entry_code=sub_profile.willful_default_status and category_code='WILLFUL_DEFAULT_STATUS'
+			  )                                                       AS will_status,
+			  TO_CHAR(sub_profile.date_willful_default,'DD/MON/YYYY') AS will_date,
+			 (select entry_name from common_code_category_entry where entry_code=sub_profile.suit_filled_status and category_code='SUIT_FILLED_STATUS') as suit_field,
+			  sub_profile.suit_ref_no,
+			  sub_profile.suit_amount,
+			  sub_profile.date_of_suit,
+			  REGION.REGION_NAME AS REGION,
+			  RM.RM_MGR_NAME     AS RMNAME,
+			  --  (SELECT region_name FROM cms_region r WHERE r.id= sub_profile.rm_region
+			  --  )                     AS rmregion,--new
+			  --  rm.rm_mgr_name        AS RMName,
+			  CC_SEGMENT.ENTRY_NAME AS SEGMENTNAME,
+			  (SELECT lsp_short_name
+			  FROM SCI_LE_SUB_PROFILE sp
+			  WHERE sp.cms_le_main_profile_id = subline.cms_le_main_profile_id
+			  ) AS guarantorName,
+			  (SELECT lsp_short_name
+			  FROM SCI_LE_SUB_PROFILE sp
+			  WHERE sp.cms_le_main_profile_id = subline.cms_le_main_profile_id
+			  )                    AS individualName,
+			  DIRECTOR.DIR_NAME    AS Name,
+			  COUNTRY.COUNTRY_NAME AS COUNTRY
+			FROM SCI_LE_SUB_PROFILE SUB_PROFILE,
+			 SCI_LE_SUBLINE SUBLINE,
+			  SCI_LE_SUB_PROFILE PROFILES,
+			  SCI_LE_MAIN_PROFILE MAIN_PROFILE,
+			  (SELECT entry_name,
+                                    entry_code
+                                  FROM common_code_category_entry
+                                  WHERE category_code = 'HDFC_SEGMENT'
+                                  ) CC_SEGMENT ,
+			  SCI_LE_REG_ADDR ADDRESS ,
+			  CMS_RELATIONSHIP_MGR RM ,
+			  CMS_CITY CTY ,
+			  CMS_STATE STATE ,
+			  CMS_COUNTRY COUNTRY ,
+			  CMS_REGION REGION ,
+			  SCI_LE_DIRECTOR DIRECTOR
+			</query>
+			<whereClause>
+			<mandatoryClause>
+					 	SUB_PROFILE.CMS_LE_MAIN_PROFILE_ID = ADDRESS.CMS_LE_MAIN_PROFILE_ID
+						AND SUBLINE.CMS_LE_MAIN_PROFILE_ID(+)    = SUB_PROFILE.CMS_LE_MAIN_PROFILE_ID
+						AND PROFILES.CMS_LE_SUB_PROFILE_ID(+)       = SUBLINE.CMS_LE_SUBLINE_PARTY_ID
+						AND MAIN_PROFILE.LMP_SGMNT_CODE_VALUE    =CC_SEGMENT.ENTRY_CODE
+						AND SUB_PROFILE.CMS_LE_MAIN_PROFILE_ID   = MAIN_PROFILE.CMS_LE_MAIN_PROFILE_ID
+						AND DIRECTOR.CMS_LE_MAIN_PROFILE_ID      = MAIN_PROFILE.CMS_LE_MAIN_PROFILE_ID
+						AND CC_SEGMENT.ENTRY_CODE                = MAIN_PROFILE.LMP_SGMNT_CODE_VALUE
+						AND ADDRESS.LRA_TYPE_VALUE               = 'CORPORATE'
+						AND RM.ID                                = SUB_PROFILE.RELATION_MGR
+						AND CTY.ID                               = ADDRESS.LRA_CITY_TEXT
+						AND STATE.ID                             = ADDRESS.LRA_STATE
+						AND REGION.ID                            = ADDRESS.LRA_REGION
+						AND country.id                           = address.lra_cntry_iso_code
+						AND SUB_PROFILE.status                  != 'INACTIVE'
+			</mandatoryClause>	    	
+	    	<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and cc_segment.entry_code = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>	
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Branch Code</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>DUNS Number</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Borrower Office Location Type</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Address Line 1</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Address Line 2</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Address Line 3</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>State</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Pincode</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Telephone Number</header><!-- 12 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Tel Area Code</header><!-- 13 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Fax Number</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Fax Area Code</header><!-- 15 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PAN</header><!-- 16 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Borrower Legal Constitution</header><!-- 17 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Class Of Activity 1</header><!-- 18 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Class Of Activity 2</header><!-- 19 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Email</header><!-- 20 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Willful Default Status*</header><!-- 21 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date Classified As Willful Default</header><!-- 22 -->
+				</reportColumn>		
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Suit Filed Status</header><!-- 23 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Suit Reference No.</header><!-- 24 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Suit Amount</header><!-- 25 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date Of Suit</header><!-- 26 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header><!-- 27 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 28 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment</header><!-- 29 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantor Name</header><!-- 30 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Individual Name</header><!-- 31 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Name</header><!-- 32 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Country</header><!-- 33 -->
+				</reportColumn>
+			</reportColumns>
+			<reportName>CIBIL Report - Borrower Segment</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+			
+		<bean id="riskTypeBusManager" class="com.integrosys.cms.app.riskType.bus.RiskTypeBusManagerImpl">
+		<property name="riskTypeDao" ref="riskTypeDao" />
+		<property name="riskTypeJdbc" ref="riskTypeJdbc" />
+		</bean>
+
+		<bean id="riskTypeProxy" class="com.integrosys.cms.app.riskType.proxy.RiskTypeProxyManagerImpl">
+		<property name="riskTypeBusManager" ref="riskTypeBusManager" />
+		<property name="stagingRiskTypeBusManager" ref="stagingRiskTypeBusManager" />
+		<property name="trxControllerFactory" ref="riskTypeTrxControllerFactory" />
+		</bean>
+		
+		<bean id="stagingRiskTypeBusManager" class="com.integrosys.cms.app.riskType.bus.RiskTypeBusManagerStagingImpl">
+		<property name="riskTypeDao" ref="riskTypeDao" />
+		<property name="riskTypeJdbc" ref="riskTypeJdbc" />
+		</bean>	
+</beans>

@@ -1,0 +1,1120 @@
+<?xml version="1.0" encoding="UTF-8"?><ejb-jar id="ejb_Recurrent">
+   <display-name>Recurrent</display-name>
+   <enterprise-beans>
+      <session id="session_SBRecurrentBusManager">
+         <ejb-name>SBRecurrentBusManager</ejb-name>
+         <home>com.integrosys.cms.app.recurrent.bus.SBRecurrentBusManagerHome</home>
+         <remote>com.integrosys.cms.app.recurrent.bus.SBRecurrentBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.SBRecurrentBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBRecurrentBusManager_EBRecurrentCheckListItem">
+            <ejb-ref-name>EBRecurrentCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocal</local>
+            <ejb-link>EBRecurrentCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBRecurrentBusManager_EBConvenant">
+            <ejb-ref-name>EBConvenantLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBConvenantLocal</local>
+            <ejb-link>EBConvenant</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBRecurrentBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBStagingRecurrentBusManager">
+         <ejb-name>SBStagingRecurrentBusManager</ejb-name>
+         <home>com.integrosys.cms.app.recurrent.bus.SBRecurrentBusManagerHome</home>
+         <remote>com.integrosys.cms.app.recurrent.bus.SBRecurrentBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.SBStagingRecurrentBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBStagingRecurrentBusManager_EBStagingRecurrentCheckListItem">
+            <ejb-ref-name>EBStagingRecurrentCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocal</local>
+            <ejb-link>EBStagingRecurrentCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBStagingRecurrentBusManager_EBStagingConvenant">
+            <ejb-ref-name>EBStagingConvenantLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBConvenantLocal</local>
+            <ejb-link>EBStagingConvenant</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBStagingRecurrentBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBRecurrentCheckList">
+         <ejb-name>EBRecurrentCheckList</ejb-name>
+         <home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListHome</home>
+         <remote>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckList</remote>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecurrentCheckList</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecurrentCheckList_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckList_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckList_cMPSubProfileID">
+            <field-name>cMPSubProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckList_checkListStatus">
+            <field-name>checkListStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckList_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>cMPCheckListID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBRecurrentCheckList_EBRecurrentCheckListItem">
+            <ejb-ref-name>EBRecurrentCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocal</local>
+            <ejb-link>EBRecurrentCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBRecurrentCheckList_EBConvenant">
+            <ejb-ref-name>EBConvenantLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBConvenantLocal</local>
+            <ejb-link>EBConvenant</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBRecurrentCheckList">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileAndSubProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBRecurrentCheckList o WHERE o.cMPLimitProfileID = ?1 AND o.cMPSubProfileID = ?2 AND o.checkListStatus <> 'OBSOLETE']]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBRecurrentCheckListItem">
+         <ejb-name>EBRecurrentCheckListItem</ejb-name>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecurrentCheckListItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_cMPCheckListItemID">
+            <field-name>cMPCheckListItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_cMPItemDesc">
+            <field-name>cMPItemDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_checkListItemRef">
+            <field-name>checkListItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_frequency">
+            <field-name>frequency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_frequencyUnit">
+            <field-name>frequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_gracePeriod">
+            <field-name>gracePeriod</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_gracePeriodUnit">
+            <field-name>gracePeriodUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_chaseReminderIndStr">
+            <field-name>chaseReminderIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_initialDocEndDate">
+            <field-name>initialDocEndDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_initialDueDate">
+            <field-name>initialDueDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_isOneOffIndStr">
+            <field-name>isOneOffIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_lastDocEntryDate">
+            <field-name>lastDocEntryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_endDateChangedCount">
+            <field-name>endDateChangedCount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListItem_docType">
+            <field-name>docType</field-name>
+         </cmp-field>
+         <primkey-field>cMPCheckListItemID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBRecurrentCheckListItem_EBRecurrentCheckListSubItem">
+            <ejb-ref-name>EBRecurrentCheckListSubItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemLocal</local>
+            <ejb-link>EBRecurrentCheckListSubItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBRecurrentCheckListItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCheckListItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBRecurrentCheckListItem o WHERE o.checkListItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBRecurrentCheckListSubItem">
+         <ejb-name>EBRecurrentCheckListSubItem</ejb-name>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecurrentCheckListSubItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_cMPSubItemID">
+            <field-name>cMPSubItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_cMPCheckListItemID">
+            <field-name>cMPCheckListItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_subItemRef">
+            <field-name>subItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_docEndDate">
+            <field-name>docEndDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_dueDate">
+            <field-name>dueDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_receivedDate">
+            <field-name>receivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_deferredDate">
+            <field-name>deferredDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_waivedDate">
+            <field-name>waivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_deferredCount">
+            <field-name>deferredCount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_isPrintReminderIndStr">
+            <field-name>isPrintReminderIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_actionParty">
+            <field-name>actionParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_frequency">
+            <field-name>frequency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_frequencyUnit">
+            <field-name>frequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_gracePeriod">
+            <field-name>gracePeriod</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecurrentCheckListSubItem_gracePeriodUnit">
+            <field-name>gracePeriodUnit</field-name>
+         </cmp-field>
+         <primkey-field>cMPSubItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBRecurrentCheckListSubItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCheckListSubItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBRecurrentCheckListSubItem o WHERE o.subItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBConvenant">
+         <ejb-name>EBConvenant</ejb-name>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBConvenantLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBConvenantBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBConvenant</abstract-schema-name>
+         <cmp-field id="cmpfield_EBConvenant_feeStr">
+            <field-name>feeStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_isParameterizedDescStr">
+            <field-name>isParameterizedDescStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_cMPConvenantID">
+            <field-name>cMPConvenantID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_isVerifiedIndStr">
+            <field-name>isVerifiedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_convenantRef">
+            <field-name>convenantRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_description">
+            <field-name>description</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_dateChecked">
+            <field-name>dateChecked</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_frequency">
+            <field-name>frequency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_frequencyUnit">
+            <field-name>frequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_gracePeriod">
+            <field-name>gracePeriod</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_gracePeriodUnit">
+            <field-name>gracePeriodUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_chaseReminderIndStr">
+            <field-name>chaseReminderIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_initialDocEndDate">
+            <field-name>initialDocEndDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_initialDueDate">
+            <field-name>initialDueDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_isOneOffIndStr">
+            <field-name>isOneOffIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_riskTriggerStr">
+            <field-name>riskTriggerStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_lastDocEntryDate">
+            <field-name>lastDocEntryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_endDateChangedCount">
+            <field-name>endDateChangedCount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenant_sourceId">
+            <field-name>sourceId</field-name>
+         </cmp-field>
+         <primkey-field>cMPConvenantID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBConvenant_EBConvenantSubItem">
+            <ejb-ref-name>EBConvenantSubItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemLocal</local>
+            <ejb-link>EBConvenantSubItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBConvenant">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByConvenantRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBConvenant o WHERE o.convenantRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBConvenantSubItem">
+         <ejb-name>EBConvenantSubItem</ejb-name>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBConvenantSubItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBConvenantSubItem_cMPSubItemID">
+            <field-name>cMPSubItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_isVerifiedIndStr">
+            <field-name>isVerifiedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_cMPConvenantID">
+            <field-name>cMPConvenantID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_subItemRef">
+            <field-name>subItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_docEndDate">
+            <field-name>docEndDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_dueDate">
+            <field-name>dueDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_checkedDate">
+            <field-name>checkedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_deferredDate">
+            <field-name>deferredDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_waivedDate">
+            <field-name>waivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_deferredCount">
+            <field-name>deferredCount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_isPrintReminderIndStr">
+            <field-name>isPrintReminderIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_actionParty">
+            <field-name>actionParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_frequency">
+            <field-name>frequency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_frequencyUnit">
+            <field-name>frequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_gracePeriod">
+            <field-name>gracePeriod</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBConvenantSubItem_gracePeriodUnit">
+            <field-name>gracePeriodUnit</field-name>
+         </cmp-field>
+         <primkey-field>cMPSubItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBConvenantSubItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByConvenantSubItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBConvenantSubItem o WHERE o.subItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingRecurrentCheckList">
+         <ejb-name>EBStagingRecurrentCheckList</ejb-name>
+         <home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListHome</home>
+         <remote>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckList</remote>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBStgRecurrentCheckListBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingRecurrentCheckList</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckList_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckList_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckList_cMPSubProfileID">
+            <field-name>cMPSubProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckList_checkListStatus">
+            <field-name>checkListStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckList_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>cMPCheckListID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingRecurrentCheckList_EBStagingRecurrentCheckListItem">
+            <ejb-ref-name>EBStagingRecurrentCheckListItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocal</local>
+            <ejb-link>EBStagingRecurrentCheckListItem</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBStagingRecurrentCheckList_EBStagingConvenant">
+            <ejb-ref-name>EBStagingConvenantLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBConvenantLocal</local>
+            <ejb-link>EBStagingConvenant</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingRecurrentCheckList">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileAndSubProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingRecurrentCheckList o WHERE o.cMPLimitProfileID = ?1 AND o.cMPSubProfileID = ?2]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingRecurrentCheckListItem">
+         <ejb-name>EBStagingRecurrentCheckListItem</ejb-name>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBStgRecurrentCheckListItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingRecurrentCheckListItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_cMPCheckListItemID">
+            <field-name>cMPCheckListItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_cMPItemDesc">
+            <field-name>cMPItemDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_checkListItemRef">
+            <field-name>checkListItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_frequency">
+            <field-name>frequency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_frequencyUnit">
+            <field-name>frequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_gracePeriod">
+            <field-name>gracePeriod</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_gracePeriodUnit">
+            <field-name>gracePeriodUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_chaseReminderIndStr">
+            <field-name>chaseReminderIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_initialDocEndDate">
+            <field-name>initialDocEndDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_initialDueDate">
+            <field-name>initialDueDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_isOneOffIndStr">
+            <field-name>isOneOffIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_lastDocEntryDate">
+            <field-name>lastDocEntryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_endDateChangedCount">
+            <field-name>endDateChangedCount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListItem_docType">
+            <field-name>docType</field-name>
+         </cmp-field>
+         <primkey-field>cMPCheckListItemID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingRecurrentCheckListItem_EBStagingRecurrentCheckListSubItem">
+            <ejb-ref-name>EBStagingRecurrentCheckListSubItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemLocal</local>
+            <ejb-link>EBStagingRecurrentCheckListSubItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingRecurrentCheckListItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCheckListItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingRecurrentCheckListItem o WHERE o.checkListItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingRecurrentCheckListSubItem">
+         <ejb-name>EBStagingRecurrentCheckListSubItem</ejb-name>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBRecurrentCheckListSubItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingRecurrentCheckListSubItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_cMPSubItemID">
+            <field-name>cMPSubItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_cMPCheckListItemID">
+            <field-name>cMPCheckListItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_subItemRef">
+            <field-name>subItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_docEndDate">
+            <field-name>docEndDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_dueDate">
+            <field-name>dueDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_receivedDate">
+            <field-name>receivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_deferredDate">
+            <field-name>deferredDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_waivedDate">
+            <field-name>waivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_deferredCount">
+            <field-name>deferredCount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_isPrintReminderIndStr">
+            <field-name>isPrintReminderIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_actionParty">
+            <field-name>actionParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_frequency">
+            <field-name>frequency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_frequencyUnit">
+            <field-name>frequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_gracePeriod">
+            <field-name>gracePeriod</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingRecurrentCheckListSubItem_gracePeriodUnit">
+            <field-name>gracePeriodUnit</field-name>
+         </cmp-field>
+         <primkey-field>cMPSubItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBStagingRecurrentCheckListSubItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCheckListSubItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingRecurrentCheckListSubItem o WHERE o.subItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingConvenant">
+         <ejb-name>EBStagingConvenant</ejb-name>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBConvenantLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBStgConvenantBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingConvenant</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingConvenant_feeStr">
+            <field-name>feeStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_isParameterizedDescStr">
+            <field-name>isParameterizedDescStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_cMPConvenantID">
+            <field-name>cMPConvenantID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_isVerifiedIndStr">
+            <field-name>isVerifiedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_convenantRef">
+            <field-name>convenantRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_description">
+            <field-name>description</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_dateChecked">
+            <field-name>dateChecked</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_frequency">
+            <field-name>frequency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_frequencyUnit">
+            <field-name>frequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_gracePeriod">
+            <field-name>gracePeriod</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_gracePeriodUnit">
+            <field-name>gracePeriodUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_chaseReminderIndStr">
+            <field-name>chaseReminderIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_initialDocEndDate">
+            <field-name>initialDocEndDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_initialDueDate">
+            <field-name>initialDueDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_isOneOffIndStr">
+            <field-name>isOneOffIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_riskTriggerStr">
+            <field-name>riskTriggerStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_lastDocEntryDate">
+            <field-name>lastDocEntryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_endDateChangedCount">
+            <field-name>endDateChangedCount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenant_sourceId">
+            <field-name>sourceId</field-name>
+         </cmp-field>
+         <primkey-field>cMPConvenantID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingConvenant_EBStagingConvenantSubItem">
+            <ejb-ref-name>EBStagingConvenantSubItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemLocal</local>
+            <ejb-link>EBStagingConvenantSubItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingConvenant">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByConvenantRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingConvenant o WHERE o.convenantRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingConvenantSubItem">
+         <ejb-name>EBStagingConvenantSubItem</ejb-name>
+         <local-home>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.recurrent.bus.EBConvenantSubItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingConvenantSubItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_cMPSubItemID">
+            <field-name>cMPSubItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_isVerifiedIndStr">
+            <field-name>isVerifiedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_cMPConvenantID">
+            <field-name>cMPConvenantID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_subItemRef">
+            <field-name>subItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_docEndDate">
+            <field-name>docEndDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_dueDate">
+            <field-name>dueDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_checkedDate">
+            <field-name>checkedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_deferredDate">
+            <field-name>deferredDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_waivedDate">
+            <field-name>waivedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_deferredCount">
+            <field-name>deferredCount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_isPrintReminderIndStr">
+            <field-name>isPrintReminderIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_actionParty">
+            <field-name>actionParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_frequency">
+            <field-name>frequency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_frequencyUnit">
+            <field-name>frequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_gracePeriod">
+            <field-name>gracePeriod</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingConvenantSubItem_gracePeriodUnit">
+            <field-name>gracePeriodUnit</field-name>
+         </cmp-field>
+         <primkey-field>cMPSubItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBStagingConvenantSubItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByConvenantSubItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingConvenantSubItem o WHERE o.subItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_RecurrentCheckList-RecurrentCheckListItem">
+         <ejb-relation-name>RecurrentCheckList-RecurrentCheckListItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_RecurrentCheckList-Has-RecurrentCheckListItem">
+            <ejb-relationship-role-name>RecurrentCheckList-Has-RecurrentCheckListItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecurrentCheckList</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCheckListItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_RecurrentCheckListItem-BelongsTo-RecurrentCheckList">
+            <ejb-relationship-role-name>RecurrentCheckListItem-BelongsTo-RecurrentCheckList</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecurrentCheckListItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_RecurrentCheckListItem-RecurrentCheckListSubItem">
+         <ejb-relation-name>RecurrentCheckListItem-RecurrentCheckListSubItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_RecurrentCheckListItem-Has-RecurrentCheckListSubItem">
+            <ejb-relationship-role-name>RecurrentCheckListItem-Has-RecurrentCheckListSubItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecurrentCheckListItem</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCheckListSubItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_RecurrentCheckListSubItem-BelongsTo-RecurrentCheckListItem">
+            <ejb-relationship-role-name>RecurrentCheckListSubItem-BelongsTo-RecurrentCheckListItem</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecurrentCheckListSubItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Convenant-ConvenantSubItem">
+         <ejb-relation-name>Convenant-ConvenantSubItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Convenant-Has-ConvenantSubItem">
+            <ejb-relationship-role-name>Convenant-Has-ConvenantSubItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBConvenant</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRConvenantSubItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_ConvenantSubItem-BelongsTo-Convenant">
+            <ejb-relationship-role-name>ConvenantSubItem-BelongsTo-Convenant</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBConvenantSubItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_RecurrentCheckList-Convenant">
+         <ejb-relation-name>RecurrentCheckList-Convenant</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_RecurrentCheckList-Has-Convenant">
+            <ejb-relationship-role-name>RecurrentCheckList-Has-Convenant</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecurrentCheckList</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRConvenants</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_Convenant-BelongsTo-RecurrentCheckList">
+            <ejb-relationship-role-name>Convenant-BelongsTo-RecurrentCheckList</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBConvenant</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingRecurrentCheckList-StagingRecurrentCheckListItem">
+         <ejb-relation-name>StagingRecurrentCheckList-StagingRecurrentCheckListItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingRecurrentCheckList-Has-StagingRecurrentCheckListItem">
+            <ejb-relationship-role-name>StagingRecurrentCheckList-Has-StagingRecurrentCheckListItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingRecurrentCheckList</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCheckListItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingRecurrentCheckListItem-BelongsTo-StagingRecurrentCheckList">
+            <ejb-relationship-role-name>StagingRecurrentCheckListItem-BelongsTo-StagingRecurrentCheckList</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingRecurrentCheckListItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingRecurrentCheckListItem-StagingRecurrentCheckListSubItem">
+         <ejb-relation-name>StagingRecurrentCheckListItem-StagingRecurrentCheckListSubItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingRecurrentCheckListItem-Has-StagingRecurrentCheckListSubItem">
+            <ejb-relationship-role-name>StagingRecurrentCheckListItem-Has-StagingRecurrentCheckListSubItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingRecurrentCheckListItem</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCheckListSubItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingRecurrentCheckListSubItem-BelongsTo-StagingRecurrentCheckListItem">
+            <ejb-relationship-role-name>StagingRecurrentCheckListSubItem-BelongsTo-StagingRecurrentCheckListItem</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingRecurrentCheckListSubItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingConvenant-StagingConvenantSubItem">
+         <ejb-relation-name>StagingConvenant-StagingConvenantSubItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingConvenant-Has-StagingConvenantSubItem">
+            <ejb-relationship-role-name>StagingConvenant-Has-StagingConvenantSubItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingConvenant</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRConvenantSubItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingConvenantSubItem-BelongsTo-StagingConvenant">
+            <ejb-relationship-role-name>StagingConvenantSubItem-BelongsTo-StagingConvenant</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingConvenantSubItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingRecurrentCheckList-StagingConvenant">
+         <ejb-relation-name>StagingRecurrentCheckList-StagingConvenant</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingRecurrentCheckList-Has-StagingConvenant">
+            <ejb-relationship-role-name>StagingRecurrentCheckList-Has-StagingConvenant</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingRecurrentCheckList</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRConvenants</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingConvenant-BelongsTo-StagingRecurrentCheckList">
+            <ejb-relationship-role-name>StagingConvenant-BelongsTo-StagingRecurrentCheckList</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingConvenant</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_RecurrentCheckList-Annexure">
+         <ejb-relation-name>RecurrentCheckList-Annexure</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_RecurrentCheckList-Has-Annexure">
+            <ejb-relationship-role-name>RecurrentCheckList-Has-Annexure</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecurrentCheckList</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRAnnexures</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_Annexure-BelongsTo-RecurrentCheckList">
+            <ejb-relationship-role-name>Annexure-BelongsTo-RecurrentCheckList</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecurrentCheckListItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingRecurrentCheckList-StagingAnnexure">
+         <ejb-relation-name>StagingRecurrentCheckList-StagingAnnexure</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingRecurrentCheckList-Has-StagingAnnexure">
+            <ejb-relationship-role-name>StagingRecurrentCheckList-Has-StagingAnnexure</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingRecurrentCheckList</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRAnnexures</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingAnnexure-BelongsTo-StagingRecurrentCheckList">
+            <ejb-relationship-role-name>StagingAnnexure-BelongsTo-StagingRecurrentCheckList</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingRecurrentCheckListItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBRecurrentBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecurrentCheckList</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecurrentCheckListItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecurrentCheckListSubItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBConvenant</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <!-- cr26 --><method>
+            <ejb-name>EBConvenantSubItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <!-- cr 26 --><trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

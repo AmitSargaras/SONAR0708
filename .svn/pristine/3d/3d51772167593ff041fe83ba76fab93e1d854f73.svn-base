@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="eodStatusManager" class="com.integrosys.cms.app.eod.bus.EODStatusManagerImpl">
+		<property name="eodStatusDao" ref="eodStatusDao" />
+	</bean>
+
+	<bean id="eodStatusProxyManager" class="com.integrosys.cms.app.eod.proxy.EODStatusProxyImpl">
+		<property name="eodStatusManager" ref="eodStatusManager" />
+	</bean>
+	
+	
+	<bean id="eodSyncStatusManager" class="com.integrosys.cms.app.eod.sync.bus.EODSyncStatusManagerImpl">
+		<property name="eodSyncStatusDao" ref="eodSyncStatusDao" />
+	</bean>
+
+	<bean id="eodSyncStatusProxyManager" class="com.integrosys.cms.app.eod.sync.proxy.EODSyncStatusProxyImpl">
+		<property name="eodSyncStatusManager" ref="eodSyncStatusManager" />
+	</bean>
+
+</beans>

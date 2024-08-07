@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CashCashForm" type="com.integrosys.cms.ui.collateral.cash.cashcash.CashCashForm">
+        </form-bean>
+        
+        <form-bean name="CashRepoForm" type="com.integrosys.cms.ui.collateral.cash.cashrepo.CashRepoForm">
+        </form-bean>
+        
+        <form-bean name="CashFdForm" type="com.integrosys.cms.ui.collateral.cash.cashfd.CashFdForm">
+        </form-bean>
+		
+		<form-bean name="FixedDepositForm" type="com.integrosys.cms.ui.collateral.cash.cashfd.FixedDepositForm">
+        </form-bean>
+
+        <form-bean name="DepositForm" type="com.integrosys.cms.ui.collateral.cash.DepositForm">
+        </form-bean>    
+        
+        <form-bean name="CashValuationFromLOSForm" type="com.integrosys.cms.ui.collateral.valuationfromlos.CashValuationFromLOSForm">
+        </form-bean>
+        
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/CashCashCollateral" type="com.integrosys.cms.ui.collateral.cash.cashcash.CashCashAction" name="CashCashForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_update.jsp"/>	            
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_DEPOSIT" path="/CashDeposit.do"/>
+            <forward name="prepare_DEPOSIT" path="/CashDeposit.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/CashSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/CashSecurityApportionment.do"/>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashcash/CashCash_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="search_pledgor_prepare" path="/CashPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/CashPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/CashPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/CashPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/CashPledge.do?event=view"/>
+		</action>
+		
+        <action path="/CashRepoCollateral" type="com.integrosys.cms.ui.collateral.cash.cashrepo.CashRepoAction" name="CashRepoForm" validate="false" scope="request">
+	            <forward name="read" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_read.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="read_return" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_read.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+				<forward name="prepare_create" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_update.jsp"/>
+				    <set-property property="title" value="title.security"/>
+				</forward>
+	            <forward name="prepare_update" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_update.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="prepare_update_sub_DEPOSIT" path="/CashDeposit.do"/>
+	            <forward name="prepare_DEPOSIT" path="/CashDeposit.do"/>
+	            <forward name="process_update" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_update.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="update_return" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_update.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="update" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="prepare_update_sub_APPORTIONMENT" path="/CashSecurityApportionment.do"/>
+	            <forward name="prepare_APPORTIONMENT" path="/CashSecurityApportionment.do"/>
+	            <forward name="approve" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="reject" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="submit" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="save" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="close" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="process" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_process.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="process_return" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_process.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="prepare_close" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_close.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="close_return" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_close.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="track" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_close.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="track_return" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/collateral/cash/cashrepo/CashRepo_close.jsp"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+	            <forward name="wip" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/common/wip.html"/>
+	                <set-property property="title" value="title.security"/>
+	            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="search_pledgor_prepare" path="/CashPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/CashPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/CashPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/CashPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/CashPledge.do?event=view"/>
+
+        </action>
+   
+        <action path="/CashFdCollateral" type="com.integrosys.cms.ui.collateral.cash.cashfd.CashFdAction" name="CashFdForm" validate="false" scope="request">
+            <forward name="fd_list" path="/collateral/cash/cashfd/fd_list.jsp"/>
+            <forward name="fill_FD" path="/collateral/cash/cashfd/fill_FD.jsp"/>
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_update.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_DEPOSIT" path="/FixedDeposit.do"/>
+            <forward name="prepare_DEPOSIT" path="/FixedDeposit.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/CashSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/CashSecurityApportionment.do"/>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="search_pledgor_prepare" path="/CashPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/CashPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/CashPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/CashPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/CashPledge.do?event=view"/>
+           
+           <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+           <forward name="refresh_city_id" path="/collateral/common/refresh_maker_create_city.jsp"/>
+            
+        </action>
+        
+		<action path="/FixedDeposit" type="com.integrosys.cms.ui.collateral.cash.cashfd.FixedDepositAction" name="FixedDepositForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="search_fd_info" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/fd_info_search.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>  
+            <forward name="ok_cancel" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="view_ok_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>                       
+            <forward name="CashFd_update" path="/CashFdCollateral.do?event=update_return"/>
+			<forward name="CashFd_read" path="/CashFdCollateral.do?event=read_return"/>
+			<forward name="CashFd_process" path="/CashFdCollateral.do?event=process_return"/>
+			<forward name="CashFd_close" path="/CashFdCollateral.do?event=close_return"/>
+			<forward name="CashFd_track" path="/CashFdCollateral.do?event=track_return"/>
+			
+			<forward name="prepare_create_lien" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/add_lien_information.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            <forward name="add_lien" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+           
+            
+            <forward name="edit_lien_details" path="/template/common_template.jsp">
+			<set-property property="title" value="title.security"/>
+			<set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_create.jsp"/>
+		</forward>
+
+           <forward name="display_lien_details" path="/template/common_template.jsp">
+			<set-property property="title" value="title.security"/>
+			<set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_create.jsp"/>
+		</forward>
+		
+		 <forward name="view_display_lien_details" path="/template/common_template.jsp">
+			<set-property property="title" value="title.security"/>
+			<set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_read.jsp"/>
+		</forward>
+              <forward name="process_lien_details" path="/template/common_template.jsp">
+			<set-property property="title" value="title.security"/>
+			<set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_create.jsp"/>
+		</forward>
+
+		<forward name="refresh_system_id" path="/imageTag/systemList.jsp"/> 
+		<forward name="refresh_facility_id" path="/collateral/cash/cashfd/facilityIdList.jsp"/> 		
+		           
+		
+		<forward name="edit_lien" path="/template/common_template.jsp">
+			<set-property property="rightFrame"  value="/collateral/cash/cashfd/edit_lien_information.jsp"/>
+	   	  	<set-property property="title" value="title.security"/>
+		</forward>
+		 <forward name="edit_conf_lien" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete_conf_lien" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/FixedDeposit_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+             <forward name="ok_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/cashfd/Cashfd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            <forward name="view_lien" path="/template/common_template.jsp">
+			<set-property property="rightFrame"  value="/collateral/cash/cashfd/view_lien_information.jsp"/>
+	   	  	<set-property property="title" value="title.security"/>
+		</forward>
+		
+        </action>
+        
+			
+        <action path="/CashDeposit" type="com.integrosys.cms.ui.collateral.cash.DepositAction" name="DepositForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/deposit_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/deposit_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/cash/deposit_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="CashCash_update" path="/CashCashCollateral.do?event=update_return"/>
+	    	<forward name="CashRepo_update" path="/CashRepoCollateral.do?event=update_return"/>
+            <forward name="CashFd_update" path="/CashFdCollateral.do?event=update_return"/>
+            <forward name="CashCash_read" path="/CashCashCollateral.do?event=read_return"/>
+            <forward name="CashRepo_read" path="/CashRepoCollateral.do?event=read_return"/>
+            <forward name="CashFd_read" path="/CashFdCollateral.do?event=read_return"/>
+            <forward name="CashCash_process" path="/CashCashCollateral.do?event=process_return"/>
+            <forward name="CashRepo_process" path="/CashRepoCollateral.do?event=process_return"/>
+            <forward name="CashFd_process" path="/CashFdCollateral.do?event=process_return"/>
+            <forward name="CashCash_close" path="/CashCashCollateral.do?event=close_return"/>
+            <forward name="CashRepo_close" path="/CashRepoCollateral.do?event=close_return"/>
+            <forward name="CashFd_close" path="/CashFdCollateral.do?event=close_return"/>
+            <forward name="CashCash_track" path="/CashCashCollateral.do?event=track_return"/>
+            <forward name="CashRepo_track" path="/CashRepoCollateral.do?event=track_return"/>
+            <forward name="CashFd_track" path="/CashFdCollateral.do?event=track_return"/>
+        </action>
+		        
+     <action path="/CashSecurityApportionment" type="com.integrosys.cms.ui.collateral.cash.SecApportionmentAction" 
+      name="SecurityApportionmentDtlForm" scope="request">
+        <forward name="read" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare_update_sub" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="refresh" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="process" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+     
+        <forward name="CashCash_update" path="/CashCashCollateral.do?event=update_return"/>
+		<forward name="CashCash_read" path="/CashCashCollateral.do?event=read_return"/>
+		<forward name="CashCash_process" path="/CashCashCollateral.do?event=process_return"/>
+		<forward name="CashCash_close" path="/CashCashCollateral.do?event=close_return"/>
+		<forward name="CashCash_track" path="/CashCashCollateral.do?event=track_return"/>
+        <forward name="CashRepo_update" path="/CashRepoCollateral.do?event=update_return"/>
+		<forward name="CashRepo_read" path="/CashRepoCollateral.do?event=read_return"/>
+		<forward name="CashRepo_process" path="/CashRepoCollateral.do?event=process_return"/>
+		<forward name="CashRepo_close" path="/CashRepoCollateral.do?event=close_return"/>
+		<forward name="CashRepo_track" path="/CashRepoCollateral.do?event=track_return"/>
+        <forward name="CashFd_update" path="/CashFdCollateral.do?event=update_return"/>
+        <forward name="CashFd_read" path="/CashFdCollateral.do?event=read_return"/>
+        <forward name="CashFd_process" path="/CashFdCollateral.do?event=process_return"/>
+        <forward name="CashFd_close" path="/CashFdCollateral.do?event=close_return"/>
+        <forward name="CashFd_track" path="/CashFdCollateral.do?event=track_return"/>
+      </action>        
+      
+      <action path="/CashValuationFromLOS"
+              type="com.integrosys.cms.ui.collateral.valuationfromlos.CashValuationFromLOSAction"
+              name="CashValuationFromLOSForm"
+              validate="false"
+              scope="request">
+          <forward name="read" path="/template/common_template.jsp">
+              <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+              <set-property property="title" value="title.security"/>
+          </forward>
+      </action>
+      
+    </action-mappings>
+    
+    <message-resources key="message-col-cash" parameter="ApplicationResources-col-cash"/>
+</struts-config>

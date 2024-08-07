@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="holidayBusManager" class="com.integrosys.cms.app.holiday.bus.HolidayBusManagerImpl">
+		<property name="holidayDao" ref="holidayDao" />
+		<property name="holidayJdbc" ref="holidayJdbc" />
+	</bean>
+
+
+	<bean id="holidayProxy" class="com.integrosys.cms.app.holiday.proxy.HolidayProxyManagerImpl">
+		<property name="holidayBusManager" ref="holidayBusManager" />
+		<property name="stagingHolidayBusManager" ref="stagingHolidayBusManager" />
+		<property name="trxControllerFactory" ref="holidayTrxControllerFactory" />
+		<property name="stagingHolidayFileMapperIdBusManager" ref="stagingHolidayFileMapperIdBusManager" />
+		<property name="holidayFileMapperIdBusManager" ref="holidayFileMapperIdBusManager" />
+	</bean>
+	<bean id="stagingHolidayBusManager" class="com.integrosys.cms.app.holiday.bus.HolidayBusManagerStagingImpl">
+		<property name="holidayDao" ref="holidayDao" />
+		<property name="holidayJdbc" ref="holidayJdbc" />
+	</bean>
+	<bean id="stagingHolidayFileMapperIdBusManager" class="com.integrosys.cms.app.holiday.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="holidayDao" ref="holidayDao" />
+		<property name="holidayJdbc" ref="holidayJdbc" />
+	</bean>
+	<bean id="holidayFileMapperIdBusManager" class="com.integrosys.cms.app.holiday.bus.FileMapperIdBusManagerImpl">
+		<property name="holidayDao" ref="holidayDao" />
+		<property name="holidayJdbc" ref="holidayJdbc" />
+	</bean>
+
+</beans>

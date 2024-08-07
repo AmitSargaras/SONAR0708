@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+			
+		<bean id="leiDateValidationBusManager" class="com.integrosys.cms.app.leiDateValidation.bus.LeiDateValidationBusManagerImpl">
+		<property name="leiDateValidationDao" ref="leiDateValidationDao" />
+		<property name="leiDateValidationJdbc" ref="leiDateValidationJdbc" />
+		</bean>
+
+		<bean id="leiDateValidationProxy" class="com.integrosys.cms.app.leiDateValidation.proxy.LeiDateValidationProxyManagerImpl">
+		<property name="leiDateValidationBusManager" ref="leiDateValidationBusManager" />
+		<property name="stagingLeiDateValidationBusManager" ref="stagingLeiDateValidationBusManager" />
+		<property name="trxControllerFactory" ref="leiDateValidationTrxControllerFactory" />
+		</bean>
+		
+		<bean id="stagingLeiDateValidationBusManager" class="com.integrosys.cms.app.leiDateValidation.bus.LeiDateValidationBusManagerStagingImpl">
+		<property name="leiDateValidationDao" ref="leiDateValidationDao" />
+		<property name="leiDateValidationJdbc" ref="leiDateValidationJdbc" />
+		</bean>	
+</beans>

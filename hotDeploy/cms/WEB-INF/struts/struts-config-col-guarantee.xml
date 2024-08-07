@@ -1,0 +1,1406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="GteIndivForm" type="com.integrosys.cms.ui.collateral.guarantees.gteindiv.GteIndivForm">
+        </form-bean>
+
+        <form-bean name="GteIndemForm" type="com.integrosys.cms.ui.collateral.guarantees.gteindem.GteIndemForm">
+        </form-bean>
+
+        <form-bean name="GteGovtForm" type="com.integrosys.cms.ui.collateral.guarantees.gtegovt.GteGovtForm">
+        </form-bean>
+
+        <form-bean name="GteCorp3rdForm" type="com.integrosys.cms.ui.collateral.guarantees.gtecorp3rd.GteCorp3rdForm">
+        </form-bean>
+
+        <form-bean name="GteCorpRelForm" type="com.integrosys.cms.ui.collateral.guarantees.gtecorprel.GteCorpRelForm">
+        </form-bean>
+
+        <form-bean name="GteSLCDiffForm" type="com.integrosys.cms.ui.collateral.guarantees.gteslcdiff.GteSLCDiffForm">
+        </form-bean>
+
+        <form-bean name="GteSLCSameForm" type="com.integrosys.cms.ui.collateral.guarantees.gteslcsame.GteSLCSameForm">
+        </form-bean>
+
+        <form-bean name="GteBankDiffForm" type="com.integrosys.cms.ui.collateral.guarantees.gtebankdiff.GteBankDiffForm">
+        </form-bean>
+
+        <form-bean name="GteBankSameForm" type="com.integrosys.cms.ui.collateral.guarantees.gtebanksame.GteBankSameForm">
+        </form-bean>
+        
+        <form-bean name="GteInwardLCForm" type="com.integrosys.cms.ui.collateral.guarantees.gteinwardlc.GteInwardLCForm">
+        </form-bean>
+        
+        <form-bean name="GteGovtLinkForm" type="com.integrosys.cms.ui.collateral.guarantees.gtegovtlink.GteGovtLinkForm">
+        </form-bean>
+        
+        <form-bean name="FeeDetailsForm" type="com.integrosys.cms.ui.collateral.guarantees.feedetails.FeeDetailsForm">
+        </form-bean>
+        
+	   <form-bean name="GteValuationFromLOSForm" type="com.integrosys.cms.ui.collateral.valuationfromlos.GteValuationFromLOSForm">
+        </form-bean>
+        
+        <form-bean name="LineDetailForm" type="com.integrosys.cms.ui.collateral.guarantees.linedetail.LineDetailForm">
+        </form-bean>
+        
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/GteIndivCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gteindiv.GteIndivAction" name="GteIndivForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindiv/GteIndiv_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/GuaranteesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/GuaranteesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/GuaranteesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/GuaranteesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/GuaranteesPledge.do?event=view"/>
+            
+              <forward name="refresh_region_id" path="/collateral/guarantees/gteindiv/refresh_maker_create_region.jsp"/>
+            
+            <forward name="refresh_state_id" path="/collateral/guarantees/gteindiv/refresh_maker_create_state.jsp"/>
+            
+            <forward name="refresh_city_id" path="/collateral/guarantees/gteindiv/refresh_maker_create_city.jsp"/>
+    
+    		<forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+    		
+    		<forward name="refresh_currency" path="/collateral/guarantees/gtebanksame/currency_info.jsp"/>
+        </action>
+
+        <action path="/GteIndemCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gteindem.GteIndemAction" name="GteIndemForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteindem/GteIndem_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/GuaranteesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/GuaranteesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/GuaranteesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/GuaranteesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/GuaranteesPledge.do?event=view"/>
+        </action>
+            
+        <action path="/GteGovtCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gtegovt.GteGovtAction" name="GteGovtForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovt/GteGovt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/GuaranteesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/GuaranteesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/GuaranteesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/GuaranteesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/GuaranteesPledge.do?event=view"/>
+       
+            <forward name="refresh_region_id" path="/collateral/guarantees/gtegovt/refresh_maker_create_region.jsp"/>
+            
+            <forward name="refresh_state_id" path="/collateral/guarantees/gtegovt/refresh_maker_create_state.jsp"/>
+            
+            <forward name="refresh_city_id" path="/collateral/guarantees/gtegovt/refresh_maker_create_city.jsp"/>
+    
+       		<forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+       		
+       		<forward name="refresh_currency" path="/collateral/guarantees/gtebanksame/currency_info.jsp"/>
+        </action>
+        
+        <action path="/GteCorp3rdCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gtecorp3rd.GteCorp3rdAction" name="GteCorp3rdForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorp3rd/GteCorp3rd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/GuaranteesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/GuaranteesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/GuaranteesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/GuaranteesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/GuaranteesPledge.do?event=view"/>
+            
+            <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+            
+             <forward name="refresh_currency" path="/collateral/guarantees/gtebanksame/currency_info.jsp"/>
+             <forward name="refresh_city_id" path="/collateral/common/refresh_maker_create_city.jsp"/>
+        </action>
+
+        <action path="/GteCorpRelCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gtecorprel.GteCorpRelAction" name="GteCorpRelForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtecorprel/GteCorpRel_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+        </action>
+                
+        <action path="/GteSLCDiffCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gteslcdiff.GteSLCDiffAction" name="GteSLCDiffForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcdiff/GteSLCDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+        </action>
+        
+        <action path="/GteSLCSameCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gteslcsame.GteSLCSameAction" name="GteSLCSameForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gteslcsame/GteSLCSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/GuaranteesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/GuaranteesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/GuaranteesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/GuaranteesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/GuaranteesPledge.do?event=view"/>
+            <!-- Additional details not getting saved. -->
+            <forward name="saveGTtoSessionForLC" path="/GLineDetail.do?event=prepare_create_line_detail"/>
+        
+             <forward name="refresh_region_id" path="/collateral/guarantees/gteslcsame/refresh_maker_create_region.jsp"/>
+            
+            <forward name="refresh_state_id" path="/collateral/guarantees/gteslcsame/refresh_maker_create_state.jsp"/>
+            
+            <forward name="refresh_city_id" path="/collateral/guarantees/gteslcsame/refresh_maker_create_city.jsp"/>
+    
+        
+        	<forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+        
+        	<forward name="refresh_currency" path="/collateral/guarantees/gtebanksame/currency_info.jsp"/>
+        
+        </action>
+        
+        <action path="/GteBankDiffCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gtebankdiff.GteBankDiffAction" name="GteBankDiffForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebankdiff/GteBankDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+
+        </action>
+        
+        <action path="/GteBankSameCollateral" type="com.integrosys.cms.ui.collateral.guarantees.gtebanksame.GteBankSameAction" name="GteBankSameForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>        
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtebanksame/GteBankSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/GuaranteesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/GuaranteesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/GuaranteesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/GuaranteesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/GuaranteesPledge.do?event=view"/>
+             <!-- Additional details not getting saved. -->
+            <forward name="saveGTtoSessionForBank" path="/GLineDetail.do?event=prepare_create_line_detail"/>
+            
+            <forward name="refresh_region_id" path="/collateral/guarantees/gtebanksame/refresh_maker_create_region.jsp"/>
+            
+            <forward name="refresh_state_id" path="/collateral/guarantees/gtebanksame/refresh_maker_create_state.jsp"/>
+            
+            <forward name="refresh_city_id" path="/collateral/guarantees/gtebanksame/refresh_maker_create_city.jsp"/>
+            
+            <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+            
+            <forward name="refresh_currency" path="/collateral/guarantees/gtebanksame/currency_info.jsp"/>
+        </action>
+        
+	<action path="/GteInwardLCCollateral"
+		type="com.integrosys.cms.ui.collateral.guarantees.gteinwardlc.GteInwardLCAction"
+		name="GteInwardLCForm"
+		validate="false"
+		scope="request">
+	    <forward name="read" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_read.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="read_return" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_read.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+		<forward name="prepare_create" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_update.jsp"/>
+            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+		    <set-property property="title" value="title.security"/>
+		</forward>
+	    <forward name="prepare_update" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_update.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="process_update" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_update.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="update" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/common/ack_save.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_update.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="approve" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="reject" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="submit" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="save" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/common/ack_save.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="close" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/common/ack_close.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="close_return" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_close.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="process" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_process.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="process_return" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_process.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="prepare_close" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_close.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="track" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_close.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="track_return" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/gteinwardlc/GteInwardLC_close.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="wip" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/common/wip.html"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+	    <forward name="reminder" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+			<set-property property="title" value="title.security"/>
+	    </forward>
+		<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+		    <forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+		    <forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+		    <forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/GuaranteesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/GuaranteesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/GuaranteesPledge.do?event=add_pledge_prepare"/>
+	        <forward name="edit_pledge_prepare" path="/GuaranteesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/GuaranteesPledge.do?event=view"/>
+	</action>
+        
+	<action path="/GteGovtLinkCollateral"
+		type="com.integrosys.cms.ui.collateral.guarantees.gtegovtlink.GteGovtLinkAction"
+		name="GteGovtLinkForm"
+		validate="false"
+		scope="request">
+		 <forward name="read" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_read.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+         <forward name="readFeeDetails" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/Fee_Details_read.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+
+		 <forward name="read_return" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_read.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="prepare_create" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_update.jsp"/>
+             <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="prepare_update" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_update.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="process_update" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_update.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="update" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="update_return" path="/template/common_template.jsp">
+	         <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_update.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="approve" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="reject" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="submit" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="save" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="close" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="close_return" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_close.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="process" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_process.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="process_return" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_process.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="prepare_close" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_close.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="track" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_close.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="track_return" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/GteGovtLink_close.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="wip" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/common/wip.html"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+		 <forward name="reminder" path="/template/common_template.jsp">
+		     <set-property property="rightFrame" value="/collateral/guarantees/reminder.jsp"/>
+		     <set-property property="title" value="title.security"/>
+		 </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="print_reminder" path="/collateral/guarantees/print_guarantee_reminder.jsp"/>
+			<forward name="prepare_update_sub_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="prepare_APPORTIONMENT" path="/GteSecurityApportionment.do"/>
+			<forward name="prepare_FEE_DETAILS" path="/FeeDetails.do"/>
+			<forward name="search_pledgor_prepare" path="/GuaranteesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/GuaranteesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/GuaranteesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/GuaranteesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/GuaranteesPledge.do?event=view"/>
+	     </action>
+	
+        <action path="/FeeDetails"
+                type="com.integrosys.cms.ui.collateral.guarantees.feedetails.FeeDetailsAction"
+                name="FeeDetailsForm"
+                validate="false"
+                scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/Fee_Details_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+              <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/Fee_Details_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/gtegovtlink/Fee_Details_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="FEE_DETAILS_update" path="/GteGovtLinkCollateral.do?event=update_return"/>
+            <forward name="GteGovtLink_update" path="/GteGovtLinkCollateral.do?event=update_return"/>
+			<forward name="GteGovtLink_close" path="/GteGovtLinkCollateral.do?event=close_return"/>
+			<forward name="GteGovtLink_process" path="/GteGovtLinkCollateral.do?event=process_return"/>
+			<forward name="GteGovtLink_track" path="/GteGovtLinkCollateral.do?event=track_return"/>
+			<forward name="GteGovtLink_read" path="/GteGovtLinkCollateral.do?event=read_return"/>
+        </action>	  
+        
+      <action path="/GteSecurityApportionment" type="com.integrosys.cms.ui.collateral.guarantees.SecApportionmentAction"
+      name="SecurityApportionmentDtlForm" scope="request">
+        <forward name="read" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare_update_sub" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="refresh" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="process" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="GteIndiv_update" path="/GteIndivCollateral.do?event=update_return"/>
+        <forward name="GteIndiv_read" path="/GteIndivCollateral.do?event=read_return"/>
+        <forward name="GteIndiv_process" path="/GteIndivCollateral.do?event=process_return"/>
+        <forward name="GteIndiv_close" path="/GteIndivCollateral.do?event=close_return"/>
+        <forward name="GteIndiv_track" path="/GteIndivCollateral.do?event=track_return"/>
+
+        <forward name="GteIndem_update" path="/GteIndemCollateral.do?event=update_return"/>
+        <forward name="GteIndem_read" path="/GteIndemCollateral.do?event=read_return"/>
+        <forward name="GteIndem_process" path="/GteIndemCollateral.do?event=process_return"/>
+        <forward name="GteIndem_close" path="/GteIndemCollateral.do?event=close_return"/>
+        <forward name="GteIndem_track" path="/GteIndemCollateral.do?event=track_return"/>
+
+        <forward name="GteGovt_update" path="/GteGovtCollateral.do?event=update_return"/>
+        <forward name="GteGovt_read" path="/GteGovtCollateral.do?event=read_return"/>
+        <forward name="GteGovt_process" path="/GteGovtCollateral.do?event=process_return"/>
+        <forward name="GteGovt_close" path="/GteGovtCollateral.do?event=close_return"/>
+        <forward name="GteGovt_track" path="/GteGovtCollateral.do?event=track_return"/>
+
+        <forward name="GteCorp3rd_update" path="/GteCorp3rdCollateral.do?event=update_return"/>
+        <forward name="GteCorp3rd_read" path="/GteCorp3rdCollateral.do?event=read_return"/>
+        <forward name="GteCorp3rd_process" path="/GteCorp3rdCollateral.do?event=process_return"/>
+        <forward name="GteCorp3rd_close" path="/GteCorp3rdCollateral.do?event=close_return"/>
+        <forward name="GteCorp3rd_track" path="/GteCorp3rdCollateral.do?event=track_return"/>
+
+        <forward name="GteCorpRel_update" path="/GteCorpRelCollateral.do?event=update_return"/>
+        <forward name="GteCorpRel_read" path="/GteCorpRelCollateral.do?event=read_return"/>
+        <forward name="GteCorpRel_process" path="/GteCorpRelCollateral.do?event=process_return"/>
+        <forward name="GteCorpRel_close" path="/GteCorpRelCollateral.do?event=close_return"/>
+        <forward name="GteCorpRel_track" path="/GteCorpRelCollateral.do?event=track_return"/>
+
+        <forward name="GteSLCDiff_update" path="/GteSLCDiffCollateral.do?event=update_return"/>
+        <forward name="GteSLCDiff_read" path="/GteSLCDiffCollateral.do?event=read_return"/>
+        <forward name="GteSLCDiff_process" path="/GteSLCDiffCollateral.do?event=process_return"/>
+        <forward name="GteSLCDiff_close" path="/GteSLCDiffCollateral.do?event=close_return"/>
+        <forward name="GteSLCDiff_track" path="/GteSLCDiffCollateral.do?event=track_return"/>
+
+        <forward name="GteSLCSame_update" path="/GteSLCSameCollateral.do?event=update_return"/>
+        <forward name="GteSLCSame_read" path="/GteSLCSameCollateral.do?event=read_return"/>
+        <forward name="GteSLCSame_process" path="/GteSLCSameCollateral.do?event=process_return"/>
+        <forward name="GteSLCSame_close" path="/GteSLCSameCollateral.do?event=close_return"/>
+        <forward name="GteSLCSame_track" path="/GteSLCSameCollateral.do?event=track_return"/>
+
+        <forward name="GteBankDiff_update" path="/GteBankDiffCollateral.do?event=update_return"/>
+        <forward name="GteBankDiff_read" path="/GteBankDiffCollateral.do?event=read_return"/>
+        <forward name="GteBankDiff_process" path="/GteBankDiffCollateral.do?event=process_return"/>
+        <forward name="GteBankDiff_close" path="/GteBankDiffCollateral.do?event=close_return"/>
+        <forward name="GteBankDiff_track" path="/GteBankDiffCollateral.do?event=track_return"/>
+
+        <forward name="GteBankSame_update" path="/GteBankSameCollateral.do?event=update_return"/>
+        <forward name="GteBankSame_read" path="/GteBankSameCollateral.do?event=read_return"/>
+        <forward name="GteBankSame_process" path="/GteBankSameCollateral.do?event=process_return"/>
+        <forward name="GteBankSame_close" path="/GteBankSameCollateral.do?event=close_return"/>
+        <forward name="GteBankSame_track" path="/GteBankSameCollateral.do?event=track_return"/>   
+      </action>         
+      
+       <action path="/GteValuationFromLOS"
+              type="com.integrosys.cms.ui.collateral.valuationfromlos.GteValuationFromLOSAction"
+              name="GteValuationFromLOSForm"
+              validate="false"
+              scope="request">
+          <forward name="read" path="/template/common_template.jsp">
+              <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+              <set-property property="title" value="title.security"/>
+          </forward>
+        </action>
+        
+        <action path="/GLineDetail" type="com.integrosys.cms.ui.collateral.guarantees.linedetail.LineDetailAction"
+              name="LineDetailForm" validate="false" scope="request">
+			<forward name="prepare_create_line_detail" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/linedetail/line_detail_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_edit_line_detail" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/linedetail/line_detail_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>  
+			<forward name="view_line_detail" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/guarantees/linedetail/line_detail_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward> 
+			<forward name="refresh_facility_dropdown" path="/collateral/guarantees/linedetail/dropdown_list.jsp"/>
+			<forward name="saveDetailsOfGuaranteeForLC" path="/GteSLCSameCollateral.do?event=saveGTtoSessionForLC"/>
+			<forward name="saveDetailsOfGuaranteeForBank" path="/GteBankSameCollateral.do?event=saveGTtoSessionForBank"/>
+			<forward name="GteSLCSame_update" path="/GteSLCSameCollateral.do?event=update_return"/>
+	        <forward name="GteSLCSame_read" path="/GteSLCSameCollateral.do?event=read_return"/>
+	        <forward name="GteSLCSame_process" path="/GteSLCSameCollateral.do?event=process_return"/>
+	        <forward name="GteSLCSame_close" path="/GteSLCSameCollateral.do?event=close_return"/>
+	        <forward name="GteSLCSame_track" path="/GteSLCSameCollateral.do?event=track_return"/>
+				  
+	        <forward name="GteBankSame_update" path="/GteBankSameCollateral.do?event=update_return"/>
+	        <forward name="GteBankSame_read" path="/GteBankSameCollateral.do?event=read_return"/>
+	        <forward name="GteBankSame_process" path="/GteBankSameCollateral.do?event=process_return"/>
+	        <forward name="GteBankSame_close" path="/GteBankSameCollateral.do?event=close_return"/>
+	        <forward name="GteBankSame_track" path="/GteBankSameCollateral.do?event=track_return"/>
+        </action>
+    </action-mappings>
+    
+    <message-resources key="message-col-guarantee" parameter="ApplicationResources-col-guarantee"/>
+</struts-config>

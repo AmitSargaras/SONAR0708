@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_Transaction">
+   <display-name>Transaction</display-name>
+   <enterprise-beans>
+      <session id="session_SBCMSTrxManager">
+         <ejb-name>SBCMSTrxManager</ejb-name>
+         <home>com.integrosys.cms.app.transaction.SBCMSTrxManagerHome</home>
+         <remote>com.integrosys.cms.app.transaction.SBCMSTrxManager</remote>
+         <ejb-class>com.integrosys.cms.app.transaction.SBCMSTrxManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCMSTrxManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCompTrxManager">
+         <ejb-name>SBCompTrxManager</ejb-name>
+         <home>com.integrosys.cms.app.transaction.SBCompTrxManagerHome</home>
+         <remote>com.integrosys.base.businfra.transaction.SBTrxPersistenceManager</remote>
+         <ejb-class>com.integrosys.cms.app.transaction.SBCompTrxManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCompTrxManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBCMSTrxValue">
+         <ejb-name>EBCMSTrxValue</ejb-name>
+         <home>com.integrosys.cms.app.transaction.EBCMSTrxValueHome</home>
+         <remote>com.integrosys.cms.app.transaction.EBCMSTrxValue</remote>
+         <ejb-class>com.integrosys.cms.app.transaction.EBCMSTrxValueBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.String</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCMSTrxValue</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCMSTrxValue_transactionID">
+            <field-name>transactionID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_fromState">
+            <field-name>fromState</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_uID">
+            <field-name>uID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_transactionType">
+            <field-name>transactionType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_createDate">
+            <field-name>createDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_transactionDate">
+            <field-name>transactionDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_eBReferenceID">
+            <field-name>eBReferenceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_eBStagingReferenceID">
+            <field-name>eBStagingReferenceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_eBTrxReferenceID">
+            <field-name>eBTrxReferenceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_cMPTeamID">
+            <field-name>cMPTeamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_opDesc">
+            <field-name>opDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_legalID">
+            <field-name>legalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_customerID">
+            <field-name>customerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_eBOriginatingCountry">
+            <field-name>eBOriginatingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_eBOriginatingOrganisation">
+            <field-name>eBOriginatingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_limitProfileID">
+            <field-name>limitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_limitProfileReferenceNumber">
+            <field-name>limitProfileReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_eBSegment">
+            <field-name>eBSegment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_userInfo">
+            <field-name>userInfo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_currentTrxHistoryID">
+            <field-name>currentTrxHistoryID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_teamTypeID">
+            <field-name>teamTypeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_transactionSubType">
+            <field-name>transactionSubType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_cMPTeamMembershipID">
+            <field-name>cMPTeamMembershipID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_loginId">
+            <field-name>loginId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_toUserId">
+            <field-name>toUserId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_toAuthGId">
+            <field-name>toAuthGId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_toAuthGroupTypeId">
+            <field-name>toAuthGroupTypeId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSTrxValue_dealNo">
+            <field-name>dealNo</field-name>
+         </cmp-field>
+         <primkey-field>transactionID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCMSTrxValue">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByRefIDAndTrxType</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCMSTrxValue o WHERE ((?1 = o.eBReferenceID) AND (?2 = o.transactionType))]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByStageRefIDAndTrxType</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCMSTrxValue o WHERE ((?1 = o.eBStagingReferenceID) AND (?2 = o.transactionType))]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByParentTrxID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCMSTrxValue o WHERE (?1 = o.eBTrxReferenceID) AND (?2 = o.transactionType) ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findWorkingTrxByTrxType</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCMSTrxValue o WHERE (?1 = o.transactionType) AND (o.status <> 'CLOSED') ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTrxStateMatrix">
+         <ejb-name>EBTrxStateMatrix</ejb-name>
+         <home>com.integrosys.base.businfra.transaction.EBTrxStateMatrixHome</home>
+         <remote>com.integrosys.base.businfra.transaction.EBTrxStateMatrix</remote>
+         <ejb-class>com.integrosys.base.businfra.transaction.EBTrxStateMatrixBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.String</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTrxStateMatrix</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTrxStateMatrix_stateId">
+            <field-name>stateId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxStateMatrix_fromState">
+            <field-name>fromState</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxStateMatrix_toStateField">
+            <field-name>toStateField</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxStateMatrix_operation">
+            <field-name>operation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxStateMatrix_descriptionField">
+            <field-name>descriptionField</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxStateMatrix_stateInstance">
+            <field-name>stateInstance</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxStateMatrix_enabled">
+            <field-name>enabled</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxStateMatrix_frontEndOperation">
+            <field-name>frontEndOperation</field-name>
+         </cmp-field>
+         <primkey-field>stateId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTrxStateMatrix">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByAllTrxStateMatrix</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxStateMatrix o]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByInstanceTrxStateMatrix</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxStateMatrix o WHERE (?1 = o.stateInstance)]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByFromStateAndOperation</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxStateMatrix o WHERE ((?1 = o.fromState) AND (?2 = o.operation) AND (?3 = o.stateInstance) AND (o.enabled = '1'))]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByStateIdAndOperation</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxStateMatrix o WHERE ((?1 = o.stateId) AND (?2 = o.operation) AND (?3 = o.stateInstance))]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByValidTrxStateMatrix</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxStateMatrix o WHERE ((?1 = o.fromState) AND (?2 = o.toStateField) AND (?3 = o.operation) AND (?4 = o.stateInstance))]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTrxHistory">
+         <ejb-name>EBTrxHistory</ejb-name>
+         <home>com.integrosys.base.businfra.transaction.EBTrxHistoryHome</home>
+         <remote>com.integrosys.base.businfra.transaction.EBTrxHistory</remote>
+         <ejb-class>com.integrosys.cms.app.transaction.EBCMSTrxHistoryBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.String</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTrxHistory</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTrxHistory_historyId">
+            <field-name>historyId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_m_transactionId">
+            <field-name>m_transactionId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_fromState">
+            <field-name>fromState</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_toState">
+            <field-name>toState</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_m_fromUId">
+            <field-name>m_fromUId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_transactionType">
+            <field-name>transactionType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_m_timeOccured">
+            <field-name>m_timeOccured</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_createDate">
+            <field-name>createDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_referenceID">
+            <field-name>referenceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_stagingReferenceID">
+            <field-name>stagingReferenceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_m_fromAuthGId">
+            <field-name>m_fromAuthGId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_comment">
+            <field-name>comment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_operationDescField">
+            <field-name>operationDescField</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_m_currentCycle">
+            <field-name>m_currentCycle</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_m_toUId">
+            <field-name>m_toUId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_m_toAuthGId">
+            <field-name>m_toAuthGId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_trxReferenceID">
+            <field-name>trxReferenceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_legalID">
+            <field-name>legalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_customerID">
+            <field-name>customerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_originatingCountry">
+            <field-name>originatingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_originatingOrganisation">
+            <field-name>originatingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_limitProfileID">
+            <field-name>limitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_limitProfileReferenceNumber">
+            <field-name>limitProfileReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_segment">
+            <field-name>segment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_teamTypeID">
+            <field-name>teamTypeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_transactionSubType">
+            <field-name>transactionSubType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_teamMembershipID">
+            <field-name>teamMembershipID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_loginId">
+            <field-name>loginId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTrxHistory_dealNo">
+            <field-name>dealNo</field-name>
+         </cmp-field>
+         <primkey-field>historyId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTrxHistory">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByTransactionId</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxHistory o WHERE (?1 = o.m_transactionId)]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByTransactionIdAndOperation</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxHistory o WHERE (?1 = o.m_transactionId) AND (?2 = o.operationDescField)]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByTransactionIdAndOperationInCurrentCycle</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxHistory o WHERE (?1 = o.m_transactionId) AND (?2 = o.operationDescField) AND (o.m_currentCycle = '1')]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByOriginatorId</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxHistory o WHERE (?1 = o.m_fromUId)]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByMember</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxHistory o WHERE (?1 = o.m_toAuthGId)]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByToAuthzIdAndGroupId</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxHistory o WHERE (?2 = o.m_toAuthGId) AND (?3 = o.m_currentCycle)]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByToAuthzId</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBTrxHistory o WHERE (?1 = o.m_toAuthGId) AND (?2 = o.m_currentCycle)]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBCMSTrxManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCompTrxManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCMSTrxValue</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTrxHistory</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTrxStateMatrix</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

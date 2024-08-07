@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="SubLimitTypeListForm" type="com.integrosys.cms.ui.commodityglobal.sublimittype.list.SubLimitTypeListForm">
+        </form-bean>
+
+        <form-bean name="SubLimitTypeItemForm" type="com.integrosys.cms.ui.commodityglobal.sublimittype.item.SubLimitTypeItemForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	    <action path="/SubLimitTypeList"
+	        type="com.integrosys.cms.ui.commodityglobal.sublimittype.list.SubLimitTypeListAction"
+	        name="SubLimitTypeListForm" validate="false" scope="request">
+	        <forward name="update_slt_list" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/sublimittype/list/update_slt_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="ack_save" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprice"/>
+	        </forward>
+	        <forward name="ack_submit" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="work_in_progress" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/wip.html"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="view_slt_list" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/sublimittype/list/view_slt_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="ack_approve" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="ack_reject" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="ack_reject" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="ck_process_slt_list" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/sublimittype/list/ck_process_slt_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="prepare_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/sublimittype/list/view_slt_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="ack_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="update_slt_item" path="/SubLimitTypeItem.do?event=prepare_update"></forward>
+		</action>
+		
+	    <action path="/SubLimitTypeItem"
+	        type="com.integrosys.cms.ui.commodityglobal.sublimittype.item.SubLimitTypeItemAction"
+	        name="SubLimitTypeItemForm" validate="false" scope="request">
+	        <forward name="update_slt_item" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/sublimittype/item/update_slt_item.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.sublimittype"/>
+	        </forward>
+	        <forward name="update_slt_item_return" path="/SubLimitTypeList.do?event=update_return">
+	        </forward>
+		</action>
+	    
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-param-commodity-sublimittype"/>-->
+</struts-config>

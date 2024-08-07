@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+			
+		<bean id="npaTraqCodeMasterBusManager" class="com.integrosys.cms.app.npaTraqCodeMaster.bus.NpaTraqCodeMasterBusManagerImpl">
+		<property name="npaTraqCodeMasterDao" ref="npaTraqCodeMasterDao" />
+		<property name="npaTraqCodeMasterJdbc" ref="npaTraqCodeMasterJdbc" />
+		</bean>
+
+		<bean id="npaTraqCodeMasterProxy" class="com.integrosys.cms.app.npaTraqCodeMaster.proxy.NpaTraqCodeMasterProxyManagerImpl">
+		<property name="npaTraqCodeMasterBusManager" ref="npaTraqCodeMasterBusManager" />
+		<property name="stagingNpaTraqCodeMasterBusManager" ref="stagingNpaTraqCodeMasterBusManager" />
+		<property name="trxControllerFactory" ref="npaTraqCodeMasterTrxControllerFactory" />
+		</bean>
+		
+		<bean id="stagingNpaTraqCodeMasterBusManager" class="com.integrosys.cms.app.npaTraqCodeMaster.bus.NpaTraqCodeMasterBusManagerStagingImpl">
+		<property name="npaTraqCodeMasterDao" ref="npaTraqCodeMasterDao" />
+		<property name="npaTraqCodeMasterJdbc" ref="npaTraqCodeMasterJdbc" />
+		</bean>	
+</beans>

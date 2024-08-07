@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+		struts config to context mapping files for property index
+	</description>
+
+    <bean name="/MaintainPropertyIndex" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.systemparameters.propertyindex.PropertyIdxAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="CheckerApproveCreatePropertyIdxCmd"
+                       value-ref="PropertyIdxAction.CheckerApproveCreatePropertyIdxCmd"/>
+                <entry key="CheckerApproveDeletePropertyIdxCmd"
+                       value-ref="PropertyIdxAction.CheckerApproveDeletePropertyIdxCmd"/>
+                <entry key="CheckerApproveEditPropertyIdxCmd"
+                       value-ref="PropertyIdxAction.CheckerApproveEditPropertyIdxCmd"/>
+                <entry key="CheckerProcessPropertyIdxCmd" value-ref="PropertyIdxAction.CheckerProcessPropertyIdxCmd"/>
+                <entry key="CheckerRejectCreatePropertyIdxCmd"
+                       value-ref="PropertyIdxAction.CheckerRejectCreatePropertyIdxCmd"/>
+                <entry key="CheckerRejectDeletePropertyIdxCmd"
+                       value-ref="PropertyIdxAction.CheckerRejectDeletePropertyIdxCmd"/>
+                <entry key="CheckerRejectEditPropertyIdxCmd"
+                       value-ref="PropertyIdxAction.CheckerRejectEditPropertyIdxCmd"/>
+                <entry key="ListPropertyValByIndexCmd" value-ref="PropertyIdxAction.ListPropertyValByIndexCmd"/>
+                <entry key="MakerClosePropertyIdxCmd" value-ref="PropertyIdxAction.MakerClosePropertyIdxCmd"/>
+                <entry key="MakerCreatePropertyIdxCmd" value-ref="PropertyIdxAction.MakerCreatePropertyIdxCmd"/>
+                <entry key="MakerDeletePropertyIdxCmd" value-ref="PropertyIdxAction.MakerDeletePropertyIdxCmd"/>
+                <entry key="MakerEditPropertyIdxCmd" value-ref="PropertyIdxAction.MakerEditPropertyIdxCmd"/>
+                <entry key="PrepareCreatePropertyIdxCmd" value-ref="PropertyIdxAction.PrepareCreatePropertyIdxCmd"/>
+                <entry key="PrepareDeletePropertyIdxCmd" value-ref="PropertyIdxAction.PrepareDeletePropertyIdxCmd"/>
+                <entry key="PreparePropertyValByIndexCmd" value-ref="PropertyIdxAction.PreparePropertyValByIndexCmd"/>
+                <entry key="ReadPropertyIdxCmd" value-ref="PropertyIdxAction.ReadPropertyIdxCmd"/>
+                <entry key="ReturnPropertyIdxCmd" value-ref="PropertyIdxAction.ReturnPropertyIdxCmd"/>
+                <entry key="SaveCurWorkingPropertyIdxCmd" value-ref="PropertyIdxAction.SaveCurWorkingPropertyIdxCmd"/>
+                <entry key="DeleteItemCmd" value-ref="PropertyIdxAction.DeleteItemCmd"/>
+                <entry key="ReadPropertyIdxItemCmd" value-ref="PropertyIdxAction.ReadPropertyIdxItemCmd"/>
+                <entry key="ReloadPropertyIndexCmd" value-ref="CollateralAction.ReloadPropertyIndexValuationProfileSingletonCommand"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="/MaintainPropertyIdxItem" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.systemparameters.propertyindex.PropertyIdxItemAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="PreparePropertyIdxItemCmd" value-ref="PropertyIdxItemAction.PreparePropertyIdxItemCmd"/>
+                <entry key="SavePropertyIdxItemCmd" value-ref="PropertyIdxItemAction.SavePropertyIdxItemCmd"/>
+                <entry key="MakerChangeListPropertyIdxParameterCmd"
+                       value-ref="PropertyIdxItemAction.MakerChangeListPropertyIdxParameterCmd"/>
+            </map>
+        </property>
+    </bean>
+</beans>

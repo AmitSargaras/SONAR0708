@@ -1,0 +1,38 @@
+-- Dropping tablespace will drop the entire table link to the tablespace
+db2 drop tablespace cms_mig;
+
+db2 drop tablespace cms_mig_index;
+
+db2 drop bufferpool cms_mig_buf;
+
+db2 drop bufferpool cms_mig_idx_buf;
+
+-- Drop  all temporary migration table
+-- DROP TABLE MIG_CU001_CU;
+-- DROP TABLE MIG_CA001_AA;
+-- DROP TABLE MIG_CA002_JB;
+-- DROP TABLE MIG_CA003_1;
+-- DROP TABLE MIG_CA003_2_BNM;
+-- DROP TABLE MIG_CA003_3_OFF;
+-- DROP TABLE MIG_CA003_4_REL;
+-- DROP TABLE MIG_CA003_5_INS;
+-- DROP TABLE MIG_CA003_6_MUL;
+-- DROP TABLE MIG_CA003_7_ISL;
+-- DROP TABLE MIG_CA003_8_BBA;
+-- DROP TABLE MIG_CA004;
+
+-- DROP TABLE MIG_CO001_AB;
+-- DROP TABLE MIG_CO002_AB_GOLD;
+-- DROP TABLE MIG_CO005_CS;
+-- DROP TABLE MIG_CO008_MS;
+-- DROP TABLE MIG_CO009_PT;
+-- DROP TABLE MIG_CO010_GT;
+-- DROP TABLE MIG_CO011_OT;
+-- DROP TABLE MIG_CO012_IN;
+-- DROP TABLE MIG_CO014_CL;
+
+-- DROP TABLE MIG_CO015_VL;
+-- DROP TABLE MIG_CO016_IN;
+-- DROP TABLE MIG_CO017_CD;
+-- DROP TABLE MIG_CO018_PG;
+-- DROP TABLE MIG_CO019_PL;

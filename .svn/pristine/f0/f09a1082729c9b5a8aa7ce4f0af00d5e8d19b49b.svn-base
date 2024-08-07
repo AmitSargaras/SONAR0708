@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT BAH_FILE_UPLOAD.SERIAL_NO,
+			BAH_FILE_UPLOAD.LINE_NO,
+			BAH_FILE_UPLOAD.CUSTOMER_ID,
+			BAH_FILE_UPLOAD.CURRENCY,
+			BAH_FILE_UPLOAD.STATUS,
+			BAH_FILE_UPLOAD.REASON,
+			FILE_UPLOAD.FILENAME,
+			TO_CHAR(FILE_UPLOAD.UPLOADTIME,'HH24:MI:SS')
+			FROM CMS_FILE_UPLOAD FILE_UPLOAD
+			INNER JOIN CMS_BAHRAIN_FILE_UPLOAD BAH_FILE_UPLOAD
+			ON BAH_FILE_UPLOAD.FILE_ID = FILE_UPLOAD.ID
+			AND FILE_UPLOAD.FILETYPE = 'BAHRAIN_UPLOAD'
+			AND FILE_UPLOAD.UPLOADBY = 'SYSTEM' AND FILE_UPLOAD.APPROVEBY='SYSTEM'
+		</query>
+		<whereClause>
+			<param>
+				<name>fromDate</name>
+				<condition>TRUNC(FILE_UPLOAD.UPLOADTIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Serial Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>Reason</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>File Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Upload Time</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>BAHRAIN.xls</reportName>
+		</reportParamters>
+	</report>
+</reports>

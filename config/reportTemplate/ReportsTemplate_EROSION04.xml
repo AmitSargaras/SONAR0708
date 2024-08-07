@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT SR_NO,
+			  PARTY_ID,
+			  --PARTY_NAME,
+			  trim((REPLACE (REPLACE (PARTY_NAME, chr (13), ''), chr (10), ' '))) AS PARTY_NAME,
+			  Total_Erosion,
+			  Erosion
+			FROM
+			  (WITH MAin_er AS
+			  (SELECT LSP_LE_ID,
+			    LSP_SHORT_NAME,
+			    SUM(c_sec) c_sec,
+			    SUM(UTILIZED_AMOUNT) UTILIZED_AMOUNT,
+			    SUM(P_sec)P_sec,
+			    SUM(P_UTILIZED_AMOUNT)P_UTILIZED_AMOUNT
+			  FROM CLMS_TRQ_PRON_RPT_FAC
+			  WHERE TRN_DATE=
+				  (SELECT
+				   TRUNC(to_Date(  CASE
+				      WHEN LAST_DAY(to_Date(param_value, 'DD-MON-YYYY'))=to_Date(param_value, 'DD-MON-YYYY')
+				      THEN TRUNC(to_Date(param_value, 'DD-MON-YYYY'),'MM')
+				      ELSE to_Date(param_value, 'DD-MON-YYYY')
+				    END ) )
+				  FROM cms_general_param
+				  WHERE param_code = 'EROSION_DATE'
+				  )
+			  GROUP BY LSP_LE_ID,
+			    LSP_SHORT_NAME
+			  ),
+			  det AS
+			  (SELECT LSP_LE_ID,
+			    LSP_SHORT_NAME,
+			    DECODE (UTILIZED_AMOUNT,0,0,c_sec/UTILIZED_AMOUNT)-DECODE (P_UTILIZED_AMOUNT,0,0,P_sec/P_UTILIZED_AMOUNT) AS Total_Erosion
+			  FROM MAin_er
+			  )
+			SELECT rownum    AS SR_NO,
+			  LSP_LE_ID      AS PARTY_ID,
+			  LSP_SHORT_NAME AS PARTY_NAME,
+			  Total_Erosion,
+			  CASE
+			    WHEN Total_Erosion>-0.50
+			    THEN 'No'
+			    ELSE 'Yes'
+			  END Erosion
+			FROM det) 
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				1=1
+			</mandatoryClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Sr. No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Party name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Total Erosion%</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Erosion</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>CLIMS TRAQ Provision Report (Party wise erosion report)</reportName>
+		</reportParamters>
+	</report>
+</reports>

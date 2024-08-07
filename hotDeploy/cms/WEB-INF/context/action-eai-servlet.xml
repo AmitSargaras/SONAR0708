@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<bean name="/EaiMessage" scope="prototype" autowire="byName" class="com.integrosys.cms.host.eai.web.EaiMessageAction">
+		<property name="messageFolder" ref="eaiMessageFolder" />
+		<property name="messageHandlerSubject" ref="messageHandler" />
+		<property name="messageAttributeName" value="msg" />
+		<property name="messageMarshallerFactory" ref="messageMarshallerFactory" />
+		<property name="processWaitingSleepingPeriod" value="${eai.sleeping.period.while.waiting.for.notify}" />
+	</bean>
+
+</beans>

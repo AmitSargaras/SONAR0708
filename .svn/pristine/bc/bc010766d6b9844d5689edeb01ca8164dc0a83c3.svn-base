@@ -1,0 +1,19 @@
+
+. set_mig_env.sh $*
+
+"$DB2_HOME"/bin/db2 call "MIG_VALIDATE_CS"
+"$DB2_HOME"/bin/db2 call "MIG_VALIDATE_CHARGE_CS"
+"$DB2_HOME"/bin/db2 call "MIG_VALIDATE_PLEDGOR_CS"
+"$DB2_HOME"/bin/db2 call "mig_setvalue_CS"
+"$DB2_HOME"/bin/db2 call "mig_setvalue_val_CS"
+"$DB2_HOME"/bin/db2 call "mig_setvalue_charge_CS"
+"$DB2_HOME"/bin/db2 call "mig_setvalue_pledgor_CS"
+
+"$DB2_HOME"/bin/db2 call "MIG_RUN_CS"
+"$DB2_HOME"/bin/db2 call "MIG_LIMIT_SECURITY_MAP"('MIG_CHARGE_CS', 'MIG_CS')
+"$DB2_HOME"/bin/db2 call "MIG_CHARGE_DETAILS_WO_RANK"('MIG_CHARGE_CS')
+"$DB2_HOME"/bin/db2 call "MIG_LIMIT_CHARGE_MAP"('MIG_CHARGE_CS', 'MIG_CS')
+"$DB2_HOME"/bin/db2 call "MIG_PLEDGOR"('MIG_PLEDGOR_CS')
+"$DB2_HOME"/bin/db2 call "MIG_SEC_PLEDGOR_MAP"('MIG_PLEDGOR_CS', 'MIG_CS')
+"$DB2_HOME"/bin/db2 call "MIG_COMMON_VALUATION"('MIG_VAL_CS', 'MIG_CS', 'M', 'F')
+"$DB2_HOME"/bin/db2 call "SI_AUTO_CREATE_TRANSACTION"

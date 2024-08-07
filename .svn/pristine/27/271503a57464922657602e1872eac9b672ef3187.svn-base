@@ -1,0 +1,50 @@
+SELECT  
+sp.LSP_LE_ID as unique_refno,
+udf.UDF96 SCM,
+null Action,
+sp.status,  
+sp.LSP_LE_ID  "party Id",
+sp.LSP_SHORT_NAME "party Name",
+sp.lsp_sgmnt_code_value "Vertical",
+sp.entity Constitution,
+cri.msme_classification "MSME Classification",    
+sp.PAN "pan no",    
+sp.ind_nm "Industry Type",
+sp.class_activity_1 "Type of Activities",
+rm.EMPLOYEE_ID "Relationship Manager" ,
+sp.TOTAL_SANCTIONED_LIMIT "Capital Line",
+lp.CMS_APPR_OFFICER_GRADE "Customer Risk Rating",
+sp.cin_llpin "Corporate Identification No",
+to_char(sp.lsp_incorp_date,'DD-MON-YYYY') "Date of Incorporation" ,
+sp.WILLFUL_DEFAULT_STATUS "Wilful Default Status",
+to_char(sp.DATE_WILLFUL_DEFAULT,'DD-MON-YYYY') "Date as Wilful Default",
+(select entry_name from common_code_category_entry where sp.SUIT_FILLED_STATUS = entry_code and ACTIVE_STATUS = '1'
+and category_code='SUIT_FILLED_STATUS') "Suit Filed ", 
+sp.SUIT_AMOUNT,
+to_char(sp.DATE_OF_SUIT,'DD-MON-YYYY') DATE_OF_SUIT,
+ra.LRA_TYPE_VALUE "Address Type",
+        ra.LRA_ADDR_LINE_1 "Address 1",  
+        ra.LRA_ADDR_LINE_2 "Address 2",  
+ ra.LRA_ADDR_LINE_3 "Address 3",  
+concat( ra.LRA_STD_CODE_TEL ,ra.LRA_TELEPHONE_TEXT) "Telephone Number",
+udf.udf17 "mobile number",
+        cc.CITY_NAME,  
+ reg.region_name region,  
+ (select distinct STATE_CODE from CMS_STATE where id = ra.LRA_STATE and STATUS='ACTIVE') as STATE,  
+ (select distinct cntry.COUNTRY_NAME from CMS_COUNTRY cntry,CMS_STATE 
+ state where reg.id = state.region_id and reg.COUNTRY_ID=cntry.id and cntry.status = 'ACTIVE') as Country,  
+ LRA_STD_CODE_TELEX || ra.LRA_TELEX_TEXT "Fax No",  
+        ra.LRA_POST_CODE "Pin Code",
+  ra.LRA_EMAIL_TEXT "Email" FROM  
+SCI_LE_REG_ADDR ra, sci_le_cri cri,SCI_LSP_LMT_PROFILE lp,SCI_LE_SUB_PROFILE sp,SCI_LE_main_PROFILE mp,  
+CMS_RELATIONSHIP_MGR rm, CMS_CITY cc,CMS_REGION reg,sci_le_udf udf  
+        WHERE  
+        sp.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID
+        AND cri.CMS_LE_MAIN_PROFILE_ID = sp.CMS_LE_MAIN_PROFILE_ID
+  AND udf.CMS_LE_MAIN_PROFILE_ID = sp.CMS_LE_MAIN_PROFILE_ID
+ AND sp.cms_le_main_profile_id = mp.cms_le_main_profile_id
+        AND sp.LSP_LE_ID = mp.lmp_le_id  
+ AND rm.ID(+) = sp.RELATION_MGR  
+AND sp.LSP_LE_ID = lp.LLP_LE_ID(+)
+AND ra.lra_region = reg.id(+) AND cc.id(+) = ra.lra_city_text AND sp.status != 'INACTIVE'  
+AND ra.LRA_TYPE_VALUE in ('CORPORATE');

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<posidexTemplateOut>
+			<query>
+			select prof.lsp_short_name party_name,
+			(addr.lra_addr_line_1||decode(addr.lra_addr_line_2,null,'',','||addr.lra_addr_line_2)||decode(addr.lra_addr_line_3,null,'',','||addr.lra_addr_line_3)) address,
+			(select city_name from cms_city where id=addr.lra_city_text) city,
+			addr.lra_post_code pincode,
+			addr.lra_telephone_text teleno,
+			prof.lsp_le_id partyid,
+			prof.pan pan_no,
+      		prof.total_sanctioned_limit,
+			prof.total_funded_limit,
+			prof.total_non_funded_limit,
+			(CASE WHEN (TO_NUMBER(cam.cms_appr_officer_grade) BETWEEN 1 AND 7 ) THEN 'GOOD'
+		      WHEN (TO_NUMBER(cam.cms_appr_officer_grade) BETWEEN 8 AND 10) THEN 'BAD'
+		      END)
+		      CUSTOMER_TYPE,
+		    (CASE WHEN ( (TO_NUMBER(cam.cms_appr_officer_grade) BETWEEN 1 AND 10) AND (TO_NUMBER(cam.cms_appr_officer_grade) != 7)  ) THEN 'HDB'||' '||TO_NUMBER(cam.cms_appr_officer_grade)||' - RAM helpdesk'
+		      WHEN (TO_NUMBER(cam.cms_appr_officer_grade) = 7 ) THEN 'HDB'||' '||TO_NUMBER(cam.cms_appr_officer_grade)||' - Refer to Wholesale Credit-RAM Helpdesk'
+		      END) REMARKS
+			from sci_le_sub_profile prof, sci_le_reg_addr addr,sci_lsp_lmt_profile cam
+		</query>
+	<whereClause>
+		<mandatoryClause>
+				1=1 
+				and addr.lra_type_value='CORPORATE'
+				and addr.cms_le_main_profile_id = prof.cms_le_main_profile_id
+				and cam.cms_customer_id = prof.cms_le_sub_profile_id
+				and prof.status='ACTIVE'
+				and prof.lsp_sgmnt_code_value 
+				in('SEG0000001',
+				'SEG0000003',
+				'SEG0000006',
+				'SEG0000007',
+				'SEG0000008',
+				'SEG0000015',
+				'SEG0000016',
+				'SEG0000017',
+				'SEG0000018',
+				'SEG0000019',
+				'SEG0000020',
+				'SEG0000022',
+				'SEG0000033',
+				'SEG0000037',
+				'SEG0000042',
+				'SEG0000045',
+				'SEG0000046',
+				'SEG0000047',
+				'SEG0000048',
+				'SEG0000049',
+				'SEG0000050',
+				'SEG0000051',
+				'SEG0000052',
+				'SEG0000053',
+				'SEG0000054',
+				'SEG0000055',
+				'SEG0000056',
+				'SEG0000060',
+				'SEG0000061',
+				'SEG0000062',
+				'SEG0000063',
+				'SEG0000064',
+				'SEG0000070',
+				'SEG0000077',
+				'SEG0000078',
+				'SEG0000080',
+				'SEG0000081',
+				'SEG0000092',
+				'SUPFIG')
+		</mandatoryClause>
+	</whereClause>
+	<reportType>TXT</reportType>
+	<delimiter>|</delimiter>
+	<secondaryDelimiter></secondaryDelimiter>
+	
+	<reportParamters>
+		<reportColumns>
+			<reportColumn>
+				<width>100</width>
+				<format>textFormat</format>
+				<header>PARTY NAME</header>
+			</reportColumn>
+			<reportColumn>
+				<width>250</width>
+				<format>textFormat</format>
+				<header>Address</header>
+			</reportColumn>
+			<reportColumn>
+				<width>100</width>
+				<format>textFormat</format>
+				<header>CITY</header>
+			</reportColumn>
+			<reportColumn>
+				<width>10</width>
+				<format>textFormat</format>
+				<header>PIN CODE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>20</width>
+				<format>textFormat</format>
+				<header>TEL NO</header>
+			</reportColumn>
+			<reportColumn>
+				<width>20</width>
+				<format>textFormat</format>
+				<header>PARTY ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>10</width>
+				<format>textFormat</format>
+				<header>PAN NO</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>TOTAL SANCTIONED AMOUNT</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>TOTAL FUNDED LIMIT</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>TOTAL NON-FUNDED LIMIT</header>
+			</reportColumn>
+			<reportColumn>
+				<width>10</width>
+				<format>textFormat</format>
+				<header>CUSTOMER TYPE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>REMARKS</header>
+			</reportColumn>
+		</reportColumns>
+		<reportName>UBS</reportName>
+		<additionalHeader>HDR</additionalHeader>
+		<additionalTrailer>TRL</additionalTrailer>
+	</reportParamters>
+	</posidexTemplateOut>

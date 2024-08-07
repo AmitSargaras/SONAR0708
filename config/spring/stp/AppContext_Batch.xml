@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       	http://www.springframework.org/schema/beans/spring-beans.xsd
+       	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
+
+    <bean id="stpReconcileFileGen" class="com.integrosys.cms.batch.sibs.stp.StpReconcileFileGen">
+        <property name="itemReader">
+            <bean class="org.springframework.batch.item.database.JdbcCursorItemReader">
+                <property name="dataSource" ref="ofaPool"/>
+                <property name="sql"
+                          value="SELECT 'CMS' || rtrim(char(trx_uid)) FROM stp_trans where status = 'SENDING'"/>
+                <property name="mapper">
+                    <bean class="com.integrosys.cms.batch.sibs.stp.StpReconcileRowMapper"/>
+                </property>
+            </bean>
+        </property>
+        <property name="itemWriter">
+            <bean class="org.springframework.batch.item.file.FlatFileItemWriter">
+                <property name="resource" value="${resource.stp.reconcile.report.path}"/>
+                <property name="fieldSetCreator">
+                    <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper"/>
+                </property>
+            </bean>
+        </property>
+        <property name="itemTransformer">
+            <bean class="com.integrosys.cms.batch.sibs.stp.StpReconcileTransformer">
+                <property name="aggregators" ref="stpReconcileAggregators"/>
+            </bean>
+        </property>
+    </bean>
+
+    <util:map id="stpReconcileAggregators">
+        <entry key="header" value-ref="stpReconcileHeader"/>
+        <entry key="footer" value-ref="stpReconcileFooter"/>
+        <entry key="body" value-ref="stpReconcileBody"/>
+    </util:map>
+
+    <bean id="stpReconcileHeader" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-1,2-9,10-12,13-17,18-20,21-24,25-25"/>
+
+    <bean id="stpReconcileBody" class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-1,2-22,23-24,25-25" p:alignment="LEFT"/>
+
+    <bean id="stpReconcileFooter"
+          class="org.springframework.batch.item.file.transform.FixedLengthLineAggregator"
+          p:columns="1-1,2-11,12-25" p:alignment="RIGHT" p:padding="0"/>
+
+    <!-- Stp refire LOS rejected facility -->
+    <bean id="StpRefireLosRejectedFacilityBatchJob"
+          class="com.integrosys.cms.batch.sibs.stp.StpRefireLosRejectedFacility">
+        <property name="jdbcTemplate">
+            <bean class="org.springframework.jdbc.core.JdbcTemplate">
+                <property name="dataSource" ref="ofaPool"/>
+            </bean>
+        </property>
+        <property name="runProcedureName" value="STP_REFIRE_LOS_REJECTED_FACILITY"/>
+    </bean>
+
+</beans>

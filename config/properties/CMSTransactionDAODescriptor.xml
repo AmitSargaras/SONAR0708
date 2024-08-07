@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSPY v5 rel. 2 U (http://www.xmlspy.com) by rth77 (rth77) -->
+<TransactionDAO>
+ <Descritpion>This config XML contains SQL statements used in DAO</Descritpion>
+ <SQL>
+  <!-- To get comments for all trx history for a particular trx  -->
+  <!-- Usage : comments history in CMSTrx object -->
+  <TransactionLog>
+   SELECT * FROM (
+  	SELECT HIST.TR_HISTORY_ID,
+         	 HIST.TRANSACTION_ID,
+         	 (SELECT USER_NAME FROM CMS_USER WHERE USER_ID=HIST.USER_ID) as USER_NAME,
+         	 HIST.TRANSACTION_TYPE,
+         	 HIST.TRANSACTION_SUBTYPE,
+         	 HIST.TRANSACTION_DATE as LOG_DATE,
+         	 HIST.creation_date as TRANSACTION_DATE,
+         	 (SELECT ABBREVIATION FROM CMS_TEAM WHERE TEAM_ID=HIST.TEAM_ID) as TEAM_NAME,
+         	 HIST.REMARKS, HIST.TO_USER_ID, HIST.TO_GROUP_ID,
+         	 HIST.TEAM_TYPE_ID, HIST.TO_GROUP_TYPE_ID,
+         	 ROW_NUMBER() OVER (ORDER BY HIST.TR_HISTORY_ID) AS RNO
+  	FROM TRANS_HISTORY HIST, TRANSACTION TRANS
+  	WHERE TRANS.TRANSACTION_ID='?TRANSACTION_ID?'
+    	  AND HIST.TRANSACTION_ID=TRANS.TRANSACTION_ID
+    	  AND HIST.TR_HISTORY_ID>= (SELECT MAX(hist1.TR_HISTORY_ID) 
+                                  FROM TRANS_HISTORY HIST1
+			      	    WHERE HIST1.TRANSACTION_ID='?TRANSACTION_ID?'
+		                		AND ((HIST1.FROM_STATE='ACTIVE' AND HIST1.TO_STATE='PENDING_UPDATE') OR (HIST1.FROM_STATE='ND' AND HIST1.TO_STATE='PENDING_CREATE') OR (HIST1.FROM_STATE='ND' AND HIST1.TO_STATE='DRAFT') )
+		                		AND (HIST1.TRANSACTION_SUBTYPE IS NULL OR (HIST1.TRANSACTION_SUBTYPE!='CC_CHECKLIST' AND HIST1.TRANSACTION_SUBTYPE!='COL_CHECKLIST') )
+	                     	   )
+    	  AND (HIST.TRANSACTION_SUBTYPE IS NULL OR (HIST.TRANSACTION_SUBTYPE!='CC_CHECKLIST' AND HIST.TRANSACTION_SUBTYPE!='COL_CHECKLIST') )
+    	  AND HIST.OPSDESC!='DIRECT_UPDATE'
+      ORDER BY HIST.TR_HISTORY_ID DESC
+   ) RESULT 
+   WHERE RESULT.RNO ?$LESSTHAN? 20 ORDER BY RESULT.TR_HISTORY_ID ASC
+  </TransactionLog>
+  <!-- To get users who participated in the trx  -->
+  <!-- Usage : used for checklist notification. checklist event monitor. -->
+  <TransactionRouteInfo>
+   SELECT DISTINCT
+          CASE WHEN HIST.TEAM_TYPE_ID = 10 THEN -999999999 ELSE CASE WHEN HIST.TEAM_TYPE_ID = 12 THEN -999999999 ELSE HIST.USER_ID END END AS FROM_USER_ID,
+          HIST.TEAM_ID AS FROM_GROUP_ID,
+          HIST.TEAM_TYPE_ID AS FROM_TEAM_TYPE_ID
+   FROM TRANS_HISTORY HIST,TRANSACTION TRANS
+   WHERE TRANS.TRANSACTION_ID ='?TRANSACTION_ID?'
+     AND HIST.TRANSACTION_ID = TRANS.TRANSACTION_ID
+     AND HIST.TR_HISTORY_ID >= (SELECT MAX(hist1.TR_HISTORY_ID) 
+					  FROM TRANS_HISTORY HIST1
+	                          WHERE HIST1.TRANSACTION_ID ='?TRANSACTION_ID?'
+	                            AND ((HIST1.FROM_STATE = 'ACTIVE' AND HIST1.TO_STATE = 'PENDING_UPDATE') OR (HIST1.FROM_STATE = 'ND' AND HIST1.TO_STATE = 'PENDING_CREATE'))
+					    AND (HIST1.TRANSACTION_SUBTYPE IS NULL OR HIST1.TRANSACTION_SUBTYPE != 'CC_CHECKLIST')
+                                )
+     AND (HIST.TRANSACTION_SUBTYPE IS NULL OR HIST.TRANSACTION_SUBTYPE != 'CC_CHECKLIST') 
+  </TransactionRouteInfo>
+  <!-- To get user info given a team id, team membership id and user id  -->
+  <!-- Usage : get name in the comments history. -->
+  <UserInfo>
+   SELECT TMTYPE.TEAM_TYPE_MEMBERSHIP_ID MEMBERSHIPTYPEID,
+	    TMTYPE.MEMBERSHIP_NAME ,
+	    TEAM.TEAM_ID,
+	    TEAM.ABBREVIATION as TEAM_NAME,
+	    TEAM.TEAM_TYPE_ID,
+	    TTYPE.BUSINESS_CODE,
+	    U.USER_ID,
+	    U.USER_NAME
+   FROM CMS_TEAM_TYPE_MEMBERSHIP  TMTYPE,
+	  CMS_TEAM TEAM,
+	  CMS_TEAM_TYPE TTYPE,
+        CMS_TEAM_MEMBERSHIP TMS LEFT OUTER JOIN CMS_TEAM_MEMBER TM ON TM.TEAM_MEMBERSHIP_ID = TMS.TEAM_MEMBERSHIP_ID LEFT OUTER JOIN  CMS_USER U ON U.USER_ID = TM.USER_ID
+   WHERE TMTYPE.TEAM_TYPE_MEMBERSHIP_ID=?TEAM_TYPE_MEMBERSHIP_ID?
+     AND ( (TEAM.TEAM_ID =?TEAM_ID?) OR (-999999999=?TEAM_ID?)
+     AND TEAM.TEAM_TYPE_ID = TMTYPE.TEAM_TYPE_ID
+     AND TTYPE.TEAM_TYPE_ID = TEAM.TEAM_TYPE_ID
+     /* Team Membership */
+     AND TMS.TEAM_TYPE_MEMBERSHIP_ID = TMTYPE.TEAM_TYPE_MEMBERSHIP_ID
+     AND TMS.TEAM_ID = TEAM.TEAM_ID
+    AND ( (U.USER_ID =?USER_ID?) OR (-999999999=?USER_ID?)
+   </UserInfo>
+   <!-- To get the list of users that can be forwarded the transaction.  -->
+   <!-- 1st query gets list of FAM group, 2nd query gets the rest of GAM, RCO, SCO users.  -->
+   <!-- Taking in to consideration data protection rules. -->
+   <!-- Usage : To popoulate dropdown list of users that can be forwarded. -->
+   <NextRouteList>
+    SELECT * FROM (
+ 	 SELECT DISTINCT tmtype.team_type_membership_id membershiptypeid,
+              ' ' membership_name, 
+              -999999999 team_id,
+              'FAM' AS team_name, 
+              -999999999 team_type_id,
+              '' business_code, 
+              -999999999 user_id, 
+              ' ' user_name
+         FROM TRANSACTION trx,
+              tr_state_matrix states,
+              cms_statematrix_action stateaction,
+              cms_team_type_membership tmtype,
+              cms_team team,
+              cms_team_type ttype,
+              cms_team_country_code tctry,
+              cms_team_organisation_code torg,
+              cms_team_segment_code tseg,
+              CMS_TEAM_MEMBERSHIP tms LEFT OUTER JOIN  CMS_TEAM_MEMBER tm ON tm.TEAM_MEMBERSHIP_ID = tms.TEAM_MEMBERSHIP_ID LEFT OUTER JOIN CMS_USER u ON u.USER_ID = tm.USER_ID
+        WHERE trx.transaction_id = '?TRANSACTION_ID?'
+          AND trx.to_group_type_id ?$NOTEQUAL? '13'
+          /* what will be TOSTATE with operation*/
+          AND states.stateins = trx.transaction_type
+          AND states.fromstate IN (SELECT states.tostate
+                         		 FROM tr_state_matrix states
+                                    WHERE states.stateins = trx.transaction_type
+                                      AND states.fromstate = trx.status
+                                      AND ( states.operation in ('OFFICER_FORWARD_CREATE', 'OFFICER_FORWARD_UPDATE', 'OFFICER_FORWARD_CLOSE','FORWARD','BACKWARD')))
+          AND stateaction.state_id = states.stateid
+          AND stateaction.team_membership_type_id = tmtype.team_type_membership_id
+          AND team.team_type_id = tmtype.team_type_id
+          AND ttype.team_type_id = team.team_type_id
+          AND ttype.business_code = 'FAM'
+          /* Team Membership */
+          AND tms.team_type_membership_id = tmtype.team_type_membership_id
+          AND tms.team_id = team.team_id
+          AND tctry.team_id = team.team_id
+          AND torg.team_id = team.team_id
+          AND tseg.team_id = team.team_id
+          AND trx.trx_origin_country in ('--', tctry.country_code)
+          AND trx.trx_origin_organisation in ('--', torg.organisation_code)
+          AND trx.trx_segment in ('--', tseg.segment_code)
+       UNION
+       SELECT DISTINCT tmtype.team_type_membership_id membershiptypeid,
+              tmtype.membership_name, 
+              team.team_id,
+              team.abbreviation AS team_name, 
+              team.team_type_id,
+              ttype.business_code, 
+              u.user_id, 
+              u.user_name
+         FROM TRANSACTION trx,
+              tr_state_matrix states,
+              cms_statematrix_action stateaction,
+              cms_team_type_membership tmtype,
+              cms_team team,
+              cms_team_type ttype,
+              cms_team_membership tms,
+              cms_team_member tm,
+              cms_team_country_code tctry,
+              cms_team_organisation_code torg,
+              cms_team_segment_code tseg,
+              cms_user u
+        WHERE trx.transaction_id = '?TRANSACTION_ID?'
+          AND trx.to_group_type_id ?$NOTEQUAL? '4'
+          AND trx.to_group_type_id ?$NOTEQUAL? '5'
+          /* what will be TOSTATE with operation*/
+          AND states.stateins = trx.transaction_type
+          AND states.fromstate IN (SELECT states.tostate
+                                     FROM tr_state_matrix states
+                                    WHERE states.stateins = trx.transaction_type
+                                      AND states.fromstate = trx.status
+                                      AND (states.operation in ('OFFICER_FORWARD_CREATE', 'OFFICER_FORWARD_UPDATE', 'OFFICER_FORWARD_CLOSE','FORWARD','BACKWARD')))
+          AND stateaction.state_id = states.stateid
+          AND stateaction.team_membership_type_id = tmtype.team_type_membership_id
+          AND team.team_type_id = tmtype.team_type_id
+          AND ttype.team_type_id = team.team_type_id
+          AND ttype.business_code ?$NOTEQUAL? 'FAM'
+          /* Team Membership */
+          AND tms.team_type_membership_id = tmtype.team_type_membership_id
+          AND tms.team_id = team.team_id
+          AND tms.team_membership_id = tm.team_membership_id
+          AND tm.user_id = u.user_id
+          AND ((u.user_id ?$NOTEQUAL? trx.to_user_id) OR (trx.to_user_id = -999999999))
+          AND tctry.team_id = team.team_id
+          AND torg.team_id = team.team_id
+          AND tseg.team_id = team.team_id
+          AND trx.trx_origin_country in ('--', tctry.country_code)
+          AND trx.trx_origin_organisation in ('--', torg.organisation_code)
+          AND trx.trx_segment in ('--', tseg.segment_code)) LIST
+    ORDER BY LIST.team_type_id, LIST.user_name
+   </NextRouteList>
+   <!-- To get to-do list items for checker and maker.  -->
+   <!-- Usage : Currently not in use. Because do not take care of scenario when creating new CMS Users/Teams. -->
+   <!-- CONSIDER TAKING OUT -->
+   <Todo>
+SELECT DISTINCT
+TRANS.TRANSACTION_ID,
+TRANS.CUR_TRX_HISTORY_ID,
+TRANS.REFERENCE_ID,
+TRANS.TRANSACTION_TYPE,
+TRANS.TRANSACTION_SUBTYPE,
+TRANS.STATUS,
+TRANS.LEGAL_ID,
+TRANS.LIMIT_PROFILE_ID,
+TRANS.LEGAL_NAME AS LNAME,
+TRANS.CUSTOMER_NAME ,
+TRANS.CUSTOMER_ID,
+TRANS.TRANSACTION_DATE,
+TRANS.TRX_ORIGIN_COUNTRY,
+STATEACTION.STATE_ID,
+STATEACTION.USER_ACTION,
+STATEACTION.URL,
+STATEACTION.TOTRACK_URL,
+TRX.USER_STATE,
+TRX.USER_TRX_TYPE,
+( SELECT COUNTRY_NAME FROM COUNTRY WHERE COUNTRY.COUNTRY_ISO_CODE = TRANS.TRX_ORIGIN_COUNTRY ) as COUNTRY_NAME,
+EMAP.LEM_EMP_NAME,
+EMAP.LEM_EMP_TYPE_VALUE,
+EMAP.LEM_PRINCIPAL_FAM_IND,
+SUB.LSP_ID,
+SUB.LSP_SHORT_NAME AS CUSTOMER_NAME,
+MAIN.LMP_LE_ID,
+MAIN.LMP_LONG_NAME AS LEGAL_NAME,
+' ' AS TASK_FLAG,
+LMT.LLP_BCA_REF_APPR_DATE,
+LMT.CMS_BCA_CREATE_DATE
+FROM
+CMS_TEAM_TYPE_MEMBERSHIP  TMTYPE,
+CMS_STATEMATRIX_ACTION  STATEACTION,
+TR_STATE_MATRIX STATES,
+CMS_TEAM TEAM,
+TRANSACTION TRANS,
+CMS_TRX_TOTRACK TRX,
+SCI_LSP_LMT_PROFILE LMT,
+SCI_LSP_EMP_MAP  EMAP,
+SCI_LE_SUB_PROFILE SUB,
+SCI_LE_MAIN_PROFILE MAIN
+WHERE
+/* Related STATES of this type of team */
+TMTYPE.TEAM_TYPE_MEMBERSHIP_ID = ?TEAM_TYPE_MEMBERSHIP_ID?
+AND STATEACTION.TEAM_MEMBERSHIP_TYPE_ID=TMTYPE.TEAM_TYPE_MEMBERSHIP_ID
+AND STATES.STATEID = STATEACTION.STATE_ID
+/* MUST Related TRANS of this type of team;
+   for Maker/Checker, only its team-charged transaction are searched out */
+AND TEAM.TEAM_TYPE_ID = TMTYPE.TEAM_TYPE_ID
+AND TRANS.TEAM_ID =TEAM.TEAM_ID
+/* TRNAS constraint within states */
+AND TRANS.TRANSACTION_TYPE = STATES.STATEINS
+AND TRANS.STATUS = STATES.FROMSTATE
+AND ( TRANS.TRX_ORIGIN_COUNTRY IN (?ALLOWED_COUNTRIES?) OR TRANS.TRX_ORIGIN_COUNTRY is NULL )
+AND ( (TRANS.TRX_ORIGIN_ORGANISATION IN (?ALLOWED_ORGANIZATIONS?)) or (TRANS.TRX_ORIGIN_ORGANISATION is null ) )
+AND ( (TRANS.TRX_SEGMENT IN (?ALLOWED_SEGMENTS?)) OR (TRANS.TRX_SEGMENT IS NULL) )
+?TRANSACTION_TYPES_CONDITION? ?LIMIT_PROFILE_ID_CONDITION? ?LEGAL_NAME_CONDITION?
+/* Look up TRX */
+AND TRANS.TRANSACTION_TYPE = TRX.TRANSACTION_TYPE(+)
+AND TRANS.STATUS = TRX.CURR_STATE(+)
+AND ( (TRANS.FROM_STATE = TRX.FROM_STATE ) OR (TRX.FROM_STATE is null) )
+AND ( (TRANS.TRANSACTION_SUBTYPE = TRX.TRANSACTION_SUBTYPE ) OR  (TRX.TRANSACTION_SUBTYPE is null ) )
+/* Look up profile */
+AND TRANS.LIMIT_PROFILE_ID = LMT.CMS_LSP_LMT_PROFILE_ID(+)
+AND EMAP.CMS_LE_SUB_PROFILE_ID = LMT.CMS_CUSTOMER_ID
+AND EMAP.LEM_EMP_BKG_LOC_CTRY = LMT.CMS_ORIG_COUNTRY
+AND EMAP.LEM_EMP_BKG_LOC_ORG = LMT.CMS_ORIG_ORGANISATION
+AND SUB.CMS_LE_SUB_PROFILE_ID = EMAP.CMS_LE_SUB_PROFILE_ID
+AND (EMAP.UPDATE_STATUS_IND != 'D' OR EMAP.UPDATE_STATUS_IND IS NULL)
+AND MAIN.CMS_LE_MAIN_PROFILE_ID = SUB.CMS_LE_MAIN_PROFILE_ID
+ORDER BY TRANS.TRANSACTION_DATE DESC, TRANS.TRANSACTION_ID DESC
+   </Todo>
+   <!-- To get to-do list items for officer (GAM/SCO/RCO). User specific, not by team. -->
+   <!-- Usage : Currently in use to get to-do list for those specified above. -->
+   <TodoAUTH>
+    SELECT DISTINCT TRANS.TRANSACTION_ID,
+	     TRANS.CUR_TRX_HISTORY_ID,
+	     TRANS.REFERENCE_ID,
+	     TRANS.TRANSACTION_TYPE,
+	     TRANS.TRANSACTION_SUBTYPE,
+	     TRANS.STATUS,
+	     TRANS.LEGAL_ID,
+	     TRANS.LIMIT_PROFILE_ID,
+	     TRANS.LEGAL_NAME AS LNAME,
+	     TRANS.CUSTOMER_NAME ,
+	     TRANS.CUSTOMER_ID,
+	     TRANS.TRANSACTION_DATE,
+	     TRANS.TRX_ORIGIN_COUNTRY,
+	     TRANS.DEAL_NO,
+	     /*STATEACTION.STATE_ID, */
+	     STATEACTION.USER_ACTION,
+	     STATEACTION.URL,
+	     STATEACTION.TOTRACK_URL,
+	     TRX.USER_STATE,
+	     TRX.USER_TRX_TYPE,
+	     (SELECT COUNTRY_NAME FROM COUNTRY WHERE COUNTRY.COUNTRY_ISO_CODE = TRANS.TRX_ORIGIN_COUNTRY ) as COUNTRY_NAME,
+	     EMAP.LEM_EMP_NAME,
+	     EMAP.LEM_EMP_TYPE_VALUE,
+	     EMAP.LEM_PRINCIPAL_FAM_IND,
+	     SUB.LSP_ID,
+	     SUB.LSP_SHORT_NAME AS CUSTOMER_NAME,
+	     MAIN.LMP_LE_ID,
+	     MAIN.LMP_LONG_NAME AS LEGAL_NAME,
+	     ' ' AS TASK_FLAG,
+	     LMT.LLP_BCA_REF_APPR_DATE,
+	     LMT.CMS_BCA_CREATE_DATE
+	FROM CMS_TEAM_TYPE_MEMBERSHIP  TMTYPE,
+	     CMS_STATEMATRIX_ACTION  STATEACTION,
+           TR_STATE_MATRIX STATES,
+           /* CMS_TEAM TEAM, */
+	     TRANSACTION TRANS LEFT OUTER JOIN  CMS_TRX_TOTRACK TRX ON TRX.TRANSACTION_TYPE = TRANS.TRANSACTION_TYPE   AND TRX.CURR_STATE = TRANS.STATUS LEFT OUTER JOIN  SCI_LSP_LMT_PROFILE LMT ON LMT.CMS_LSP_LMT_PROFILE_ID = TRANS.LIMIT_PROFILE_ID,
+           SCI_LSP_EMP_MAP  EMAP,
+	     SCI_LE_SUB_PROFILE SUB,
+	     SCI_LE_MAIN_PROFILE MAIN
+     WHERE /* Related STATES of this type of team */
+           TMTYPE.TEAM_TYPE_MEMBERSHIP_ID = ?TEAM_TYPE_MEMBERSHIP_ID?
+       AND STATEACTION.TEAM_MEMBERSHIP_TYPE_ID=TMTYPE.TEAM_TYPE_MEMBERSHIP_ID
+       AND STATES.STATEID = STATEACTION.STATE_ID
+	    /* COMMENTED Related TRANS of this type of team for FAM level, not restricted with its team. AND TEAM.TEAM_TYPE_ID = TMTYPE.TEAM_TYPE_ID AND TRANS.TEAM_ID =TEAM.TEAM_ID */
+	 AND TRANS.TO_GROUP_TYPE_ID = '?TEAM_TYPE_MEMBERSHIP_ID?' 
+	    /* TRANS constraint within states */
+	 AND TRANS.TRANSACTION_TYPE = STATES.STATEINS
+	 AND TRANS.STATUS = STATES.FROMSTATE
+	 ?TRANSACTION_TYPES_CONDITION? ?LIMIT_PROFILE_ID_CONDITION? ?LEGAL_NAME_CONDITION? ?TO_USER_ID_CONDITION?
+	    /* Look up TRX */
+	 AND ( (TRANS.FROM_STATE = TRX.FROM_STATE ) OR (TRX.FROM_STATE is null) )
+	 AND ( (TRANS.TRANSACTION_SUBTYPE = TRX.TRANSACTION_SUBTYPE ) OR  (TRX.TRANSACTION_SUBTYPE is null ) )
+	    /* Look up profile */
+	 AND EMAP.CMS_LE_SUB_PROFILE_ID = LMT.CMS_CUSTOMER_ID
+	 AND EMAP.LEM_EMP_BKG_LOC_CTRY = LMT.CMS_ORIG_COUNTRY
+	 AND EMAP.LEM_EMP_BKG_LOC_ORG = LMT.CMS_ORIG_ORGANISATION
+	 AND SUB.CMS_LE_SUB_PROFILE_ID = EMAP.CMS_LE_SUB_PROFILE_ID
+	 AND MAIN.CMS_LE_MAIN_PROFILE_ID = SUB.CMS_LE_MAIN_PROFILE_ID
+	 AND TRANS.TRANSACTION_TYPE IN ('CHECKLIST','COMMODITY_DEAL')
+	 AND EMAP.CMS_LSP_EMP_MAP_ID = (SELECT MIN(CMS_LSP_EMP_MAP_ID) 
+						    FROM SCI_LSP_EMP_MAP e
+						   WHERE e.CMS_LE_SUB_PROFILE_ID = LMT.CMS_CUSTOMER_ID
+						     AND e.LEM_EMP_BKG_LOC_CTRY = LMT.CMS_ORIG_COUNTRY
+						     AND e.LEM_EMP_BKG_LOC_ORG = LMT.CMS_ORIG_ORGANISATION
+						     AND SUB.CMS_LE_SUB_PROFILE_ID = e.CMS_LE_SUB_PROFILE_ID
+						     AND (e.UPDATE_STATUS_IND != 'D' OR e.UPDATE_STATUS_IND IS NULL)
+						  )
+	ORDER BY TRANS.TRANSACTION_DATE DESC, TRANS.TRANSACTION_ID DESC
+   </TodoAUTH>
+   <!-- To get to-track list items for checker and maker.  -->
+   <!-- Usage : Currently not in use. Because do not take care of scenario when creating new CMS Users/Teams. -->
+   <!-- CONSIDER TAKING OUT -->
+   <totrack>
+SELECT DISTINCT
+ TRANS.TRANSACTION_ID ,
+ TRANS.CUR_TRX_HISTORY_ID,
+ TRANS.REFERENCE_ID,
+ TRANS.TRANSACTION_TYPE,
+TRANS.TRANSACTION_SUBTYPE,
+TRANS.STATUS,
+TRANS.LEGAL_ID,
+TRANS.LIMIT_PROFILE_ID,
+TRANS.LEGAL_NAME as LNAME,
+TRANS.CUSTOMER_NAME AS CNAME,
+TRANS.CUSTOMER_ID,
+TRANS.TRANSACTION_DATE,
+TRANS.TRX_ORIGIN_COUNTRY,
+' ' AS USER_ACTION,
+' ' AS URL,
+TRX.TOTRACK_URL,
+TRX.USER_STATE,
+TRX.USER_TRX_TYPE,
+( SELECT COUNTRY_NAME FROM COUNTRY WHERE COUNTRY.COUNTRY_ISO_CODE = TRANS.TRX_ORIGIN_COUNTRY ) as COUNTRY_NAME,
+EMP.LEM_EMP_NAME,
+EMP.LEM_EMP_TYPE_VALUE,
+EMP.LEM_PRINCIPAL_FAM_IND,
+SUB.LSP_ID,
+MAIN.LMP_LE_ID,
+SUB.LSP_SHORT_NAME AS CUSTOMER_NAME,
+MAIN.LMP_LONG_NAME AS LEGAL_NAME,
+' ' AS TASK_FLAG,
+LMT.LLP_BCA_REF_APPR_DATE,
+LMT.CMS_BCA_CREATE_DATE
+FROM
+TRANSACTION TRANS,
+CMS_TRX_TOTRACK TRX,
+SCI_LE_SUB_PROFILE SUB,
+SCI_LSP_EMP_MAP EMP,
+SCI_LSP_LMT_PROFILE LMT,
+SCI_LE_MAIN_PROFILE MAIN,
+TRANS_HISTORY HIS,
+CMS_TEAM_MEMBER TM,
+CMS_TEAM_MEMBERSHIP TMS
+WHERE
+TMS.TEAM_TYPE_MEMBERSHIP_ID = ?TEAM_TYPE_MEMBERSHIP_ID?
+AND TM.TEAM_MEMBERSHIP_ID = TMS.TEAM_MEMBERSHIP_ID
+/* Related HISTORY with this kind of team */
+AND HIS.USER_ID = TM.USER_ID
+/* TRANSACTION of this HISTORY*/
+AND TRANS.TRANSACTION_ID = HIS.TRANSACTION_ID
+/* Current TRANSACTION not to be done by this kind of team*/
+AND NOT EXISTS
+(
+        SELECT TMTYPE1.* FROM
+        TR_STATE_MATRIX STATES1,
+        CMS_STATEMATRIX_ACTION STATEACTION1,
+        CMS_TEAM_TYPE_MEMBERSHIP TMTYPE1,
+        CMS_TEAM TEAM1
+        WHERE
+        /* STATE Space of this TRANSACTION */
+        STATES1.STATEINS = TRANS.TRANSACTION_TYPE
+        AND STATES1.FROMSTATE = TRANS.STATUS
+        AND STATEACTION1.STATE_ID = STATES1.STATEID
+        /* This kind team to do this */
+        AND STATEACTION1.TEAM_MEMBERSHIP_TYPE_ID = ?TEAM_TYPE_MEMBERSHIP_ID?
+        /*  Its team */
+        AND TEAM1.TEAM_ID = TRANS.TEAM_ID
+        AND TEAM1.TEAM_TYPE_ID = TMTYPE1.TEAM_TYPE_ID
+)
+/* More constraints of this TRANSACTION*/
+AND TRANS.TRANSACTION_DATE >= TO_DATE('?TRANSACTION_DATE?', 'dd/mm/yyyy')
+AND TRANS.TRANSACTION_TYPE != 'CT'
+AND (TRANS.TRX_ORIGIN_COUNTRY IN (?ALLOWED_COUNTRIES?)  OR TRANS.TRX_ORIGIN_COUNTRY IS NULL )
+AND (TRANS.TRX_SEGMENT IN (?ALLOWED_SEGMENTS?) OR TRANS.TRX_SEGMENT IS NULL)
+AND (TRANS.TRX_ORIGIN_ORGANISATION IN (?ALLOWED_ORGANIZATIONS?) OR TRANS.TRX_ORIGIN_ORGANISATION IS NULL)
+?TRANSACTION_TYPES_CONDITION? ?LIMIT_PROFILE_ID_CONDITION?
+/*Look up TRX */
+AND TRANS.TRANSACTION_TYPE = TRX.TRANSACTION_TYPE
+AND TRANS.STATUS = TRX.CURR_STATE
+AND (TRANS.FROM_STATE = TRX.FROM_STATE OR TRX.FROM_STATE IS NULL)
+AND (TRANS.TRANSACTION_SUBTYPE = TRX.TRANSACTION_SUBTYPE OR TRX.TRANSACTION_SUBTYPE IS NULL)
+ /*Lookup Profile*/
+AND TRANS.CUSTOMER_ID = SUB.CMS_LE_SUB_PROFILE_ID(+)
+AND SUB.CMS_LE_MAIN_PROFILE_ID = MAIN.CMS_LE_MAIN_PROFILE_ID(+)
+/*Lookup Limit Profile*/
+AND TRANS.LIMIT_PROFILE_ID = LMT.CMS_LSP_LMT_PROFILE_ID(+)
+/* Found EMP*/
+AND LMT.CMS_CUSTOMER_ID = EMP.CMS_LE_SUB_PROFILE_ID(+)
+AND LMT.CMS_ORIG_COUNTRY = EMP.LEM_EMP_BKG_LOC_CTRY(+)
+AND LMT.CMS_ORIG_ORGANISATION = EMP.LEM_EMP_BKG_LOC_ORG(+)
+AND (EMP.UPDATE_STATUS_IND != 'D' OR EMP.UPDATE_STATUS_IND IS NULL)
+ORDER BY TRANS.TRANSACTION_DATE DESC, TRANS.TRANSACTION_ID DESC
+   </totrack>
+   <!-- To get to-track list items for officer (GAM/SCO/RCO). User specific, not by team. -->
+   <!-- Usage : Currently in use to get to-track list for those specified above. -->
+   <totrackAUTH>
+    SELECT DISTINCT TRANS.TRANSACTION_ID ,
+ 	     TRANS.CUR_TRX_HISTORY_ID,
+ 	     TRANS.REFERENCE_ID,
+ 	     TRANS.TRANSACTION_TYPE,
+	     TRANS.TRANSACTION_SUBTYPE,
+	     TRANS.STATUS,
+	     TRANS.LEGAL_ID,
+	     TRANS.LIMIT_PROFILE_ID,
+	     TRANS.LEGAL_NAME as LNAME,
+	     TRANS.CUSTOMER_NAME AS CNAME,
+	     TRANS.CUSTOMER_ID,
+	     TRANS.TRANSACTION_DATE,
+	     TRANS.TRX_ORIGIN_COUNTRY,
+	     TRANS.DEAL_NO,
+	     ' ' AS USER_ACTION,
+	     ' ' AS URL,
+	     TRX.TOTRACK_URL,
+	     TRX.USER_STATE,
+	     TRX.USER_TRX_TYPE,
+	     (SELECT COUNTRY_NAME FROM COUNTRY WHERE COUNTRY.COUNTRY_ISO_CODE = TRANS.TRX_ORIGIN_COUNTRY ) as COUNTRY_NAME,
+	     EMP.FAM_NAME AS LEM_EMP_NAME,
+	     '' AS LEM_EMP_TYPE_VALUE,
+	     '' AS LEM_PRINCIPAL_FAM_IND,
+	     SUB.LSP_ID,
+	     MAIN.LMP_LE_ID,
+	     SUB.LSP_SHORT_NAME AS CUSTOMER_NAME,
+	     MAIN.LMP_LONG_NAME AS LEGAL_NAME,
+	     ' ' AS TASK_FLAG,
+	     LMT.LLP_BCA_REF_APPR_DATE,
+	     LMT.CMS_BCA_CREATE_DATE
+	FROM CMS_TRX_TOTRACK TRX,
+	     TRANS_HISTORY HIS,
+	     CMS_TEAM_MEMBER TM,
+	     CMS_TEAM_MEMBERSHIP TMS,
+	     TRANSACTION TRANS LEFT OUTER JOIN  
+           SCI_LE_SUB_PROFILE SUB ON SUB.CMS_LE_SUB_PROFILE_ID = TRANS.CUSTOMER_ID LEFT OUTER JOIN  
+	     SCI_LSP_LMT_PROFILE LMT ON LMT.CMS_LSP_LMT_PROFILE_ID = TRANS.LIMIT_PROFILE_ID LEFT OUTER JOIN  
+	     CUST_LOC_FAM EMP ON EMP.CUSTOMER_ID = LMT.CMS_CUSTOMER_ID AND EMP.BKG_LOC_CTRY = LMT.CMS_ORIG_COUNTRY  AND EMP.BKG_LOC_ORG = LMT.CMS_ORIG_ORGANISATION LEFT OUTER JOIN  
+	     SCI_LE_MAIN_PROFILE MAIN ON MAIN.CMS_LE_MAIN_PROFILE_ID = SUB.CMS_LE_MAIN_PROFILE_ID 
+     WHERE TMS.TEAM_TYPE_MEMBERSHIP_ID = ?TEAM_TYPE_MEMBERSHIP_ID?
+	 AND TM.TEAM_MEMBERSHIP_ID = TMS.TEAM_MEMBERSHIP_ID
+	     /* Related HISTORY with this kind of user-team */
+	 AND HIS.USER_ID = TM.USER_ID
+	 ?USER_ID_HISTORY_CONDITION?
+	     /* TRANSACTION of this HISTORY*/
+	 AND TRANS.TRANSACTION_ID = HIS.TRANSACTION_ID
+	     /* Current TRANSACTION not to be done by this kind of user-team*/
+	 AND TRANS.TO_USER_ID ?$NOTEQUAL? ?USER_ID?
+	     /*
+		AND NOT EXISTS
+		(
+        		SELECT TMTYPE1.* FROM
+        		TR_STATE_MATRIX STATES1,
+        		CMS_STATEMATRIX_ACTION STATEACTION1,
+        		CMS_TEAM_TYPE_MEMBERSHIP TMTYPE1,
+        		CMS_TEAM TEAM1
+        		WHERE
+        		STATES1.STATEINS = TRANS.TRANSACTION_TYPE
+        		AND STATES1.FROMSTATE = TRANS.STATUS
+        		AND STATEACTION1.STATE_ID = STATES1.STATEID
+        		AND STATEACTION1.TEAM_MEMBERSHIP_TYPE_ID = ?TEAM_TYPE_MEMBERSHIP_ID?
+        		AND TEAM1.TEAM_ID = TRANS.TEAM_ID
+        		AND TEAM1.TEAM_TYPE_ID = TMTYPE1.TEAM_TYPE_ID
+		)
+	     */
+	     /* More constraints of this TRANSACTION*/
+	 AND TRANS.TRANSACTION_DATE >= ?TRANSACTION_DATE?  
+	 AND TRANS.TRANSACTION_TYPE IN ('CHECKLIST','COMMODITY_DEAL')
+	 AND TRANS.TRX_ORIGIN_COUNTRY IN ('--', ?ALLOWED_COUNTRIES?) 
+	 AND TRANS.TRX_SEGMENT IN ('--', ?ALLOWED_SEGMENTS?) 
+	 AND TRANS.TRX_ORIGIN_ORGANISATION IN ('--',?ALLOWED_ORGANIZATIONS?)
+	 ?TRANSACTION_TYPES_CONDITION? ?LIMIT_PROFILE_ID_CONDITION?
+	 /*Look up TRX */
+	 AND TRANS.TRANSACTION_TYPE = TRX.TRANSACTION_TYPE
+	 AND TRANS.STATUS = TRX.CURR_STATE
+	 AND (TRANS.FROM_STATE = TRX.FROM_STATE OR TRX.FROM_STATE IS NULL)
+	 AND (TRANS.TRANSACTION_SUBTYPE = TRX.TRANSACTION_SUBTYPE OR TRX.TRANSACTION_SUBTYPE IS NULL)
+ 	 ORDER BY TRANS.TRANSACTION_DATE DESC, TRANS.TRANSACTION_ID DESC
+    </totrackAUTH>
+    <SecruityCoverageNotification>
+    <CMDDeal>
+    <!-- To get list of customers for a particular country. -->
+    <!-- Usage : In deal level fsv shortfall event monitor. Parent query. -->
+    <!-- NOTE : Same as the query for limit level fsv shortfall event monitor -->
+    <LegalGroup>
+      SELECT DISTINCT lsp.lsp_short_name AS legal_name,
+		 lsp.lsp_le_id AS le_id,
+		 llp.cms_lsp_lmt_profile_id AS lmtprofile_id,
+		 llp.llp_bca_ref_num AS refno,
+		 llp.cms_orig_country AS cms_orig_country,
+		 fam.fam_name AS armname,
+		 fam.fam_code AS armcode
+	 FROM  sci_lsp_lmt_profile llp  LEFT OUTER JOIN  cust_loc_fam fam  ON  llp.cms_customer_id  = fam.customer_id AND	llp.cms_orig_country  = fam.bkg_loc_ctry  AND llp.cms_orig_organisation  = fam.bkg_loc_org,
+		 sci_le_sub_profile lsp,
+		 sci_lsp_appr_lmts lmts,
+		 cms_cmdt_deal deal 
+	WHERE	 llp.cms_orig_country  = '?ALLOWED_COUNTRIES?'
+	  AND	 llp.cms_customer_id  = lsp.cms_le_sub_profile_id
+	  AND	 lmts.cms_limit_profile_id  = llp.cms_lsp_lmt_profile_id
+	  AND	 deal.customer_category  = 'MB'
+	  AND	 deal.cms_lsp_appr_lmts_id  = lmts.cms_lsp_appr_lmts_id
+	  AND	(convert_currency(deal.deal_fsv_ccy, deal.orig_face_amt_ccy, COALESCE(deal.deal_fsv, 0)) - (COALESCE(deal.orig_face_amt, 0) * COALESCE(deal.finance_pct, 0) / 100 * COALESCE(lmts.cms_req_sec_coverage, 0) / 100)) ?$LESSTHAN? 0
+      UNION ALL
+	SELECT DISTINCT lsp.lsp_short_name AS legal_name,
+		 lsp.lsp_le_id AS le_id,
+		 llp.cms_lsp_lmt_profile_id AS lmtprofile_id,
+		 llp.llp_bca_ref_num AS refno,
+		 llp.cms_orig_country AS cms_orig_country,
+		 fam.fam_name AS armname,
+		 fam.fam_code AS armcode
+	 FROM  sci_lsp_lmt_profile llp  LEFT OUTER JOIN  cust_loc_fam fam  ON  llp.cms_customer_id  = fam.customer_id AND	llp.cms_orig_country  = fam.bkg_loc_ctry  AND llp.cms_orig_organisation  = fam.bkg_loc_org,
+		 sci_le_sub_profile lsp,
+		 sci_lsp_appr_lmts lmts,
+		 cms_cmdt_deal deal,
+		 sci_lsp_co_borrow_lmt clmts 
+	WHERE	 llp.cms_orig_country  = '?ALLOWED_COUNTRIES?'
+	  AND	 lmts.cms_limit_profile_id  = llp.cms_lsp_lmt_profile_id
+	  AND	 lmts.cms_lsp_appr_lmts_id  = clmts.cms_limit_id
+	  AND	 clmts.cms_customer_id  = lsp.cms_le_sub_profile_id
+	  AND	 deal.customer_category  = 'CB'
+	  AND	 deal.CMS_LSP_CO_BORROW_LMT_ID  = clmts.cms_lsp_co_borrow_lmt_id
+	  AND (convert_currency(deal.deal_fsv_ccy, deal.orig_face_amt_ccy, COALESCE(deal.deal_fsv, 0)) - (COALESCE(deal.orig_face_amt, 0) * COALESCE(deal.finance_pct, 0) / 100 * COALESCE(lmts.cms_req_sec_coverage, 0) / 100)) ?$LESSTHAN? 0
+	ORDER BY legal_name 
+    </LegalGroup>
+    <!-- To get information for all deals with a shortfall in fsv for a customer. -->
+    <!-- Usage : In deal level fsv shortfall event monitor. Child query. -->
+    <DealInfo>
+	SELECT DISTINCT PROFILE.LSP_SHORT_NAME as LEGAL_NAME,
+		 PROFILE.LSP_LE_ID as LE_ID,
+		 LMTPROFILE.CMS_LSP_LMT_PROFILE_ID as LMTPROFILE_ID,
+		 LMTPROFILE.LLP_BCA_REF_NUM as REFNO,
+		 FAM.FAM_NAME as ARMNAME,
+		 FAM.FAM_CODE as ARMCODE,
+		 outdeal.DEAL_NO as DEALREFNO,
+		 CMS_CMDT_PROFILE.PRODUCT_TYPE as PRODUCTTYPECODE,
+		 (SELECT entry_name FROM  COMMON_CODE_CATEGORY_ENTRY  WHERE	 entry_code  = CMS_CMDT_PROFILE.PRODUCT_TYPE) as PRODUCTTYPE,	 
+		 CASE SIGN((SELECT COUNT(*) FROM  CMS_CMDT_DEAL indeal, CMS_TITLE_DOC  WHERE	CMS_TITLE_DOC.DEAL_ID  = indeal.DEAL_ID  AND indeal.DEAL_ID  = outdeal.DEAL_ID  AND	CMS_TITLE_DOC.IS_SECURED  = 'Y')) 
+		  WHEN 1 THEN 'Yes' 
+		  WHEN 0 THEN 'No' 
+		  WHEN - 1 THEN 'No' 
+		 END as SECURED,	 
+		 CASE UCASE(outdeal.IS_ATTAIN_ENFORCE) 
+		  WHEN 'Y' THEN 'Yes' 
+		  WHEN 'N' THEN 'No' 
+		 END as ENFORCEABLE,
+		 outdeal.ACT_PRICE as LASTPRICE,
+		 TO_CHAR(outdeal.ACT_PRICE, '999999999.000') as SLASTPRICE,
+		 outdeal.ACT_PRICE_CCY as LASTCURRENCYCODE,
+		 CMS_CMDT_PRICE.CURRENT_PRICE as CURRENTPRICE,
+		 TO_CHAR(CMS_CMDT_PRICE.CURRENT_PRICE, '999999999.000') as SCURRENTPRICE,
+		 CMS_CMDT_PRICE.CURRENT_PRICE_CURRENCY as CURRENCYCODE,
+		 LMTS.CMS_REQ_SEC_COVERAGE,
+		 outdeal.ORIG_FACE_AMT_CCY as CURRENCY_DEALAMOUNT,
+		 outdeal.DEAL_FSV_CCY as CURRENCY_DEALFSV,
+		 COALESCE(outdeal.ORIG_FACE_AMT, 0) * COALESCE(outdeal.FINANCE_PCT, 0) / 100 as DEALAMOUNT,
+		 COALESCE(outdeal.DEAL_FSV, 0) as DEALAFSV,
+		 0 - (convert_currency(outdeal.DEAL_FSV_CCY, outdeal.ORIG_FACE_AMT_CCY, COALESCE(outdeal.DEAL_FSV, 0)) - (COALESCE(outdeal.ORIG_FACE_AMT, 0) * COALESCE(outdeal.FINANCE_PCT, 0) / 100 * COALESCE(LMTS.CMS_REQ_SEC_COVERAGE, 0) / 100)) as SHORTFALLVALUE
+	FROM  CMS_CMDT_DEAL outdeal  LEFT OUTER JOIN  CMS_CMDT_PRICE  ON  outdeal.CNTR_PROFILE_ID  = CMS_CMDT_PRICE.PROFILE_ID  ,
+		 SCI_LSP_LMT_PROFILE LMTPROFILE  LEFT OUTER JOIN  CUST_LOC_FAM FAM  ON  LMTPROFILE.CMS_CUSTOMER_ID  = FAM.CUSTOMER_ID 
+		 AND	LMTPROFILE.CMS_ORIG_COUNTRY  = FAM.BKG_LOC_CTRY 
+		 AND	LMTPROFILE.CMS_ORIG_ORGANISATION  = FAM.BKG_LOC_ORG  ,
+		 CMS_CMDT_PROFILE,
+		 SCI_LE_SUB_PROFILE PROFILE,
+		 SCI_LSP_APPR_LMTS LMTS 
+	WHERE	 LMTPROFILE.CMS_LSP_LMT_PROFILE_ID  = ?LIMIT_PROFILE_ID?
+	 AND	PROFILE.CMS_LE_SUB_PROFILE_ID  = LMTPROFILE.CMS_CUSTOMER_ID
+	 AND	LMTS.CMS_LIMIT_PROFILE_ID  = LMTPROFILE.CMS_LSP_LMT_PROFILE_ID
+	 AND	outdeal.CMS_LSP_APPR_LMTS_ID  = LMTS.CMS_LSP_APPR_LMTS_ID
+	 AND	(convert_currency(outdeal.DEAL_FSV_CCY, outdeal.ORIG_FACE_AMT_CCY, COALESCE(outdeal.DEAL_FSV, 0)) - (COALESCE(outdeal.ORIG_FACE_AMT, 0) * COALESCE(outdeal.FINANCE_PCT, 0) / 100 * COALESCE(LMTS.CMS_REQ_SEC_COVERAGE, 0) / 100)) ?$LESSTHAN? 0
+	 AND	outdeal.CNTR_PROFILE_ID  = CMS_CMDT_PROFILE.PROFILE_ID
+	ORDER BY PROFILE.LSP_SHORT_NAME, outdeal.DEAL_NO 
+    </DealInfo>
+    </CMDDeal>
+    <CMDLimit>
+    <!-- To get list of customers for a particular country. -->
+    <!-- Usage : In limit level fsv shortfall event monitor. Parent query. -->
+    <!-- NOTE : Same as the query for deal level fsv shortfall event monitor -->
+    <LegalGroup>
+	SELECT PROFILE.LSP_SHORT_NAME as LEGAL_NAME,
+		 PROFILE.LSP_LE_ID as LE_ID,
+		 LMTPROFILE.CMS_LSP_LMT_PROFILE_ID as LMTPROFILE_ID,
+		 LMTPROFILE.LLP_BCA_REF_NUM as REFNO,
+		 LMTPROFILE.CMS_ORIG_COUNTRY as CMS_ORIG_COUNTRY,
+		 FAM.FAM_NAME as ARMNAME,
+		 FAM.FAM_CODE as ARMCODE
+	 FROM  SCI_LSP_LMT_PROFILE LMTPROFILE  LEFT OUTER JOIN  CUST_LOC_FAM FAM  ON  LMTPROFILE.CMS_CUSTOMER_ID  = FAM.CUSTOMER_ID  AND LMTPROFILE.CMS_ORIG_COUNTRY  = FAM.BKG_LOC_CTRY  AND LMTPROFILE.CMS_ORIG_ORGANISATION  = FAM.BKG_LOC_ORG,
+		 SCI_LE_SUB_PROFILE PROFILE 
+	WHERE	 LMTPROFILE.CMS_ORIG_COUNTRY  = '?ALLOWED_COUNTRIES?'
+	  AND	 LMTPROFILE.CMS_CUSTOMER_ID  = PROFILE.CMS_LE_SUB_PROFILE_ID
+	  AND	 Exists(SELECT LMTS1.CMS_LIMIT_PROFILE_ID
+			    FROM SCI_LSP_APPR_LMTS LMTS1, CMS_LIMIT_SECURITY_MAP SECMAP1, CMS_SECURITY SECURITY1 
+			   WHERE LMTS1.CMS_LIMIT_PROFILE_ID  = LMTPROFILE.CMS_LSP_LMT_PROFILE_ID
+		           AND (COALESCE(LMTS1.CMS_ACT_SEC_COVERAGE, 0) / 100 - COALESCE(LMTS1.CMS_REQ_SEC_COVERAGE, 0) / 100) * COALESCE(LMTS1.CMDT_OP_LMT, 0) ?$LESSTHAN? 0
+		 	     AND SECMAP1.CMS_LSP_APPR_LMTS_ID  = LMTS1.CMS_LSP_APPR_LMTS_ID
+		 	     AND SECURITY1.CMS_COLLATERAL_ID  = SECMAP1.CMS_COLLATERAL_ID
+		 	     AND SECURITY1.TYPE_NAME  = 'Commodity')
+	ORDER BY PROFILE.LSP_SHORT_NAME 
+    </LegalGroup>
+    <!-- To get information of all limits with a shortfall in fsv for a customer. -->
+    <!-- Usage : In limit level fsv shortfall event monitor. Child query. -->
+    <LimitInfo>
+      SELECT DISTINCT lsp.LSP_SHORT_NAME as LEGAL_NAME,
+		 lsp.LSP_LE_ID as LE_ID,
+		 llp.CMS_LSP_LMT_PROFILE_ID as LMTPROFILE_ID,
+		 llp.LLP_BCA_REF_NUM as REFNO,
+		 FAM.FAM_NAME as ARMNAME,
+		 FAM.FAM_CODE as ARMCODE,
+		 lmts.LMT_ID as LIMITID,
+		 lmts.LMT_PRD_TYPE_VALUE as LIMITFACILITYTYPECODE,
+		 (SELECT entry_name FROM  COMMON_CODE_CATEGORY_ENTRY  WHERE	entry_code  = lmts.LMT_PRD_TYPE_VALUE) as LIMITFACILITYTYPE,
+		 COALESCE(LMT_AMT, 0) as APPROVEDLIMIT,
+		 COALESCE(LMTS.CMS_ACTIVATED_LIMIT, 0) as ACTIVATEDLIMIT,
+		 COALESCE(LMTS.CMDT_OP_LMT, 0) as OPERATIONALLIMIT,
+		 LMTS.LMT_CRRNCY_ISO_CODE as CURRENCYCODE,
+		 LMTS.CMS_ACT_SEC_COVERAGE as ACTUALCOVERAGE,
+		 LMTS.CMS_REQ_SEC_COVERAGE as REQCOVERAGE,
+		 sec.SCI_SECURITY_DTL_ID as SECURITYID,
+		 sec.SUBTYPE_NAME as SECURITYSUBTYPE,
+		 sec.TYPE_NAME as SECURITYTYPE,
+        0 - (COALESCE(lmts.CMS_ACT_SEC_COVERAGE, 0) / 100 - COALESCE(lmts.CMS_REQ_SEC_COVERAGE, 0) / 100) * COALESCE(lmts.CMDT_OP_LMT, 0) as SHORTFALLVALUE
+	 FROM  SCI_LSP_LMT_PROFILE llp  LEFT OUTER JOIN  CUST_LOC_FAM FAM  ON  llp.CMS_CUSTOMER_ID  = FAM.CUSTOMER_ID AND	llp.CMS_ORIG_COUNTRY  = FAM.BKG_LOC_CTRY  AND llp.CMS_ORIG_ORGANISATION  = FAM.BKG_LOC_ORG,
+		 SCI_LE_SUB_PROFILE lsp,
+		 SCI_LSP_APPR_LMTS lmts,
+		 CMS_LIMIT_SECURITY_MAP secmap,
+		 CMS_SECURITY sec 
+	WHERE	 llp.CMS_LSP_LMT_PROFILE_ID  = ?LIMIT_PROFILE_ID?
+	  AND	 lsp.CMS_LE_SUB_PROFILE_ID  = llp.CMS_CUSTOMER_ID
+	  AND	 lmts.CMS_LIMIT_PROFILE_ID  = llp.CMS_LSP_LMT_PROFILE_ID
+	  AND	 secmap.CUSTOMER_CATEGORY  = 'MB'
+	  AND	 secmap.CMS_LSP_APPR_LMTS_ID  = lmts.CMS_LSP_APPR_LMTS_ID
+	  AND	 sec.CMS_COLLATERAL_ID  = secmap.CMS_COLLATERAL_ID
+	  AND	 sec.TYPE_NAME  = 'Commodity'
+      AND	 (COALESCE(lmts.CMS_ACT_SEC_COVERAGE, 0) / 100 - COALESCE(lmts.CMS_REQ_SEC_COVERAGE, 0) / 100) * COALESCE(lmts.CMDT_OP_LMT, 0) ?$LESSTHAN? 0
+	UNION
+	SELECT DISTINCT lsp.LSP_SHORT_NAME as LEGAL_NAME,
+		 lsp.LSP_LE_ID as LE_ID,
+		 llp.CMS_LSP_LMT_PROFILE_ID as LMTPROFILE_ID,
+		 llp.LLP_BCA_REF_NUM as REFNO,
+		 FAM.FAM_NAME as ARMNAME,
+		 FAM.FAM_CODE as ARMCODE,
+		 lmts.LMT_ID as LIMITID,
+		 lmts.LMT_PRD_TYPE_VALUE as LIMITFACILITYTYPECODE,
+		 (SELECT entry_name FROM  COMMON_CODE_CATEGORY_ENTRY WHERE	entry_code  = lmts.LMT_PRD_TYPE_VALUE) as LIMITFACILITYTYPE,
+		 COALESCE(LMT_AMT, 0) as APPROVEDLIMIT,
+		 COALESCE(LMTS.CMS_ACTIVATED_LIMIT, 0) as ACTIVATEDLIMIT,
+		 COALESCE(LMTS.CMDT_OP_LMT, 0) as OPERATIONALLIMIT,
+		 LMTS.LMT_CRRNCY_ISO_CODE as CURRENCYCODE,
+		 LMTS.CMS_ACT_SEC_COVERAGE as ACTUALCOVERAGE,
+		 LMTS.CMS_REQ_SEC_COVERAGE as REQCOVERAGE,
+		 sec.SCI_SECURITY_DTL_ID as SECURITYID,
+		 sec.SUBTYPE_NAME as SECURITYSUBTYPE,
+		 sec.TYPE_NAME as SECURITYTYPE,
+        0 - (COALESCE(lmts.CMS_ACT_SEC_COVERAGE, 0) / 100 - COALESCE(lmts.CMS_REQ_SEC_COVERAGE, 0) / 100) * COALESCE(lmts.CMDT_OP_LMT, 0) as SHORTFALLVALUE
+	FROM  SCI_LSP_LMT_PROFILE llp  LEFT OUTER JOIN  CUST_LOC_FAM FAM  ON  llp.CMS_CUSTOMER_ID  = FAM.CUSTOMER_ID  AND	llp.CMS_ORIG_COUNTRY  = FAM.BKG_LOC_CTRY  AND llp.CMS_ORIG_ORGANISATION  = FAM.BKG_LOC_ORG ,
+		SCI_LE_SUB_PROFILE lsp,
+		SCI_LSP_APPR_LMTS lmts,
+		sci_lsp_co_borrow_lmt clmts,
+		CMS_LIMIT_SECURITY_MAP secmap,
+		CMS_SECURITY sec 
+     WHERE	llp.CMS_LSP_LMT_PROFILE_ID  = ?LIMIT_PROFILE_ID?
+	 AND	secmap.CUSTOMER_CATEGORY  = 'CB'
+	 AND	secmap.CMS_LSP_CO_BORROW_LMT_ID  = clmts.CMS_LSP_CO_BORROW_LMT_ID
+	 AND	clmts.CMS_CUSTOMER_ID  = lsp.CMS_LE_SUB_PROFILE_ID
+	 AND	lmts.CMS_LSP_APPR_LMTS_ID  = clmts.CMS_LIMIT_ID
+	 AND	lmts.CMS_LIMIT_PROFILE_ID  = llp.CMS_LSP_LMT_PROFILE_ID
+	 AND	sec.CMS_COLLATERAL_ID  = secmap.CMS_COLLATERAL_ID
+	 AND	sec.TYPE_NAME  = 'Commodity'
+	 AND	(COALESCE(lmts.CMS_ACT_SEC_COVERAGE, 0) / 100 - COALESCE(lmts.CMS_REQ_SEC_COVERAGE, 0) / 100) * COALESCE(lmts.CMDT_OP_LMT, 0) ?$LESSTHAN? 0
+	ORDER BY LEGAL_NAME 
+    </LimitInfo>
+    </CMDLimit>
+   </SecruityCoverageNotification>
+  </SQL>
+</TransactionDAO>

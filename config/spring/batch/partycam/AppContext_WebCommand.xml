@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	
+	
+
+    <bean id="PartyCamUploadAction.PartyCamUploadCmd" class="com.integrosys.cms.ui.partycamupload.PartyCamUploadCmd">
+      <!--  <property name="partyCamuploadProxy" ref="partyCamuploadProxy" />  --> 
+    </bean>
+	<bean id="PartyCamUploadAction.PartyCamFileUploadCmd" class="com.integrosys.cms.ui.partycamupload.PartyCamFileUploadCmd">
+        <property name="partyCamuploadProxy" ref="partyCamuploadProxy" />
+    </bean>
+    <bean id="PartyCamUploadAction.DownloadReportCommand" class="com.integrosys.cms.ui.partycamupload.DownloadReportCommand"></bean>
+    <bean id="PartyCamUploadAction.CheckerReadPartyCamFileUploadCmd" class="com.integrosys.cms.ui.partycamupload.CheckerReadPartyCamFileUploadCmd">
+       <property name="partyCamuploadProxy" ref="partyCamuploadProxy" />
+     </bean>
+    <bean id="PartyCamUploadAction.CheckerApprovePartyCamFileUploadCmd" class="com.integrosys.cms.ui.partycamupload.CheckerApprovePartyCamFileUploadCmd">
+       <property name="partyCamuploadProxy" ref="partyCamuploadProxy" />
+     </bean>
+    <bean id="PartyCamUploadAction.CheckerRejectPartyCamFileCmd" class="com.integrosys.cms.ui.partycamupload.CheckerRejectPartyCamFileCmd">
+       <property name="partyCamuploadProxy" ref="partyCamuploadProxy" />
+     </bean>
+	<bean id="PartyCamUploadAction.MakerReadPartyCamRejectCmd" class="com.integrosys.cms.ui.partycamupload.MakerReadPartyCamRejectCmd">
+       <property name="partyCamuploadProxy" ref="partyCamuploadProxy" />
+     </bean>
+     <bean id="PartyCamUploadAction.MakerClosePartyCamFileCmd" class="com.integrosys.cms.ui.partycamupload.MakerClosePartyCamFileCmd">
+       <property name="partyCamuploadProxy" ref="partyCamuploadProxy" />
+     </bean>
+     <bean id="PartyCamUploadAction.ReadProcessPartyCamFile" class="com.integrosys.cms.ui.partycamupload.ReadProcessPartyCamFile">
+       <property name="partyCamuploadProxy" ref="partyCamuploadProxy" />
+     </bean>
+</beans>
+

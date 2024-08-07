@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select 
+subprofile.lsp_le_id,subprofile.lsp_short_name,
+(select entry_name from common_code_category_entry where category_code='HDFC_SEGMENT' and entry_code=subprofile.LSP_SGMNT_CODE_value) as segmentname,
+(select rm_mgr_name from cms_relationship_mgr where id= subprofile.relation_mgr) as RM,
+subprofile.pan,
+panlog.status,panlog.errormessage,TO_CHAR(panlog.lastvalidateddate,'DD-Mon-YYYY hh:mm:ss AM') lastvalidatedDate,LASTVALIDATEDBY as VALIDATEDBY
+from sci_le_sub_profile subprofile,pan_validation_log panlog
+		</query>
+			<whereClause>
+			<mandatoryClause>
+         			subprofile.lsp_le_id = panlog.partyid 
+         			and subprofile.pan = panlog.panno
+			</mandatoryClause>			
+			<param>
+				<name>party</name>
+				<condition> and subprofile.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and subprofile.LSP_SGMNT_CODE_value = </condition>
+			</param>
+			</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PARTY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PARTY NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>SEGMENT NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>10</width>
+					<format>textFormat</format>
+					<header>PAN NUMBER</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>SUCCESS/FAILURE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>REASON OF FAILURE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>VALIDATION DATE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>VALIDATED BY</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>PAN Validation Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

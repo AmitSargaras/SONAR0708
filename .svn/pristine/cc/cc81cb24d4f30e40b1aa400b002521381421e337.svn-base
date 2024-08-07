@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_Limits">
+   <display-name>Limits</display-name>
+   <enterprise-beans>
+      <session id="session_SBLimitBookingProxy">
+         <ejb-name>SBLimitBookingProxy</ejb-name>
+         <home>com.integrosys.cms.app.limitbooking.proxy.SBLimitBookingProxyHome</home>
+         <remote>com.integrosys.cms.app.limitbooking.proxy.SBLimitBookingProxy</remote>
+         <ejb-class>com.integrosys.cms.app.limitbooking.proxy.SBLimitBookingProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBLimitBookingProxy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBLimitBookingBusManager">
+         <ejb-name>SBLimitBookingBusManager</ejb-name>
+         <home>com.integrosys.cms.app.limitbooking.bus.SBLimitBookingBusManagerHome</home>
+         <remote>com.integrosys.cms.app.limitbooking.bus.SBLimitBookingBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.limitbooking.bus.SBLimitBookingBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBLimitBookingBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBLimitBookingBusManagerStaging">
+         <ejb-name>SBLimitBookingBusManagerStaging</ejb-name>
+         <home>com.integrosys.cms.app.limitbooking.bus.SBLimitBookingBusManagerHome</home>
+         <remote>com.integrosys.cms.app.limitbooking.bus.SBLimitBookingBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.limitbooking.bus.SBLimitBookingBusManagerStagingBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBLimitBookingBusManagerStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBLimitBooking">
+         <ejb-name>EBLimitBooking</ejb-name>
+         <home>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingHome</home>
+         <remote>com.integrosys.cms.app.limitbooking.bus.EBLimitBooking</remote>
+         <local-home>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingLocalHome</local-home>
+         <local>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingLocal</local>
+         <ejb-class>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitBooking</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitBooking_limitBookingIDPK">
+            <field-name>limitBookingIDPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_subProfileID">
+            <field-name>subProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_ticketNo">
+            <field-name>ticketNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_aaNo">
+            <field-name>aaNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_aaSource">
+            <field-name>aaSource</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgName">
+            <field-name>bkgName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgIDNo">
+            <field-name>bkgIDNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgCurrency">
+            <field-name>bkgCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgAmt">
+            <field-name>bkgAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgCountry">
+            <field-name>bkgCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgBusSector">
+            <field-name>bkgBusSector</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgBusUnit">
+            <field-name>bkgBusUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgBankEntity">
+            <field-name>bkgBankEntity</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_isExistingCustomer">
+            <field-name>isExistingCustomer</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_isFinancialInstitution">
+            <field-name>isFinancialInstitution</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_bkgStatus">
+            <field-name>bkgStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_overallBkgResult">
+            <field-name>overallBkgResult</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_createDate">
+            <field-name>createDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_expiryDate">
+            <field-name>expiryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_lastModifiedBy">
+            <field-name>lastModifiedBy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_eBCmsRef">
+            <field-name>eBCmsRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBooking_lastModifiedDate">
+            <field-name>lastModifiedDate</field-name>
+         </cmp-field>
+         <primkey-field>limitBookingIDPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBLimitBooking_EBLimitBookingDetail">
+            <ejb-ref-name>EBLimitBookingDetailLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailLocalHome</local-home>
+            <local>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailLocal</local>
+            <ejb-link>EBLimitBookingDetail</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBLimitBooking">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitBooking o WHERE o.bkgStatus <> ?1 ORDER BY o.limitBookingIDPK]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBLimitBookingStaging">
+         <ejb-name>EBLimitBookingStaging</ejb-name>
+         <home>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingHome</home>
+         <remote>com.integrosys.cms.app.limitbooking.bus.EBLimitBooking</remote>
+         <local-home>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingLocalHome</local-home>
+         <local>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingLocal</local>
+         <ejb-class>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitBookingStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_limitBookingIDPK">
+            <field-name>limitBookingIDPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_subProfileID">
+            <field-name>subProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_ticketNo">
+            <field-name>ticketNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_aaNo">
+            <field-name>aaNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_aaSource">
+            <field-name>aaSource</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgName">
+            <field-name>bkgName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgIDNo">
+            <field-name>bkgIDNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgCurrency">
+            <field-name>bkgCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgAmt">
+            <field-name>bkgAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgCountry">
+            <field-name>bkgCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgBusSector">
+            <field-name>bkgBusSector</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgBusUnit">
+            <field-name>bkgBusUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgBankEntity">
+            <field-name>bkgBankEntity</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_isExistingCustomer">
+            <field-name>isExistingCustomer</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_isFinancialInstitution">
+            <field-name>isFinancialInstitution</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_bkgStatus">
+            <field-name>bkgStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_overallBkgResult">
+            <field-name>overallBkgResult</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_createDate">
+            <field-name>createDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_expiryDate">
+            <field-name>expiryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_lastModifiedBy">
+            <field-name>lastModifiedBy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_eBCmsRef">
+            <field-name>eBCmsRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingStaging_lastModifiedDate">
+            <field-name>lastModifiedDate</field-name>
+         </cmp-field>
+         <primkey-field>limitBookingIDPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBLimitBookingStaging_EBLimitBookingDetailStaging">
+            <ejb-ref-name>EBLimitBookingDetailLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailLocalHome</local-home>
+            <local>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailLocal</local>
+            <ejb-link>EBLimitBookingDetailStaging</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBLimitBookingStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitBookingStaging o WHERE o.bkgStatus <> ?1 ORDER BY o.limitBookingIDPK]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBLimitBookingDetail">
+         <ejb-name>EBLimitBookingDetail</ejb-name>
+         <local-home>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailLocalHome</local-home>
+         <local>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailLocal</local>
+         <ejb-class>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitBookingDetail</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_lmtBookDtlIDPK">
+            <field-name>lmtBookDtlIDPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_limitBookingIDFK">
+            <field-name>limitBookingIDFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgType">
+            <field-name>bkgType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgTypeCode">
+            <field-name>bkgTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgTypeDesc">
+            <field-name>bkgTypeDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgProdTypeCode">
+            <field-name>bkgProdTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgProdTypeDesc">
+            <field-name>bkgProdTypeDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgSubType">
+            <field-name>bkgSubType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgSubTypeCode">
+            <field-name>bkgSubTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgSubTypeDesc">
+            <field-name>bkgSubTypeDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgCurrency">
+            <field-name>bkgCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgAmt">
+            <field-name>bkgAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_preBookedCurrency">
+            <field-name>preBookedCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_preBookedAmt">
+            <field-name>preBookedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_limitCurrency">
+            <field-name>limitCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_limitAmt">
+            <field-name>limitAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_curExposureCurrency">
+            <field-name>curExposureCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_currentExposureAmt">
+            <field-name>currentExposureAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_totalBookedCurrency">
+            <field-name>totalBookedCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_totalBookedAmt">
+            <field-name>totalBookedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_bkgResult">
+            <field-name>bkgResult</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_eBGrpIsRetrieved">
+            <field-name>eBGrpIsRetrieved</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_eBCmsRef">
+            <field-name>eBCmsRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetail_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>lmtBookDtlIDPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBLimitBookingDetail">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitBookingIDAndType</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitBookingDetail o WHERE o.bkgType = ?1 AND o.limitBookingIDFK = ?2 AND o.status <> ?3 ORDER BY o.bkgTypeCode]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByLimitBookingID</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitBookingDetail o WHERE o.limitBookingIDFK = ?1 AND o.status <> ?2 ORDER BY o.bkgTypeCode]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBLimitBookingDetailStaging">
+         <ejb-name>EBLimitBookingDetailStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailLocalHome</local-home>
+         <local>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailLocal</local>
+         <ejb-class>com.integrosys.cms.app.limitbooking.bus.EBLimitBookingDetailStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitBookingDetailStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_lmtBookDtlIDPK">
+            <field-name>lmtBookDtlIDPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_limitBookingIDFK">
+            <field-name>limitBookingIDFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgType">
+            <field-name>bkgType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgTypeCode">
+            <field-name>bkgTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgTypeDesc">
+            <field-name>bkgTypeDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgProdTypeCode">
+            <field-name>bkgProdTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgProdTypeDesc">
+            <field-name>bkgProdTypeDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgSubType">
+            <field-name>bkgSubType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgSubTypeCode">
+            <field-name>bkgSubTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgSubTypeDesc">
+            <field-name>bkgSubTypeDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgCurrency">
+            <field-name>bkgCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgAmt">
+            <field-name>bkgAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_preBookedCurrency">
+            <field-name>preBookedCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_preBookedAmt">
+            <field-name>preBookedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_limitCurrency">
+            <field-name>limitCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_limitAmt">
+            <field-name>limitAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_curExposureCurrency">
+            <field-name>curExposureCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_currentExposureAmt">
+            <field-name>currentExposureAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_totalBookedCurrency">
+            <field-name>totalBookedCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_totalBookedAmt">
+            <field-name>totalBookedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_bkgResult">
+            <field-name>bkgResult</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_eBGrpIsRetrieved">
+            <field-name>eBGrpIsRetrieved</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_eBCmsRef">
+            <field-name>eBCmsRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitBookingDetailStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>lmtBookDtlIDPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBLimitBookingDetailStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitBookingIDAndType</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+                  <method-param>long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitBookingDetailStaging o WHERE o.bkgType = ?1 AND o.limitBookingIDFK = ?2 AND o.status <> ?3 ORDER BY o.bkgTypeCode]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByLimitBookingID</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitBookingDetailStaging o WHERE o.limitBookingIDFK = ?1 AND o.status <> ?2 ORDER BY o.bkgTypeCode]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBLimitBookingProxy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBLimitBookingBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBLimitBookingBusManagerStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLimitBooking</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLimitBookingDetail</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

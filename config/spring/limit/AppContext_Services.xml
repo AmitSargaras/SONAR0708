@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/lang 
+	http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd" default-lazy-init="true">	
+	
+	
+	<bean id="limitCustomEditorConfigurer"
+		class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="com.integrosys.cms.app.limit.bus.support.FacilityCodeBasedCollateralUpdateMetaInfo[]" value="com.integrosys.cms.app.limit.bus.support.FacilityCodeBasedCollateralUpdateMetaInfoArrayPropertyEditor"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="tradingFacilityCollateralUpdateMetaInfo" class="com.integrosys.cms.app.limit.bus.support.FacilityCodeBasedCollateralUpdateMetaInfoFactoryBean">
+		<property name="metaInfos">
+		 	<value>
+		 		FAC_CODE_${facility.codes.for.trading}, COL_SOURCE_SMF, COL_TYPE_MS
+		 	</value>
+		</property>
+	</bean>
+
+  	<bean id="limitBusManager" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean">
+	  <property name="jndiName" value="SBLimitManagerHome" />
+	  <property name="businessInterface" value="com.integrosys.cms.app.limit.bus.SBLimitManager" />
+	  <property name="lookupHomeOnStartup" value="false" />
+	</bean>
+
+  	<bean id="stagingLimitBusManager" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean">
+	  <property name="jndiName" value="SBLimitManagerHomeStaging" />
+	  <property name="businessInterface" value="com.integrosys.cms.app.limit.bus.SBLimitManager" />
+	  <property name="lookupHomeOnStartup" value="false" />
+	</bean>
+
+	<bean id="limitProxy" class="com.integrosys.cms.app.limit.proxy.LimitProxyImpl" />
+
+</beans>

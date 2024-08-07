@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+    <!--Internal Credit Rating-->
+    <bean id="IntCrRtTrx.CheckerApproveUpdateInternalCreditRatingOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.CheckerApproveUpdateInternalCreditRatingOperation">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+    </bean>
+    <bean id="IntCrRtTrx.CheckerRejectUpdateInternalCreditRatingOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.CheckerRejectUpdateInternalCreditRatingOperation">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+    </bean>
+    <bean id="IntCrRtTrx.MakerCloseCreateInternalCreditRatingOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.MakerCloseCreateInternalCreditRatingOperation">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+    </bean>
+    <bean id="IntCrRtTrx.MakerCloseUpdateInternalCreditRatingOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.MakerCloseUpdateInternalCreditRatingOperation">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+    </bean>
+    <bean id="IntCrRtTrx.MakerCreateInternalCreditRatingOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.MakerCreateInternalCreditRatingOperation">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+    </bean>
+    <bean id="IntCrRtTrx.MakerUpdateInternalCreditRatingOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.MakerUpdateInternalCreditRatingOperation">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+    </bean>
+    <bean id="IntCrRtTrx.ReadInternalCreditRatingByTrxIDOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.ReadInternalCreditRatingByTrxIDOperation">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+    </bean>
+    <bean id="IntCrRtTrx.ReadInternalCreditRatingOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.ReadInternalCreditRatingOperation">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+    </bean>
+
+    <bean id="intCrRtReadController"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.InternalCreditRatingReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadInternalCreditRatingByTrxIDOperation"
+                       value-ref="IntCrRtTrx.ReadInternalCreditRatingByTrxIDOperation"/>
+                <entry key="ReadInternalCreditRatingOperation"
+                       value-ref="IntCrRtTrx.ReadInternalCreditRatingOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="intCrRtTrxController"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.InternalCreditRatingTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="CheckerApproveUpdateInternalCreditRatingOperation"
+                       value-ref="IntCrRtTrx.CheckerApproveUpdateInternalCreditRatingOperation"/>
+                <entry key="CheckerRejectUpdateInternalCreditRatingOperation"
+                       value-ref="IntCrRtTrx.CheckerRejectUpdateInternalCreditRatingOperation"/>
+                <entry key="MakerCloseCreateInternalCreditRatingOperation"
+                       value-ref="IntCrRtTrx.MakerCloseCreateInternalCreditRatingOperation"/>
+                <entry key="MakerCloseUpdateInternalCreditRatingOperation"
+                       value-ref="IntCrRtTrx.MakerCloseUpdateInternalCreditRatingOperation"/>
+                <entry key="MakerCreateInternalCreditRatingOperation"
+                       value-ref="IntCrRtTrx.MakerCreateInternalCreditRatingOperation"/>
+                <entry key="MakerUpdateInternalCreditRatingOperation"
+                       value-ref="IntCrRtTrx.MakerUpdateInternalCreditRatingOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="intCrRtTrxControllerFactory"
+          class="com.integrosys.cms.app.creditriskparam.trx.internalcreditrating.InternalCreditRatingTrxControllerFactory">
+        <property name="intCrRtReadController" ref="intCrRtReadController"/>
+        <property name="intCrRtTrxController" ref="intCrRtTrxController"/>
+    </bean>
+
+    <!--Entity Limit-->
+    <bean id="EntityLimitTrx.CheckerApproveUpdateEntityLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.CheckerApproveUpdateEntityLimitOperation">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+    </bean>
+    <bean id="EntityLimitTrx.CheckerRejectUpdateEntityLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.CheckerRejectUpdateEntityLimitOperation">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+    </bean>
+    <bean id="EntityLimitTrx.MakerCloseCreateEntityLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.MakerCloseCreateEntityLimitOperation">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+    </bean>
+    <bean id="EntityLimitTrx.MakerCloseUpdateEntityLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.MakerCloseUpdateEntityLimitOperation">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+    </bean>
+    <bean id="EntityLimitTrx.MakerCreateEntityLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.MakerCreateEntityLimitOperation">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+    </bean>
+    <bean id="EntityLimitTrx.MakerUpdateEntityLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.MakerUpdateEntityLimitOperation">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+    </bean>
+    <bean id="EntityLimitTrx.ReadEntityLimitByTrxIDOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.ReadEntityLimitByTrxIDOperation">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+    </bean>
+    <bean id="EntityLimitTrx.ReadEntityLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.ReadEntityLimitOperation">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+    </bean>
+
+    <bean id="entityLimitReadController"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.EntityLimitReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadEntityLimitByTrxIDOperation"
+                       value-ref="EntityLimitTrx.ReadEntityLimitByTrxIDOperation"/>
+                <entry key="ReadEntityLimitOperation"
+                       value-ref="EntityLimitTrx.ReadEntityLimitOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="entityLimitTrxController"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.EntityLimitTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="CheckerApproveUpdateEntityLimitOperation"
+                       value-ref="EntityLimitTrx.CheckerApproveUpdateEntityLimitOperation"/>
+                <entry key="CheckerRejectUpdateEntityLimitOperation"
+                       value-ref="EntityLimitTrx.CheckerRejectUpdateEntityLimitOperation"/>
+                <entry key="MakerCloseCreateEntityLimitOperation"
+                       value-ref="EntityLimitTrx.MakerCloseCreateEntityLimitOperation"/>
+                <entry key="MakerCloseUpdateEntityLimitOperation"
+                       value-ref="EntityLimitTrx.MakerCloseUpdateEntityLimitOperation"/>
+                <entry key="MakerCreateEntityLimitOperation"
+                       value-ref="EntityLimitTrx.MakerCreateEntityLimitOperation"/>
+                <entry key="MakerUpdateEntityLimitOperation"
+                       value-ref="EntityLimitTrx.MakerUpdateEntityLimitOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="entityLimitTrxControllerFactory"
+          class="com.integrosys.cms.app.creditriskparam.trx.entitylimit.EntityLimitTrxControllerFactory">
+        <property name="entityLimitReadController" ref="entityLimitReadController"/>
+        <property name="entityLimitTrxController" ref="entityLimitTrxController"/>
+    </bean>
+
+    <!-- Sector Limit Parameter -->
+    <bean id="SectorLimit.MakerCreateSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.MakerCreateSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.MakerUpdateSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.MakerUpdateSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.MakerDeleteSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.MakerDeleteSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.CheckerApproveSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.CheckerApproveSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.CheckerRejectSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.CheckerRejectSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.MakerCloseCreateSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.MakerCloseCreateSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.MakerCloseUpdateSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.MakerCloseUpdateSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.MakerCloseDeleteSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.MakerCloseDeleteSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.ReadSectorLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.ReadSectorLimitParameterOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.ReadSectorLimitParameterByTrxIdOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.ReadSectorLimitParameterByTrxIdOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="SectorLimit.ReadSectorLimitParameterByIdOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.ReadSectorLimitParameterByIdOperation">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="sectorLimitParameterReadController"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.SectorLimitParameterReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadSectorLimitParameterOperation"
+                       value-ref="SectorLimit.ReadSectorLimitParameterOperation"/>
+                <entry key="ReadSectorLimitParameterByTrxIdOperation"
+                       value-ref="SectorLimit.ReadSectorLimitParameterByTrxIdOperation"/>
+                <entry key="ReadSectorLimitParameterByIdOperation"
+                       value-ref="SectorLimit.ReadSectorLimitParameterByIdOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="sectorLimitParameterTrxController"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.SectorLimitParameterTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="MakerCreateSectorLimitParameterOperation"
+                       value-ref="SectorLimit.MakerCreateSectorLimitParameterOperation"/>
+                <entry key="MakerUpdateSectorLimitParameterOperation"
+                       value-ref="SectorLimit.MakerUpdateSectorLimitParameterOperation"/>
+                <entry key="MakerDeleteSectorLimitParameterOperation"
+                       value-ref="SectorLimit.MakerDeleteSectorLimitParameterOperation"/>
+                <entry key="CheckerApproveSectorLimitParameterOperation"
+                       value-ref="SectorLimit.CheckerApproveSectorLimitParameterOperation"/>
+                <entry key="CheckerRejectSectorLimitParameterOperation"
+                       value-ref="SectorLimit.CheckerRejectSectorLimitParameterOperation"/>
+                <entry key="MakerCloseCreateSectorLimitParameterOperation"
+                       value-ref="SectorLimit.MakerCloseCreateSectorLimitParameterOperation"/>
+                <entry key="MakerCloseUpdateSectorLimitParameterOperation"
+                       value-ref="SectorLimit.MakerCloseUpdateSectorLimitParameterOperation"/>
+                <entry key="MakerCloseDeleteSectorLimitParameterOperation"
+                       value-ref="SectorLimit.MakerCloseDeleteSectorLimitParameterOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="SectorLimitParameterTrxControllerFactory"
+          class="com.integrosys.cms.app.creditriskparam.trx.sectorlimit.SectorLimitParameterTrxControllerFactory">
+        <property name="sectorLimitReadController" ref="sectorLimitParameterReadController"/>
+        <property name="sectorLimitTrxContoller" ref="sectorLimitParameterTrxController"/>
+    </bean>
+
+
+    <!--Internal Limit Parameter-->
+    <bean id="InternalLimitTrx.CheckApproveInternalLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.CheckApproveInternalLimitParameterOperation">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+    </bean>
+    <bean id="InternalLimitTrx.CheckerRejectInternalLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.CheckerRejectInternalLimitParameterOperation">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+    </bean>
+    <bean id="InternalLimitTrx.MakerCancelUpdateInternalLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.MakerCancelUpdateInternalLimitParameterOperation">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+    </bean>
+    <bean id="InternalLimitTrx.MakerCloseInternalLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.MakerCloseInternalLimitParameterOperation">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+    </bean>
+    <bean id="InternalLimitTrx.MakerSaveInternalLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.MakerSaveInternalLimitParameterOperation">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+    </bean>
+    <bean id="InternalLimitTrx.MakerUpdateInternalLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.MakerUpdateInternalLimitParameterOperation">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+    </bean>
+    <bean id="InternalLimitTrx.ReadInternalLimitParameterByTrxIDOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.ReadInternalLimitParameterByTrxIDOperation">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+    </bean>
+    <bean id="InternalLimitTrx.ReadInternalLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.ReadInternalLimitParameterOperation">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="internalLimitParameterReadController"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.InternalLimitParameterReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadInternalLimitParameterByTrxIDOperation"
+                       value-ref="InternalLimitTrx.ReadInternalLimitParameterByTrxIDOperation"/>
+                <entry key="ReadInternalLimitParameterOperation"
+                       value-ref="InternalLimitTrx.ReadInternalLimitParameterOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="internalLimitParameterTrxController"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.InternalLimitParameterTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="CheckApproveInternalLimitParameterOperation"
+                       value-ref="InternalLimitTrx.CheckApproveInternalLimitParameterOperation"/>
+                <entry key="CheckerRejectInternalLimitParameterOperation"
+                       value-ref="InternalLimitTrx.CheckerRejectInternalLimitParameterOperation"/>
+                <entry key="MakerCancelUpdateInternalLimitParameterOperation"
+                       value-ref="InternalLimitTrx.MakerCancelUpdateInternalLimitParameterOperation"/>
+                <entry key="MakerCloseInternalLimitParameterOperation"
+                       value-ref="InternalLimitTrx.MakerCloseInternalLimitParameterOperation"/>
+                <entry key="MakerSaveInternalLimitParameterOperation"
+                       value-ref="InternalLimitTrx.MakerSaveInternalLimitParameterOperation"/>
+                <entry key="MakerUpdateInternalLimitParameterOperation"
+                       value-ref="InternalLimitTrx.MakerUpdateInternalLimitParameterOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="internalLimitParameterTrxControllerFactory"
+          class="com.integrosys.cms.app.creditriskparam.trx.internallimit.InternalLimitParameterTrxControllerFactory">
+        <property name="internalLimitParameterReadController" ref="internalLimitParameterReadController"/>
+        <property name="internalLimitParameterTrxController" ref="internalLimitParameterTrxController"/>
+    </bean>
+
+    <!-- Product Limit -->
+    <bean id="ProductLimit.ReadProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.ReadProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.ReadProductLimitParameterByTrxIdOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.ReadProductLimitParameterByTrxIdOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.ReadProductLimitParameterByIdOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.ReadProductLimitParameterByIdOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="productLimitParameterReadController"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.ProductLimitParameterReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadProductLimitParameterOperation"
+                       value-ref="ProductLimit.ReadProductLimitParameterOperation"/>
+                <entry key="ReadProductLimitParameterByTrxIdOperation"
+                       value-ref="ProductLimit.ReadProductLimitParameterByTrxIdOperation"/>
+                <entry key="ReadProductLimitParameterByIdOperation"
+                       value-ref="ProductLimit.ReadProductLimitParameterByIdOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="ProductLimit.MakerCreateProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.MakerCreateProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.MakerDeleteProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.MakerDeleteProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.CheckerApproveProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.CheckerApproveProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.CheckerRejectProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.CheckerRejectProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.MakerCloseCreateProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.MakerCloseCreateProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.MakerCloseUpdateProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.MakerCloseUpdateProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.MakerUpdateProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.MakerUpdateProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="ProductLimit.MakerCloseDeleteProductLimitParameterOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.MakerCloseDeleteProductLimitParameterOperation">
+        <property name="productLimitParameterBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitParameterBusManager" ref="stagingProductLimitParameterBusManager"/>
+    </bean>
+
+    <bean id="productLimitParameterTrxController"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.ProductLimitParameterTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="MakerCreateProductLimitParameterOperation"
+                       value-ref="ProductLimit.MakerCreateProductLimitParameterOperation"/>
+                <entry key="MakerUpdateProductLimitParameterOperation"
+                       value-ref="ProductLimit.MakerUpdateProductLimitParameterOperation"/>
+                <entry key="MakerDeleteProductLimitParameterOperation"
+                       value-ref="ProductLimit.MakerDeleteProductLimitParameterOperation"/>
+                <entry key="CheckerApproveProductLimitParameterOperation"
+                       value-ref="ProductLimit.CheckerApproveProductLimitParameterOperation"/>
+                <entry key="CheckerRejectProductLimitParameterOperation"
+                       value-ref="ProductLimit.CheckerRejectProductLimitParameterOperation"/>
+                <entry key="MakerCloseCreateProductLimitParameterOperation"
+                       value-ref="ProductLimit.MakerCloseCreateProductLimitParameterOperation"/>
+                <entry key="MakerCloseUpdateProductLimitParameterOperation"
+                       value-ref="ProductLimit.MakerCloseUpdateProductLimitParameterOperation"/>
+                <entry key="MakerCloseDeleteProductLimitParameterOperation"
+                       value-ref="ProductLimit.MakerCloseDeleteProductLimitParameterOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="productLimitParameterTrxControllerFactory"
+          class="com.integrosys.cms.app.creditriskparam.trx.productlimit.ProductLimitParameterTrxControllerFactory">
+        <property name="productLimitReadController" ref="productLimitParameterReadController"/>
+        <property name="productLimitTrxContoller" ref="productLimitParameterTrxController"/>
+    </bean>
+
+    <!--Bank Entity Branch Param-->
+    <bean id="BkEntityBrchPrmTrx.ReadBankEntityBranchByTrxIDOp"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.ReadBankEntityBranchByTrxIDOp">
+        <property name="bankEntityBranchParamBusManager" ref="bankEntityBranchParamBusManager"/>
+        <property name="stagingBankEntityBranchParamBusManager" ref="stagingBankEntityBranchParamBusManager"/>
+    </bean>
+    <bean id="BkEntityBrchPrmTrx.ReadBankEntityBranchOp"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.ReadBankEntityBranchOp">
+        <property name="bankEntityBranchParamBusManager" ref="bankEntityBranchParamBusManager"/>
+        <property name="stagingBankEntityBranchParamBusManager" ref="stagingBankEntityBranchParamBusManager"/>
+    </bean>
+    <bean id="BkEntityBrchPrmTrx.CheckerApproveBankEntityBranchOp"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.CheckerApproveBankEntityBranchOp">
+        <property name="bankEntityBranchParamBusManager" ref="bankEntityBranchParamBusManager"/>
+        <property name="stagingBankEntityBranchParamBusManager" ref="stagingBankEntityBranchParamBusManager"/>
+    </bean>
+    <bean id="BkEntityBrchPrmTrx.CheckerRejectBankEntityBranchOp"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.CheckerRejectBankEntityBranchOp">
+        <property name="bankEntityBranchParamBusManager" ref="bankEntityBranchParamBusManager"/>
+        <property name="stagingBankEntityBranchParamBusManager" ref="stagingBankEntityBranchParamBusManager"/>
+    </bean>
+    <bean id="BkEntityBrchPrmTrx.MakerCloseRejectedBankEntityBranchOp"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.MakerCloseRejectedBankEntityBranchOp">
+        <property name="bankEntityBranchParamBusManager" ref="bankEntityBranchParamBusManager"/>
+        <property name="stagingBankEntityBranchParamBusManager" ref="stagingBankEntityBranchParamBusManager"/>
+    </bean>
+    <bean id="BkEntityBrchPrmTrx.MakerUpdateBankEntityBranchOp"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.MakerUpdateBankEntityBranchOp">
+        <property name="bankEntityBranchParamBusManager" ref="bankEntityBranchParamBusManager"/>
+        <property name="stagingBankEntityBranchParamBusManager" ref="stagingBankEntityBranchParamBusManager"/>
+    </bean>
+
+    <bean id="bkEntityBrchPrmReadController"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.BankEntityBranchReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadBankEntityBranchByTrxIDOp"
+                       value-ref="BkEntityBrchPrmTrx.ReadBankEntityBranchByTrxIDOp"/>
+                <entry key="ReadBankEntityBranchOp"
+                       value-ref="BkEntityBrchPrmTrx.ReadBankEntityBranchOp"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bkEntityBrchPrmTrxController"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.BankEntityBranchTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="CheckerApproveBankEntityBranchOp"
+                       value-ref="BkEntityBrchPrmTrx.CheckerApproveBankEntityBranchOp"/>
+                <entry key="CheckerRejectBankEntityBranchOp"
+                       value-ref="BkEntityBrchPrmTrx.CheckerRejectBankEntityBranchOp"/>
+                <entry key="MakerCloseRejectedBankEntityBranchOp"
+                       value-ref="BkEntityBrchPrmTrx.MakerCloseRejectedBankEntityBranchOp"/>
+                <entry key="MakerUpdateBankEntityBranchOp"
+                       value-ref="BkEntityBrchPrmTrx.MakerUpdateBankEntityBranchOp"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="bkEntityBrchPrmTrxControllerFactory"
+          class="com.integrosys.cms.app.creditriskparam.trx.bankentitybranch.BankEntityBranchTrxControllerFactory">
+        <property name="bkEntityBrchPrmReadController" ref="bkEntityBrchPrmReadController"/>
+        <property name="bkEntityBrchPrmTrxController" ref="bkEntityBrchPrmTrxController"/>
+    </bean>
+
+    <!--Country Limit-->
+    <bean id="CtryLimitTrx.ReadCountryLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.ReadCountryLimitOperation">
+        <property name="countryLimitBusManager" ref="countryLimitBusManager"/>
+        <property name="stagingCountryLimitBusManager" ref="stagingCountryLimitBusManager"/>
+    </bean>
+    <bean id="CtryLimitTrx.ReadCountryLimitByTrxIDOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.ReadCountryLimitByTrxIDOperation">
+        <property name="countryLimitBusManager" ref="countryLimitBusManager"/>
+        <property name="stagingCountryLimitBusManager" ref="stagingCountryLimitBusManager"/>
+    </bean>
+    <bean id="CtryLimitTrx.MakerUpdateCountryLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.MakerUpdateCountryLimitOperation">
+        <property name="countryLimitBusManager" ref="countryLimitBusManager"/>
+        <property name="stagingCountryLimitBusManager" ref="stagingCountryLimitBusManager"/>
+    </bean>
+    <bean id="CtryLimitTrx.CheckerApproveUpdateCountryLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.CheckerApproveUpdateCountryLimitOperation">
+        <property name="countryLimitBusManager" ref="countryLimitBusManager"/>
+        <property name="stagingCountryLimitBusManager" ref="stagingCountryLimitBusManager"/>
+    </bean>
+    <bean id="CtryLimitTrx.CheckerRejectUpdateCountryLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.CheckerRejectUpdateCountryLimitOperation">
+        <property name="countryLimitBusManager" ref="countryLimitBusManager"/>
+        <property name="stagingCountryLimitBusManager" ref="stagingCountryLimitBusManager"/>
+    </bean>
+    <bean id="CtryLimitTrx.MakerCloseUpdateCountryLimitOperation"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.MakerCloseUpdateCountryLimitOperation">
+        <property name="countryLimitBusManager" ref="countryLimitBusManager"/>
+        <property name="stagingCountryLimitBusManager" ref="stagingCountryLimitBusManager"/>
+    </bean>
+
+    <bean id="ctryLimitReadController"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.CountryLimitReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadCountryLimitOperation"
+                       value-ref="CtryLimitTrx.ReadCountryLimitOperation"/>
+                <entry key="ReadCountryLimitByTrxIDOperation"
+                       value-ref="CtryLimitTrx.ReadCountryLimitByTrxIDOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="ctryLimitTrxController"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.CountryLimitTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="MakerUpdateCountryLimitOperation"
+                       value-ref="CtryLimitTrx.MakerUpdateCountryLimitOperation"/>
+                <entry key="CheckerApproveUpdateCountryLimitOperation"
+                       value-ref="CtryLimitTrx.CheckerApproveUpdateCountryLimitOperation"/>
+                <entry key="CheckerRejectUpdateCountryLimitOperation"
+                       value-ref="CtryLimitTrx.CheckerRejectUpdateCountryLimitOperation"/>
+                <entry key="MakerCloseUpdateCountryLimitOperation"
+                       value-ref="CtryLimitTrx.MakerCloseUpdateCountryLimitOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="ctryLimitTrxControllerFactory"
+          class="com.integrosys.cms.app.creditriskparam.trx.countrylimit.CountryLimitTrxControllerFactory">
+        <property name="ctryLimitReadController" ref="ctryLimitReadController"/>
+        <property name="ctryLimitTrxController" ref="ctryLimitTrxController"/>
+    </bean>
+
+</beans>

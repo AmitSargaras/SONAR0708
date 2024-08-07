@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<syncMasterTemplateOut>
+		<query>
+		Select DOCUMENT_ID,DOCUMENT_DESCRIPTION,DOCUMENT_CODE,CATEGORY,ACTION
+		From(
+		select cdg.DOCUMENT_ID ,  cdg.DOCUMENT_DESCRIPTION ,  cdg.DOCUMENT_CODE ,  cdg.CATEGORY ,  
+		'I' as Action
+		from cms_document_globallist cdg, trans_history trah , transaction tra 
+		where cdg.DOCUMENT_ID = tra.reference_id 
+		and cdg.DOCUMENT_ID = trah.reference_id  
+		and trah.transaction_type ='DOCITEM' 
+		and trah.from_state = 'PENDING_CREATE' and trah.STATUS = 'ACTIVE'
+		and tra.STATUS != 'DELETED'
+		and to_char(trah.transaction_date,'DD-MON-YY') = (select To_Date(Param_Value,'DD-Mon-YYYY') from Cms_General_Param where param_code = 'LAST_EOD_DATE')
+		UNION
+		select cdg.DOCUMENT_ID ,  cdg.DOCUMENT_DESCRIPTION ,  cdg.DOCUMENT_CODE ,  cdg.CATEGORY ,  
+		CASE
+	      WHEN UPPER(cdg.EOD_SYNC_STATUS) = 'INSERT_SENT' or UPPER(cdg.EOD_SYNC_STATUS) = 'INSERT_FAILED' 
+	      THEN 'I'
+	      Else 'U'
+	    END AS Action
+		from cms_document_globallist cdg, trans_history trah , transaction tra  
+		where cdg.DOCUMENT_ID = tra.reference_id  
+		and trah.tr_history_id = tra.cur_trx_history_id
+		and tra.transaction_type ='DOCITEM' 
+		And Tra.Status = 'ACTIVE'
+		and to_char(tra.transaction_date,'DD-MON-YY') = (select To_Date(Param_Value,'DD-Mon-YYYY') from Cms_General_Param where param_code = 'LAST_EOD_DATE')
+		and cdg.DOCUMENT_ID not in(
+		    select reference_id from trans_history 
+		    where transaction_type ='DOCITEM' 
+		    and from_state = 'PENDING_CREATE' and STATUS = 'ACTIVE'
+		    and to_char(transaction_date,'DD-MON-YY') = (select To_Date(Param_Value,'DD-Mon-YYYY') from Cms_General_Param where param_code = 'LAST_EOD_DATE')
+		)
+		UNION 
+		select cdg.DOCUMENT_ID ,  cdg.DOCUMENT_DESCRIPTION ,  cdg.DOCUMENT_CODE ,  cdg.CATEGORY ,  
+		'D' as Action
+		from cms_document_globallist cdg, transaction tra 
+		where cdg.DOCUMENT_ID = tra.reference_id  
+		And Tra.Transaction_Type ='DOCITEM' 
+    	AND cdg.Eod_Sync_Status  not in ('INSERT_SENT','INSERT_FAILED')
+		And Tra.Status = 'DELETED' 
+		and to_char(tra.transaction_date,'DD-MON-YY') = (select To_Date(Param_Value,'DD-Mon-YYYY') from Cms_General_Param where param_code = 'LAST_EOD_DATE')
+		and cdg.DOCUMENT_ID not in(
+		    select reference_id from trans_history 
+		    where transaction_type ='DOCITEM' 
+		    and from_state = 'PENDING_CREATE' and STATUS = 'ACTIVE'
+		    And To_Char(Transaction_Date,'DD-MON-YY') = (Select To_Date(Param_Value,'DD-Mon-YYYY') From Cms_General_Param Where Param_Code = 'LAST_EOD_DATE')
+		)
+    	UNION 
+		select cdg.DOCUMENT_ID ,  cdg.DOCUMENT_DESCRIPTION ,  cdg.DOCUMENT_CODE ,  cdg.CATEGORY ,  
+		CASE
+	      WHEN UPPER(cdg.EOD_SYNC_STATUS) = 'INSERT_SENT'
+	      THEN 'I'
+	      WHEN Upper(Cdg.Eod_Sync_Status) = 'DELETE_SENT'
+	      	OR Upper(Cdg.Eod_Sync_Status)   = 'DELETE_FAILED'
+	      	OR (Upper(Cdg.EOD_SYNC_STATUS)  = 'UPDATE_SENT' AND Tra.Status ='DELETED')
+	      THEN 'D'
+	      WHEN Upper(cdg.EOD_SYNC_STATUS) = 'UPDATE_SENT'
+	      THEN 'U'
+	    END AS Action
+		from cms_document_globallist cdg, transaction tra 
+		where cdg.DOCUMENT_ID = tra.reference_id  
+		And Tra.Transaction_Type ='DOCITEM' 
+    	AND((Cdg.Eod_Sync_Status         = 'INSERT_SENT' AND Tra.Status                  !='DELETED')
+    		OR Cdg.Eod_Sync_Status          IN ('UPDATE_SENT','DELETE_SENT','DELETE_FAILED') )
+		And trunc(Tra.Transaction_Date) != (Select To_Date(Param_Value,'DD-Mon-YYYY') From Cms_General_Param Where Param_Code = 'LAST_EOD_DATE')
+		)	
+		</query>
+	<whereClause>
+		<mandatoryClause>
+				1=1
+		</mandatoryClause>
+	</whereClause>
+	<reportType>TXT</reportType>
+	<delimiter>|||</delimiter>
+	<secondaryDelimiter>~~~</secondaryDelimiter>
+	
+	<reportParamters>
+		<reportColumns>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>DOCUMENT_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>DOCUMENT_DESCRIPTION</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>DOCUMENT_CODE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>CATEGORY</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ACTION</header>
+			</reportColumn>
+		</reportColumns>
+		<reportName>CLIMS_DocumnetGloble_Mst</reportName>
+	</reportParamters>
+	</syncMasterTemplateOut>

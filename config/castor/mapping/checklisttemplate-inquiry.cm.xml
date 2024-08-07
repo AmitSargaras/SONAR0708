@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>Checklist Template Mapping - DC001 (Inquiry)</description>
+
+	<include href="common.cm.xml" /> 
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.document.inquiry.template.CheckListTemplateInquiryMsgBody" >
+		<map-to xml="MsgBody"/>
+		<field name="ChecklistTemplateCriteria" type="com.integrosys.cms.host.eai.document.inquiry.template.ChecklistTemplateCriteria"/>		
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.inquiry.template.ChecklistTemplateCriteria">
+		<map-to xml="ChecklistTemplateCriteria"/>
+		<field name="ChecklistType" type="string"/>
+        <field name="Country" type="string"/>
+        <field name="CCTemplate" type="com.integrosys.cms.host.eai.document.bus.CCTemplate"/>
+        <field name="SCTemplate" type="com.integrosys.cms.host.eai.document.bus.SCTemplate"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.CCTemplate">
+		<map-to xml="CCTemplate"/>
+		<field name="CustomerType" type="string"/>
+        <field name="CustomerClass" type="com.integrosys.cms.host.eai.StandardCode"/>
+        <field name="ApplicableLaw" type="string"/>
+        <field name="ApplicationType" type="com.integrosys.cms.host.eai.StandardCode"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.SCTemplate">
+		<map-to xml="SCTemplate"/>
+        <field name="SecurityType" type="com.integrosys.cms.host.eai.StandardCode"/>
+        <field name="SecuritySubType" type="com.integrosys.cms.host.eai.StandardCode"/>
+        <field name="ApplicationType" type="com.integrosys.cms.host.eai.StandardCode"/>
+        <field name="GoodsStatus" type="com.integrosys.cms.host.eai.StandardCode"/>
+        <field name="PBTPBRInd" type="com.integrosys.cms.host.eai.StandardCode"/>
+	</class>
+  
+</mapping>

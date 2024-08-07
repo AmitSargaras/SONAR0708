@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for Batch Job. Probably inject Services or DAO.
+	</description>
+	<bean id="eodUserManagerJob" class="com.integrosys.cms.app.eventmonitor.enabledisableuser.MonEnableDisableUser">
+	</bean>
+	<bean id="endOfDayBatchJob" class="com.integrosys.cms.batch.eod.EndOfDayBatchMain">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl"/>
+    </bean>
+    <!--  Added By Dayananda Laishram for Basel Report Generation on 12-May-2015 BASEL_REPORT_ON_EOD || Starts  -->
+    <bean id="endOfDayBaselUpdateReportJob" class="com.integrosys.cms.batch.eod.EndOfDayBaselUpdateReportMain">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl"/>
+    </bean>
+    <!--   Added By Dayananda Laishram for Basel Report Generation on 12-May-2015 BASEL_REPORT_ON_EOD || Ends  -->
+   
+    <bean id="rBIReportEndOfDayBatchJob" class="com.integrosys.cms.batch.eod.RBIReportEndOfDayBatchMain">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl"/>
+    </bean>
+    <bean id="endOfDayYearJob" class="com.integrosys.cms.batch.eod.EndOfYearBatchMain">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl"/>
+    </bean>
+    <bean id="systemHandOffJob" class="com.integrosys.cms.batch.eod.SystemHandoffBatchMain">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl"/>
+    </bean>
+    <bean id="EndOfDayBatchServiceImpl" class="com.integrosys.cms.batch.eod.EndOfDayBatchServiceImpl">
+    	<property name="generalParam" ref="generalParamDao"></property>
+    	<property name="holidayDao" ref="holidayDao"></property>
+    	<property name="holidayJdbc" ref="holidayJdbc"></property>
+    	<property name="baselDao" ref="baselDao"></property>
+    	<property name="monEnableDisableUser" ref="monEnableDisableUserBean"></property>
+    	<property name="emailNotificationMain" ref="emailNotificationMainBean"></property>
+    	<property name="eodStatusProxy" ref="eodStatusProxyManager"></property>
+    	<property name="refreshMvDao" ref="refreshMvDao"></property> <!--Uma Khot: 19/02/2016 :Refreshing MV as User Admin Report Taking time for execution. -->
+    	<property name="camQuarterDao" ref="camQuarterDao"></property><!-- Added for CAM Quarter Activity CR -->
+
+    </bean>
+
+    <!-- Start:Uma Khot: 19/02/2016 :Refreshing MV as User Admin Report Taking time for execution. -->
+     <bean id="refreshMvDao" class="com.integrosys.cms.app.eod.refreshMv.RefreshMvDao">
+     <property name="jdbcTemplate">
+            <bean class="org.springframework.jdbc.core.JdbcTemplate">
+                <property name="dataSource" ref="ofaPool" />
+            </bean>
+        </property>
+        <property name="spUserTransaction" value="SP_User_transaction" />
+        <property name="spRefreshEwsStockDeferral" value="SP_RFRESH_EWSStockDef_MV" />
+        <property name="spRefreshDPAuditTrailMV" value="SP_RFRESH_DPREGUL_AUDIT_TRAIL" />
+        <property name="spRefreshStockStmntReportRM" value="SP_RFRESH_STOCK_STMNT_REPORT_RM" />
+        
+        <property name="spRefreshCustomerWiseSecurity" value="SP_RFRESH_CUSTOMERWISESECURITY_MV" />
+        <property name="spRefreshCalculateRecDate" value="SP_RFRESH_CALCULATE_REC_DATE_MV" />
+        <property name="spRefreshSecMapChargeIdMv" value="SP_RFRESH_SECMAPCHARGEID_MV" />
+        
+      </bean>
+    <!-- End:Uma Khot: 19/02/2016 :Refreshing MV as User Admin Report Taking time for execution. -->
+    
+
+    <bean id="endOfDaySyncMastersBatchJob" class="com.integrosys.cms.batch.eod.EndOfDaySyncMastersMain">
+        <property name="endOfDaySyncMastersService" ref="EndOfDaySyncMastersServiceImpl"/>
+    </bean>
+    <bean id="EndOfDaySyncMastersServiceImpl" class="com.integrosys.cms.batch.eod.EndOfDaySyncMastersServiceImpl">
+    	<property name="generalParam" ref="generalParamDao"></property>
+    	<property name="collateralNewMasterProxy" ref="collateralNewMasterProxy" />
+    	<property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    	<property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    	<property name="creditApprovalProxy" ref="creditApprovalProxy" />
+    	<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+    	<property name="partyGroupProxy" ref="partyGroupProxy" />
+    	<property name="eodSyncStatusProxy" ref="eodSyncStatusProxyManager"></property>
+    	<property name="processMasterSyncOutData" ref="processMasterSyncOutData"></property>
+    	<property name="eodSyncOutMaster" ref="eodSyncOutMasterDao"></property>
+    </bean>
+    <bean id="processMasterSyncOutData" class="com.integrosys.cms.batch.common.filereader.ProcessMasterSyncOutData" >
+    	<property name="eodSyncOutMaster" ref="eodSyncOutMasterDao"></property>
+    </bean>
+
+    <bean id="monEnableDisableUserBean" class="com.integrosys.cms.app.eventmonitor.enabledisableuser.MonEnableDisableUser"/>
+    <bean id="emailNotificationMainBean" class="com.integrosys.cms.batch.email.notification.EmailNotificationMain">
+     <property name="emailNotificationService" ref="emailNotificationService"/>
+     <property name="emailNotificationJdbc" ref="emailNotificationJdbc"/>
+    </bean>
+    
+    <bean id="baselDao" class="com.integrosys.cms.app.eod.basel.BaselDao">
+   		<property name="jdbcTemplate">
+            <bean class="org.springframework.jdbc.core.JdbcTemplate">
+                <property name="dataSource" ref="ofaPool" />
+            </bean>
+        </property>
+        <property name="dailyBaselReport" value="sp_cms_basel_daily" />
+        <property name="monthlyBaselReport" value="sp_cms_basel_monthly" />
+        <property name="monthlyBaselReport_p2" value="sp_cms_basel_monthly_p2" />
+        <!-- Added By Dayananda Laishram for Basel Report Generation on 12-May-2015 BASEL_REPORT_ON_EOD -->
+        <property name="sp_basel_update_report" value="SP_CMS_BASEL_UPDATE_REPORT" />
+        
+    </bean>
+   <!-- Start:Added by Uma Khot for CAM Quarter Activity CR -->
+      <bean id="camQuarterDao" class="com.integrosys.cms.app.eod.camquarter.CamQuarterDao">
+   		<property name="jdbcTemplate">
+            <bean class="org.springframework.jdbc.core.JdbcTemplate">
+                <property name="dataSource" ref="ofaPool" />
+            </bean>
+        </property>
+        <property name="sp_cam_detail_report" value="SP_CAM_DETAIL_REPORT" />
+        <property name="sp_cam_quarter_activity" value="SP_CAM_QUARTER_ACTIVITY" />
+      </bean>
+     <!-- End:Added by Uma Khot for CAM Quarter Activity CR -->
+     
+     <bean id="posidexFileGenerationJob" class="com.integrosys.cms.batch.eod.PosidexFileGenerationMain">
+        <property name="generatePosidexReportFileService" ref="GeneratePosidexReportFileServiceImpl"/>
+    </bean>
+    
+    <bean id="GeneratePosidexReportFileServiceImpl" class="com.integrosys.cms.batch.eod.GeneratePosidexReportFileServiceImpl">
+    	<property name="generalParam" ref="generalParamDao"></property>
+    	<property name="processPosidexOutData" ref="processPosidexOutData"></property>
+    	<property name="posidexFileGen" ref="posidexFileGenDao"></property>
+    </bean>
+    
+    <bean id="processPosidexOutData" class="com.integrosys.cms.batch.common.filereader.ProcessPosidexOutData" >
+    	<property name="posidexFileGen" ref="posidexFileGenDao"></property>
+    	<property name="generalParam" ref="generalParamDao"></property>
+    </bean>
+    
+    <!-- FCUBS handoff CR -->
+    <bean id="fcubsFileDownload" class="com.integrosys.cms.batch.eod.FcubsFileDownload">
+    <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl"></property>
+    </bean>
+
+  <!-- Erosion CR - autosys job-->
+    <bean id="erosionDataCreateBatchJob" class="com.integrosys.cms.batch.erosion.schedular.ErosionDataCreateBatchMain">
+        <property name="erosionDataCreateJob" ref="erosionDataCreateJobImpl"/>
+    </bean>
+    <bean id="erosionDataCreateJobImpl" class="com.integrosys.cms.batch.erosion.schedular.ErosionDataCreateJob">
+     <property name="erosionHelper" ref="erosionHelper"></property>
+    </bean>
+    
+    <bean id="erosionFileWriteBatchJob" class="com.integrosys.cms.batch.erosion.schedular.ErosionFileGenerationBatchMain">
+        <property name="erosionFileWriteJob" ref="erosionFileWriteJobImpl"/>
+    </bean>
+    <bean id="erosionFileWriteJobImpl" class="com.integrosys.cms.batch.erosion.schedular.ErosionFileWriteJob">
+     <property name="erosionHelper" ref="erosionHelper"></property>
+    </bean>
+</beans>

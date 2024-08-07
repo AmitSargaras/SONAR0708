@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_Custodian">
+   <display-name>Custodian</display-name>
+   <enterprise-beans>
+      <session id="session_SBCustodianProxyManager">
+         <ejb-name>SBCustodianProxyManager</ejb-name>
+         <home>com.integrosys.cms.app.custodian.proxy.SBCustodianProxyManagerHome</home>
+         <remote>com.integrosys.cms.app.custodian.proxy.SBCustodianProxyManager</remote>
+         <ejb-class>com.integrosys.cms.app.custodian.proxy.SBCustodianProxyManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCustodianProxyManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCustodianBusManager">
+         <ejb-name>SBCustodianBusManager</ejb-name>
+         <home>com.integrosys.cms.app.custodian.bus.SBCustodianBusManagerHome</home>
+         <remote>com.integrosys.cms.app.custodian.bus.SBCustodianBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.custodian.bus.SBCustodianBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBCustodianBusManager_EBCustodianDoc">
+            <ejb-ref-name>EBCustodianDocLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocLocalHome</local-home>
+            <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocLocal</local>
+            <ejb-link>EBCustodianDoc</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBCustodianBusManager_EBCustodianDocItem">
+            <ejb-ref-name>EBCustodianDocItemHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocItemHome</local-home>
+            <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocItem</local>
+            <ejb-link>EBCustodianDocItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBCustodianBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBStagingCustodianBusManager">
+         <ejb-name>SBStagingCustodianBusManager</ejb-name>
+         <home>com.integrosys.cms.app.custodian.bus.SBCustodianBusManagerHome</home>
+         <remote>com.integrosys.cms.app.custodian.bus.SBCustodianBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.custodian.bus.SBStagingCustodianBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBStagingCustodianBusManager_EBStagingCustodianDoc">
+            <ejb-ref-name>EBStagingCustodianDocLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocLocalHome</local-home>
+            <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocLocal</local>
+            <ejb-link>EBStagingCustodianDoc</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_SBStagingCustodianBusManager_EBStagingCustodianDocItem">
+            <ejb-ref-name>EBStagingCustodianDocItemHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocItemHome</local-home>
+            <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocItem</local>
+            <ejb-link>EBStagingCustodianDocItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBStagingCustodianBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBCustodianDoc">
+         <ejb-name>EBCustodianDoc</ejb-name>
+         <home>com.integrosys.cms.app.custodian.bus.EBCustodianDocHome</home>
+         <remote>com.integrosys.cms.app.custodian.bus.EBCustodianDoc</remote>
+         <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocLocalHome</local-home>
+         <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocLocal</local>
+         <ejb-class>com.integrosys.cms.app.custodian.bus.EBCustodianDocBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCustodianDoc</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPCustodianDocID">
+            <field-name>cMPCustodianDocID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPPledgorID">
+            <field-name>cMPPledgorID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPSubProfileID">
+            <field-name>cMPSubProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPCollateralID">
+            <field-name>cMPCollateralID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPDocType">
+            <field-name>cMPDocType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPDocSubType">
+            <field-name>cMPDocSubType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPVersionTime">
+            <field-name>cMPVersionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPLastUpdateDate">
+            <field-name>cMPLastUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPUpdatedCheckListItemRefList">
+            <field-name>cMPUpdatedCheckListItemRefList</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPReversalRemarks">
+            <field-name>cMPReversalRemarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPRevRemarksUpdatedBy">
+            <field-name>cMPRevRemarksUpdatedBy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPReversalID">
+            <field-name>cMPReversalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDoc_cMPReversalRmkUpdatedUserInfo">
+            <field-name>cMPReversalRmkUpdatedUserInfo</field-name>
+         </cmp-field>
+         <primkey-field>cMPCustodianDocID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCustodianDoc_EBCustodianDocItem">
+            <ejb-ref-name>EBCustodianDocItemHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocItemHome</local-home>
+            <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocItem</local>
+            <ejb-link>EBCustodianDocItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCustodianDoc">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCollateralID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBCustodianDoc o WHERE o.cMPCheckListID = ?1 ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByCheckList</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCustodianDoc o WHERE o.cMPCheckListID = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingCustodianDoc">
+         <ejb-name>EBStagingCustodianDoc</ejb-name>
+         <home>com.integrosys.cms.app.custodian.bus.EBCustodianDocHome</home>
+         <remote>com.integrosys.cms.app.custodian.bus.EBCustodianDoc</remote>
+         <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocLocalHome</local-home>
+         <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocLocal</local>
+         <ejb-class>com.integrosys.cms.app.custodian.bus.EBStagingCustodianDocBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingCustodianDoc</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPCustodianDocID">
+            <field-name>cMPCustodianDocID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPCheckListID">
+            <field-name>cMPCheckListID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPPledgorID">
+            <field-name>cMPPledgorID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPSubProfileID">
+            <field-name>cMPSubProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPCollateralID">
+            <field-name>cMPCollateralID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPDocType">
+            <field-name>cMPDocType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPDocSubType">
+            <field-name>cMPDocSubType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPVersionTime">
+            <field-name>cMPVersionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPLastUpdateDate">
+            <field-name>cMPLastUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPUpdatedCheckListItemRefList">
+            <field-name>cMPUpdatedCheckListItemRefList</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPReversalRemarks">
+            <field-name>cMPReversalRemarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPRevRemarksUpdatedBy">
+            <field-name>cMPRevRemarksUpdatedBy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPReversalID">
+            <field-name>cMPReversalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDoc_cMPReversalRmkUpdatedUserInfo">
+            <field-name>cMPReversalRmkUpdatedUserInfo</field-name>
+         </cmp-field>
+         <primkey-field>cMPCustodianDocID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingCustodianDoc_EBStagingCustodianDocItem">
+            <ejb-ref-name>EBStagingCustodianDocItemHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocItemHome</local-home>
+            <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocItem</local>
+            <ejb-link>EBStagingCustodianDocItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingCustodianDoc">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCollateralID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingCustodianDoc o WHERE o.cMPCheckListID = ?1 ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByCheckList</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBStagingCustodianDoc o WHERE o.cMPCheckListID = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCustodianDocItem">
+         <ejb-name>EBCustodianDocItem</ejb-name>
+         <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocItemHome</local-home>
+         <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocItem</local>
+         <ejb-class>com.integrosys.cms.app.custodian.bus.EBCustodianDocItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCustodianDocItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPCustodianDocID">
+            <field-name>cMPCustodianDocID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPCustodianDocItemID">
+            <field-name>cMPCustodianDocItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPCheckListItemRefID">
+            <field-name>cMPCheckListItemRefID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPStatus">
+            <field-name>cMPStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPReason">
+            <field-name>cMPReason</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPLastUpdateDate">
+            <field-name>cMPLastUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPMakerID">
+            <field-name>cMPMakerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPCheckerID">
+            <field-name>cMPCheckerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_makerTrxDate">
+            <field-name>makerTrxDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_checkerTrxDate">
+            <field-name>checkerTrxDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPReversalDate">
+            <field-name>cMPReversalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPSecEnvelopeBarcode">
+            <field-name>cMPSecEnvelopeBarcode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianDocItem_cMPCustodianDocItemBarcode">
+            <field-name>cMPCustodianDocItemBarcode</field-name>
+         </cmp-field>
+         <primkey-field>cMPCustodianDocItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCustodianDocItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBStagingCustodianDocItem">
+         <ejb-name>EBStagingCustodianDocItem</ejb-name>
+         <local-home>com.integrosys.cms.app.custodian.bus.EBCustodianDocItemHome</local-home>
+         <local>com.integrosys.cms.app.custodian.bus.EBCustodianDocItem</local>
+         <ejb-class>com.integrosys.cms.app.custodian.bus.EBCustodianDocItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingCustodianDocItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPCustodianDocID">
+            <field-name>cMPCustodianDocID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPCustodianDocItemID">
+            <field-name>cMPCustodianDocItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPCheckListItemRefID">
+            <field-name>cMPCheckListItemRefID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPStatus">
+            <field-name>cMPStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPReason">
+            <field-name>cMPReason</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPLastUpdateDate">
+            <field-name>cMPLastUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPMakerID">
+            <field-name>cMPMakerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPCheckerID">
+            <field-name>cMPCheckerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_makerTrxDate">
+            <field-name>makerTrxDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_checkerTrxDate">
+            <field-name>checkerTrxDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPReversalDate">
+            <field-name>cMPReversalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPSecEnvelopeBarcode">
+            <field-name>cMPSecEnvelopeBarcode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCustodianDocItem_cMPCustodianDocItemBarcode">
+            <field-name>cMPCustodianDocItemBarcode</field-name>
+         </cmp-field>
+         <primkey-field>cMPCustodianDocItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBStagingCustodianDocItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBCustodianAuthz">
+         <ejb-name>EBCustodianAuthz</ejb-name>
+         <home>com.integrosys.cms.app.custodian.bus.EBCustodianAuthzHome</home>
+         <remote>com.integrosys.cms.app.custodian.bus.EBCustodianAuthz</remote>
+         <ejb-class>com.integrosys.cms.app.custodian.bus.EBCustodianAuthzBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCustodianAuthz</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCustodianAuthz_cMPCustAuthorizeId">
+            <field-name>cMPCustAuthorizeId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianAuthz_cMPCustodianId">
+            <field-name>cMPCustodianId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianAuthz_authorizeRole">
+            <field-name>authorizeRole</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianAuthz_authorizeName">
+            <field-name>authorizeName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianAuthz_signNum">
+            <field-name>signNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianAuthz_authzDate">
+            <field-name>authzDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianAuthz_operation">
+            <field-name>operation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustodianAuthz_checkListItemRef">
+            <field-name>checkListItemRef</field-name>
+         </cmp-field>
+         <primkey-field>cMPCustAuthorizeId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCustodianAuthz">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_StagingCustodianDoc-StagingCustodianDocItems">
+         <ejb-relation-name>StagingCustodianDoc-StagingCustodianDocItems</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingCustodianDoc-include-StagingCustodianDocItems">
+            <ejb-relationship-role-name>StagingCustodianDoc-include-StagingCustodianDocItems</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingCustodianDoc</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>custodianDocItemCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingCustodianDocItems-belongTo-StagingCustodianDoc">
+            <ejb-relationship-role-name>StagingCustodianDocItems-belongTo-StagingCustodianDoc</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source>
+               <ejb-name>EBStagingCustodianDocItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_CustodianDoc-CustodianDocItems">
+         <ejb-relation-name>CustodianDoc-CustodianDocItems</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CustodianDoc-include-CustodianDocItems">
+            <ejb-relationship-role-name>CustodianDoc-include-CustodianDocItems</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCustodianDoc</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>custodianDocItemCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_CustodianDocItems-belongTo-CustodianDoc">
+            <ejb-relationship-role-name>CustodianDocItems-belongTo-CustodianDoc</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source>
+               <ejb-name>EBCustodianDocItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBCustodianProxyManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCustodianBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCustodianDoc</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingCustodianDoc</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingCustodianDocItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCustodianAuthz</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

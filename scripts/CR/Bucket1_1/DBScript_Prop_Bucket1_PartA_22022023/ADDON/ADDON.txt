@@ -1,0 +1,4927 @@
+SET define OFF;
+
+ALTER TABLE  STAGE_USER  add REF_NUMBER VARCHAR2(30) ;
+ALTER TABLE  CMS_USER  add REF_NUMBER VARCHAR2(30) ;
+
+ALTER TABLE  STAGE_USER  add MAKER_DT VARCHAR2(30)  ;
+ALTER TABLE  STAGE_USER  add CHECKER_DT  VARCHAR2(30)  ;
+
+ALTER TABLE  CMS_USER  add MAKER_DT VARCHAR2(30)  ;
+ALTER TABLE  CMS_USER  add CHECKER_DT  VARCHAR2(30)  ;
+
+
+
+CREATE TABLE CMS_BANKING_METHOD_CUST(
+
+CMS_BANKING_METHOD_ID       NUMBER(19) NOT NULL ,
+CUSTOMER_ID                   VARCHAR2(100),
+CMS_BANKING_METHOD_NAME      VARCHAR2(250) ,
+CMS_LE_SUB_PROFILE_ID          NUMBER(19),
+STATUS                       VARCHAR2(20)
+);
+
+CREATE TABLE CMS_STAGE_BANKING_METHOD_CUST
+(
+CMS_BANKING_METHOD_ID       NUMBER(19) NOT NULL ,
+CUSTOMER_ID                   VARCHAR2(100),
+CMS_BANKING_METHOD_NAME      VARCHAR2(250) ,
+CMS_LE_SUB_PROFILE_ID          NUMBER(19),
+STATUS                       VARCHAR2(20)    
+);
+
+CREATE SEQUENCE CMS_BANKING_METHOD_SEQ MINVALUE 1 MAXVALUE 9999999 INCREMENT BY 1 START WITH 1 NOCACHE NOORDER CYCLE NOKEEP  GLOBAL ;
+
+CREATE SEQUENCE CHK_STG_BANKING_METHOD_SEQ MINVALUE 1 MAXVALUE 9999999 INCREMENT BY 1 START WITH 1 NOCACHE NOORDER CYCLE NOKEEP  GLOBAL ;
+
+ALTER TABLE SCI_LE_BANKING_METHOD  add REVISED_EMAIL_ID VARCHAR2(500);
+ALTER TABLE STAGE_SCI_LE_BANKING_METHOD  add REVISED_EMAIL_ID VARCHAR2(500);
+
+ALTER TABLE SCI_LE_SUB_PROFILE MODIFY BANKING_METHOD VARCHAR2(500);
+ALTER TABLE STAGE_SCI_LE_SUB_PROFILE MODIFY BANKING_METHOD VARCHAR2(500);
+
+ALTER TABLE SCI_LE_MAIN_PROFILE MODIFY BANKING_METHOD VARCHAR2(500);
+ALTER TABLE STAGE_SCI_LE_MAIN_PROFILE MODIFY BANKING_METHOD VARCHAR2(500);
+
+
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add LISTED_COMPANY VARCHAR2(10); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add LISTED_COMPANY VARCHAR2(10); 
+
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add ISIN_NO VARCHAR2(20);
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add ISIN_NO VARCHAR2(20);
+
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add RAROC  NUMBER(12,2);
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add RAROC NUMBER(12,2) ; 
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add RARAOC_PERIOD  TIMESTAMP(9);
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add RARAOC_PERIOD TIMESTAMP(9);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add YEAR_END_PERIOD VARCHAR2(6); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add YEAR_END_PERIOD VARCHAR2(6);
+
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add CREDIT_MGR_EMPID VARCHAR2(150); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add CREDIT_MGR_EMPID VARCHAR2(150);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add PF_LRD_CREDIT_MGR_EMPID VARCHAR2(150); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add PF_LRD_CREDIT_MGR_EMPID VARCHAR2(150);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add CREDIT_MGR_SEGMENT VARCHAR2(250); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add CREDIT_MGR_SEGMENT VARCHAR2(250);
+
+
+
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add MULTBNK_FUNDBSE_LEADBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add MULTBNK_FUNDBSE_LEADBNK_PER NUMBER(22,2); 
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add MULTBNK_FUNDBSE_HDFCBNK_PER NUMBER(22,2);
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add MULTBNK_FUNDBSE_HDFCBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add MULTBNK_NONFUNDBSE_LEADBNK_PER  NUMBER(22,2);
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add MULTBNK_NONFUNDBSE_LEADBNK_PER NUMBER(22,2) ; 
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add MULTBNK_NONFUNDBSE_HDFCBNK_PER  NUMBER(22,2);
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add MULTBNK_NONFUNDBSE_HDFCBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add CONSBNK_FUNDBSE_LEADBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add CONSBNK_FUNDBSE_LEADBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add CONSBNK_FUNDBSE_HDFCBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add CONSBNK_FUNDBSE_HDFCBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add CONSBNK_NONFUNDBSE_LEADBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add CONSBNK_NONFUNDBSE_LEADBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add CONSBNK_NONFUNDBSE_HDFCBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add CONSBNK_NONFUNDBSE_HDFCBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_SUB_PROFILE add FINAL_BANK_METHOD_LIST VARCHAR2(500); 
+ALTER TABLE  STAGE_SCI_LE_SUB_PROFILE add FINAL_BANK_METHOD_LIST VARCHAR2(500);
+
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add LISTED_COMPANY VARCHAR2(10); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add LISTED_COMPANY VARCHAR2(10); 
+
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add ISIN_NO VARCHAR2(20);
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add ISIN_NO VARCHAR2(20);
+
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add RAROC  NUMBER(12,2);
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add RAROC NUMBER(12,2) ; 
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add RARAOC_PERIOD  TIMESTAMP(9);
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add RARAOC_PERIOD TIMESTAMP(9);
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add YEAR_END_PERIOD VARCHAR2(6); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add YEAR_END_PERIOD VARCHAR2(6);
+
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add CREDIT_MGR_EMPID VARCHAR2(150); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add CREDIT_MGR_EMPID VARCHAR2(150);
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add PF_LRD_CREDIT_MGR_EMPID VARCHAR2(150); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add PF_LRD_CREDIT_MGR_EMPID VARCHAR2(150);
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add CREDIT_MGR_SEGMENT VARCHAR2(250); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add CREDIT_MGR_SEGMENT VARCHAR2(250);
+
+
+
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add MULTBNK_FUNDBSE_LEADBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add MULTBNK_FUNDBSE_LEADBNK_PER NUMBER(22,2); 
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add MULTBNK_FUNDBSE_HDFCBNK_PER NUMBER(22,2);
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add MULTBNK_FUNDBSE_HDFCBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add MULTBNK_NONFUNDBSE_LEADBNK_PER  NUMBER(22,2);
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add MULTBNK_NONFUNDBSE_LEADBNK_PER NUMBER(22,2) ; 
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add MULTBNK_NONFUNDBSE_HDFCBNK_PER  NUMBER(22,2);
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add MULTBNK_NONFUNDBSE_HDFCBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add CONSBNK_FUNDBSE_LEADBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add CONSBNK_FUNDBSE_LEADBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add CONSBNK_FUNDBSE_HDFCBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add CONSBNK_FUNDBSE_HDFCBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add CONSBNK_NONFUNDBSE_LEADBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add CONSBNK_NONFUNDBSE_LEADBNK_PER NUMBER(22,2);
+
+ALTER TABLE  SCI_LE_MAIN_PROFILE add CONSBNK_NONFUNDBSE_HDFCBNK_PER NUMBER(22,2); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add CONSBNK_NONFUNDBSE_HDFCBNK_PER NUMBER(22,2);
+ 
+ALTER TABLE  SCI_LE_MAIN_PROFILE add FINAL_BANK_METHOD_LIST VARCHAR2(500); 
+ALTER TABLE  STAGE_SCI_LE_MAIN_PROFILE add FINAL_BANK_METHOD_LIST VARCHAR2(500);
+
+
+
+
+ALTER TABLE  CMS_IFSC_CODE add REVISED_EMAIL_ID VARCHAR2(200); 
+ALTER TABLE  CMS_STAGE_IFSC_CODE add REVISED_EMAIL_ID VARCHAR2(200);
+
+
+
+ALTER TABLE  CMS_OTHER_BANK_BRANCH add REVISED_CONTACT_MAIL_ID VARCHAR2(200); 
+ALTER TABLE  CMS_STAGE_OTHER_BANK_BRANCH add REVISED_CONTACT_MAIL_ID VARCHAR2(200);
+
+
+ALTER TABLE  CMS_STAGE_SYSTEM_BANK add REVISED_CONTACT_MAIL VARCHAR2(200); 
+ALTER TABLE  CMS_SYSTEM_BANK add REVISED_CONTACT_MAIL VARCHAR2(200);
+
+
+
+------------SECURITY LEVEL FIELDS ----------------------------
+
+ALTER TABLE CMS_SECURITY ADD PRIMARY_SEC_ADDR VARCHAR2(250);
+ALTER TABLE CMS_SECURITY ADD SEC_VAL_ASPER_CAM DATE;
+ALTER TABLE CMS_SECURITY ADD SECONDARY_SEC_ADDR VARCHAR2(250);
+ALTER TABLE CMS_SECURITY ADD SECURITY_MARGIN NUMBER(5,2);
+ALTER TABLE CMS_SECURITY ADD CHARGE_PRIORITY VARCHAR2(250);
+
+
+ALTER TABLE CMS_STAGE_SECURITY ADD PRIMARY_SEC_ADDR VARCHAR2(250);
+ALTER TABLE CMS_STAGE_SECURITY ADD SEC_VAL_ASPER_CAM DATE;
+ALTER TABLE CMS_STAGE_SECURITY ADD SECONDARY_SEC_ADDR VARCHAR2(250);
+ALTER TABLE CMS_STAGE_SECURITY ADD SECURITY_MARGIN NUMBER(5,2);
+ALTER TABLE CMS_STAGE_SECURITY ADD CHARGE_PRIORITY VARCHAR2(250);
+
+
+
+
+
+---------------------CRI Details Customer Fly Closure field common code values added---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'January Ending',
+      'January Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='January Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'January Ending',
+      'January Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );
+    
+    
+    
+------February ---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'February Ending',
+      'February Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='February Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'February Ending',
+      'February Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );
+    
+    
+    
+    
+     
+------April---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'April Ending',
+      'April Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='April Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'April Ending',
+      'April Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );   
+    
+    
+------May---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'May Ending',
+      'May Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='May Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'May Ending',
+      'May Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );    
+ 
+ 
+
+------June---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'June Ending',
+      'June Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='June Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'June Ending',
+      'June Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );    
+        
+        
+------July---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'July Ending',
+      'July Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='July Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'July Ending',
+      'July Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );
+    
+
+------August---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'August Ending',
+      'August Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='August Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'August Ending',
+      'August Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );    
+    
+    
+    
+------September---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'September Ending',
+      'September Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='September Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'September Ending',
+      'September Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );    
+    
+    
+------October---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'October Ending',
+      'October Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='October Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'October Ending',
+      'October Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );
+    
+ ------November---------------------------------
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'November Ending',
+      'November Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+  
+  
+  
+  
+  INSERT
+  INTO STAGE_COMMON_CODE_ENTRY
+    (
+      STAGE_ID,
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      IS_NEW,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID
+    )
+    VALUES
+    (
+      (SELECT MAX(STAGE_ID)+ 1 FROM STAGE_COMMON_CODE_ENTRY
+      )
+      ,
+      (SELECT ENTRY_ID
+      FROM COMMON_CODE_CATEGORY_ENTRY
+      WHERE ENTRY_CODE ='November Ending'
+      AND category_code='FINANCIAL_CLOSUER'
+      ),
+      'November Ending',
+      'November Ending',
+      '1',
+      'FINANCIAL_CLOSUER',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1377606967321,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='FINANCIAL_CLOSUER'
+      ),
+      'Z',
+      to_date('24-DEC-21','DD-MON-RR'),
+      to_date('24-DEC-21','DD-MON-RR'),
+      NULL
+    );   
+    
+
+---------------FROM TEJAS----------------------------------------------------------------------
+
+
+
+ALTER TABLE SCI_LSP_APPR_LMTS ADD (RISK_TYPE VARCHAR2(20) );
+ALTER TABLE SCI_LSP_APPR_LMTS ADD (TENOR NUMBER(10));
+ALTER TABLE SCI_LSP_APPR_LMTS ADD (TENOR_UNIT VARCHAR2(20 CHAR));
+ALTER TABLE SCI_LSP_APPR_LMTS ADD (MARGIN NUMBER(10,2));
+ALTER TABLE SCI_LSP_APPR_LMTS ADD (PUT_CALL_OPTION VARCHAR2(20));
+ALTER TABLE SCI_LSP_APPR_LMTS ADD (TENOR_DESC VARCHAR2(200));
+ALTER TABLE SCI_LSP_APPR_LMTS ADD (LOAN_AVAIL_DATE TIMESTAMP(9));
+ALTER TABLE SCI_LSP_APPR_LMTS ADD (OPTION_DATE TIMESTAMP(9));
+
+ALTER TABLE STAGE_LIMIT ADD (RISK_TYPE VARCHAR2(20) );
+ALTER TABLE STAGE_LIMIT ADD (TENOR NUMBER(10));
+ALTER TABLE STAGE_LIMIT ADD (TENOR_UNIT VARCHAR2(20 CHAR));
+ALTER TABLE STAGE_LIMIT ADD (MARGIN NUMBER(10,2));
+ALTER TABLE STAGE_LIMIT ADD (PUT_CALL_OPTION VARCHAR2(20));
+ALTER TABLE STAGE_LIMIT ADD (TENOR_DESC VARCHAR2(200));
+ALTER TABLE STAGE_LIMIT ADD (LOAN_AVAIL_DATE TIMESTAMP(9));
+ALTER TABLE STAGE_LIMIT ADD (OPTION_DATE TIMESTAMP(9));
+
+
+
+INSERT INTO COMMON_CODE_CATEGORY (CATEGORY_ID, CATEGORY_CODE, CATEGORY_NAME, CATEGORY_TYPE, ACTIVE_STATUS, VERSION_TIME)
+values ((select max(CATEGORY_ID) + 1 from common_code_category), 'TENOR', 'Tenor', 1, 'A', 0);
+
+INSERT INTO STAGE_COMMON_CODE_CATEGORY (CATEGORY_ID, CATEGORY_CODE, CATEGORY_NAME, CATEGORY_TYPE, ACTIVE_STATUS, VERSION_TIME)
+values ((select max(CATEGORY_ID) + 1 from stage_common_code_category), 'TENOR', 'Tenor', 1, 'A', 0);
+
+
+insert into common_code_category_entry 
+(entry_id, entry_code, entry_name, active_status, category_code, category_code_id,version_time, creation_date,last_update_date)
+VALUES
+((SELECT MAX(ENTRY_ID) + 1 FROM COMMON_CODE_CATEGORY_ENTRY),'YEAR', 'Year(s)', '1', 'TENOR',
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='TENOR' and active_status = 'A'), 0, sysdate, sysdate);
+
+insert into common_code_category_entry 
+(entry_id, entry_code, entry_name, active_status, category_code, category_code_id,version_time, creation_date,last_update_date)
+VALUES
+((SELECT MAX(ENTRY_ID) + 1 FROM COMMON_CODE_CATEGORY_ENTRY),'MONTH', 'Month(s)', '1', 'TENOR',
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='TENOR' and active_status = 'A'), 0, sysdate, sysdate);
+
+
+insert into common_code_category_entry 
+(entry_id, entry_code, entry_name, active_status, category_code, category_code_id,version_time, creation_date,last_update_date)
+VALUES
+((SELECT MAX(ENTRY_ID) + 1 FROM COMMON_CODE_CATEGORY_ENTRY),'DAYS', 'Day(s)', '1', 'TENOR',
+(SELECT CATEGORY_ID FROM COMMON_CODE_CATEGORY WHERE CATEGORY_CODE='TENOR' AND ACTIVE_STATUS = 'A'), 0, SYSDATE, SYSDATE);
+
+
+
+insert into STAGE_COMMON_CODE_ENTRY 
+(stage_id, entry_id, entry_code, entry_name, active_status, category_code, category_code_id,version_time, STAGING_REFERENCE_ID, creation_date,last_update_date)
+values
+((select max(stage_id) + 1 from STAGE_COMMON_CODE_ENTRY),
+(select entry_id from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE = 'TENOR' and entry_code= 'YEAR' and ACTIVE_STATUS = '1')
+,'YEAR', 'Year(s)', '1', 'TENOR',
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='TENOR' and active_status = 'A'), 0,
+(Select Category_Id From Stage_Common_Code_Category Where Category_Code='TENOR' And Active_Status='A')
+, sysdate, sysdate);
+
+
+insert into STAGE_COMMON_CODE_ENTRY 
+(stage_id, entry_id, entry_code, entry_name, active_status, category_code, category_code_id,version_time, STAGING_REFERENCE_ID, creation_date,last_update_date)
+values
+((select max(stage_id) + 1 from STAGE_COMMON_CODE_ENTRY),
+(select entry_id from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE = 'TENOR' and entry_code= 'YEAR' and ACTIVE_STATUS = '1')
+,'MONTH', 'Month(s)', '1', 'TENOR',
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='TENOR' and active_status = 'A'), 0,
+(SELECT CATEGORY_ID FROM STAGE_COMMON_CODE_CATEGORY WHERE CATEGORY_CODE='TENOR' AND ACTIVE_STATUS='A')
+, sysdate, sysdate);
+
+insert into STAGE_COMMON_CODE_ENTRY 
+(stage_id, entry_id, entry_code, entry_name, active_status, category_code, category_code_id,version_time, STAGING_REFERENCE_ID, creation_date,last_update_date)
+values
+((select max(stage_id) + 1 from STAGE_COMMON_CODE_ENTRY),
+(select entry_id from COMMON_CODE_CATEGORY_ENTRY where CATEGORY_CODE = 'TENOR' and entry_code= 'YEAR' and ACTIVE_STATUS = '1')
+,'DAYS', 'Day(s)', '1', 'TENOR',
+(SELECT CATEGORY_ID FROM common_code_category WHERE category_code='TENOR' and active_status = 'A'), 0,
+(SELECT CATEGORY_ID FROM STAGE_COMMON_CODE_CATEGORY WHERE CATEGORY_CODE='TENOR' AND ACTIVE_STATUS='A')
+, sysdate, sysdate);
+
+----------------FROM BHUSHAN-----------------------------------------------------------------------------------------------------------------------
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','*','-1' FROM CMS_FUNCTION_ACCESS;
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','*','1006' FROM CMS_FUNCTION_ACCESS;
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','maker_list_risk_type','1006' FROM CMS_FUNCTION_ACCESS;
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','*','1007' FROM CMS_FUNCTION_ACCESS;
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','*','1001' FROM CMS_FUNCTION_ACCESS;
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','*','1002' FROM CMS_FUNCTION_ACCESS;
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','*','1003' FROM CMS_FUNCTION_ACCESS;
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','*','1004' FROM CMS_FUNCTION_ACCESS;
+--Insert into CMS_FUNCTION_ACCESS (ID,ACTION,EVENT,ROLE_TYPE) SELECT MAX(ID)+1,'riskType','*','1005' FROM CMS_FUNCTION_ACCESS;
+
+
+
+
+
+ALTER TABLE CMS_FACILITY_NEW_MASTER ADD  AVAIL_AND_OPTION_APPLICABLE CHAR(3 CHAR);
+ALTER TABLE  CMS_FACILITY_NEW_MASTER ADD SELECTED_RISK_TYPES VARCHAR2(500);
+
+ALTER TABLE CMS_STAGE_FACILITY_NEW_MASTER ADD  AVAIL_AND_OPTION_APPLICABLE CHAR(3 CHAR);
+ALTER TABLE  CMS_STAGE_FACILITY_NEW_MASTER ADD SELECTED_RISK_TYPES VARCHAR2(500);
+
+
+
+-------------------------1  ------>>>  Url Access Maker <<------
+
+INSERT
+INTO CMS_FUNCTION_ACCESS
+  (
+    ID,
+    ACTION,
+    EVENT,
+    ROLE_TYPE
+  )
+SELECT MAX(ID)+1,'riskType','*','1004' FROM CMS_FUNCTION_ACCESS;
+
+
+SELECT ,9,'0')
+
+-------------------------------2  ------>>>  Create Actual Table And Index  <<------
+
+CREATE TABLE "CMS_RISK_TYPE"
+  (
+    "ID"                      NUMBER(19,0) NOT NULL ENABLE PRIMARY KEY,
+    "VERSION_TIME"            NUMBER(19,0) NOT NULL ENABLE,
+	"RISK_TYPE_NAME"           VARCHAR2(100 CHAR) NOT NULL ENABLE,
+    "RISK_TYPE_CODE"           VARCHAR2(10 CHAR) NOT NULL ENABLE,
+	"STATUS"                  VARCHAR2(20 CHAR) NOT NULL ENABLE,
+    "CREATED_BY"              VARCHAR2(50 BYTE),
+    "CREATION_DATE"           TIMESTAMP (9) NOT NULL ENABLE,
+    "LAST_UPDATE_BY"          VARCHAR2(50 BYTE),
+    "LAST_UPDATE_DATE"        TIMESTAMP (9) NOT NULL ENABLE,
+    "DEPRECATED"              VARCHAR2(50 CHAR)
+  ) ;
+CREATE TABLE "CMS_STAGE_RISK_TYPE"
+  (
+    "ID"                      NUMBER(19,0) NOT NULL ENABLE PRIMARY KEY,
+    "VERSION_TIME"            NUMBER(19,0) NOT NULL ENABLE,
+    "RISK_TYPE_NAME"           VARCHAR2(100 CHAR) NOT NULL ENABLE,
+    "RISK_TYPE_CODE"           VARCHAR2(10 CHAR) NOT NULL ENABLE,
+	"STATUS"                  VARCHAR2(20 CHAR) NOT NULL ENABLE,
+    "CREATED_BY"              VARCHAR2(50 BYTE),
+    "CREATION_DATE"           TIMESTAMP (9) NOT NULL ENABLE,
+    "LAST_UPDATE_BY"          VARCHAR2(50 BYTE),
+    "LAST_UPDATE_DATE"        TIMESTAMP (9) NOT NULL ENABLE,
+    "DEPRECATED"              VARCHAR2(50 CHAR)
+  ) ;
+
+---------------------------------3  ------>>>  Create Sequence  <<------
+
+
+  CREATE SEQUENCE CMS_RISK_TYPE_SEQ MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 11 NOCACHE NOORDER CYCLE;
+  CREATE SEQUENCE CMS_STAGE_RISK_TYPE_SEQ MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 23 NOCACHE NOORDER CYCLE;
+
+------------------------------------4  ------>>> Url Access Checker <<------
+
+ INSERT
+  INTO CMS_FUNCTION_ACCESS
+    (
+      ID,
+      ACTION,
+      EVENT,
+      ROLE_TYPE
+    )
+  SELECT MAX(ID)+1,'riskType','*','1005' FROM CMS_FUNCTION_ACCESS;
+  
+ ------------------------------------------5  ------>>> Transaction Entry <<------
+  INSERT
+  INTO tr_state_matrix
+    (
+      stateid,
+      stateins,
+      operation,
+      fromstate,
+      tostate,
+      userstate,
+      enableind,
+      frontendop
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CREATE_RISK_TYPE',
+      'ND',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CHECKER_APPROVE_ENABLE',
+      'PENDING_ENABLE',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'APPROVE_RISK_TYPE',
+      'PENDING_UPDATE',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'UPDATE_RISK_TYPE',
+      'ACTIVE',
+      'PENDING_UPDATE',
+      'PENDING_UPDATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'EDIT_REJECTED_DELETE_RISK_TYPE',
+      'REJECTED',
+      'PENDING_DELETE',
+      'PENDING_DELETE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CREATE_RISK_TYPE',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'APPROVE_CREATE_RISK_TYPE',
+      'PENDING_CREATE',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'REJECT_RISK_TYPE',
+      'PENDING_UPDATE',
+      'REJECTED',
+      'REJECTED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'EDIT_REJECTED_UPDATE_RISK_TYPE',
+      'REJECTED',
+      'PENDING_UPDATE',
+      'PENDING_UPDATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CLOSE_REJECTED_UPDATE_RISK_TYPE',
+      'REJECTED',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'REJECT_RISK_TYPE',
+      'PENDING_CREATE',
+      'REJECTED',
+      'REJECTED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CLOSE_REJECTED_CREATE_RISK_TYPE',
+      'REJECTED',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'EDIT_REJECTED_CREATE_RISK_TYPE',
+      'REJECTED',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'DELETE_RISK_TYPE',
+      'ACTIVE',
+      'PENDING_DELETE',
+      'PENDING_DELETE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'DELETE_RISK_TYPE',
+      'PENDING_DELETE',
+      'DELETED',
+      'DELETED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'REJECT_RISK_TYPE',
+      'PENDING_DELETE',
+      'REJECTED',
+      'REJECTED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CLOSE_REJECTED_DELETE_RISK_TYPE',
+      'REJECTED',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'UPDATE_RISK_TYPE',
+      'PENDING_UPDATE',
+      'ACTIVE',
+      'PENDING_UPDATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CHECKER_APPROVE_UPDATE',
+      'PENDING_UPDATE',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CHECKER_APPROVE_DELETE',
+      'PENDING_DELETE',
+      'DELETED',
+      'DELETED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'APPROVE_RISK_TYPE',
+      'PENDING_DELETE',
+      'DELETED',
+      'DELETED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CHECKER_APPROVE_UPDATE',
+      'PENDING_DELETE',
+      'DELETED',
+      'DELETED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'MAKER_SAVE',
+      'PENDING_PERFECTION',
+      'DRAFT',
+      'DRAFT',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CREATE_RISK_TYPE',
+      'DRAFT',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'MAKER_UPDATE_SAVE',
+      'ACTIVE',
+      'DRAFT',
+      'DRAFT',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'UPDATE_RISK_TYPE',
+      'DRAFT',
+      'PENDING_UPDATE',
+      'PENDING_UPDATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'MAKER_UPDATE_CLOSE',
+      'DRAFT',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'CREATE_RISK_TYPE',
+      'PENDING_PERFECTION',
+      'DRAFT',
+      'DRAFT',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'UPDATE_RISK_TYPE',
+      'DELETED',
+      'PENDING_ENABLE',
+      'PENDING_ENABLE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'REJECT_ACTIVATE_RISK_TYPE',
+      'PENDING_ENABLE',
+      'REJECTED',
+      'REJECTED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'EDIT_REJECTED_ENABLE_RISK_TYPE',
+      'REJECTED',
+      'PENDING_ENABLE',
+      'PENDING_ENABLE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'ACTIVATE_RISK_TYPE',
+      'ACTIVE',
+      'PENDING_ENABLE',
+      'PENDING_ENABLE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'RISK_TYPE',
+      'ACTIVATE_RISK_TYPE',
+      'DELETED',
+      'PENDING_ENABLE',
+      'PENDING_ENABLE',
+      '1',
+      '1'
+    );
+
+
+**********************
+  -----------------------------------------------------------------------------------------------------------------------
+  --6  ------>>> ToTrack Entry <<------
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'PENDING_CREATE',
+      'Pending Create',
+      'Risk Type',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'REJECTED',
+      'Rejected',
+      'Risk Type',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'CLOSED',
+      'Closed',
+      'Risk Type',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'PENDING_UPDATE',
+      'Pending Update',
+      'Risk Type',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'PENDING_DELETE',
+      'Pending Delete',
+      'Risk Type',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Approved',
+      'Risk Type',
+      'PENDING_UPDATE',
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Approved',
+      'Risk Type',
+      'PENDING_CREATE',
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Enabled',
+      'Risk Type',
+      'PENDING_ENABLE',
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'DRAFT',
+      'Draft',
+      'Risk Type',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'DELETED',
+      'Deleted',
+      'Risk Type',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'PENDING_ENABLE',
+      'Pending Enable',
+      'Risk Type',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Closed',
+      'Risk Type',
+      'REJECTED',
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'riskType.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Closed',
+      'Risk Type',
+      'DRAFT',
+      NULL
+    );
+  
+  ----------------------------------------------------------------------------------------------------------------------------
+  ------>>> 7 CMS_STATEMATRIX_ACTION <<------
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='UPDATE_RISK_TYPE'
+        AND FROMSTATE ='PENDING_UPDATE'
+        AND TOSTATE   ='ACTIVE'
+      )
+      ,
+      1005,
+      'Process',
+      'riskType.do?event=checker_process_edit&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='REJECT_RISK_TYPE'
+        AND FROMSTATE ='PENDING_UPDATE'
+        AND TOSTATE   ='REJECTED'
+      )
+      ,
+      1005,
+      'Process',
+      'riskType.do?event=checker_process_edit&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='CREATE_RISK_TYPE'
+        AND FROMSTATE ='PENDING_CREATE'
+        AND TOSTATE   ='PENDING_CREATE'
+      )
+      ,
+      1005,
+      'Process',
+      'riskType.do?event=checker_process_create&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='DELETE_RISK_TYPE'
+        AND FROMSTATE ='PENDING_DELETE'
+        AND TOSTATE   ='DELETED'
+      )
+      ,
+      1005,
+      'Process',
+      'riskType.do?event=checker_process_delete&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='CREATE_RISK_TYPE'
+        AND FROMSTATE ='PENDING_PERFECTION'
+        AND TOSTATE   ='DRAFT'
+      )
+      ,
+      1004,
+      'Process',
+      'riskType.do?event=create_save_collateral_roc&trxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='EDIT_REJECTED_UPDATE_RISK_TYPE'
+        AND FROMSTATE ='REJECTED'
+        AND TOSTATE   ='PENDING_UPDATE'
+      )
+      ,
+      1004,
+      'Process',
+      'riskType.do?event=maker_prepare_resubmit_create&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='CLOSE_REJECTED_UPDATE_RISK_TYPE'
+        AND FROMSTATE ='REJECTED'
+        AND TOSTATE   ='ACTIVE'
+      )
+      ,
+      1004,
+      'Close',
+      'riskType.do?event=maker_prepare_close&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='MAKER_UPDATE_CLOSE'
+        AND FROMSTATE ='DRAFT'
+        AND TOSTATE   ='ACTIVE'
+      )
+      ,
+      1004,
+      'Close',
+      'riskType.do?event=maker_draft_close_process&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='EDIT_REJECTED_CREATE_RISK_TYPE'
+        AND FROMSTATE ='REJECTED'
+        AND TOSTATE   ='PENDING_CREATE'
+      )
+      ,
+      1004,
+      'Process',
+      'riskType.do?event=maker_prepare_resubmit_create&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='EDIT_REJECTED_DELETE_RISK_TYPE'
+        AND FROMSTATE ='REJECTED'
+        AND TOSTATE   ='PENDING_DELETE'
+      )
+      ,
+      1004,
+      'Process',
+      'riskType.do?event=maker_prepare_resubmit_delete&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='MAKER_SAVE'
+        AND FROMSTATE ='PENDING_PERFECTION'
+        AND TOSTATE   ='DRAFT'
+      )
+      ,
+      1004,
+      'Process',
+      'riskTyper.do?event=maker_save_process&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='CREATE_RISK_TYPE'
+        AND FROMSTATE ='DRAFT'
+        AND TOSTATE   ='PENDING_CREATE'
+      )
+      ,
+      1004,
+      'Process',
+      'riskType.do?event=maker_save_process&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='RISK_TYPE'
+        AND OPERATION ='UPDATE_RISK_TYPE'
+        AND FROMSTATE ='DRAFT'
+        AND TOSTATE   ='PENDING_UPDATE'
+      )
+      ,
+      1004,
+      'Process',
+      'riskType.do?event=maker_update_save_process&TrxId=',
+      NULL
+    );
+  
+  ------------------------------------------------------------------------------------------------------------------------
+  ------>>> 8 transaction_type_name and CMS_USER_MODULE  <<------
+  INSERT
+  INTO transaction_type_name
+    (
+      TRANSACTION_TYPE,
+      NAME,
+      TRANSACTION_SUBTYPE,
+      ACCESS_NAME
+    )
+    VALUES
+    (
+      'RISK_TYPE',
+      'Risk Type',
+      NULL,
+      '2'
+    );
+  
+  INSERT
+  INTO CMS_USER_MODULE
+    (
+      MODULE_ID,
+      MODULE_NAME,
+      MODULE_TYPE
+    )
+    VALUES
+    (
+      (SELECT MAX(MODULE_ID)+1 FROM cms_module_access
+      )
+      ,
+      'Risk Type',
+      'MASTERS'
+    );
+  
+  ------------------------------------------------------------------------------------------------------------------------
+  ------>>> 9 CMS_MODULE_ACCESS<<------
+  INSERT
+  INTO CMS_MODULE_ACCESS
+    (
+      ACCESS_ID,
+      ROLE,
+      MODULE_ID,
+      ADD_ACCESS,
+      EDIT_ACCESS,
+      DELETE_ACCESS,
+      VIEW_ACCESS,
+      APPROVE_ACCESS
+    )
+    VALUES
+    (
+      (SELECT MAX(access_id)+1 FROM CMS_MODULE_ACCESS
+      )
+      ,
+      1004,
+      (SELECT module_id
+      FROM cms_user_module
+      WHERE module_name='Risk Type'
+      ),
+      'Y',
+      'Y',
+      'Y',
+      'Y',
+      'N'
+    );
+  INSERT
+  INTO CMS_MODULE_ACCESS
+    (
+      ACCESS_ID,
+      ROLE,
+      MODULE_ID,
+      ADD_ACCESS,
+      EDIT_ACCESS,
+      DELETE_ACCESS,
+      VIEW_ACCESS,
+      APPROVE_ACCESS
+    )
+    VALUES
+    (
+      (SELECT MAX(access_id)+1 FROM CMS_MODULE_ACCESS
+      )
+      ,
+      1005,
+      (SELECT module_id
+      FROM cms_user_module
+      WHERE module_name='Risk Type'
+      ),
+      'N',
+      'N',
+      'N',
+      'Y',
+      'Y'
+    );
+
+
+----------New Common Code-------------------- 
+
+
+------------------------Other Covenant Type-----------------------
+INSERT
+  INTO common_code_category
+    (
+      CATEGORY_ID,
+      CATEGORY_CODE,
+      CATEGORY_NAME,
+      CATEGORY_TYPE,
+      ACTIVE_STATUS,
+      VERSION_TIME,
+      STATUS,
+      REF_CATEGORY_CODE
+    )
+    VALUES
+    (
+      (SELECT MAX(CATEGORY_ID)+ 1 FROM common_code_category
+      )
+      ,
+      'OTHER_COVENANT_TYPE',
+      'Other Covenant Type',
+      2,
+      'A',
+      1305711321319,
+      NULL,
+      NULL
+    );
+ 
+
+  INSERT
+  INTO stage_common_code_category
+    (
+      CATEGORY_ID,
+      CATEGORY_CODE,
+      CATEGORY_NAME,
+      CATEGORY_TYPE,
+      ACTIVE_STATUS,
+      VERSION_TIME,
+      STATUS,
+      REF_CATEGORY_CODE
+    )
+    VALUES
+    (
+      (SELECT MAX(CATEGORY_ID)+ 1 FROM stage_common_code_category
+      )
+      ,
+      'OTHER_COVENANT_TYPE',
+      'Other Covenant Type',
+      2,
+      'A',
+      1305711321319,
+      NULL,
+      NULL
+    );
+
+-----------------------------------------------------------------------------------------------
+INSERT
+  INTO TRANSACTION
+    (
+      TRANSACTION_ID,
+      FROM_STATE,
+      USER_ID,
+      LOGIN_ID,
+      TRANSACTION_TYPE,
+      CREATION_DATE,
+      TRANSACTION_DATE,
+      REFERENCE_ID,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      TEAM_ID,
+      VERSION,
+      TRX_REFERENCE_ID,
+      OPSDESC,
+      LEGAL_NAME,
+      LEGAL_ID,
+      CUSTOMER_NAME,
+      CUSTOMER_ID,
+      TRX_ORIGIN_COUNTRY,
+      TRX_ORIGIN_ORGANISATION,
+      LIMIT_PROFILE_ID,
+      LIMIT_PROFILE_REF_NUM,
+      TRX_SEGMENT,
+      USER_INFO,
+      CUR_TRX_HISTORY_ID,
+      TEAM_TYPE_ID,
+      TRANSACTION_SUBTYPE,
+      TO_GROUP_TYPE_ID,
+      TO_GROUP_ID,
+      TO_USER_ID,
+      DEAL_NO,
+      TEAM_MEMBERSHIP_ID,
+      SYSTEM_DATE
+    )
+    VALUES
+    (
+      (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      )
+      ,
+      'PENDING_CREATE',
+      -999999999,
+      NULL,
+      'COMMON_CODE_TYPE',
+      NULL,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_TYPE'
+      ),
+      'ACTIVE',
+      NULL,
+      (SELECT team_id
+      FROM CMS_TEAM
+      WHERE team_type_id IN
+        (SELECT team_type_id FROM cms_team_type WHERE business_code='CPUADMIN'
+        )
+      ),
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      '-999999999',
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      2,
+      NULL,
+      '-999999999',
+      -999999999,
+      -999999999,
+      NULL,
+      NULL,
+      NULL
+    );
+ 
+ INSERT
+  INTO TRANSACTION
+    (
+      TRANSACTION_ID,
+      FROM_STATE,
+      USER_ID,
+      LOGIN_ID,
+      TRANSACTION_TYPE,
+      CREATION_DATE,
+      TRANSACTION_DATE,
+      REFERENCE_ID,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      TEAM_ID,
+      VERSION,
+      TRX_REFERENCE_ID,
+      OPSDESC,
+      LEGAL_NAME,
+      LEGAL_ID,
+      CUSTOMER_NAME,
+      CUSTOMER_ID,
+      TRX_ORIGIN_COUNTRY,
+      TRX_ORIGIN_ORGANISATION,
+      LIMIT_PROFILE_ID,
+      LIMIT_PROFILE_REF_NUM,
+      TRX_SEGMENT,
+      USER_INFO,
+      CUR_TRX_HISTORY_ID,
+      TEAM_TYPE_ID,
+      TRANSACTION_SUBTYPE,
+      TO_GROUP_TYPE_ID,
+      TO_GROUP_ID,
+      TO_USER_ID,
+      DEAL_NO,
+      TEAM_MEMBERSHIP_ID,
+      SYSTEM_DATE
+    )
+    VALUES
+    (
+      (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      )
+      ,
+      'PENDING_UPDATE',
+      20110708000000259,
+      'CPU_CHK',
+      'COMMON_CODE_ENTRY',
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_TYPE'
+      ),
+      'ACTIVE',
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_TYPE'
+      ),
+      (SELECT team_id
+      FROM CMS_TEAM
+      WHERE team_type_id IN
+        (SELECT team_type_id FROM cms_team_type WHERE business_code='CPUADMIN'
+        )
+      ),
+      1490063201432,
+      -999999999,
+      'COMMON_CODE_ENTRY_APPROVE',
+      NULL,
+      '-999999999',
+      NULL,
+      -999999999,
+      '--',
+      '--',
+      -999999999,
+      NULL,
+      '--',
+      'CPU Checker ( CPU_CHK )',
+      '20170321000031992',
+      102,
+      NULL,
+      '-999999999',
+      -999999999,
+      -999999999,
+      NULL,
+      20110623000000070,
+      to_timestamp('25-MAY-22 07.56.41.407000000 AM','DD-MON-RR HH.MI.SSXFF AM')
+    );
+-------------------------------------------------------------
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'DOCUMENT_RELATED',
+      'Document Related',
+      '1',
+      'OTHER_COVENANT_TYPE',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_TYPE'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'TRADE_TRANSACTION_RELATED',
+      'Trade/ Transaction related',
+      '1',
+      'OTHER_COVENANT_TYPE',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_TYPE'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'OTHER',
+      'Other',
+      '1',
+      'OTHER_COVENANT_TYPE',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_TYPE'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+---------------------------------------------Other Covenant Conditions---------------------
+    
+    
+INSERT
+  INTO common_code_category
+    (
+      CATEGORY_ID,
+      CATEGORY_CODE,
+      CATEGORY_NAME,
+      CATEGORY_TYPE,
+      ACTIVE_STATUS,
+      VERSION_TIME,
+      STATUS,
+      REF_CATEGORY_CODE
+    )
+    VALUES
+    (
+      (SELECT MAX(CATEGORY_ID)+ 1 FROM common_code_category
+      )
+      ,
+      'OTHER_COVENANT_CONDITIONS',
+      'Other Covenant Conditions',
+      2,
+      'A',
+      1305711321319,
+      NULL,
+      NULL
+    );
+ 
+
+  INSERT
+  INTO stage_common_code_category
+    (
+      CATEGORY_ID,
+      CATEGORY_CODE,
+      CATEGORY_NAME,
+      CATEGORY_TYPE,
+      ACTIVE_STATUS,
+      VERSION_TIME,
+      STATUS,
+      REF_CATEGORY_CODE
+    )
+    VALUES
+    (
+      (SELECT MAX(CATEGORY_ID)+ 1 FROM stage_common_code_category
+      )
+      ,
+      'OTHER_COVENANT_CONDITIONS',
+      'Other Covenant Conditions',
+      2,
+      'A',
+      1305711321319,
+      NULL,
+      NULL
+    );
+
+-----------------------------------------------------------------------------------------------
+INSERT
+  INTO TRANSACTION
+    (
+      TRANSACTION_ID,
+      FROM_STATE,
+      USER_ID,
+      LOGIN_ID,
+      TRANSACTION_TYPE,
+      CREATION_DATE,
+      TRANSACTION_DATE,
+      REFERENCE_ID,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      TEAM_ID,
+      VERSION,
+      TRX_REFERENCE_ID,
+      OPSDESC,
+      LEGAL_NAME,
+      LEGAL_ID,
+      CUSTOMER_NAME,
+      CUSTOMER_ID,
+      TRX_ORIGIN_COUNTRY,
+      TRX_ORIGIN_ORGANISATION,
+      LIMIT_PROFILE_ID,
+      LIMIT_PROFILE_REF_NUM,
+      TRX_SEGMENT,
+      USER_INFO,
+      CUR_TRX_HISTORY_ID,
+      TEAM_TYPE_ID,
+      TRANSACTION_SUBTYPE,
+      TO_GROUP_TYPE_ID,
+      TO_GROUP_ID,
+      TO_USER_ID,
+      DEAL_NO,
+      TEAM_MEMBERSHIP_ID,
+      SYSTEM_DATE
+    )
+    VALUES
+    (
+      (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      )
+      ,
+      'PENDING_CREATE',
+      -999999999,
+      NULL,
+      'COMMON_CODE_TYPE',
+      NULL,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_CONDITIONS'
+      ),
+      'ACTIVE',
+      NULL,
+      (SELECT team_id
+      FROM CMS_TEAM
+      WHERE team_type_id IN
+        (SELECT team_type_id FROM cms_team_type WHERE business_code='CPUADMIN'
+        )
+      ),
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      '-999999999',
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      2,
+      NULL,
+      '-999999999',
+      -999999999,
+      -999999999,
+      NULL,
+      NULL,
+      NULL
+    );
+ 
+ INSERT
+  INTO TRANSACTION
+    (
+      TRANSACTION_ID,
+      FROM_STATE,
+      USER_ID,
+      LOGIN_ID,
+      TRANSACTION_TYPE,
+      CREATION_DATE,
+      TRANSACTION_DATE,
+      REFERENCE_ID,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      TEAM_ID,
+      VERSION,
+      TRX_REFERENCE_ID,
+      OPSDESC,
+      LEGAL_NAME,
+      LEGAL_ID,
+      CUSTOMER_NAME,
+      CUSTOMER_ID,
+      TRX_ORIGIN_COUNTRY,
+      TRX_ORIGIN_ORGANISATION,
+      LIMIT_PROFILE_ID,
+      LIMIT_PROFILE_REF_NUM,
+      TRX_SEGMENT,
+      USER_INFO,
+      CUR_TRX_HISTORY_ID,
+      TEAM_TYPE_ID,
+      TRANSACTION_SUBTYPE,
+      TO_GROUP_TYPE_ID,
+      TO_GROUP_ID,
+      TO_USER_ID,
+      DEAL_NO,
+      TEAM_MEMBERSHIP_ID,
+      SYSTEM_DATE
+    )
+    VALUES
+    (
+      (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      )
+      ,
+      'PENDING_UPDATE',
+      20110708000000259,
+      'CPU_CHK',
+      'COMMON_CODE_ENTRY',
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_CONDITIONS'
+      ),
+      'ACTIVE',
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_CONDITIONS'
+      ),
+      (SELECT team_id
+      FROM CMS_TEAM
+      WHERE team_type_id IN
+        (SELECT team_type_id FROM cms_team_type WHERE business_code='CPUADMIN'
+        )
+      ),
+      1490063201432,
+      -999999999,
+      'COMMON_CODE_ENTRY_APPROVE',
+      NULL,
+      '-999999999',
+      NULL,
+      -999999999,
+      '--',
+      '--',
+      -999999999,
+      NULL,
+      '--',
+      'CPU Checker ( CPU_CHK )',
+      '20170321000031992',
+      102,
+      NULL,
+      '-999999999',
+      -999999999,
+      -999999999,
+      NULL,
+      20110623000000070,
+      to_timestamp('25-MAY-22 07.56.41.407000000 AM','DD-MON-RR HH.MI.SSXFF AM')
+    );
+-------------------------------------------------------------
+INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'EXISTING',
+      'Existing',
+      '1',
+      'OTHER_COVENANT_CONDITIONS',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_CONDITIONS'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+    
+    INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'PROPOSED',
+      'Proposed',
+      '1',
+      'OTHER_COVENANT_CONDITIONS',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='OTHER_COVENANT_CONDITIONS'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+    
+    -------------------------------3.Monitoring Responsibility----------------------------------
+    
+    
+    INSERT
+  INTO common_code_category
+    (
+      CATEGORY_ID,
+      CATEGORY_CODE,
+      CATEGORY_NAME,
+      CATEGORY_TYPE,
+      ACTIVE_STATUS,
+      VERSION_TIME,
+      STATUS,
+      REF_CATEGORY_CODE
+    )
+    VALUES
+    (
+      (SELECT MAX(CATEGORY_ID)+ 1 FROM common_code_category
+      )
+      ,
+      'MONITORING_RESPONSIBILITY',
+      'Monitoring Responsibility',
+      2,
+      'A',
+      1305711321319,
+      NULL,
+      NULL
+    );
+ 
+
+  INSERT
+  INTO stage_common_code_category
+    (
+      CATEGORY_ID,
+      CATEGORY_CODE,
+      CATEGORY_NAME,
+      CATEGORY_TYPE,
+      ACTIVE_STATUS,
+      VERSION_TIME,
+      STATUS,
+      REF_CATEGORY_CODE
+    )
+    VALUES
+    (
+      (SELECT MAX(CATEGORY_ID)+ 1 FROM stage_common_code_category
+      )
+      ,
+      'MONITORING_RESPONSIBILITY',
+      'Monitoring Responsibility',
+      2,
+      'A',
+      1305711321319,
+      NULL,
+      NULL
+    );
+
+-----------------------------------------------------------------------------------------------
+INSERT
+  INTO TRANSACTION
+    (
+      TRANSACTION_ID,
+      FROM_STATE,
+      USER_ID,
+      LOGIN_ID,
+      TRANSACTION_TYPE,
+      CREATION_DATE,
+      TRANSACTION_DATE,
+      REFERENCE_ID,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      TEAM_ID,
+      VERSION,
+      TRX_REFERENCE_ID,
+      OPSDESC,
+      LEGAL_NAME,
+      LEGAL_ID,
+      CUSTOMER_NAME,
+      CUSTOMER_ID,
+      TRX_ORIGIN_COUNTRY,
+      TRX_ORIGIN_ORGANISATION,
+      LIMIT_PROFILE_ID,
+      LIMIT_PROFILE_REF_NUM,
+      TRX_SEGMENT,
+      USER_INFO,
+      CUR_TRX_HISTORY_ID,
+      TEAM_TYPE_ID,
+      TRANSACTION_SUBTYPE,
+      TO_GROUP_TYPE_ID,
+      TO_GROUP_ID,
+      TO_USER_ID,
+      DEAL_NO,
+      TEAM_MEMBERSHIP_ID,
+      SYSTEM_DATE
+    )
+    VALUES
+    (
+      (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      )
+      ,
+      'PENDING_CREATE',
+      -999999999,
+      NULL,
+      'COMMON_CODE_TYPE',
+      NULL,
+      NULL,
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      'ACTIVE',
+      NULL,
+      (SELECT team_id
+      FROM CMS_TEAM
+      WHERE team_type_id IN
+        (SELECT team_type_id FROM cms_team_type WHERE business_code='CPUADMIN'
+        )
+      ),
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      '-999999999',
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      -999999999,
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      2,
+      NULL,
+      '-999999999',
+      -999999999,
+      -999999999,
+      NULL,
+      NULL,
+      NULL
+    );
+ 
+ INSERT
+  INTO TRANSACTION
+    (
+      TRANSACTION_ID,
+      FROM_STATE,
+      USER_ID,
+      LOGIN_ID,
+      TRANSACTION_TYPE,
+      CREATION_DATE,
+      TRANSACTION_DATE,
+      REFERENCE_ID,
+      STATUS,
+      STAGING_REFERENCE_ID,
+      TEAM_ID,
+      VERSION,
+      TRX_REFERENCE_ID,
+      OPSDESC,
+      LEGAL_NAME,
+      LEGAL_ID,
+      CUSTOMER_NAME,
+      CUSTOMER_ID,
+      TRX_ORIGIN_COUNTRY,
+      TRX_ORIGIN_ORGANISATION,
+      LIMIT_PROFILE_ID,
+      LIMIT_PROFILE_REF_NUM,
+      TRX_SEGMENT,
+      USER_INFO,
+      CUR_TRX_HISTORY_ID,
+      TEAM_TYPE_ID,
+      TRANSACTION_SUBTYPE,
+      TO_GROUP_TYPE_ID,
+      TO_GROUP_ID,
+      TO_USER_ID,
+      DEAL_NO,
+      TEAM_MEMBERSHIP_ID,
+      SYSTEM_DATE
+    )
+    VALUES
+    (
+      (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      )
+      ,
+      'PENDING_UPDATE',
+      20110708000000259,
+      'CPU_CHK',
+      'COMMON_CODE_ENTRY',
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      'ACTIVE',
+      (SELECT CATEGORY_ID
+      FROM stage_common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      (SELECT team_id
+      FROM CMS_TEAM
+      WHERE team_type_id IN
+        (SELECT team_type_id FROM cms_team_type WHERE business_code='CPUADMIN'
+        )
+      ),
+      1490063201432,
+      -999999999,
+      'COMMON_CODE_ENTRY_APPROVE',
+      NULL,
+      '-999999999',
+      NULL,
+      -999999999,
+      '--',
+      '--',
+      -999999999,
+      NULL,
+      '--',
+      'CPU Checker ( CPU_CHK )',
+      '20170321000031992',
+      102,
+      NULL,
+      '-999999999',
+      -999999999,
+      -999999999,
+      NULL,
+      20110623000000070,
+      to_timestamp('25-MAY-22 07.56.41.407000000 AM','DD-MON-RR HH.MI.SSXFF AM')
+    );
+-------------------------------------------------------------
+
+    INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'CREDIT',
+      'Credit',
+      '1',
+      'MONITORING_RESPONSIBILITY',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+    INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'BUSINESS',
+      'Business',
+      '1',
+      'MONITORING_RESPONSIBILITY',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+    INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'CAD',
+      'CAD',
+      '1',
+      'MONITORING_RESPONSIBILITY',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+    INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'TRADE',
+      'Trade',
+      '1',
+      'MONITORING_RESPONSIBILITY',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+    INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'RM',
+      'RM',
+      '1',
+      'MONITORING_RESPONSIBILITY',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+    INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'Cash',
+      'Cash',
+      '1',
+      'MONITORING_RESPONSIBILITY',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+
+    INSERT
+  INTO COMMON_CODE_CATEGORY_ENTRY
+    (
+      ENTRY_ID,
+      ENTRY_CODE,
+      ENTRY_NAME,
+      ACTIVE_STATUS,
+      CATEGORY_CODE,
+      CATEGORY_CODE_ID,
+      ENTRY_SOURCE,
+      COUNTRY,
+      GROUP_ID,
+      REF_ENTRY_CODE,
+      VERSION_TIME,
+      STATUS,
+      CREATION_DATE,
+      LAST_UPDATE_DATE,
+      CPS_ID,
+      EOD_SYNC_STATUS
+    )
+    VALUES
+    (
+      (SELECT MAX(ENTRY_ID)+ 1 FROM COMMON_CODE_CATEGORY_ENTRY
+      )
+      ,
+      'CALL_MEMO',
+      'CALL Memo',
+      '1',
+      'MONITORING_RESPONSIBILITY',
+      (SELECT CATEGORY_ID
+      FROM common_code_category
+      WHERE CATEGORY_CODE='MONITORING_RESPONSIBILITY'
+      ),
+      NULL,
+      NULL,
+      NULL,
+      NULL,
+      1490063201380,
+      NULL,
+      to_date('25-MAY-22','DD-MON-RR'),
+      to_date('25-MAY-22','DD-MON-RR'),
+      NULL,
+      'SUCCESSFUL'
+    );
+    
+    
+ --------------STAGING TABLE FOR OTHER COVENANT------------------
+  
+  CREATE TABLE STAGE_SCI_LSP_OTHER_COVENANT
+   ("CMS_LE_OTHER_COVENANT_ID" NUMBER(19,0), 
+	"CMS_LE_COVENANT_TYPE" VARCHAR2(100), 
+	"CMS_LE_ID" VARCHAR2(50 BYTE), 
+	"CMS_LE_COVENANT_CONDITION" VARCHAR2(100), 
+	"CMS_LE_COVENANT_COMPILED" VARCHAR2(30), 
+	"CMS_LE_COVENANT_CATEGORY" VARCHAR2(50), 
+	"CMS_LE_COVENANT_ADVISED" VARCHAR2(25), 
+	"CMS_LE_COVENANT_DESCRIPTION" VARCHAR2(200), 
+	"CMS_LE_COVENANT_REMARKS" VARCHAR2(200), 
+	"CMS_LE_COVENANT_TARGETDATE" VARCHAR2(30), 
+	"CMS_LE_LMT_PROFILE_ID" VARCHAR2(30), 
+	"CMS_LE_STATUS" VARCHAR2(25), 
+	"CMS_LE_PREV_STAGE_ID" VARCHAR2(35), 
+	"CMS_LE_IS_UPDATE_FLAG" VARCHAR2(25)
+	);
+--------------ACTUAL TABLE FOR OTHER COVENANT----------------------
+
+CREATE TABLE SCI_LSP_OTHER_COVENANT
+   ("CMS_LE_OTHER_COVENANT_ID" NUMBER(19,0), 
+	"CMS_LE_COVENANT_TYPE" VARCHAR2(50), 
+	"CMS_LE_ID" VARCHAR2(30), 
+	"CMS_LE_COVENANT_CONDITION" VARCHAR2(50), 
+	"CMS_LE_COVENANT_COMPILED" VARCHAR2(25), 
+	"CMS_LE_COVENANT_CATEGORY" VARCHAR2(25), 
+	"CMS_LE_COVENANT_ADVISED" VARCHAR2(20), 
+	"CMS_LE_COVENANT_DESCRIPTION" VARCHAR2(200), 
+	"CMS_LE_COVENANT_REMARKS" VARCHAR2(200), 
+	"CMS_LE_COVENANT_TARGETDATE" VARCHAR2(30), 
+	"CMS_LE_LMT_PROFILE_ID" VARCHAR2(25), 
+	"CMS_LE_STATUS" VARCHAR2(25), 
+	"CMS_LE_STAGE_ID" VARCHAR2(30)
+   );
+------------------STAGING TABLE FOR OTHER COVENANT COMBO BOX-------------------
+
+    CREATE TABLE STAGE_SCI_LSP_OTHER_COVENANT_VALUES
+   ("CMS_LE_OTHER_COVENANT_DETAILS_ID" NUMBER(19,0), 
+	"COVENANT_MONITORING_RESP_VALUE" VARCHAR2(50), 
+	"CMS_LE_ID" VARCHAR2(25), 
+	"COVENANT_FACILITY_NAME_VALUE" VARCHAR2(100), 
+	"CMS_LE_LMT_PROFILE_ID" VARCHAR2(35), 
+	"CMS_LE_STAGE_OC_ID" VARCHAR2(35), 
+	"STATUS" VARCHAR2(20), 
+	"UNIQUE_SEQ_FROM_OC" VARCHAR2(20)
+   );
+---------------ACTUAL TABLE FOR OTHER COVENANT COMBO BOX---------------------
+
+    CREATE TABLE SCI_LSP_OTHER_COVENANT_VALUES
+   ("CMS_LE_OTHER_COVENANT_DETAILS_ID" NUMBER(19,0), 
+	"COVENANT_MONITORING_RESP_VALUE" VARCHAR2(50), 
+	"CMS_LE_ID" VARCHAR2(25), 
+	"COVENANT_FACILITY_NAME_VALUE" VARCHAR2(100), 
+	"CMS_LE_LMT_PROFILE_ID" VARCHAR2(35), 
+	"CMS_LE_STAGE_OC_ID" VARCHAR2(35), 
+	"STATUS" VARCHAR2(20), 
+	"UNIQUE_SEQ_FROM_OC" VARCHAR2(20)
+   );
+   
+  -----------------------STAGING SEQUENCE---------------------------------------------
+  
+CREATE SEQUENCE "STAGE_SCI_LSP_OTHER_COVENANT_VALUES_SEQ"  MINVALUE 1 MAXVALUE 9999999 INCREMENT BY 1 START WITH 1 NOCACHE  NOORDER  CYCLE  NOKEEP  NOSCALE  GLOBAL ;
+
+-----------------------ACTUAL SEQUENCE---------------------------------------------
+
+CREATE SEQUENCE "SCI_LSP_OTHER_COVENANT_VALUES_SEQ"  MINVALUE 1 MAXVALUE 9999999 INCREMENT BY 1 START WITH 1 NOCACHE  NOORDER  CYCLE  NOKEEP  NOSCALE  GLOBAL ;
+
+-----------------------ACTUAL SEQUENCE---------------------------------------------
+CREATE SEQUENCE "SCI_LSP_OTHER_COVENANT_SEQ"  MINVALUE 1 MAXVALUE 9999999999999 INCREMENT BY 1 START WITH 1001 NOCACHE  NOORDER  CYCLE  NOKEEP  NOSCALE  GLOBAL ;
+
+-----------------------STAGING SEQUENCE---------------------------------------------
+CREATE SEQUENCE "STAGE_SCI_LSP_OTHER_COVENANT_SEQ"  MINVALUE 1 MAXVALUE 9999999999999 INCREMENT BY 1 START WITH 1001 NOCACHE  NOORDER  CYCLE  NOKEEP  NOSCALE  GLOBAL ;
+
+
+----------Display Sequence--------------------------------
+
+CREATE SEQUENCE "CAM_OC_MAP_SEQ"  MINVALUE 1001 MAXVALUE 9999999 INCREMENT BY 1 START WITH 1098 NOCACHE  NOORDER  CYCLE  NOKEEP  NOSCALE  GLOBAL ;
+
+--------------------------Risk Type Code-----------------------------------------------
+
+CREATE SEQUENCE  "RISK_TYPE_SEQ"  MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 06 NOCACHE  NOORDER  NOCYCLE  NOKEEP  NOSCALE  GLOBAL ;
+
+
+alter table SCI_LE_CRI modify(NAME_OF_HOLDING_COMPANY varchar2(255));
+alter table SCI_LE_CRI_STAGING modify(NAME_OF_HOLDING_COMPANY varchar2(255));
+alter table SCI_LE_CRI modify(LANDHOLDING varchar2(255));
+alter table SCI_LE_CRI_STAGING modify(LANDHOLDING varchar2(255));
+alter table SCI_LE_CRI modify(REJECT_HISTORY_REASON varchar2(4000));
+alter table SCI_LE_CRI_STAGING modify(REJECT_HISTORY_REASON varchar2(4000));
+alter table SCI_LE_CRI modify(COMPANY varchar2(255));
+alter table SCI_LE_CRI_STAGING modify(COMPANY varchar2(255));
+alter table SCI_LE_CRI modify(HOLDING_COMPANY varchar2(255));
+alter table SCI_LE_CRI_STAGING modify(HOLDING_COMPANY varchar2(255));
+
+
+
+
+---------------
+
+CREATE OR REPLACE FUNCTION get_banking_method (p_deptno  in  CMS_BANKING_METHOD_CUST.customer_id%TYPE)
+  RETURN VARCHAR2
+IS
+  l_text  VARCHAR2(32767) := NULL;
+   customer_id  VARCHAR2(32767) := NULL;
+BEGIN
+  FOR cur_rec IN (SELECT ENTRY_NAME FROM COMMON_CODE_CATEGORY_ENTRY WHERE ENTRY_CODE IN (SELECT CMS_BANKING_METHOD_NAME FROM CMS_BANKING_METHOD_CUST WHERE customer_id = p_deptno AND status = 'ACTIVE') 
+  AND ACTIVE_STATUS = 1 AND CATEGORY_CODE = 'BANKING_METHOD') LOOP
+    l_text := l_text || ',' || cur_rec.ENTRY_NAME;
+  END LOOP;
+  RETURN LTRIM(l_text, ',');
+END;
+------------------------------------------------------------
+
+DROP MATERIALIZED VIEW CUSTOMER_WISE_SECURITY_MV;
+
+
+CREATE MATERIALIZED VIEW CUSTOMER_WISE_SECURITY_MV
+    AS
+  SELECT party_id,
+    party_name,
+    segmentName,
+    facilityName,
+    secNature,
+    secSubType,
+    Collateral_name,
+    secPriority,
+    currCode,
+    securityAmount,
+    lineNo,
+    serialNo,
+    systemName,
+    systemId,
+    releasedAmount,
+    rmname,
+    region,
+    colId,
+    facId,
+    valuationAmt,
+    TO_CHAR(dateOfVal,'DD/MON/YYYY') AS dateOfVal,
+    
+    ( CASE WHEN party_id IS NOT NULL
+    THEN
+    (SELECT entry_name
+    FROM common_code_category_entry
+    WHERE category_code='FREQUENCY'
+    AND entry_code     = revalFreq
+    )             
+    END
+    ) AS revalFreq,
+    
+    
+    TO_CHAR(nextRevalDate,'DD/MON/YYYY') AS nextValDate,
+    typeOfCharge,
+    pectFstChgByBank,
+    PRIMARY_SEC_ADDR,
+    SEC_VAL_ASPER_CAM,
+    SECONDARY_SEC_ADDR,
+    SECURITY_MARGIN,
+    CHARGE_PRIORITY,
+    (
+    CASE
+      WHEN monitorProcCol='Y'
+      THEN 'Yes'
+      WHEN monitorProcCol='N'
+      THEN 'No'
+    END) AS monitorProcCol,
+    ( CASE WHEN party_id IS NOT NULL
+    THEN
+    (SELECT entry_name
+    FROM common_code_category_entry
+    WHERE category_code='FREQUENCY'
+    AND entry_code     = monitorProcColFreq
+    )
+    END )
+    AS monitorProcColFreq ,
+    
+    
+    (
+    CASE
+      WHEN phyVerifOfCol='Y'
+      THEN 'Yes'
+      WHEN phyVerifOfCol='N'
+      THEN 'No'
+    END)AS phyVerifOfCol,
+    
+    ( CASE WHEN party_id IS NOT NULL
+    THEN
+    (SELECT entry_name
+    FROM common_code_category_entry
+    WHERE category_code='FREQUENCY'
+    AND entry_code     = phyVerifOfColFreq
+    )                                       
+    END )
+    AS phyVerifOfColFreq,
+    TO_CHAR(phyVerifDoneOn,'DD/MON/YYYY')   AS phyVerifDoneOn,
+    TO_CHAR(nxtPhyVerifDueOn,'DD/MON/YYYY') AS nxtPhyVerifDueOn,
+    (
+    CASE
+      WHEN priorClaim='Y'
+      THEN 'Yes'
+      WHEN priorClaim='N'
+      THEN 'No'
+    END)AS priorClaim,
+    (
+    CASE
+      WHEN typeOfClaim ='LITIGATION'
+      THEN 'Litigation'
+      WHEN typeOfClaim ='PROPERTY_TAX'
+      THEN 'Property Tax'
+      WHEN typeOfClaim ='OTHERS_CLAIM'
+      THEN 'Others'
+      ELSE '-'
+    END ) AS typeOfClaim,
+    relationManager,
+    partyID,
+   segmentCode
+  FROM (
+    (SELECT DISTINCT sub_profile.lsp_le_id              AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+     
+     ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+      (SELECT SUM(lien_amount)
+      FROM cms_lien
+      WHERE cash_deposit_id IN
+        (SELECT cash_deposit_id
+        FROM cms_cash_deposit
+        WHERE cms_collateral_id=secdetail.cms_collateral_id
+        AND status             ='ACTIVE'
+        AND ACTIVE             ='active'
+        )
+      )   
+     END) AS securityAmount,
+      facdetail.line_no            AS lineNo,
+      facdetail.serial_no          AS serialNo,
+      lmts.facility_system         AS systemName,
+      facdetail.FACILITY_SYSTEM_ID AS systemId,
+      facdetail.released_amount    AS releasedAmount,
+      rm.rm_mgr_name               AS rmname,
+    ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )   
+      END) AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+      secdetail.PRIMARY_SEC_ADDR AS PRIMARY_SEC_ADDR,
+      secdetail.SEC_VAL_ASPER_CAM AS SEC_VAL_ASPER_CAM,
+      secdetail.SECONDARY_SEC_ADDR AS SECONDARY_SEC_ADDR,
+      secdetail.SECURITY_MARGIN AS SECURITY_MARGIN,
+      secdetail.CHARGE_PRIORITY AS CHARGE_PRIORITY,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+      ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )  
+      END) AS typeOfCharge,
+      secdetail.other_bank_charge       AS pectFstChgByBank,
+      NULL                              AS phyVerifOfCol,
+      NULL                              AS phyVerifOfColFreq,
+      NULL                              AS phyVerifDoneOn,
+      NULL                              AS nxtPhyVerifDueOn,
+      NULL                              AS priorClaim,
+      NULL                              AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager,
+      cc_segment.entry_code                            AS segmentCode
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr ,
+      cms_collateral_new_master colMaster
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                 = 'CORPORATE'
+    AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind             != 'D'
+    OR lsm.update_status_ind               IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+    AND rm.id                               = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)    =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                  = 'ACTIVE'
+    AND secdetail.security_sub_type_id      ='CS202'
+    AND lsm.CHARGE_ID                      IN
+      (SELECT MAX(MAPS2.CHARGE_ID)
+      FROM cms_limit_security_map maps2
+      WHERE maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id
+      AND maps2.cms_collateral_id      =secDetail.cms_collateral_id
+      )
+    AND colMaster.new_collateral_code = secDetail.collateral_code
+    AND lmts.cms_limit_status        <> 'DELETED'
+    )
+  UNION
+    ( SELECT DISTINCT sub_profile.lsp_le_id             AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+      secDetail.CMV                                     AS securityAmount,
+      facdetail.line_no                                 AS lineNo,
+      facdetail.serial_no                               AS serialNo,
+      lmts.facility_system                              AS systemName,
+      facdetail.FACILITY_SYSTEM_ID                      AS systemId,
+      facdetail.released_amount                         AS releasedAmount,
+      rm.rm_mgr_name                                    AS rmname,
+      ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )   
+      END) AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+      secdetail.PRIMARY_SEC_ADDR AS PRIMARY_SEC_ADDR,
+      secdetail.SEC_VAL_ASPER_CAM AS SEC_VAL_ASPER_CAM,
+      secdetail.SECONDARY_SEC_ADDR AS SECONDARY_SEC_ADDR,
+      secdetail.SECURITY_MARGIN AS SECURITY_MARGIN,
+      secdetail.CHARGE_PRIORITY AS CHARGE_PRIORITY,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+	  
+     ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )
+      END) AS typeOfCharge,
+      secdetail.other_bank_charge       AS pectFstChgByBank,
+      prop.is_phy_inspect               AS phyVerifOfCol,
+      prop.phy_inspect_freq_unit        AS phyVerifOfColFreq,
+      prop.last_phy_inspect_date        AS phyVerifDoneOn,
+      prop.next_phy_inspect_date        AS nxtPhyVerifDueOn,
+      prop.claim                        AS priorClaim,
+      prop.claim_type                   AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager,
+      cc_segment.entry_code                            AS segmentCode
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr,
+      cms_collateral_new_master colMaster,
+      CMS_PROPERTY prop
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+    AND secDetail.cms_collateral_id         = prop.cms_collateral_id(+)
+    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                 = 'CORPORATE'
+    AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind             != 'D'
+    OR lsm.update_status_ind               IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+    AND rm.id                               = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)    =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                  = 'ACTIVE'
+    AND secdetail.security_sub_type_id      ='PT701'
+    AND colMaster.new_collateral_code       = secDetail.collateral_code
+    AND lmts.cms_limit_status              <> 'DELETED'
+    )
+  UNION
+    (SELECT DISTINCT sub_profile.lsp_le_id              AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+      secDetail.CMV                                     AS securityAmount,
+      facdetail.line_no                                 AS lineNo,
+      facdetail.serial_no                               AS serialNo,
+      lmts.facility_system                              AS systemName,
+      facdetail.FACILITY_SYSTEM_ID                      AS systemId,
+      facdetail.released_amount                         AS releasedAmount,
+      rm.rm_mgr_name                                    AS rmname,
+     ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )      
+      END) AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+	  secdetail.PRIMARY_SEC_ADDR AS PRIMARY_SEC_ADDR,
+      secdetail.SEC_VAL_ASPER_CAM AS SEC_VAL_ASPER_CAM,
+      secdetail.SECONDARY_SEC_ADDR AS SECONDARY_SEC_ADDR,
+      secdetail.SECURITY_MARGIN AS SECURITY_MARGIN,
+      secdetail.CHARGE_PRIORITY AS CHARGE_PRIORITY,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+     ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )     
+      END) AS typeOfCharge,
+      secdetail.other_bank_charge       AS pectFstChgByBank,
+      NULL                              AS phyVerifOfCol,
+      NULL                              AS phyVerifOfColFreq,
+      NULL                              AS phyVerifDoneOn,
+      NULL                              AS nxtPhyVerifDueOn,
+      NULL                              AS priorClaim,
+      NULL                              AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager,
+      cc_segment.entry_code                            AS segmentCode
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr,
+      cms_collateral_new_master colMaster,
+      CMS_INSURANCE ins
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+    AND secDetail.cms_collateral_id         = ins.cms_collateral_id
+    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                 = 'CORPORATE'
+    AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind             != 'D'
+    OR lsm.update_status_ind               IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+    AND rm.id                               = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)    =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                  = 'ACTIVE'
+    AND secdetail.security_sub_type_id      ='IN501'
+    AND colMaster.new_collateral_code       = secDetail.collateral_code
+    AND lmts.cms_limit_status              <> 'DELETED'
+    )
+  UNION
+    (SELECT DISTINCT sub_profile.lsp_le_id              AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+      (
+      CASE
+        WHEN secdetail.security_sub_type_id='AB100'
+        THEN
+          (SELECT CALCULATEDDP
+          FROM CMS_ASSET_GC_DET gc_det
+          WHERE gc_det.cms_collateral_id = secdetail.cms_collateral_id
+          AND gc_det.doc_code            =LATEST_GC_DOCCODE(secdetail.cms_collateral_id)
+          )
+        ELSE secDetail.CMV
+      END)                         AS securityAmount,
+      facdetail.line_no            AS lineNo,
+      facdetail.serial_no          AS serialNo,
+      lmts.facility_system         AS systemName,
+      facdetail.FACILITY_SYSTEM_ID AS systemId,
+      facdetail.released_amount    AS releasedAmount,
+      rm.rm_mgr_name               AS rmname,
+      ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )     
+      END) AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+	  secdetail.PRIMARY_SEC_ADDR AS PRIMARY_SEC_ADDR,
+      secdetail.SEC_VAL_ASPER_CAM AS SEC_VAL_ASPER_CAM,
+      secdetail.SECONDARY_SEC_ADDR AS SECONDARY_SEC_ADDR,
+      secdetail.SECURITY_MARGIN AS SECURITY_MARGIN,
+      secdetail.CHARGE_PRIORITY AS CHARGE_PRIORITY,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+     ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )               
+      END) AS typeOfCharge,
+      secdetail.other_bank_charge       AS pectFstChgByBank,
+      asset.PHY_INSPECTION_DONE         AS phyVerifOfCol,
+      asset.PHY_INSPECTION_FREQ_UNIT    AS phyVerifOfColFreq,
+      asset.last_phy_inspect_date       AS phyVerifDoneOn,
+      asset.next_phy_inspect_date       AS nxtPhyVerifDueOn,
+      ''                                AS priorClaim,
+      ''                                AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager,
+      cc_segment.entry_code                            AS segmentCode
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr,
+      cms_collateral_new_master colMaster,
+      CMS_ASSET asset
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+    AND secDetail.cms_collateral_id         = asset.cms_collateral_id(+)
+    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                 = 'CORPORATE'
+    AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind             != 'D'
+    OR lsm.update_status_ind               IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+    AND rm.id                               = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)    =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                  = 'ACTIVE'
+    AND secdetail.security_sub_type_id     IN ('AB100','AB110', 'AB101', 'AB109', 'AB102', 'AB108', 'GT402','GT400','GT406','GT408','GT405')
+    AND colMaster.new_collateral_code       = secDetail.collateral_code
+    AND lmts.cms_limit_status              <> 'DELETED'
+    )
+  UNION
+    (SELECT DISTINCT sub_profile.lsp_le_id              AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+      secDetail.CMV                                     AS securityAmount,
+      facdetail.line_no                                 AS lineNo,
+      facdetail.serial_no                               AS serialNo,
+      lmts.facility_system                              AS systemName,
+      --lmts.FACILITY_SYSTEM_ID   AS systemId,
+      facdetail.FACILITY_SYSTEM_ID AS systemId,
+      facdetail.released_amount    AS releasedAmount,
+      rm.rm_mgr_name               AS rmname,
+      ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN
+     (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )                 
+      END) AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+	  secdetail.PRIMARY_SEC_ADDR AS PRIMARY_SEC_ADDR,
+      secdetail.SEC_VAL_ASPER_CAM AS SEC_VAL_ASPER_CAM,
+      secdetail.SECONDARY_SEC_ADDR AS SECONDARY_SEC_ADDR,
+      secdetail.SECURITY_MARGIN AS SECURITY_MARGIN,
+      secdetail.CHARGE_PRIORITY AS CHARGE_PRIORITY,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+      ( CASE 
+     WHEN sub_profile.lsp_le_id IS NOT NULL
+     THEN 
+     (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )   
+      END) AS typeOfCharge,
+      secdetail.other_bank_charge       AS pectFstChgByBank,
+      NULL                              AS phyVerifOfCol,
+      NULL                              AS phyVerifOfColFreq,
+      NULL                              AS phyVerifDoneOn,
+      NULL                              AS nxtPhyVerifDueOn,
+      NULL                              AS priorClaim,
+      NULL                              AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager,
+      cc_segment.entry_code                            AS segmentCode
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr,
+      cms_collateral_new_master colMaster
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                 = 'CORPORATE'
+    AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind             != 'D'
+    OR lsm.update_status_ind               IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+    AND rm.id                               = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)    =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                  = 'ACTIVE'
+    AND secdetail.security_sub_type_id     IN ('MS600','MS605','MS610','CL001','OT900','AB103')
+    AND colMaster.new_collateral_code       = secDetail.collateral_code
+    AND lmts.cms_limit_status              <> 'DELETED'
+    ) ) temp
+  WHERE 1=1;
+ 
+ 
+ ---------------------LOA Script----------------------------------------
+ 
+ CREATE TABLE DAY_ZERO_MIG_EMP_GRADE_LOA 
+   (	"EMPLOYEE_GRADE" VARCHAR2(50 CHAR), 
+	"SEGMENT" VARCHAR2(50 CHAR), 
+	"LIMIT_RELEASE_AMT" NUMBER(24,2), 
+	"TOTAL_SANCTIONED_LIMIT" NUMBER(32,2), 
+	"PROPERTY_VALUATION_AMT" NUMBER(22,2), 
+	"FD_AMOUNT" NUMBER(17,2), 
+	"DRAWING_POWER" NUMBER(17,2), 
+	"SBLC_SECURITY_OMV" NUMBER(17,2), 
+	"FACILITY_CAM_COVENANT" CHAR(1 BYTE), 
+	"STATUS" CHAR(1 BYTE) DEFAULT 'P', 
+	"REASON_FOR_FAIL" VARCHAR2(4000 BYTE)
+   );
+
+
+Create Sequence CMS_LOA_MASTER_SEQ Minvalue 1 Maxvalue 999999999 Increment By 1 Start With 1 Nocache  Noorder  Cycle;
+Create Sequence CMS_STAGE_LOA_MASTER_SEQ Minvalue 1 Maxvalue 999999999 Increment By 1 Start With 1 Nocache  Noorder  Cycle;
+
+ALTER TABLE ACTUAL_RELEASELINEDET_UPLOAD add TEMP_SYSTEM_ID VARCHAR2(20);
+UPDATE ACTUAL_RELEASELINEDET_UPLOAD set TEMP_SYSTEM_ID=SYSTEM_ID;
+ALTER TABLE ACTUAL_RELEASELINEDET_UPLOAD drop column SYSTEM_ID;
+ALTER TABLE ACTUAL_RELEASELINEDET_UPLOAD rename column TEMP_SYSTEM_ID to SYSTEM_ID;
+
+ALTER TABLE STAGE_RELEASELINEDET_UPLOAD add TEMP_SYSTEM_ID VARCHAR2(20);
+UPDATE STAGE_RELEASELINEDET_UPLOAD set TEMP_SYSTEM_ID=SYSTEM_ID;
+ALTER TABLE STAGE_RELEASELINEDET_UPLOAD drop column SYSTEM_ID;
+ALTER TABLE STAGE_RELEASELINEDET_UPLOAD rename column TEMP_SYSTEM_ID to SYSTEM_ID;
+ 
+ SET DEFINE ON;
+ COMMIT;
+ 
+
+
+
+

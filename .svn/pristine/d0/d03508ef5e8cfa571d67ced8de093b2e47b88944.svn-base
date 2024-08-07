@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		Transaction Plugin context files, mainly deal with 'autoProxyCreator', to intercept MessageHandler , ORM/JDBC-based DAOs.
+	</description>
+	
+	<bean id="matchAllEaiTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource">
+				<property name="transactionAttribute" value="PROPAGATION_REQUIRED" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="matchAllEaiInquiryTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean class="org.springframework.transaction.interceptor.MatchAlwaysTransactionAttributeSource">
+				<property name="transactionAttribute" value="PROPAGATION_REQUIRES_NEW,readOnly,timeout_600" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="eaiDaoJdbcProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchAllTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="logMessageJdbc" />
+				<idref bean="securityJdbc" />
+				<idref bean="chargeDetailJdbc" />
+				<idref bean="customerDao" />
+				<idref bean="limitDao" />
+				<idref bean="limitJdbc" />
+				<idref bean="securityDao" />
+				<idref bean="documentDao" />
+				<idref bean="documentDaoJdbc" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="eaiTrxAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchAllEaiTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="eaiMessageManager" />
+				<idref bean="customerMessageHandler"/>
+				<idref bean="customerFusionMessageHandler"/>
+				<idref bean="customerRelationshipMessageHandler"/>
+				<idref bean="customerUpdateMessageHandler"/>
+				<idref bean="customerSearchMessageHandler"/>
+				<idref bean="limitMessageHandler"/>
+				<idref bean="securityMessageHandler"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="eaiInquiryTrxAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchAllEaiInquiryTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="sharedSecurityMessageHandler"/>
+			</list>
+		</property>
+	</bean>
+
+</beans>

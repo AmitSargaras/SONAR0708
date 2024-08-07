@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT descp.id         AS discrepancyId,
+			  cc_segment.entry_name AS segmentName,
+			  rm.rm_mgr_name        AS rmname,
+			  (SELECT region_name FROM cms_region WHERE id=party.rm_region
+			  ) AS region,
+			  (SELECT entry_name
+			  FROM common_code_category_entry
+			  WHERE entry_code=cam.rbi_asset_classification
+			  AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION'
+			  )                    AS RBI_Asset,
+			  party.lsp_short_name AS partyName,
+			  CASE
+			    WHEN UPPER(descp.STATUS) = 'ACTIVE'
+			    THEN TO_CHAR(descp.ORIGINAL_TARGET_DATE,'DD/Mon/YYYY')
+			    WHEN UPPER(descp.STATUS) = 'DEFERED'
+			    THEN
+			      CASE
+			        WHEN descp.NEXT_DUE_DATE IS NULL
+			        THEN TO_CHAR(descp.DEFER_DATE,'DD/Mon/YYYY')
+			        WHEN descp.NEXT_DUE_DATE IS NOT NULL
+			        THEN TO_CHAR(descp.NEXT_DUE_DATE,'DD/Mon/YYYY')
+			      END
+			  END                                               AS dueDate,
+			  cc_descp.ENTRY_NAME                               AS discrepancyDesc,
+			  descp.STATUS                                      AS status,
+			  TO_CHAR(descp.ORIGINAL_TARGET_DATE,'DD/Mon/YYYY') AS originalDuedate,
+			  descp.remarks                                     AS creationRemark,
+			  descp.doc_remarks
+			FROM SCI_LE_SUB_PROFILE party,
+			  CMS_DISCREPENCY descp,
+			  common_code_category_entry cc_segment,
+			  cms_relationship_mgr rm,
+			  SCI_LSP_LMT_PROFILE cam,
+			  common_code_category_entry cc_descp,
+			  transaction trx       
+			</query>
+		<whereClause>
+			<mandatoryClause>
+                 party.lsp_sgmnt_code_value=cc_segment.entry_code(+)
+				AND party.lsp_le_id = cam.llp_le_id
+				AND rm.id(+)                    = party.relation_mgr
+				AND party.cms_le_sub_profile_id = descp.customer_id(+)
+				AND cc_descp.category_code      ='DISCREPENCY'
+				AND cc_descp.active_status      = 1
+				AND cc_segment.category_code      ='HDFC_SEGMENT'
+        		AND cc_segment.active_status      = 1
+				AND descp.discrepency           = cc_descp.entry_code(+)
+				AND Upper(descp.status)        IN ('AWAITING','DEFERED','ACTIVE')
+				AND party.status                = 'ACTIVE'
+				AND trx.transaction_type        ='DISCREPENCY'
+				AND trx.reference_id            =descp.id
+				AND trx.status                  ='ACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND party.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and cc_segment.entry_code = </condition>
+			</param>
+			<param>
+				<name>rbiAsset</name>
+				<condition> and cam.rbi_asset_classification = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Discrepancy Id</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Asset Classification</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Due Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Discrepancy Description</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Original Due date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Creation Remarks</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header>
+				</reportColumn>	
+			</reportColumns>
+			<reportName>Deferral Report -Discrepancy</reportName>
+		</reportParamters>
+	</report>
+</reports>

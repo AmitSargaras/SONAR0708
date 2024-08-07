@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.approvalmatrix.bus">
+  <class entity-name="actualApprovalMatrixEntry" name="OBApprovalMatrixEntry" table="CMS_APPROVAL_MATRIX" lazy="false">
+	<id name="approvalMatrixEntryID" type="long" column="APPROVAL_MATRIX_ID" >
+		<generator class="increment">
+        </generator>
+	</id>
+	<version name="versionTime" column="VERSION_TIME" type="long" />
+    <property name="riskGrade" column="RISK_GRADE" />
+    <property name="level1" column="LEVEL_1" />
+    <property name="level2" column="LEVEL_2" />
+    <property name="level3" column="LEVEL_3" />
+    <property name="level4" column="LEVEL_4" />    
+    <property name="lastUpdatedDate" column="LAST_UPDATE_DATE" />
+    <property name="approvalMatrixEntryRef" column="FEED_REF" type="long"/>
+  </class>
+
+  <class entity-name="actualApprovalMatrixGroup" name="OBApprovalMatrixGroup" table="CMS_FEED_GROUP">
+	<id name="approvalMatrixGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false"  order-by="RISK_GRADE">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="actualApprovalMatrixEntry" />
+	</set>
+  </class>
+
+  <class entity-name="stageApprovalMatrixEntry" name="OBApprovalMatrixEntry" table="CMS_STAGE_APPROVAL_MATRIX" lazy="false">
+	<id name="approvalMatrixEntryID" type="long" column="APPROVAL_MATRIX_ID" >
+		<generator class="increment">
+        </generator>
+	</id>
+	<version name="versionTime" column="VERSION_TIME" type="long" />
+    <property name="riskGrade" column="RISK_GRADE" />
+    <property name="level1" column="LEVEL_1" />
+    <property name="level2" column="LEVEL_2" />
+    <property name="level3" column="LEVEL_3" /> 
+    <property name="level4" column="LEVEL_4" />   
+    <property name="lastUpdatedDate" column="LAST_UPDATE_DATE" />
+    <property name="approvalMatrixEntryRef" column="FEED_REF" type="long"/>
+  </class>
+
+  <class entity-name="stageApprovalMatrixGroup" name="OBApprovalMatrixGroup" table="CMS_STAGE_FEED_GROUP">
+	<id name="approvalMatrixGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false"  order-by="RISK_GRADE">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="stageApprovalMatrixEntry" />
+	</set>
+  </class>
+
+</hibernate-mapping>

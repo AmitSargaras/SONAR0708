@@ -1,0 +1,1048 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+	<form-beans type="org.apache.struts.action.ActionFormBean">
+		<!-- Exchange rate list ActionForm. -->
+		<form-bean name="exchangeRateListForm"
+			type="com.integrosys.cms.ui.feed.exchangerate.list.ExchangeRateListForm" />
+
+		<!-- Exchange rate item ActionForm. -->
+		<form-bean name="exchangeRateItemForm"
+			type="com.integrosys.cms.ui.feed.exchangerate.item.ExchangeRateItemForm" />
+
+		<!--  Gold List ActionForm. -->
+		<form-bean name="goldListForm"
+			type="com.integrosys.cms.ui.feed.gold.list.GoldListForm" />
+			
+		<!-- Gold item ActionForm. -->
+		<form-bean name="goldItemForm"
+			type="com.integrosys.cms.ui.feed.gold.item.GoldItemForm" />
+
+		
+		<!-- Bond list ActionForm. -->
+		<form-bean name="bondListForm"
+			type="com.integrosys.cms.ui.feed.bond.list.BondListForm" />
+
+		<!-- Bond item ActionForm. -->
+		<form-bean name="bondItemForm"
+			type="com.integrosys.cms.ui.feed.bond.item.BondItemForm" />
+
+		<!-- Stock list ActionForm. -->
+		<form-bean name="stockListForm"
+			type="com.integrosys.cms.ui.feed.stock.list.StockListForm" />
+
+		<!-- Stock item ActionForm. -->
+		<form-bean name="stockItemForm"
+			type="com.integrosys.cms.ui.feed.stock.item.StockItemForm" />
+
+		<!-- Unit trust list ActionForm. -->
+		<form-bean name="unitTrustListForm"
+			type="com.integrosys.cms.ui.feed.unittrust.list.UnitTrustListForm" />
+
+		<!-- Unit trust item ActionForm. -->
+		<form-bean name="unitTrustItemForm"
+			type="com.integrosys.cms.ui.feed.unittrust.item.UnitTrustItemForm" />
+
+		<!-- Stock indexlist ActionForm. -->
+		<form-bean name="stockIndexListForm"
+			type="com.integrosys.cms.ui.feed.stockindex.list.StockIndexListForm" />
+
+		<!-- Stock index item ActionForm. -->
+		<form-bean name="stockIndexItemForm"
+			type="com.integrosys.cms.ui.feed.stockindex.item.StockIndexItemForm" />
+		<!-- Property indexlist ActionForm. -->
+		<form-bean name="propertyIndexListForm"
+			type="com.integrosys.cms.ui.feed.propertyindex.list.PropertyIndexListForm" />
+
+		<!-- Property index item ActionForm. -->
+		<form-bean name="propertyIndexItemForm"
+			type="com.integrosys.cms.ui.feed.propertyindex.item.PropertyIndexItemForm" />
+			
+			
+		<!-- Mutual Funds list ActionForm. -->
+		<form-bean name="mutualFundsListForm"
+			type="com.integrosys.cms.ui.feed.mutualfunds.list.MutualFundsListForm" />
+
+		<!-- MutualFunds item ActionForm. -->
+		<form-bean name="mutualFundsItemForm"
+			type="com.integrosys.cms.ui.feed.mutualfunds.item.MutualFundsItemForm" />
+
+	</form-beans>
+
+	<action-mappings
+		type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+		<!-- Exchange Rate list Action. -->
+		<action path="/feed_exchange_rate_list"
+			type="com.integrosys.cms.ui.feed.exchangerate.list.ExchangeRateListAction"
+			name="exchangeRateListForm" validate="false" scope="request">
+
+			<forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/exchange_rate/list/list.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="add"
+				path="/feed_exchange_rate_item.do?event=prepare" />
+			<forward name="save" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="submit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="list2ForChecker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/exchange_rate/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="list2ForMaker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/exchange_rate/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="workInProgress"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/exchange_rate/list/view.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.exchange.rate" />
+			</forward>
+		</action>
+		<!-- Exchange rate item Action. -->
+		<action path="/feed_exchange_rate_item"
+			type="com.integrosys.cms.ui.feed.exchangerate.item.ExchangeRateItemAction"
+			name="exchangeRateItemForm" validate="false" scope="request">
+
+			<forward name="prepare"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/exchange_rate/item/prepare.jsp" />
+				<set-property property="title" value="title.manual.update.feed.exchange.rate" />
+			</forward>
+			<forward name="save"
+				path="/feed_exchange_rate_list.do?event=listStaging" />
+				
+				<!-- -File Upload -->
+				<forward name="prepare_upload_exchangeRateItem_page" path="/template/common_template.jsp">
+					 <set-property property="rightFrame" value="/feed/exchange_rate/item/maker_upload_exchangeRateItem.jsp"/>
+					 <set-property property="title" value="title.manual.update.feed.exchange.rate" />
+ 				</forward>
+				<forward name="maker_view_insert_todo_page" path="/template/common_template.jsp">
+               		 <set-property property="rightFrame" value="/feed/exchange_rate/item/maker_view_insert_todo_exchangeRateItem.jsp"/>
+                	 <set-property property="title" value="title.manual.update.feed.exchange.rate" />
+           	    </forward>
+             	<forward name="checker_exchangeRateItem_insert_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/exchange_rate/item/checker_exchangeRateItem_insert.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.exchange.rate" />
+            	</forward>
+             	<forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/exchange_rate/item/maker_insert_close_exchangeRateItem.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.exchange.rate" />
+            	</forward>
+            	<forward name="maker_fileupload_exchangeRateItem_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/exchange_rate/item/maker_fileupload_exchangeRateItem.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.exchange.rate" />
+            	</forward>
+            	<forward name="common_reject_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.exchange.rate" />
+            	</forward>
+            	<forward name="common_close_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.exchange.rate" />
+            	</forward>
+             	<forward name="common_approve_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.exchange.rate" />
+            	</forward>
+            	<forward name="common_submit_page" path="/template/common_template.jsp">
+					<set-property property="rightFrame" value="/common/ack_submit.jsp" />
+					<set-property property="title" value="title.manual.update.feed.exchange.rate" />
+			</forward>
+            <!-- End File Upload -->
+
+		</action>
+		
+		
+		
+		
+		
+
+		<!-- Gold List Action -->
+		<action path="/feed_gold_list"
+			type="com.integrosys.cms.ui.feed.gold.list.GoldListAction"
+			name="goldListForm" validate="false" scope="request">
+
+			<forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/gold/list/list.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="add" path="/feed_gold_item.do?event=prepare" />
+			<forward name="save" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="submit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="workInProgress"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="list2ForChecker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/gold/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="list2ForMaker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/gold/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/gold/list/view.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+		</action>
+		
+		<!-- Gold Item Action -->
+		<action path="/feed_gold_item"
+			type="com.integrosys.cms.ui.feed.gold.item.GoldItemAction"
+			name="goldItemForm" validate="false" scope="request">
+
+			<forward name="prepare"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/gold/item/prepare.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.gold" />
+			</forward>
+			<forward name="save"
+				path="/feed_gold_list.do?event=listStaging" />
+		</action>
+
+		<!-- Bond list Action. -->
+		<action path="/feed_bond_list"
+			type="com.integrosys.cms.ui.feed.bond.list.BondListAction"
+			name="bondListForm" validate="false" scope="request">
+
+			<forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/bond/list/list.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="add" path="/feed_bond_item.do?event=prepare" />
+			<forward name="save" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="submit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="list2ForChecker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/bond/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="list2ForMaker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/bond/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="workInProgress"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/bond/list/view.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+		</action>
+		<!-- Bond item Action. -->
+		<action path="/feed_bond_item"
+			type="com.integrosys.cms.ui.feed.bond.item.BondItemAction"
+			name="bondItemForm" validate="false" scope="request">
+
+			<forward name="prepare"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/bond/item/prepare.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.bond" />
+			</forward>
+			<forward name="save"
+				path="/feed_bond_list.do?event=listStaging" />
+				
+				
+			<!-- -File Upload -->
+				<forward name="prepare_upload_bondItem_page" path="/template/common_template.jsp">
+					 <set-property property="rightFrame" value="/feed/bond/item/maker_upload_bondItem.jsp"/>
+					 <set-property property="title" value="title.manual.update.feed.bond" />
+ 				</forward>
+				<forward name="maker_view_insert_todo_page" path="/template/common_template.jsp">
+               		 <set-property property="rightFrame" value="/feed/bond/item/maker_view_insert_todo_bondItem.jsp"/>
+                	 <set-property property="title" value="title.manual.update.feed.bond" />
+           	    </forward>
+             	<forward name="checker_bondItem_insert_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/bond/item/checker_bondItem_insert.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.bond" />
+            	</forward>
+             	<forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/bond/item/maker_insert_close_bondItem.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.bond" />
+            	</forward>
+            	<forward name="maker_fileupload_bondItem_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/bond/item/maker_fileupload_bondItem.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.bond" />
+            	</forward>
+            	<forward name="common_reject_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.bond" />
+            	</forward>
+            	<forward name="common_close_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.bond" />
+            	</forward>
+             	<forward name="common_approve_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.bond" />
+            	</forward>
+            	<forward name="common_submit_page" path="/template/common_template.jsp">
+					<set-property property="rightFrame" value="/common/ack_submit.jsp" />
+					<set-property property="title" value="title.manual.update.feed.bond" />
+				</forward>
+            <!-- End File Upload -->			
+
+		</action>
+
+
+
+
+		<!-- Stock list Action. -->
+		<action path="/feed_stock_list"
+			type="com.integrosys.cms.ui.feed.stock.list.StockListAction"
+			name="stockListForm" validate="false" scope="request">
+			
+			<forward name="selectMarketableInstrument"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock/list/MarketableInstrument.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+              <forward name="checkerSelectMarketableInstrument"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock/list/checkerMarketableInstrument.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>			
+						
+			<forward name="select"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock/list/select.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock/list/list.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="add"
+				path="/feed_stock_item.do?event=prepare" />
+			<forward name="save" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="submit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="list2ForChecker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="list2ForMaker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="workInProgress"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock/list/view.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+		</action>
+
+		<!-- Stock item Action. -->
+		<action path="/feed_stock_item"
+			type="com.integrosys.cms.ui.feed.stock.item.StockItemAction"
+			name="stockItemForm" validate="false" scope="request">
+
+			<forward name="prepare"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock/item/prepare.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock" />
+			</forward>
+			<forward name="save"
+				path="/feed_stock_list.do?event=listStaging" />
+				
+				<!-- -File Upload -->
+				<forward name="prepare_upload_stockItem_page" path="/template/common_template.jsp">
+					 <set-property property="rightFrame" value="/feed/stock/item/maker_upload_stockItem.jsp"/>
+					 <set-property property="title" value="title.manual.update.feed.stock" />
+ 				</forward>
+				<forward name="maker_view_insert_todo_page" path="/template/common_template.jsp">
+               		 <set-property property="rightFrame" value="/feed/stock/item/maker_view_insert_todo_stockItem.jsp"/>
+                	 <set-property property="title" value="title.manual.update.feed.stock" />
+           	    </forward>
+             	<forward name="checker_stockItem_insert_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/stock/item/checker_stockItem_insert.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.stock" />
+            	</forward>
+             	<forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/stock/item/maker_insert_close_stockItem.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.stock" />
+            	</forward>
+            	<forward name="maker_fileupload_stockItem_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/stock/item/maker_fileupload_stockItem.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.stock" />
+            	</forward>
+            	<forward name="common_reject_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.stock" />
+            	</forward>
+            	<forward name="common_close_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.stock" />
+            	</forward>
+             	<forward name="common_approve_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.stock" />
+            	</forward>
+            	<forward name="common_submit_page" path="/template/common_template.jsp">
+					<set-property property="rightFrame" value="/common/ack_submit.jsp" />
+					<set-property property="title" value="title.manual.update.feed.stock" />
+				</forward>
+            <!-- End File Upload -->	
+
+		</action>
+		<!-- Unit trust list Action. -->
+		<action path="/feed_unit_trust_list"
+			type="com.integrosys.cms.ui.feed.unittrust.list.UnitTrustListAction"
+			name="unitTrustListForm" validate="false" scope="request">
+
+			<forward name="select"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/unit_trust/list/select.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/unit_trust/list/list.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="add"
+				path="/feed_unit_trust_item.do?event=prepare" />
+			<forward name="edit_feed"
+				path="/feed_unit_trust_item.do?event=prepare_edit" />
+			<forward name="save" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="submit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="list2ForChecker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/unit_trust/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="list2ForMaker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/unit_trust/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="workInProgress"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/unit_trust/list/view.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+		</action>
+
+		<!-- Unit trust item Action. -->
+		<action path="/feed_unit_trust_item"
+			type="com.integrosys.cms.ui.feed.unittrust.item.UnitTrustItemAction"
+			name="unitTrustItemForm" validate="false" scope="request">
+
+			<forward name="prepare"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/unit_trust/item/prepare.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="prepare_edit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/unit_trust/item/prepare.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.unit.trust" />
+			</forward>
+			<forward name="save"
+				path="/feed_unit_trust_list.do?event=listStaging" />
+
+		</action>
+
+
+		<!-- Stock index list Action. -->
+		<action path="/feed_stock_index_list"
+			type="com.integrosys.cms.ui.feed.stockindex.list.StockIndexListAction"
+			name="stockIndexListForm" validate="false" scope="request">
+
+			<forward name="select"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock_index/list/select.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock_index/list/list.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="add"
+				path="/feed_stock_index_item.do?event=prepare" />
+			<forward name="save" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="submit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="list2ForChecker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock_index/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="list2ForMaker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock_index/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="workInProgress"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock_index/list/view.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+		</action>
+
+		<!-- Stock index item Action. -->
+		<action path="/feed_stock_index_item"
+			type="com.integrosys.cms.ui.feed.stockindex.item.StockIndexItemAction"
+			name="stockIndexItemForm" validate="false" scope="request">
+
+			<forward name="prepare"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/stock_index/item/prepare.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.stock.index" />
+			</forward>
+			<forward name="save"
+				path="/feed_stock_index_list.do?event=listStaging" />
+
+		</action>
+
+		<!-- Property index list Action. -->
+		<action path="/feed_property_index_list"
+			type="com.integrosys.cms.ui.feed.propertyindex.list.PropertyIndexListAction"
+			name="propertyIndexListForm" validate="false" scope="request">
+
+			<forward name="select"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/property_index/list/select.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/property_index/list/list.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="add"
+				path="/feed_property_index_item.do?event=prepare" />
+			<forward name="save" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="submit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="list2ForChecker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/property_index/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="list2ForMaker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/property_index/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="workInProgress"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/property_index/list/view.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+		</action>
+
+		<!-- Property index item Action. -->
+		<action path="/feed_property_index_item"
+			type="com.integrosys.cms.ui.feed.propertyindex.item.PropertyIndexItemAction"
+			name="propertyIndexItemForm" validate="false" scope="request">
+
+			<forward name="prepare"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/property_index/item/prepare.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.property.index" />
+			</forward>
+			<!-- note that offset and length below will have no real effect. -->
+			<forward name="save"
+				path="/feed_property_index_list.do?event=listStaging" />
+			<forward name="cancel"
+				path="/feed_property_index_list.do?event=listStaging" />
+
+		</action>
+		
+		<!-- Mutual Funds List Action -->
+		
+		<action path="/feed_mutual_funds_list"
+			type="com.integrosys.cms.ui.feed.mutualfunds.list.MutualFundsListAction"
+			name="mutualFundsListForm" validate="false" scope="request">
+
+			<forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/mutual_funds/list/list.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="add" path="/feed_mutual_funds_item.do?event=prepare" />
+			<forward name="save" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="submit"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="list2ForChecker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/mutual_funds/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="list2ForMaker"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/mutual_funds/list/list2.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="workInProgress"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/mutual_funds/list/view.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+		</action>
+		<!-- MutualFunds item Action. -->
+		<action path="/feed_mutual_funds_item"
+			type="com.integrosys.cms.ui.feed.mutualfunds.item.MutualFundsItemAction"
+			name="mutualFundsItemForm" validate="false" scope="request">
+
+			<forward name="prepare"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/feed/mutual_funds/item/prepare.jsp" />
+				<set-property property="title"
+					value="title.manual.update.feed.mutualfunds" />
+			</forward>
+			<forward name="save"
+				path="/feed_mutual_funds_list.do?event=listStaging" />
+				<!-- File Upload (mutualfunds)-->
+				<forward name="prepare_upload_mutualfundsItem_page" path="/template/common_template.jsp">
+					 <set-property property="rightFrame" value="/feed/mutual_funds/item/maker_upload_mutualfundsItem.jsp"/>
+					 <set-property property="title" value="title.manual.update.feed.mutualfunds" />
+ 				</forward>
+				<forward name="maker_view_insert_todo_page" path="/template/common_template.jsp">
+               		 <set-property property="rightFrame" value="/feed/mutual_funds/item/maker_view_insert_todo_mutualfundsItem.jsp"/>
+                	 <set-property property="title" value="title.manual.update.feed.mutualfunds" />
+           	    </forward>
+             	<forward name="checker_mutualfundsItem_insert_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/mutual_funds/item/checker_mutualfundsItem_insert.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.mutualfunds" />
+            	</forward>
+             	<forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/mutual_funds/item/maker_insert_close_mutualfundsItem.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.mutualfunds" />
+            	</forward>
+            	<forward name="maker_fileupload_mutualfundsItem_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/feed/mutual_funds/item/maker_fileupload_mutualfundsItem.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.mutualfunds" />
+            	</forward>
+            	<forward name="common_reject_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.mutualfunds" />
+            	</forward>
+            	<forward name="common_close_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.mutualfunds" />
+            	</forward>
+             	<forward name="common_approve_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                	<set-property property="title" value="title.manual.update.feed.mutualfunds" />
+            	</forward>
+            	<forward name="common_submit_page" path="/template/common_template.jsp">
+					<set-property property="rightFrame" value="/common/ack_submit.jsp" />
+					<set-property property="title" value="title.manual.update.feed.mutualfunds" />
+				</forward>
+            <!-- End File Upload (mutualfunds)-->	
+
+		</action>		
+		
+	</action-mappings>
+
+	<message-resources key="message-manualfeeds"
+		parameter="ApplicationResources-manualfeeds" />
+
+	<!-- <controller>
+		<set-property property="processorClass" value="org.springframework.web.struts.DelegatingRequestProcessor"/>
+		</controller> -->
+
+	<!--<message-resources parameter="ApplicationResources-manualfeeds"/>-->
+	<!-- 
+		<plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation" value="/WEB-INF/context/action-manualfeeds-servlet.xml"/>
+		</plug-in>
+		=======
+		<message-resources key="message-manualfeeds" parameter="ApplicationResources-manualfeeds"/>
+		
+	-->
+</struts-config>

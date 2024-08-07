@@ -1,0 +1,1182 @@
+ <!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.host.eai.limit.bus">
+  <class entity-name="actualFacMaster" name="FacilityMaster" table="CMS_FACILITY_MASTER" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FACILITY_MASTER_SEQ</param>
+  		</generator>
+  	</id>
+
+	<property name="limitID" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+	<property name="ACFNo" column="ACF_NO"  />
+  	<component name="productPackageCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="PROD_PACKAGE_CODE_NUM" />
+    	<property name="standardCodeValue" column="PROD_PACKAGE_CODE_VALUE" />
+    </component>
+    
+  	<component name="applicationSource" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="APPL_SRC_CODE_NUM" />
+    	<property name="standardCodeValue" column="APPL_SRC_CODE_VALUE" />
+    </component>
+    
+   	<component name="dealerLPPCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DEALER_NUM_LPP_CODE_NUM" />
+    	<property name="standardCodeValue" column="DEALER_NUM_LPP_CODE_VALUE" />
+    </component>   
+    
+    <property name="JDOInstructedDate" column="DATE_INSTRUCTED" type="timestamp" />
+    <property name="alternateRate" column="ALT_RATE"  />
+    
+    <component name="departmentCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DEPARTMENT_CODE_NUM" />
+    	<property name="standardCodeValue" column="DEPARTMENT_CODE_VALUE" />
+    </component> 
+    
+    <property name="solicitorName" column="SOLICITOR_NAME" />
+    
+    <component name="lawyerCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LAWYER_CODE_NUM"/>
+    	<property name="standardCodeValue" column="LAWYER_CODE_VALUE" />
+    </component>     
+    
+    <property name="odExcessRateVar" type="double"  >
+    	<column name="OD_EXCESS_RATE_VAR" default="0" />
+    </property>
+	<property name="odExcessRateVarCode" column="OD_EXCESS_RATE_VAR_CODE"  />
+	<property name="mainFacilityInd" column="MAIN_FACILITY_IND"  />
+	<property name="mainFacilityAANo" column="MAIN_FACILITY_AA_NUM"  />
+	<property name="mainFacilityCode" column="MAIN_FACILITY_CODE" />
+	<property name="mainFacilitySequenceNumber" column="MAIN_FACILITY_SEQ" type="long" />
+	<property name="standbyLine" column="STANDBY_LINE"  />
+	<property name="altSchedule" column="ALT_SCHEDULE" type="yes_no" />
+  	<property name="floorPledgeLimit" column="FLOOR_PLEDGED_LIMIT" type="double" />
+  	<property name="availPeriodInDays" column="AVAIL_PERIOD_DAY" type="integer" />
+	<property name="availPeriodInMonths" column="AVAIL_PERIOD_MONTH" type="integer" />
+	<property name="calFirstInstlDate" column="CAL_FIRST_INSTL_DATE"  />
+	<property name="creditLineIndicator" column="CREDIT_LINE_IND"  />
+	<property name="level" column="LEVEL" type="integer" />
+	<property name="parValueShares" column="PAR_VALUE_SHARES"  />
+	<property name="retentionPeriodCode" column="RETENTION_PERIOD_CODE"  />
+	<property name="standbyLineFacCode"  column="STANDBY_LINE_FAC_CODE"  type="java.lang.String"/>
+	<property name="standbyLineFacCodeSeq" column="STANDBY_LINE_FAC_SEQ"  type="integer" />
+	<property name="revolvingInd"  column="REVOLVING_IND"  />
+	<property name="revOSBalOrgAmt" column="REVOLVING_ON_CRITERIA_IND"   />
+	<property name="retentionSum" column="RETENTION_SUM" type="double" />
+	<property name="retentionPeriod" column="RETENTION_PERIOD" type="integer" />
+	<property name="JDODateApproveCGCBNM" column="CGC_BNM_APPROVED_DATE" type="timestamp" />
+	<property name="effectiveCostOfFund" column="EFFECTIVE_COSE_OF_FUND"   />
+	<property name="ECOFAdminCost" column="ECOF_ADMIN_COST" type="double" />
+	<property name="ECOFRate"  column="ECOF_RATE" type="double" />
+	<property name="ECOFVariance" column="ECOF_VARIANCE"  type="double" />
+	<property name="ECOFVarianceCode" column="ECOF_VARIANCE_CODE"      />
+	<property name="JDOFacAvalDate" column="AVAIL_DATE"  type="timestamp" />
+	<property name="facAvalPeriod" column="AVAIL_PERIOD"  />
+	<property name="toBeCancelledInd" column="TO_BE_CANCELLED_IND" />
+
+    <component name="refinanceFromBank" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="REFINANCE_FROM_BANK_CODE_NUM"/>
+    	<property name="standardCodeValue" column="REFINANCE_FROM_BANK_CODE_VALUE" />
+    </component>
+		
+	
+	<component name="drawingAmount" class="com.integrosys.base.businfra.currency.Amount">
+		<property name="amountAsBigDecimal" column="CMS_DRAWING_LIMIT" type="big_decimal" />
+		<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+	</component>
+
+	<set name="officerSet"  cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="actualFacOfficer" 	 />
+	</set>
+
+	<set name="relationshipSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="actualFacRelationship" />
+	</set>
+	
+	<set name="facilityMultiTierFinancings" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="actualFacilityMultiTierFinancing" />
+	</set>
+	
+	<set name="facilityMessages" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="actualFacMessage" />
+	</set>
+
+	<set name="facilityIncrementals" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="actualFacIncremental" />
+	</set>
+
+	<set name="facilityReductions" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="actualFacReduction" />
+	</set>
+	
+	<join table="CMS_FAC_RENTAL_RENEWAL" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<component name="facilityIslamicRentalRenewal" class="FacilityIslamicRentalRenewal">
+		  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		  	<property name="renewalTerm" column="RENEWAL_TERM" />
+			<component name="renewalTermCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="RENEWAL_TERM_CODE_NUM" />
+		    	<property name="standardCodeValue" column="RENEWAL_TERM_CODE_VALUE" />
+		    </component>
+			<component name="primeRateNumber" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="PRIME_RATE_CODE_NUM" />
+		    	<property name="standardCodeValue" column="PRIME_RATE_CODE_VALUE" />
+		    </component>
+		  	<property name="renewalRate" column="RENEWAL_RATE" type="double" />
+		  	<property name="primeVariance" column="PRIME_VARIANCE" type="double" />
+		  	<property name="primeVarianceCode" column="PRIME_VARIANCE_CODE" />
+			<property name="status" column="STATUS" />
+		</component>
+	</join>
+
+	<join table="CMS_FAC_SECURITY_DEPOSIT" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<component name="facilityIslamicSecurityDeposit" class="FacilityIslamicSecurityDeposit">
+		  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		  	<property name="numberOfMonth" column="NUM_OF_MONTH" type="integer" />
+		  	<property name="securityDeposit" column="SECURITY_DEPOSIT" type="double" />
+		  	<property name="fixSecurityDepositAmount" column="FIX_SECURITY_DEPOSIT_AMOUNT" type="double" />
+		  	<property name="originalSecurityDepositAmount" column="ORIG_SECURITY_DEPOSIT_AMOUNT" type="double" />
+			<property name="status" column="STATUS" />
+		</component>
+	</join>
+
+	<join table="CMS_FAC_GENERAL" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+	  	<property name="financedAmt" column="FINANCED_AMOUNT"   type="double" />
+		<property name="facilityCurrencyCode" column="CURRENCY_CODE" type="java.lang.String"/>
+		<property  name="facilityStatusCategoryCode" column="FAC_STATUS_CODE_NUM" type="java.lang.String" />
+		<property name="facilityStatusEntryCode" column="FAC_STATUS_CODE_VALUE" type="java.lang.String" /> 
+	  	<property name="installmentAmt"  column="INSTALLMENT_AMOUNT"   type="double" />
+	  	
+		<component name="loanPurposeCode" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="LOAN_PURPOSE_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="LOAN_PURPOSE_CODE_VALUE" />
+	    </component> 
+
+	  	<property name="JDOOfferAcceptedDate" column="OFFER_ACCEPTED_DATE" type="timestamp" />
+	  	<property name="JDOOfferDate" column="OFFER_DATE" type="timestamp" />
+	  	
+	  	<component name="approvedBy" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="PERSON_APPROVED_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="PERSON_APPROVED_CODE_VALUE" />
+	    </component> 
+	    <property name="JDOApproveDate" column="APPROVED_DATE" type="timestamp" />
+	    
+	    <component name="cancelRejectCode" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="CANCEL_REJECT_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="CANCEL_REJECT_CODE_VALUE" />
+	    </component> 
+	  	<property name="JDOCancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+	  	
+	    <component name="officer" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="OFFICER_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="OFFICER_CODE_VALUE" />
+	    </component> 
+	    
+	    <component name="limitStatus" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="LMT_STATUS_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="LMT_STATUS_CODE_VALUE" />
+	    </component>
+	     
+     	<property name="JDOApplicationDate" column="APPLICATION_DATE" type="timestamp" />
+     	<property name="finalPaymentAmt" column="FINAL_PAYMENT" type="double" />
+     	<property name="approvedAmount" column="APPROVED_AMOUNT" type="double" />
+
+		<property name="term" column="TERM" type="long" />
+	    <component name="termCode" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="TERM_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="TERM_CODE_VALUE" />
+	    </component> 
+     	
+	</join>
+
+	<join table="CMS_FAC_BNM_CODES" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<component name="facilityBnmCodes" class="FacilityBNM">
+		
+			<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		
+			 <component name="BNMIndustryCode" class="com.integrosys.cms.host.eai.StandardCode">
+			    	<property name="standardCodeNumber" column="INDUSTRY_CODE_NUM"/>
+			    	<property name="standardCodeValue" column="INDUSTRY_CODE_VALUE" />
+		    </component>
+		    	
+		     <component name="BNMSectorCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="SECTOR_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="SECTOR_CODE_VALUE" />
+		    </component>
+		    	
+		     <component name="BNMStateCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="STATE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="STATE_CODE_VALUE" />
+		    </component>	
+		    
+		     <component name="BNMBumiNRCCCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="BUMI_NRCC_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="BUMI_NRCC_CODE_VALUE" />
+		    </component>	
+		    
+		     <component name="BNMPrescribedRateCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="PRESCRIBED_RATE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="PRESCRIBED_RATE_CODE_VALUE" />
+		    </component>	
+		    <component name="BNMSmallScaleCode" class="com.integrosys.cms.host.eai.StandardCode">
+				<property name="standardCodeNumber" column="SMALL_SCALE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="SMALL_SCALE_CODE_VALUE" />
+		    </component>	
+		     <component name="BNMRelationshipCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="RELATIONSHIP_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="RELATIONSHIP_CODE_VALUE" />
+		    </component>	
+		    
+		    <property name="BNMExempt" column="EXEMPTED_CODE_IND"/>
+	
+		     <component name="BNMExemptCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="EXEMPTED_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="EXEMPTED_CODE_VALUE" />
+		    </component>
+		    
+		    <component name="BNMPurposeCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="PURPOSE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="PURPOSE_CODE_VALUE" />
+		    </component>
+		    
+   		     <component name="BNMGoodFinancedCd1" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="GOODS_FINANCED_ONE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="GOODS_FINANCED_ONE_CODE_VALUE" />
+		    </component>
+		    
+   		     <component name="BNMGoodFinancedCd2" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="GOODS_FINANCED_TWO_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="GOODS_FINANCED_TWO_CODE_VALUE" />
+		    </component>
+		    
+   		     <component name="baselSAFinalised" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="BASEL_SA_FINALISED_NUM"/>
+		    	<property name="standardCodeValue" column="BASEL_SA_FINALISED_VALUE" />
+		    </component>
+		    
+   		     <component name="baselIRB" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="BASEL_IRB_NUM"/>
+		    	<property name="standardCodeValue" column="BASEL_IRB_VALUE" />
+		    </component>
+		    
+   		     <component name="baselSAConcept" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="BASEL_SA_CONCEPT_NUM"/>
+		    	<property name="standardCodeValue" column="BASEL_SA_CONCEPT_VALUE" />
+		    </component>
+		</component>
+	</join>
+
+	<join table="CMS_FAC_INTEREST" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+			<component name="rateType" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="INTEREST_TYPE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="INTEREST_TYPE_CODE_VALUE" />
+		    </component>
+		  	<property name="spread" column="SPREAD" type="double" />
+		  	<property name="spreadSign" column="SPREAD_SIGN" type="java.lang.String"  />
+		  	<property name="interestRate" column="INTEREST_RATE" type="double" />
+			
+			<property name="primeRateFloor" column="PRIME_RATE_FLOOR" type="double" />
+			<property name="primeRateCeiling" column="PRIME_RATE_CEILING" type="double" />
+			<property name="JDOPrimeReviewDate" column="PRIME_REVIEW_DATE"  type="timestamp" />
+			<property name="primeReviewTerm" column="PRIME_REVIEW_TERM"  type="integer" />
+		    <component name="primeReviewTermCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="PRIME_REVIEW_TERM_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="PRIME_REVIEW_TERM_CODE_VALUE" />
+		    </component>
+		    <property name="JDONextReviewDate" column="NEXT_REVIEW_DATE"  type="timestamp" />
+			<property name="nextReviewTerm" column="NEXT_REVIEW_TERM"  type="integer" />
+		    <component name="nextReviewTermCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="NEXT_REVIEW_TERM_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="NEXT_REVIEW_TERM_CODE_VALUE" />
+		    </component>
+		  	
+	</join>
+	
+	<join table="CMS_FAC_ISLAMIC_MASTER" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+			<component name="islamicFacilityMaster" class="IslamicFacilityMaster">
+				<property name="GPPTerm" column="GPP_TERM"  type="integer" />
+				<property name="GPPTermCode" column="GPP_TERM_CODE"  type="java.lang.String" />
+				<property name="GPPPaymentMode" column="GPP_PAYMENT_MODE_VALUE"  type="java.lang.String" />
+				<property name="customerInterestRate" column="CUSOTMER_INTEREST_RATE"  type="double" />
+				<property name="GPPCalcMethod" column="GPP_CALCULATION_MEHTOD_VALUE"  type="java.lang.String" />
+				<property name="compoundingMethod" column="COMPOUNDING_METHOD"  type="java.lang.String" />
+				<property name="JDODateStopCompounding" column="DATE_STOP_COMPOUNDING"  type="timestamp" />
+				<property name="fulrelProfitCalMehod" column="FULREL_PROFIC_CALC_METHOD"  type="java.lang.String" />
+				<property name="refundGppProfit" column="REFUND_GPP_PROFIT_VALUE"  type="java.lang.String" />
+				<property name="refundFulRelProfit" column="REFUND_FULREL_PROFIT_VALUE"  type="java.lang.String" />
+				<property name="excCMPInPMTAMT" column="EXC_CMP_IN_PMT_AMT"  type="java.lang.String" />
+				<property name="sellingPrice" column="SELLING_PRICE"  type="double" />
+				<property name="totalGPPAmt" column="TOTAL_GPP_AMT"  type="double" />
+				<property name="currencyCode" column="CURRENCY_CODE"  type="java.lang.String" />
+			</component>
+	</join>
+	
+	<join table="CMS_FAC_BBA_VARI_PACKAGE" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityBBAVariPackage" class="FacilityBBAVariPackage">
+				<property name="CustProfRate" column="CUST_PROF_RATE" type="double" />
+				<property name="RebateMethod" column="REBATE_METHOD" type="java.lang.String" />
+				<property name="GPPPaymentMode" column="GPP_PAYMENT_MODE" type="java.lang.String" />
+				<property name="GPPCalcMethod" column="GPP_CAL_METHOD" type="java.lang.String" />
+				<property name="GPPTerm" column="GPP_TERM" type="integer" />
+				<property name="GPPTermCode" column="GPP_TERM_CODE" type="java.lang.String" />
+				<property name="FullReleaseProfit" column="FULL_RELEASE_PROFIT" type="java.lang.String" />
+				<property name="RefundFullReleaseProfit" column="REFUND_FULL_RELEASE_PROFIT" type="java.lang.String" />
+				<property name="FullReleaseProfitCalcMethod" column="FUL_REL_PROFIT_CAL_METHOD" type="java.lang.String" />
+				<property name="Installment" column="INSTALLMENT" type="double" />
+				<property name="FinalPaymentAmt" column="FINAL_PAYMENT_AMT" type="double" />
+				<property name="sellingPrice" column="SELLING_PRICE" type="double" />
+     			<property name="totalProfit" column="TOTAL_PROFIT" type="double" />
+     			<property name="totalGPPAmt" column="TOTAL_GPP_AMT" type="double" />
+			</component>
+	</join>	
+	
+	<join table="CMS_FAC_FEE_CHARGE" optional ="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<property name="handlingFee" column="HANDLING_FEES" type="double" />
+		
+		<property name="commissionFees" column="COMMISSION_FEES" type="double" />
+		<property name="commissionRate" column="COMMISSION_RATE"  type="double" />
+	    <component name="commissionBasis" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="COMMISSION_BASIS_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="COMMISSION_BASIS_CODE_VALUE" />
+	    </component>		
+		<property name="subsidyAmt" column="SUBSIDY_AMOUNT"  type="double" />
+		<property name="othersFee"  column="OTHERS_FEE" type="double" />
+		<property name="maximumCommission" column="MAX_COMSSN_AMOUNT"  type="double" />
+		<property name="minimumCommission" column="MIN_COMSSN_AMOUNT"  type="double" />
+	</join>
+
+  </class>
+
+  <class entity-name="actualFacOfficer" name="FacilityOfficer" table="CMS_FAC_OFFICER" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_OFFICER_SEQ</param>
+  		</generator>
+  	</id>
+
+  	<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long"  />
+  	<!-- <property name="CMSOfficerId" column="CMS_REF_ID" type="long" insert="false" update="false" /> -->
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="status" column="STATUS" />
+  	
+	<component name="relationshipCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="RELATIONSHIP_CODE_NUM"/>
+    	<property name="standardCodeValue" column="RELATIONSHIP_CODE_VALUE" />
+    </component>
+    
+	<component name="officer" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="OFFICER_CODE_NUM"/>
+    	<property name="standardCodeValue" column="OFFICER_CODE_VALUE" />
+    </component>
+    
+	<component name="officerType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="OFFICER_TYPE_CODE_NUM"/>
+    	<property name="standardCodeValue" column="OFFICER_TYPE_CODE_VALUE" />
+    </component>
+    
+  </class>
+  
+  <class entity-name="actualFacRelationship" name="FacilityRelationship" table="CMS_FAC_RELATIONSHIP" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_RELATIONSHIP_SEQ</param>
+  		</generator>
+  	</id>
+
+  	<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long"  />
+  	<!-- <property name="CMSFacilityRelationshipID" column="CMS_REF_ID" type="long" insert="false" update="false" /> -->
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="CIFId" column="CIF_NUMBER" />
+	<property name="status" column="STATUS" />
+  		
+  	<component name="accountRelationship" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="ACCT_RELATIONSHIP_CODE_NUM"/>
+    	<property name="standardCodeValue" column="ACCT_RELATIONSHIP_CODE_VALUE" />
+    </component>
+    <property name="currencyCode" column="CURRENCY_CODE" />
+    <property name="GuaranteeAmt" column="GUARANTEE_AMOUNT" type="double" />
+    <property name="GuaranteePercentage" column="GUARANTEE_PERCENTAGE" type="double" />
+  <!-- <component name="GuaranteeAmt" class="">
+  		<property name="amountAsBigDecimal" column="GUARANTEE_AMOUNT" />
+  		<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false"/>
+  	</component>
+  	 -->
+    <property name="addressSeqNum" column="HOST_ADD_SEQ_NUM" type="long" />
+    <property name="customerName" column="CUSTOMER_NAME" />
+    <property name="mainProfileID" column="CMS_LE_MAIN_PROFILE_ID" type="long" />
+    
+   	<property name="shareHolderPercentage" column="SHARE_HOLDER_PERCENTAGE"  type="double" />
+	<property name="receiveMailCode"  column="RECEIVE_MAIL_CODE"      />
+  	<component name="holdMailCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="HOLD_MAIN_CODE_NUM" />
+    	<property name="standardCodeValue" column="HOLD_MAIN_CODE_VALUE" />
+    </component>
+	<property name="nameAssociatedWFacOrder" column="NAME_ASSOC_WITH_FAC_ORDER"  type="integer" />
+	<property name="nameConjunctionPosition" column="NAME_CONJUNCTION_POSITION"      />
+	<property name="nameConjunction" column="NAME_CONJUNCTION" />
+	<property name="profitRatio" column="PROFIT_RATIO"  type="double" />
+	<property name="dividendRatio" column="DIVIDEND_RATIO"  type="double" />
+   
+  </class>
+  
+  <class entity-name="actualFacilityMultiTierFinancing" name="FacilityMultiTierFinancing" table="CMS_FAC_MULTI_TIER_FINANCING" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_MULTI_TIER_SEQ</param>
+  		</generator>
+  	</id>
+  	<property name="refID" column="CMS_REF_ID" type="long" />
+  	<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<property name="tierTerm" column="TIER_TERM" type="integer"  />
+  	<property name="tierSeqNo" column="TIER_SEQ_NO" type="integer" />
+	<component name="tierTermCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="PROD_PACKAGE_CODE_NUM" /> -->
+    	<property name="standardCodeValue" column="TIER_TERM_CODE" />
+    </component>
+  	<property name="rate" column="RATE" type="double" />
+  	<property name="gppIndicator" column="GRACE_PERIOD" />
+  	<property name="newPaymentAmt" column="PAYMENT_AMOUNT" type="double" />	
+	<property name="status" column="STATUS" />
+  </class>
+  
+  <class entity-name="actualFacMessage" name="FacilityMessage" table="CMS_FAC_MESSAGE" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_MSG_SEQ</param>
+  		</generator>
+  	</id>
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<property name="message" column="MESSAGE" />
+	<component name="messageTypeCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="MSG_TYPE_CODE_NUM" />
+    	<property name="standardCodeValue" column="MSG_TYPE_CODE_VALUE" />
+    </component>
+	<component name="messageSeverityCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="MSG_SEVERITY_CODE_NUM" />
+    	<property name="standardCodeValue" column="MSG_SEVERITY_CODE_VALUE" />
+    </component>
+  	<property name="expirationDate" column="EXPIRATION_DATE" type="timestamp" />
+  	<property name="sequenceNumber" column="SEQ_NO" type="long" />
+	<property name="status" column="STATUS" />
+  </class>
+  
+  <class entity-name="actualFacIncremental" name="FacilityIncremental" table="CMS_FAC_INCREMENTAL" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_INCREMENTAL_SEQ</param>
+  		</generator>
+  	</id>
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<property name="incrementalNumber" column="INCREMENTAL_NUMBER" type="integer" />
+  	<property name="amountApplied" column="AMOUNT_APPLIED" type="double" />
+  	<property name="incrementalLimit" column="INCREMENTAL_LIMIT" type="double" />
+  	<property name="originalLimit" column="ORIGINAL_LIMIT" type="double" />
+  	<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+
+	<component name="loanPurposeCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LOAN_PURPOSE_CODE_NUM" />
+    	<property name="standardCodeValue" column="LOAN_PURPOSE_CODE_VALUE" />
+    </component>
+
+  	<property name="dateOfOffer" column="DATE_OF_OFFER" type="timestamp" />
+  	<property name="dateOfferAccepted" column="DATE_OFFER_ACCEPTED" type="timestamp" />
+  	<property name="dateApproved" column="DATE_APPROVED" type="timestamp" />
+  	
+	<component name="approvedBy" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="PERSON_APPROVED_CODE_NUM" />
+    	<property name="standardCodeValue" column="PERSON_APPROVED_CODE_VALUE" />
+    </component>
+    
+	<component name="cancelRejectCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="CANCEL_REJECT_CODE_NUM" />
+    	<property name="standardCodeValue" column="CANCEL_REJECT_CODE_VALUE" />
+    </component>
+  	
+  	<property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+  	<property name="facilityStatusCategoryCode" column="FACILITY_STATUS_CODE_NUM" />
+  	<property name="facilityStatus" column="FACILITY_STATUS_CODE_VALUE" />
+
+	<component name="dealerLLPCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DEALER_LLP_CODE_NUM" />
+    	<property name="standardCodeValue" column="DEALER_LLP_CODE_VALUE" />
+    </component>
+
+  	<property name="solicitorName" column="SOLICITOR_NAME" />
+    
+	<component name="requestReason" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="REQUEST_REASON_CODE_NUM" />
+    	<property name="standardCodeValue" column="REQUEST_REASON_CODE_VALUE" />
+    </component>
+    
+	<component name="documentationStatus" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DOC_STATUS_CODE_NUM" />
+    	<property name="standardCodeValue" column="DOC_STATUS_CODE_VALUE" />
+    </component>
+    
+	<component name="lawyerCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LAWYER_CODE_NUM" />
+    	<property name="standardCodeValue" column="LAWYER_CODE_VALUE" />
+    </component>
+
+	<property name="status" column="STATUS" />
+  </class>
+
+  <class entity-name="actualFacReduction" name="FacilityReduction" table="CMS_FAC_REDUCTION" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_REDUCTION_SEQ</param>
+  		</generator>
+  	</id>
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<property name="incrementalNumber" column="INCREMENTAL_NUMBER" type="integer" />
+  	<property name="amountApplied" column="AMOUNT_APPLIED" type="double" />
+  	<property name="incrementalLimit" column="INCREMENTAL_LIMIT" type="double" />
+  	<property name="originalLimit" column="ORIGINAL_LIMIT" type="double" />
+  	<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+
+  	<property name="dateOfferAccepted" column="DATE_OFFER_ACCEPTED" type="timestamp" />
+  	<property name="dateApproved" column="DATE_APPROVED" type="timestamp" />
+  	
+	<component name="approvedBy" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="PERSON_APPROVED_CODE_NUM" />
+    	<property name="standardCodeValue" column="PERSON_APPROVED_CODE_VALUE" />
+    </component>
+    
+	<component name="cancelRejectCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="CANCEL_REJECT_CODE_NUM" />
+    	<property name="standardCodeValue" column="CANCEL_REJECT_CODE_VALUE" />
+    </component>
+  	
+  	<property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+  	<property name="facilityStatusCategoryCode" column="FACILITY_STATUS_CODE_NUM" />
+  	<property name="facilityStatus" column="FACILITY_STATUS_CODE_VALUE" />
+
+  	<property name="solicitorName" column="SOLICITOR_NAME" />
+    
+	<component name="requestReason" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="REQUEST_REASON_CODE_NUM" />
+    	<property name="standardCodeValue" column="REQUEST_REASON_CODE_VALUE" />
+    </component>
+    
+	<component name="documentationStatus" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DOC_STATUS_CODE_NUM" />
+    	<property name="standardCodeValue" column="DOC_STATUS_CODE_VALUE" />
+    </component>
+    
+	<component name="lawyerCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LAWYER_CODE_NUM" />
+    	<property name="standardCodeValue" column="LAWYER_CODE_VALUE" />
+    </component>
+
+	<property name="status" column="STATUS" />
+  </class>
+
+  <class entity-name="stageFacMaster" name="FacilityMaster" table="CMS_STG_FACILITY_MASTER" lazy="false">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FACILITY_MASTER_SEQ</param>
+  		</generator>
+  	</id>
+	<property name="limitID" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+	<property name="ACFNo" column="ACF_NO"  />
+  	<component name="productPackageCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="PROD_PACKAGE_CODE_NUM" />
+    	<property name="standardCodeValue" column="PROD_PACKAGE_CODE_VALUE" />
+    </component>
+    
+  	<component name="applicationSource" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="APPL_SRC_CODE_NUM" />
+    	<property name="standardCodeValue" column="APPL_SRC_CODE_VALUE" />
+    </component>
+    
+   	<component name="dealerLPPCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DEALER_NUM_LPP_CODE_NUM" />
+    	<property name="standardCodeValue" column="DEALER_NUM_LPP_CODE_VALUE" />
+    </component>   
+    
+    <property name="JDOInstructedDate" column="DATE_INSTRUCTED" type="timestamp" />
+    <property name="alternateRate" column="ALT_RATE"  />
+    
+    <component name="departmentCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DEPARTMENT_CODE_NUM" />
+    	<property name="standardCodeValue" column="DEPARTMENT_CODE_VALUE" />
+    </component> 
+    
+    <property name="solicitorName" column="SOLICITOR_NAME" />
+    
+    <component name="lawyerCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LAWYER_CODE_NUM"/>
+    	<property name="standardCodeValue" column="LAWYER_CODE_VALUE" />
+    </component>     
+    
+    <property name="odExcessRateVar" column="OD_EXCESS_RATE_VAR" type="double" />
+	<property name="odExcessRateVarCode" column="OD_EXCESS_RATE_VAR_CODE"  />
+	<property name="mainFacilityInd" column="MAIN_FACILITY_IND"  />
+	<property name="mainFacilityAANo" column="MAIN_FACILITY_AA_NUM"  />
+	<property name="mainFacilityCode" column="MAIN_FACILITY_CODE" />
+	<property name="mainFacilitySequenceNumber" column="MAIN_FACILITY_SEQ" type="long" />
+	<property name="standbyLine" column="STANDBY_LINE"  />
+	<property name="altSchedule" column="ALT_SCHEDULE" type="yes_no" />
+  	<property name="floorPledgeLimit" column="FLOOR_PLEDGED_LIMIT" type="double" />
+  	<property name="availPeriodInDays" column="AVAIL_PERIOD_DAY" type="integer" />
+	<property name="availPeriodInMonths" column="AVAIL_PERIOD_MONTH" type="integer" />
+	<property name="calFirstInstlDate" column="CAL_FIRST_INSTL_DATE"  />
+	<property name="creditLineIndicator" column="CREDIT_LINE_IND"  />
+	<property name="level" column="LEVEL" type="integer" />
+	<property name="parValueShares" column="PAR_VALUE_SHARES"  />
+	<property name="retentionPeriodCode" column="RETENTION_PERIOD_CODE"  />
+	
+	<property name="standbyLineFacCode"  column="STANDBY_LINE_FAC_CODE"  type="java.lang.String"/>
+	<property name="standbyLineFacCodeSeq" column="STANDBY_LINE_FAC_SEQ"  type="integer" />
+	<property name="revolvingInd"  column="REVOLVING_IND"  />
+	<property name="revOSBalOrgAmt" column="REVOLVING_ON_CRITERIA_IND"   />
+	<property name="retentionSum" column="RETENTION_SUM" type="double" />
+	<property name="retentionPeriod" column="RETENTION_PERIOD" type="integer" />
+	<property name="JDODateApproveCGCBNM" column="CGC_BNM_APPROVED_DATE" type="timestamp" />
+	<property name="effectiveCostOfFund" column="EFFECTIVE_COSE_OF_FUND"   />
+	<property name="ECOFAdminCost" column="ECOF_ADMIN_COST" type="double" />
+	<property name="ECOFRate"  column="ECOF_RATE" type="double" />
+	<property name="ECOFVariance" column="ECOF_VARIANCE"  type="double" />
+	<property name="ECOFVarianceCode" column="ECOF_VARIANCE_CODE"      />
+	<property name="JDOFacAvalDate" column="AVAIL_DATE"  type="timestamp" />
+	<property name="facAvalPeriod" column="AVAIL_PERIOD" />
+	<property name="toBeCancelledInd" column="TO_BE_CANCELLED_IND" />
+
+    <component name="refinanceFromBank" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="REFINANCE_FROM_BANK_CODE_NUM"/>
+    	<property name="standardCodeValue" column="REFINANCE_FROM_BANK_CODE_VALUE" />
+    </component>
+	    	
+	<component name="drawingAmount" class="com.integrosys.base.businfra.currency.Amount">
+		<property name="amountAsBigDecimal" column="CMS_DRAWING_LIMIT" type="big_decimal" />
+		<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+	</component>
+
+	<set name="officerSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="stageFacOfficer" />
+	</set>
+
+	<set name="relationshipSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="stageFacRelationship" />
+	</set>
+	
+	<set name="facilityMultiTierFinancings" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="stageFacilityMultiTierFinancing" />
+	</set>
+
+	<set name="facilityMessages" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="stageFacMessage" />
+	</set>
+
+	<set name="facilityIncrementals" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="stageFacIncremental" />
+	</set>
+
+	<set name="facilityReductions" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="CMS_FAC_MASTER_ID" />
+		<one-to-many entity-name="stageFacReduction" />
+	</set>
+
+	<join table="CMS_STG_FAC_RENTAL_RENEWAL" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<component name="facilityIslamicRentalRenewal" class="FacilityIslamicRentalRenewal">
+		  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		  	<property name="renewalTerm" column="RENEWAL_TERM" />
+			<component name="renewalTermCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="RENEWAL_TERM_CODE_NUM" />
+		    	<property name="standardCodeValue" column="RENEWAL_TERM_CODE_VALUE" />
+		    </component>
+			<component name="primeRateNumber" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="PRIME_RATE_CODE_NUM" />
+		    	<property name="standardCodeValue" column="PRIME_RATE_CODE_VALUE" />
+		    </component>
+		  	<property name="renewalRate" column="RENEWAL_RATE" type="double" />
+		  	<property name="primeVariance" column="PRIME_VARIANCE" type="double" />
+		  	<property name="primeVarianceCode" column="PRIME_VARIANCE_CODE" />
+			<property name="status" column="STATUS" />
+		</component>
+	</join>
+
+	<join table="CMS_STG_FAC_SECURITY_DEPOSIT" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<component name="facilityIslamicSecurityDeposit" class="FacilityIslamicSecurityDeposit">
+		  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		  	<property name="numberOfMonth" column="NUM_OF_MONTH" type="integer" />
+		  	<property name="securityDeposit" column="SECURITY_DEPOSIT" type="double" />
+		  	<property name="fixSecurityDepositAmount" column="FIX_SECURITY_DEPOSIT_AMOUNT" type="double" />
+		  	<property name="originalSecurityDepositAmount" column="ORIG_SECURITY_DEPOSIT_AMOUNT" type="double" />
+			<property name="status" column="STATUS" />
+		</component>
+	</join>
+
+	<join table="CMS_STG_FAC_GENERAL" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<!--<component name="facilityGeneral" class="Facility	"   >-->
+		  	
+		<property name="financedAmt" column="FINANCED_AMOUNT"   type="double"/>
+			<property  name="facilityStatusCategoryCode" column="FAC_STATUS_CODE_NUM"  type="java.lang.String"/>
+			<property name="facilityStatusEntryCode" column="FAC_STATUS_CODE_VALUE" type="java.lang.String" />
+			<property name="facilityCurrencyCode" column="CURRENCY_CODE" type="java.lang.String"/> 
+			
+	  	<property name="installmentAmt"  column="INSTALLMENT_AMOUNT"   type="double" />
+	  	
+		<component name="loanPurposeCode" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="LOAN_PURPOSE_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="LOAN_PURPOSE_CODE_VALUE" />
+	    </component> 
+
+	  	<property name="JDOOfferAcceptedDate" column="OFFER_ACCEPTED_DATE" type="timestamp" />
+	  	<property name="JDOOfferDate" column="OFFER_DATE" type="timestamp" />
+	  	
+	  	<component name="approvedBy" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="PERSON_APPROVED_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="PERSON_APPROVED_CODE_VALUE" />
+	    </component> 
+	    <property name="JDOApproveDate" column="APPROVED_DATE" type="timestamp" />
+	    
+	    <component name="cancelRejectCode" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="CANCEL_REJECT_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="CANCEL_REJECT_CODE_VALUE" />
+	    </component> 
+	  	<property name="JDOCancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+	  	
+	    <component name="officer" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="OFFICER_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="OFFICER_CODE_VALUE" />
+	    </component> 
+	    
+	    <component name="limitStatus" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="LMT_STATUS_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="LMT_STATUS_CODE_VALUE" />
+		</component> 
+
+	    <property name="JDOApplicationDate" column="APPLICATION_DATE" type="timestamp" />
+     	<property name="finalPaymentAmt" column="FINAL_PAYMENT" type="double" />
+     	<property name="approvedAmount" column="APPROVED_AMOUNT" type="double" />
+     	
+		<property name="term" column="TERM" type="long" />
+	    <component name="termCode" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="TERM_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="TERM_CODE_VALUE" />
+	    </component> 
+
+	</join>
+
+	<join  table="CMS_STG_FAC_BNM_CODES"  optional="true">
+		<key  column="CMS_FAC_MASTER_ID" />
+		<component  insert="true" name="facilityBnmCodes"    class="FacilityBNM">
+		
+			<property  name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		
+			<component name="BNMIndustryCode" class="com.integrosys.cms.host.eai.StandardCode">
+			   	<property name="standardCodeNumber" column="INDUSTRY_CODE_NUM"/>
+			   	<property name="standardCodeValue" column="INDUSTRY_CODE_VALUE" />
+		    </component>
+		    	
+		    <component name="BNMSectorCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="SECTOR_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="SECTOR_CODE_VALUE" />
+		    </component>
+		    	
+		    <component name="BNMStateCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="STATE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="STATE_CODE_VALUE" />
+		    </component>	
+		    
+		    <component name="BNMBumiNRCCCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="BUMI_NRCC_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="BUMI_NRCC_CODE_VALUE" />
+		    </component>	
+		    
+		    <component name="BNMPrescribedRateCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="PRESCRIBED_RATE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="PRESCRIBED_RATE_CODE_VALUE" />
+		    </component>
+
+		    <component name="BNMSmallScaleCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="SMALL_SCALE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="SMALL_SCALE_CODE_VALUE" />
+		    </component>
+
+		    <component name="BNMRelationshipCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="RELATIONSHIP_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="RELATIONSHIP_CODE_VALUE" />
+		    </component>	
+		    
+		    <property name="BNMExempt" column="EXEMPTED_CODE_IND"/>
+	
+		    <component name="BNMExemptCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="EXEMPTED_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="EXEMPTED_CODE_VALUE" />
+		    </component>
+		    
+		    <component name="BNMPurposeCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="PURPOSE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="PURPOSE_CODE_VALUE" />
+		    </component>	
+		    
+   		    <component name="BNMGoodFinancedCd1" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="GOODS_FINANCED_ONE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="GOODS_FINANCED_ONE_CODE_VALUE" />
+		    </component>
+		    
+   		    <component name="BNMGoodFinancedCd2" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="GOODS_FINANCED_TWO_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="GOODS_FINANCED_TWO_CODE_VALUE" />
+		    </component>
+		    
+   		    <component name="baselSAFinalised" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="BASEL_SA_FINALISED_NUM"/>
+		    	<property name="standardCodeValue" column="BASEL_SA_FINALISED_VALUE" />
+		    </component>
+		    
+   		    <component name="baselIRB" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="BASEL_IRB_NUM"/>
+		    	<property name="standardCodeValue" column="BASEL_IRB_VALUE" />
+		    </component>
+
+   		     <component name="baselSAConcept" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="BASEL_SA_CONCEPT_NUM"/>
+		    	<property name="standardCodeValue" column="BASEL_SA_CONCEPT_VALUE" />
+		    </component>
+		</component>
+	</join>
+
+	<join table="CMS_STG_FAC_INTEREST" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<!--<component name="facilityInterest" class="FacilityInterest">-->
+			<component name="rateType" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="INTEREST_TYPE_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="INTEREST_TYPE_CODE_VALUE" />
+		    </component>
+		  	<property name="spread" column="SPREAD" type="double" />
+		  	<property name="spreadSign" column="SPREAD_SIGN" type="java.lang.String"  />
+		  	<property name="interestRate" column="INTEREST_RATE" type="double" />
+		  	
+		  	<property name="primeRateFloor" column="PRIME_RATE_FLOOR" type="double" />
+			<property name="primeRateCeiling" column="PRIME_RATE_CEILING" type="double" />
+			<property name="JDOPrimeReviewDate" column="PRIME_REVIEW_DATE"  type="timestamp" />
+			<property name="primeReviewTerm" column="PRIME_REVIEW_TERM"  type="integer" />
+		    <component name="primeReviewTermCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="PRIME_REVIEW_TERM_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="PRIME_REVIEW_TERM_CODE_VALUE" />
+		    </component>
+		    <property name="JDONextReviewDate" column="NEXT_REVIEW_DATE"  type="timestamp" />
+			<property name="nextReviewTerm" column="NEXT_REVIEW_TERM"  type="integer" />
+		    <component name="nextReviewTermCode" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<property name="standardCodeNumber" column="NEXT_REVIEW_TERM_CODE_NUM"/>
+		    	<property name="standardCodeValue" column="NEXT_REVIEW_TERM_CODE_VALUE" />
+		    </component>
+	</join>
+	
+	<join table="CMS_STG_FAC_ISLAMIC_MASTER" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+			<component name="islamicFacilityMaster" class="IslamicFacilityMaster">
+				<property name="GPPTerm" column="GPP_TERM"  type="integer" />
+				<property name="GPPTermCode" column="GPP_TERM_CODE"  type="java.lang.String" />
+				<property name="GPPPaymentMode" column="GPP_PAYMENT_MODE_VALUE"  type="java.lang.String" />
+				<property name="customerInterestRate" column="CUSOTMER_INTEREST_RATE"  type="double" />
+				<property name="GPPCalcMethod" column="GPP_CALCULATION_MEHTOD_VALUE"  type="java.lang.String" />
+				<property name="compoundingMethod" column="COMPOUNDING_METHOD"  type="java.lang.String" />
+				<property name="JDODateStopCompounding" column="DATE_STOP_COMPOUNDING"  type="timestamp" />
+				<property name="fulrelProfitCalMehod" column="FULREL_PROFIC_CALC_METHOD"  type="java.lang.String" />
+				<property name="refundGppProfit" column="REFUND_GPP_PROFIT_VALUE"  type="java.lang.String" />
+				<property name="refundFulRelProfit" column="REFUND_FULREL_PROFIT_VALUE"  type="java.lang.String" />
+				<property name="excCMPInPMTAMT" column="EXC_CMP_IN_PMT_AMT"  type="java.lang.String" />
+				<property name="sellingPrice" column="SELLING_PRICE"  type="double" />
+				<property name="totalGPPAmt" column="TOTAL_GPP_AMT"  type="double" />
+				<property name="currencyCode" column="CURRENCY_CODE"  type="java.lang.String" />
+			</component>
+	</join>
+	
+	<join table="CMS_STG_FAC_BBA_VARI_PACKAGE" optional="true">
+		<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityBBAVariPackage" class="FacilityBBAVariPackage">
+				<property name="CustProfRate" column="CUST_PROF_RATE" type="double" />
+				<property name="RebateMethod" column="REBATE_METHOD" type="java.lang.String" />
+				<property name="GPPPaymentMode" column="GPP_PAYMENT_MODE" type="java.lang.String" />
+				<property name="GPPCalcMethod" column="GPP_CAL_METHOD" type="java.lang.String" />
+				<property name="GPPTerm" column="GPP_TERM" type="integer" />
+				<property name="GPPTermCode" column="GPP_TERM_CODE" type="java.lang.String" />
+				<property name="FullReleaseProfit" column="FULL_RELEASE_PROFIT" type="java.lang.String" />
+				<property name="RefundFullReleaseProfit" column="REFUND_FULL_RELEASE_PROFIT" type="java.lang.String" />
+				<property name="FullReleaseProfitCalcMethod" column="FUL_REL_PROFIT_CAL_METHOD" type="java.lang.String" />
+				<property name="Installment" column="INSTALLMENT" type="double" />
+				<property name="FinalPaymentAmt" column="FINAL_PAYMENT_AMT" type="double" />
+				<property name="sellingPrice" column="SELLING_PRICE" type="double" />
+     			<property name="totalProfit" column="TOTAL_PROFIT" type="double" />
+     			<property name="totalGPPAmt" column="TOTAL_GPP_AMT" type="double" />
+			</component>
+	</join>	
+
+	<join table="CMS_STG_FAC_FEE_CHARGE" optional ="true">
+		<key column="CMS_FAC_MASTER_ID" />
+		<property name="handlingFee" column="HANDLING_FEES" type="double" />
+		
+		<property name="commissionFees" column="COMMISSION_FEES" type="double" />
+		<property name="commissionRate" column="COMMISSION_RATE"  type="double" />
+	    <component name="commissionBasis" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<property name="standardCodeNumber" column="COMMISSION_BASIS_CODE_NUM"/>
+	    	<property name="standardCodeValue" column="COMMISSION_BASIS_CODE_VALUE" />
+	    </component>		
+		<property name="subsidyAmt" column="SUBSIDY_AMOUNT"  type="double" />
+		<property name="othersFee"  column="OTHERS_FEE" type="double" />
+		<property name="maximumCommission" column="MAX_COMSSN_AMOUNT"  type="double" />
+		<property name="minimumCommission" column="MIN_COMSSN_AMOUNT"  type="double" />
+	</join>
+
+  </class>
+
+  <class entity-name="stageFacOfficer" name="FacilityOfficer" table="CMS_STG_FAC_OFFICER" lazy="false">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_OFFICER_SEQ</param>
+  		</generator>
+  	</id>
+	
+	<!-- <property name="refID" column="CMS_REF_ID" type="long" /> --> 
+  	<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<!-- <property name="CMSOfficerId" column="CMS_REF_ID" type="long" insert="false" update="false" /> -->
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="status" column="STATUS" />
+
+	<component name="relationshipCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="RELATIONSHIP_CODE_NUM"/>
+    	<property name="standardCodeValue" column="RELATIONSHIP_CODE_VALUE" />
+    </component>
+
+	<component name="officer" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="OFFICER_CODE_NUM"/>
+    	<property name="standardCodeValue" column="OFFICER_CODE_VALUE" />
+    </component>
+    
+	<component name="officerType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="OFFICER_TYPE_CODE_NUM"/>
+    	<property name="standardCodeValue" column="OFFICER_TYPE_CODE_VALUE" />
+    </component>
+    
+  </class>
+
+  <class entity-name="stageFacRelationship" name="FacilityRelationship" table="CMS_STG_FAC_RELATIONSHIP" lazy="false">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_RELATIONSHIP_SEQ</param>
+  		</generator>
+  	</id>
+
+  	<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<!-- <property name="CMSFacilityRelationshipID" column="CMS_REF_ID" type="long" insert="false" update="false" /> -->
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="CIFId" column="CIF_NUMBER" />
+  	<property name="currencyCode" column="CURRENCY_CODE" />
+  	<property name="status" column="STATUS" />
+  	
+  	<component name="accountRelationship" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="ACCT_RELATIONSHIP_CODE_NUM"/>
+    	<property name="standardCodeValue" column="ACCT_RELATIONSHIP_CODE_VALUE" />
+    </component>
+    <property name="GuaranteeAmt" column="GUARANTEE_AMOUNT" type="double" />
+    <property name="GuaranteePercentage" column="GUARANTEE_PERCENTAGE" type="double" />
+    <!--  
+  	<component name="JDOGuaranteeAmt" class="com.integrosys.base.businfra.currency.Amount">
+  		<property name="amountAsBigDecimal" column="GUARANTEE_AMOUNT" />
+  		<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false"/>
+  	</component>
+  	-->
+    <property name="addressSeqNum" column="HOST_ADD_SEQ_NUM" type="long" />
+    <property name="customerName" column="CUSTOMER_NAME"  />
+    <property name="mainProfileID" column="CMS_LE_MAIN_PROFILE_ID" type="long" />
+    
+   	<property name="shareHolderPercentage" column="SHARE_HOLDER_PERCENTAGE"  type="double" />
+	<property name="receiveMailCode"  column="RECEIVE_MAIL_CODE"      />
+  	<component name="holdMailCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="HOLD_MAIN_CODE_NUM" />
+    	<property name="standardCodeValue" column="HOLD_MAIN_CODE_VALUE" />
+    </component>
+	<property name="nameAssociatedWFacOrder" column="NAME_ASSOC_WITH_FAC_ORDER"  type="integer" />
+	<property name="nameConjunctionPosition" column="NAME_CONJUNCTION_POSITION"     />
+	<property name="nameConjunction" column="NAME_CONJUNCTION"  />
+	<property name="profitRatio" column="PROFIT_RATIO"  type="double" />
+	<property name="dividendRatio" column="DIVIDEND_RATIO"  type="double" />
+  </class>
+
+  <class entity-name="stageFacilityMultiTierFinancing" name="FacilityMultiTierFinancing" table="STAGE_FAC_MULTI_TIER_FINANCING" lazy="false" polymorphism="explicit">
+	  	<id name="id" column="ID" type="long">
+	  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+	  			<param name="sequence">FAC_MULTI_TIER_SEQ</param>
+	  		</generator>
+	  	</id>
+	  	<property name="refID" column="CMS_REF_ID" type="long" />
+	  	<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+	  	<property name="tierTerm" column="TIER_TERM" type="integer"  />
+	  	<property name="tierSeqNo" column="TIER_SEQ_NO" type="integer" />
+		<component name="tierTermCode" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="PROD_PACKAGE_CODE_NUM" /> -->
+	    	<property name="standardCodeValue" column="TIER_TERM_CODE" />
+	    </component>
+
+	  	<property name="rate" column="RATE" type="double" />
+  	  	<property name="gppIndicator" column="GRACE_PERIOD" />
+	  	<property name="newPaymentAmt" column="PAYMENT_AMOUNT" type="double" />
+		<property name="status" column="STATUS" />
+  </class>
+  
+  <class entity-name="stageFacMessage" name="FacilityMessage" table="CMS_STG_FAC_MESSAGE" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_MSG_SEQ</param>
+  		</generator>
+  	</id>
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<property name="message" column="MESSAGE" />
+	<component name="messageTypeCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="MSG_TYPE_CODE_NUM" />
+    	<property name="standardCodeValue" column="MSG_TYPE_CODE_VALUE" />
+    </component>
+	<component name="messageSeverityCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="MSG_SEVERITY_CODE_NUM" />
+    	<property name="standardCodeValue" column="MSG_SEVERITY_CODE_VALUE" />
+    </component>
+  	<property name="expirationDate" column="EXPIRATION_DATE" type="timestamp" />
+  	<property name="sequenceNumber" column="SEQ_NO" type="long" />
+	<property name="status" column="STATUS" />
+  </class>
+
+  <class entity-name="stageFacIncremental" name="FacilityIncremental" table="CMS_STG_FAC_INCREMENTAL" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_INCREMENTAL_SEQ</param>
+  		</generator>
+  	</id>
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<property name="incrementalNumber" column="INCREMENTAL_NUMBER" type="integer" />
+  	<property name="amountApplied" column="AMOUNT_APPLIED" type="double" />
+  	<property name="incrementalLimit" column="INCREMENTAL_LIMIT" type="double" />
+  	<property name="originalLimit" column="ORIGINAL_LIMIT" type="double" />
+  	<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+
+	<component name="loanPurposeCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LOAN_PURPOSE_CODE_NUM" />
+    	<property name="standardCodeValue" column="LOAN_PURPOSE_CODE_VALUE" />
+    </component>
+
+  	<property name="dateOfOffer" column="DATE_OF_OFFER" type="timestamp" />
+  	<property name="dateOfferAccepted" column="DATE_OFFER_ACCEPTED" type="timestamp" />
+  	<property name="dateApproved" column="DATE_APPROVED" type="timestamp" />
+  	
+	<component name="approvedBy" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="PERSON_APPROVED_CODE_NUM" />
+    	<property name="standardCodeValue" column="PERSON_APPROVED_CODE_VALUE" />
+    </component>
+    
+	<component name="cancelRejectCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="CANCEL_REJECT_CODE_NUM" />
+    	<property name="standardCodeValue" column="CANCEL_REJECT_CODE_VALUE" />
+    </component>
+  	
+  	<property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+  	<property name="facilityStatusCategoryCode" column="FACILITY_STATUS_CODE_NUM" />
+  	<property name="facilityStatus" column="FACILITY_STATUS_CODE_VALUE" />
+
+	<component name="dealerLLPCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DEALER_LLP_CODE_NUM" />
+    	<property name="standardCodeValue" column="DEALER_LLP_CODE_VALUE" />
+    </component>
+
+  	<property name="solicitorName" column="SOLICITOR_NAME" />
+    
+	<component name="requestReason" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="REQUEST_REASON_CODE_NUM" />
+    	<property name="standardCodeValue" column="REQUEST_REASON_CODE_VALUE" />
+    </component>
+    
+	<component name="documentationStatus" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DOC_STATUS_CODE_NUM" />
+    	<property name="standardCodeValue" column="DOC_STATUS_CODE_VALUE" />
+    </component>
+    
+	<component name="lawyerCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LAWYER_CODE_NUM" />
+    	<property name="standardCodeValue" column="LAWYER_CODE_VALUE" />
+    </component>
+
+	<property name="status" column="STATUS" />
+  </class>
+
+  <class entity-name="stageFacReduction" name="FacilityReduction" table="CMS_STG_FAC_REDUCTION" lazy="false" polymorphism="explicit">
+  	<id name="id" column="ID" type="long">
+  		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+  			<param name="sequence">FAC_REDUCTION_SEQ</param>
+  		</generator>
+  	</id>
+  	<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" />
+  	<property name="incrementalNumber" column="INCREMENTAL_NUMBER" type="integer" />
+  	<property name="amountApplied" column="AMOUNT_APPLIED" type="double" />
+  	<property name="incrementalLimit" column="INCREMENTAL_LIMIT" type="double" />
+  	<property name="originalLimit" column="ORIGINAL_LIMIT" type="double" />
+  	<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+
+  	<property name="dateOfferAccepted" column="DATE_OFFER_ACCEPTED" type="timestamp" />
+  	<property name="dateApproved" column="DATE_APPROVED" type="timestamp" />
+  	
+	<component name="approvedBy" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="PERSON_APPROVED_CODE_NUM" />
+    	<property name="standardCodeValue" column="PERSON_APPROVED_CODE_VALUE" />
+    </component>
+    
+	<component name="cancelRejectCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="CANCEL_REJECT_CODE_NUM" />
+    	<property name="standardCodeValue" column="CANCEL_REJECT_CODE_VALUE" />
+    </component>
+  	
+  	<property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+  	<property name="facilityStatusCategoryCode" column="FACILITY_STATUS_CODE_NUM" />
+  	<property name="facilityStatus" column="FACILITY_STATUS_CODE_VALUE" />
+
+  	<property name="solicitorName" column="SOLICITOR_NAME" />
+    
+	<component name="requestReason" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="REQUEST_REASON_CODE_NUM" />
+    	<property name="standardCodeValue" column="REQUEST_REASON_CODE_VALUE" />
+    </component>
+    
+	<component name="documentationStatus" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="DOC_STATUS_CODE_NUM" />
+    	<property name="standardCodeValue" column="DOC_STATUS_CODE_VALUE" />
+    </component>
+    
+	<component name="lawyerCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LAWYER_CODE_NUM" />
+    	<property name="standardCodeValue" column="LAWYER_CODE_VALUE" />
+    </component>
+
+	<property name="status" column="STATUS" />
+  </class>
+
+</hibernate-mapping>

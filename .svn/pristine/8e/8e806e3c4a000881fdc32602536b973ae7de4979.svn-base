@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	<!-- Bond List -->
+	
+	<bean id="ApprovalMatrixAction.AddApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.AddApprovalMatrixCommand">
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.ApproveApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.ApproveApprovalMatrixCommand">
+  		<property name="approvalMatrixProxy" ref="approvalMatrixProxy" />
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.CloseApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.CloseApprovalMatrixCommand">
+  		<property name="approvalMatrixProxy" ref="approvalMatrixProxy" />
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.CompareApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.CompareApprovalMatrixCommand">
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.DeleteApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.DeleteApprovalMatrixCommand">
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.ListApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.ListApprovalMatrixCommand">
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.ListCompareApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.ListCompareApprovalMatrixCommand">
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.ListViewApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.ListViewApprovalMatrixCommand">
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.PaginateApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.PaginateApprovalMatrixCommand">
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.ReadApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.ReadApprovalMatrixCommand">
+  		<property name="approvalMatrixProxy" ref="approvalMatrixProxy" />
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.RejectApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.RejectApprovalMatrixCommand">
+  		<property name="approvalMatrixProxy" ref="approvalMatrixProxy" />
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.SaveApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.SaveApprovalMatrixCommand">
+  		<property name="approvalMatrixProxy" ref="approvalMatrixProxy" />
+  	</bean>
+	
+	<bean id="ApprovalMatrixAction.SubmitApprovalMatrixCommand" class="com.integrosys.cms.ui.approvalmatrix.SubmitApprovalMatrixCommand">
+  		<property name="approvalMatrixProxy" ref="approvalMatrixProxy" />
+  	</bean>
+	
+</beans>

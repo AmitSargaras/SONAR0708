@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT ROWNUM, to_char(applicationdate,'DD-MON-YYYY'), processdesc,
+			(select file_name from cms_eodsync_status where processkey=log.processkey) file_name,
+			(select ack_file_name from cms_eodsync_status where processkey=log.processkey) ack_file_name,
+			totalcount, successcount, failedcount
+			FROM cms_eodsync_status_log log </query>
+		<whereClause>
+			<mandatoryClause> trunc(currentdate) = </mandatoryClause>
+			<param>
+				<name>eodSyncUpDate</name>
+				<condition></condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Sr No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Sync Up Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Master Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>Master File Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>Acknowledgement File Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Total Count</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Fail Count</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Success Count</header>
+				</reportColumn>
+			</reportColumns>	
+			<reportName>EOD Sync Up Acknowledgement Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

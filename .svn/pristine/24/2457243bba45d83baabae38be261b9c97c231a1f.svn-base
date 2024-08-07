@@ -1,0 +1,669 @@
+## ------------------------------------------------------------------------------------
+## Use by CommonDataSingleton for caching of common codes
+## ------------------------------------------------------------------------------------
+integrosys.commoncode.disablecache=false
+integrosys.commoncode.cachetiming=300000
+
+## AccessProfileRequired=Yes
+scheduler.flux.propertyfile=fluxconfig.properties
+los.AuthGroupDAOClass=com.integrosys.los.app.authz.authzgroup.bus.ORAuthzGroupDAO
+
+## Provision to use log4j.  Uncomment these if require to use log4j appenders.
+integrosys.logger.use_xml_configurator=true
+integrosys.logger.xml.file=logging.xml
+integrosys.logger.use_new_logger=true
+
+# Used by com.integrosys.base.techinfra.util.DateUtil
+# These properties define the default system specific locale and timezone
+#integrosys.dateutil.timezone=Asia/Singapore
+#techinfra.util.dateutil.timezone.HK=Asia/Singapore
+#techinfra.util.dateutil.timezone.IN=Asia/Calcutta
+#techinfra.util.dateutil.timezone.MY=Asia/Singapore
+#techinfra.util.dateutil.timezone.SG=Asia/Singapore
+#techinfra.util.dateutil.timezone.TH=Asia/Bangkok
+
+#####################################
+# used for castor differetiation util
+#####################################
+castor.compare.master.mapping.file=Mapping_Master.xml
+castor.compare.master.id.mapping.file=Id-Mapping_Master.xml
+
+##########################
+# Used for OFA Junit Tests
+##########################
+integrosys.test.OFATestDataTestSetup.command=sqlplus
+integrosys.test.OFATestDataTestSetup.loginString=
+integrosys.test.OFATestDataTestSetup.mainSetupScript=
+integrosys.test.OFATestDataTestSetup.mainTeardownScript=
+
+integrosys.validation.swiftcode.enable=false
+#integrosys.authzmanager.CA.classname=com.integrosys.los.sme.app.authz.routeprocess.bus.TCAProcessManager
+integrosys.authzmanager.CA.classname=com.integrosys.los.sme.app.authz.routeprocess.bus.CAAuthzRouteProcessManager
+
+# Workspace related properties
+integrosys.todo.maker.status='DRAFT','APPROVED','REJECTED','LO_GENERATED','CUST_ACCEPTED','CUST_REJECTED'
+integrosys.totrack.maker.status='PENDING','EFFECTIVE','EFFECTIVE_CLOSED','CLOSED','ABORTED'
+integrosys.todo.checker.status='DRAFT','APPROVED','REJECTED','LO_GENERATED','CUST_ACCEPTED','CUST_REJECTED','PENDING'
+integrosys.totrack.checker.status='DRAFT','PENDING','APPROVED','LO_GENERATED','CUST_ACCEPTED','CUST_REJECTED','REJECTED','EFFECTIVE','EFFECTIVE_CLOSED','CLOSED','ABORTED'
+
+
+##########################################
+# Login and security related configuration
+##########################################
+integrosys.sme.login.enabled=false
+integrosys.sme.login.username.minlength=4
+integrosys.sme.login.username.maxlength=10
+# Used from cms_password_policy instead of property
+#integrosys.sme.login.password.minlength=8
+#integrosys.sme.login.password.maxlength=10
+integrosys.sme.login.password.expiry.period=30
+
+integrosys.los.smeuser.registration.enable=true
+# Set this to true to create Enabled user.. The step of create Disabled user and then Enable is skipped.
+integrosys.los.smeuser.create.active.user=true
+integrosys.los.smeuser.loginID.alphanumeric.strict=true
+# Set this to true to not allow 2nd user to invalidate session of 1st logged in user.
+integrosys.los.smeuser.not.invalidate.first.user.session=false
+
+integrosys.super_users=SA_MAKER,SA_CHECKER 
+###############################################
+# Team type Id (role) that local SA can access
+###############################################
+integrosys.local.users.access=
+
+integrosys.authenticationmanager.sme.jndi=SBSMEAuthenticationManager
+
+# indicate if login.jsp to be part of Web Desktop controlled by Prototype JavaScript framework, http://prototype.conio.net/
+# true if login.jsp is the first entry point
+# false if main.jsp is to be used
+integrosys.login.top.most.layer=false
+integrosys.login.persistentbroker=com.integrosys.component.login.app.DBPersistentBroker
+integrosys.login.loginmodule.losuser=com.integrosys.component.login.app.SMEUserLoginModule
+integrosys.login.persistententity.losuser=com.integrosys.component.login.app.OBLOSCustomer
+integrosys.login.mapper.losuser=com.integrosys.component.login.app.LOSCustomerMapper
+integrosys.login.datepattern=d MMM yyyy hh:mm aa
+integrosys.login.days.dormant=30
+integrosys.login.session.expiry.warning=true
+
+integrosys.alert.messageGenerator=com.integrosys.component.alerts.app.AlertMessageGeneratorUsingVelocity
+
+com.integrosys.los.sme.alertprocessor=com.integrosys.component.alerts.app.AlertProcessor
+
+integrosys.alert.msg.user_registration.email.file=new_user_registration.txt
+integrosys.alert.msg.user_pin_reset.email.file=user_pin_reset.txt
+integrosys.alert.email.messageDispatcher=com.integrosys.component.alerts.app.EmailDispatcher
+integrosys.alert.from.EmailId=los-pwd-mailer@integrosys.com
+integrosys.alert.from.Name=CMS Admin
+
+####################
+#  Default Country Code
+####################
+defaultCountryCode=MY
+
+####################
+#  Default PDF Report Foleder
+####################
+defaultPDFFolder=report/pdf
+reportSystemName=Collateral Management System
+reportBankName=EON Bank
+
+####################
+#  Default CSV(Text) Report Foleder
+####################
+defaultCSVFolder=report/csv
+
+#####  trx logging for turn around times for ca  #####
+# comma delimited
+ca.log.turnaround.operations=CREATE_CA,SUBMIT_CA,APPROVE_CA,CANCEL_CA,REJECT_CA,RETURN_CA,ABORT_CA,CLOSE_CA,APPEAL_CA,ACCEPT_CA,VOID_CA
+
+
+########################################
+# Default number of items for pagination
+########################################
+customer.pagination.nitems=10
+
+pagination.total.page=10
+pagination.records.per.page=10
+
+
+#######################################################
+# css class name for various colours in checker screen
+#######################################################
+cms.css.modified = indexdiff
+cms.css.unmodified = index
+cms.css.added = indexadd
+cms.css.deleted = indexdel
+
+
+####################################
+# JNDI Name for Transaction Manager
+####################################
+component.trxmgr.JNDI=SBCompTrxManagerHome
+component.trxmgr.JNDI.home=com.integrosys.cms.app.transaction.SBCompTrxManagerHome
+
+###########################################################################
+# Configuring dual-control or single control for User component transaction
+#
+# Values: true|false
+###########################################################################
+component.user.dualcontrol=true
+component.bus_param_grp.dualcontrol=true
+
+#########################################################
+# Component User TrxValue implementation class definition
+#########################################################
+component.user.trxvalue.impl.class=com.integrosys.cms.app.user.trx.OBUserTrxValue
+component.bus_param_grp.trxvalue.impl.class=com.integrosys.cms.app.systemparameters.trx.OBSystemParametersTrxValue
+
+#####################################
+# Component User Database Table names
+#####################################
+component.user.table.roletype=CMS_ROLE_TYPE
+component.user.table.user=CMS_USER
+component.user.table.stage.user=STAGE_USER
+component.user.table.authentication=CMS_AUTHENTICATION
+component.user.table.transaction=TRANSACTION
+component.user.table.login.audit=CMS_LOGIN_AUDIT
+component.user.table.session=CMS_USER_SESSION
+
+###########################################################################
+# Configuring dual-control or single control for User component transaction
+#
+# Values: true|false
+###########################################################################
+component.team.dualcontrol=true
+
+#########################################################
+# Component Team TrxValue implementation class definition
+#########################################################
+component.team.trxvalue.impl.class=com.integrosys.cms.app.bizstructure.trx.OBCMSTeamTrxValue
+
+#####################################
+# Component Team Database Table names
+#####################################
+component.team.table.team=CMS_TEAM
+component.team.table.membership=CMS_TEAM_MEMBERSHIP
+component.team.table.member=CMS_TEAM_MEMBER
+
+##############################################
+# Maintain Team requires CMS business segment
+# Values: true|false
+##############################################
+component.team.require.cms.segment=true
+
+##############################################
+# Maintain Team requires business segment
+# Values: true|false
+##############################################
+component.team.require.segment=true
+
+##############################################
+# Maintain Team requires org code filter
+# Values: true|false
+##############################################
+component.team.require.org.code.filter=false
+
+#######################################################
+# Maintain Team - Maker/Checker allow to be same user
+# Values: true|false
+#######################################################
+component.team.maker.checker.same.user=true
+
+###########################################
+# Application Resources Properties setting
+###########################################
+# application resource starts with string
+integro.message.resource.key = message
+
+# application resource name for menu
+integro.message.resource.menu = message-menu 
+
+## process def
+#CT.routing.processid=100
+#USER.routing.processid=100
+CHECKLIST.routing.processid=102
+#LIMITPROFILE.routing.processid=511
+integrosys.workflow.repositorypath.test=route.jar
+integrosys.CUST_CHECKER_TODO.actionconstructor=com.integrosys.cms.app.workspace.CustodianActionConstuctor
+
+
+################################
+# Component History Logger class
+################################
+component.transaction.logger=com.integrosys.cms.app.transaction.CMSTrxHistoryLogger
+
+###############################################
+# Component Transaction TrxProcessManager class
+###############################################
+component.transaction.process.manager=com.integrosys.cms.app.transaction.CMSProcessTrxManager
+
+##############################################################
+# Global Preprocess UI Command Chain.
+# Separate with comma(,) if more than one command is required
+##############################################################
+PreProcessCommands=com.integrosys.cms.ui.common.GlobalPrepareSessionCommand,com.integrosys.cms.ui.common.GlobalAccessControlCommand
+
+####################
+#  Base Currency Code
+####################
+baseCurrencyCode=USER
+baseExchangeCcy=MYR
+
+######################
+#  Forex Manager
+######################
+integrosys.forexmanager.jndi.sbhome=SBForexManager
+XRateConverter=com.integrosys.base.businfra.forex.USDCrossRateConverter
+
+########################
+#  Concentration Reports
+########################
+
+# Allowable search days for reports
+report.search.days=60
+
+#########################
+# Number of past days to show the totrack
+#########################
+transaction.totrack.days=5
+
+# Waiver And Deferral Generation
+waiver.subject = Request for Waiver
+deferral.subject = Request for Deferral
+
+# <FunctionAccessProfile>
+com.integrosys.cms.app.accessprofile.proxy.AccessProfileProxyFactory.proxy=com.integrosys.cms.app.accessprofile.proxy.AccessProfileCachingProxyImpl
+#com.integrosys.cms.app.accessprofile.proxy.AccessProfileProxyFactory.proxy=com.integrosys.cms.app.accessprofile.proxy.AccessProfileProxyImpl
+# </FunctionAccessProfile>
+
+
+#Properties Moved from ofa_env.properties
+loader.DEBUG=false
+loader.target1=local
+
+loader.local.enabled=true
+loader.local.type=WEBLOGIC
+
+dbconfig.db1.defined=true
+dbconfig.db1.name=CMSPool
+dbconfig.db1.type=WebLogic
+dbconfig.db1.enabled=true
+dbconfig.db1.poolID=CMSPool
+dbconfig.manager.online.class=com.integrosys.base.techinfra.dbsupport.WLSConnectionManager
+
+##################################
+#  Common JDBC Connection Manager
+##################################
+DefaultSequencerClass=com.integrosys.base.techinfra.dbsupport.DB2Sequencer
+DefaultSeqFormatterClass=com.integrosys.base.techinfra.dbsupport.DateSequencerFormatter
+
+dbconfig.manager.batch.class=com.integrosys.cms.batch.common.SCBJDBCConnectionManager
+dbconfig.batch.driver.name=oracle.jdbc.driver.OracleDriver
+dbconfig.connection.timeout=10800000
+
+dbconfig.weblogic.datasource.jndiname=java:comp/env/jdbc/CMSPool
+
+# Following line is introduced bacause the lookup uses jndi.properties instead of above options
+persistable.lookin.jndi.properties=true
+
+
+###########################################################
+# Use to configure Multi-Login Controller in common action
+###########################################################
+common.action.multi.login.disallow=true
+common.action.multi.login.controller=com.integrosys.cms.ui.common.CMSMultiLoginController
+
+
+########################################## Exchange Mapping #################################################
+## Reuters Exchange Map to Cms Exchange ##
+
+reuters.SES=SGX
+reuters.BSE=BSESN
+reuters.HKG=HKSE
+reuters.NYS=NYSE
+reuters.SET=SET
+reuters.LSE=FTSE
+reuters.NMS=NASDA
+reuters.CCS=IBS
+reuters.ZSE=ZWSE
+reuters.MAE=MERV
+reuters.ASX=AORD
+reuters.VIE=ATX
+reuters.BAH=SASE
+reuters.BFX=BFX
+reuters.BSM=BWSE
+reuters.SAO=BVSP
+reuters.BLG=BGSE
+reuters.BEC=IPSA
+reuters.COL=COSE
+reuters.CYS=CYSE
+reuters.CPH=KFX
+reuters.CAI=CCSI
+reuters.HEX=FISE
+reuters.PAR=FCHI
+reuters.FRA=GDAXI
+reuters.GSE=GHSE
+reuters.ATH=ATG
+reuters.BUD=BUX
+reuters.ICE=ISSE
+reuters.NSI=NSE
+reuters.JKT=JKSE
+reuters.ISE=IESE
+reuters.TLV=TA100
+reuters.MIL=MILSE
+reuters.OSA=N225
+reuters.NAI=KESE
+reuters.KSC=KRSE
+reuters.BDB=LBSE
+reuters.LUX=LUSE
+reuters.KLS=KLSE
+reuters.MAU=MUSE
+reuters.MEX=MXX
+reuters.CAS=MASE
+reuters.AMS/AEX=AEX
+reuters.NZE=NZ40
+reuters.LAG=NGSE
+reuters.OSL=OSEAX
+reuters.LMA=IGRA
+reuters.PHS=PSI
+reuters.WSE=PLSE
+reuters.LIS=PSI20
+reuters.JNB=ZASE
+reuters.BAR=SMSI
+reuters.CSE=CSE
+reuters.STO=SXAXPI
+reuters.TAI=TWII
+reuters.IST=XU100
+reuters.BD/EQUITY=BDSE
+reuters.LATAM=BOSE
+reuters.IR/EXCH1=IRSE
+reuters.PK/EQUITY=KSE
+reuters.LT/EQUITY=LTSE
+reuters.IT/EXCH2=MIBTEL
+reuters.SWX=SSMI
+reuters.UG/EXCH1=UGSE
+
+########################## ENCRYPTION ##########################
+encryption.provider=com.integrosys.cms.ui.security.DES3Fixed
+encrypted.dbuid.file=d:\\development\\eon\\eoncms\\config\\dbuid.so
+encrypted.dbpwd.file=d:\\development\\eon\\eoncms\\config\\dbpwd.so
+#db.security.key=123456789012345678901234
+
+password.encryption.needed=true
+#########################################################################
+
+######################## PASSWORD VALIDATION ###########################
+password.simpleword=JANUARY,FEBRUARY,MARCH,APRIL,MAY,JUNE,JULY,AUGUST,SEPTEMBER,OCTOBER,NOVEMBER,DECEMBER,ALLIANCE,CMS,TEST,SYSTEM,CODE,SSC,RISK,CRM,GAM,CSA,MRM,AFC,SAC,AM,SC,CC,BC,ORM,CAD,TRACS,FINSYS,SEMA
+
+######################## Crystal Report Parameters ######################
+misreport.misreportbybca.class=com.integrosys.cms.batch.reports.MISReportByBCAHandler
+bytearrayconverter.class=com.integrosys.cms.batch.reports.ByteStreamConverter
+chararrayconverter.class=com.integrosys.cms.batch.reports.CharStreamConverter
+deficiency_rpt_export.format=PDF
+diary_rpt_export.format=XLS
+mis_rpt_export.format=XLS
+mis_bl_disclaimer_export.format=DOC
+
+###########################################################
+# Dual role support for CPC & CPC Custodian
+###########################################################
+com.cms.common.team.multipleTeams.group.1.CPC=10
+com.cms.common.team.multipleTeams.group.1.CPC_CUSTODIAN=9
+
+
+###########################################################
+# Batch Programs Timeout - Commit 
+###########################################################
+trx.commit.after.loops=10
+trx.timeout.seconds=3600
+thread.count=3
+thread.sleep.time=500
+
+#########################################################################
+# COMPONENT_NAME:  Reports properties                       		#
+# Licensed Materials - Property of integro technologies                 #
+# COPYRIGHT (C) integro technologies., 2002, 2003                       #
+# Version 1.0                                                           #
+#                                                                       #
+# Customer Note:                                                        #
+# 1. report Location                                                    #
+# 2. Application Server IP                                              #
+# 3. cror<b>a</b>( without "a" )                                        #
+#                                                                       #
+# REMARKS:                                                              #
+# The following report configuration settings are merged from           # 
+# report.properties, which were used previously for client side report  #
+# processing batch program. Both the performance and stability of this  # 
+# batch program has been enhanced significantly by moving its main      # 
+# process logic from client side to server side  - by David.  8/3/2006  #
+#########################################################################
+
+
+#########################################################################
+## Report Configuration
+#########################################################################
+
+rpt.trx.timeout.seconds=36000
+rpt.sleep.time=500
+rpt.wait.pending=100
+rpt.max.retry.count=10
+rpt.thread.count=3
+
+##############################################################################
+## NOT IMPLEMENTED
+##############################################################################
+## Errors Type Name
+error.PropertiesFileNotFound=Missing elixir properties file
+error.PropertiesFileReadError=Reading elixir properties file error
+error.InvalidParameters=Invalid input parameters
+error.DbException=Database failure :
+error.DbEmptyResultSet=Empty resultset
+error.ErrorGeneratingReport=Error Generating Report
+error.MissingConfiguration=ReportConfiguration is not constructed; error(s) in properties definition.
+error.GeneralException=Exception occurred :
+
+## Warnings Type Name
+error.NoReportGenerated=No Report Generated
+databaseUsed =DB2
+
+
+##############################################################################
+## Manual Input Customer
+##############################################################################
+
+manualInputCustomer.searchCIF.count=5
+manualInputCustomer.searchCIF.frequency=2000
+
+##############################################################################
+## Trading Book
+##############################################################################
+refCcy=MYR
+
+##########################################
+## Required Liquidation Module
+## Values: true|false
+##########################################
+build.liquidation=true
+
+#####################################
+## Sequence Generate Pad length
+#####################################
+sequence.formatter.pad.length=9
+
+##################################
+## Required Maintain Limit Account
+## Values: true|false
+##################################
+build.maintain.limit.account=false
+
+#####################################
+# to be used for customer search
+# up to AA country/org code only
+#####################################
+customer.search.dap.aa.only=true
+
+#######################
+# Session listener property
+# Values: true|false
+#######################
+sessionlistener.debug=false
+sessionlistener.countusers=false
+sessionlistener.maxusers=150
+
+#######################
+# Valuation Mechanism
+# Values: margin | haircut
+#######################
+valuation.mechanism=haircut
+
+###############################
+# STP Required
+# Values: true|false
+###############################
+stp.required=true
+
+############################################
+# List of facility codes for trading purpose
+# 
+# *must* be separated by pipe character if
+# there is multiple values.
+############################################
+facility.codes.for.trading=260|261|262|542
+
+#################################
+# Filter STP Systems
+# Values: systemCode|systemCode
+#################################
+filter.stp.systems=MIMB
+
+##################################################
+# Filter STP facility loading application
+# Values: applicationTypeCode|applicationTypeCode
+##################################################
+filter.stp.facility.loading.apptype=CC
+
+###################################
+# Filter documentation Systems
+# Values: systemCode|systemcode
+###################################
+filter.documentation.systems=MIMB
+
+#################################################
+# Filter documentation application
+# Values: applicationTypeCode|applicationTypeCode
+#################################################
+filter.documentation.apptype=CC
+
+##################################################
+# Filter STP Collateral loading systesm
+# Values: applicationTypeCode|applicationTypeCode
+##################################################
+filter.stp.collateral.loading.systems=
+
+##################################################
+# Filter STP Collateral loading application
+# Values: applicationTypeCode|applicationTypeCode
+##################################################
+filter.stp.collateral.loading.apptype=CC
+
+##################################################
+# list of source id which not required edit of
+# covenant item
+#
+# Possible values: RLOS, CLOS
+##################################################
+filter.edit.covenant.item.source.id=RLOS
+
+########################################################################################
+# Marketable Securities Valuation Settings:
+# Details:
+# dailyrunningcappercent = cap, in percentage
+# mthlyrunningcappercent = cap, in percentage
+# pertimes = number of times of the PE ratio
+# newstockcappercent = cap, in percentage
+# ----------------------------------------------------------------------------------------
+# newstockduration and newstockdurationuom to be used together = e.g. 6 months (month = 2)
+# newstockdurationuom takes the constant values from Calendar class
+# The types supported are: Calendar.YEAR=1, Calendar.MONTH=2, Calendar.DATE=5.
+########################################################################################
+#This is Main Board
+valuation.mktsec.dailyrunningcappercent.1=70
+valuation.mktsec.mthlyrunningcappercent.1=70
+valuation.mktsec.pertimes.1=2
+
+#This is 2nd Board
+valuation.mktsec.dailyrunningcappercent.2=50
+valuation.mktsec.mthlyrunningcappercent.2=50
+valuation.mktsec.pertimes.2=1.2
+
+#This is MESDAQ
+valuation.mktsec.dailyrunningcappercent.4=50
+valuation.mktsec.mthlyrunningcappercent.4=50
+valuation.mktsec.pertimes.4=1.2
+
+#This is KLCI Component Stock
+valuation.mktsec.dailyrunningcappercent.5=70
+valuation.mktsec.mthlyrunningcappercent.5=70
+valuation.mktsec.pertimes.5=2
+
+valuation.mktsec.newstockcappercent=50
+valuation.mktsec.newstockduration=6
+valuation.mktsec.newstockdurationuom=2
+
+########################################
+# Common code category for product type
+########################################
+common.code.category.product.type = PRODUCT_TYPE
+
+####################################################
+# Action and Event required to reset 
+# Global scope customer and limit profile 
+# Values: <action>,<event1>,<event2>|<action>....
+####################################################
+reset.global.customer.limit.profile=Welcome|PasswordChange|ToDo|CustomerSearch,prepare|CounterpartyCCI
+
+##################################################
+# Filter application modules by application type 
+# Team setup on biz segment (applicaiton type)
+# Values: true|false
+##################################################
+modules.filter.by.application.type=true
+
+
+##################################################
+# Filter application modules by business unit
+# Team setup on biz segment (business unit)
+# Values: true|false
+##################################################
+
+modules.filter.by.biz.unit=true
+
+###########################################################
+# Determine whether need to display debug log in error page
+# Values: true|false
+###########################################################
+display.exception.log=true
+
+##################################################################################
+# Detemine whether product type required special handling to retrieve description
+# Values: true|false
+##################################################################################
+common.code.product.type.special.handling=true
+
+##########################################################
+# Enable fields editable for pending facility cases
+# Values: true|false
+##########################################################
+facility.pending.fields.enable=false
+
+##########################################################
+# Enable field only for migration data
+# Values: true|false
+##########################################################
+migration.data.fields.enable=false
+
+##########################################################
+# GLOS - CLIMS STP CommonCode Validation
+# Values: true|false
+##########################################################
+glos.clims.commoncode.validate=false

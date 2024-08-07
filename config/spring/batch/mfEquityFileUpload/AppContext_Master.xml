@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="mfEquityUploadJobTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="mfEquityUploadJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="mfEquityUploadJobDetail" />
+		<property name="cronExpression" value="${ftp.mf.equity.upload.schedular.time}" />
+	</bean>
+	
+	<bean id="mfEquityUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="mfEquityUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="mfEquityUploadJob" class="com.integrosys.cms.batch.mtmvalprocess.mfequity.upload.MfEquityFileUploadJob"/>
+
+</beans>

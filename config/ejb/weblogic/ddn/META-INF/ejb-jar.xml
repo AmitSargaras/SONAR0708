@@ -1,0 +1,685 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
+<ejb-jar>
+<display-name>DDN</display-name>
+    <enterprise-beans>
+        <session id="session_SBDDNProxyManager">
+            <ejb-name>SBDDNProxyManager</ejb-name>
+            <home>com.integrosys.cms.app.ddn.proxy.SBDDNProxyManagerHome</home>
+            <remote>com.integrosys.cms.app.ddn.proxy.SBDDNProxyManager</remote>
+            <ejb-class>com.integrosys.cms.app.ddn.proxy.SBDDNProxyManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session id="session_SBDDNBusManager">
+            <ejb-name>SBDDNBusManager</ejb-name>
+            <home>com.integrosys.cms.app.ddn.bus.SBDDNBusManagerHome</home>
+            <remote>com.integrosys.cms.app.ddn.bus.SBDDNBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.ddn.bus.SBDDNBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session id="session_SBStagingDDNBusManager">
+            <ejb-name>SBStagingDDNBusManager</ejb-name>
+            <home>com.integrosys.cms.app.ddn.bus.SBDDNBusManagerHome</home>
+            <remote>com.integrosys.cms.app.ddn.bus.SBDDNBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.ddn.bus.SBStagingDDNBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+                        
+        <entity id="entity_EBDDN">
+            <ejb-name>EBDDN</ejb-name>
+            <home>com.integrosys.cms.app.ddn.bus.EBDDNHome</home>
+            <remote>com.integrosys.cms.app.ddn.bus.EBDDN</remote>
+            <local-home>com.integrosys.cms.app.ddn.bus.EBDDNLocalHome</local-home>
+            <local>com.integrosys.cms.app.ddn.bus.EBDDNLocal</local>
+            <ejb-class>com.integrosys.cms.app.ddn.bus.EBDDNBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBDDN</abstract-schema-name>
+            <cmp-field id="cmp_EBDDN_cMPDDNID">
+                <field-name>cMPDDNID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDN_dDNRef">
+                <field-name>dDNRef</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDN_cMPLimitProfileID">
+                <field-name>cMPLimitProfileID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDN_dateGenerated">
+                <field-name>dateGenerated</field-name>
+            </cmp-field>           
+            <cmp-field id="cmp_EBDDN_deferredToDate">
+                <field-name>deferredToDate</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBDDN_daysValid">
+                <field-name>daysValid</field-name>
+            </cmp-field>                         
+            <cmp-field id="cmp_EBDDN_extendedToDate">
+                <field-name>extendedToDate</field-name>
+            </cmp-field>             
+            <cmp-field id="cmp_EBDDN_approvalDate">
+                <field-name>approvalDate</field-name>
+            </cmp-field>             
+            <cmp-field id="cmp_EBDDN_approvalBy">
+                <field-name>approvalBy</field-name>
+            </cmp-field>               
+            <cmp-field id="cmp_EBDDN_creditOfficerName">
+                <field-name>creditOfficerName</field-name>
+            </cmp-field>               
+            <cmp-field id="cmp_EBDDN_creditOfficerSignNo">
+                <field-name>creditOfficerSignNo</field-name>
+            </cmp-field>        
+            <cmp-field id="cmp_EBDDN_creditOfficerCountry">
+                <field-name>creditOfficerCountry</field-name>
+            </cmp-field>      
+            <cmp-field id="cmp_EBDDN_creditOfficerOrgCode">
+                <field-name>creditOfficerOrgCode</field-name>
+            </cmp-field>         
+            <cmp-field id="cmp_EBDDN_seniorOfficerName">
+                <field-name>seniorOfficerName</field-name>
+            </cmp-field>               
+            <cmp-field id="cmp_EBDDN_seniorOfficerSignNo">
+                <field-name>seniorOfficerSignNo</field-name>
+            </cmp-field>     
+            <cmp-field id="cmp_EBDDN_seniorOfficerCountry">
+                <field-name>seniorOfficerCountry</field-name>
+            </cmp-field>         
+            <cmp-field id="cmp_EBDDN_seniorOfficerOrgCode">
+                <field-name>seniorOfficerOrgCode</field-name>
+            </cmp-field>  
+            <cmp-field id="cmp_EBDDN_creditOfficerDt">
+                <field-name>creditOfficerDt</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDN_seniorOfficerDt">
+                <field-name>seniorOfficerDt</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDN_remarks">
+                <field-name>remarks</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDN_isSCCIssuedIndStr">
+                <field-name>isSCCIssuedIndStr</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDN_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field>  
+            <cmp-field id="cmp_EBDDN_documentType">
+                <field-name>documentType</field-name>
+            </cmp-field>
+            <cmp-field id="bcaApprovalDate">
+                <field-name>bcaApprovalDate</field-name>
+            </cmp-field>
+            <cmp-field id="bcaApprovalAuthority">
+                <field-name>bcaApprovalAuthority</field-name>
+            </cmp-field>
+            <cmp-field id="bcaNextReviewDate">
+                <field-name>bcaNextReviewDate</field-name>
+            </cmp-field>
+            <cmp-field id="bcaExtReviewDate">
+                <field-name>bcaExtReviewDate</field-name>
+            </cmp-field>
+            <cmp-field id="famCode">
+                <field-name>famCode</field-name>
+            </cmp-field>
+            <cmp-field id="famName">
+                <field-name>famName</field-name>
+            </cmp-field>
+            <cmp-field id="bcaOrigCtry">
+                <field-name>bcaOrigCtry</field-name>
+            </cmp-field>
+            <cmp-field id="bcaOrigOrg">
+                <field-name>bcaOrigOrg</field-name>
+            </cmp-field>
+            <cmp-field id="legalName">
+                <field-name>legalName</field-name>
+            </cmp-field>
+            <cmp-field id="customerName">
+                <field-name>customerName</field-name>
+            </cmp-field>
+            <cmp-field id="custSegmentCode">
+                <field-name>custSegmentCode</field-name>
+            </cmp-field>
+            <cmp-field id="bFLIssuedDate">
+                <field-name>bFLIssuedDate</field-name>
+            </cmp-field>
+            <cmp-field id="creditGradeCode">
+                <field-name>creditGradeCode</field-name>
+            </cmp-field>
+            <cmp-field id="subProfileID">
+                <field-name>subProfileID</field-name>
+            </cmp-field>
+            <cmp-field id="legalID">
+                <field-name>legalID</field-name>
+            </cmp-field>
+            <cmp-field id="releaseTo">
+                <field-name>releaseTo</field-name>
+            </cmp-field>
+            <primkey-field>cMPDDNID</primkey-field>                 
+            <ejb-local-ref>
+                <ejb-ref-name>EBDDNItemLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.ddn.bus.EBDDNItemLocalHome</local-home>
+                <local>com.integrosys.cms.app.ddn.bus.EBDDNItemLocal</local>
+                <ejb-link>EBDDNItem</ejb-link>
+            </ejb-local-ref> 
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>           
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileID</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBDDN o WHERE o.cMPLimitProfileID = ?1]]></ejb-ql>
+            </query>                    
+        </entity>
+        
+        <entity id="entity_EBDDNItem">
+            <ejb-name>EBDDNItem</ejb-name>
+            <local-home>com.integrosys.cms.app.ddn.bus.EBDDNItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.ddn.bus.EBDDNItemLocal</local>
+            <ejb-class>com.integrosys.cms.app.ddn.bus.EBDDNItemBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBDDNItem</abstract-schema-name>
+            <cmp-field id="cmp_EBDDNItem_cMPDDNItemID">
+                <field-name>cMPDDNItemID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDNItem_dDNItemRef">
+                <field-name>dDNItemRef</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBDDNItem_cMPLimitID">
+                <field-name>cMPLimitID</field-name>
+            </cmp-field>      
+            <cmp-field id="cmp_EBDDNItem_limitType">
+                <field-name>limitType</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDNItem_cMPDDNID">
+                <field-name>cMPDDNID</field-name>
+            </cmp-field>           
+            <cmp-field id="cmp_EBDDNItem_dDNAmtCurrency">
+                <field-name>dDNAmtCurrency</field-name>
+            </cmp-field>               
+            <cmp-field id="cmp_EBDDNItem_dDNAmt">
+                <field-name>dDNAmt</field-name>
+            </cmp-field>    
+            <cmp-field id="cmp_EBDDNItem_issuedDate">
+                <field-name>issuedDate</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDNItem_maturityDate">
+                <field-name>maturityDate</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDDNItem_isDDNIssuedIndStr">
+                <field-name>isDDNIssuedIndStr</field-name>
+            </cmp-field>                    
+            <cmp-field id="cmp_EBDDNItem_isDeletedIndStr">
+                <field-name>isDeletedIndStr</field-name>
+            </cmp-field>     
+            <cmp-field id="approvedLimitAmtCcy">
+                <field-name>approvedLimitAmtCcy</field-name>
+            </cmp-field>            
+            <cmp-field id="approvedLimitAmt">
+                <field-name>approvedLimitAmt</field-name>
+            </cmp-field>            
+            <cmp-field id="bkgLoctnCtry">
+                <field-name>bkgLoctnCtry</field-name>
+            </cmp-field>
+            <cmp-field id="bkgLoctnOrg">
+                <field-name>bkgLoctnOrg</field-name>
+            </cmp-field>
+            <cmp-field id="securityIDs">
+                <field-name>securityIDs</field-name>
+            </cmp-field>
+            <cmp-field id="securityTypes">
+                <field-name>securityTypes</field-name>
+            </cmp-field>   
+            <cmp-field id="approvalLimitDate">
+                <field-name>approvalLimitDate</field-name>
+            </cmp-field>
+            <cmp-field id="productType">
+                <field-name>productType</field-name>
+            </cmp-field>
+            <cmp-field id="outLimitRef">
+                <field-name>outLimitRef</field-name>
+            </cmp-field>
+            <cmp-field id="coBorrowLegalID">
+                <field-name>coBorrowLegalID</field-name>
+            </cmp-field>
+            <cmp-field id="coBorrowName">
+                <field-name>coBorrowName</field-name>
+            </cmp-field>
+            <cmp-field id="docNumber">
+                <field-name>docNumber</field-name>
+            </cmp-field>
+            <cmp-field id="docCode">
+                <field-name>docCode</field-name>
+            </cmp-field>
+            <cmp-field id="docDesc">
+                <field-name>docDesc</field-name>
+            </cmp-field>
+            <cmp-field id="dateDefer">
+                <field-name>dateDefer</field-name>
+            </cmp-field>
+            <cmp-field id="dateOfReturn">
+                <field-name>dateOfReturn</field-name>
+            </cmp-field>
+            <cmp-field id="docStatus">
+                <field-name>docStatus</field-name>
+            </cmp-field>
+            <cmp-field id="actionParty">
+                <field-name>actionParty</field-name>
+            </cmp-field>
+            <cmp-field id="theApprovalDate">
+                <field-name>theApprovalDate</field-name>
+            </cmp-field>
+            <cmp-field id="approvedBy">
+                <field-name>approvedBy</field-name>
+            </cmp-field>
+            <primkey-field>cMPDDNItemID</primkey-field> 
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>                                      
+            <query>
+                <query-method>
+                    <method-name>findByDDNItemRef</method-name>
+                    <method-params>
+                        <method-param>long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBDDNItem o WHERE o.dDNItemRef = ?1 ]]></ejb-ql>
+            </query>
+        </entity>                   
+                        
+        <entity id="entity_EBStagingDDN">
+            <ejb-name>EBStagingDDN</ejb-name>
+            <home>com.integrosys.cms.app.ddn.bus.EBDDNHome</home>
+            <remote>com.integrosys.cms.app.ddn.bus.EBDDN</remote>
+            <local-home>com.integrosys.cms.app.ddn.bus.EBDDNLocalHome</local-home>
+            <local>com.integrosys.cms.app.ddn.bus.EBDDNLocal</local>
+            <ejb-class>com.integrosys.cms.app.ddn.bus.EBStgDDNBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingDDN</abstract-schema-name>
+            <cmp-field id="cmp_EBStagingDDN_cMPDDNID">
+                <field-name>cMPDDNID</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBStagingDDN_dDNRef">
+                <field-name>dDNRef</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBStagingDDN_cMPLimitProfileID">
+                <field-name>cMPLimitProfileID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingDDN_dateGenerated">
+                <field-name>dateGenerated</field-name>
+            </cmp-field>           
+            <cmp-field id="cmp_EBStagingDDN_deferredToDate">
+                <field-name>deferredToDate</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBStagingDDN_daysValid">
+                <field-name>daysValid</field-name>
+            </cmp-field>              
+            <cmp-field id="cmp_EBStagingDDN_extendedToDate">
+                <field-name>extendedToDate</field-name>
+            </cmp-field>             
+            <cmp-field id="cmp_EBStagingDDN_approvalDate">
+                <field-name>approvalDate</field-name>
+            </cmp-field>             
+            <cmp-field id="cmp_EBStagingDDN_approvalBy">
+                <field-name>approvalBy</field-name>
+            </cmp-field>        
+            <cmp-field id="cmp_EBStagingDDN_creditOfficerName">
+                <field-name>creditOfficerName</field-name>
+            </cmp-field>               
+            <cmp-field id="cmp_EBStagingDDN_creditOfficerSignNo">
+                <field-name>creditOfficerSignNo</field-name>
+            </cmp-field>     
+            <cmp-field id="cmp_EBStagingDDN_creditOfficerCountry">
+                <field-name>creditOfficerCountry</field-name>
+            </cmp-field>      
+            <cmp-field id="cmp_EBStagingDDN_creditOfficerOrgCode">
+                <field-name>creditOfficerOrgCode</field-name>
+            </cmp-field>                                
+            <cmp-field id="cmp_EBStagingDDN_seniorOfficerName">
+                <field-name>seniorOfficerName</field-name>
+            </cmp-field>               
+            <cmp-field id="cmp_EBStagingDDN_seniorOfficerSignNo">
+                <field-name>seniorOfficerSignNo</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBStagingDDN_seniorOfficerCountry">
+                <field-name>seniorOfficerCountry</field-name>
+            </cmp-field>         
+            <cmp-field id="cmp_EBStagingDDN_seniorOfficerOrgCode">
+                <field-name>seniorOfficerOrgCode</field-name>
+            </cmp-field>  
+            <cmp-field id="cmp_EBStagingDDN_creditOfficerDt">
+		        <field-name>creditOfficerDt</field-name>
+	        </cmp-field>
+	        <cmp-field id="cmp_EBStagingDDN_seniorOfficerDt">
+		        <field-name>seniorOfficerDt</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingDDN_remarks">
+                <field-name>remarks</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingDDN_isSCCIssuedIndStr">
+                <field-name>isSCCIssuedIndStr</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingDDN_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field>  
+      	    <cmp-field id="cmp_EBStagingDDN_documentType">
+               <field-name>documentType</field-name>
+            </cmp-field>
+            <cmp-field id="staging_bcaApprovalDate">
+                <field-name>bcaApprovalDate</field-name>
+            </cmp-field>
+            <cmp-field id="staging_bcaApprovalAuthority">
+                <field-name>bcaApprovalAuthority</field-name>
+            </cmp-field>
+            <cmp-field id="staging_bcaNextReviewDate">
+                <field-name>bcaNextReviewDate</field-name>
+            </cmp-field>
+            <cmp-field id="staging_bcaExtReviewDate">
+                <field-name>bcaExtReviewDate</field-name>
+            </cmp-field>
+            <cmp-field id="staging_famCode">
+                <field-name>famCode</field-name>
+            </cmp-field>
+            <cmp-field id="staging_famName">
+                <field-name>famName</field-name>
+            </cmp-field>
+            <cmp-field id="staging_bcaOrigCtry">
+                <field-name>bcaOrigCtry</field-name>
+            </cmp-field>
+            <cmp-field id="staging_bcaOrigOrg">
+                <field-name>bcaOrigOrg</field-name>
+            </cmp-field>
+            <cmp-field id="staging_legalName">
+                <field-name>legalName</field-name>
+            </cmp-field>
+            <cmp-field id="staging_customerName">
+                <field-name>customerName</field-name>
+            </cmp-field>
+            <cmp-field id="staging_custSegmentCode">
+                <field-name>custSegmentCode</field-name>
+            </cmp-field>
+            <cmp-field id="staging_bFLIssuedDate">
+                <field-name>bFLIssuedDate</field-name>
+            </cmp-field>
+            <cmp-field id="staging_creditGradeCode">
+                <field-name>creditGradeCode</field-name>
+            </cmp-field>
+            <cmp-field id="staging_subProfileID">
+                <field-name>subProfileID</field-name>
+            </cmp-field>
+            <cmp-field id="staging_legalID">
+                <field-name>legalID</field-name>
+            </cmp-field>
+            <cmp-field id="staging_releaseTo">
+                <field-name>releaseTo</field-name>
+            </cmp-field>
+            <primkey-field>cMPDDNID</primkey-field>                 
+            <ejb-local-ref>
+                <ejb-ref-name>EBStagingDDNItemLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.ddn.bus.EBDDNItemLocalHome</local-home>
+                <local>com.integrosys.cms.app.ddn.bus.EBDDNItemLocal</local>
+                <ejb-link>EBStagingDDNItem</ejb-link>
+            </ejb-local-ref>       
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>         
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileID</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingDDN o WHERE o.cMPLimitProfileID = ?1]]></ejb-ql>
+            </query>                    
+        </entity>
+        
+        <entity id="entity_EBStagingDDNItem">
+            <ejb-name>EBStagingDDNItem</ejb-name>
+            <local-home>com.integrosys.cms.app.ddn.bus.EBDDNItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.ddn.bus.EBDDNItemLocal</local>
+            <ejb-class>com.integrosys.cms.app.ddn.bus.EBDDNItemBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingDDNItem</abstract-schema-name>
+            <cmp-field id="cmp_EBStagingDDNItem_cMPDDNItemID">
+                <field-name>cMPDDNItemID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingDDNItem_dDNItemRef">
+                <field-name>dDNItemRef</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBStagingDDNItem_cMPLimitID">
+                <field-name>cMPLimitID</field-name>
+            </cmp-field>   
+            <cmp-field id="cmp_EBStagingDDNItem_limitType">
+                <field-name>limitType</field-name>
+            </cmp-field>   
+            <cmp-field id="cmp_EBStagingDDNItem_cMPDDNID">
+                <field-name>cMPDDNID</field-name>
+            </cmp-field>           
+            <cmp-field id="cmp_EBStagingDDNItem_dDNAmtCurrency">
+                <field-name>dDNAmtCurrency</field-name>
+            </cmp-field>               
+            <cmp-field id="cmp_EBStagingDDNItem_dDNAmt">
+                <field-name>dDNAmt</field-name>
+            </cmp-field>    
+            <cmp-field id="cmp_EBStagingDDNItem_issuedDate">
+                <field-name>issuedDate</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingDDNItem_maturityDate">
+                <field-name>maturityDate</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingDDNItem_isDDNIssuedIndStr">
+                <field-name>isDDNIssuedIndStr</field-name>
+            </cmp-field>                    
+            <cmp-field id="cmp_EBStagingDDNItem_isDeletedIndStr">
+                <field-name>isDeletedIndStr</field-name>
+            </cmp-field> 
+            <cmp-field id="staging_approvedLimitAmtCcy">
+                <field-name>approvedLimitAmtCcy</field-name>
+            </cmp-field>            
+            <cmp-field id="staging_approvedLimitAmt">
+                <field-name>approvedLimitAmt</field-name>
+            </cmp-field>            
+            <cmp-field id="staging_bkgLoctnCtry">
+                <field-name>bkgLoctnCtry</field-name>
+            </cmp-field>
+            <cmp-field id="staging_bkgLoctnOrg">
+                <field-name>bkgLoctnOrg</field-name>
+            </cmp-field>
+            <cmp-field id="staging_securityIDs">
+                <field-name>securityIDs</field-name>
+            </cmp-field>
+            <cmp-field id="staging_securityTypes">
+                <field-name>securityTypes</field-name>
+            </cmp-field>                                 
+            <cmp-field id="staging_approvalLimitDate">
+                <field-name>approvalLimitDate</field-name>
+            </cmp-field>
+            <cmp-field id="staging_productType">
+                <field-name>productType</field-name>
+            </cmp-field>
+            <cmp-field id="staging_outLimitRef">
+                <field-name>outLimitRef</field-name>
+            </cmp-field>
+            <cmp-field id="staging_coBorrowLegalID">
+                <field-name>coBorrowLegalID</field-name>
+            </cmp-field>
+            <cmp-field id="staging_coBorrowName">
+                <field-name>coBorrowName</field-name>
+            </cmp-field>
+            <cmp-field id="staging_docNumber">
+                <field-name>docNumber</field-name>
+            </cmp-field>
+            <cmp-field id="staging_docCode">
+                <field-name>docCode</field-name>
+            </cmp-field>
+            <cmp-field id="staging_docDesc">
+                <field-name>docDesc</field-name>
+            </cmp-field>
+            <cmp-field id="staging_dateDefer">
+                <field-name>dateDefer</field-name>
+            </cmp-field>
+            <cmp-field id="staging_dateOfReturn">
+                <field-name>dateOfReturn</field-name>
+            </cmp-field>
+            <cmp-field id="staging_docStatus">
+                <field-name>docStatus</field-name>
+            </cmp-field>
+            <cmp-field id="staging_actionParty">
+                <field-name>actionParty</field-name>
+            </cmp-field>
+            <cmp-field id="staging_theApprovalDate">
+                <field-name>theApprovalDate</field-name>
+            </cmp-field>
+            <cmp-field id="staging_approvedBy">
+                <field-name>approvedBy</field-name>
+            </cmp-field>
+            <primkey-field>cMPDDNItemID</primkey-field>                                       
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>    
+            <query>
+                <query-method>
+                    <method-name>findByDDNItemRef</method-name>
+                    <method-params>
+                        <method-param>long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingDDNItem o WHERE o.dDNItemRef = ?1 ]]></ejb-ql>
+            </query>
+        </entity>     
+
+    </enterprise-beans>    
+        
+    <relationships>
+        <ejb-relation>
+            <ejb-relation-name>DDN-DDNItem</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>DDN-Has-DDNItem</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBDDN</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>cMRDDNItems</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>DDNItem-BelongsTo-DDN</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBDDNItem</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>         
+                       
+                       
+        <ejb-relation>
+            <ejb-relation-name>StagingDDN-StagingDDNItem</ejb-relation-name>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>StagingDDN-Has-StagingDDNItem</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBStagingDDN</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>cMRDDNItems</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>StagingDDNItem-BelongsTo-StagingDDN</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBStagingDDNItem</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+        </ejb-relation>         
+                       
+    </relationships>
+        
+    <assembly-descriptor>
+        <container-transaction>            
+            <method>
+                <ejb-name>SBDDNProxyManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBDDNBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBStagingDDNBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBDDN</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBDDNItem</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBStagingDDN</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBStagingDDNItem</ejb-name>
+                <method-name>*</method-name>
+            </method>
+           <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>
+

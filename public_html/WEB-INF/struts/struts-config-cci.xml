@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CounterpartySearchForm" type="com.integrosys.cms.ui.cci.CounterpartySearchForm">
+        </form-bean>        
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/CounterpartyCCI" type="com.integrosys.cms.ui.cci.CounterpartyCCIAction" name="CounterpartySearchForm" validate="false" scope="request">
+
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="title" value="title.cci.search"/>
+                <set-property property="rightFrame" value="/cci/cci_search.jsp"/>
+            </forward>
+            
+            <forward name="after_list" path="/template/common_template.jsp">
+                <set-property property="title" value="title.cci.search"/>
+                <set-property property="rightFrame" value="/cci/cci_customer_list.jsp"/>
+            </forward>
+            
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.create.newcci"/>
+            </forward>
+
+            <forward name="prepare_search_customer" path="/template/common_template.jsp">
+                <set-property property="title" value="title.cci.search"/>
+                <set-property property="rightFrame" value="/cci/cci_customer_search.jsp"/>
+            </forward>
+
+            <forward name="after_prepare" path="/template/common_template.jsp">
+                <set-property property="title" value="title.cci.search"/>
+                <set-property property="rightFrame" value="/cci/cci_search.jsp"/>
+            </forward>
+            
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/view_ccino.jsp"/>
+                <set-property property="title" value="title.cci.view.ccino"/>
+            </forward>
+            
+            <forward name="edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.edit.ccino"/>
+            </forward>
+
+            <forward name="search_customer" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/cci_customer_search.jsp"/>
+                <set-property property="title" value="title.cci.search"/>
+            </forward>
+            
+            <forward name="cc_customer_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/search_customer_result.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+
+            <forward name="customer_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/search_customer_result.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+
+            <forward name="add" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.create.newcci"/>
+            </forward>
+
+	   		<forward name="after_add_create" path="/template/common_template.jsp">
+	    		<set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+	   			<set-property property="title" value="title.cci.create.newcci"/>
+	   		</forward>
+
+	  		<forward name="after_add_update" path="/template/common_template.jsp">
+	    		<set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+	    		<set-property property="title" value="title.cci.edit.ccino"/>
+	   		</forward>
+
+            <forward name="after_add" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.edit.ccino"/>
+            </forward>
+            
+            <forward name="remove" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/cc_ack_save.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+            
+            <forward name="addNoop" path="/template/common_template.jsp">
+                <set-property property="title" value="title.cci.detatils"/>
+                <set-property property="rightFrame" value="/cci/search_customer_result.jsp"/>
+            </forward>
+
+            <forward name="ack_submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/cci_ack_submit.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+            
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+            
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+            
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+            
+            <forward name="workInProgress" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="roleDesc" value="am.maker"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+
+            <forward name="checker_edit_cci" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/checker_edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+
+	    	<forward name="checker_edit_cci_error" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/checker_edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+
+            <forward name="prepare_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/prepare_delete_ccino.jsp"/>
+                <set-property property="title" value="title.cci.delete.cci"/>
+            </forward>
+            
+            <forward name="maker_edit_cci_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/maker_edit_cci_page.jsp"/>
+                <set-property property="title" value="title.cci.edit.ccino"/>
+            </forward>
+
+            <forward name="maker_edit_cci_reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.edit.ccino"/>
+            </forward>
+            
+            <forward name="maker_close_cci_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/maker_close_cci_page.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+            
+            <forward name="viewLimitProfile" path="/cci/ViewLimitProfile.jsp"/>
+
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/to_track_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+
+            <forward name="maker_prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cci/edit_cciNo_list.jsp"/>
+                <set-property property="title" value="title.cci.detatils"/>
+            </forward>
+
+            <forward name="view_customer_details" path="/customer/viewdetails/ViewLimitProfile.jsp"/>
+
+        </action>
+        
+    </action-mappings>
+    
+    <message-resources key="message-cci" parameter="ApplicationResources-cci"/>
+</struts-config>

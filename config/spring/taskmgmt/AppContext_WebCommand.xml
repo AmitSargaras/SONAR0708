@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <bean id="TodoAction.RefreshPendingCasesCommand" class="com.integrosys.cms.ui.todo.RefreshPendingCasesCommand" />
+
+  <bean id="TodoAction.ReassignPendingCasesCommand" class="com.integrosys.cms.ui.todo.ReassignPendingCasesCommand" />
+
+  <bean id="TodoAction.PrepareToTrackCommand" class="com.integrosys.cms.ui.todo.PrepareToTrackCommand">
+  	<property name="workflowManager" ref="workflowManager" />
+  </bean>
+
+  <bean id="TodoAction.PreparePendingCasesCommand" class="com.integrosys.cms.ui.todo.PreparePendingCasesCommand">
+  	<property name="workflowManager" ref="workflowManager" />
+  </bean>
+
+  <bean id="TodoAction.PrepareTodoCommand" class="com.integrosys.cms.ui.todo.PrepareTodoCommand">
+  	<property name="workflowManager" ref="workflowManager" />
+  </bean>
+
+  <bean id="TodoAction.PrepareNewLimitProfileCommand" class="com.integrosys.cms.ui.todo.PrepareNewLimitProfileCommand">
+  	<property name="workflowManager" ref="workflowManager" />
+  </bean>
+
+  <bean id="TodoAction.PrepareCustomerTodoCommand" class="com.integrosys.cms.ui.todo.PrepareCustomerTodoCommand">
+	<property name="workflowManager" ref="workflowManager" />
+  </bean>
+
+  <bean id="TodoAction.PreparePendingPerfectionCreditFolderCommand" class="com.integrosys.cms.ui.todo.PreparePendingPerfectionCreditFolderCommand">
+  	<property name="workflowManager" ref="workflowManager" />
+	<property name="totalPageForPagination" value="${pagination.total.page}" />
+	<property name="recordsPerPageForPagination" value="${pagination.records.per.page}" />
+  </bean>
+ <bean id="TodoAction.PrepareTodoDiscrepancyCommand" class="com.integrosys.cms.ui.todo.PrepareTodoDiscrepancyCommand">
+  	<property name="workflowManager" ref="workflowManager" />
+  </bean>
+  <bean id="TodoAction.PrepareToTrackDiscrepancyCommand" class="com.integrosys.cms.ui.todo.PrepareToTrackDiscrepancyCommand">
+  	<property name="workflowManager" ref="workflowManager" />
+  </bean>
+</beans>

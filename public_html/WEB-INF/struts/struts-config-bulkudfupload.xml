@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="BulkUDFUploadForm" type="com.integrosys.cms.ui.bulkudfupdateupload.BulkUDFUploadForm">
+        </form-bean>
+
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/Bulkudfupload" type="com.integrosys.cms.ui.bulkudfupdateupload.BulkUDFUploadAction" name="BulkUDFUploadForm" validate="false" scope="request">
+            <forward name="csvupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/upload_bulkudf.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward>
+            <forward name="bulkudfupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/list_bulkudf_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward>
+                    <forward name="downloadReport" path="/file/popup.jsp" />
+             <forward name="checker_approve_create_bulkudf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/chk_approve_bulkudf.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward> 
+            <forward name="checker_reject_create_bulkudf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/checker_reject_create_bulkudf.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward> 
+            <forward name="maker_prepare_bulkudf_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/maker_prepare_bulkudf_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward> 
+            <forward name="checker_process_create_bulkudf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/checker_process_create_bulkudf.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward> 
+            <forward name="error_reject_bulkudf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/checker_process_create_bulkudf.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward> 
+            <forward name="maker_close_bulkudf_file" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/maker_close_bulkudf_file.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward> 
+            <forward name="error_csvupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/upload_bulkudf.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.bulkudfupload"/>
+            </forward> 
+             <forward name="rejected_delete_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bulkudfupload/process_bulkudf_file.jsp"/>
+                <set-property property="title" value="menu.maual_feeds.file_upload"/>
+            </forward> 
+        </action>
+		
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+</struts-config>

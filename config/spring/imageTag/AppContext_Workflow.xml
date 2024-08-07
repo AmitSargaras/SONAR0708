@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+    
+    <bean id="ImageTagTrx.ReadImageTagOperation" class="com.integrosys.cms.app.imageTag.trx.ReadImageTagOperation">
+        <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+    </bean>
+    
+    <bean id="ImageTagTrx.ReadImageTagIDOperation" class="com.integrosys.cms.app.imageTag.trx.ReadImageTagIDOperation">
+        <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+    </bean>
+	<bean id="ImageTagTrx.MakerCreateImageTagOperation"
+		class="com.integrosys.cms.app.imageTag.trx.MakerCreateImageTagOperation">
+		 <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<bean id="ImageTagTrx.MakerCloseRejectedCreateImageTagOperation"
+		class="com.integrosys.cms.app.imageTag.trx.MakerCloseRejectedCreateImageTagOperation">
+		 <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<bean id="ImageTagTrx.MakerCloseRejectedUpdateImageTagOperation"
+		class="com.integrosys.cms.app.imageTag.trx.MakerCloseRejectedUpdateImageTagOperation">
+		 <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<bean id="ImageTagTrx.CheckerRejectImageTagOperation"
+		class="com.integrosys.cms.app.imageTag.trx.CheckerRejectImageTagOperation">
+		 <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<bean id="ImageTagTrx.CheckerApproveCreateImageTagOperation"
+		class="com.integrosys.cms.app.imageTag.trx.CheckerApproveCreateImageTagOperation">
+		<property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<!-- Added by Anil -->
+	<bean id="ImageTagTrx.CheckerApproveUpdateImageTagOperation"
+		class="com.integrosys.cms.app.imageTag.trx.CheckerApproveUpdateImageTagOperation">
+		<property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<bean id="ImageTagTrx.MakerUpdateImageTagOperation" class="com.integrosys.cms.app.imageTag.trx.MakerUpdateImageTagOperation">
+		 <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<bean id="ImageTagTrx.MakerEditRejectedCreateImageTagOperation" class="com.integrosys.cms.app.imageTag.trx.MakerEditRejectedCreateImageTagOperation">
+		 <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<bean id="ImageTagTrx.MakerEditRejectedUpdateImageTagOperation" class="com.integrosys.cms.app.imageTag.trx.MakerEditRejectedUpdateImageTagOperation">
+		 <property name="imageTagBusManager" ref="imageTagBusManager"/>
+        <property name="stagingImageTagBusManager" ref="stagingImageTagBusManager"/>
+	</bean>
+	<!-- Added by Anil -->
+
+    <bean id="imageTagReadController" class="com.integrosys.cms.app.imageTag.trx.ImageTagReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                 <entry key="ReadImageTagOperation" value-ref="ImageTagTrx.ReadImageTagOperation"/>
+                 <entry key="ReadImageTagIDOperation" value-ref="ImageTagTrx.ReadImageTagIDOperation"/>
+                
+            </map>
+        </property>
+    </bean>
+
+    <bean id="imageTagTrxController" class="com.integrosys.cms.app.imageTag.trx.ImageTagTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                  <entry key="MakerCreateImageTagOperation" value-ref="ImageTagTrx.MakerCreateImageTagOperation"/>
+                  <entry key="MakerCloseRejectedCreateImageTagOperation" value-ref="ImageTagTrx.MakerCloseRejectedCreateImageTagOperation"/>
+                  <entry key="MakerCloseRejectedUpdateImageTagOperation" value-ref="ImageTagTrx.MakerCloseRejectedUpdateImageTagOperation"/>
+                  <entry key="CheckerApproveCreateImageTagOperation" value-ref="ImageTagTrx.CheckerApproveCreateImageTagOperation"/>
+                  <entry key="CheckerApproveUpdateImageTagOperation" value-ref="ImageTagTrx.CheckerApproveUpdateImageTagOperation"/>
+                  <entry key="MakerUpdateImageTagOperation" value-ref="ImageTagTrx.MakerUpdateImageTagOperation"/>
+                  <entry key="MakerEditRejectedCreateImageTagOperation" value-ref="ImageTagTrx.MakerEditRejectedCreateImageTagOperation"/>
+                  <entry key="MakerEditRejectedUpdateImageTagOperation" value-ref="ImageTagTrx.MakerEditRejectedUpdateImageTagOperation"/>
+                  <entry key="CheckerRejectImageTagOperation" value-ref="ImageTagTrx.CheckerRejectImageTagOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="imageTagTrxControllerFactory" class="com.integrosys.cms.app.imageTag.trx.ImageTagTrxControllerFactory">
+        <property name="imageTagReadController" ref="imageTagReadController"/>
+        <property name="imageTagTrxController" ref="imageTagTrxController"/>
+    </bean>
+</beans>

@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	<!-- StockIndex List -->
+	
+	<bean id="StockIndexListAction.ReadStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.ReadStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.AddStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.AddStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.DeleteStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.DeleteStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.SaveStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.SaveStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.PaginateStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.PaginateStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.SubmitStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.SubmitStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.CompareStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.CompareStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.ApproveStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.ApproveStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.RejectStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.RejectStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.ListStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.ListStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.ListCompareStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.ListCompareStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.ListViewStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.ListViewStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexListAction.CloseStockIndexListCommand" class="com.integrosys.cms.ui.feed.stockindex.list.CloseStockIndexListCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<!-- StockIndex Item -->
+	
+	<bean id="StockIndexItemAction.SaveStockIndexItemCommand" class="com.integrosys.cms.ui.feed.stockindex.item.SaveStockIndexItemCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<bean id="StockIndexItemAction.PrepareStockIndexItemCommand" class="com.integrosys.cms.ui.feed.stockindex.item.PrepareStockIndexItemCommand">
+		<property name="stockIndexFeedProxy" ref="stockIndexFeedProxy" />
+	</bean>
+	
+	<!-- Stock List -->
+	
+  	<bean id="StockListAction.CompareStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.CompareStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+	<bean id="StockListAction.SaveStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.SaveStockListCommand">
+		<property name="stockFeedProxy" ref="stockFeedProxy" />
+	</bean>
+
+  	<bean id="StockListAction.CloseStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.CloseStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockListAction.DeleteStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.DeleteStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockListAction.RejectStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.RejectStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+  	
+  	<bean id="StockListAction.PaginateStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.PaginateStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+	</bean>
+
+  	<bean id="StockListAction.ApproveStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.ApproveStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockListAction.ListViewStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.ListViewStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockListAction.SubmitStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.SubmitStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockListAction.AddStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.AddStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockListAction.ListCompareStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.ListCompareStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockListAction.ListStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.ListStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockListAction.ReadStockListCommand" class="com.integrosys.cms.ui.feed.stock.list.ReadStockListCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+	
+	<!-- Stock Item -->
+	
+  	<bean id="StockItemAction.SaveStockItemCommand" class="com.integrosys.cms.ui.feed.stock.item.SaveStockItemCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+
+  	<bean id="StockItemAction.PrepareStockItemCommand" class="com.integrosys.cms.ui.feed.stock.item.PrepareStockItemCommand">
+  		<property name="stockFeedProxy" ref="stockFeedProxy" />
+  	</bean>
+  	
+  	<!-- file Upload for stock  -->
+		<bean id="StockItemAction.MakerPrepareUploadStockItemCommand" class="com.integrosys.cms.ui.feed.stock.item.MakerPrepareUploadStockItemCommand">
+  			<property name="stockFeedProxy" ref="stockFeedProxy"/>
+  		</bean>
+  	
+  		<bean id="StockItemAction.MakerUploadStockItemCommand" class="com.integrosys.cms.ui.feed.stock.item.MakerUploadStockItemCommand">
+  			<property name="stockFeedProxy" ref="stockFeedProxy"/>
+  		</bean>
+  	
+  		<bean id="StockItemAction.CheckerReadFileInsertListCommand" class="com.integrosys.cms.ui.feed.stock.item.CheckerReadFileInsertListCommand">
+       		<property name="stockFeedProxy" ref="stockFeedProxy"/>
+   	    </bean>
+    	<bean id="StockItemAction.CheckerApproveInsertStockItemCommand" class="com.integrosys.cms.ui.feed.stock.item.CheckerApproveInsertStockItemCommand">
+     	 	<property name="stockFeedProxy" ref="stockFeedProxy"/>
+    	</bean>	  
+    	<bean id="StockItemAction.CheckerRejectInsertStockItemCommand" class="com.integrosys.cms.ui.feed.stock.item.CheckerRejectInsertStockItemCommand">
+       		<property name="stockFeedProxy" ref="stockFeedProxy"/>
+    	</bean>
+    	<bean id="StockItemAction.MakerInsertCloseStockItemCommand" class="com.integrosys.cms.ui.feed.stock.item.MakerInsertCloseStockItemCommand">
+       		<property name="stockFeedProxy" ref="stockFeedProxy"/>
+    	</bean>
+		<!-- end file Upload for stock  -->
+
+	<!-- ExchangeRateList -->
+	
+	<bean id="ExchangeRateListAction.SaveExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.SaveExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.AddExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.AddExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.ReadExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.ReadExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	<bean id="ExchangeRateListAction.SearchReadExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.SearchReadExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	<bean id="ExchangeRateListAction.PaginateExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.PaginateExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.ApproveExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.ApproveExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.ListExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.ListExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.CloseExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.CloseExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.CompareExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.CompareExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.RejectExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.RejectExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.ListViewExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.ListViewExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.ListCompareExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.ListCompareExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.DeleteExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.DeleteExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<bean id="ExchangeRateListAction.SubmitExchangeRateListCommand" class="com.integrosys.cms.ui.feed.exchangerate.list.SubmitExchangeRateListCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	<!-- ExchangeRateItem -->
+	
+	<bean id="ExchangeRateItemAction.SaveExchangeRateItemCommand" class="com.integrosys.cms.ui.feed.exchangerate.item.SaveExchangeRateItemCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+
+	<bean id="ExchangeRateItemAction.PrepareExchangeRateItemCommand" class="com.integrosys.cms.ui.feed.exchangerate.item.PrepareExchangeRateItemCommand">
+		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+	</bean>
+	
+	           <!-- file Upload for ExchangeRateItem  -->
+		<bean id="ExchangeRateItemAction.MakerPrepareUploadExchangeRateItemCommand" class="com.integrosys.cms.ui.feed.exchangerate.item.MakerPrepareUploadExchangeRateItemCommand">
+  			<property name="forexFeedProxy" ref="forexFeedProxy"/>
+  		</bean>
+  	
+  		<bean id="ExchangeRateItemAction.MakerUploadExchangeRateItemCommand" class="com.integrosys.cms.ui.feed.exchangerate.item.MakerUploadExchangeRateItemCommand">
+  			<property name="forexFeedProxy" ref="forexFeedProxy"/>
+  		</bean>
+  	
+  		<bean id="ExchangeRateItemAction.CheckerReadFileInsertListCommand" class="com.integrosys.cms.ui.feed.exchangerate.item.CheckerReadFileInsertListCommand">
+       		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+   	    </bean>
+    	<bean id="ExchangeRateItemAction.CheckerApproveInsertExchangeRateItemCommand" class="com.integrosys.cms.ui.feed.exchangerate.item.CheckerApproveInsertExchangeRateItemCommand">
+     	 	<property name="forexFeedProxy" ref="forexFeedProxy"/>
+    	</bean>	  
+    	<bean id="ExchangeRateItemAction.CheckerRejectInsertExchangeRateItemCommand" class="com.integrosys.cms.ui.feed.exchangerate.item.CheckerRejectInsertExchangeRateItemCommand">
+       		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+    	</bean>
+    	<bean id="ExchangeRateItemAction.MakerInsertCloseExchangeRateItemCommand" class="com.integrosys.cms.ui.feed.exchangerate.item.MakerInsertCloseExchangeRateItemCommand">
+       		<property name="forexFeedProxy" ref="forexFeedProxy"/>
+    	</bean>
+
+	<!-- Gold List -->
+	
+	<bean id="GoldListAction.SaveGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.SaveGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.AddGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.AddGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean> 
+	
+	<bean id="GoldListAction.ReadGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.ReadGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.PaginateGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.PaginateGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.ApproveGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.ApproveGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.ListGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.ListGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.CloseGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.CloseGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.CompareGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.CompareGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.RejectGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.RejectGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.ListViewGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.ListViewGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.ListCompareGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.ListCompareGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.DeleteGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.DeleteGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+	
+	<bean id="GoldListAction.SubmitGoldListCommand" class="com.integrosys.cms.ui.feed.gold.list.SubmitGoldListCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean> 
+	
+	<!-- Gold Item -->
+	
+	<bean id="GoldItemAction.SaveGoldItemCommand" class="com.integrosys.cms.ui.feed.gold.item.SaveGoldItemCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+
+	<bean id="GoldItemAction.PrepareGoldItemCommand" class="com.integrosys.cms.ui.feed.gold.item.PrepareGoldItemCommand">
+		<property name="goldFeedProxy" ref="goldFeedProxy"/>
+	</bean>
+
+	<!-- Bond List -->
+	
+	<bean id="BondListAction.AddBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.AddBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.ApproveBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.ApproveBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.CloseBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.CloseBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.CompareBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.CompareBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.DeleteBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.DeleteBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.ListBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.ListBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.ListCompareBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.ListCompareBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.ListViewBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.ListViewBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.PaginateBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.PaginateBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.ReadBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.ReadBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.RejectBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.RejectBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.SaveBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.SaveBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondListAction.SubmitBondListCommand" class="com.integrosys.cms.ui.feed.bond.list.SubmitBondListCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<!-- Bond Item-->
+	
+	<bean id="BondItemAction.PrepareBondItemCommand" class="com.integrosys.cms.ui.feed.bond.item.PrepareBondItemCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondItemAction.SaveBondItemCommand" class="com.integrosys.cms.ui.feed.bond.item.SaveBondItemCommand">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+	
+	<bean id="BondItemAction.SaveCurWorkingBondCmd" class="com.integrosys.cms.ui.feed.bond.item.SaveCurWorkingBondCmd">
+  		<property name="bondFeedProxy" ref="bondFeedProxy" />
+  	</bean>
+  	
+  		<!-- file Upload for bond  -->
+		<bean id="BondItemAction.MakerPrepareUploadBondItemCommand" class="com.integrosys.cms.ui.feed.bond.item.MakerPrepareUploadBondItemCommand">
+  			<property name="bondFeedProxy" ref="bondFeedProxy"/>
+  		</bean>
+  	
+  		<bean id="BondItemAction.MakerUploadBondItemCommand" class="com.integrosys.cms.ui.feed.bond.item.MakerUploadBondItemCommand">
+  			<property name="bondFeedProxy" ref="bondFeedProxy"/>
+  		</bean>
+  	
+  		<bean id="BondItemAction.CheckerReadFileInsertListCommand" class="com.integrosys.cms.ui.feed.bond.item.CheckerReadFileInsertListCommand">
+       		<property name="bondFeedProxy" ref="bondFeedProxy"/>
+   	    </bean>
+    	<bean id="BondItemAction.CheckerApproveInsertBondItemCommand" class="com.integrosys.cms.ui.feed.bond.item.CheckerApproveInsertBondItemCommand">
+     	 	<property name="bondFeedProxy" ref="bondFeedProxy"/>
+    	</bean>	  
+    	<bean id="BondItemAction.CheckerRejectInsertBondItemCommand" class="com.integrosys.cms.ui.feed.bond.item.CheckerRejectInsertBondItemCommand">
+       		<property name="bondFeedProxy" ref="bondFeedProxy"/>
+    	</bean>
+    	<bean id="BondItemAction.MakerInsertCloseBondItemCommand" class="com.integrosys.cms.ui.feed.bond.item.MakerInsertCloseBondItemCommand">
+       		<property name="bondFeedProxy" ref="bondFeedProxy"/>
+    	</bean>
+		<!-- end file Upload for bond  -->
+	<!-- Unit Trust List-->
+	
+	<bean id="UnitTrustListAction.AddUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.AddUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.ApproveUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.ApproveUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.CloseUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.CloseUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.CompareUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.CompareUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.DeleteUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.DeleteUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.UpdateUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.UpdateUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.ListCompareUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.ListCompareUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.ListUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.ListUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.ListViewUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.ListViewUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.PaginateUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.PaginateUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.ReadUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.ReadUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.RejectUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.RejectUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.SaveUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.SaveUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustListAction.SubmitUnitTrustListCommand" class="com.integrosys.cms.ui.feed.unittrust.list.SubmitUnitTrustListCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<!-- Unit Trust Item-->
+	
+	<bean id="UnitTrustItemAction.PrepareUnitTrustItemCommand" class="com.integrosys.cms.ui.feed.unittrust.item.PrepareUnitTrustItemCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustItemAction.PrepareUpdateUnitTrustItemCommand" class="com.integrosys.cms.ui.feed.unittrust.item.PrepareUpdateUnitTrustItemCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+	
+	<bean id="UnitTrustItemAction.SaveUnitTrustItemCommand" class="com.integrosys.cms.ui.feed.unittrust.item.SaveUnitTrustItemCommand">
+  		<property name="unitTrustFeedProxy" ref="unitTrustFeedProxy" />
+  	</bean>
+  	
+  	
+  	
+  	<!-- Mutual Funds List -->
+	
+	<bean id="MutualFundsListAction.AddMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.AddMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.ApproveMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.ApproveMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.CloseMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.CloseMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.CompareMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.CompareMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.DeleteMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.DeleteMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.ListMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.ListMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.ListCompareMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.ListCompareMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.ListViewMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.ListViewMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.PaginateMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.PaginateMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.ReadMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.ReadMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.RejectMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.RejectMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.SaveMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.SaveMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsListAction.SubmitMutualFundsListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.list.SubmitMutualFundsListCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<!-- MutualFunds Item-->
+	
+	<bean id="MutualFundsItemAction.PrepareMutualFundsItemCommand" class="com.integrosys.cms.ui.feed.mutualfunds.item.PrepareMutualFundsItemCommand">
+  	</bean>
+	
+	<bean id="MutualFundsItemAction.SaveMutualFundsItemCommand" class="com.integrosys.cms.ui.feed.mutualfunds.item.SaveMutualFundsItemCommand">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+	
+	<bean id="MutualFundsItemAction.SaveCurWorkingMutualFundsCmd" class="com.integrosys.cms.ui.feed.mutualfunds.item.SaveCurWorkingMutualFundsCmd">
+  		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy" />
+  	</bean>
+  	<!-- file Upload for mutual funds  -->
+		<bean id="MutualFundsItemAction.MakerPrepareUploadMutualFundsItemCommand" class="com.integrosys.cms.ui.feed.mutualfunds.item.MakerPrepareUploadMutualFundsItemCommand">
+  			<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy"/>
+  		</bean>
+  	
+  		<bean id="MutualFundsItemAction.MakerUploadMutualFundsItemCommand" class="com.integrosys.cms.ui.feed.mutualfunds.item.MakerUploadMutualFundsItemCommand">
+  			<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy"/>
+  		</bean>
+  	
+  		<bean id="MutualFundsItemAction.CheckerReadFileInsertListCommand" class="com.integrosys.cms.ui.feed.mutualfunds.item.CheckerReadFileInsertListCommand">
+       		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy"/>
+   	    </bean>
+    	<bean id="MutualFundsItemAction.CheckerApproveInsertMutualFundsItemCommand" class="com.integrosys.cms.ui.feed.mutualfunds.item.CheckerApproveInsertMutualFundsItemCommand">
+     	 	<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy"/>
+    	</bean>	  
+    	<bean id="MutualFundsItemAction.CheckerRejectInsertMutualFundsItemCommand" class="com.integrosys.cms.ui.feed.mutualfunds.item.CheckerRejectInsertMutualFundsItemCommand">
+       		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy"/>
+    	</bean>
+    	<bean id="MutualFundsItemAction.MakerInsertCloseMutualFundsItemCommand" class="com.integrosys.cms.ui.feed.mutualfunds.item.MakerInsertCloseMutualFundsItemCommand">
+       		<property name="mutualFundsFeedProxy" ref="mutualFundsFeedProxy"/>
+    	</bean>
+		<!-- end file Upload for  mutual funds  -->
+  	
+  	 	
+</beans>

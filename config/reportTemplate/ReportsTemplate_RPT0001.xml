@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+				<query>
+				
+				SELECT
+					sp.LSP_SHORT_NAME ,
+						ra.LRA_ADDR_LINE_1||' '||ra.LRA_ADDR_LINE_2||' '||ra.LRA_ADDR_LINE_3 ADDRESS ,
+						cc.CITY_NAME,
+						ra.LRA_POST_CODE,
+						ra.LRA_STD_CODE_TEL as tel_code,
+						ra.LRA_TELEPHONE_TEXT as tel_number,
+						ra.LRA_EMAIL_TEXT,
+						ra.LRA_STD_CODE_TELEX as fax_code,
+						ra.LRA_TELEX_TEXT as fax_number,
+						ce.ENTRY_NAME,
+						sp.LSP_LE_ID,
+						lp.CMS_APPR_OFFICER_GRADE,
+						cc_industry.ENTRY_NAME AS industryName,
+						sp.RBI_IND_CODE||'-'||cc_rbi.entry_name||'' AS rbiIndustryCode,
+						cc_entity.entry_name AS entity,
+						rm.RM_MGR_NAME ,
+						pg.PARTY_GROUP_NAME,
+                        othersystem.cms_le_other_sys_cust_id AS CustomerId,
+                        reg.region_name                   AS Region,
+                        to_char(lp.RAM_RATING_FINALIZATION_DATE,'DD-Mon-YYYY') as RAM_RATING_FINALIZATION_DATE,
+                        sp.LISTED_COMPANY AS LISTED_COMPANY,
+  						sp.ISIN_NO AS ISIN_NO,
+  						sp.RAROC AS RAROC,
+  						to_char(sp.RARAOC_PERIOD,'DD-Mon-YYYY') AS RARAOC_PERIOD,
+  						sp.YEAR_END_PERIOD AS YEAR_END_PERIOD,
+  						sp.CREDIT_MGR_EMPID AS CREDIT_MGR_EMPID,
+  						sp.PF_LRD_CREDIT_MGR_EMPID AS PF_LRD_CREDIT_MGR_EMPID,
+  						sp.CREDIT_MGR_SEGMENT AS CREDIT_MGR_SEGMENT,
+                         sp.status
+					FROM
+						SCI_LE_REG_ADDR ra ,
+						SCI_LSP_LMT_PROFILE lp ,
+						SCI_LE_SUB_PROFILE sp,
+						TRANSACTION trx ,
+						CMS_RELATIONSHIP_MGR rm,
+						CMS_PARTY_GROUP pg,
+						CMS_CITY cc,
+						common_code_category_entry ce,
+						common_code_category_entry cc_industry,
+						common_code_category_entry cc_rbi,
+						common_code_category_entry cc_entity ,
+			            CMS_REGION reg,
+			           sci_le_other_system otherSystem
+
+			</query>
+		<whereClause>
+			<mandatoryClause>
+					(sp.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+                    AND ra.LRA_TYPE_VALUE = 'CORPORATE')
+                    AND sp.LSP_LE_ID = lp.LLP_LE_ID(+) 
+                    AND TRX.REFERENCE_ID =  sp.cms_le_sub_profile_id
+					AND TRX.TRANSACTION_TYPE         ='CUSTOMER'
+	                AND sp.LSP_SGMNT_CODE_VALUE=ce.ENTRY_CODE(+)
+                    AND rm.ID(+) = sp.RELATION_MGR
+                    and pg.id(+) = sp.party_grp_nm 
+                    AND ra.lra_region = reg.id(+)
+	     			and cc.id(+) = ra.lra_city_text
+					and sp.ind_nm =cc_industry.entry_code(+)
+					and sp.rbi_ind_code = cc_rbi.entry_code(+)
+					and sp.entity = cc_entity.entry_code(+)
+					and (ce.category_code(+) = 'HDFC_SEGMENT')
+					and (cc_industry.category_code(+) = 'HDFC_INDUSTRY')
+                    and (cc_rbi.category_code(+) = 'HDFC_RBI_CODE')
+                    and (cc_entity.category_code(+) = 'Entity')
+                    and othersystem.cms_le_main_profile_id(+) = sp.cms_le_main_profile_id
+                    AND sp.status                 !=   'INACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>industry</name>
+				<condition> and sp.IND_NM = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> AND sp.LSP_SGMNT_CODE_VALUE = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sp.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(trx.TRANSACTION_DATE) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Address</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>City Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Pin Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>STD CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Tel 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Email</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>STD CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Fax</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Risk Grade</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Industry Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Industry Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Entity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Group Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Customer Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM Rating Finalization Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Listed Company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>ISIN No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>RAROC</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>RARAOC Period</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Year-end Period</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Credit Manager Employee ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>PF/LRD Credit Manager Employee ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Credit Manager's Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>All parties in LSS with Industry/ Segment</reportName>
+		</reportParamters>
+	</report>
+</reports>

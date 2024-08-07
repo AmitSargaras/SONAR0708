@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.email.notification.bus">
+	<class  entity-name="actualEmailNotification" name="OBEmailNotification" table="EMAIL_NOTIFICATION" lazy="false">
+		<id name="notifcationId" column="NOTIFCATION_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_EMAIL_NOTIFICATION_SEQ</param>
+		</generator>
+		</id>
+		<version name="versionTime" 			column="VERSION_TIME" type="long"></version>
+		<property name="noticationTypeCode" 	column="NOTICATION_TYPE_CODE"/>
+        <property name="recipentEmailId" 		column="RECIPENT_EMAIL_ID" />
+        <property name="msgSubject" 			column="MSG_SUBJECT"/>
+        <property name="msgBody" 				column="MSG_BODY"/>
+        <property name="isSent" 				column="IS_SENT" />
+        <property name="errorLog" 				column="ERROR_LOG" />
+        
+        <property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATE_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+		<property name="fromServer" column="FROM_SERVER" />
+	</class>
+</hibernate-mapping>
+
+

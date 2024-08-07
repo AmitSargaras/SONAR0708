@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT rownum SR_NO,
+			  LSP_LE_ID as PARTY_ID,
+			  --LSP_SHORT_NAME AS PARTY_NAME,
+			  trim(REPLACE (REPLACE (LSP_SHORT_NAME, chr (13), ''), chr (10), ' ')) AS PARTY_NAME,
+			  CMS_COLLATERAL_ID AS SECURITY_ID,
+			  --TYPE_NAME AS SECURITY_TYPE,
+			  trim(REPLACE (REPLACE (TYPE_NAME, chr (13), ''), chr (10), ' ')) AS SECURITY_TYPE,
+			  --SUBTYPE_NAME AS SECURITY_SUB_TYPE,
+			  trim(REPLACE (REPLACE (SUBTYPE_NAME, chr (13), ''), chr (10), ' ')) AS SECURITY_SUB_TYPE,
+			  --NPA_TRAQ_CODE AS TRAQ_COLLATERAL_TYPE,
+			  trim(REPLACE (REPLACE (NPA_TRAQ_CODE, chr (13), ''), chr (10), ' ')) AS TRAQ_COLLATERAL_TYPE,
+			  --SEC_PRIORITY AS SECURITY_PRIORITY,
+			  trim(REPLACE (REPLACE (SEC_PRIORITY, chr (13), ''), chr (10), ' ')) AS SECURITY_PRIORITY,
+			  (select country_name from cms_country where country_code= SECURITY_LOCATION) AS SECURITY_LOCATION,
+			  (SELECT entry_name FROM common_code_category_entry WHERE entry_code=reval_freq and  active_status='1'and CATEGORY_CODE='FREQUENCY') AS REVALUATION_FREQUENCY,
+			 (SELECT ENTRY_NAME FROM common_code_category_entry WHERE category_code='TYPE_CHARGE' and  active_status='1' AND entry_code = change_type) AS TYPE_OF_CHARGE,
+			  PROPERTY_ID,
+			  --DESCRIPTION_ASSET AS BORROWERS_NAME,
+			  trim(REPLACE (REPLACE (DESCRIPTION_ASSET, chr (13), ''), chr (10), ' ')) AS BORROWERS_NAME,
+			  (SELECT ENTRY_NAME FROM common_code_category_entry
+			  WHERE category_code = 'PROPERTY_TYPE' and  active_status='1' AND ENTRY_CODE = property_type) AS PROPERTY_TYPE,
+			  SALE_PURCHASE_VALUE AS FACILITY_SECURED_AMOUNT,
+			  SALE_PURCHASE_DATE AS MORTGAGE_CREATION_EXTENTION_DATE,
+			  --DEVELOPER_GROUP_COMPANY AS OWNER_NAME_DETAILS,
+			  trim(REPLACE (REPLACE (DEVELOPER_GROUP_COMPANY, chr (13), ''), chr (10), ' ')) AS OWNER_NAME_DETAILS,
+			  --PROPERTY_ADDRESS AS PROPERTY_ADDRESS_1,
+			  trim(REPLACE (REPLACE (PROPERTY_ADDRESS, chr (13), ''), chr (10), ' ')) AS PROPERTY_ADDRESS_1,
+			  --PROPERTY_ADDRESS_2,
+			  trim(REPLACE (REPLACE (PROPERTY_ADDRESS_2, chr (13), ''), chr (10), ' ')) AS PROPERTY_ADDRESS_2,
+			  --PROPERTY_ADDRESS_3,
+			  trim(REPLACE (REPLACE (PROPERTY_ADDRESS_3, chr (13), ''), chr (10), ' ')) AS PROPERTY_ADDRESS_3,
+			  --PROPERTY_ADDRESS_4,
+			  trim(REPLACE (REPLACE (PROPERTY_ADDRESS_4, chr (13), ''), chr (10), ' ')) AS PROPERTY_ADDRESS_4,
+			  --PROPERTY_ADDRESS_5,
+			  trim(REPLACE (REPLACE (PROPERTY_ADDRESS_5, chr (13), ''), chr (10), ' ')) AS PROPERTY_ADDRESS_5,
+			  --PROPERTY_ADDRESS_6,
+			  trim(REPLACE (REPLACE (PROPERTY_ADDRESS_6, chr (13), ''), chr (10), ' ')) AS PROPERTY_ADDRESS_6,
+			  CASE
+			    WHEN SECURITY_SUB_TYPE_ID IN('CS202','AB108')
+			    THEN DECODE(CMV,0,'-',null,'-',CMV)
+			  END CURRENT_MONTH_FD_PDC_AMOUNT,
+			  CASE
+			    WHEN SECURITY_SUB_TYPE_ID IN('CS202','AB108')
+			    THEN DECODE(P_CMV,0,'-',null,'-',P_CMV)
+			  END PREVIOUS_MONTH_FD_PDC_AMOUNT,
+			  CASE
+			    WHEN SECURITY_SUB_TYPE_ID IN('CS202','AB108','AB100')
+			    THEN '-'
+			    ELSE to_char(CMV)
+			  END CURRENT_MONTH_OMV_AMOUNT,
+			  CASE
+			    WHEN SECURITY_SUB_TYPE_ID IN('CS202','AB108','AB100')
+			    THEN '-'
+			    ELSE to_char(P_CMV)
+			  END PREVIOUS_MONTH_OMV_AMOUNT,
+			  CASE
+			    WHEN SECURITY_SUB_TYPE_ID IN('AB100')
+			    THEN DECODE(CMV,0,'-',null,'-',CMV)
+			  END CURRENT_MONTH_DP_SHARE_AMOUNT,
+			  CASE
+			    WHEN SECURITY_SUB_TYPE_ID IN('AB100')
+			    THEN DECODE(P_CMV,0,'-',null,'-',P_CMV)
+			  END PREVIOUS_MONTH_DP_SHARE_AMOUNT,
+			  C_TOTAL_SEC AS CURRENT_MONTH_TOTAL_SECURITY_OMV,
+			  P_TOTAL_SEC AS PREVIOUS_MONTH_TOTAL_SECURITY_OMV,
+			  SECURITY_VALUATION_DATE,
+			  NEXT_VALUATION_DATE,
+			  --(select VALUATION_AGENCY_NAME from CMS_VALUATION_AGENCY where id=VALUATION_COMPANY) as VALUATION_COMPANY,
+			  trim(REPLACE (REPLACE ((select VALUATION_AGENCY_NAME from CMS_VALUATION_AGENCY where id=VALUATION_COMPANY), chr (13), ''), chr (10), ' ')) AS VALUATION_COMPANY,
+			  CASE
+				WHEN SECURITY_SUB_TYPE_ID IN('GT406','GT408','GT405','GT400','GT402','MS605','MS600','MS610')
+				THEN '-'
+				ELSE to_char(VALUATION_PERIOD)
+			  END Valuation_period,
+			  EROSSION_SEC AS EROSSION_SECURITY,
+			  EROSSION_PERCENT,
+			  EROSSION_THRESOLD AS EROSSION_ABOVE_THRESOLD
+			FROM CLMS_TRQ_PRON_RPT_CUST_FAC
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				TRN_DATE=
+				  (SELECT
+				   TRUNC(to_Date( CASE
+				      WHEN LAST_DAY(to_Date(param_value, 'DD-MON-YYYY'))=to_Date(param_value, 'DD-MON-YYYY')
+				      THEN TRUNC(to_Date(param_value, 'DD-MON-YYYY'),'MM')
+				      ELSE to_Date(param_value, 'DD-MON-YYYY')
+				    END ))
+				  FROM cms_general_param
+				  WHERE param_code = 'EROSION_DATE'
+				  )
+			</mandatoryClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Serial No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security Sub-Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>TRAQ collateral type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security Priority</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security Location</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Revaluation Frequency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Type of Charge</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Property ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Borrower’s Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Property Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility / Secured Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Mortgage Creation / Extension Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Owner Name Details</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Property Address 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Property Address 2</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Property Address 3</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Property Address 4</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Property Address 5</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Property Address 6</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Current FD Amount/ PDC Amount(In INR)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Previous month's FD Amount/ PDC Amount(In INR) </header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Current month's Security OMV amount (In INR)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Previous month's Security OMV amount (In INR)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Current month's Security DP Share Amount (In INR)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Previous month's Security DP Share Amount (In INR)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Current month -Total Security OMV (AS per  TRAQ)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Previous month -Total Security OMV (AS per  TRAQ)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security Valuation Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Next Valuation Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Valuation Company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Valuation Period (In Days)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Erosion security</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Erosion %</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Erosion above threshold(yes/No)</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>CLIMS TRAQ Provision Report (Customer- Security)</reportName>
+		</reportParamters>
+	</report>
+</reports>

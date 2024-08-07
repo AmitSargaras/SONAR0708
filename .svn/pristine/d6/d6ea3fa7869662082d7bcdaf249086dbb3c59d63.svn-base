@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+					select 
+				    sub_profile.lsp_short_name as party_name,
+				    cc_segment.entry_name as segmentName, 
+				    lmtProfile.CMS_APPR_OFFICER_GRADE as riskGradeId,
+				    cc_industry.entry_name as industryName,   
+				    cc_rbi.entry_code||'-'||cc_rbi.entry_name as rbi,    
+				    cc_entry.entry_name as entity,
+				    rm.rm_mgr_name as rmname,       
+				    partygr.party_group_name as partydesc,
+				    cc_willfull_def_sts.entry_name as willfullDefaultStatus,
+				    to_char(sub_profile.date_willful_default,'DD/Mon/YYYY') as dateWillfulDefault,
+				    cc_suit_fld_sts.entry_name as suitFldStatus,
+				    sub_profile.suit_ref_no as suitRefNo,
+				    sub_profile.suit_amount as suitAmount,
+				    to_char(sub_profile.date_of_suit,'DD/Mon/YYYY') as dateOfSuit,
+                    reg.region_name                   AS Region,
+                    cam.rbi_asset_classification
+				from SCI_LE_SUB_PROFILE sub_profile
+				    ,SCI_LE_MAIN_PROFILE main_profile 
+				    ,( select entry_name,entry_code from common_code_category_entry where category_code = 'HDFC_INDUSTRY' ) cc_industry
+				    ,( select entry_name,entry_code from common_code_category_entry where category_code = 'HDFC_SEGMENT' ) cc_segment
+				    ,( select entry_name,entry_code from common_code_category_entry where category_code = 'HDFC_RBI_CODE' ) cc_rbi
+				    ,(select entry_name,entry_code from common_code_category_entry where category_code = 'WILLFUL_DEFAULT_STATUS') cc_willfull_def_sts
+				    ,(select entry_name,entry_code from common_code_category_entry where category_code = 'SUIT_FILLED_STATUS') cc_suit_fld_sts
+				    ,cms_relationship_mgr rm
+				    ,cms_party_group partygr
+				    ,sci_lsp_lmt_profile lmtProfile,
+                     common_code_category_entry cc_entry,
+                     CMS_REGION reg,
+                     SCI_LE_REG_ADDR ra ,
+                     SCI_LSP_LMT_PROFILE  cam
+			</query>
+		<whereClause>
+			<mandatoryClause>
+					sub_profile.cms_le_main_profile_id  =  main_profile.cms_le_main_profile_id 
+					and cc_industry.entry_code(+)=sub_profile.ind_nm
+					and cc_segment.entry_code(+)=main_profile.lmp_sgmnt_code_value
+					and cc_rbi.entry_code(+)=sub_profile.rbi_ind_code
+					and rm.id(+) = sub_profile.relation_mgr
+                    AND sub_profile.cms_le_sub_profile_id  (+)= cam.cms_customer_id 
+					and sub_profile.party_grp_nm = partygr.id(+)
+					and cc_willfull_def_sts.entry_code(+)=sub_profile.willful_default_status
+					and cc_suit_fld_sts.entry_code(+)=sub_profile.suit_filled_status
+					and sub_profile.cms_le_sub_profile_id = lmtProfile.cms_customer_id
+                    and cc_entry.entry_code = sub_profile.entity
+                    And  	(sub_profile.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+                    AND ra.LRA_TYPE_VALUE = 'CORPORATE')
+                    AND  reg.id  =  ra.lra_region
+                    AND sub_profile.status != 'INACTIVE' 
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition>  AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Risk Grade Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Industry Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RBI Category Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Entity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Group Description</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Willful Default Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date classified as willful default</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Suit Filed Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Suit Reference Number</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Suit Amount</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of Suit</header>
+				</reportColumn>	
+				<reportColumn>
+				<width>50</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+				<width>50</width>
+					<format>textFormat</format>
+					<header>RBI Asset Classification</header>
+				</reportColumn>				
+							
+			</reportColumns>
+			<reportName>Legal Status of Party</reportName>
+		</reportParamters>
+	</report>
+</reports>

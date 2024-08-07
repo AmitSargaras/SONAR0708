@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		Validator class to validate the EAI Message.
+	</description>
+
+	<bean id="validationMandatoryFieldFactory" class="com.integrosys.cms.host.eai.support.ValidationMandatoryFieldFactory">
+		<constructor-arg>
+			<set value-type="com.integrosys.cms.host.eai.support.ValidationMandatoryFieldKey">
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.ApprovedSecurity
+					PROPERTY_securityReferenceNote
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.insurance.InsuranceSecurity
+					PROPERTY_effectiveDate
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.cash.CashSecurity
+					PROPERTY_securityIssuer
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.asset.SpecificChargeDetail
+					PROPERTY_registrationNo
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.limit.bus.FacilityMaster
+					PROPERTY_offerAcceptedDate
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.limit.bus.FacilityMaster
+					PROPERTY_offerDate
+				</value>
+				<value>
+					SOURCE_CLOS
+					CLASS_com.integrosys.cms.host.eai.limit.bus.ChargeDetail
+					PROPERTY_partyCharge
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.asset.VehicleDetail
+					PROPERTY_PBTPBRInd
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.SecurityInsurancePolicy
+					PROPERTY_insurerName
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.SecurityInsurancePolicy
+					PROPERTY_insuranceType
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.SecurityInsurancePolicy
+					PROPERTY_insuredAmount
+				</value>
+				<value>
+					SOURCE_RLOS
+					CLASS_com.integrosys.cms.host.eai.security.bus.SecurityInsurancePolicy
+					PROPERTY_effectiveDate
+				</value>
+			</set>
+		</constructor-arg>
+	</bean>
+
+	<!-- Customer Module -->
+
+	<bean id="creditGradeValidator" class="com.integrosys.cms.host.eai.customer.validator.CreditGradeValidator"/>
+	
+	<bean id="customerRelationshipValidator" class="com.integrosys.cms.host.eai.customer.validator.CustomerRelationshipValidator"/>
+	
+	<bean id="customerSearchValidator" class="com.integrosys.cms.host.eai.customer.validator.CustomerSearchMultipleValidator"/>
+
+	<bean id="mainProfileValidator" class="com.integrosys.cms.host.eai.customer.validator.MainProfileValidator"/>
+	
+	<bean id="customerIdInfoValidator" class="com.integrosys.cms.host.eai.customer.validator.CustomerIDInfoValidator"/>
+	<!-- AA Module -->
+	
+	<bean id="aaValidator" class="com.integrosys.cms.host.eai.limit.validator.AAValidator">
+		<property name="sourceIdsDrawAmountOrPercentageMandatory" value="CLOS" />
+	</bean>
+	
+	<bean id="chargeDetailValidator" class="com.integrosys.cms.host.eai.limit.validator.ChargeDetailValidator">
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="chargeDetailJdbcDao" ref="chargeDetailJdbc" />
+		<property name="limitDao" ref="limitDao" />
+		<property name="sourceIdsNatureOfChargeApplicable" value="CLOS" />
+		<property name="securitySubtypeIdsNatureOfChargeApplicable" value="CS200,CS202,IN500,IN501,MS600,MS601,MS602,MS605,MS606,MS607" />
+		<property name="sourceIdsChargePendingRedemptionApplicable" value="CLOS" />
+		<property name="securitySubtypeIdNatureOfChargeStandardCodeNumMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="CS200" value="NAT_OF_CHARGE_CASH" />
+				<entry key="CS202" value="NAT_OF_CHARGE_CASH" />
+				<entry key="IN500" value="NAT_OF_CHARGE_INS" />
+				<entry key="IN501" value="NAT_OF_CHARGE_INS" />
+				<entry key="MS600" value="NAT_OF_CHARGE_MARKSEC" />
+				<entry key="MS601" value="NAT_OF_CHARGE_MARKSEC" />
+				<entry key="MS602" value="NAT_OF_CHARGE_MARKSEC" />
+				<entry key="MS605" value="NAT_OF_CHARGE_MARKSEC" />
+				<entry key="MS606" value="NAT_OF_CHARGE_MARKSEC" />
+				<entry key="MS607" value="NAT_OF_CHARGE_MARKSEC" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="facilityValidator" class="com.integrosys.cms.host.eai.limit.validator.FacilityValidator">
+		<property name="stpJdbcDao" ref="stpTransJdbc" />
+		<property name="facilityNotRequiredAppTypeList">
+			<list>
+				<value>CC</value>
+			</list>
+		</property>
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+	</bean>
+
+	<bean id="corporateFacilityValidator" class="com.integrosys.cms.host.eai.limit.validator.CorporateFacilityValidator">
+		<property name="stpJdbcDao" ref="stpTransJdbc" />
+		<property name="facilityNotRequiredAppTypeList">
+			<list>
+				<value>CC</value>
+			</list>
+		</property>
+		<property name="corporateApplicationTypes" value="CO,CHP" />
+	</bean>
+
+	<bean id="creditApplicationListingInquiryValidator" class="com.integrosys.cms.host.eai.limit.inquiry.listing.CreditApplicationListingInquiryMessageValidator" />
+	
+	<bean id="creditApplicationInquiryValidator" class="com.integrosys.cms.host.eai.limit.inquiry.limitprofile.CreditApplicationInquiryMessageValidator" />
+	
+	<!-- Collateral Module -->
+	
+	<bean id="securityValidator" class="com.integrosys.cms.host.eai.security.validator.SecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="securitySubtypeIdsLinkToCgcGuaranteeApplicable" value="AB100,AB101,AB102,AB103,AB109,AB110,AB111,CS200,CS202,OT900" />
+		<property name="securityTypeIdsLinkToCgcGuaranteeApplicable" value="PT" />
+		<property name="sourceIdsLinkToCgcGuaranteeApplicable" value="CLOS" />
+		<property name="securitySubtypeIdsCustodianInfoMandatory" value="AB100,AB101,AB102,AB103,AB109,AB110,AB111" />
+		<property name="securityTypeIdsCustodianInfoMandatory" value="CS,DC,GT,IN,OT,PT" />
+		<property name="securityTypeIdsCurrencyMandatory" value="AB,MS,CS,DC,GT,IN,OT,PT" />
+		<property name="securityTypeIdsGeneralInfoApplicable" value="AB,MS,CS,DC,GT,IN,OT,PT" />
+	</bean>
+
+	<bean id="assetSecurityValidator" class="com.integrosys.cms.host.eai.security.validator.AssetSecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="secSubTypeIdAssetTypeMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="AB101" value="PLANT_EQUIP" />
+				<entry key="AB102" value="VEHICLE_TYPE" />
+				<entry key="AB103" value="AB_OTHERS_TYPE" />
+				<entry key="AB109" value="AIRCRAFT_TYPE" />
+				<entry key="AB110" value="GOLD_TYPE" />
+				<entry key="AB111" value="VESSEL_TYPE" />
+			</map>
+		</property>
+		<property name="securitySubtypeIdsCommonChargeDetailApplicable" value="AB100,AB101,AB102,AB103,AB109,AB110,AB111" />
+		<property name="securitySubtypeIdsSpecificChargeDetailApplicable" value="AB101,AB102,AB103,AB109,AB110,AB111" />
+		<property name="securitySubtypeIdsReceivableDetailApplicable" value="AB106,AB107" />
+		<property name="securitySubtypeIdsAircraftDetailApplicable" value="AB109" />
+		<property name="securitySubtypeIdsGoldDetailApplicable" value="AB110" />
+		<property name="securitySubtypeIdsVehicleDetailApplicable" value="AB102" />
+		<property name="securitySubtypeIdsVesselDetailApplicable" value="AB111" />
+		<property name="securitySubtypeIdsPlantEquipDetailApplicable" value="AB101" />
+		<property name="securitySubtypeIdsPostDatedChequeDetailApplicable" value="AB108" />
+		<property name="securitySubtypeIdsCommonChargePhysicalInspectionStatusApplicable" value="AB101,AB102" />
+		<property name="securitySubtypeIdsSpecificChargePurchasePriceApplicable" value="AB101,AB102,AB109,AB110,AB111" />
+		<property name="securitySubtypeIdsSpecificChargeManufactureYearMandatory" value="AB101,AB102,AB109" />
+		<property name="securitySubtypeIdsSpecificChargeMakeMandatory" value="AB101,AB102" />
+		<property name="securitySubtypeIdsSpecificChargeModelMandatory" value="AB101,AB102,AB109,AB111" />
+		<property name="securitySubtypeIdsSpecificChargeSalesProceedApplicable" value="AB101,AB102,AB110" />
+		<property name="securitySubtypeIdsSpecificChargeRegistrationNoMandatory" value="AB102" />
+		<property name="sourceIdsSpecificChargeRegistrationNoMandatory" value="RLOS" />
+		<property name="securitySubtypeIdsSpecificChargeRegistrationFeeApplicable" value="AB101,AB102" />
+		<property name="sourceIdsSpecificChargeRegistrationFeeApplicable" value="RLOS" />
+		<property name="securitySubtypeIdsSpecificChargeGoodStatusMandatory" value="AB102" />
+		<property name="securitySubtypeIdsSpecificPublicTransportMandatory" value="AB102,AB109,AB111" />
+		<property name="securitySubtypeIdsSpecificChargeRLSerialNoApplicable" value="AB101,AB102,AB109,AB111" />
+		<property name="securitySubtypeIdsSpecificChargeResidualScrapValueApplicable" value="AB101,AB102,AB109,AB111" />
+		<property name="securitySubtypeIdsSpecificChargeYardApplicable" value="AB101" />
+		<property name="securitySubtypeIdsSpecificChargeInsurersApplicable" value="AB109,AB111" />
+		<property name="securitySubtypeIdsSpecificChargeDownPaymentInfoApplicable" value="AB101,AB102" />
+		<property name="sourceIdsSpecificChargeDownPaymentInfoApplicable" value="RLOS" />
+	</bean>
+	
+	<bean id="cashSecurityValidator" class="com.integrosys.cms.host.eai.security.validator.CashSecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="securitySubtypeIdsFixedDeposit" value="CS202" />
+	</bean>
+
+	<bean id="insuranceSecurityValidator" class="com.integrosys.cms.host.eai.security.validator.InsuranceSecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="securitySubtypeIdsCreditInsurance" value="IN500" />
+		<property name="securitySubtypeIdsLifeInsurance" value="IN501" />
+		<property name="securitySubtypeIdsCreditDerivativesAndDefaultSwap" value="IN502,IN503" />
+		<property name="securitySubtypeIdsInsuranceDescriptionApplicable" value="IN500,IN502,IN503" />
+	</bean>
+	
+	<bean id="documentSecurityValidator" class="com.integrosys.cms.host.eai.security.validator.DocumentSecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="securitySubtypeIdsIsdaIfemaDocuments" value="DC300" />
+		<property name="securitySubtypeIdsDeedOfAssignmentDocuments" value="DC308" />
+		<property name="securitySubtypeIdsLeaseAgreementDocuments" value="DC309" />
+		<property name="securitySubtypeIdsDocumentAmountApplicable" value="DC307,DC309" />
+		<property name="securitySubtypeIdsLetterOfUndertakingFlagApplicable" value="DC305,DC308" />
+		<property name="securitySubtypeIdsBlanketAssignmentApplicable" value="DC305,DC308" />
+	</bean>
+	
+	<bean id="otherSecurityValidator" class="com.integrosys.cms.host.eai.security.validator.OtherSecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+	</bean>
+	
+	<bean id="guaranteeSecurityValidator" class="com.integrosys.cms.host.eai.security.validator.GuaranteeSecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="securitySubtypeIdGuaranteeSecuredUnsecuredPortionApplicable" value="GT400,GT409" />
+		<property name="sourceIdsGuaranteeSecuredUnsecuredPercentageApplicable" value="CLOS" />
+		<property name="securitySubtypeIdsReimbursementBankApplicable" value="GT402" />
+		<property name="securitySubtypeIdsSchemeApplicable" value="GT409" />
+		<property name="securitySubtypeIdsRefNoApplicable" value="GT402,GT409" />
+		<property name="sourceIdsRefNoApplicable" value="CLOS" />
+		<property name="securitySubtypeIdsSecurityIssuerAndBenificiarApplicable" value="GT400,GT402,GT406" />
+		<property name="sourceIdsSecurityIssuerAndBenificiarApplicable" value="CLOS" />
+	</bean>
+	
+	<bean id="marketableSecurityValidator" class="com.integrosys.cms.host.eai.security.validator.MarketableSecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="secSubTypeIdPortfolioItemTypeMap">
+			<map key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="MS600" value="EQUITY_MARKSECMAINFOREIGN" />
+				<entry key="MS601" value="EQUITY_MARKSECMAINFOREIGN" />
+				<entry key="MS605" value="EQUITY_MARKSECOTHERLISTED" />
+				<entry key="MS606" value="EQUITY_MARKSECOTHERLISTED" />
+				<entry key="MS607" value="EQUITY_MARKSECNONLISTEDLOCAL" />
+				<entry key="MS610" value="BOND_TYPE_MARKSECBONDLOCAL" />
+				<entry key="MS611" value="BOND_TYPE_MARKSECBONDLOCAL" />
+			</map>
+		</property>
+		<property name="securitySubtypeIdsStockPortfolio" value="MS600,MS601,MS605,MS606" />
+		<property name="securitySubtypeIdsOtherListedStockPortfolio" value="MS605,MS606" />
+		<property name="securitySubtypeIdsBondPortfolio" value="MS610,MS611" />
+		<property name="securitySubtypeIdsGovernmentPortfolio" value="MS602,MS603" />
+		<property name="securitySubtypeIdsNonListedPortfolio" value="MS607" />
+		<property name="securitySubtypeIdsGuaranteeByGovernmentApplicable" value="MS602" />
+		<property name="sourceIdsGuaranteeByGovernmentApplicable" value="CLOS" />
+	</bean>
+
+	<bean id="propertySecurityValidator" class="com.integrosys.cms.host.eai.security.validator.PropertySecurityValidator">
+		<property name="securityJdbc" ref="securityJdbc" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+	</bean>
+
+	<bean id="pledgorValidator" class="com.integrosys.cms.host.eai.security.validator.PledgorValidator">
+		<property name="securityTypeIdsPledgorDetailsMandatory" value="AB,CS,DC,GT,IN,MS,OT,PT" />
+	</bean>
+	
+	<bean id="valuationValidator" class="com.integrosys.cms.host.eai.security.validator.ValuationValidator">
+		<property name="securityTypeIdsValuationDetailApplicable" value="AB,CS,DC,GT,IN,MS,OT,PT" />
+		<property name="sourceIdsValuationDetailApplicable" value="RLOS,CLOS" />
+	</bean>
+	
+	<bean id="insurancePolicyValidator" class="com.integrosys.cms.host.eai.security.validator.InsurancePolicyValidator">
+		<property name="securityTypeIdsInsurancePolicyDetailApplicable" value="AB,OT,PT" />
+		<property name="validationMandatoryFieldFactory" ref="validationMandatoryFieldFactory" />
+		<property name="sourceIdsinsuranceCompanyNameApplicable" value="RLOS" />
+	</bean>
+
+	<bean id="securityInquiryValidator" class="com.integrosys.cms.host.eai.security.inquiry.SecurityInquiryValidator"/>
+
+	<!-- Documentation / Checklist Module -->
+	
+	<bean id="checklistValidator" class="com.integrosys.cms.host.eai.document.validator.CheckListValidator" />
+	
+	<!-- COVENANT Module -->
+	<bean id="covenantValidator" class="com.integrosys.cms.host.eai.covenant.validator.CovenantValidator">
+		<property name="sourceIdsFrequencyInfoApplicable" value="CLOS" />
+	</bean>
+
+	<bean id="convenantInquireValidator" class="com.integrosys.cms.host.eai.covenant.validator.ConvenantInquireValidator"/>
+
+	<bean id="checklistTemplateCriteriaValidator" class="com.integrosys.cms.host.eai.document.inquiry.template.ChecklistTemplateCriteriaValidator"/>
+
+	<bean id="checklistCriteriaValidator" class="com.integrosys.cms.host.eai.document.inquiry.checklist.ChecklistCriteriaValidator"/>
+
+	<bean id="sharedSecurityValidator" class="com.integrosys.cms.host.eai.security.sharedsecurity.validator.SharedSecurityValidator" />
+	
+	<bean id="messageHeaderValidator" class="com.integrosys.cms.host.eai.support.MessageHeaderValidator" >
+		<property name="messageTypeMessageIdsMap">
+			<map value-type="java.lang.String[]">
+				<entry key="CUSTOMER">
+					<value>CU001</value>
+				</entry>
+				<entry key="LIMIT">
+					<value>CA001</value>
+				</entry>
+				<entry key="SECURITY">
+					<value>CO001,CO002,CO003,CO004,CO005,CO006,CO007,CO008,CO009</value>
+				</entry>
+				<entry key="CA.LISTING.INQUIRY">
+					<value>CA002I</value>
+				</entry>
+				<entry key="CA.INQUIRY">
+					<value>CA003I</value>
+				</entry>
+				<entry key="SHARED.SECURITY">
+					<value>SS001I</value>
+				</entry>
+				<entry key="SECURITY.INQUIRY">
+					<value>CO010I</value>
+				</entry>
+				<entry key="TEMPLATE.INQUIRY">
+					<value>DC001I</value>
+				</entry>
+				<entry key="DOCUMENT.INQUIRY">
+					<value>DC002I</value>
+				</entry>
+				<entry key="COVENANT.INQUIRY">
+					<value>CV002I</value>
+				</entry>
+				<entry key="DOCUMENT">
+					<value>DC003</value>
+				</entry>
+				<entry key="COVENANT">
+					<value>CV001</value>
+				</entry>
+			</map>
+		</property>
+		<property name="validSourceIds" value="RLOS,CLOS,CMS" />
+	</bean>
+
+</beans>

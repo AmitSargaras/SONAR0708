@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+	<form-beans>
+		<form-bean name="OtherBankForm" type="com.integrosys.cms.ui.otherbankbranch.OtherBankForm"></form-bean>
+		<form-bean name="OtherBranchForm" type="com.integrosys.cms.ui.otherbankbranch.OtherBranchForm"></form-bean>
+	</form-beans>
+	
+	<action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+		<!-- start of otherBankBranch Entries -->
+		<action path="/OtherBank" type="com.integrosys.cms.ui.otherbankbranch.OtherBankAction" name="OtherBankForm" scope="request">
+
+			<forward name="save_ack" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/common_ack.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+               
+            </forward>            
+            <forward name="prepare_maker_submit_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/edit_other_bank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+               
+            </forward>
+
+            <forward name="view_other_bank_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/view_other_bank_by_index.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+               
+            </forward>
+            
+            <forward name="prepare_maker_submit_remove" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/view_other_bank_by_index.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>	
+            
+            <forward name="maker_submit_remove" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="maker_submit_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>	
+            
+            <forward name="list" path="/BankList.do?event=view_other_bank"/>
+            
+            <forward name="view_other_bank" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/list_other_bank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+			</forward>
+			
+            <forward name="search_other_bank_by_type" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/list_other_bank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="prepare_create_other_bank" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/prepare_create_other_bank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+			</forward>
+			
+			<forward name="checker_view_delete_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/checker_view_delete_otherBank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+			
+			<forward name="maker_submit_create_other_bank" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="checker_reject_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_close_otherBank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="maker_confirm_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+	        </forward>
+            
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="checker_otherBank_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/checker_otherBank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="rejected_read_page" path="/otherbankbranch/forward.jsp"/>
+            
+            <forward name="maker_view_todo_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_view_todo_otherBank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_resubmit_otherBank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_confirm_submit_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>	
+            
+            
+            <forward name="maker_save_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_resubmit_otherBank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_update_save_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_resubmit_otherBank.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_confirm_submit_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>	
+            
+            <forward name="maker_save_create_other_bank" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="maker_confirm_draft_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+	        </forward>
+            
+            <forward name="maker_save_update_other_bank" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="refresh_state_id" path="/otherbankbranch/stateIdList.jsp"/>
+
+            <forward name="refresh_region_id" path="/otherbankbranch/regionIdList.jsp"/>
+            
+            <forward name="refresh_city_id" path="/otherbankbranch/cityIdList.jsp"/>
+            
+            <forward name="maker_prepare_upload_other_bank_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_upload_otherBank.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            
+            <forward name="checker_process_create_insert_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/checker_otherBank_insert_list.jsp"/>
+                <set-property property="title"  value="maintain.cc.checklist"/>
+            </forward>
+            
+             <forward name="maker_rejected_delete_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/upload_totrack_otherBank.jsp"/>
+                <set-property property="title"  value="maintain.cc.checklist"/>
+            </forward>
+            
+             <forward name="maker_prepare_insert_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_insert_close_otherBank.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+			
+			
+			 <forward name="checker_reject_insert_error_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/checker_otherBank_insert_list.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+             <forward name="maker_fileupload_other_Bank_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_fileupload_otherBank.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+        </action>
+        
+        <action path="/OtherBranch" type="com.integrosys.cms.ui.otherbankbranch.OtherBranchAction" name="OtherBranchForm" scope="request">
+        	
+        	<forward name="view_other_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/list_other_branch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBankBranch"/>
+               
+            </forward>
+        
+        	<forward name="search_other_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/list_other_branch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBankBranch"/>
+               
+            </forward>
+            
+        	<forward name="view_other_branch_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/view_other_branch_by_index.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBankBranch"/>
+               
+            </forward>
+            
+            <forward name="prepare_edit_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/edit_other_branch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBankBranch"/>
+               
+            </forward>
+            
+            <forward name="prepare_maker_submit_edit_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/prepare_edit_maker_submit_other.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBankBranch"/>
+               
+            </forward>
+            
+            <forward name="prepare_maker_submit_remove_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/view_other_branch_by_index.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBankBranch"/>
+               
+            </forward>
+            
+            <forward name="maker_submit_remove_branch" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="maker_submit_edit_branch" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="save_ack" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/common_ack.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBankBranch"/>
+               
+            </forward>     
+            
+            <forward name="checker_process_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/prepare_checker_submit_other_branch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBankBranch"/>
+               
+            </forward>        
+            
+            <forward name="prepare_create_other_bank_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/prepare_create_other_bank_branch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+			</forward>
+			
+			<forward name="maker_submit_create_other_bank_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="list" path="/OtherBranch.do?event=view_other_branch"/>
+            
+            <forward name="refresh_state_id" path="/otherbankbranch/stateIdList.jsp"/>
+            <forward name="refresh_region_id" path="/otherbankbranch/regionIdList.jsp"/>
+            <forward name="refresh_city_id" path="/otherbankbranch/cityIdList.jsp"/>
+            
+            <forward name="checker_view_delete_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/checker_view_delete_otherBankBranch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+			
+			<forward name="maker_submit_create_other_bank" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="checker_reject_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_close_otherBankBranch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="maker_confirm_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+	        </forward>
+            
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            <forward name="checker_otherBranch_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/checker_otherBankBranch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="rejected_read_page" path="/otherbankbranch/forward.jsp"/>
+            
+            <forward name="maker_view_todo_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_view_todo_otherBankBranch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_resubmit_otherBankBranch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_confirm_submit_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+        
+        
+        <forward name="maker_save_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_resubmit_otherBankBranch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_update_save_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_resubmit_otherBankBranch.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+            </forward>
+            
+            <forward name="maker_confirm_submit_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>	
+            
+            <forward name="maker_save_create_other_bank_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <forward name="maker_confirm_draft_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.sys.admin.maint.otherBank"/>
+	        </forward>
+            
+            <forward name="maker_save_update_other_bank_branch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            <!--############################################UPLOAD#####################################	-->
+            
+              <forward name="maker_prepare_upload_other_bankbranch_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_upload_otherBankBranch.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+            
+            <forward name="checker_process_create_insert_bankbranch_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/checker_otherBankBranch_insert_list.jsp"/>
+                <set-property property="title"  value="maintain.cc.checklist"/>
+            </forward>
+            
+             <forward name="maker_rejected_delete_read_bankbranch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/upload_totrack_otherBankBranch.jsp"/>
+                <set-property property="title"  value="maintain.cc.checklist"/>
+            </forward>
+            
+             <forward name="maker_prepare_insert_close_bankbranch" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_insert_close_otherBankBranch.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+			
+			
+			 <forward name="checker_reject_insert_bankbranch_error_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/checker_otherBankBranch_insert_list.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+             <forward name="maker_fileupload_other_Bankbranch_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_fileupload_otherBankBranch.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+            
+             <forward name="maker_fileupload_other_BankBranch_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/otherbankbranch/maker_fileupload_otherBankBranch.jsp"/>
+                <set-property property="title" value="maintain.cc.checklist"/>
+            </forward>
+           
+		<!-- end of otherbankbranch -->
+		</action>
+	</action-mappings>
+
+</struts-config>

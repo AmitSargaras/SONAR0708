@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+    		select PANNUMBER,LINEID,DOCUMENTATIONAMOUNT,'Yes' RELEASED, decode(REVOLVINGLINE, 'Y' , 'Yes' , 'N' , 'No', '') REVOLVINGLINE,
+			decode(CAPITALMARKETEXPOSURE, 'Y' , 'Yes' , 'N' , 'No', '') CAPITALMARKETEXPOSURE, decode(REALESTATEEXPOSURE, 'Y' , 'Yes' , 'N' , 'No', '') REALESTATEEXPOSURE,
+			ESTATETYPEVAL, nvl(COMMESTATETYPEVAL,(SELECT entry_name FROM COMMON_CODE_CATEGORY_ENTRY WHERE category_code = 'COMMERCIAL_REAL_ESTATE' and active_status = '1' and entry_code= COMMESTATETYPE)) COMMESTATETYPEVAL, 
+			nvl(RULEIDVAL,(SELECT entry_name FROM COMMON_CODE_CATEGORY_ENTRY WHERE category_code = 'NPA_RULE_ID' and active_status = '1' and entry_code= RULEID)) RULEIDVAL,
+      		decode(PRIORITYFLAG, 'Y' , 'Yes' , 'N' , 'No', '') PRIORITYFLAG, 
+      		nvl(PRIORITYVAL,(SELECT entry_name FROM COMMON_CODE_CATEGORY_ENTRY WHERE category_code = decode(PRIORITYFLAG, 'Y' , 'PRIORITY_SECTOR_Y' , 'N' , 'PRIORITY_SECTOR', '') and active_status = '1' and entry_code= PRIORITY)) PRIORITYVAL,
+      		nvl(UNCONDICANCLCOMMITMENTVAL,(SELECT entry_name FROM COMMON_CODE_CATEGORY_ENTRY WHERE category_code = 'UNCONDI_CANCL_COMMITMENT' and active_status = '1' and entry_code= UNCONDICANCLCOMMITMENT)) UNCONDICANCLCOMMITMENTVAL,
+			BORROWERCUSTOMERID LIABILITY_ID, nvl(LIABILITYBRANCHVAL, (select BRANCHCODE from CMS_FCCBRANCH_MASTER where status ='ACTIVE' and DEPRECATED = 'N' and BRANCHCODE =LIABILITYBRANCH)) LIABILITYBRANCHVAL,
+      		decode(AVAILABLE, 'Y' , 'Yes' , 'N' , 'No', '') AVAILABLE, LINECODE,
+			BORROWERCUSTOMERID SYSTEM_ID, BORROWERADDITIONDATE LIMIT_START_DATE, decode(FREEZE, 'Y' , 'Yes' , 'N' , 'No', '') FREEZE, REMARKS, 
+			FINALLIMITRELEASABLE RELEASED_AMT, ACTION, decode (STATUS, 'S', 'Success', 'F', 'Reject' , 'Reject') STATUS, ERRORCODE, ERRORMESSAGE
+			from CMS_ECBF_LMT_INTERFACE_LOG
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				1=1
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> and PARTYID = </condition>
+			</param>
+ 			<param>
+ 				<name>recordType</name>
+ 				<condition> and decode (STATUS, 'S', 'SUCCESS', 'F', 'REJECTED' , 'REJECTED') = </condition>
+ 			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and TRUNC(REQUESTDATETIME) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+			<orderAndGroupByClause>
+ 				ORDER BY id desc
+ 			</orderAndGroupByClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PAN Number *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Line ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Releasable Amount *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>60</width>
+					<format>textFormat</format>
+					<header>Released *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Revolving Line *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Capital market Exposure *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Real Estate Exposure *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Real Estate Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Commerical Real Estate Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Rule ID *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PSL FLG *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PSL FLG Dropdown *</header>
+				</reportColumn>		
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>UNCONDI CANCL COMMITMENT *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Liability ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Liability Branch *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Available *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Line no. *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>System ID *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Limit Start Date *</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Freeze *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Internal Remarks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Released Amount *</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Action</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>STATUS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>ERROR CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>ERROR DESCRIPTION</header>
+				</reportColumn>				
+			</reportColumns>
+			<reportName>Success/Reject/Summary Report of Party Line &amp; Limit Details</reportName>
+		</reportParamters>
+	</report>
+</reports>

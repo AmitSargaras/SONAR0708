@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+	<bean id="BaselTrx.MakerCreateBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerCreateBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.ReadBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.ReadBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.CheckerRejectBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.CheckerRejectBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.ReadBaselIDOperation" class="com.integrosys.cms.app.baselmaster.trx.ReadBaselIDOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>		
+	
+	<bean id="BaselTrx.CheckerApproveCreateBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.CheckerApproveCreateBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.MakerEditRejectedCreateBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerEditRejectedCreateBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.MakerCloseRejectedCreateBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerCloseRejectedCreateBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.MakerUpdateBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerUpdateBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.MakerCloseRejectedUpdateBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerCloseRejectedUpdateBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.MakerEditRejectedUpdateBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerEditRejectedUpdateBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.CheckerApproveUpdateBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.CheckerApproveUpdateBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.MakerDeleteBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerDeleteBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.MakerCloseRejectedDeleteBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerCloseRejectedDeleteBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+	
+	<bean id="BaselTrx.MakerEditRejectedDeleteBaselOperation" class="com.integrosys.cms.app.baselmaster.trx.MakerEditRejectedDeleteBaselOperation">
+		 <property name="baselBusManager" ref="baselBusManager"/>
+        <property name="stagingBaselBusManager" ref="stagingBaselBusManager"/>
+	</bean>
+			
+	<bean id="baselReadController" class="com.integrosys.cms.app.baselmaster.trx.BaselReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadBaselOperation" value-ref="BaselTrx.ReadBaselOperation"/>
+                 <entry key="ReadBaselIDOperation" value-ref="BaselTrx.ReadBaselIDOperation"/>
+                               
+                
+            </map>
+        </property>
+    </bean>
+			
+			
+	 <bean id="baselTrxController" class="com.integrosys.cms.app.baselmaster.trx.BaselTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            <entry key="MakerCreateBaselOperation" value-ref="BaselTrx.MakerCreateBaselOperation"/>
+            <entry key="CheckerApproveCreateBaselOperation" value-ref="BaselTrx.CheckerApproveCreateBaselOperation"/>
+            <entry key="CheckerRejectBaselOperation" value-ref="BaselTrx.CheckerRejectBaselOperation"/>
+            <entry key="MakerEditRejectedCreateBaselOperation" value-ref="BaselTrx.MakerEditRejectedCreateBaselOperation"/>
+            <entry key="MakerCloseRejectedCreateBaselOperation" value-ref="BaselTrx.MakerCloseRejectedCreateBaselOperation"/>
+            <entry key="MakerUpdateBaselOperation" value-ref="BaselTrx.MakerUpdateBaselOperation"/>
+            <entry key="MakerCloseRejectedUpdateBaselOperation" value-ref="BaselTrx.MakerCloseRejectedUpdateBaselOperation"/>
+            <entry key="MakerEditRejectedUpdateBaselOperation" value-ref="BaselTrx.MakerEditRejectedUpdateBaselOperation"/>
+            <entry key="CheckerApproveUpdateBaselOperation" value-ref="BaselTrx.CheckerApproveUpdateBaselOperation"/>
+            <entry key="MakerDeleteBaselOperation" value-ref="BaselTrx.MakerDeleteBaselOperation"/>
+            <entry key="MakerCloseRejectedDeleteBaselOperation" value-ref="BaselTrx.MakerCloseRejectedDeleteBaselOperation"/>
+             <entry key="MakerEditRejectedDeleteBaselOperation" value-ref="BaselTrx.MakerEditRejectedDeleteBaselOperation"/>
+            </map>
+         </property>
+     </bean>		
+			
+			
+	<bean id="baselTrxControllerFactory" class="com.integrosys.cms.app.baselmaster.trx.BaselTrxControllerFactory">
+       
+        <property name="baselTrxController" ref="baselTrxController"/>
+        <property name="baselReadController" ref="baselReadController"/>
+       
+    </bean>
+			
+	
+</beans>

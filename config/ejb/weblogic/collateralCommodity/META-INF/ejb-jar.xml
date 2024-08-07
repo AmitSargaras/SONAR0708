@@ -1,0 +1,2289 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar>
+   <display-name>CollateralCommodity</display-name>
+   <enterprise-beans>
+
+      <entity>
+         <ejb-name>EBCommodityCollateral</ejb-name>
+         <home>com.integrosys.cms.app.collateral.bus.EBCollateralDetailHome</home>
+         <remote>com.integrosys.cms.app.collateral.bus.EBCollateralDetail</remote>
+         <local-home>com.integrosys.cms.app.collateral.bus.EBCollateralDetailLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.EBCollateralDetailLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBCommodityCollateralBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommodityCollateral</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBCollateralID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>degreeOfEnvironmentalRisky</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>dateOfDegreeOfEnvironmentalRiskyConfirmed</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>approvedCustomerDifferentialSign</field-name>
+         </cmp-field>
+         <cmp-field>
+                <field-name>approvedCustomerDifferential</field-name>
+         </cmp-field>
+         <primkey-field>eBCollateralID</primkey-field>
+         <ejb-local-ref id="ejblocalref1_EBCommodityCollateral">
+            <ejb-ref-name>EBContractLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractLocal</local>
+            <ejb-link>EBContract</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref2_EBCommodityCollateral">
+            <ejb-ref-name>EBApprovedCommodityTypeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocal</local>
+            <ejb-link>EBApprovedCommodityType</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref3_EBCommodityCollateral">
+            <ejb-ref-name>EBHedgingContractInfoLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoLocal</local>
+            <ejb-link>EBHedgingContractInfo</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref4_EBCommodityCollateral">
+            <ejb-ref-name>EBLoanAgencyLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyLocal</local>
+            <ejb-link>EBLoanAgency</ejb-link>
+         </ejb-local-ref>
+          <ejb-local-ref id="ejblocalref5_EBCommodityCollateral">
+             <ejb-ref-name>EBPreConditionLocalHome</ejb-ref-name>
+             <ejb-ref-type>Entity</ejb-ref-type>
+             <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionLocalHome</local-home>
+             <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionLocal</local>
+             <ejb-link>EBPreCondition</ejb-link>
+          </ejb-local-ref>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity>
+         <ejb-name>EBCommodityCollateralStaging</ejb-name>
+         <home>com.integrosys.cms.app.collateral.bus.EBCollateralDetailHome</home>
+         <remote>com.integrosys.cms.app.collateral.bus.EBCollateralDetail</remote>
+         <local-home>com.integrosys.cms.app.collateral.bus.EBCollateralDetailLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.EBCollateralDetailLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBCommodityCollateralStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommodityCollateralStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBCollateralID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>degreeOfEnvironmentalRisky</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>dateOfDegreeOfEnvironmentalRiskyConfirmed</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>approvedCustomerDifferentialSign</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>approvedCustomerDifferential</field-name>
+         </cmp-field>
+         <primkey-field>eBCollateralID</primkey-field>
+         <ejb-local-ref id="ejblocalref1_EBCommodityCollateralStaging">
+            <ejb-ref-name>EBContractStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractLocal</local>
+            <ejb-link>EBContractStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref2_EBCommodityCollateralStaging">
+            <ejb-ref-name>EBApprovedCommodityTypeStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocal</local>
+            <ejb-link>EBApprovedCommodityTypeStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref3_EBCommodityCollateralStaging">
+            <ejb-ref-name>EBHedgingContractInfoStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoLocal</local>
+            <ejb-link>EBHedgingContractInfoStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref4_EBCommodityCollateralStaging">
+            <ejb-ref-name>EBLoanAgencyStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyLocal</local>
+            <ejb-link>EBLoanAgencyStaging</ejb-link>
+         </ejb-local-ref>
+          <ejb-local-ref id="ejblocalref5_EBCommodityCollateralStaging">
+             <ejb-ref-name>EBPreConditionStagingLocalHome</ejb-ref-name>
+             <ejb-ref-type>Entity</ejb-ref-type>
+             <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionLocalHome</local-home>
+             <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionLocal</local>
+             <ejb-link>EBPreConditionStaging</ejb-link>
+          </ejb-local-ref>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+
+      <!-- EBHedgingContractInfo -->
+      <entity id="entity_EBHedgingContractInfo">
+         <ejb-name>EBHedgingContractInfo</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBHedgingContractInfo</abstract-schema-name>
+         <cmp-field id="cmp_EBHedgingContractInfo_hedgingContractInfoPK">
+            <field-name>eBHedgingContractInfoID</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_globalTreasuryReference">
+            <field-name>globalTreasuryReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_dateOfDeal">
+            <field-name>dateOfDeal</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_nameOfTheCounterParty">
+            <field-name>nameOfTheCounterParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_dealAmount">
+            <field-name>eBDealAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_dealAmountCurrency">
+            <field-name>dealAmountCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_hedgingAgreement">
+            <field-name>hedgingAgreement</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_hedgingAgreementDate">
+            <field-name>hedgingAgreementDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_margin">
+            <field-name>margin</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_commonRef">
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfo_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>eBHedgingContractInfoID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBHedgingContractInfo o </ejb-ql>
+         </query>
+      </entity>
+      <!-- EBHedgingContractInfoStaging -->
+      <entity id="entity_EBHedgingContractInfoStaging">
+         <ejb-name>EBHedgingContractInfoStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBHedgingContractInfoBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBHedgingContractInfoStaging</abstract-schema-name>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_hedgingContractInfoPK">
+            <field-name>eBHedgingContractInfoID</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_globalTreasuryReference">
+            <field-name>globalTreasuryReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_dateOfDeal">
+            <field-name>dateOfDeal</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_nameOfTheCounterParty">
+            <field-name>nameOfTheCounterParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_dealAmount">
+            <field-name>eBDealAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_dealAmountCurrency">
+            <field-name>dealAmountCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_hedgingAgreement">
+            <field-name>hedgingAgreement</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_hedgingAgreementDate">
+            <field-name>hedgingAgreementDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_margin">
+            <field-name>margin</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_commonRef">
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBHedgingContractInfoStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>eBHedgingContractInfoID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBHedgingContractInfoStaging o </ejb-ql>
+         </query>
+      </entity>
+      
+      <!-- EBApprovedCommodityType -->
+      <entity>
+         <ejb-name>EBApprovedCommodityType</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBApprovedCommodityType</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBApprovedCommodityTypeID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>profileID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>eBApprovedCommodityTypeID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBApprovedCommodityType o </ejb-ql>
+         </query>
+      </entity>
+
+      <entity>
+         <ejb-name>EBApprovedCommodityTypeStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBApprovedCommodityTypeStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBApprovedCommodityTypeID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>profileID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>eBApprovedCommodityTypeID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBApprovedCommodityTypeStaging o </ejb-ql>
+         </query>
+      </entity>
+      
+      <entity>
+         <ejb-name>EBBorrower</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBBorrower</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBBorrowerID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>name</field-name>
+         </cmp-field>
+	     <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBBorrowerID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBBorrower o </ejb-ql>
+         </query>
+      </entity>
+
+      <entity>
+         <ejb-name>EBBorrowerStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBBorrowerStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBBorrowerID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>name</field-name>
+         </cmp-field>
+ 	     <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBBorrowerID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBBorrowerStaging o </ejb-ql>
+         </query>
+      </entity>
+      
+      <!-- EBLoanAgency -->
+      <entity id="entity_EBLoanAgency">
+         <ejb-name>EBLoanAgency</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLoanAgency</abstract-schema-name>
+         <cmp-field id="cmp_EBLoanAgency_loanAgencyPK">
+            <field-name>loanAgencyPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_administrativeAgentName">
+            <field-name>administrativeAgentName</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_collateralAgentName">
+            <field-name>collateralAgentName</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_documentAgent">
+            <field-name>documentAgent</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_lCIssuingBank">
+            <field-name>lCIssuingBank</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBIsMultipleCurrencies">
+            <field-name>eBIsMultipleCurrencies</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_globalCurrenciesStr">
+            <field-name>globalCurrenciesStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBGlobalAmount">
+            <field-name>eBGlobalAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_globalAmountCurrency">
+            <field-name>globalAmountCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_facilityCommitmentDate">
+            <field-name>facilityCommitmentDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_facilityEffectiveDate">
+            <field-name>facilityEffectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_facilityMaturityDate">
+            <field-name>facilityMaturityDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_facilityTerminationDate">
+            <field-name>facilityTerminationDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_lastDateToIssueLC">
+            <field-name>lastDateToIssueLC</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_finalLCMaturityDate">
+            <field-name>finalLCMaturityDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_typeOfTransaction">
+            <field-name>typeOfTransaction</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_agentBankCounselName">
+            <field-name>agentBankCounselName</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBIsEqualInstalments">
+            <field-name>eBIsEqualInstalments</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBPrincipleAmount">
+            <field-name>eBPrincipleAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_principleAmountCurrency">
+            <field-name>principleAmountCurrency</field-name>
+         </cmp-field>
+         <!--
+         <cmp-field id="cmp_EBLoanAgency_numberOfInstalments">
+            <field-name>numberOfInstalments</field-name>
+         </cmp-field>
+         -->
+         <cmp-field id="cmp_EBLoanAgency_frequencyOfPayment">
+            <field-name>frequencyOfPayment</field-name>
+         </cmp-field>
+         <!--
+         <cmp-field id="cmp_EBLoanAgency_dateOfPayment">
+            <field-name>dateOfPayment</field-name>
+         </cmp-field>
+         -->
+         <cmp-field id="cmp_EBLoanAgency_eBIsTermOutOption">
+            <field-name>eBIsTermOutOption</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_calculationBaseNumberOfDays">
+            <field-name>calculationBaseNumberOfDays</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBDebtRate">
+            <field-name>eBDebtRate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBIsPrepaymentOption">
+            <field-name>eBIsPrepaymentOption</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBPrepaymentMinAmount">
+            <field-name>eBPrepaymentMinAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_prepaymentMinAmountCurrency">
+            <field-name>prepaymentMinAmountCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBIsPrepaymentPenalty">
+            <field-name>eBIsPrepaymentPenalty</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_numberOfNoticeDays">
+            <field-name>numberOfNoticeDays</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_governingLaw">
+            <field-name>governingLaw</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_interestPeriodDurationUnit">
+            <field-name>interestPeriodDurationUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_interestPeriodDuration">
+            <field-name>interestPeriodDuration</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_maxNumberOfLoanOutstanding">
+            <field-name>maxNumberOfLoanOutstanding</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_minDrawdownAmountAllowedCurrency">
+            <field-name>minDrawdownAmountAllowedCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBMinDrawdownAmountAllowed">
+            <field-name>eBMinDrawdownAmountAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_minNumberOfDrawdownsAllowed">
+            <field-name>eBMinNumberOfDrawdownsAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_minAssignmentFeesCurrency">
+            <field-name>minAssignmentFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBMinAssignmentFees">
+            <field-name>eBMinAssignmentFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_maxDrawdownAmountAllowedCurrency">
+            <field-name>maxDrawdownAmountAllowedCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBMaxDrawdownAmountAllowed">
+            <field-name>eBMaxDrawdownAmountAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_maxNumberOfDrawdownsAllowed">
+            <field-name>eBMaxNumberOfDrawdownsAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_maxAssignmentFeesCurrency">
+            <field-name>maxAssignmentFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBMaxAssignmentFees">
+            <field-name>eBMaxAssignmentFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBIsConsentFromBorrower">
+            <field-name>eBIsConsentFromBorrower</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBMajorityLendersConsent">
+            <field-name>eBMajorityLendersConsent</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBDefaultRate">
+            <field-name>eBDefaultRate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_agencyFeesCurrency">
+            <field-name>agencyFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBAgencyFees">
+            <field-name>eBAgencyFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_closingFeesCurrency">
+            <field-name>closingFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBClosingFees">
+            <field-name>eBClosingFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_commitmentFeesCurrency">
+            <field-name>commitmentFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBCommitmentFees">
+            <field-name>eBCommitmentFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_facilityFeesCurrency">
+            <field-name>facilityFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBFacilityFees">
+            <field-name>eBFacilityFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_upfrontFeesCurrency">
+            <field-name>upfrontFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBUpfrontFees">
+            <field-name>eBUpfrontFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_lCFeesCurrency">
+            <field-name>lCFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBLCFees">
+            <field-name>eBLCFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_amendmentFeesCurrency">
+            <field-name>amendmentFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBAmendmentFees">
+            <field-name>eBAmendmentFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_extensionFeesCurrency">
+            <field-name>extensionFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBExtensionFees">
+            <field-name>eBExtensionFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_arrangementCurrency">
+            <field-name>arrangementCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBArrangementFees">
+            <field-name>eBArrangementFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_otherFeesCurrency">
+            <field-name>otherFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_eBOtherFees">
+            <field-name>eBOtherFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_facilityType">
+            <field-name>facilityType</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgency_commonRef">
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>loanAgencyPK</primkey-field>
+         <ejb-local-ref id="ejblocalref1_EBLoanAgency">
+            <ejb-ref-name>EBLoanLimitLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitLocal</local>
+            <ejb-link>EBLoanLimit</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref2_EBLoanAgency">
+            <ejb-ref-name>EBGuarantorLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorLocal</local>
+            <ejb-link>EBGuarantor</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref3_EBLoanAgency">
+            <ejb-ref-name>EBBorrowerLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerLocal</local>
+            <ejb-link>EBBorrower</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref4_EBLoanAgency">
+            <ejb-ref-name>EBParticipantLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantLocal</local>
+            <ejb-link>EBParticipant</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref5_EBLoanAgency">
+            <ejb-ref-name>EBSubLimitLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitLocal</local>
+            <ejb-link>EBSubLimit</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref6_EBLoanAgency">
+            <ejb-ref-name>EBLoanScheduleLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleLocal</local>
+            <ejb-link>EBLoanSchedule</ejb-link>
+         </ejb-local-ref>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBLoanAgency o </ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBLoanAgencyStaging">
+         <ejb-name>EBLoanAgencyStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanAgencyStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLoanAgencyStaging</abstract-schema-name>
+         <cmp-field id="cmp_EBLoanAgencyStaging_loanAgencyPK">
+            <field-name>loanAgencyPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_administrativeAgentName">
+            <field-name>administrativeAgentName</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_collateralAgentName">
+            <field-name>collateralAgentName</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_documentAgent">
+            <field-name>documentAgent</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_lCIssuingBank">
+            <field-name>lCIssuingBank</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBIsMultipleCurrencies">
+            <field-name>eBIsMultipleCurrencies</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_globalCurrenciesStr">
+            <field-name>globalCurrenciesStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBGlobalAmount">
+            <field-name>eBGlobalAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_globalAmountCurrency">
+            <field-name>globalAmountCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_facilityCommitmentDate">
+            <field-name>facilityCommitmentDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_facilityEffectiveDate">
+            <field-name>facilityEffectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_facilityMaturityDate">
+            <field-name>facilityMaturityDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_facilityTerminationDate">
+            <field-name>facilityTerminationDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_lastDateToIssueLC">
+            <field-name>lastDateToIssueLC</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_finalLCMaturityDate">
+            <field-name>finalLCMaturityDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_typeOfTransaction">
+            <field-name>typeOfTransaction</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_agentBankCounselName">
+            <field-name>agentBankCounselName</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBIsEqualInstalments">
+            <field-name>eBIsEqualInstalments</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBPrincipleAmount">
+            <field-name>eBPrincipleAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_principleAmountCurrency">
+            <field-name>principleAmountCurrency</field-name>
+         </cmp-field>
+         <!--
+         <cmp-field id="cmp_EBLoanAgencyStaging_numberOfInstalments">
+            <field-name>numberOfInstalments</field-name>
+         </cmp-field>
+         -->
+         <cmp-field id="cmp_EBLoanAgencyStaging_frequencyOfPayment">
+            <field-name>frequencyOfPayment</field-name>
+         </cmp-field>
+         <!--
+         <cmp-field id="cmp_EBLoanAgencyStaging_dateOfPayment">
+            <field-name>dateOfPayment</field-name>
+         </cmp-field>
+         -->
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBIsTermOutOption">
+            <field-name>eBIsTermOutOption</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_calculationBaseNumberOfDays">
+            <field-name>calculationBaseNumberOfDays</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBDebtRate">
+            <field-name>eBDebtRate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBIsPrepaymentOption">
+            <field-name>eBIsPrepaymentOption</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBPrepaymentMinAmount">
+            <field-name>eBPrepaymentMinAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_prepaymentMinAmountCurrency">
+            <field-name>prepaymentMinAmountCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_isPrepaymentPenalty">
+            <field-name>eBIsPrepaymentPenalty</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_numberOfNoticeDays">
+            <field-name>numberOfNoticeDays</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_governingLaw">
+            <field-name>governingLaw</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_interestPeriodDurationUnit">
+            <field-name>interestPeriodDurationUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_interestPeriodDuration">
+            <field-name>interestPeriodDuration</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_maxNumberOfLoanOutstanding">
+            <field-name>maxNumberOfLoanOutstanding</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_minDrawdownAmountAllowedCurrency">
+            <field-name>minDrawdownAmountAllowedCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBMinDrawdownAmountAllowed">
+            <field-name>eBMinDrawdownAmountAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_minNumberOfDrawdownsAllowed">
+            <field-name>eBMinNumberOfDrawdownsAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_minAssignmentFeesCurrency">
+            <field-name>minAssignmentFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBMinAssignmentFees">
+            <field-name>eBMinAssignmentFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_maxDrawdownAmountAllowedCurrency">
+            <field-name>maxDrawdownAmountAllowedCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBMaxDrawdownAmountAllowed">
+            <field-name>eBMaxDrawdownAmountAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_maxNumberOfDrawdownsAllowed">
+            <field-name>eBMaxNumberOfDrawdownsAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_maxAssignmentFeesCurrency">
+            <field-name>maxAssignmentFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBMaxAssignmentFees">
+            <field-name>eBMaxAssignmentFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBIsConsentFromBorrower">
+            <field-name>eBIsConsentFromBorrower</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBMajorityLendersConsent">
+            <field-name>eBMajorityLendersConsent</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBDefaultRate">
+            <field-name>eBDefaultRate</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_agencyFeesCurrency">
+            <field-name>agencyFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBAgencyFees">
+            <field-name>eBAgencyFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_closingFeesCurrency">
+            <field-name>closingFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBClosingFees">
+            <field-name>eBClosingFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_commitmentFeesCurrency">
+            <field-name>commitmentFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBCommitmentFees">
+            <field-name>eBCommitmentFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_facilityFeesCurrency">
+            <field-name>facilityFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBFacilityFees">
+            <field-name>eBFacilityFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_upfrontFeesCurrency">
+            <field-name>upfrontFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBUpfrontFees">
+            <field-name>eBUpfrontFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_lCFeesCurrency">
+            <field-name>lCFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBLCFees">
+            <field-name>eBLCFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_amendmentFeesCurrency">
+            <field-name>amendmentFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBAmendmentFees">
+            <field-name>eBAmendmentFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_extensionFeesCurrency">
+            <field-name>extensionFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBExtensionFees">
+            <field-name>eBExtensionFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_arrangementCurrency">
+            <field-name>arrangementCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBArrangementFees">
+            <field-name>eBArrangementFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_otherFeesCurrency">
+            <field-name>otherFeesCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_eBOtherFees">
+            <field-name>eBOtherFees</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStagin_facilityType">
+            <field-name>facilityType</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmp_EBLoanAgencyStaging_commonRef">
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>loanAgencyPK</primkey-field>
+         <ejb-local-ref id="ejblocalref1_EBLoanAgencyStaging">
+            <ejb-ref-name>EBLoanLimitStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitLocal</local>
+            <ejb-link>EBLoanLimitStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref2_EBLoanAgencyStaging">
+            <ejb-ref-name>EBGuarantorStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorLocal</local>
+            <ejb-link>EBGuarantorStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref3_EBLoanAgencyStaging">
+            <ejb-ref-name>EBBorrowerStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBBorrowerLocal</local>
+            <ejb-link>EBBorrowerStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref4_EBLoanAgencyStaging">
+            <ejb-ref-name>EBParticipantStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantLocal</local>
+            <ejb-link>EBParticipantStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref5_EBLoanAgencyStaging">
+            <ejb-ref-name>EBSubLimitStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitLocal</local>
+            <ejb-link>EBSubLimitStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref6_EBLoanAgencyStaging">
+            <ejb-ref-name>EBLoanScheduleStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleLocal</local>
+            <ejb-link>EBLoanScheduleStaging</ejb-link>
+         </ejb-local-ref>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBLoanAgencyStaging o </ejb-ql>
+         </query>
+      </entity>
+      
+      <entity>
+         <ejb-name>EBGuarantor</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBGuarantor</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBGuarantorID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>name</field-name>
+         </cmp-field>
+	     <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBGuarantorID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBGuarantor o </ejb-ql>
+         </query>
+      </entity>
+
+      <entity>
+         <ejb-name>EBGuarantorStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBGuarantorBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBGuarantorStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBGuarantorID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>name</field-name>
+         </cmp-field>
+	     <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBGuarantorID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBGuarantorStaging o </ejb-ql>
+         </query>
+      </entity>
+
+      <!-- EBLoanLimit -->
+      <entity>
+         <ejb-name>EBLoanLimit</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLoanLimit</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBLoanLimitID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBLimitID</field-name>
+         </cmp-field>
+	     <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBCommonReferenceID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBCoBorrowerLimitID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>customerCategory</field-name>
+         </cmp-field>
+
+         <primkey-field>eBLoanLimitID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <!-- EBLoanLimitStaging -->
+      <entity>
+         <ejb-name>EBLoanLimitStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanLimitBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLoanLimitStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBLoanLimitID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBLimitID</field-name>
+         </cmp-field>
+	     <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBCommonReferenceID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBCoBorrowerLimitID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>customerCategory</field-name>
+         </cmp-field>
+         <primkey-field>eBLoanLimitID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+
+      <entity>
+         <ejb-name>EBParticipant</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBParticipant</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBParticipantID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>name</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBAllocatedAmount</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>remarks</field-name>
+         </cmp-field>
+	     <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBParticipantID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBParticipant o </ejb-ql>
+         </query>
+      </entity>
+
+      <entity>
+         <ejb-name>EBParticipantStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBParticipantBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBParticipantStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBParticipantID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>name</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBAllocatedAmount</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>remarks</field-name>
+         </cmp-field>
+	     <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBParticipantID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBParticipantStaging o </ejb-ql>
+         </query>
+      </entity>
+
+      <!-- EBSubLimit -->
+      <entity>
+         <ejb-name>EBSubLimit</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBSubLimit</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBSubLimitID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>currency</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBAmount</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>facilityType</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBSubLimitID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBSubLimit o </ejb-ql>
+         </query>
+      </entity>
+      <!-- EBSubLimitStaging -->
+      <entity>
+         <ejb-name>EBSubLimitStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBSubLimitBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBSubLimitStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBSubLimitID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>currency</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBAmount</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>facilityType</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBSubLimitID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBSubLimitStaging o </ejb-ql>
+         </query>
+      </entity>
+
+      <!-- EBLoanSchedule -->
+      <entity>
+         <ejb-name>EBLoanSchedule</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLoanSchedule</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBLoanScheduleID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>paymentDate</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBPrincipalDueAmount</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBInterestDueAmount</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBLoanScheduleID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBLoanSchedule o </ejb-ql>
+         </query>
+      </entity>
+      <!-- EBLoanScheduleStaging -->
+      <entity>
+         <ejb-name>EBLoanScheduleStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBLoanScheduleBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLoanScheduleStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBLoanScheduleID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>paymentDate</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBPrincipalDueAmount</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBInterestDueAmount</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBLoanScheduleID</primkey-field>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBLoanScheduleStaging o </ejb-ql>
+         </query>
+      </entity>
+
+       <entity>
+           <ejb-name>EBPreCondition</ejb-name>
+           <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionLocalHome</local-home>
+           <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionLocal</local>
+           <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionBean</ejb-class>
+           <persistence-type>Container</persistence-type>
+           <prim-key-class>java.lang.Long</prim-key-class>
+           <reentrant>False</reentrant>
+           <cmp-version>2.x</cmp-version>
+           <abstract-schema-name>EBPreCondition</abstract-schema-name>
+           <cmp-field>
+              <field-name>eBPreConditionID</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>preCondition</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>userInfo</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>userID</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>updateDate</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>limitProfileID</field-name>
+           </cmp-field>
+           <primkey-field>eBPreConditionID</primkey-field>
+           <resource-ref>
+              <res-ref-name>jdbc/CMSPool</res-ref-name>
+              <res-type>javax.sql.DataSource</res-type>
+              <res-auth>Container</res-auth>
+              <res-sharing-scope>Shareable</res-sharing-scope>
+           </resource-ref>
+       </entity>
+
+       <entity>
+           <ejb-name>EBPreConditionStaging</ejb-name>
+           <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionLocalHome</local-home>
+           <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionLocal</local>
+           <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBPreConditionBean</ejb-class>
+           <persistence-type>Container</persistence-type>
+           <prim-key-class>java.lang.Long</prim-key-class>
+           <reentrant>False</reentrant>
+           <cmp-version>2.x</cmp-version>
+           <abstract-schema-name>EBPreConditionStaging</abstract-schema-name>
+           <cmp-field>
+              <field-name>eBPreConditionID</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>preCondition</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>userInfo</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>userID</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>updateDate</field-name>
+           </cmp-field>
+           <cmp-field>
+              <field-name>limitProfileID</field-name>
+           </cmp-field>
+           <primkey-field>eBPreConditionID</primkey-field>
+           <resource-ref>
+              <res-ref-name>jdbc/CMSPool</res-ref-name>
+              <res-type>javax.sql.DataSource</res-type>
+              <res-auth>Container</res-auth>
+              <res-sharing-scope>Shareable</res-sharing-scope>
+           </resource-ref>
+       </entity>
+
+      <!-- EBContract -->
+      <entity>
+         <ejb-name>EBContract</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBContract</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBContractID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>approvedCommodityTypeID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>supplierID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>maturityDate</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>minShippingFrequency</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>minShippingFrequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>lastShipmentDate</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>mainContractNumber</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBContractPriceCcyCode</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBContractPrice</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBContractedQty</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBContractedQtyUOM</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBQtyDifferentialSign</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBQtyDifferential</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBContractID</primkey-field>
+         <ejb-local-ref id="ejblocalref1_EBContract">
+            <ejb-ref-name>EBApprovedCommodityTypeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocal</local>
+            <ejb-link>EBApprovedCommodityType</ejb-link>
+         </ejb-local-ref>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBContract o </ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findAllNotDeleted</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBContract o WHERE o.status &lt;&gt; 'DELETED'</ejb-ql>
+         </query>
+      </entity>
+      <!-- EBContractStaging -->
+      <entity>
+         <ejb-name>EBContractStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractLocalHome</local-home>
+         <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractLocal</local>
+         <ejb-class>com.integrosys.cms.app.collateral.bus.type.commodity.EBContractStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBContractStaging</abstract-schema-name>
+         <cmp-field>
+            <field-name>eBContractID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>approvedCommodityTypeID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>supplierID</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>maturityDate</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>minShippingFrequency</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>minShippingFrequencyUnit</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>lastShipmentDate</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>mainContractNumber</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBContractPriceCcyCode</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBContractPrice</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBContractedQty</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBContractedQtyUOM</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBQtyDifferentialSign</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>eBQtyDifferential</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field>
+            <field-name>commonRef</field-name>
+         </cmp-field>
+         <primkey-field>eBContractID</primkey-field>
+         <ejb-local-ref id="ejblocalref1_EBContractStaging">
+            <ejb-ref-name>EBApprovedCommodityTypeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocalHome</local-home>
+            <local>com.integrosys.cms.app.collateral.bus.type.commodity.EBApprovedCommodityTypeLocal</local>
+            <ejb-link>EBApprovedCommodityType</ejb-link>
+         </ejb-local-ref>
+         <resource-ref>
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBContractStaging o </ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findAllNotDeleted</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql>SELECT  OBJECT(o) FROM EBContractStaging o WHERE o.status &lt;&gt; 'DELETED'</ejb-ql>
+         </query>
+      </entity>
+
+   </enterprise-beans>
+
+   <relationships>
+
+      <!-- CommodityCollateral-Contract -->
+      <ejb-relation id="EJBRelation_1">
+         <ejb-relation-name>CommodityCollateral-Contract</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_1">
+            <ejb-relationship-role-name>CommodityCollateral-Has-Contract</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_1">
+               <ejb-name>EBCommodityCollateral</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_1">
+               <cmr-field-name>contractsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_2">
+            <ejb-relationship-role-name>Contract-BelongsTo-CommodityCollateral</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_2">
+               <ejb-name>EBContract</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_2">
+         <ejb-relation-name>CommodityCollateralStaging-ContractStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_21">
+            <ejb-relationship-role-name>CommodityCollateralStaging-Has-ContractStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_21">
+               <ejb-name>EBCommodityCollateralStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_2">
+               <cmr-field-name>contractsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_22">
+            <ejb-relationship-role-name>ContractStaging-BelongsTo-CommodityCollateralStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_22">
+               <ejb-name>EBContractStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+
+      <!-- CommodityCollateral-HedgingContractInfo -->
+      <ejb-relation id="EJBRelation_5">
+         <ejb-relation-name>CommodityCollateral-HedgingContractInfo</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_5">
+            <ejb-relationship-role-name>CommodityCollateral-Has-HedgingContractInfo</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_5">
+               <ejb-name>EBCommodityCollateral</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_5">
+               <cmr-field-name>hedgingContractInfosCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_6">
+            <ejb-relationship-role-name>HedgingContractInfo-BelongsTo-CommodityCollateral</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_6">
+               <ejb-name>EBHedgingContractInfo</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_6">
+         <ejb-relation-name>CommodityCollateralStaging-HedgingContractInfoStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_65">
+            <ejb-relationship-role-name>CommodityCollateralStaging-Has-HedgingContractInfoStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_65">
+               <ejb-name>EBCommodityCollateralStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_6">
+               <cmr-field-name>hedgingContractInfosCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_66">
+            <ejb-relationship-role-name>HedgingContractInfoStaging-BelongsTo-CommodityCollateralStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_66">
+               <ejb-name>EBHedgingContractInfoStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+  
+      <!-- CommodityCollateral-ApprovedCommodityType -->
+      <ejb-relation id="EJBRelation_3">
+         <ejb-relation-name>CommodityCollateral-ApprovedCommodityType</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_3">
+            <ejb-relationship-role-name>CommodityCollateral-Has-ApprovedCommodityType</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_3">
+               <ejb-name>EBCommodityCollateral</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_3">
+               <cmr-field-name>approvedCommodityTypesCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_4">
+            <ejb-relationship-role-name>ApprovedCommodityType-BelongsTo-CommodityCollateral</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_4">
+               <ejb-name>EBApprovedCommodityType</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_4">
+         <ejb-relation-name>CommodityCollateralStaging-ApprovedCommodityTypeStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_43">
+            <ejb-relationship-role-name>CommodityCollateralStaging-Has-ApprovedCommodityTypeStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_43">
+               <ejb-name>EBCommodityCollateralStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_4">
+               <cmr-field-name>approvedCommodityTypesCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_44">
+            <ejb-relationship-role-name>ApprovedCommodityTypeStaging-BelongsTo-CommodityCollateralStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_44">
+               <ejb-name>EBApprovedCommodityTypeStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+
+      <!-- LoanAgency-Borrower  -->
+      <ejb-relation id="EJBRelation_171">
+         <ejb-relation-name>LoanAgency-Borrower</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_171">
+            <ejb-relationship-role-name>LoanAgency-Has-Borrower</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_171">
+               <ejb-name>EBLoanAgency</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_171">
+               <cmr-field-name>borrowersCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_114">
+            <ejb-relationship-role-name>Borrower-BelongsTo-LoanAgency</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_114">
+               <ejb-name>EBBorrower</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_141">
+         <ejb-relation-name>LoanAgencyStaging-BorrowerStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_1417">
+            <ejb-relationship-role-name>LoanAgencyStaging-Has-BorrowerStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_1417">
+               <ejb-name>EBLoanAgencyStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_14">
+               <cmr-field-name>borrowersCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_1501">
+            <ejb-relationship-role-name>BorrowerStaging-BelongsTo-LoanAgencyStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_1501">
+               <ejb-name>EBBorrowerStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+
+      <!-- CommodityCollateral-LoanAgency -->
+      <ejb-relation id="EJBRelation_71">
+         <ejb-relation-name>CommodityCollateral-LoanAgency</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_71">
+            <ejb-relationship-role-name>CommodityCollateral-Has-LoanAgency</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_71">
+               <ejb-name>EBCommodityCollateral</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_71">
+               <cmr-field-name>loansCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_14">
+            <ejb-relationship-role-name>LoanAgency-BelongsTo-CommodityCollateral</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_14">
+               <ejb-name>EBLoanAgency</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_41">
+         <ejb-relation-name>CommodityCollateralStaging-LoanAgencyStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_47">
+            <ejb-relationship-role-name>CommodityCollateralStaging-Has-LoanAgencyStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_47">
+               <ejb-name>EBCommodityCollateralStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_42">
+               <cmr-field-name>loansCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_41">
+            <ejb-relationship-role-name>LoanAgencyStaging-BelongsTo-CommodityCollateralStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_41">
+               <ejb-name>EBLoanAgencyStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+
+      <!-- LoanAgency-Guarantor -->
+      <ejb-relation id="EJBRelation_1701">
+         <ejb-relation-name>LoanAgency-Guarantor</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_181">
+            <ejb-relationship-role-name>LoanAgency-Has-Guarantor</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_181">
+               <ejb-name>EBLoanAgency</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_1701">
+               <cmr-field-name>guarantorsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_154">
+            <ejb-relationship-role-name>Guarantor-BelongsTo-LoanAgency</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_154">
+               <ejb-name>EBGuarantor</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_161">
+         <ejb-relation-name>LoanAgencyStaging-GuarantorStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_1427">
+            <ejb-relationship-role-name>LoanAgencyStaging-Has-GuarantorStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_1427">
+               <ejb-name>EBLoanAgencyStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_104">
+               <cmr-field-name>guarantorsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_1401">
+            <ejb-relationship-role-name>GuarantorStaging-BelongsTo-LoanAgencyStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_1401">
+               <ejb-name>EBGuarantorStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      
+      <!-- LoanAgency-Limit  -->
+      <ejb-relation>
+         <ejb-relation-name>LoanAgency-Limit</ejb-relation-name>
+         <ejb-relationship-role>
+            <ejb-relationship-role-name>LoanAgency-Has-Limit</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLoanAgency</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>limitsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role>
+            <ejb-relationship-role-name>Limit-BelongsTo-LoanAgency</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source>
+               <ejb-name>EBLoanLimit</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation>
+         <ejb-relation-name>LoanAgency-Limit-Staging</ejb-relation-name>
+         <ejb-relationship-role>
+            <ejb-relationship-role-name>LoanAgency-Has-Limit-Stage</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLoanAgencyStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>limitsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role>
+            <ejb-relationship-role-name>Limit-BelongsTo-LoanAgency-Stage</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source>
+               <ejb-name>EBLoanLimitStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>      
+      
+      <!-- LoanAgency-SubLimit -->
+      <ejb-relation id="EJBRelation_878">
+         <ejb-relation-name>LoanAgency-SubLimit</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_878">
+            <ejb-relationship-role-name>LoanAgency-Has-SubLimit</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_878">
+               <ejb-name>EBLoanAgency</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_878">
+               <cmr-field-name>subLimitsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_884">
+            <ejb-relationship-role-name>SubLimit-BelongsTo-LoanAgency</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_884">
+               <ejb-name>EBSubLimit</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_848">
+         <ejb-relation-name>LoanAgencyStaging-SubLimitStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_8487">
+            <ejb-relationship-role-name>LoanAgencyStaging-Has-SubLimitStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_8487">
+               <ejb-name>EBLoanAgencyStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_84">
+               <cmr-field-name>subLimitsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_848">
+            <ejb-relationship-role-name>SubLimitStaging-BelongsTo-LoanAgencyStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_848">
+               <ejb-name>EBSubLimitStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>      
+      
+      <!-- LoanAgency-Participant -->
+      <ejb-relation id="EJBRelation_1711">
+         <ejb-relation-name>LoanAgency-Participant</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_191">
+            <ejb-relationship-role-name>LoanAgency-Has-Participant</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_191">
+               <ejb-name>EBLoanAgency</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_1711">
+               <cmr-field-name>participantsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_164">
+            <ejb-relationship-role-name>Participant-BelongsTo-LoanAgency</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_164">
+               <ejb-name>EBParticipant</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_1731">
+         <ejb-relation-name>LoanAgencyStaging-ParticipantStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_1437">
+            <ejb-relationship-role-name>LoanAgencyStaging-Has-ParticipantStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_1437">
+               <ejb-name>EBLoanAgencyStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_1104">
+               <cmr-field-name>participantsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_1511">
+            <ejb-relationship-role-name>ParticipantStaging-BelongsTo-LoanAgencyStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_1511">
+               <ejb-name>EBParticipantStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      
+      <!-- LoanAgency-LoanSchedule -->
+      <ejb-relation id="EJBRelation_2112">
+         <ejb-relation-name>LoanAgency-LoanSchedule</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_2112">
+            <ejb-relationship-role-name>LoanAgency-Has-LoanSchedule</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_2112">
+               <ejb-name>EBLoanAgency</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_2112">
+               <cmr-field-name>loanSchedulesCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_224">
+            <ejb-relationship-role-name>LoanSchedule-BelongsTo-LoanAgency</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_224">
+               <ejb-name>EBLoanSchedule</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="EJBRelation_242">
+         <ejb-relation-name>LoanAgencyStaging-LoanScheduleStaging</ejb-relation-name>
+         <ejb-relationship-role id="EJBRelationshipRole_24211">
+            <ejb-relationship-role-name>LoanAgencyStaging-Has-LoanScheduleStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source id="RoleSource_24211">
+               <ejb-name>EBLoanAgencyStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field id="CMRField_24">
+               <cmr-field-name>loanSchedulesCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="EJBRelationshipRole_242">
+            <ejb-relationship-role-name>LoanScheduleStaging-BelongsTo-LoanAgencyStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <cascade-delete/>
+            <relationship-role-source id="RoleSource_242">
+               <ejb-name>EBLoanScheduleStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>      
+      
+       <ejb-relation>
+          <ejb-relation-name>CommodityCollateral-PreCondition</ejb-relation-name>
+          <ejb-relationship-role>
+             <ejb-relationship-role-name>CommodityCollateral-Has-PreCondition</ejb-relationship-role-name>
+             <multiplicity>One</multiplicity>
+             <relationship-role-source>
+                <ejb-name>EBCommodityCollateral</ejb-name>
+             </relationship-role-source>
+             <cmr-field>
+                <cmr-field-name>preConditionCMR</cmr-field-name>
+                <cmr-field-type>java.util.Collection</cmr-field-type>
+             </cmr-field>
+          </ejb-relationship-role>
+          <ejb-relationship-role>
+             <ejb-relationship-role-name>PreCondition-BelongsTo-CommodityCollateral</ejb-relationship-role-name>
+             <multiplicity>Many</multiplicity>
+             <cascade-delete/>
+             <relationship-role-source>
+                <ejb-name>EBPreCondition</ejb-name>
+             </relationship-role-source>
+          </ejb-relationship-role>
+       </ejb-relation>
+
+       <ejb-relation>
+          <ejb-relation-name>CommodityCollateralStaging-PreConditionStaging</ejb-relation-name>
+          <ejb-relationship-role>
+             <ejb-relationship-role-name>CommodityCollateralStaging-Has-PreConditionStaging</ejb-relationship-role-name>
+             <multiplicity>One</multiplicity>
+             <relationship-role-source>
+                <ejb-name>EBCommodityCollateralStaging</ejb-name>
+             </relationship-role-source>
+             <cmr-field>
+                <cmr-field-name>preConditionCMR</cmr-field-name>
+                <cmr-field-type>java.util.Collection</cmr-field-type>
+             </cmr-field>
+          </ejb-relationship-role>
+          <ejb-relationship-role>
+             <ejb-relationship-role-name>PreConditionStaging-BelongsTo-CommodityCollateralStaging</ejb-relationship-role-name>
+             <multiplicity>Many</multiplicity>
+             <cascade-delete/>
+             <relationship-role-source>
+                <ejb-name>EBPreConditionStaging</ejb-name>
+             </relationship-role-source>
+          </ejb-relationship-role>
+       </ejb-relation>      
+
+ 
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+
+         <method>
+            <ejb-name>EBContract</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBContractStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBHedgingContractInfo</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBHedgingContractInfoStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBApprovedCommodityType</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBApprovedCommodityTypeStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBBorrower</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBBorrowerStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBLoanAgency</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLoanAgencyStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBGuarantor</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBGuarantorStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBCommodityCollateral</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCommodityCollateralStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBLoanLimit</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLoanLimitStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBParticipant</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBParticipantStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+         <method>
+            <ejb-name>EBSubLimit</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBSubLimitStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+
+          <method>
+             <ejb-name>EBPreCondition</ejb-name>
+             <method-name>*</method-name>
+          </method>
+          <method>
+             <ejb-name>EBPreConditionStaging</ejb-name>
+             <method-name>*</method-name>
+          </method>
+
+
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

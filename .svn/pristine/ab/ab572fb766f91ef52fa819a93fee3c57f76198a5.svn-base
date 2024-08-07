@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+	<form-beans type="org.apache.struts.action.ActionFormBean">
+		<form-bean name="UdfForm" type="com.integrosys.cms.ui.udf.UdfForm" />
+	</form-beans>
+	<action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+		<action path="/udf" type="com.integrosys.cms.ui.udf.UdfAction" name="UdfForm" validate="false" scope="request">
+           <forward name="list_udf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/list_udf.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.udf"/>
+			</forward>
+			<!--  <forward name="prepare_add_udf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/add_udf.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.addudf"/>
+			</forward>
+			 <forward name="add_udf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.addudf"/>
+            </forward>
+             <forward name="delete_udf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.addudf"/>
+            </forward>
+            <forward name="freeze_udf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.addudf"/>
+            </forward> -->
+            
+              <forward name="maker_prepare_create_udf" path="/template/common_template.jsp">
+			<set-property property="title" value="menu.manual_feeds.udf.name"/>
+			<set-property property="rightFrame" value="/udf/add_udf.jsp"/>
+			</forward>
+          
+           <forward name="maker_en_disable_udf" path="/template/common_template.jsp">
+			<set-property property="title" value="menu.manual_feeds.udf.name"/>
+			<set-property property="rightFrame" value="/udf/maker_en_disable_udf.jsp"/>
+			</forward>
+			 <forward name="checker_activate_udf_read" path="/template/common_template.jsp">
+                  <set-property property="title" value="menu.manual_feeds.udf.name"/>
+                <set-property property="rightFrame" value="/udf/checker_enable_udf.jsp"/>
+            </forward>
+            <forward name="checker_process_delete" path="/template/common_template.jsp">
+                  <set-property property="title" value="menu.manual_feeds.udf.name"/>
+                <set-property property="rightFrame" value="/udf/checker_disable_udf.jsp"/>
+            </forward>
+            <forward name="checker_activate_udf" path="/template/common_template.jsp">
+                  <set-property property="title" value="menu.manual_feeds.udf.name"/>
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            </forward>
+           <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+               <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward>
+            
+            <forward name="checker_udf_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/checker_udf.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward>
+            
+             <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward>
+           <forward name="maker_view_udf_page" path="/template/common_template.jsp">
+               <set-property property="title" value="menu.manual_feeds.udf.name"/>
+			   <set-property property="rightFrame" value="/udf/maker_view_udf.jsp"/>
+            </forward>
+            
+            <forward name="maker_edit_udf_read_page" path="/template/common_template.jsp">
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+			   <set-property property="rightFrame" value="/udf/maker_edit_udf_read.jsp"/>
+            </forward>
+            
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward>
+            
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/maker_prepare_resubmit_delete.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward>
+            
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/maker_close_udf.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward>
+            
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward>
+            
+            <!-- <forward name="maker_view_save_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/maker_read_save_udf.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward> -->
+            
+           <!--  <forward name="checker_list_udf_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/udf/checker_list_udf.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.udf.name"/>
+            </forward> -->
+        </action>
+	</action-mappings>
+
+	<message-resources key="message-udf" parameter="ApplicationResources-udf" />
+</struts-config>

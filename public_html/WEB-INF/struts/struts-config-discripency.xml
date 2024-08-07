@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="DiscrepencyForm" type="com.integrosys.cms.ui.discrepency.DiscrepencyForm"></form-bean>
+    </form-beans>
+    
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">    
+        <action path="/Discrepency" type="com.integrosys.cms.ui.discrepency.DiscrepencyAction" name="DiscrepencyForm" validate="false" scope="request"> 
+        <forward name="calculate_aging_days" path="/discrepency/discrepancyDays.jsp" />       
+        	<forward name="list_discrepency" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/discrepency_list.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            <forward name="work_in_process" path="/template/common_frame_template.jsp">	
+             <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>			
+				<set-property property="rightFrame" value="/common/wip.html"/>
+				<set-property property="title" value="title.sys.admin.maint.discrepency"/>
+	  	    </forward>
+            <forward name="prepare_maker_edit_discrepency_close" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/close.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            <forward name="prepare_maker_edit_discrepency_waive" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/waive.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            <forward name="prepare_maker_edit_discrepency_defer" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/defer.jsp"/>
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="view_discrepency" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/view_discrepency.jsp"/>
+                 <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="totrack_maker_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/totrack_maker_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="checker_process_create_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_checker_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="process_bulk_discrepancy" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_checker_bulk_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            <forward name="maker_close_bulk_discrepancy" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_maker_bulk_close_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            <forward name="maker_process_bulk_discrepancy" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_maker_bulk_process_discrepency.jsp"/>
+                 <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            <forward name="checker_approve_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+             <forward name="checker_approve_bulk_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/discrepancy_ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            <forward name="checker_reject_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/discrepancy_ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="view_discrepency_by_index" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/view_discrepency_by_index.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+             <forward name="prepare_create_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/maker_create_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+             <forward name="maker_create_discrepency_temp" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/maker_create_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+                        
+            <forward name="maker_create_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_create_bulk_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/discrepancy_ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_discrepency" path="/template/common_frame_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/update_discrepency.jsp"/>
+                 <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_edit_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/discrepency_ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="checker_process_update_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_checker_edit_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_delete_discrepency_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/prepare_delete_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_delete_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/discrepency_ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_prepare_activate_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/prepare_activate_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+               
+            <forward name="maker_activate_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+             <forward name="prepare_remove_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/maker_resubmit_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_prepare_close_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/maker_close_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/maker_close_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_confirm_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/discrepency_ack_submit.jsp"/>
+	            <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+	        </forward>
+	        
+	        <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/discrepency_ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>  
+            
+             
+	  	    
+	  	      <forward name="maker_save_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="todo_maker_save_create_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/maker_save_create_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+             <forward name="maker_save_edit_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="checker_view_discrepancy" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_checker_view_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_view_discrepancy" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/maker_create_view_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_reject_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/update_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_view_reject_discrepency" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_maker_process_view_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_process_discrepency_defer" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_maker_process_defer_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_process_discrepency_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_maker_process_close_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="prepare_maker_edit_process_discrepency_waive" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/todo_maker_process_waive_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            <forward name="maker_update_temp_discrepancy" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/discrepency/maker_update_temp_discrepency.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.discrepency"/>
+            </forward>
+            
+            
+        </action>
+        
+   </action-mappings>
+    
+<!--    <message-resources key="message-geography" parameter="ApplicationResources-geography"/>-->
+</struts-config>

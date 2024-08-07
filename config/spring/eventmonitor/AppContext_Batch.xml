@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<description>
+		To be used for Batch Job. Probably inject Services or DAO.
+	</description>
+	
+	<bean id="collateralEvaluationDueBatchJob" class="com.integrosys.cms.app.eventmonitor.collateralevaluationdue.MonEvaluationDue">
+		<property name="monitorDaoList">
+			<list>
+				<ref bean="collateralEvaluationDueDao"/>
+			</list>
+		</property>
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="eventListenersList">
+			<list>
+				<ref bean="evaluationDueListener"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="collateralMaturityBatchJob" class="com.integrosys.cms.app.eventmonitor.collateralmaturity.MonCollateralMaturity">
+		<property name="monitorDaoList">
+			<list>
+				<ref bean="marketableSecCollateralMaturityDao"/>
+				<ref bean="marketableSecCollateralMaturityDao"/>
+				<ref bean="nonMarketableSecCollateralMaturityDao"/>
+				<ref bean="nonMarketableSecCollateralMaturityDao"/>
+				<ref bean="assetPostDatedChequeCollateralMaturityDao"/>
+				<ref bean="assetPostDatedChequeCollateralMaturityDao"/>
+				<ref bean="cashDepositCollateralMaturityDao"/>
+				<ref bean="cashDepositCollateralMaturityDao"/>
+			</list>
+		</property>
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="eventListenersList">
+			<list>
+				<ref bean="collateralMaturityListener"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="marketIndexUpBatchJob" class="com.integrosys.cms.app.eventmonitor.marketindex.MonMarketIndex">
+		<property name="monitorDaoList">
+			<list>
+				<ref bean="marketIndexDao"/>
+			</list>
+		</property>
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="eventListenersList">
+			<list>
+				<ref bean="marketIndexListener"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="marketIndexDownBatchJob" class="com.integrosys.cms.app.eventmonitor.marketindexdown.MonMarketIndexDown">
+		<property name="monitorDaoList">
+			<list>
+				<ref bean="marketIndexDao"/>
+			</list>
+		</property>
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="eventListenersList">
+			<list>
+				<ref bean="marketIndexListener"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="securityCoverageExcessBatchJob" class="com.integrosys.cms.app.eventmonitor.coverageexcess.MonCoverageExcess">
+		<property name="monitorDaoList">
+			<list>
+				<ref bean="coverageExcessDao"/>
+			</list>
+		</property>
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="eventListenersList">
+			<list>
+				<ref bean="coverageListener"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="securityCoverageShortfallBatchJob" class="com.integrosys.cms.app.eventmonitor.coverageshortfall.MonCoverageShortfall">
+		<property name="monitorDaoList">
+			<list>
+				<ref bean="coverageExcessDao"/>
+			</list>
+		</property>
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="eventListenersList">
+			<list>
+				<ref bean="coverageListener"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="expiredDocumentBatchJob" class="com.integrosys.cms.app.eventmonitor.documentexpiry.MonDocumentExpiry">
+		<property name="monitorDaoList">
+			<list>
+				<ref bean="expiredDocumentDao"/>
+			</list>
+		</property>
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="checklistProxyManager" ref="checklistProxy" />
+	</bean>
+
+</beans>

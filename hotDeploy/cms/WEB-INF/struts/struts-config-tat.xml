@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+	<form-beans type="org.apache.struts.action.ActionFormBean">
+		<form-bean name="TatsForm"
+			type="com.integrosys.cms.ui.tat.TatsForm">
+		</form-bean>
+
+		<form-bean name="BflForm"
+			type="com.integrosys.cms.ui.bfl.BflForm">
+		</form-bean>
+
+
+		<form-bean name="TatDocForm"
+			type="com.integrosys.cms.ui.tatdoc.TatDocForm">
+		</form-bean>
+		
+		<form-bean name="MaintainTATForm"
+			type="com.integrosys.cms.ui.maintaintat.MaintainTATForm">
+		</form-bean>
+		
+		<form-bean name="TatDurationForm"
+			type="com.integrosys.cms.ui.tatduration.TatDurationForm">
+		</form-bean>
+	</form-beans>
+
+
+	<action-mappings
+		type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+
+		<action path="/TatDoc"
+			type="com.integrosys.cms.ui.tatdoc.TatDocAction" name="TatDocForm"
+			validate="false" scope="request">
+			
+			<forward name="read_app_type"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/tatdoc/view_appType_tat.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="read_edit"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/tatdoc/edit_new1.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			
+			<forward name="checker_read"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/tatdoc/view.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="submit_todo"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="save_todo" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+				
+			<forward name="submit"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="save" 
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_save.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="work_in_progress"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="approve"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="reject"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="close"
+				path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="rightFrame"
+					value="/tatdoc/view.jsp" />
+				<set-property property="title" value="title.tatdoc" />
+			</forward>
+
+            <forward name="view_frame" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+                <set-property property="rightFrame" value="/tatdoc/view.jsp" />
+                <set-property property="title" value="title.tatdoc" />
+            </forward>
+
+        </action>
+
+		<action path="/TatDocSolicitorInstruction" type="com.integrosys.cms.ui.tatdoc.TatDocSolicitorInstructionAction" scope="request">
+		</action>
+
+
+		<action path="/Tat" type="com.integrosys.cms.ui.tat.TatAction"
+			name="TatsForm" validate="false" scope="request">
+			<forward name="after_tat" path="/tat/Tat.jsp"></forward>
+			<forward name="after_createTat"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/tat/CreateTat.jsp" />
+				<set-property property="title"
+					value="title.tat.createtat" />
+			</forward>
+			<forward name="after_to_track"
+				path="/template/common_view_template.jsp">
+				<set-property property="rightFrame"
+					value="/tat/CreateTat.jsp" />
+				<set-property property="title"
+					value="title.tat.createtat" />
+			</forward>
+			<forward name="after_update"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="title"
+					value="title.common.confirmation" />
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+			</forward>
+			<forward name="after_chkTatList"
+				path="/tat/ChkTatList.jsp">
+			</forward>
+			<forward name="after_chkTatApRej"
+				path="/template/common_view_template.jsp">
+				<set-property property="title"
+					value="title.tat.viewtat" />
+				<set-property property="rightFrame"
+					value="/tat/ChkTatApRej.jsp" />
+			</forward>
+			<forward name="after_approve"
+				path="/template/common_view_template.jsp">
+				<set-property property="title"
+					value="title.common.confirmation" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+			</forward>
+			<forward name="after_reject"
+				path="/template/common_view_template.jsp">
+				<set-property property="title"
+					value="title.common.confirmation" />
+				<set-property property="rightFrame"
+					value="/common/ack_reject.jsp" />
+			</forward>
+			<forward name="after_chkTatListSub"
+				path="/tat/ChkTatListSub.jsp">
+			</forward>
+			<forward name="after_resubmit"
+				path="/template/common_view_template.jsp">
+				<set-property property="title"
+					value="title.tat.createtat" />
+				<set-property property="rightFrame"
+					value="/tat/CreateTat.jsp" />
+			</forward>
+			<forward name="after_submit"
+				path="/template/common_view_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_submit.jsp" />
+				<set-property property="title"
+					value="title.common.confirmation" />
+			</forward>
+			<forward name="after_cancel"
+				path="/template/common_view_template.jsp">
+				<set-property property="rightFrame"
+					value="/common/ack_close.jsp" />
+				<set-property property="title"
+					value="title.tat.createtat" />
+			</forward>
+			<forward name="after_close"
+				path="/template/common_view_template.jsp">
+				<set-property property="title"
+					value="title.tat.createtat" />
+				<set-property property="rightFrame"
+					value="/tat/close_createTat.jsp" />
+			</forward>
+			<forward name="wip"
+				path="/template/common_view_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="title" value="title.common.wip" />
+				<set-property property="rightFrame"
+					value="/common/wip.html" />
+			</forward>
+			<forward name="update_tat"
+				path="/Tat.do?event=chkTatApRej">
+			</forward>
+			<forward name="update_limit_profile"
+				path="/CustomerProcess.do?event=chkLimitProfileApRej">
+			</forward>
+			<forward name="resubmit_tat"
+				path="/Tat.do?event=resubmit">
+			</forward>
+			<forward name="resubmit_limit_profile"
+				path="/CustomerProcess.do?event=resubmit">
+			</forward>
+			<forward name="close_tat" path="/Tat.do?event=close">
+			</forward>
+			<forward name="close_limit_profile"
+				path="/CustomerProcess.do?event=close">
+			</forward>
+			<forward name="after_viewTat"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/tat/view_tat.jsp" />
+				<set-property property="title"
+					value="title.tat.createtat" />
+			</forward>
+		</action>
+
+
+
+
+		<action path="/Bfl" type="com.integrosys.cms.ui.bfl.BflAction"
+			name="BflForm" validate="false" scope="request">
+			<forward name="after_bfl" path="/bfl/bfl.jsp"></forward>
+			<forward name="after_issue_draft_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/issue_draft_bfl.jsp" />
+				<set-property property="title"
+					value="title.bfl.issuedraftbfl" />
+			</forward>
+			<forward name="after_confirm_issue_draft_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.bfl.issuedraftbfl" />
+			</forward>
+			<forward name="after_send_draft_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/send_draft_bfl.jsp" />
+				<set-property property="title"
+					value="title.bfl.senddraftbfl" />
+			</forward>
+			<forward name="after_confirm_send_draft_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.bfl.senddraftbfl" />
+			</forward>
+			<forward name="after_recv_draft_bfl_ack"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/recv_draft_bfl_ack.jsp" />
+				<set-property property="title"
+					value="title.bfl.recvdraftbflack" />
+			</forward>
+			<forward name="after_confirm_recv_draft_bfl_ack"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.bfl.recvdraftbflack" />
+			</forward>
+			<forward name="after_issue_clean_type_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/issue_clean_type_bfl.jsp" />
+				<set-property property="title"
+					value="title.bfl.issuecleantypebfl" />
+			</forward>
+
+			<!-- Added by Pratheepa for CR148 -->
+			<forward name="after_view_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/bflRes.jsp" />
+				<set-property property="title" value="title.bfl.bfl" />
+			</forward>
+
+			<forward name="after_confirm_issue_clean_type_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.bfl.issuecleantypebfl" />
+			</forward>
+			<forward name="after_special_issue_clean_type_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/special_issue_clean_type_bfl.jsp" />
+				<set-property property="title"
+					value="title.bfl.specialissuecleantypebfl" />
+			</forward>
+			<forward name="after_confirm_special_issue_clean_type_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.bfl.specialissuecleantypebfl" />
+			</forward>
+			<forward name="after_issue_final_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/issue_final_bfl.jsp" />
+				<set-property property="title"
+					value="title.bfl.issuefinalbfl" />
+			</forward>
+			<forward name="after_confirm_issue_final_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.bfl.issuefinalbfl" />
+			</forward>
+			<forward name="after_customer_accept_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/customer_accept_bfl.jsp" />
+				<set-property property="title"
+					value="title.bfl.customeracceptbfl" />
+			</forward>
+			<forward name="after_confirm_customer_accept_bfl"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.bfl.customeracceptbfl" />
+			</forward>
+			<forward name="after_print_bfl_reminder"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/bfl/print_bfl_reminder.jsp" />
+				<set-property property="title"
+					value="title.bfl.printbflreminder" />
+			</forward>
+			<forward name="after_reminder_bfl"
+				path="/bfl/reminder_bfl.jsp" />
+			<forward name="noreminder"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/noreminder.html" />
+				<set-property property="title"
+					value="title.bfl.printbflreminder" />
+			</forward>
+			<forward name="after_confirm_print_bfl_reminder"
+				path="/template/common_frame_template.jsp">
+				<set-property property="leftFrame"
+					value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame"
+					value="/common/ack_approve.jsp" />
+				<set-property property="title"
+					value="title.bfl.printbflreminder" />
+			</forward>
+		</action>
+		
+		<action path="/TatDuration"
+			type="com.integrosys.cms.ui.tatduration.TatDurationAction" name="TatDurationForm"
+			validate="false" scope="request">
+			
+			<forward name="view_app_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tat/view_appType_tat.jsp"/>
+                <set-property property="title" value="menu.maintaintat.tatduration"/>
+            </forward>
+            
+            <forward name="view_stage_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tat/view_tat_param_stage.jsp"/>
+                <set-property property="title" value="menu.maintaintat.tatduration"/>
+            </forward>
+            
+            <forward name="after_submit_tat_duration" path="/template/common_template.jsp">
+				<set-property property="title" value="title.common.confirmation" />
+				<set-property property="rightFrame" value="/common/ack_submit.jsp" />
+			</forward>
+           
+           <forward name="checker_prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tat/tat_param_duration_checker_view.jsp"/>
+                <set-property property="title" value="menu.maintaintat.tatduration"/>
+            </forward>
+            
+            <forward name="after_checker_process_tat_duration" path="/template/common_template.jsp">
+				<set-property property="title" value="title.common.confirmation" />
+				<set-property property="rightFrame" value="/common/ack_submit.jsp" />
+			</forward>
+			
+           <forward name="view_property_index" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/tat/tat_param_duration_checker_view.jsp"/>
+                <set-property property="title" value="menu.maintaintat.tatduration"/>
+			</forward>
+
+            <forward name="workInProgress" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="menu.maintaintat.tatduration"/>
+            </forward>
+		</action>	
+			
+	</action-mappings>
+
+	<message-resources key="message-tat"
+		parameter="ApplicationResources-tat" />
+</struts-config>

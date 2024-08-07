@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WL5G3N0:definitions name="PANValService" targetNamespace="panval.isd.wsdl.hdfcbank.com" xmlns:WL5G3N0="http://schemas.xmlsoap.org/wsdl/" xmlns:WL5G3N1="panval.isd.xsd.hdfcbank.com" xmlns:WL5G3N2="panval.isd.wsdl.hdfcbank.com" xmlns:WL5G3N3="http://schemas.xmlsoap.org/wsdl/soap/">
+  <WL5G3N0:types>
+    <xsd:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="panval.isd.xsd.hdfcbank.com" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="panval.isd.xsd.hdfcbank.com" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:archxsd="panval.isd.xsd.hdfcbank.com" xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/" xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <xsd:complexType name="PAN_DETAILS_TYPE">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="1" name="PAN" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="PAN_Status" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Name" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="FATHER_NAME" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="DOB" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="SEEDING_STATUS" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Value1" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Value2" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PANValServiceResponseType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Return_Code" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Return_Description" type="xsd:string"/>
+          <xsd:element maxOccurs="5" minOccurs="0" name="PAN_Details" type="tns:PAN_DETAILS_TYPE"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="ResponseTime" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Req_no" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="PANValServiceResponse" type="tns:PANValServiceResponseType"/>
+      <xsd:complexType name="PanDetailsRequestType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="1" name="PAN" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Name" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="FatherName" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="DOB" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Value1" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Value2" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="PANValServiceRequestType">
+        <xsd:sequence>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Service_User" nillable="false" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Service_Password " type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Consumer_Name" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="NSDL_User_Name" type="xsd:string"/>
+          <xsd:element maxOccurs="5" minOccurs="0" name="PAN_Details" type="tns:PanDetailsRequestType"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Req_Date_Time" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Req_No" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Cost_Center_No" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="1" name="Filler1" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Filler2" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Filler3" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Filler4" type="xsd:string"/>
+          <xsd:element maxOccurs="1" minOccurs="0" name="Filler5" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="PANValServiceRequest" type="tns:PANValServiceRequestType"/>
+    </xsd:schema>
+  </WL5G3N0:types>
+  <WL5G3N0:message name="PANValServiceInput">
+    <WL5G3N0:part name="body" element="WL5G3N1:PANValServiceRequest"/>
+  </WL5G3N0:message>
+  <WL5G3N0:message name="PANValServiceOutput">
+    <WL5G3N0:part name="body" element="WL5G3N1:PANValServiceResponse"/>
+  </WL5G3N0:message>
+  <WL5G3N0:portType name="PANValServicePortType">
+    <WL5G3N0:operation name="ExecutePANValService">
+      <WL5G3N0:documentation>Takes upto 5 PAN Numbers and other details as request and gives individual PAN details as response</WL5G3N0:documentation>
+      <WL5G3N0:input message="WL5G3N2:PANValServiceInput"/>
+      <WL5G3N0:output message="WL5G3N2:PANValServiceOutput"/>
+    </WL5G3N0:operation>
+  </WL5G3N0:portType>
+  <WL5G3N0:binding name="SearchPANValService" type="WL5G3N2:PANValServicePortType">
+    <WL5G3N3:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <WL5G3N0:operation name="ExecutePANValService">
+      <WL5G3N3:operation/>
+      <WL5G3N0:input>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:input>
+      <WL5G3N0:output>
+        <WL5G3N3:body use="literal"/>
+      </WL5G3N0:output>
+    </WL5G3N0:operation>
+  </WL5G3N0:binding>
+  <WL5G3N0:service name="SearchPANValServiceQSService">
+    <WL5G3N0:documentation>OSB Service</WL5G3N0:documentation>
+    <WL5G3N0:port name="SearchPANValServiceQSPort" binding="WL5G3N2:SearchPANValService">
+      <WL5G3N3:address location="http://HBUSOASL01:8014/PAN_Verification/v1/PS_PANVerification_V1"/>
+    </WL5G3N0:port>
+  </WL5G3N0:service>
+</WL5G3N0:definitions>

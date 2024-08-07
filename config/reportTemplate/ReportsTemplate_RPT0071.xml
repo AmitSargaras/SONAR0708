@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select LEI.PARTY_ID, 
+				   (select PRO.CMS_LSP_LMT_PROFILE_ID from SCI_LSP_LMT_PROFILE PRO where PRO.LLP_LE_ID = LEI.PARTY_ID ) , 
+				   LEI.LEI_CODE, 
+				   TO_CHAR(LEI.LEI_EXP_DATE,'dd-MM-yyyy'),
+				   LEI.STATUS, 
+				   LEI.REASON 
+			from ACTUAL_LEI_DETAILS_UPLOAD LEI
+		</query>
+		<whereClause>
+			<mandatoryClause>
+			</mandatoryClause>
+			<param>
+				<name>fromDate</name>
+				<condition> TRUNC(LEI.CHECKER_DATE) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PARTY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>CAM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>LEI Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>LEI Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Status Reason</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>Reject Reason</header>
+				</reportColumn>				
+			</reportColumns>
+			<reportName>Success/Reject of LEI Upload report</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,150 @@
+create or replace PROCEDURE SP_CLMS_TRQ_PRON_RPT_FAC(
+    P_DATE IN DATE )
+AS
+  CURSOR CR_det(v_date DATE)
+  IS
+    with det as (
+SELECT LSP_LE_ID,
+      LSP_SHORT_NAME,
+      --FACILITY_NAME,
+      LMT_ID,
+      SUM(UTILIZED_AMOUNT) UTILIZED_AMOUNT,
+      SUM(p_UTILIZED_AMOUNT) P_UTILIZED_AMOUNT
+from (SELECT LSP_LE_ID,
+      LSP_SHORT_NAME,
+      LMT_ID,
+     -- FACILITY_NAME,
+      SERIAL_NO,
+      FACILITY_SYSTEM_ID,
+      LINE_NO,
+      UTILIZED_AMOUNT,
+      P_UTILIZED_AMOUNT
+  FROM CLMS_TRQ_PRON_RPT_CUST_FAC
+  WHERE TRN_DATE=v_date
+    GROUP BY LSP_LE_ID,
+      LSP_SHORT_NAME,
+      --FACILITY_NAME,
+      LMT_ID,
+      SERIAL_NO,
+      FACILITY_SYSTEM_ID,
+      LINE_NO,
+      UTILIZED_AMOUNT,
+      P_UTILIZED_AMOUNT
+ )
+ group by LSP_LE_ID,
+      LSP_SHORT_NAME,
+      --FACILITY_NAME,
+      LMT_ID
+  ),
+  det1 as (select LSP_LE_ID,
+      LSP_SHORT_NAME,
+      LMT_ID,--FACILITY_NAME, 
+      sum(CMV*LMT_SECURITY_COVERAGE/100) c_sec,sum(P_CMV*LMT_SECURITY_COVERAGE/100) P_sec from(  
+      select LSP_LE_ID,
+      LSP_SHORT_NAME,
+      LMT_ID,
+      --FACILITY_NAME,
+      CMS_COLLATERAL_ID,LMT_SECURITY_COVERAGE,CMV,P_CMV   
+      FROM CLMS_TRQ_PRON_RPT_CUST_FAC
+    WHERE TRN_DATE=v_date
+    group by 
+    LSP_LE_ID,
+      LSP_SHORT_NAME,
+      LMT_ID,
+      --FACILITY_NAME,
+      CMS_COLLATERAL_ID,LMT_SECURITY_COVERAGE,CMV,P_CMV)
+      group by 
+      LSP_LE_ID,
+      LSP_SHORT_NAME,
+      LMT_ID--,FACILITY_NAME
+      )
+      select det.LSP_LE_ID,
+      det.LSP_SHORT_NAME,
+      det.LMT_ID,--det.FACILITY_NAME,
+      det.UTILIZED_AMOUNT,
+      det.P_UTILIZED_AMOUNT,
+      det1.C_sec,
+      det1.p_sec
+      from det inner join det1 on det.LSP_LE_ID=det1.LSP_LE_ID
+      and det.LMT_ID=det1.LMT_ID;
+      
+      
+      
+type ty_col_CR_det
+IS
+  TABLE OF CR_det%rowtype;
+  RD_det ty_col_CR_det;
+type col_CLMS_TRQ_PRON_RPT_FAC
+IS
+  TABLE OF CLMS_TRQ_PRON_RPT_FAC%rowtype;
+  col_rep col_CLMS_TRQ_PRON_RPT_FAC;
+  rec_rep CLMS_TRQ_PRON_RPT_FAC%rowtype;
+  type ty_col_unique is table of varchar2(4000) index by varchar2(4000);
+  v_col_unique ty_col_unique;
+  --
+  --with det as (
+  --select LSP_LE_ID,LSP_SHORT_NAME,FACILITY_NAME,UTILIZED_AMOUNT,sum(UTILIZED_AMOUNT*LMT_SECURITY_COVERAGE/100) c_sec,P_UTILIZED_AMOUNT,sum(P_UTILIZED_AMOUNT*LMT_SECURITY_COVERAGE/100)P_sec
+  --from CLMS_TRQ_PRON_RPT_CUST_FAC where TRN_DATE=?
+  --group by LSP_LE_ID,LSP_SHORT_NAME,FACILITY_NAME,UTILIZED_AMOUNT,P_UTILIZED_AMOUNT)
+  --select LSP_LE_ID,LSP_SHORT_NAME,FACILITY_NAME,UTILIZED_AMOUNT, c_sec,UTILIZED_AMOUNT/C_sec C_sec_Per ,P_UTILIZED_AMOUNT,P_sec,P_UTILIZED_AMOUNT/P_sec P_sec_Per,
+  --(UTILIZED_AMOUNT/C_sec )-(P_UTILIZED_AMOUNT/P_sec) "Security coverage erosion ", case when  (P_UTILIZED_AMOUNT/P_sec)>.1 and (UTILIZED_AMOUNT/C_sec )<.10 then 'Y' else 'N' end
+  --from det
+  v_counter NUMBER;
+  V_date    DATE;
+BEGIN
+  col_rep            :=col_CLMS_TRQ_PRON_RPT_FAC();
+  v_counter          :=0;
+  IF LAST_DAY(P_DATE)<>P_DATE THEN
+    V_date           :=P_DATE;
+  ELSE
+    V_date:=TRUNC(P_DATE, 'MM');
+  END IF;
+  OPEN CR_det(V_date);
+  LOOP
+    FETCH CR_det bulk collect INTO RD_det limit 10000;
+    EXIT
+  WHEN RD_det.count=0;
+    FOR i IN 1..RD_det.count
+    LOOP
+      --  if not v_col_unique.exists(RD_det(i).LSP_LE_ID||'--'||RD_det(i).FACILITY_NAME) then
+              rec_rep                   :=NULL;
+              v_counter                 :=v_counter+1;
+              rec_rep.SR_NO             :=v_counter;
+              rec_rep.TRN_DATE          :=V_date;--TRUNC(P_DATE, 'MM');
+              rec_rep.LSP_LE_ID         :=RD_det(i).LSP_LE_ID;
+              rec_rep.LSP_SHORT_NAME    :=RD_det(i).LSP_SHORT_NAME;
+              --rec_rep.FACILITY_NAME     :=RD_det(i).FACILITY_NAME;
+              rec_rep.UTILIZED_AMOUNT   :=RD_det(i).UTILIZED_AMOUNT;
+              rec_rep.c_sec             :=RD_det(i).c_sec;
+              rec_rep.LMT_ID :=RD_det(i).LMT_ID;
+              IF NVL(RD_det(i).UTILIZED_AMOUNT,0) <> 0 THEN
+                rec_rep.C_sec_Per       :=(RD_det(i).c_sec/RD_det(i).UTILIZED_AMOUNT)*100;
+              ELSE
+                rec_rep.C_sec_Per:=0;
+              END IF;
+              rec_rep.P_UTILIZED_AMOUNT :=RD_det(i).P_UTILIZED_AMOUNT;
+              rec_rep.P_sec             :=RD_det(i).P_sec;
+              IF NVL(RD_det(i).P_UTILIZED_AMOUNT,0) <> 0 THEN
+                rec_rep.P_sec_Per       :=(RD_det(i).P_sec/RD_det(i).P_UTILIZED_AMOUNT)*100;
+              ELSE
+                rec_rep.P_sec_Per :=0;
+              END IF;
+              rec_rep.Security_coverage_erosion:=rec_rep.C_sec_Per -rec_rep.P_sec_Per;
+              IF rec_rep.P_sec_Per              >10                /100 AND rec_rep.C_sec_Per<10/100 THEN
+                rec_rep.Erosion_threshold      :='Y';
+              ELSE
+                rec_rep.Erosion_threshold:='N';
+              END IF;
+              col_rep.extend();
+              col_rep(col_rep.last):=rec_rep;
+--              v_col_unique(RD_det(i).LSP_LE_ID||'--'||RD_det(i).FACILITY_NAME):=RD_det(i).LSP_LE_ID||'--'||RD_det(i).FACILITY_NAME;
+--        end if;
+    END LOOP;
+  END LOOP;
+  CLOSE CR_det;
+  forall i IN 1..col_rep.count
+  INSERT INTO CLMS_TRQ_PRON_RPT_FAC VALUES col_rep
+    (i
+    );
+  COMMIT;
+END SP_CLMS_TRQ_PRON_RPT_FAC;

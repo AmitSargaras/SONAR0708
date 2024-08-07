@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+
+
+	<bean name="/leidetailsupload" scope="prototype" autowire="byName" class="com.integrosys.cms.app.leiDetailsUpload.LeiDetailsUploadAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="LeiDetailsUploadCmd" value-ref="LeiDetailsUploadAction.LeiDetailsUploadCmd" />		
+			 	<entry key="LeiDetailsFileUploadCmd" value-ref="LeiDetailsUploadAction.LeiDetailsFileUploadCmd" />
+			 	<entry key="DownloadReportCommand" value-ref="LeiDetailsUploadAction.DownloadReportCommand"/>
+			 	<entry key="ReadProcessLeiDetailsFile" value-ref="LeiDetailsUploadAction.ReadProcessLeiDetailsFile"/> 
+				<entry key="CheckerReadLeiDetailsFileUploadCmd" value-ref="LeiDetailsUploadAction.CheckerReadLeiDetailsFileUploadCmd"/>	
+				<entry key="CheckerApproveLeiDetailsFileUploadCmd" value-ref="LeiDetailsUploadAction.CheckerApproveLeiDetailsFileUploadCmd"/>	
+				<entry key="CheckerRejectLeiDetailsFileCmd" value-ref="LeiDetailsUploadAction.CheckerRejectLeiDetailsFileCmd"/>		
+				<entry key="MakerReadLeiDetailsRejectCmd" value-ref="LeiDetailsUploadAction.MakerReadLeiDetailsRejectCmd"/>
+				<entry key="MakerCloseLeiDetailsFileCmd" value-ref="LeiDetailsUploadAction.MakerCloseLeiDetailsFileCmd"/>
+				
+			</map>
+		</property>
+	</bean>
+</beans>

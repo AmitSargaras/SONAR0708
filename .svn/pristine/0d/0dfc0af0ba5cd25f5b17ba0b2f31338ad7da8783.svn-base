@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT  
+  cc_segment.entry_name       AS segmentName,
+  rm.rm_mgr_name              AS rmname,
+  (SELECT region_name FROM cms_region WHERE id=main_profile.rm_region
+  )                           AS region,
+  checlistitem.document_code,
+  (select entry_name from common_code_category_entry where entry_code=limit_profile.rbi_asset_classification and CATEGORY_CODE='RBI_ASSET_ClASSIFICATION') as RBI_Asset,
+  main_profile.lsp_short_name AS partyname,
+  
+  --main_profile.rm_region,
+  CASE
+    WHEN checListItem.STATUS = 'AWAITING'
+    THEN TO_CHAR(checListItem.effective_date,'DD/Mon/YYYY')
+    WHEN checListItem.status = 'DEFERRED'
+    THEN TO_CHAR(checListItem.expected_return_date,'DD/Mon/YYYY')
+  END                                                  AS dueDate,
+  checlistitem.doc_description                         AS bankName,
+  checListItem.STATUS                                  AS status,
+  TO_CHAR(checListItem.LAST_UPDATE_DATE,'DD/Mon/YYYY') AS activityDate,
+  checListItem.remarks
+FROM SCI_LE_SUB_PROFILE main_profile,
+  common_code_category_entry cc_segment,
+  cms_relationship_mgr rm,
+  cms_checklist checList,
+  cms_checklist_item checListItem,
+  SCI_LSP_LMT_PROFILE limit_profile
+
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				      main_profile.lsp_sgmnt_code_value  =cc_segment.entry_code(+)
+AND rm.id(+)                             = main_profile.relation_mgr
+AND LIMIT_PROFILE.CMS_CUSTOMER_ID        = main_profile.cms_le_sub_profile_id
+AND limit_profile.CMS_LSP_LMT_PROFILE_ID = checList.cms_lsp_lmt_profile_id
+AND checListItem.checklist_id            = checList.checklist_id
+AND (checListItem.status                 = 'AWAITING'
+OR checListItem.status                   ='DEFERRED')
+AND checlist.category                    = 'PARIPASSU'
+AND main_profile.status                  = 'ACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> and main_profile.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and cc_segment.entry_code = </condition>
+			</param>
+			<param>
+				<name>rbiAsset</name>
+				<condition> and limit_profile.rbi_asset_classification = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Doc Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Asset Classification</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Due Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Bank Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Activity Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header>
+				</reportColumn>	
+			</reportColumns>
+			<reportName>Deferral Report -Pari Passu</reportName>
+		</reportParamters>
+	</report>
+</reports>

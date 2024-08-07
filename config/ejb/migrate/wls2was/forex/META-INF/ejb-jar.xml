@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar
+  PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "c://ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_Forex">
+   <display-name>Forex</display-name>
+   <enterprise-beans>
+      <session id="session_SBForexManager">
+         <ejb-name>SBForexManager</ejb-name>
+         <home>com.integrosys.base.businfra.forex.SBForexManagerHome</home>
+         <remote>com.integrosys.base.businfra.forex.SBForexManager</remote>
+         <ejb-class>com.integrosys.cms.app.forex.SBCMSForexManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBForexManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+   </enterprise-beans>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBForexManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

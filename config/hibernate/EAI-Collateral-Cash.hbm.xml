@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="com.integrosys.cms.host.eai.security.bus.cash.CashSecurity" table="CMS_CASH" polymorphism="explicit">
+	<id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+
+    <property name="interestCapital" column="INTEREST_CAPITIALISATION" />
+    
+        <property name="SecurityIssuer" column="ISSUER" />
+    <property name="CCRefNo" column="CREDIT_CARD_FD_REF_NO" />
+    <property name="JDOPrivateCaveatGteeExpDate" column="PRI_CAVEAT_GUARANTEE_DATE" type="timestamp" />
+    <property name="FDDesc" column="DESCRIPTION" />
+    
+    <property name="holdingPeriod" column="HOLDING_PERIOD" type="double" />
+    
+    <component name="holdingPeriodUnit" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="HOLDING_PERIOD_UOM" />
+    </component>
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.cash.StageCashSecurity" table="CMS_STAGE_CASH">
+	<id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+
+    <property name="interestCapital" column="INTEREST_CAPITIALISATION" />
+    
+        <property name="securityIssuer" column="ISSUER" />
+    <property name="CCRefNo" column="CREDIT_CARD_FD_REF_NO" />
+    <property name="JDOPrivateCaveatGteeExpDate" column="PRI_CAVEAT_GUARANTEE_DATE" type="timestamp" />
+    <property name="FDDesc" column="DESCRIPTION" />
+    
+    <property name="holdingPeriod" type="double">
+    	<column name="HOLDING_PERIOD" default="0"/>
+    </property>
+
+    <component name="holdingPeriodUnit" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="HOLDING_PERIOD_UOM" />
+    </component>
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.cash.CashDeposit" table="CMS_CASH_DEPOSIT" polymorphism="explicit">
+	<id name="cashDepositId" column="CASH_DEPOSIT_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CASH_DEPOSIT_SEQ</param>
+		</generator>
+	</id>
+
+    <property name="collateralId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="referenceNo" column="DEPOSIT_RECEIPT_NUMBER" />
+    <!-- <property name="receiptNumber" column="DEPOSIT_RECEIPT_NUMBER" /> -->
+    <property name="amountCurrency" column="DEPOSIT_AMOUNT_CURRENCY" />
+    <property name="amount" type="double">
+    	<column name="DEPOSIT_AMOUNT" default="0"/>
+    </property>
+    <property name="JDOMaturityDate" column="DEPOSIT_MATURITY_DATE" type="timestamp" />
+    
+    <!-- <property name="OwnOtherBankInd" column="THIRD_PARTY_BANK"  />  -->
+    <property name="ownOtherBankInd" column="IS_OWN_BANK"  /> 
+    <property name="groupAcctNo" column="DEPOSIT_REFERENCE_NUMBER"/>
+    <property name="tenure" column="TENURE" type="long" />
+    <property name="tenurePeriodType" column="TENURE_UNIT" />
+    <property name="holdCode" column="HOLD_STATUS" />
+    <property name="securityId" column="SOURCE_SECURITY_ID" />
+    <property name="sourceId" column="SOURCE_ID" />
+    <property name="cmsRefId" column="CMS_REF_ID" type="long" />
+    <property name="status" column="STATUS" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.cash.StageCashDeposit" table="CMS_STAGE_CASH_DEPOSIT">
+	<id name="cashDepositId" column="CASH_DEPOSIT_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CASH_DEPOSIT_SEQ</param>
+		</generator>
+	</id>
+
+    <property name="collateralId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="referenceNo" column="DEPOSIT_RECEIPT_NUMBER" />
+    <!-- <property name="receiptNumber" column="DEPOSIT_RECEIPT_NUMBER" /> -->
+    <property name="amountCurrency" column="DEPOSIT_AMOUNT_CURRENCY" />
+    <property name="amount" type="double">
+    	<column name="DEPOSIT_AMOUNT" default="0"/>
+    </property>
+    <property name="JDOMaturityDate" column="DEPOSIT_MATURITY_DATE" type="timestamp"/>
+
+   <!--  <property name="OwnOtherBankInd" column="THIRD_PARTY_BANK"  /> -->
+    <property name="ownOtherBankInd" column="IS_OWN_BANK"  /> 
+    <property name="groupAcctNo" column="DEPOSIT_REFERENCE_NUMBER"/>
+    <property name="tenure" column="TENURE" type="long" />
+    <property name="tenurePeriodType" column="TENURE_UNIT" />
+    <property name="holdCode" column="HOLD_STATUS" />
+    <property name="securityId" column="SOURCE_SECURITY_ID" />
+    <property name="sourceId" column="SOURCE_ID" />
+    <property name="cmsRefId" column="CMS_REF_ID" type="long" />
+    <property name="status" column="STATUS" />
+  </class>
+
+</hibernate-mapping>

@@ -1,0 +1,73 @@
+create table MIG_EXC_LINE_FR_STP_SRM(
+LINE_CODE VARCHAR2(300 CHAR) NOT NULL,
+status CHAR(1 CHAR) default 'P');
+
+create or replace procedure sp_sync_exc_line_fr_stp_srm  as
+v_trx_id number;
+v_trx_hist_id number;
+v_mst_id number;
+v_stg_id number;
+v_status varchar(3);
+CURSOR CR_DATA IS select * from MIG_EXC_LINE_FR_STP_SRM where status = 'P' for update of status;
+RC_DATA CR_DATA%ROWTYPE;
+begin 
+open cr_data;
+  loop
+   FETCH CR_DATA INTO RC_DATA;
+      EXIT WHEN CR_DATA%NOTFOUND;
+        v_status := 'F';
+  
+      v_trx_id := to_char(sysdate,'YYYYMMDD') || lpad(TRX_SEQ.nextval,9,0);
+      v_mst_id := to_char(sysdate,'YYYYMMDD') || lpad(CMS_EXC_LINE_FR_STP_SRM_SEQ.nextval,9,0);
+      v_stg_id := to_char(sysdate,'YYYYMMDD') || lpad(STG_EXC_LINE_FR_STP_SRM_SEQ.nextval,9,0);
+      v_trx_hist_id := to_char(sysdate,'YYYYMMDD') || lpad(TRX_HISTORY_SEQ.nextval,9,0);
+          
+      insert into trans_history (tr_history_id, transaction_id, from_state, to_state,
+      user_id, login_id, transaction_type, creation_date, transaction_date,reference_id,status,
+      staging_reference_id, team_id, opsdesc, to_user_id, to_group_id, customer_id, limit_profile_id,
+      team_type_id, team_membership_id)
+      values (
+      v_trx_hist_id, v_trx_id, 'ND', 'PENDING_CREATE',
+      -1, 'System', 'EXC_LINE_FR_STP_SRM', sysdate, sysdate, null, 'PENDING_CREATE',
+      v_stg_id, -999999999, 'CREATE', -999999999, -999999999, -999999999, -999999999,
+      -999999999, -999999999);
+
+      v_trx_hist_id := to_char(sysdate,'YYYYMMDD') || lpad(TRX_HISTORY_SEQ.nextval,9,0);
+
+      insert into trans_history (tr_history_id, transaction_id, from_state, to_state,
+      user_id, login_id, transaction_type, creation_date, transaction_date,reference_id,status,
+      staging_reference_id, team_id, opsdesc, to_user_id, to_group_id, customer_id, limit_profile_id,
+      team_type_id, team_membership_id)
+      values (
+      v_trx_hist_id, v_trx_id, 'PENDING_CREATE', 'ACTIVE',
+      -1, 'System', 'EXC_LINE_FR_STP_SRM', sysdate, sysdate, v_mst_id, 'ACTIVE',
+      v_stg_id, -999999999, 'APPROVE_CREATE', -999999999, -999999999, -999999999, -999999999,
+      -999999999, -999999999);
+        
+      insert into transaction (transaction_id, from_state, user_id, login_id, transaction_type,
+      creation_date, transaction_date, reference_id, status, staging_reference_id, team_id, version,
+      trx_reference_id, opsdesc, customer_id, limit_profile_id, cur_trx_history_id, team_type_id,
+      to_group_type_id, to_group_id, to_user_id, team_membership_id, system_date)
+      values (
+      v_trx_id, 'PENDING_CREATE', -1, 'System', 'EXC_LINE_FR_STP_SRM',
+      sysdate, sysdate, v_mst_id, 'ACTIVE', v_stg_id, -999999999, 0,
+      -999999999, 'APPROVE_CREATE', -999999999, -999999999, v_trx_hist_id, -999999999,
+      -999999999, -999999999, -999999999, -999999999, sysdate);
+        
+      insert into CMS_EXC_LINE_FR_STP_SRM ( id, line_code, excluded, status, version_time,
+      created_by, creation_date, last_update_by, last_update_date, deprecated)
+      values ( v_mst_id,  RC_DATA.line_code, 'on', 'ACTIVE', 0, 'System', sysdate, 'System', sysdate,
+      'N');
+
+      insert into STG_EXC_LINE_FR_STP_SRM ( id, line_code, excluded, status, version_time,
+      created_by, creation_date, last_update_by, last_update_date, deprecated)
+      values ( v_stg_id, RC_DATA.line_code, 'on', 'ACTIVE', 0, 'System', sysdate, 'System', sysdate,
+      'N');          
+        
+        v_status := 'S';
+     update MIG_EXC_LINE_FR_STP_SRM set status = v_status where current of CR_DATA;       
+  END LOOP;
+close CR_DATA;
+COMMIT;
+end sp_sync_exc_line_fr_stp_srm;
+/

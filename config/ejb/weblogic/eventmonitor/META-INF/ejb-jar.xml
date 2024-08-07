@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
+<ejb-jar>
+<display-name>EventMonitor</display-name>
+    <enterprise-beans>
+        <session id="session_SBEventMonitorController">
+            <ejb-name>SBEventMonitorController</ejb-name>
+            <home>com.integrosys.cms.app.eventmonitor.SBEventMonitorControllerHome</home>
+            <remote>com.integrosys.cms.app.eventmonitor.SBEventMonitorController</remote>
+            <ejb-class>com.integrosys.cms.app.eventmonitor.SBEventMonitorControllerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Bean</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        <session id="session_SBEventMonitorFirstPass">
+            <ejb-name>SBEventMonitorFirstPass</ejb-name>
+            <home>com.integrosys.cms.app.eventmonitor.SBEventMonitorFirstPassHome</home>
+            <remote>com.integrosys.cms.app.eventmonitor.SBEventMonitorFirstPass</remote>
+            <ejb-class>com.integrosys.cms.app.eventmonitor.SBEventMonitorFirstPassBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Bean</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        <session id="session_SBEventManager">
+            <ejb-name>SBEventManager</ejb-name>
+            <home>com.integrosys.cms.app.eventmonitor.SBEventManagerHome</home>
+            <remote>com.integrosys.cms.app.eventmonitor.SBEventManager</remote>
+            <ejb-class>com.integrosys.cms.app.eventmonitor.SBEventManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        <session id="session_SBDocExpiry">
+            <ejb-name>SBDocExpiry</ejb-name>
+            <home>com.integrosys.cms.app.eventmonitor.documentexpiry.SBDocExpiryHome</home>
+            <remote>com.integrosys.cms.app.eventmonitor.documentexpiry.SBDocExpiry</remote>
+            <ejb-class>com.integrosys.cms.app.eventmonitor.documentexpiry.SBDocExpiryBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+    </enterprise-beans>
+    <assembly-descriptor>
+        <container-transaction>
+            <method>
+                <ejb-name>SBEventManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>RequiresNew</trans-attribute>
+        </container-transaction>
+        <container-transaction>
+            <method>
+                <ejb-name>SBDocExpiry</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>RequiresNew</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

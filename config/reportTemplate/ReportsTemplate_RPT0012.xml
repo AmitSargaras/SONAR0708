@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT DISTINCT rgn.region_name AS Region,
+			sub_profile.lsp_short_name AS partyName,
+			'1 Month' AS stockDuration,
+			
+			TO_CHAR(CRDM.RECEIVED_DATE,'DD/Mon/YYYY') AS stmtReceivedDate,
+			secdetail.type_name AS secType,
+			secdetail.subtype_name AS secsubType,
+			CASE gcStockDet.HAS_INSURANCE
+			WHEN 'Y'
+			THEN 'Yes'
+			WHEN 'N'
+			THEN 'No'
+			END AS insuredFlag,
+			sub_profile.funded_share_percent AS collateralShare,
+			gcstockdet.component_amount AS grossValue,
+			gcstockdet.margin AS margin,
+			gcstockdet.lonable AS loanableValue,
+			 case when TO_CHAR(gcdet.TOTAL_LOANABLE) is not null
+			then
+			TO_CHAR(gcdet.TOTAL_LOANABLE)
+			else
+			TO_CHAR(CALCULATE_DP(gcstockdet.gc_det_id,SUB_PROFILE.FUNDED_SHARE_PERCENT) )
+			end AS DPAmount,
+			CASE
+			WHEN gcstockdet.stock_type IN ('CurrentAsset','ValueDebtors')
+			          THEN
+			          (SELECT entry_name FROM common_code_category_entry WHERE category_code ='CURRENT_ASSET' AND entry_code = gcstockdet.component)
+			        WHEN gcstockdet.stock_type IN ('CurrentLiabilities','LessAdvances')
+			          THEN
+			          (SELECT entry_name FROM common_code_category_entry WHERE category_code ='CURRENT_LIABILITIES' AND entry_code = gcstockdet.component)
+			END AS component,
+			  (SELECT document_description
+			  FROM CMS_DOCUMENT_GLOBALLIST
+			  WHERE document_code = gcdet.doc_code
+			  )  
+			  AS StatementName,
+			secdetail.cms_collateral_id AS SecurityId,
+			  (SELECT rm.rm_mgr_name
+			  FROM cms_relationship_mgr rm
+			  WHERE rm.id = sub_profile.relation_mgr
+			  )       
+			  AS RM,
+			cc_segment.entry_name AS segment,
+			GCDET.LAST_UPDATED_BY AS Maker,
+			GCDET.LAST_UPDATED_ON AS MakerDateTime,
+			GCDET.LAST_APPROVED_BY AS Checker,
+			GCDET.LAST_APPROVED_ON AS CheckerDateTime
+			
+			FROM
+			CMS_LIMIT_SECURITY_MAP lsm,
+			SCI_LSP_APPR_LMTS lmts,
+			SCI_LSP_LMT_PROFILE pf,
+			SCI_LE_SUB_PROFILE sub_profile,
+			CMS_SECURITY secDetail,
+			cms_asset_gc_det gcdet,
+			cms_asset_gc_stock_det gcstockdet,
+			SCI_LE_REG_ADDR address ,
+			cms_region rgn,
+			(SELECT reference_id,transaction_type,transaction_date FROM TRANSACTION WHERE transaction_type = 'COL') TRX,
+			(SELECT entry_name, entry_code FROM common_code_category_entry WHERE category_code = 'HDFC_SEGMENT' ) cc_segment,
+			CALCULATE_REC_DATE_MV CRDM 
+
+			</query>
+		<whereClause>
+			<mandatoryClause>
+			sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+			AND sub_profile.cms_le_main_profile_id = address.cms_le_main_profile_id
+			AND pf.cms_lsp_lmt_profile_id = lmts.CMS_LIMIT_PROFILE_ID
+			AND lmts.cms_lsp_appr_lmts_id = lsm.cms_lsp_appr_lmts_id
+			AND (lsm.update_status_ind != 'D'
+			OR lsm.update_status_ind IS NULL)
+			AND secdetail.cms_collateral_id =LSM.CMS_COLLATERAL_ID
+			AND gcdet.gc_det_id =gcstockdet.gc_det_id
+			AND secdetail.cms_collateral_id =gcdet.cms_collateral_id
+			AND address.lra_type_value ='CORPORATE'
+			AND rgn.id =address.lra_region
+			AND gcdet.status ='APPROVED'
+			AND trx.reference_id = gcdet.cms_collateral_id
+			AND trx.transaction_type = 'COL'
+			AND cc_segment.entry_code = sub_profile.lsp_sgmnt_code_value
+			AND sub_profile.STATUS != 'INACTIVE'
+			AND lmts.CMS_LIMIT_STATUS != 'DELETED'
+			
+			AND CRDM.LSP_LE_ID =  sub_profile.LSP_LE_ID 
+			</mandatoryClause>
+			<param>
+				<name>segment</name>
+				<condition> AND sub_profile.lsp_sgmnt_code_value = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>
+			<param>
+				<name>securityType1</name>
+				<condition> AND secDetail.TYPE_NAME = </condition>
+			</param>
+			<param>
+				<name>securitySubType</name>
+				<condition> AND secDetail.SECURITY_SUB_TYPE_ID = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and TRUNC(trx.transaction_date) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+ 			
+ 			<orderAndGroupByClause>
+ 			
+ 			</orderAndGroupByClause>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Stock Duration</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Stock Statement Received date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Security Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Sub Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Insured Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Collateral Share (DP%)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Gross Value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Margin</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Loanable Value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>DP Amount</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Component</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Statement Name</header>
+				</reportColumn>		
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Security ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker Date and Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker Date and Time</header>
+				</reportColumn>						
+			</reportColumns>
+			<reportName>Customer wise Stock details</reportName>
+		</reportParamters>
+	</report>
+</reports>

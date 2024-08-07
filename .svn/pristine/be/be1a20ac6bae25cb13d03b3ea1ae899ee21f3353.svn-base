@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT   EVENT,CATEGORY,
+			PARTY_REGION,
+			RM_REGION,
+			LINE_NO,
+			LIMIT_RELEASED_AMOUNT,
+			SERIAL_NO,
+			CASE_RM,
+			PARTY_RM,
+			CASE_NO,
+			PARTY_NAME,
+			PARTY_ID,
+			CUSTOMER_SEGMENT,
+			RM_DOCUMENT_SUBMITTED_DATE,
+			RM_DOCUMENT_SUBMITTED_TIME,
+			LIMIT_DOCUMENT_RECEIVED_TIME,
+			LIMIT_DOCUMENT_RECEIVED_DATE,
+			LIMIT_DOCUMENT_SCANNED_DATE,
+			LIMIT_DOCUMENT_SCANNED_TIME,
+			DEFERRAL_RAISED_DATE,
+			DEFERRAL_RAISED_TIME,
+			DEFERRAL_APPROVED_DATE,
+			DEFERRAL_APPROVED_TIME,
+			CPU_LIMIT_SET_CLIMS_DATE,
+			CPU_LIMIT_SET_CLIMS_TIME,
+			TOTAL_TIME,
+			TURN_AROUND_TIME
+			FROM CMS_NEW_TAT_REPORT_CASEBASE
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				1 = 1
+			</mandatoryClause>
+			<param>
+				<name>segment</name>
+				<condition> AND CUSTOMER_SEGMENT = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND CMS_LE_MAIN_PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>region</name>
+				<condition> AND RM_REGION = </condition>
+			</param>
+			<param>
+				<name>relationshipManager</name>
+				<condition> AND PARTY_RM = </condition>
+			</param>
+			<param>
+				<name>event</name>
+				<condition> AND EVENT = </condition>
+			</param>
+			<param>
+				<name>tatCriteria</name>
+				<condition> AND TURN_AROUND_TIME = </condition>
+			</param>
+			<param>
+				<name>category</name>
+				<condition> AND CATEGORY = </condition>
+			</param>
+			<param>
+				<name>caseId</name>
+				<condition> AND CASE_NO = </condition>
+			</param>
+			<!--<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(ACTIVITY_TIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		--></whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Event</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line no. </header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Released amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Serial no.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Initiator RM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party RM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Document Submitted Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Document Submitted Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Document received time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Document received date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Document Scanned Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit document Scanned Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deferral Raised Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deferral Raised Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deferral Approved Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deferral Approved Time</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CPU Limit Setup Date / CLIMS Updated Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CPU Limit Setup Time / CLIMS Updated Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Total Time ( Case TAT )</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Turn Around Time </header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>TAT Monitoring report for Users</reportName>
+		</reportParamters>
+	</report>
+</reports>

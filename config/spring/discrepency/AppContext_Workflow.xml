@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+	<!--    Discrepency Beans Start	By Sandeep Shinde on 01-06-2011	-->
+	
+	<bean id="discrepencyTrxController" class="com.integrosys.cms.app.discrepency.trx.DiscrepencyTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateDiscrepencyOperation" value-ref="MakerCreateDiscrepencyOperation"/>	
+				  <entry key="MakerUpdateDiscrepencyOperation" value-ref="MakerUpdateDiscrepencyOperation"/>
+				  <entry key="MakerDeleteDiscrepencyOperation" value-ref="MakerDeleteDiscrepencyOperation"/>
+				  
+            	  <entry key="MakerEditRejectedCreateDiscrepencyOperation" value-ref="MakerEditRejectedCreateDiscrepencyOperation"/>
+            	  <entry key="MakerEditRejectedUpdateDiscrepencyOperation" value-ref="MakerEditRejectedUpdateDiscrepencyOperation"/>
+            	  <entry key="MakerEditRejectedDeleteDiscrepencyOperation" value-ref="MakerEditRejectedDeleteDiscrepencyOperation"/>
+            	  <entry key="MakerCloseRejectedCreateDiscrepencyOperation" value-ref="MakerCloseRejectedCreateDiscrepencyOperation"/>
+                  <entry key="MakerCloseRejectedUpdateDiscrepencyOperation" value-ref="MakerCloseRejectedUpdateDiscrepencyOperation"/>
+                  <entry key="MakerCloseRejectedDeleteDiscrepencyOperation" value-ref="MakerCloseRejectedDeleteDiscrepencyOperation"/>
+                  <entry key="MakerCloseRejectedInActivateDiscrepencyOperation" value-ref="MakerCloseRejectedInActivateDiscrepencyOperation"/>
+                  <entry key="MakerEditRejectedInActivateDiscrepencyOperation" value-ref="MakerEditRejectedInActivateDiscrepencyOperation"/>
+
+                  <entry key="CheckerApproveUpdateDiscrepencyOperation" value-ref="CheckerApproveUpdateDiscrepencyOperation"/>
+                  <entry key="CheckerApproveCreateDiscrepencyOperation" value-ref="CheckerApproveCreateDiscrepencyOperation"/>
+                  <entry key="CheckerRejectDiscrepencyOperation" value-ref="CheckerRejectDiscrepencyOperation"/>
+                  <entry key="CheckerApproveDeleteDiscrepencyOperation" value-ref="CheckerApproveDeleteDiscrepencyOperation"/>
+                  <entry key="MakerActivateDeletedDiscrepencyOperation" value-ref="MakerActivateDeletedDiscrepencyOperation"/>
+                  <entry key="CheckerApproveActivateDiscrepencyOperation" value-ref="CheckerApproveActivateDiscrepencyOperation"/>
+                  
+                  <entry key="MakerSaveCreateDiscrepencyOperation" value-ref="MakerSaveCreateDiscrepencyOperation"/>
+                  <entry key="MakerSaveUpdateDiscrepencyOperation" value-ref="MakerSaveUpdateDiscrepencyOperation"/>
+                  <entry key="MakerCreateSavedDiscrepencyOperation" value-ref="MakerCreateSavedDiscrepencyOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+     <bean id="discrepencyTrxControllerFactory" class="com.integrosys.cms.app.discrepency.trx.DiscrepencyTrxControllerFactory">
+        <property name="discrepencyReadController" ref="discrepencyReadController"/>
+        <property name="discrepencyTrxController" ref="discrepencyTrxController"/>
+    </bean>
+                 
+    <bean id="discrepencyReadController" class="com.integrosys.cms.app.discrepency.trx.DiscrepencyReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadDiscrepencyOperation" value-ref="ReadDiscrepencyOperation"/>
+                 <entry key="ReadDiscrepencyIDOperation" value-ref="ReadDiscrepencyIDOperation"/>
+            </map>
+        </property>
+    </bean>
+  
+    <bean id="ReadDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.ReadDiscrepencyOperation">
+        <property name="discrepencyBusManager" ref="discrepencyBusManager"/>
+        <property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager"/>
+    </bean>
+    
+    <bean id="ReadDiscrepencyIDOperation" class="com.integrosys.cms.app.discrepency.trx.ReadDiscrepencyIDOperation">
+        <property name="discrepencyBusManager" ref="discrepencyBusManager"/>
+        <property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager"/>
+    </bean>
+
+    
+    <bean id="MakerCreateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerCreateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveCreateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.CheckerApproveCreateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.CheckerRejectDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerUpdateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerUpdateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+			
+	<bean id="MakerDeleteDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerDeleteDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+		
+	<bean id="MakerEditRejectedCreateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerEditRejectedCreateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedUpdateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerEditRejectedUpdateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedDeleteDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerEditRejectedDeleteDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedCreateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerCloseRejectedCreateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedUpdateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerCloseRejectedUpdateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveUpdateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.CheckerApproveUpdateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="CheckerRejectUpdateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.CheckerRejectUpdateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerCloseRejectedDeleteDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerCloseRejectedDeleteDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>	
+	
+	<bean id="MakerCloseRejectedInActivateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerCloseRejectedInActivateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerEditRejectedInActivateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerEditRejectedInActivateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveDeleteDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.CheckerApproveDeleteDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerActivateDeletedDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerActivateDeletedDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="CheckerApproveActivateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.CheckerApproveActivateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<bean id="MakerSaveCreateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerSaveCreateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>	
+	
+	<bean id="MakerSaveUpdateDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerSaveUpdateDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>		
+	
+	<bean id="MakerCreateSavedDiscrepencyOperation" class="com.integrosys.cms.app.discrepency.trx.MakerCreateSavedDiscrepencyOperation">
+		<property name="discrepencyBusManager" ref="discrepencyBusManager" />
+		<property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager" />
+	</bean>
+	
+	<!--    Discrepency Beans End	-->		
+</beans>

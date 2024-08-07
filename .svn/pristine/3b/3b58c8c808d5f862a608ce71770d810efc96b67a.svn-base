@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	
+	<class  entity-name="actualOBImageTagDetails" name="com.integrosys.cms.app.imageTag.bus.OBImageTagDetails" table="CMS_IMAGE_TAG_DETAILS" lazy="false">
+
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_IMAGE_TAG_DET_SEQ</param>
+			</generator>
+		</id>
+		
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+	
+		<property name="custId" column="CUST_ID"/>
+		
+		<property name="securityId" column="SECURITY_ID"/>
+
+		<property name="facilityId" column="FACILITY_ID"/>
+		<property name="docType" column="DOC_TYPE"/>
+		<property name="docDesc" column="DOC_DESC"/>
+		
+		<!-- Added by Uma Khot: Start: Phase 3 CR:tag scanned images of Annexure II  -->
+        <property name="bank" column="BANK_NAME"/> 
+        <!-- Added by Uma Khot: End: Phase 3 CR:tag scanned images of Annexure II  -->
+		
+	</class>
+	<class  entity-name="stageOBImageTagDetails" name="com.integrosys.cms.app.imageTag.bus.OBImageTagDetails" table="CMS_STAGE_IMAGE_TAG_DETAILS" lazy="false">
+
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_IMAGE_TAG_DET_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+	
+		<property name="custId" column="CUST_ID"/>
+		
+		<property name="securityId" column="SECURITY_ID"/>
+		
+		<property name="facilityId" column="FACILITY_ID"/>
+		<property name="docType" column="DOC_TYPE"/>
+		<property name="docDesc" column="DOC_DESC"/>
+		
+		<!-- Added by Uma Khot: Start: Phase 3 CR:tag scanned images of Annexure II  -->
+        <property name="bank" column="BANK_NAME"/> 
+        <!-- Added by Uma Khot: End: Phase 3 CR:tag scanned images of Annexure II  -->
+        
+	</class>
+	<class  entity-name="actualOBImageTagMap" name="com.integrosys.cms.app.imageTag.bus.OBImageTagMap" table="CMS_IMAGE_TAG_MAP" lazy="false">
+		<composite-id>
+			<key-property name="tagId" column="TAG_ID" type="long"/>
+			<key-property name="imageId" column="IMAGE_ID"/>
+		</composite-id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="untaggedStatus" column="UNTAGGED_STATUS" />
+	</class>
+	<class  entity-name="stageOBImageTagMap" name="com.integrosys.cms.app.imageTag.bus.OBImageTagMap" table="CMS_STAGE_IMAGE_TAG_MAP" lazy="false">
+		<id name="tagId" column="TAG_ID" type="long">
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="imageId" column="IMAGE_ID"/>
+		<property name="untaggedStatus" column="UNTAGGED_STATUS" />
+	</class>
+</hibernate-mapping>

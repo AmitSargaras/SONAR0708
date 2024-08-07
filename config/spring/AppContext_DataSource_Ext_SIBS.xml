@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		DataSource and Hibernate settings used to connect to AS400 DB2 system used by SIBS
+	</description>
+
+	<bean id="sibsPool" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/SIBSPool" />
+		<property name="lookupOnStartup" value="false" />
+		<property name="cache" value="true" />
+		<property name="proxyInterface" value="javax.sql.DataSource" />
+	</bean>
+
+	<bean id="sibsSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="sibsPool" />
+		<property name="mappingLocations" value="classpath:ParameterHost.hbm.xml" />
+		<property name="hibernateProperties">
+			<value>
+				<![CDATA[
+					hibernate.dialect=org.hibernate.dialect.DB2400Dialect
+					hibernate.query.factory_class=org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory
+				]]>
+			</value>
+		</property>
+	</bean>
+
+</beans>

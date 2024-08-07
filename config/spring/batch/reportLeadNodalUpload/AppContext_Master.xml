@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="reportLeadNodalUploadJobTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="reportLeadNodalUploadJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="reportLeadNodalUploadJobDetail" />
+		<property name="cronExpression" value="${report.leadnodal.schedular.time}" /> 
+
+	</bean>
+	
+	<bean id="reportLeadNodalUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="reportLeadNodalUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="reportLeadNodalUploadJob" class="com.integrosys.cms.batch.reportLeadNodalUpload.schedular.ReportLeadNodalUploadJob"/>
+	
+
+
+</beans>

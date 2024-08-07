@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+	SELECT partyName,
+					  segName,
+					  rmName ,
+					  region,
+					  facName,
+					  facType,
+					  facCatg,
+					  curr,
+					  facSys,
+					  facSysId,
+					  lineNo,
+					  secDesc,
+					  secType,
+					  secSubtype,
+					  cmv,
+					  relAmt,
+					  currency,
+					  secCov,
+					  coalesce(secAmount,0)
+				FROM
+				  (SELECT sp.LSP_SHORT_NAME  AS partyName,
+					ci.ENTRY_NAME            AS segName,
+					rm.RM_MGR_NAME           AS rmName ,
+					cr.region_name           AS region,
+					lmts.FACILITY_NAME       AS facName,
+					lmts.FACILITY_TYPE       AS facType,
+					(SELECT entry_name
+    FROM (select entry_name from common_code_category_entry cc
+    WHERE cc.category_code='FACILITY_CATEGORY'
+    AND cc.entry_code =lmts.FACILITY_CAT order by cc.ENTRY_ID desc) where rownum=1)         AS facCatg,
+					lmts.LMT_CRRNCY_ISO_CODE AS curr,
+					lx.FACILITY_SYSTEM       AS facSys,
+					lx.FACILITY_SYSTEM_ID    AS facSysId,
+					lmts.LINE_NO             AS lineNo,
+					cs.COLLATERAL_CODE
+					||'-'
+					||ncm.NEW_COLLATERAL_DESCRIPTION AS secDesc,
+					cs.TYPE_NAME                     AS secType,
+					cs.SUBTYPE_NAME                  AS secSubtype,
+				CASE
+					  WHEN cs.SECURITY_SUB_TYPE_ID='CS202'--FD
+					  THEN
+						(SELECT SUM(LIEN_AMOUNT) FROM CMS_LIEN WHERE  cash_deposit_id IN (SELECT cfd.cash_deposit_id 
+                     FROM cms_cash_deposit cfd WHERE cfd.cms_collateral_id = cs.cms_collateral_id 
+                     AND STATUS='ACTIVE' and ACTIVE = 'active' ))
+					  WHEN cs.SECURITY_SUB_TYPE_ID!='CS202'--Other than FD
+					  THEN cs.CMV
+					END AS cmv,
+					lmts.TOTAL_RELEASED_AMOUNT       AS relAmt,
+					cs.cms_collateral_id             AS colId,
+					lmts.lmt_crrncy_iso_code         AS currency,
+					lsm.lmt_security_coverage        AS secCov,
+					sp.cms_le_sub_profile_id         AS partyId,
+					CASE
+					  WHEN cs.SECURITY_SUB_TYPE_ID='CS202'--FD
+					  THEN
+					(SELECT SUM(LIEN_AMOUNT) FROM CMS_LIEN WHERE  cash_deposit_id IN (SELECT cfd.cash_deposit_id 
+                     FROM cms_cash_deposit cfd WHERE cfd.cms_collateral_id = cs.cms_collateral_id 
+                     AND STATUS='ACTIVE' and ACTIVE = 'active' )) 
+					  WHEN cs.SECURITY_SUB_TYPE_ID!='CS202'--Other than FD
+					  THEN cs.CMV
+					END AS secAmount
+				  FROM CMS_LIMIT_SECURITY_MAP lsm,
+					SCI_LSP_APPR_LMTS lmts ,
+					CMS_SECURITY cs,
+					SCI_LSP_LMT_PROFILE pf,
+					SCI_LE_SUB_PROFILE sp,
+					CMS_RELATIONSHIP_MGR rm,
+					COMMON_CODE_CATEGORY_ENTRY ci ,
+					SCI_LSP_LMTS_XREF_MAP lxm,
+					SCI_LSP_SYS_XREF lx,
+					cms_region cr,
+					CMS_COLLATERAL_NEW_MASTER ncm
+				  WHERE lsm.CMS_LSP_APPR_LMTS_ID  = lmts.CMS_LSP_APPR_LMTS_ID
+				  AND (lsm.UPDATE_STATUS_IND     != 'D'
+				  OR lsm.UPDATE_STATUS_IND       IS NULL)
+				  AND lsm.CMS_COLLATERAL_ID       = cs.CMS_COLLATERAL_ID
+				  AND pf.CMS_LSP_LMT_PROFILE_ID   = lmts.CMS_LIMIT_PROFILE_ID
+				  AND sp.CMS_LE_SUB_PROFILE_ID    = pf.CMS_CUSTOMER_ID
+				  AND rm.ID(+)                    = sp.RELATION_MGR
+				  AND ci.ENTRY_CODE(+)            = sp.LSP_SGMNT_CODE_VALUE
+				  AND lx.CMS_LSP_SYS_XREF_ID      = lxm.CMS_LSP_SYS_XREF_ID
+				  AND lxm.CMS_LSP_APPR_LMTS_ID(+) = lmts.CMS_LSP_APPR_LMTS_ID
+				  AND cr.id(+)                    = rm.region
+				  AND cs.COLLATERAL_CODE          = ncm.new_collateral_code(+)
+				  AND sp.status                  != 'INACTIVE'
+				  AND cs.SECURITY_SUB_TYPE_ID    !='AB100'--excluding GC
+				  and lmts.cms_limit_status = 'ACTIVE'   
+		          and  cs.status = 'ACTIVE'           
+		          AND lsm.CHARGE_ID   in 
+		            (SELECT MAX(MAPS2.CHARGE_ID) 
+			       from cms_limit_security_map maps2 
+			        where maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id 
+			        AND maps2.cms_collateral_id      =cs.cms_collateral_id 
+			        ) 				  
+				  GROUP BY sp.LSP_SHORT_NAME,
+					ci.ENTRY_NAME,
+					rm.RM_MGR_NAME ,
+					cr.region_name,
+					lmts.FACILITY_NAME,
+					lmts.FACILITY_TYPE,
+					lmts.FACILITY_CAT,
+					lmts.LMT_CRRNCY_ISO_CODE,
+					lx.FACILITY_SYSTEM,
+					lx.FACILITY_SYSTEM_ID,
+					lmts.LINE_NO,
+					cs.COLLATERAL_CODE
+					||'-'
+					||ncm.NEW_COLLATERAL_DESCRIPTION,
+					cs.TYPE_NAME,
+					cs.SUBTYPE_NAME,
+					cs.CMV,
+					lmts.TOTAL_RELEASED_AMOUNT,
+					sp.cms_le_sub_profile_id,
+					cs.cms_collateral_id,
+					lmts.lmt_crrncy_iso_code ,
+					lsm.lmt_security_coverage,
+					cs.SECURITY_SUB_TYPE_ID
+				  UNION ALL
+				  -- union for GC
+				  SELECT sp.LSP_SHORT_NAME   AS partyName,
+					ci.ENTRY_NAME            AS segName,
+					rm.RM_MGR_NAME           AS rmName ,
+					cr.region_name           AS region,
+					lmts.FACILITY_NAME       AS facName,
+					lmts.FACILITY_TYPE       AS facType,
+					(SELECT entry_name
+    FROM (select entry_name from common_code_category_entry cc
+    WHERE cc.category_code='FACILITY_CATEGORY'
+    AND cc.entry_code =lmts.FACILITY_CAT order by cc.ENTRY_ID desc) where rownum=1)         AS facCatg,
+					lmts.LMT_CRRNCY_ISO_CODE AS curr,
+					lx.FACILITY_SYSTEM       AS facSys,
+					lx.FACILITY_SYSTEM_ID    AS facSysId,
+					lmts.LINE_NO             AS lineNo,
+					cs.COLLATERAL_CODE
+					||'-'
+					||ncm.NEW_COLLATERAL_DESCRIPTION                                      AS secDesc,
+					cs.TYPE_NAME                                                          AS secType,
+					cs.SUBTYPE_NAME                                                       AS secSubtype,
+					to_number(CALCULATE_DP(gcstockdet.gc_det_id,sp.FUNDED_SHARE_PERCENT)) AS cmv,
+					lmts.TOTAL_RELEASED_AMOUNT                                            AS relAmt,
+					cs.cms_collateral_id                                                  AS colId,
+					lmts.lmt_crrncy_iso_code                                              AS currency,
+					lsm.lmt_security_coverage                                             AS secCov,
+					sp.cms_le_sub_profile_id                                              AS partyId,
+					to_number(CALCULATE_DP(gcstockdet.gc_det_id,sp.FUNDED_SHARE_PERCENT)) AS secAmount
+				  FROM CMS_LIMIT_SECURITY_MAP lsm,
+					SCI_LSP_APPR_LMTS lmts ,
+					CMS_SECURITY cs,
+					SCI_LSP_LMT_PROFILE pf,
+					SCI_LE_SUB_PROFILE sp,
+					CMS_RELATIONSHIP_MGR rm,
+					COMMON_CODE_CATEGORY_ENTRY ci ,
+					SCI_LSP_LMTS_XREF_MAP lxm,
+					SCI_LSP_SYS_XREF lx,
+					cms_region cr,
+					CMS_COLLATERAL_NEW_MASTER ncm ,
+					cms_asset_gc_det gcdet,
+					cms_asset_gc_stock_det gcstockdet
+				  WHERE lsm.CMS_LSP_APPR_LMTS_ID  = lmts.CMS_LSP_APPR_LMTS_ID
+				  AND (lsm.UPDATE_STATUS_IND     != 'D'
+				  OR lsm.UPDATE_STATUS_IND       IS NULL)
+				  AND cs.SECURITY_SUB_TYPE_ID     ='AB100'
+				  AND lsm.CMS_COLLATERAL_ID       = cs.CMS_COLLATERAL_ID
+				  AND pf.CMS_LSP_LMT_PROFILE_ID   = lmts.CMS_LIMIT_PROFILE_ID
+				  AND sp.CMS_LE_SUB_PROFILE_ID    = pf.CMS_CUSTOMER_ID
+				  AND rm.ID(+)                    = sp.RELATION_MGR
+				  AND ci.ENTRY_CODE(+)            = sp.LSP_SGMNT_CODE_VALUE
+				  AND lx.CMS_LSP_SYS_XREF_ID      = lxm.CMS_LSP_SYS_XREF_ID
+				  AND lxm.CMS_LSP_APPR_LMTS_ID(+) = lmts.CMS_LSP_APPR_LMTS_ID
+				  AND cr.id(+)                    = rm.region
+				  AND cs.COLLATERAL_CODE          = ncm.new_collateral_code(+)
+				  AND gcdet.gc_det_id             = gcstockdet.gc_det_id
+				  AND gcdet.cms_collateral_id     = cs.cms_collateral_id
+				  AND gcdet.doc_code              =LATEST_GC_DOCCODE(cs.cms_collateral_id)
+				  AND sp.status                  != 'INACTIVE'
+				  GROUP BY sp.LSP_SHORT_NAME,
+					ci.ENTRY_NAME,
+					rm.RM_MGR_NAME ,
+					cr.region_name,
+					lmts.FACILITY_NAME,
+					lmts.FACILITY_TYPE,
+					lmts.FACILITY_CAT,
+					lmts.LMT_CRRNCY_ISO_CODE,
+					lx.FACILITY_SYSTEM,
+					lx.FACILITY_SYSTEM_ID,
+					lmts.LINE_NO,
+					cs.COLLATERAL_CODE
+					||'-'
+					||ncm.NEW_COLLATERAL_DESCRIPTION,
+					cs.TYPE_NAME,
+					cs.SUBTYPE_NAME,
+					cs.CMV,
+					lmts.TOTAL_RELEASED_AMOUNT,
+					cs.cms_collateral_id,
+					sp.cms_le_sub_profile_id ,
+					gcstockdet.gc_det_id,
+					sp.FUNDED_SHARE_PERCENT,
+					lmts.lmt_crrncy_iso_code ,
+					lsm.lmt_security_coverage,
+					cs.SECURITY_SUB_TYPE_ID
+				  ) temp
+			</query>
+		<whereClause>
+						
+			<param>
+				<name>party</name>
+				<condition> temp.partyId= </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Line No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Sub type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Valuation of Security Taken</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Total Released Amount</header>
+				</reportColumn>	
+					<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security coverage % </header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Security coverage Amount</header>
+				</reportColumn>			
+			</reportColumns>
+			<reportName>Total Adequacy Report - MIS Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

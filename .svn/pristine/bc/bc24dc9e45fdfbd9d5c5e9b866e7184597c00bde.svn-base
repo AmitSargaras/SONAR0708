@@ -1,0 +1,237 @@
+<?xml version="1.0"?>
+<!-- 
+	Ant build.xml for Weblogic specific tasks, This should be imported into main build.xml in root folder,
+	Which mean, this build.xml cannot be run standalone.
+-->
+
+<project name="aurionPro Solutions HDFC CLIMS - Weblogic">	
+	<import file="build_WL11.xml" />
+	<patternset id="cms.public.html.wls.packages">
+		<exclude name="**/WEB-INF/server/**" />
+		<exclude name="**/WEB-INF/weblogic.xml" />
+	</patternset>
+
+	<patternset id="cms.ear.dist.excl.3rdparty.jars">
+		<include name="*.jar" />
+		<exclude name="integrobase.jar" />
+		<exclude name="uiinfrabase.jar" />
+		<exclude name="ofacomp.jar" />
+		<exclude name="ofacompui.jar" />
+		<exclude name="hotswap.jar" />
+		<exclude name="dd.jar" />
+		<exclude name="j2ee*.jar" />
+		<exclude name="junit" />
+		<exclude name="servlet.jar" />
+		<exclude name="ejb.jar" />
+		<exclude name="mq*.jar" />
+	</patternset>
+
+	<target name="deploy" depends="init, buildnumber" 
+			description="to copy files that is environmental specific for Windows' Weblogic">
+		<filter token="PUBLIC_HTML_TOKEN" value="${current.dev.dir}\public_html" />
+		<filter token="EJB_DD_HOME" value="${current.dev.dir}\config\ejb\weblogic" />
+
+		<tstamp>
+    		<format property="build.date" pattern="dd-MMM-yyyy"/>
+		</tstamp>
+		<filter token="BUILD_DATE" value="${build.date}" />
+
+		<path id="original.integro.home">
+			<pathelement location="${current.dev.dir}" />
+		</path>
+		<pathconvert property="integro.home.for.java" refid="original.integro.home">
+			<filtermapper>
+				<replacestring from="\" to="/" />
+			</filtermapper>
+		</pathconvert>
+
+		<filter token="INTEGRO_HOME" value="${current.dev.dir}" />
+		<filter token="INTEGRO_HOME_FOR_JAVA" value="${integro.home.for.java}" />
+
+		<property file="build.number" />
+		<filter token="BUILD_NUMBER" value="${build.number}" />
+
+		<echo message="-------- Copying Weblogic Deployment Stuff --------" />
+
+		<copy todir="${public.html.dir}/WEB-INF" overwrite="yes">
+			<fileset dir="${public.html.dir}/WEB-INF/server/weblogic" includes="weblogic.xml, web.xml" />
+		</copy>
+
+		<copy file="${config.dir}/weblogic/wls.local.cmd" tofile="${current.bea.dir}/${weblogic.domain}/startWls.cmd" overwrite="yes" />
+
+		<copy file="${config.dir}/weblogic/config.local.xml"
+		      tofile="${current.bea.dir}/${weblogic.domain}/config.xml"
+		      filtering="true"
+		      overwrite="yes" />
+
+		<copy file="${config.dir}/weblogic/AppContext_Master.xml"
+		      tofile="${config.dir}/spring/AppContext_Master.xml"
+		      overwrite="yes" />
+
+		<copy todir="${config.dir}/properties" overwrite="yes" filtering="yes">
+			<fileset dir="${config.dir}/weblogic" includes="ofa_env.properties, batch.properties, logging.xml" />
+		</copy>
+	</target>
+
+	<target name="deploy-server" depends="init, buildnumber" 
+			description="to copy files that is environmental specific for Windows' Weblogic, for cms.ear deployment purpose">
+		<tstamp>
+    		<format property="build.date" pattern="dd-MMM-yyyy"/>
+		</tstamp>
+		<filter token="BUILD_DATE" value="${build.date}" />
+
+		<path id="original.integro.home">
+			<pathelement location="${current.dev.dir}" />
+		</path>
+		<pathconvert property="integro.home.for.java" refid="original.integro.home">
+			<filtermapper>
+				<replacestring from="\" to="/" />
+			</filtermapper>
+		</pathconvert>
+
+		<filter token="INTEGRO_HOME" value="${current.dev.dir}" />
+		<filter token="INTEGRO_HOME_FOR_JAVA" value="${integro.home.for.java}" />
+
+		<property file="build.number" />
+		<filter token="BUILD_NUMBER" value="${build.number}" />
+
+		<echo message="-------- Copying Weblogic Deployment Stuff --------" />
+
+		<copy file="${config.dir}/weblogic/wls.server.cmd" tofile="${current.bea.dir}/${weblogic.domain}/startWls.cmd" overwrite="yes" />
+
+		<copy file="${config.dir}/weblogic/config.server.xml"
+		      tofile="${current.bea.dir}/${weblogic.domain}/config.xml"
+		      filtering="true"
+		      overwrite="yes" />
+
+		<copy file="${config.dir}/weblogic/AppContext_Master.xml"
+		      tofile="${config.dir}/spring/AppContext_Master.xml"
+		      overwrite="yes" />
+
+		<copy todir="${config.dir}/properties" overwrite="yes" filtering="yes">
+			<fileset dir="${config.dir}/weblogic" includes="ofa_env.properties, batch.properties, logging.xml" />
+		</copy>
+	</target>
+
+	<target name="deploy-wls" depends="init, buildnumber" 
+			description="to copy files that is environmental specific for UNIX's Weblogic">
+		<filter token="INTEGRO_HOME" value="${websphere.unix.home}" />
+		<filter token="FEED_HOME" value="${websphere.unix.feed.path}" />
+
+		<property file="build.number" />
+		<filter token="BUILD_NUMBER" value="${build.number}" />
+
+		<echo message="-------- Copying Weblogic Deployment Stuff --------" />
+
+		<copy file="${config.dir}/weblogic/AppContext_Master.xml"
+		      tofile="${config.dir}/spring/AppContext_Master.xml"
+		      overwrite="yes" />
+
+		<copy todir="${config.dir}/properties" filtering="yes" overwrite="yes">
+			<fileset dir="${config.dir}/weblogic" includes="ofa_env.properties, batch.properties, logging.xml" />
+		</copy>
+	</target>
+
+	<target name="wls-ejbc-all" depends="dist-cms-jar">
+		<property file="build.properties" />
+		<property file="build.number" />
+
+		<exec dir="${current.dev.dir}" executable="${current.dev.dir}\bin\weblogic\wls_ejbc_all.bat">
+		</exec>
+	</target>
+
+	<target name="wls-ejbc" depends="dist-cms-jar">
+		<property file="build.properties" />
+		<property file="build.number" />
+
+		<exec dir="${current.dev.dir}" executable="${current.dev.dir}\bin\weblogic\wls_ejbc.bat">
+			<arg value="${ejb}" />
+			<arg value="${current.dev.dir}\build\dist" />
+		</exec>
+	</target>
+
+	<target name="dist-wls-cms-war" depends="manifest" description="create cms.war for Weblogic env">
+		<echo message="Creating cms.war for all the files in ${public.html.dir}" />
+	
+		<war destfile="${dist.dir}/cms.war"
+		     webxml="${public.html.dir}/WEB-INF/server/weblogic/web.xml"
+		     defaultexcludes="true"
+		     manifest="${config.dir}/${manifest.file}">
+
+		    <webinf dir="${public.html.dir}/WEB-INF/server/weblogic" includes="weblogic.xml" />
+
+			<fileset dir="${public.html.dir}">
+				<patternset refid="cms.public.html.wls.packages" />
+			</fileset>
+		</war>
+	</target>
+
+	<target name="dist-wls-cms-ear" depends="manifest" 
+			description="Prepare cms.ear for Weblogic env">
+		<echo message="Preparing distribution of cms.ear for Weblogic Environment" />
+		<echo message="Make sure cms.war and other jars are prepared prior to this task" />
+
+		<mkdir dir="${dist.dir}/APP-INF/lib" />
+		<copy todir="${dist.dir}/APP-INF/lib" overwrite="yes">
+			<fileset dir="${3rdparty.dir}">
+				<patternset refid="cms.ear.dist.excl.3rdparty.jars" />
+			</fileset>
+		</copy>
+
+		<ear destfile="${dist.dir}/cms.ear"
+		     appxml="${config.dir}/weblogic/application.xml"
+		     defaultexcludes="true"
+		     manifest="${config.dir}/${manifest.file}">
+
+			<fileset dir="${dist.dir}" 
+					 includes="*.jar, *.war, APP-INF/"
+					 excludes="Deployed_*.jar" />
+			<fileset dir="${3rdparty.dir}">
+				<patternset refid="cms.ear.dist.3rdparty.jars" />
+			</fileset>
+		</ear>
+		
+		<delete dir="${dist.dir}/APP-INF" quiet="true" />
+	</target>
+
+	<target name="dist-wls" depends="manifest, dist-config-jar, dist-wls-cms-war, dist-wls-cms-ear" 
+			description="Prepare distribution for Weblogic env">
+		<echo message="Preparing distribution for Weblogic Environment" />
+	</target>
+
+	<target name="dist-wls-win"
+	        depends="createdirs, manifest, dist-cms-jar, wls-ejbc-all, deploy, dist-wls"
+	        description="create distribution for Weblogic windows env" />
+
+	<target name="dist-wls-unix"
+	        depends="createdirs, manifest, dist-cms-jar, wls-ejbc-all, deploy-wls, dist-wls"
+	        description="create distribution for Weblogic unix env" />
+	
+	<target name="update_ejb_list" depends="init">
+		<property file="build.properties" />
+		<property file="build.number" />
+		<exec dir="${current.dev.dir}" executable="${current.dev.dir}\bin\jenkins\update_ejb_list.bat">
+		</exec>
+	</target>
+	<target name="migrateejball" depends="init">
+		<property file="build.properties" />
+		<property file="build.number" />
+		<exec dir="${current.dev.dir}" executable="${current.dev.dir}\bin\jenkins\migrateejball.bat">
+		</exec>
+	</target>
+	<target name="transfer_ejb" depends="init">
+		<property file="build.properties" />
+		<property file="build.number" />
+		<exec dir="${current.dev.dir}" executable="${current.dev.dir}\bin\jenkins\transfer_ejb.bat">
+		</exec>
+	</target>
+	<target name="update_ejb" depends="init">
+		<property file="build.properties" />
+		<property file="build.number" />
+		<java jar="${current.dev.dir}\bin\jenkins\updateEJB.jar" fork="true"/>
+	</target>	
+	<target name="create_ejb" depends="init,wls-ejbc-all,migrateejball,transfer_ejb,update_ejb">
+		<property file="build.properties" />
+		<property file="build.number" />
+	</target>
+</project>

@@ -1,0 +1,81 @@
+create or replace procedure sp_migrate_SRno
+AS
+    cursor CR_COl_list   is select CMS_COLLATERAL_ID from CMS_SECURITY where SECURITY_SUB_TYPE_ID ='AB100';
+    type ty_CR_COl_list is table of CR_COl_list%rowtype;
+    rc_COl_list ty_CR_COl_list;
+    cursor CR_ASSET_GC_DET(V_CMS_COLLATERAL_ID number)   is select GC_DET_ID ,DOC_CODE, DUE_DATE  from CMS_ASSET_GC_DET where CMS_COLLATERAL_ID=V_CMS_COLLATERAL_ID;
+    type ty_CR_ASSET_GC_DET is table of CR_ASSET_GC_DET%rowtype;
+    RC_ASSET_GC_DET ty_CR_ASSET_GC_DET;
+
+    cursor CR_STOCK_DET(V_GC_DET_ID number) is select  COMPONENT, CMS_REF_ID,GC_STOCK_DET_ID   from CMS_ASSET_GC_STOCK_DET where GC_DET_ID =V_GC_DET_ID ;--and CMS_REF_ID is null ; -- update CMS_REF_ID
+    type ty_CR_STOCK_DET is table of CR_STOCK_DET%rowtype;
+    RC_STOCK_DET ty_CR_STOCK_DET;
+
+    cursor CR_ST_ASSET_GC_DET(V_CMS_COLLATERAL_ID number,V_DOC_CODE varchar2,V_DUE_DATE date) is  select GC_DET_ID ,DOC_CODE, DUE_DATE  from CMS_STAGE_ASSET_GC_DET where CMS_COLLATERAL_ID in (
+    select STAGING_REFERENCE_ID from TRANSACTION where  REFERENCE_ID=V_CMS_COLLATERAL_ID AND TRANSACTION_TYPE = 'COL'
+    ) and DOC_CODE=V_DOC_CODE and DUE_DATE=V_DUE_DATE;
+    --type ty_CR_ST_ASSET_GC_DET is table of CR_ST_ASSET_GC_DET%rowtype;
+    RC_ST_ASSET_GC_DET CR_ST_ASSET_GC_DET%rowtype;
+
+
+    cursor CR_ST_STOCK_DET(V_GC_DET_ID number,v_COMPONENT varchar2) is select  COMPONENT, CMS_REF_ID,GC_STOCK_DET_ID   from CMS_STAGE_ASSET_GC_STOCK_DET where GC_DET_ID =V_GC_DET_ID and COMPONENT=v_COMPONENT; -- update CMS_REF_ID
+    --type ty_CR_STOCK_DET is table of 
+    RC_ST_STOCK_DET CR_ST_STOCK_DET%rowtype;
+    V_starttime timestamp;
+    V_endtime timestamp;
+begin
+  --  dbms_output.enable(1000000);
+    V_starttime:=CURRENT_timestamp;
+    update CMS_STAGE_ASSET_GC_STOCK_DET set CMS_REF_ID =  GC_STOCK_DET_ID;
+  --  DBMS_OUTPUT.PUT_LINE('Update of Staging Stock completed at. :-' ||current_timestamp);
+ --   DBMS_OUTPUT.PUT_LINE('Staging Stock table updated. Execution time is :-' ||to_char (CURRENT_timestamp-v_starttime));
+    commit;
+
+    open CR_COl_list;
+        loop 
+            fetch CR_COl_list bulk collect into rc_COl_list limit 10000;
+            exit when rc_COl_list.count=0;
+
+            for CL in 1..rc_COl_list.count
+                loop
+                    open CR_ASSET_GC_DET(rc_COl_list(CL).CMS_COLLATERAL_ID); 
+                    fetch CR_ASSET_GC_DET bulk collect into RC_ASSET_GC_DET;
+                    close CR_ASSET_GC_DET;
+                    for AG in 1..RC_ASSET_GC_DET.count
+                    loop
+                        open CR_ST_ASSET_GC_DET(rc_COl_list(CL).CMS_COLLATERAL_ID,RC_ASSET_GC_DET(AG).DOC_CODE,RC_ASSET_GC_DET(AG).DUE_DATE);
+                        fetch CR_ST_ASSET_GC_DET  into RC_ST_ASSET_GC_DET;
+                        if CR_ST_ASSET_GC_DET%NOTFOUND or CR_ST_ASSET_GC_DET%NOTFOUND is null then
+                            close CR_ST_ASSET_GC_DET;
+                            continue;
+                        end if;
+                        close CR_ST_ASSET_GC_DET;
+                        open CR_STOCK_DET(RC_ASSET_GC_DET(AG).GC_DET_ID);
+                        fetch CR_STOCK_DET bulk collect into RC_STOCK_DET;
+                        close CR_STOCK_DET;
+                        for ST in 1..RC_STOCK_DET.count
+                        loop
+                            open CR_ST_STOCK_DET(RC_ST_ASSET_GC_DET.GC_DET_ID,RC_STOCK_DET(ST).COMPONENT);
+                            fetch CR_ST_STOCK_DET  into RC_ST_STOCK_DET;
+                            if CR_ST_STOCK_DET%NOTFOUND or CR_ST_STOCK_DET%NOTFOUND is null then
+                                close CR_ST_STOCK_DET;
+                                continue;
+                            else
+                                RC_STOCK_DET(ST).CMS_REF_ID:=RC_ST_STOCK_DET.CMS_REF_ID;
+                            end if;
+                            close CR_ST_STOCK_DET;
+
+                        end loop;
+                        forall upd in  1..RC_STOCK_DET.count
+                        update CMS_ASSET_GC_STOCK_DET set CMS_REF_ID=RC_STOCK_DET(upd).CMS_REF_ID where GC_STOCK_DET_ID=RC_STOCK_DET(upd).GC_STOCK_DET_ID;
+
+                    end loop;
+                commit;
+          --      DBMS_OUTPUT.PUT_LINE('Update for COLLATERAL ('|| rc_COl_list(CL).CMS_COLLATERAL_ID ||')completed at. :-' ||current_timestamp);
+                end loop;
+                
+        end loop;
+    close CR_COl_list;
+    V_Endtime:=CURRENT_timestamp;
+    DBMS_OUTPUT.PUT_LINE('Process Completed. total Execution time is :-' ||to_char(V_Endtime-v_starttime));
+end;

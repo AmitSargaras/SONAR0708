@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+			
+		<bean id="limitsOfAuthorityMasterBusManager" class="com.integrosys.cms.app.limitsOfAuthorityMaster.bus.BusManagerImpl">
+			<property name="dao" ref="limitsOfAuthorityMasterDao" />
+			<property name="jdbc" ref="limitsOfAuthorityMasterJdbc" />
+		</bean>
+
+		<bean id="limitsOfAuthorityMasterProxy" class="com.integrosys.cms.app.limitsOfAuthorityMaster.proxy.ProxyManagerImpl">
+			<property name="busManager" ref="limitsOfAuthorityMasterBusManager" />
+			<property name="stagingBusManager" ref="stagingLimitsOfAuthorityMasterBusManager" />
+			<property name="trxControllerFactory" ref="limitsOfAuthorityMasterTrxControllerFactory" />
+		</bean>
+		
+		<bean id="stagingLimitsOfAuthorityMasterBusManager" class="com.integrosys.cms.app.limitsOfAuthorityMaster.bus.BusManagerStagingImpl">
+			<property name="dao" ref="limitsOfAuthorityMasterDao" />
+			<property name="jdbc" ref="limitsOfAuthorityMasterJdbc" />
+		</bean>	
+</beans>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	
+	
+
+    <bean id="AcknowledgmentUploadAction.AcknowledgmentUploadCmd" class="com.integrosys.cms.ui.acknowledgmentupload.AcknowledgmentUploadCmd">
+        
+    </bean>
+	<bean id="AcknowledgmentUploadAction.AcknowledgmentFileUploadCmd" class="com.integrosys.cms.ui.acknowledgmentupload.AcknowledgmentFileUploadCmd">
+        <property name="acknowledgmentuploadProxy" ref="acknowledgmentuploadProxy" />
+    </bean>
+  <bean id="AcknowledgmentUploadAction.DownloadReportCommand" class="com.integrosys.cms.ui.acknowledgmentupload.DownloadReportCommand"></bean>
+              <bean id="AcknowledgmentUploadAction.ReadProcessAcknowledgmentFile" class="com.integrosys.cms.ui.acknowledgmentupload.ReadProcessAcknowledgmentFile">
+       <property name="acknowledgmentuploadProxy" ref="acknowledgmentuploadProxy" /> </bean>
+      <bean id="AcknowledgmentUploadAction.CheckerReadAcknowledgmentFileUploadCmd" class="com.integrosys.cms.ui.acknowledgmentupload.CheckerReadAcknowledgmentFileUploadCmd">
+       <property name="acknowledgmentuploadProxy" ref="acknowledgmentuploadProxy" />
+     </bean>
+    <bean id="AcknowledgmentUploadAction.CheckerApproveAcknowledgmentFileUploadCmd" class="com.integrosys.cms.ui.acknowledgmentupload.CheckerApproveAcknowledgmentFileUploadCmd">
+       <property name="acknowledgmentuploadProxy" ref="acknowledgmentuploadProxy" />
+     </bean>
+    <bean id="AcknowledgmentUploadAction.CheckerRejectAcknowledgmentFileCmd" class="com.integrosys.cms.ui.acknowledgmentupload.CheckerRejectAcknowledgmentFileCmd">
+       <property name="acknowledgmentuploadProxy" ref="acknowledgmentuploadProxy" />
+     </bean>
+	<bean id="AcknowledgmentUploadAction.MakerReadAcknowledgmentRejectCmd" class="com.integrosys.cms.ui.acknowledgmentupload.MakerReadAcknowledgmentRejectCmd">
+       <property name="acknowledgmentuploadProxy" ref="acknowledgmentuploadProxy" />
+     </bean>
+     <bean id="AcknowledgmentUploadAction.MakerCloseAcknowledgmentFileCmd" class="com.integrosys.cms.ui.acknowledgmentupload.MakerCloseAcknowledgmentFileCmd">
+       <property name="acknowledgmentuploadProxy" ref="acknowledgmentuploadProxy" />
+     </bean>
+</beans>
+

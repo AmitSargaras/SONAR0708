@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	
+	
+	<bean id="MaintainSystemBankBranchAction.ListSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.ListSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+   
+    </bean>
+   
+    <bean id="MaintainSystemBankBranchAction.MakerPrepareCreateSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerPrepareCreateSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+        <property name="systemBankProxy" ref="systemBankProxy" />
+         <property name="cityProxy" ref="cityProxy"/>
+         <property name="pincodeMappingBusManager" ref="pincodeMappingBusManager"></property>
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.MakerCreateSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerCreateSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+     <bean id="MaintainSystemBankBranchAction.MakerSaveSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerSaveSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.SearchListSystemBankBranchCommand" class="com.integrosys.cms.ui.systemBankBranch.SearchListSystemBankBranchCommand">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+         <property name="systemBankProxy" ref="systemBankProxy" />
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.PaginationCmd" class="com.integrosys.cms.ui.systemBankBranch.PaginationCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.MakerReadSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerReadSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+        <property name="cityProxy" ref="cityProxy"/>
+        <property name="pincodeMappingBusManager" ref="pincodeMappingBusManager"></property>
+    </bean>
+	<bean id="MaintainSystemBankBranchAction.MakerEditSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerEditSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+	<bean id="MaintainSystemBankBranchAction.MakerDeleteSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerDeleteSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.CheckerReadSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.CheckerReadSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+        <property name="cityProxy" ref="cityProxy"/>
+        <property name="pincodeMappingBusManager" ref="pincodeMappingBusManager"/>      
+    </bean>
+     <bean id="MaintainSystemBankBranchAction.CheckerApproveEditSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.CheckerApproveEditSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.CheckerRejectEditSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.CheckerRejectEditSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+      <bean id="MaintainSystemBankBranchAction.MakerCloseSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerCloseSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <bean id="MaintainSystemBankAction.RefreshRegionCmd" class="com.integrosys.cms.ui.systemBank.RefreshRegionCmd">
+          <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+     <bean id="MaintainSystemBankAction.RefreshStateCmd" class="com.integrosys.cms.ui.systemBank.RefreshStateCmd">
+          <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+     <bean id="MaintainSystemBankAction.RefreshCityCmd" class="com.integrosys.cms.ui.systemBank.RefreshCityCmd">
+          <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+	 <bean id="MaintainSystemBankBranchAction.MakerUploadSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerUploadSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.MakerPrepareUploadSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerPrepareUploadSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.CheckerReadFileInsertListCmd" class="com.integrosys.cms.ui.systemBankBranch.CheckerReadFileInsertListCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+     <bean id="MaintainSystemBankBranchAction.CheckerApproveInsertSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.CheckerApproveInsertSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+     <bean id="MaintainSystemBankBranchAction.CheckerRejectInsertSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.CheckerRejectInsertSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <bean id="MaintainSystemBankBranchAction.MakerInsertCloseSystemBankBranchCmd" class="com.integrosys.cms.ui.systemBankBranch.MakerInsertCloseSystemBankBranchCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+
+    
+    
+    
+    
+    
+     <bean id="AssetPostDatedChqsAction.PrepareAssetPostDatedChqsCommand" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.PrepareAssetPostDatedChqsCommand">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    
+    <bean id="AssetPostDatedChqsAction.ReadCollateralCommand" class="com.integrosys.cms.ui.collateral.ReadCollateralCommand">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+ 
+  
+     <bean id="AssetSpecVehiclesAction.PrepareAssetSpecVehiclesCommand" class="com.integrosys.cms.ui.collateral.assetbased.assetspecvehicles.PrepareAssetSpecVehiclesCommand">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    
+    <bean id="AssetSpecVehiclesAction.ReadCollateralCommand" class="com.integrosys.cms.ui.collateral.ReadCollateralCommand">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    
+
+     <bean id="MaintainUserAction.ListOptionsCmd" class="com.integrosys.cms.ui.user.ListOptionsCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    	<property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    <bean id="MaintainUserAction.UpdateListOptionsCmd" class="com.integrosys.cms.ui.user.UpdateListOptionsCmd">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    	<property name="cityProxy" ref="cityProxy"/>
+    </bean>
+<!--     <bean id="MaintainUserAction.MakerReadUserCmd" class="com.integrosys.cms.ui.user.MakerReadUserCmd">-->
+<!--        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />-->
+<!--    	<property name="cityProxy" ref="cityProxy"/>-->
+<!--    </bean>-->
+    <bean id="MaintainUserAction.RefreshRegionCmd" class="com.integrosys.cms.ui.user.RefreshRegionCmd">
+          <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+     <bean id="MaintainUserAction.RefreshStateCmd" class="com.integrosys.cms.ui.user.RefreshStateCmd">
+          <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+     <bean id="MaintainUserAction.RefreshCityCmd" class="com.integrosys.cms.ui.user.RefreshCityCmd">
+          <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+
+</beans>
+

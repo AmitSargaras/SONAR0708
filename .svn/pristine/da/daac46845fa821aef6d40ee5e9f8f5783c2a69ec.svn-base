@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="erosionStatusManager" class="com.integrosys.cms.app.erosion.bus.ErosionStatusManagerImpl">
+		<property name="erosionStatusDao" ref="erosionStatusDao" />
+	</bean>
+
+	<bean id="erosionStatusProxyManager" class="com.integrosys.cms.app.erosion.proxy.ErosionStatusProxyImpl">
+		<property name="erosionStatusManager" ref="erosionStatusManager" />
+	</bean>
+	
+	<bean id="erosionDataCreateJob" class="com.integrosys.cms.batch.erosion.schedular.ErosionDataCreateJob">
+    	<property name="erosionHelper" ref="erosionHelper"></property>
+    </bean>
+    
+    <bean id="erosionFileWriteJob" class="com.integrosys.cms.batch.erosion.schedular.ErosionFileWriteJob">
+    	<property name="erosionHelper" ref="erosionHelper"></property>
+    </bean>
+    
+    <bean id="erosionDataBackupJob" class="com.integrosys.cms.batch.erosion.schedular.ErosionDataBackupJob">
+    	<property name="erosionHelper" ref="erosionHelper"></property>
+    </bean>
+    
+	<bean id="erosionHelper" class="com.integrosys.cms.batch.erosion.schedular.ErosionHelper">
+    	<property name="erosionStatusProxy" ref="erosionStatusProxyManager"></property>
+    	<property name="erosionStatusJdbc" ref="erosionStatusJdbc"></property>
+    	<property name="erosionStatusJdbcTemplate" ref="erosionStatusJdbcTemplate"></property>
+    	<property name="reportService" ref="reportService"></property>
+    	<property name="reportDao" ref="poiReportDao"></property>
+    </bean>
+    
+    <bean id="reportService" class="com.integrosys.cms.app.poi.report.ReportService">
+		<property name="reportDao" ref="poiReportDao" />
+	</bean>
+	
+</beans>

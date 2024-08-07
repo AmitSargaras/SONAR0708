@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN"
+"http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+
+<ejb-jar>
+    
+<display-name>PreDeal</display-name>
+    
+    <enterprise-beans>
+        
+        <session id="session_SBPreDealProxyManager">
+            <ejb-name>SBPreDealProxyManager</ejb-name>
+            <home>com.integrosys.cms.app.predeal.proxy.SBPreDealProxyManagerHome</home>
+            <remote>com.integrosys.cms.app.predeal.proxy.SBPreDealProxyManager</remote>
+            <ejb-class>com.integrosys.cms.app.predeal.proxy.SBPreDealProxyManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref id="resourceref_SBPreDealProxyManager_1">
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        
+        <session id="session_SBPreDealBusManager">
+            <ejb-name>SBPreDealBusManager</ejb-name>
+            <home>com.integrosys.cms.app.predeal.bus.SBPreDealBusManagerHome</home>
+            <remote>com.integrosys.cms.app.predeal.bus.SBPreDealBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.predeal.bus.SBPreDealBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref id="resourceref_SBPreDealBusManager_1">
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        
+        <session id="session_SBStagingPreDealBusManager">
+            <ejb-name>SBStagingPreDealBusManager</ejb-name>
+            <home>com.integrosys.cms.app.predeal.bus.SBPreDealBusManagerHome</home>
+            <remote>com.integrosys.cms.app.predeal.bus.SBPreDealBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.predeal.bus.SBStagingPreDealBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref id="resourceref_SBStagingPreDealBusManager_1">
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        
+        <entity id="entity_EBEarMark">
+            <ejb-name>EBEarMark</ejb-name>
+            <home>com.integrosys.cms.app.predeal.bus.EBEarMarkHome</home>
+            <remote>com.integrosys.cms.app.predeal.bus.EBEarMark</remote>
+            <ejb-class>com.integrosys.cms.app.predeal.bus.EBEarMarkBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBEarMark</abstract-schema-name>
+            
+            <cmp-field >
+                <field-name>earMarkId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkGroupId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>feedId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>customerName</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>sourceSystem</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>securityId</field-name>
+            </cmp-field>  
+            <cmp-field >
+                <field-name>aaNumber</field-name>
+            </cmp-field>            
+            <cmp-field >
+                <field-name>branchName</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>branchCode</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cifNo</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>accountNo</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkUnits</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkingDate</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkStatus</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPholdingInd</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>releaseStatus</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPinfoCorrectInd</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>infoIncorrectDetails</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPwaiveApproveInd</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPstatus</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>dateMaxCapBreach</field-name>
+            </cmp-field>            
+            <cmp-field >
+                <field-name>purposeOfEarmarking</field-name>
+            </cmp-field>             
+            
+            <primkey-field>earMarkId</primkey-field>
+            
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+            
+            <query>
+                <query-method>
+                    <method-name>findByEarMarkGroupId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBEarMark o WHERE (?1 = o.earMarkGroupId)]]></ejb-ql>
+            </query>
+            
+            <query>
+                <query-method>
+                    <method-name>findByFeedId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBEarMark o WHERE (?1 = o.feedId)]]></ejb-ql>
+            </query>
+            
+        </entity>
+        
+        <entity id="entity_EBStagingEarMark">
+            <ejb-name>EBStagingEarMark</ejb-name>
+            <home>com.integrosys.cms.app.predeal.bus.EBEarMarkHome</home>
+            <remote>com.integrosys.cms.app.predeal.bus.EBEarMark</remote>
+            <ejb-class>com.integrosys.cms.app.predeal.bus.EBStagingEarMarkBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingEarMark</abstract-schema-name>
+            
+            <cmp-field >
+                <field-name>earMarkId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkGroupId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>feedId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>customerName</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>sourceSystem</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>securityId</field-name>
+            </cmp-field>  
+            <cmp-field >
+                <field-name>aaNumber</field-name>
+            </cmp-field>            
+            <cmp-field >
+                <field-name>branchName</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>branchCode</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cifNo</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>accountNo</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkUnits</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkingDate</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkStatus</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPholdingInd</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>releaseStatus</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPinfoCorrectInd</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>infoIncorrectDetails</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPwaiveApproveInd</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPstatus</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>dateMaxCapBreach</field-name>
+            </cmp-field>  
+            <cmp-field >
+                <field-name>purposeOfEarmarking</field-name>
+            </cmp-field>  
+			
+            <primkey-field>earMarkId</primkey-field>
+            
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+            
+            <query>
+                <query-method>
+                    <method-name>findByEarMarkGroupId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingEarMark o WHERE (?1 = o.earMarkGroupId)]]></ejb-ql>
+            </query>
+            
+            <query>
+                <query-method>
+                    <method-name>findByFeedId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingEarMark o WHERE (?1 = o.feedId)]]></ejb-ql>
+            </query>
+            
+        </entity>
+        
+        <entity id="entity_EBEarMarkGroup">
+            <ejb-name>EBEarMarkGroup</ejb-name>
+            <home>com.integrosys.cms.app.predeal.bus.EBEarMarkGroupHome</home>
+            <remote>com.integrosys.cms.app.predeal.bus.EBEarMarkGroup</remote>
+            <ejb-class>com.integrosys.cms.app.predeal.bus.EBEarMarkGroupBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBEarMarkGroup</abstract-schema-name>
+            
+            <cmp-field >
+                <field-name>earMarkGroupId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>feedId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>sourceSystemId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cmsActualHolding</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkHolding</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>earMarkCurrent</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPbreachInd</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>dateQuotaBreach</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>dateMaxCapBreach</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>lastBatchUpdate</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>lastDateQuotaBreach</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>lastDateMaxCapBreach</field-name>
+            </cmp-field>  
+            <cmp-field >
+                <field-name>status</field-name>
+            </cmp-field>            
+            <cmp-field >
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>totalOfUnits</field-name>
+            </cmp-field>
+			
+            <primkey-field>earMarkGroupId</primkey-field>
+            
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+            
+            <query>
+                <query-method>
+                    <method-name>findByFeedId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBEarMarkGroup o WHERE (?1 = o.feedId)]]></ejb-ql>
+            </query>
+            
+            <query>
+                <query-method>
+                    <method-name>findBySourceAndFeedId</method-name>
+                    <method-params>
+                        <method-param>java.lang.String</method-param>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBEarMarkGroup o WHERE (?1 = o.sourceSystemId AND ?2 = o.feedId)]]></ejb-ql>
+            </query>
+            
+        </entity>
+        
+    </enterprise-beans>
+    
+    <assembly-descriptor>
+        
+        <container-transaction>
+            
+            <method>
+                <ejb-name>SBPreDealBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>SBPreDealProxyManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>SBStagingPreDealBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>EBEarMark</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>EBStagingEarMark</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>EBEarMarkGroup</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <trans-attribute>Required</trans-attribute>
+            
+        </container-transaction>
+        
+    </assembly-descriptor>
+    
+</ejb-jar>

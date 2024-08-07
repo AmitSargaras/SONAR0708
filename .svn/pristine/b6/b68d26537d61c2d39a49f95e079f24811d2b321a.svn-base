@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT sp.LSP_LE_ID,
+					  sp.LSP_SHORT_NAME,
+					   ce.entry_name AS segment,
+					  sp.BRANCH_CODE,   					
+					  sec.cms_collateral_id AS sourceSecId,
+					  cd.DEPOSIT_AMOUNT,
+					  CD.SYSTEM_ID,
+					  CD.DEPOSIT_REFERENCE_NUMBER,
+					  TO_CHAR(cd.DEPOSIT_MATURITY_DATE,'DD/Mon/YYYY'),
+					  TO_CHAR(cd.ISSUE_DATE,'DD/Mon/YYYY'),
+					  cl.LIEN_AMOUNT,
+					  cd.DEPOSIT_INTEREST_RATE,
+					  sec.SCI_SECURITY_CURRENCY,
+					  (SELECT RM_MGR_NAME
+					  FROM CMS_RELATIONSHIP_MGR
+					  WHERE id = sp.RELATION_MGR
+					  ) AS RMNAME,
+					  --  reg.region_name,
+					  (
+					  SELECT REGION_NAME
+					  FROM CMS_REGION
+					  WHERE id = sp.rm_region
+					  ) AS RMREGION,
+					  CASE
+					    WHEN cd.IS_OWN_BANK = 'Y'
+					    THEN sp.LSP_SHORT_NAME
+					    WHEN cd.IS_OWN_BANK != 'Y'
+					    THEN cd.DEPOSITOR_NAME
+					  END AS depositorName,
+					  lmts.FACILITY_NAME,
+					  cl.lien_number,
+					  cl.serial_no,
+					  cl.remark,
+					  temp.amt AS weightedAvgIntrst,
+					  sec.spread,
+					  (sec.spread + temp.amt) AS effectiveRate,
+						cd.maker_id AS Maker,
+						TO_CHAR(cd.maker_date,'DD/Mon/YYYY') AS MakerDateTime,
+						cd.checker_id AS Approved_By,
+						TO_CHAR(cd.checker_date,'DD/Mon/YYYY') AS CheckerDateTime
+						FROM CMS_LIMIT_SECURITY_MAP lsm,
+						 SCI_LSP_APPR_LMTS lmts,
+						 SCI_LSP_LMT_PROFILE pf,
+						 SCI_LE_SUB_PROFILE sp,
+						 CMS_CASH_DEPOSIT cd,
+						 CMS_LIEN CL,
+						 COMMON_CODE_CATEGORY_ENTRY ce,
+						 SCI_LE_REG_ADDR addr ,
+						 CMS_REGION reg,
+						 cms_security sec,
+						 (select round(sum(cd1.deposit_interest_rate * cl1.lien_amount)/sum(cl1.lien_amount),2) as amt ,sec1.cms_collateral_id
+						from cms_lien cl1,cms_cash_deposit cd1 ,
+						cms_security sec1 where 
+						sec1.cms_collateral_id = cd1.cms_collateral_id 
+						and cl1.cash_deposit_id = cd1.cash_deposit_id
+						and  CD1.STATUS = 'ACTIVE'  
+						and cd1.ACTIVE = 'active' 
+						and sec1.status = 'ACTIVE' group by sec1.cms_collateral_id) temp
+			</query>
+		<whereClause>
+			<mandatoryClause>				
+				sp.CMS_LE_SUB_PROFILE_ID = pf.CMS_CUSTOMER_ID
+				AND pf.CMS_LSP_LMT_PROFILE_ID  = lmts.CMS_LIMIT_PROFILE_ID
+				AND lmts.CMS_LSP_APPR_LMTS_ID  = lsm.CMS_LSP_APPR_LMTS_ID
+				AND cd.CMS_COLLATERAL_ID (+)   = lsm.CMS_COLLATERAL_ID
+				AND (lsm.UPDATE_STATUS_IND    != 'D' OR lsm.UPDATE_STATUS_IND      IS NULL)
+				AND CD.CASH_DEPOSIT_ID         = CL.CASH_DEPOSIT_ID(+)
+				AND sp.LSP_SGMNT_CODE_VALUE    =ce.ENTRY_CODE(+)
+				AND (CD.STATUS                 = 'ACTIVE')
+				AND sp.status                 != 'INACTIVE'
+				AND sp.cms_le_main_profile_id  = addr.cms_le_main_profile_id
+				AND addr.LRA_TYPE_VALUE        = 'CORPORATE'
+				AND addr.lra_region            = reg.id
+				AND ce.category_code           = 'HDFC_SEGMENT'
+				and lmts.cms_limit_status &lt;&gt; 'DELETED'
+				and sec.cms_collateral_id = cd.cms_collateral_id
+
+				AND lsm.CHARGE_ID   in 
+                (SELECT MAX(MAPS2.CHARGE_ID)
+		        from cms_limit_security_map maps2
+		        where maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id
+		        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+		        )
+						AND lsm.UPDATE_STATUS_IND = 'I'
+					 and temp.cms_collateral_id(+) = sec.cms_collateral_id
+						and cd.ACTIVE = 'active'
+       			AND lmts.LMT_ID = CL.FACILITY_ID
+			</mandatoryClause>
+			<param>
+				<name>segment</name>
+				<condition> AND sp.LSP_SGMNT_CODE_VALUE = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sp.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			    <reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Branch Code</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Source Security Id</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>FD Amount</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Customer Id</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>FD Receipt Number</header><!-- 8 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Maturity Date</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Deposit Date</header><!-- 10 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>FD Lien Amount</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Interest Rate</header><!-- 12 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency Code</header><!-- 13 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 14 -->
+				</reportColumn>			
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 15 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Depositor Name</header><!-- 16 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header><!-- 17 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Line Number</header><!-- 18 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Serial Number</header><!-- 19 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header><!-- 20 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Weighted Average Interest</header><!-- 21 -->
+				</reportColumn>		
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Spread</header><!-- 22 -->
+				</reportColumn>		
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Effective Rate</header><!-- 23 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Edited By</header><!-- 24 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Edited On</header><!-- 25 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Last Approved By</header><!-- 26 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Last Approved On</header><!-- 27 -->
+				</reportColumn>			
+			</reportColumns>
+			<reportName>Total FD Details</reportName>
+		</reportParamters>
+	</report>
+</reports>

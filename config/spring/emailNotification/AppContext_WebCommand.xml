@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	
+	
+	<bean id="ReportAction.GenerateReportCmd" class="com.integrosys.cms.ui.poi.report.GenerateReportCmd">
+        <property name="reportService" ref="reportService" />
+    </bean>
+	<bean id="ReportAction.PrepareReportFilterCmd" class="com.integrosys.cms.ui.poi.report.PrepareReportFilterCmd">
+        <!-- <property name="reportService" ref="reportService" /> -->
+    </bean>
+	<bean id="ReportAction.ListSystemBankBranchRPTCmd" class="com.integrosys.cms.ui.poi.report.ListSystemBankBranchRPTCommand">
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    <!--<bean id="MaintainFacilityNewMasterAction.MakerPrepareCreateFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.MakerPrepareCreateFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+    <bean id="MaintainFacilityNewMasterAction.MakerCreateFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.MakerCreateFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+     <bean id="MaintainFacilityNewMasterAction.MakerSaveFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.MakerSaveFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+    <bean id="MaintainFacilityNewMasterAction.SearchListFacilityNewMasterCommand" class="com.integrosys.cms.ui.facilityNewMaster.SearchListFacilityNewMasterCommand">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+    <bean id="MaintainFacilityNewMasterAction.PaginationCmd" class="com.integrosys.cms.ui.facilityNewMaster.PaginationCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+    <bean id="MaintainFacilityNewMasterAction.MakerReadFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.MakerReadFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+	<bean id="MaintainFacilityNewMasterAction.MakerEditFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.MakerEditFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+	<bean id="MaintainFacilityNewMasterAction.MakerDeleteFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.MakerDeleteFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+    <bean id="MaintainFacilityNewMasterAction.CheckerReadFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.CheckerReadFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+     <bean id="MaintainFacilityNewMasterAction.CheckerApproveEditFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.CheckerApproveEditFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+    <bean id="MaintainFacilityNewMasterAction.CheckerRejectEditFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.CheckerRejectEditFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+      <bean id="MaintainFacilityNewMasterAction.MakerCloseFacilityNewMasterCmd" class="com.integrosys.cms.ui.facilityNewMaster.MakerCloseFacilityNewMasterCmd">
+        <property name="facilityNewMasterProxy" ref="facilityNewMasterProxy" />
+    </bean>
+	
+--></beans>
+

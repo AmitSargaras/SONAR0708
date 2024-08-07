@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	<!-- Bond List -->
+	
+	<bean id="DigitalLibraryAction.AddDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.AddDigitalLibraryCommand">
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.ApproveDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.ApproveDigitalLibraryCommand">
+  		<property name="digitalLibraryProxy" ref="digitalLibraryProxy" />
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.CloseDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.CloseDigitalLibraryCommand">
+  		<property name="digitalLibraryProxy" ref="digitalLibraryProxy" />
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.CompareDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.CompareDigitalLibraryCommand">
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.DeleteDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.DeleteDigitalLibraryCommand">
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.ListDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.ListDigitalLibraryCommand">
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.ListCompareDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.ListCompareDigitalLibraryCommand">
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.ListViewDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.ListViewDigitalLibraryCommand">
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.PaginateDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.PaginateDigitalLibraryCommand">
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.ReadDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.ReadDigitalLibraryCommand">
+  		<property name="digitalLibraryProxy" ref="digitalLibraryProxy" />
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.RejectDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.RejectDigitalLibraryCommand">
+  		<property name="digitalLibraryProxy" ref="digitalLibraryProxy" />
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.SaveDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.SaveDigitalLibraryCommand">
+  		<property name="digitalLibraryProxy" ref="digitalLibraryProxy" />
+  	</bean>
+	
+	<bean id="DigitalLibraryAction.SubmitDigitalLibraryCommand" class="com.integrosys.cms.ui.digitalLibrary.SubmitDigitalLibraryCommand">
+  		<property name="digitalLibraryProxy" ref="digitalLibraryProxy" />
+  	</bean>
+	
+</beans>

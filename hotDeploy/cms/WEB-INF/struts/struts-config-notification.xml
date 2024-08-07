@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="NotificationForm" type="com.integrosys.cms.ui.notification.NotificationForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/Notification"
+            type="com.integrosys.cms.ui.notification.NotificationAction"
+            name="NotificationForm" validate="false" scope="request">
+            <forward name="search" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/notification/notification_search.jsp"/>
+                <set-property property="title" value="title.notification"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/notification/notification_view.jsp"/>
+                <set-property property="title" value="title.notification"/>
+            </forward>
+            <forward name="view_deleted" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/notification/notification_view.jsp"/>
+                <set-property property="title" value="title.deleted.notification"/>
+            </forward>
+            <forward name="list_deleted_notification" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/notification/list_deleted_notification.jsp"/>
+                <set-property property="title" value="title.deleted.notification"/>
+            </forward>
+            <forward name="delete" path="Notification.do?event=search" redirect="true"/>
+        </action>
+    
+    </action-mappings>
+    
+    <message-resources key="message-notification" parameter="ApplicationResources-notification"/>
+</struts-config>

@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class entity-name="actualInternalCreditRating"
+           name="com.integrosys.cms.app.creditriskparam.bus.internalcreditrating.OBInternalCreditRating"
+           table="CMS_INTERNAL_CREDIT_RATING"
+           lazy="false">
+        <id name="intCredRatId" column="INT_CR_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_INTERNAL_CREDIT_RATING_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="intCredRatCode" column="INT_CR_CODE"/>
+        <property name="intCredRatLmtAmtCurCode" column="INT_CR_LMT_AMT_CUR_CODE"/>
+        <property name="intCredRatLmtAmt" column="INT_CR_LMT_AMT" type="double"/>
+        <property name="groupId" column="GROUP_ID" type="long"/>
+        <property name="refId" column="CMS_REF_ID" type="long"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="stageInternalCreditRating"
+           name="com.integrosys.cms.app.creditriskparam.bus.internalcreditrating.OBInternalCreditRating"
+           table="CMS_STG_INTERNAL_CREDIT_RATING"
+           lazy="false">
+        <id name="intCredRatId" column="INT_CR_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_STG_INTERNAL_CREDIT_RATING_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="intCredRatCode" column="INT_CR_CODE"/>
+        <property name="intCredRatLmtAmtCurCode" column="INT_CR_LMT_AMT_CUR_CODE"/>
+        <property name="intCredRatLmtAmt" column="INT_CR_LMT_AMT" type="double"/>
+        <property name="groupId" column="GROUP_ID" type="long"/>
+        <property name="refId" column="CMS_REF_ID" type="long"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="actualEntityLimit"
+           name="com.integrosys.cms.app.creditriskparam.bus.entitylimit.OBEntityLimit"
+           table="CMS_ENTITY_LIMIT"
+           lazy="false">
+        <id name="entityLimitID" column="ENTITY_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">ENTITY_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="customerID" column="CMS_LE_SUB_PROFILE_ID" type="long"/>
+        <property name="status" column="STATUS"/>
+        <property name="limitCurrency" column="LIMIT_CURRENCY"/>
+
+        <component name="limitAmount" class="com.integrosys.base.businfra.currency.Amount">
+            <property name="amountAsBigDecimal" column="LIMIT_AMOUNT" type="big_decimal"/>
+            <property name="currencyCode" column="LIMIT_CURRENCY" insert="false" update="false"/>
+        </component>
+
+        <property name="limitLastReviewDate" column="LIMIT_REVIEW_DATE" type="timestamp"/>
+        <property name="commonRef" column="CMS_REF_ID" type="long"/>
+        <property name="groupID" column="GROUP_ID" type="long"/>
+    </class>
+
+    <class entity-name="stageEntityLimit"
+           name="com.integrosys.cms.app.creditriskparam.bus.entitylimit.OBEntityLimit"
+           table="CMS_STAGE_ENTITY_LIMIT"
+           lazy="false">
+        <id name="entityLimitID" column="ENTITY_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">ENTITY_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="customerID" column="CMS_LE_SUB_PROFILE_ID" type="long"/>
+        <property name="status" column="STATUS"/>
+        <property name="limitCurrency" column="LIMIT_CURRENCY"/>
+
+        <component name="limitAmount" class="com.integrosys.base.businfra.currency.Amount">
+            <property name="amountAsBigDecimal" column="LIMIT_AMOUNT" type="big_decimal"/>
+            <property name="currencyCode" column="LIMIT_CURRENCY" insert="false" update="false"/>
+        </component>
+
+        <property name="limitLastReviewDate" column="LIMIT_REVIEW_DATE" type="timestamp"/>
+        <property name="commonRef" column="CMS_REF_ID" type="long"/>
+        <property name="groupID" column="GROUP_ID" type="long"/>
+    </class>
+
+    <!-- Sector Limit -->
+    <class entity-name="mainSectorLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.OBMainSectorLimitParameter"
+           table="CMS_MAIN_SECTOR_LIMIT" lazy="false">
+        <id name="id" column="MAIN_SECTOR_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">MAIN_SECTOR_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="loanPurposeCode" column="LOAN_PURPOSE_CODE_VALUE"/>
+        <property name="sectorCode" column="SECTOR_CODE"/>
+        <property name="limitPercentage" column="LIMIT_PERCENT" type="double"/>
+        <property name="conventionalBankPercentage" column="CONV_BK_PERCENT" type="double"/>
+        <property name="islamicBankPercentage" column="ISLAMIC_BK_PERCENT" type="double"/>
+        <property name="investmentBankPercentage" column="INV_BK_PERCENT" type="double"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+        <set name="subSectorSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+            <key column="MAIN_SECTOR_LIMIT_ID"/>
+            <one-to-many entity-name="subSectorLimitParameter"/>
+        </set>
+    </class>
+
+    <class entity-name="subSectorLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.OBSubSectorLimitParameter"
+           table="CMS_SUB_SECTOR_LIMIT" lazy="false">
+        <id name="id" column="SUB_SECTOR_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">SUB_SECTOR_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <property name="mainSectorLimitId" column="MAIN_SECTOR_LIMIT_ID" insert="false" update="false"/>
+        <property name="loanPurposeCode" column="LOAN_PURPOSE_CODE_VALUE"/>
+        <property name="sectorCode" column="SECTOR_CODE"/>
+        <property name="limitPercentage" column="LIMIT_PERCENT" type="double"/>
+        <property name="conventionalBankPercentage" column="CONV_BK_PERCENT" type="double"/>
+        <property name="islamicBankPercentage" column="ISLAMIC_BK_PERCENT" type="double"/>
+        <property name="investmentBankPercentage" column="INV_BK_PERCENT" type="double"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+        <set name="ecoSectorSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+            <key column="SUB_SECTOR_LIMIT_ID"/>
+            <one-to-many entity-name="ecoSectorLimitParameter"/>
+        </set>
+    </class>
+
+    <class entity-name="ecoSectorLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.OBEcoSectorLimitParameter"
+           table="CMS_ECO_SECTOR_LIMIT" lazy="false">
+        <id name="id" column="ECO_SECTOR_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">ECO_SECTOR_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <property name="subSectorLimitId" column="SUB_SECTOR_LIMIT_ID" insert="false" update="false"/>
+        <property name="loanPurposeCode" column="LOAN_PURPOSE_CODE_VALUE"/>
+        <property name="sectorCode" column="SECTOR_CODE"/>
+        <property name="limitPercentage" column="LIMIT_PERCENT" type="double"/>
+        <property name="conventionalBankPercentage" column="CONV_BK_PERCENT" type="double"/>
+        <property name="islamicBankPercentage" column="ISLAMIC_BK_PERCENT" type="double"/>
+        <property name="investmentBankPercentage" column="INV_BK_PERCENT" type="double"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+    </class>
+
+
+    <class entity-name="stagingMainSectorLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.OBMainSectorLimitParameter"
+           table="CMS_STAGE_MAIN_SECTOR_LIMIT" lazy="false">
+        <id name="id" column="MAIN_SECTOR_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">MAIN_SECTOR_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="loanPurposeCode" column="LOAN_PURPOSE_CODE_VALUE"/>
+        <property name="sectorCode" column="SECTOR_CODE"/>
+        <property name="limitPercentage" column="LIMIT_PERCENT" type="double"/>
+        <property name="conventionalBankPercentage" column="CONV_BK_PERCENT" type="double"/>
+        <property name="islamicBankPercentage" column="ISLAMIC_BK_PERCENT" type="double"/>
+        <property name="investmentBankPercentage" column="INV_BK_PERCENT" type="double"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+        <set name="subSectorSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+            <key column="MAIN_SECTOR_LIMIT_ID" not-null="true"/>
+            <one-to-many entity-name="stagingSubSectorLimitParameter"/>
+        </set>
+    </class>
+
+    <class entity-name="stagingSubSectorLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.OBSubSectorLimitParameter"
+           table="CMS_STAGE_SUB_SECTOR_LIMIT" lazy="false">
+        <id name="id" column="SUB_SECTOR_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">SUB_SECTOR_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <property name="mainSectorLimitId" column="MAIN_SECTOR_LIMIT_ID" insert="false" update="false"/>
+        <property name="loanPurposeCode" column="LOAN_PURPOSE_CODE_VALUE"/>
+        <property name="sectorCode" column="SECTOR_CODE"/>
+        <property name="limitPercentage" column="LIMIT_PERCENT" type="double"/>
+        <property name="conventionalBankPercentage" column="CONV_BK_PERCENT" type="double"/>
+        <property name="islamicBankPercentage" column="ISLAMIC_BK_PERCENT" type="double"/>
+        <property name="investmentBankPercentage" column="INV_BK_PERCENT" type="double"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+        <set name="ecoSectorSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+            <key column="SUB_SECTOR_LIMIT_ID" not-null="true"/>
+            <one-to-many entity-name="stagingEcoSectorLimitParameter"/>
+        </set>
+    </class>
+
+    <class entity-name="stagingEcoSectorLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.OBEcoSectorLimitParameter"
+           table="CMS_STAGE_ECO_SECTOR_LIMIT" lazy="false">
+        <id name="id" column="ECO_SECTOR_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">ECO_SECTOR_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <property name="subSectorLimitId" column="SUB_SECTOR_LIMIT_ID" insert="false" update="false"/>
+        <property name="loanPurposeCode" column="LOAN_PURPOSE_CODE_VALUE"/>
+        <property name="sectorCode" column="SECTOR_CODE"/>
+        <property name="limitPercentage" column="LIMIT_PERCENT" type="double"/>
+        <property name="conventionalBankPercentage" column="CONV_BK_PERCENT" type="double"/>
+        <property name="islamicBankPercentage" column="ISLAMIC_BK_PERCENT" type="double"/>
+        <property name="investmentBankPercentage" column="INV_BK_PERCENT" type="double"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+    </class>
+
+    <!-- Product Limit -->
+    <class entity-name="productProgramLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.productlimit.OBProductProgramLimitParameter"
+           table="CMS_PRODUCT_PROGRAM" lazy="false">
+        <id name="id" column="PRODUCT_PROGRAM_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">PRODUCT_PROGRAM_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="productProgramDesc" column="PRODUCT_PROGRAM_DESC"/>
+        <property name="referenceCode" column="REFERENCE_CODE"/>
+        <component name="limitAmount" class="com.integrosys.base.businfra.currency.Amount">
+            <property name="amountAsBigDecimal" column="LIMIT_AMOUNT" type="big_decimal"/>
+        </component>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+        <set name="productTypeSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+            <key column="PRODUCT_PROGRAM_ID"/>
+            <one-to-many entity-name="productTypeLimitParameter"/>
+        </set>
+    </class>
+
+    <class entity-name="productTypeLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.productlimit.OBProductTypeLimitParameter"
+           table="CMS_PRODUCT_TYPE" lazy="false">
+        <id name="id" column="PRODUCT_TYPE_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">PRODUCT_TYPE_SEQ</param>
+            </generator>
+        </id>
+        <property name="productProgramId" column="PRODUCT_PROGRAM_ID" insert="false" update="false"/>
+        <property name="productTypeDesc" column="PRODUCT_TYPE_DESC"/>
+        <property name="referenceCode" column="REFERENCE_CODE"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+    </class>
+
+    <class entity-name="stagingProductProgramLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.productlimit.OBProductProgramLimitParameter"
+           table="CMS_STAGE_PRODUCT_PROGRAM" lazy="false">
+        <id name="id" column="PRODUCT_PROGRAM_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">PRODUCT_PROGRAM_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="productProgramDesc" column="PRODUCT_PROGRAM_DESC"/>
+        <property name="referenceCode" column="REFERENCE_CODE"/>
+        <component name="limitAmount" class="com.integrosys.base.businfra.currency.Amount">
+            <property name="amountAsBigDecimal" column="LIMIT_AMOUNT" type="big_decimal"/>
+        </component>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+        <set name="productTypeSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+            <key column="PRODUCT_PROGRAM_ID"/>
+            <one-to-many entity-name="stagingProductTypeLimitParameter"/>
+        </set>
+    </class>
+
+    <class entity-name="stagingProductTypeLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.productlimit.OBProductTypeLimitParameter"
+           table="CMS_STAGE_PRODUCT_TYPE" lazy="false">
+        <id name="id" column="PRODUCT_TYPE_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">PRODUCT_TYPE_SEQ</param>
+            </generator>
+        </id>
+        <property name="productProgramId" column="PRODUCT_PROGRAM_ID" insert="false" update="false"/>
+        <property name="productTypeDesc" column="PRODUCT_TYPE_DESC"/>
+        <property name="referenceCode" column="REFERENCE_CODE"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID" type="long"/>
+    </class>
+
+    <!-- Internal Limit -->
+    <class entity-name="actualInternalLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.internallimit.OBInternalLimitParameter"
+           table="CMS_INTERNAL_LIMIT_PARAMETER"
+           lazy="false">
+        <id name="id" column="INT_LIMIT_PARAM_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_INTERNAL_LIMIT_PARAMETER_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="descriptionCode" column="DESCRIPTION_CODE"/>
+        <property name="capitalFundAmountCurrencyCode" column="CAP_FUND_AMT_CUR_CODE"/>
+        <property name="capitalFundAmount" column="CAP_FUND_AMT" type="double"/>
+        <property name="totalLoanAdvanceAmountCurrencyCode" column="TOTAL_LOAN_ADV_AMT_CUR_CODE"/>
+        <property name="totalLoanAdvanceAmount" column="TOTAL_LOAN_ADV_AMT" type="double"/>
+        <property name="gp5LimitPercentage" column="GP5_LIM_PERCENTAGE" type="double"/>
+        <property name="internalLimitPercentage" column="INT_LIM_PERCENTAGE" type="double"/>
+        <property name="groupID" column="GROUP_ID" type="long"/>
+        <property name="commonRef" column="CMS_REF_ID" type="long"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="stageInternalLimitParameter"
+           name="com.integrosys.cms.app.creditriskparam.bus.internallimit.OBInternalLimitParameter"
+           table="CMS_STAGE_INTERNAL_LIMIT_PARAM"
+           lazy="false">
+        <id name="id" column="INT_LIMIT_PARAM_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_STG_INTERNAL_LIMIT_PARAMETER_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="descriptionCode" column="DESCRIPTION_CODE"/>
+        <property name="capitalFundAmountCurrencyCode" column="CAP_FUND_AMT_CUR_CODE"/>
+        <property name="capitalFundAmount" column="CAP_FUND_AMT" type="double"/>
+        <property name="totalLoanAdvanceAmountCurrencyCode" column="TOTAL_LOAN_ADV_AMT_CUR_CODE"/>
+        <property name="totalLoanAdvanceAmount" column="TOTAL_LOAN_ADV_AMT" type="double"/>
+        <property name="gp5LimitPercentage" column="GP5_LIM_PERCENTAGE" type="double"/>
+        <property name="internalLimitPercentage" column="INT_LIM_PERCENTAGE" type="double"/>
+        <property name="groupID" column="GROUP_ID" type="long"/>
+        <property name="commonRef" column="CMS_REF_ID" type="long"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <!-- Bank Entity Branch Param -->
+    <class entity-name="actualBankEntityBranch"
+           name="com.integrosys.cms.app.creditriskparam.bus.bankentitybranch.OBBankEntityBranchParam"
+           table="CMS_BANK_ENTITY_PARAM"
+           lazy="false">
+        <id name="bankEntityId" column="BANK_ENTITY_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_BANK_ENTITY_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="groupId" column="GROUP_ID" type="long"/>
+        <property name="entityType" column="ENTITY_TYPE"/>
+        <property name="branchCode" column="BRANCH_CODE"/>
+        <property name="branchCodeSrc" column="BRANCH_CODE_SRC"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID"/>
+    </class>
+
+    <class entity-name="stageBankEntityBranch"
+           name="com.integrosys.cms.app.creditriskparam.bus.bankentitybranch.OBBankEntityBranchParam"
+           table="CMS_STAGE_BANK_ENTITY_PARAM"
+           lazy="false">
+        <id name="bankEntityId" column="BANK_ENTITY_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_STG_BANK_ENTITY_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="groupId" column="GROUP_ID" type="long"/>
+        <property name="entityType" column="ENTITY_TYPE"/>
+        <property name="branchCode" column="BRANCH_CODE"/>
+        <property name="branchCodeSrc" column="BRANCH_CODE_SRC"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID"/>
+    </class>
+
+    <!-- Country Limit -->
+    <class entity-name="actualCountryLimit"
+           name="com.integrosys.cms.app.creditriskparam.bus.countrylimit.OBCountryLimit"
+           table="CMS_COUNTRY_LIMIT"
+           lazy="false">
+        <id name="countryLimitID" column="COUNTRY_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">COUNTRY_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="countryCode" column="COUNTRY_CODE"/>
+        <property name="countryRatingCode" column="COUNTRY_RATING_CODE"/>
+        <component name="countryLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+            <property name="amountAsBigDecimal" column="COUNTRY_LIMIT_AMOUNT" type="big_decimal"/>
+            <property name="currencyCode" column="COUNTRY_LIMIT_CCY_CODE" insert="true" update="false"/>
+        </component>
+        <property name="groupID" column="GROUP_ID" type="long"/>
+        <property name="refID" column="COUNTRY_LIMIT_REF" type="long"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="stageCountryLimit"
+           name="com.integrosys.cms.app.creditriskparam.bus.countrylimit.OBCountryLimit"
+           table="CMS_STAGE_COUNTRY_LIMIT"
+           lazy="false">
+        <id name="countryLimitID" column="COUNTRY_LIMIT_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">COUNTRY_LIMIT_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="countryCode" column="COUNTRY_CODE"/>
+        <property name="countryRatingCode" column="COUNTRY_RATING_CODE"/>
+        <component name="countryLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+            <property name="amountAsBigDecimal" column="COUNTRY_LIMIT_AMOUNT" type="big_decimal"/>
+            <property name="currencyCode" column="COUNTRY_LIMIT_CCY_CODE" insert="true" update="false"/>
+        </component>
+        <property name="groupID" column="GROUP_ID" type="long"/>
+        <property name="refID" column="COUNTRY_LIMIT_REF" type="long"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <!-- Country Rating -->
+    <class entity-name="actualCountryRating"
+           name="com.integrosys.cms.app.creditriskparam.bus.countrylimit.OBCountryRating"
+           table="CMS_COUNTRY_RATING"
+           lazy="false">
+        <id name="countryRatingID" column="COUNTRY_RATING_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">COUNTRY_RATING_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="countryRatingCode" column="COUNTRY_RATING_CODE"/>
+        <property name="bankCapFundPercentage" column="BANK_CAPITAL_FUND_PERCENT" type="double"/>
+        <property name="presetCtryLimitPercentage" column="PRESET_COUNTRY_LIMIT_PERCENT" type="double"/>
+        <property name="groupID" column="GROUP_ID" type="long"/>
+    </class>
+
+    <class entity-name="stageCountryRating"
+           name="com.integrosys.cms.app.creditriskparam.bus.countrylimit.OBCountryRating"
+           table="CMS_STAGE_COUNTRY_RATING"
+           lazy="false">
+        <id name="countryRatingID" column="COUNTRY_RATING_ID" type="long">
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">COUNTRY_RATING_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long"/>
+        <property name="countryRatingCode" column="COUNTRY_RATING_CODE"/>
+        <property name="bankCapFundPercentage" column="BANK_CAPITAL_FUND_PERCENT" type="double"/>
+        <property name="presetCtryLimitPercentage" column="PRESET_COUNTRY_LIMIT_PERCENT" type="double"/>
+        <property name="groupID" column="GROUP_ID" type="long"/>
+    </class>
+
+</hibernate-mapping>
+                               

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT branch.EVENT,
+				  branch.CATEGORY,
+				  (SELECT region_name FROM cms_region WHERE id = branch.PARTY_REGION
+				  ) AS PARTYREGION,
+				  (SELECT region_name FROM cms_region WHERE id = branch.RM_REGION
+				  ) AS RMREGION,
+				  branch.LINE_NO,
+				  branch.LIMIT_RELEASED_AMOUNT,
+				  branch.SERIAL_NO,
+				  (SELECT user_name FROM cms_user WHERE login_id = branch.CASE_RM
+				  ) AS CASERM,
+				  (SELECT rm_mgr_name FROM cms_relationship_mgr WHERE id = branch.PARTY_RM
+				  ) AS PARTYRM,
+				  branch.CASE_NO,
+				  branch.PARTY_NAME,
+				  branch.PARTY_ID,
+				  (SELECT entry_name
+				  FROM common_code_category_entry
+				  WHERE category_code = 'HDFC_SEGMENT'
+				  AND entry_code      = branch.CUSTOMER_SEGMENT
+				  ) AS CUSTOMERSEGMENT,
+				  branch.ActualCaseReceivedDateBR,
+				  branch.ActualCaseReceivedTimeBR,
+				  branch.ActualCaseProcessedDateBR,
+				  branch.ActualCaseProcessedTimeBR,
+				  CAL_DIFF_DATE(branch.CaseReceivedDateBR, branch.CaseReceivedTimeBR, branch.CaseProcessedDateBR, branch.CaseProcessedTimeBR,
+				  (SELECT start_timing FROM cms_tat_master WHERE event_code =branch.event
+				  ),
+				  (SELECT end_timing
+				  FROM cms_tat_master
+				  WHERE event_code = branch.event
+				  ), ( (to_date(branch.CaseProcessedDateBR,'DD-MM-YYYY') - to_date(branch.CaseReceivedDateBR,'DD-MM-YYYY')) - 
+				  
+				  
+				  (COALESCE (
+				  (SELECT SUM((TRUNC(end_date)                             -TRUNC(start_date)+1)- (next_day(TRUNC(end_date), 'MONDAY')-next_day(TRUNC(start_date), 'MONDAY'))/7 )
+				  FROM cms_holiday h
+				  WHERE TRUNC(h.start_date) BETWEEN to_date(TO_CHAR(branch.CaseReceivedDateBR),'DD-MM-YYYY') AND to_date(TO_CHAR(branch.CaseProcessedDateBR),'DD-MM-YYYY')
+				  OR TRUNC(h.end_date) BETWEEN to_date(TO_CHAR(branch.CaseReceivedDateBR),'DD-MM-YYYY') AND to_date(TO_CHAR(branch.CaseProcessedDateBR),'DD-MM-YYYY')
+				  ),0)
+				  
+				  +
+				  
+				  COALESCE ((select  (next_day(to_date(TO_CHAR(abc.CaseProcessedDateBR),'DD-MM-YYYY'), 'MONDAY')-next_day(to_date(TO_CHAR(abc.CaseReceivedDateBR),'DD-MM-YYYY'), 'MONDAY'))/7
+				from tat_rpt_for_Branch abc where abc.case_No = branch.Case_no),0)
+				  
+				  )
+				  
+				  ) * ((to_date(CaseProcessedDateBR
+				  || ' '
+				  ||
+				  (SELECT end_timing FROM cms_tat_master WHERE event_code = branch.event
+				  ), 'dd-mm-yyyy HH24:MI') - to_date(CaseProcessedDateBR
+				  || ' '
+				  ||
+				  (SELECT start_timing FROM cms_tat_master WHERE event_code = branch.event
+				  ), 'dd-mm-yyyy HH24:MI') )*24 )) AS TotalTime
+				  
+				
+				FROM TAT_RPT_FOR_BRANCH branch,
+				  sci_le_sub_profile sp
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				sp.lsp_le_id= branch.party_id
+                and sp.status = 'ACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>segment</name>
+				<condition> AND CUSTOMER_SEGMENT = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND PARTY_ID = </condition>
+			</param>
+			<param>
+				<name>region</name>
+				<condition> AND RM_REGION = </condition>
+			</param>
+			<param>
+				<name>relationshipManager</name>
+				<condition> AND PARTY_RM = </condition>
+			</param>
+			<param>
+				<name>event</name>
+				<condition> AND EVENT = </condition>
+			</param>
+			<param>
+				<name>tatCriteria</name>
+				<condition> AND TURN_AROUND_TIME = </condition>
+			</param>
+			<param>
+				<name>category</name>
+				<condition> AND CATEGORY = </condition>
+			</param>
+			<param>
+				<name>caseId</name>
+				<condition> AND CASE_NO = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(CASE_INITIATE_TIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Event</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line no. </header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Released amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Serial no.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Initiator RM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party RM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Received Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Received Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Processed Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Processed Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Total Time ( Case TAT )</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>TAT Monitoring report for Users</reportName>
+		</reportParamters>
+	</report>
+</reports>

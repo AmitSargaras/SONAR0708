@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <bean id="CollateralMarketFactorTrx.MakerCloseCreateMFChecklistOperation" class="com.integrosys.cms.app.collateral.trx.marketfactor.MakerCloseCreateMFChecklistOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralMarketFactorTrx.MakerCloseUpdateMFChecklistOperation" class="com.integrosys.cms.app.collateral.trx.marketfactor.MakerCloseUpdateMFChecklistOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralMarketFactorTrx.ReadMFChecklistOperation" class="com.integrosys.cms.app.collateral.trx.marketfactor.ReadMFChecklistOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralMarketFactorTrx.ReadMFChecklistByTrxIDOperation" class="com.integrosys.cms.app.collateral.trx.marketfactor.ReadMFChecklistByTrxIDOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralMarketFactorTrx.CheckerApproveUpdateMFChecklistOperation" class="com.integrosys.cms.app.collateral.trx.marketfactor.CheckerApproveUpdateMFChecklistOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralMarketFactorTrx.CheckerRejectUpdateMFChecklistOperation" class="com.integrosys.cms.app.collateral.trx.marketfactor.CheckerRejectUpdateMFChecklistOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralMarketFactorTrx.MakerCreateMFChecklistOperation" class="com.integrosys.cms.app.collateral.trx.marketfactor.MakerCreateMFChecklistOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="CollateralMarketFactorTrx.MakerUpdateMFChecklistOperation" class="com.integrosys.cms.app.collateral.trx.marketfactor.MakerUpdateMFChecklistOperation">
+    <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+    <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+  </bean>
+
+  <bean id="collateralMarketFactorTrxController" class="com.integrosys.cms.app.collateral.trx.marketfactor.MFChecklistTrxController">
+    <property name="nameTrxOperationMap">
+      <map>
+        <entry key="MakerCloseCreateMFChecklistOperation" value-ref="CollateralMarketFactorTrx.MakerCloseCreateMFChecklistOperation"/>
+        <entry key="MakerCloseUpdateMFChecklistOperation" value-ref="CollateralMarketFactorTrx.MakerCloseUpdateMFChecklistOperation"/>
+        <entry key="CheckerApproveUpdateMFChecklistOperation" value-ref="CollateralMarketFactorTrx.CheckerApproveUpdateMFChecklistOperation"/>
+        <entry key="CheckerRejectUpdateMFChecklistOperation" value-ref="CollateralMarketFactorTrx.CheckerRejectUpdateMFChecklistOperation"/>
+        <entry key="MakerCreateMFChecklistOperation" value-ref="CollateralMarketFactorTrx.MakerCreateMFChecklistOperation"/>
+        <entry key="MakerUpdateMFChecklistOperation" value-ref="CollateralMarketFactorTrx.MakerUpdateMFChecklistOperation"/>
+      </map>
+    </property>
+    <property name="processTrxManager" ref="processTrxManager" />
+  </bean>
+  
+  <bean id="collateralMarketFactorReadController" class="com.integrosys.cms.app.collateral.trx.marketfactor.MFChecklistReadController">
+    <property name="nameTrxOperationMap">
+      <map>
+        <entry key="ReadMFChecklistOperation" value-ref="CollateralMarketFactorTrx.ReadMFChecklistOperation"/>
+        <entry key="ReadMFChecklistByTrxIDOperation" value-ref="CollateralMarketFactorTrx.ReadMFChecklistByTrxIDOperation"/>
+      </map>
+    </property>
+  </bean>
+</beans>

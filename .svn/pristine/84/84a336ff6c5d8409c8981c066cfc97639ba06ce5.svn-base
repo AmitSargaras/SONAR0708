@@ -1,0 +1,783 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+select
+      DISTINCT LMT.LLP_BCA_REF_NUM,
+      SUB.LSP_SHORT_NAME,
+      APPR.FACILITY_SYSTEM,
+      SUB.PAN,
+      APPR.FACILITY_NAME,
+      APPR.PROJECT_LOAN,
+      APPR.PROJECT_FINANCE,
+      APPR.INFRA_FLAG,
+      APPR.LIMIT_RELEASE_FLG,
+      TO_CHAR(APPR.SCOD,'DD/MON/YYYY') as SCOD,
+      APPR.SCOD_REMARK,
+      TO_CHAR(APPR.ACOD,'DD/MON/YYYY') as ACOD,
+      APPR.DELAY_FLAG_L1,
+      APPR.DELAY_LEVEL,
+      TO_CHAR(APPR.ESCOD_L1,'DD/MON/YYYY') as ESCOD_L1,
+      APPR.INFRA_FLAG,
+      APPR.PRIOR_REQ_FLAG ,
+      APPR.DEF_REASON_L1,
+      APPR.REPAY_CHNG_SCHED_L1,
+      -----Change of Ownership_L1 Delay,
+     APPR.OWNERSHIP_Q1_FLAG_L1,
+     APPR.OWNERSHIP_Q2_FLAG_L1,
+     APPR.OWNERSHIP_Q3_FLAG_L1,
+     --Change of Scope_L1 Delay,
+     APPR.SCOPE_Q1_FLAG_L1,
+     APPR.SCOPE_Q2_FLAG_L1,
+     APPR.OWNERSHIP_Q3_FLAG_L1,
+     TO_CHAR(APPR.REVISED_ESCOD_L1,'DD/MON/YYYY') as REVISED_ESCOD_L1,
+     APPR.EXE_ASSET_CLASS_L1,
+     TO_CHAR(APPR.EXE_ASSET_CLASS_DT_L1,'DD/MON/YYYY') as EXE_ASSET_CLASS_DT_L1,
+     APPR.REV_ASSET_CLASS_L1,
+     TO_CHAR(APPR.REV_ASSET_CLASS_DT_L1,'DD/MON/YYYY') as REV_ASSET_CLASS_DT_L1,
+     TO_CHAR(APPR.ESCOD_L2,'DD/MON/YYYY') as ESCOD_L2,
+     APPR.DEF_REASON_L2,
+     APPR.REPAY_CHNG_SCHED_L2,
+--     APPR.ESCOD_REVISION_REASON_Q1_L2,
+--     APPR.ESCOD_REVISION_REASON_Q2_L2,
+--     APPR.ESCOD_REVISION_REASON_Q3_L2,
+--     APPR.ESCOD_REVISION_REASON_Q4_L2,
+ --    
+     APPR.ESCOD_REVISION_REASON_Q1_L2,
+     APPR.LEGAL_DETAIL_L2,
+     APPR.ESCOD_REVISION_REASON_Q3_L2,
+     APPR.BEYOND_CONTROL_L2,
+
+ 	 
+     -----Change of Ownership_L2 Delay,
+    APPR.ESCOD_REVISION_REASON_Q5_L2,
+    APPR.OWNERSHIP_Q1_FLAG_L2,
+    APPR.OWNERSHIP_Q2_FLAG_L2,
+    APPR.OWNERSHIP_Q3_FLAG_L2,
+    --Change of Scope_L1 Delay,
+    APPR.ESCOD_REVISION_REASON_Q6_L2,
+    APPR.SCOPE_Q1_FLAG_L2,
+    APPR.SCOPE_Q2_FLAG_L2,
+    APPR.SCOPE_Q3_FLAG_L2,
+    TO_CHAR(APPR.REVISED_ESCOD_L2,'DD/MON/YYYY') as REVISED_ESCOD_L2,
+    APPR.EXE_ASSET_CLASS_L2,
+    TO_CHAR(APPR.EXE_ASSET_CLASS_DT_L2,'DD/MON/YYYY') as EXE_ASSET_CLASS_DT_L2,
+    APPR.REV_ASSET_CLASS_L2,
+    TO_CHAR(APPR.REV_ASSET_CLASS_DT_L2,'DD/MON/YYYY') as REV_ASSET_CLASS_DT_L2,
+    TO_CHAR(APPR.ESCOD_L3,'DD/MON/YYYY') as ESCOD_L3,
+    APPR.DEF_REASON_L3,
+    APPR.REPAY_CHNG_SCHED_L3,
+--    APPR.ESCOD_REVISION_REASON_Q1_L3,
+--    APPR.ESCOD_REVISION_REASON_Q2_L3,
+--    APPR.ESCOD_REVISION_REASON_Q3_L3,
+--    APPR.ESCOD_REVISION_REASON_Q4_L3,
+--    APPR.ESCOD_REVISION_REASON_Q5_L3,
+--    APPR.ESCOD_REVISION_REASON_Q6_L3,
+APPR.ESCOD_REVISION_REASON_Q1_L3,
+    APPR.LEGAL_DETAIL_L3,
+    APPR.BEYOND_CONTROL_L3,
+     APPR.ESCOD_REVISION_REASON_Q3_L3,
+    -----Change of Ownership_L1 Delay,
+    APPR.ESCOD_REVISION_REASON_Q5_L3,
+    APPR.OWNERSHIP_Q1_FLAG_L3,
+    APPR.OWNERSHIP_Q2_FLAG_L3,
+    APPR.OWNERSHIP_Q3_FLAG_L3,
+    --Change of Scope_L1 Delay,
+     APPR.ESCOD_REVISION_REASON_Q6_L3,
+    APPR.SCOPE_Q1_FLAG_L3,
+    APPR.SCOPE_Q2_FLAG_L3,
+    APPR.SCOPE_Q3_FLAG_L3,
+    TO_CHAR(APPR.REVISED_ESCOD_L3,'DD/MON/YYYY') as REVISED_ESCOD_L3,
+    APPR.EXE_ASSET_CLASS_L3,
+    TO_CHAR(APPR.EXE_ASSET_CLASS_DT_L3,'DD/MON/YYYY') as EXE_ASSET_CLASS_DT_L3,
+    APPR.REV_ASSET_CLASS_L3,
+    TO_CHAR(APPR.REV_ASSET_CLASS_DT_L3,'DD/MON/YYYY') as REV_ASSET_CLASS_DT_L3,
+CASE
+					      WHEN trx.from_state = 'PENDING_PERFECTION'
+					      THEN
+					        (SELECT hist.login_id
+					        FROM trans_history hist
+					        WHERE hist.transaction_id = trx.transaction_id
+					        AND hist.from_state       = 'PENDING_PERFECTION'
+					        AND hist.to_state         ='DRAFT'
+					        )
+					      WHEN trx.from_state = 'PENDING_CREATE'
+					      THEN
+					        (SELECT hist.login_id
+					        FROM trans_history hist
+					        WHERE hist.transaction_id = trx.transaction_id
+					        AND hist.from_state      IN ('ND','DRAFT')
+					        AND hist.to_state         ='PENDING_CREATE'
+					        )
+					      WHEN trx.from_state = 'PENDING_UPDATE'
+					      THEN
+					        (SELECT hist.login_id
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state      IN ('ACTIVE','DRAFT')
+					          AND to_state         = 'PENDING_UPDATE'
+					          )
+					        )
+					      WHEN trx.from_state = 'PENDING_DELETE'
+					      THEN
+					        (SELECT hist.login_id
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       ='ACTIVE'
+					          AND to_state         ='PENDING_DELETE'
+					          )
+					        )
+					      WHEN trx.from_state = 'ACTIVE'
+					      THEN
+					        (SELECT hist.login_id
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       ='ACTIVE'
+					          AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+					          )
+					        )
+					      WHEN trx.from_state = 'REJECTED'
+					      THEN
+					        (SELECT hist.login_id
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       = 'REJECTED'
+					          AND to_state         ='ACTIVE'
+					          )
+					        )
+					      WHEN trx.from_state = 'DRAFT'
+					      THEN
+					        CASE
+					          WHEN trx.status = 'PENDING_UPDATE'
+					          THEN
+					            (SELECT hist.login_id
+					            FROM trans_history hist
+					            WHERE hist.TR_HISTORY_ID=
+					              (SELECT MAX(TR_HISTORY_ID)
+					              FROM trans_history
+					              WHERE transaction_id = trx.transaction_id
+					              AND from_state       = 'DRAFT'
+					              AND to_state         ='PENDING_UPDATE'
+					              )
+					            )
+					          WHEN trx.status = 'ACTIVE'
+					          THEN
+					            (SELECT hist.login_id
+					            FROM trans_history hist
+					            WHERE hist.TR_HISTORY_ID=
+					              (SELECT MAX(TR_HISTORY_ID)
+					              FROM trans_history
+					              WHERE transaction_id = trx.transaction_id
+					              AND from_state       = 'DRAFT'
+					              AND to_state         ='ACTIVE'
+					              )
+					            )
+					        END
+					    END AS MAKER_ID,
+CASE
+					      WHEN trx.status   = 'PENDING_CREATE'
+					      OR trx.from_state = 'PENDING_PERFECTION'
+					      THEN ''
+					      WHEN trx.status = 'PENDING_UPDATE'
+					      THEN
+					        (SELECT hist.login_id
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+					          AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+					          )
+					        )
+					      WHEN ((trx.status  != 'PENDING_CREATE'
+					      AND trx.from_state != 'PENDING_PERFECTION')
+					      AND trx.status     != 'PENDING_UPDATE')
+					      THEN TO_CHAR(trx.login_id)
+					    END AS CHECKER_ID,
+        CASE
+					      WHEN trx.from_state = 'PENDING_PERFECTION'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.transaction_id = trx.transaction_id
+					        AND hist.from_state       = 'PENDING_PERFECTION'
+					        AND hist.to_state         ='DRAFT'
+					        )
+					      WHEN trx.from_state = 'PENDING_CREATE'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.transaction_id = trx.transaction_id
+					        AND hist.from_state      IN ('ND','DRAFT')
+					        AND hist.to_state         ='PENDING_CREATE'
+					        )
+					      WHEN trx.from_state = 'PENDING_UPDATE'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state      IN ('ACTIVE','DRAFT')
+					          AND to_state         = 'PENDING_UPDATE'
+					          )
+					        )
+					      WHEN trx.from_state = 'PENDING_DELETE'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       ='ACTIVE'
+					          AND to_state         ='PENDING_DELETE'
+					          )
+					        )
+					      WHEN trx.from_state = 'ACTIVE'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       ='ACTIVE'
+					          AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+					          )
+					        )
+					      WHEN trx.from_state = 'REJECTED'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       = 'REJECTED'
+					          AND to_state         ='ACTIVE'
+					          )
+					        )
+					      WHEN trx.from_state = 'DRAFT'
+					      THEN
+					        CASE
+					          WHEN trx.status = 'PENDING_UPDATE'
+					          THEN
+					            (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+					            FROM trans_history hist
+					            WHERE hist.TR_HISTORY_ID=
+					              (SELECT MAX(TR_HISTORY_ID)
+					              FROM trans_history
+					              WHERE transaction_id = trx.transaction_id
+					              AND from_state       = 'DRAFT'
+					              AND to_state         ='PENDING_UPDATE'
+					              )
+					            )
+					          WHEN trx.status = 'ACTIVE'
+					          THEN
+					            (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					            FROM trans_history hist
+					            WHERE hist.TR_HISTORY_ID=
+					              (SELECT MAX(TR_HISTORY_ID)
+					              FROM trans_history
+					              WHERE transaction_id = trx.transaction_id
+					              AND from_state       = 'DRAFT'
+					              AND to_state         ='ACTIVE'
+					              )
+					            )
+					        END
+					    END AS MAKER_DATETIME,
+        CASE
+					      WHEN trx.from_state = 'PENDING_CREATE'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.transaction_id = trx.transaction_id
+					        AND hist.from_state       ='PENDING_CREATE'
+					        AND hist.to_state         ='ACTIVE'
+					        )
+					      WHEN trx.from_state = 'PENDING_UPDATE'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       ='PENDING_UPDATE'
+					          AND to_state         ='ACTIVE'
+					          )
+					        )
+					      WHEN trx.from_state = 'PENDING_DELETE'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       ='PENDING_DELETE'
+					          AND to_state         ='ACTIVE'
+					          )
+					        )
+					      WHEN trx.from_state = 'ACTIVE'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+					          AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+					          )
+					        )
+					      WHEN trx.from_state = 'REJECTED'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND from_state       ='REJECTED'
+					          AND to_state         ='ACTIVE'
+					          )
+					        )
+					      WHEN trx.from_state = 'DRAFT'
+					      THEN
+					        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MM:SS AM')
+					        FROM trans_history hist
+					        WHERE hist.TR_HISTORY_ID=
+					          (SELECT MAX(TR_HISTORY_ID)
+					          FROM trans_history
+					          WHERE transaction_id = trx.transaction_id
+					          AND to_state         ='ACTIVE'
+					          )
+					        )
+					    END AS CHECKER_DATETIME         
+   from SCI_LSP_APPR_LMTS APPR,
+   SCI_LE_SUB_PROFILE SUB,
+   SCI_LSP_LMT_PROFILE LMT,
+   TRANSACTION TRX 
+  		</query>
+		<whereClause>
+			<mandatoryClause>
+				SUB.LSP_LE_ID = LMT.LLP_LE_ID and
+                LMT.CMS_LSP_LMT_PROFILE_ID = APPR.CMS_LIMIT_PROFILE_ID AND
+                APPR.CMS_LSP_APPR_LMTS_ID = TRX.REFERENCE_ID 
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition>  </condition>
+			</param>
+				<param>
+				<name>scodFromDate</name>
+				<condition></condition>
+			</param>
+			<param>
+				<name>scodToDate</name>
+				<condition></condition>
+			</param>
+			<param>
+				<name>escodFromDate</name>
+				<condition></condition>
+			</param>
+			<param>
+				<name>escodToDate</name>
+				<condition></condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CAM Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>PARTY NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>System</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PAN</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>Project Loan</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Project Finance</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Infra / Non-Infra project flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Whether Limit released as you are updating SCOD?</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SCOD (Scheduled Commercial Operations Date)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Remarks on SCOD</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>ACOD (Actual Commercial Operations Date)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>Whether Project is Delayed</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Level of delay in SCOD</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>Extended SCOD (ESCOD) date in the event of level 1 delay_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>Whether Principal / Interest Servicing is as per schedule_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Whether Request for deferment received prior to expiry of SCOD_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Reason for Deferment of SCOD in the event of level 1 delay_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether change in repayment schedule_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Do New Promoters have capability to run the project_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Do New promoters hold 51% equity in the project_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Has project viability been re-assessed_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Change in scope has taken place before SCOD_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Cost > 25% of original project cost_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Project Viability reassessed_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised ESCOD stipulated in the event of second level delay in SCOD_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Existing Asset classification_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Existing Asset classification Date_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Asset Classification_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Asset Classification Date_L1 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Extended SCOD (ESCOD) date in the event of level 2 delay_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Reason for Deferment of SCOD in the event of level 2 delay_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether change in repayment schedule_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether Legal / arbitration proceedings in the project_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Details of legal / arbitration proceedings_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether Reasons beyond control of promoter_ L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Details of “reasons beyond control of promoter”_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether Change of ownership of Project_L2 Delay</header>
+				</reportColumn>
+
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Do New Promoters have capability to run the project_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Do New promoters hold 51% equity in the project_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Has project viability been re-assessed_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether Change of Scope of project_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Change in scope has taken place before SCOD_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Cost > 25% of original project cost_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Project Viability reassessed_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised ESCOD stipulated in the event of second level delay in SCOD_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Existing Asset classification_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Existing Asset classification Date_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Asset Classification_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Asset Classification Date_L2 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Extended SCOD (ESCOD) date in the event of level 3 delay_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Reason for Deferment of SCOD in the event of level 3 delay_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether change in repayment schedule_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether Legal / arbitration proceedings in the project_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Details of legal / arbitration proceedings_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether Reasons beyond control of promoter_ L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Details of “reasons beyond control of promoter”_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether Change of ownership of Project_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Do New Promoters have capability to run the project_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Do New promoters hold 51% equity in the project_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Has project viability been re-assessed_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Whether Change of Scope of project_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Change in scope has taken place before SCOD_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Cost > 25% of original project cost_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Project Viability reassessed_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised ESCOD stipulated in the event of third level delay in SCOD_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Existing Asset classification_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Existing Asset classification Date_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Asset Classification_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>Revised Asset Classification Date_L3 Delay</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>MAKER ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>CHECKER ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>MAKER DATETIME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>CHECKER DATETIME</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>SCOD / ESCOD Due Report
+			</reportName>
+		</reportParamters>
+	</report>
+</reports>

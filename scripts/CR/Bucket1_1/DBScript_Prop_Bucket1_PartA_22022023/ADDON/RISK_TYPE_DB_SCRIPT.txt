@@ -1,0 +1,1103 @@
+
+
+
+--------------------------------------RT01-----------------------------------------------------------------------
+INSERT
+INTO CMS_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    20231117000000001,
+    0,
+    'Customer Direct Exposure',
+    'RT01',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  ---------------------
+  
+  INSERT
+INTO CMS_STAGE_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    20231117000000013,
+    0,
+    'Customer Direct Exposure',
+    'RT01',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  
+  ----------------------------------------------------------------------------------
+INSERT
+INTO TRANSACTION
+  (
+    TRANSACTION_ID,
+    FROM_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    TRX_REFERENCE_ID,
+    OPSDESC,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    USER_INFO,
+    CUR_TRX_HISTORY_ID,
+    TEAM_TYPE_ID,
+    TRANSACTION_SUBTYPE,
+    TO_GROUP_TYPE_ID,
+    TO_GROUP_ID,
+    TO_USER_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    SYSTEM_DATE,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+    (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      ),
+    'PENDING_CREATE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    to_date('02-05-22','DD-MM-RR'),
+    to_date('02-05-22','DD-MM-RR'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT01'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT01'),
+    20110623000000034,
+    1663041094443,
+    -999999999,
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    '--',
+    '--',
+    -999999999,
+    NULL,
+    '--',
+    'CPU Checker ( CPU_CHK )',
+    (SELECT MAX(TR_HISTORY_ID)+ 1 FROM TRANS_HISTORY),
+    102,
+    NULL,
+    '-999999999',
+    -999999999,
+    -999999999,
+    NULL,
+    20110623000000070,
+    to_timestamp('13-09-22 09:21:34.421000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    NULL
+  );
+  
+  ----------------------------------------------------------------------
+  INSERT
+INTO TRANS_HISTORY
+  (
+    TR_HISTORY_ID,
+    TRANSACTION_ID,
+    FROM_STATE,
+    TO_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    TRANSACTION_SUBTYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    REMARKS,
+    OPSDESC,
+    CURCYCLE,
+    TO_USER_ID,
+    TO_GROUP_ID,
+    TRX_REFERENCE_ID,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    TEAM_TYPE_ID,
+    TO_GROUP_TYPE_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    IP_ADDRESS,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+     (SELECT MAX(CUR_TRX_HISTORY_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    (SELECT MAX(TRANSACTION_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    'PENDING_CREATE',
+    'ACTIVE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    NULL,
+    to_timestamp('02-05-22 09:20:28.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    to_timestamp('02-05-22 09:21:34.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT01'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT01'),
+    20110623000000034,
+    NULL,
+    'APPROVE',
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    -999999999,
+    -999999999,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    102,
+    NULL,
+    NULL,
+    20110623000000070,
+    NULL,
+    NULL
+  );
+--------------------------------------RT02-----------------------------------------------------------------------
+INSERT
+INTO CMS_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    (SELECT MAX(ID)+ 1 FROM CMS_RISK_TYPE
+    ),
+    0,
+    'Customer Recourse Memo',
+    'RT02',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  ---------------------
+  
+  INSERT
+INTO CMS_STAGE_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    (SELECT MAX(ID)+ 1 FROM CMS_RISK_TYPE
+    ),
+    0,
+	'Customer Recourse Memo',
+    'RT02',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  
+  ----------------------------------------------------------------------------------
+INSERT
+INTO TRANSACTION
+  (
+    TRANSACTION_ID,
+    FROM_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    TRX_REFERENCE_ID,
+    OPSDESC,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    USER_INFO,
+    CUR_TRX_HISTORY_ID,
+    TEAM_TYPE_ID,
+    TRANSACTION_SUBTYPE,
+    TO_GROUP_TYPE_ID,
+    TO_GROUP_ID,
+    TO_USER_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    SYSTEM_DATE,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+    (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      ),
+    'PENDING_CREATE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    to_date('02-05-22','DD-MM-RR'),
+    to_date('02-05-22','DD-MM-RR'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT02'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT02'),
+    20110623000000034,
+    1663041094443,
+    -999999999,
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    '--',
+    '--',
+    -999999999,
+    NULL,
+    '--',
+    'CPU Checker ( CPU_CHK )',
+    '20220913000157439',
+    102,
+    NULL,
+    '-999999999',
+    -999999999,
+    -999999999,
+    NULL,
+    20110623000000070,
+    to_timestamp('13-09-22 09:21:34.421000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    NULL
+  );
+  
+  ----------------------------------------------------------------------
+  INSERT
+INTO TRANS_HISTORY
+  (
+    TR_HISTORY_ID,
+    TRANSACTION_ID,
+    FROM_STATE,
+    TO_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    TRANSACTION_SUBTYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    REMARKS,
+    OPSDESC,
+    CURCYCLE,
+    TO_USER_ID,
+    TO_GROUP_ID,
+    TRX_REFERENCE_ID,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    TEAM_TYPE_ID,
+    TO_GROUP_TYPE_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    IP_ADDRESS,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+     (SELECT MAX(TR_HISTORY_ID)+ 1 FROM TRANS_HISTORY),
+    (SELECT MAX(TRANSACTION_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    'PENDING_CREATE',
+    'ACTIVE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    NULL,
+    to_timestamp('02-05-22 09:20:28.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    to_timestamp('02-05-22 09:21:34.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT02'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT02'),
+    20110623000000034,
+    NULL,
+    'APPROVE',
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    -999999999,
+    -999999999,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    102,
+    NULL,
+    NULL,
+    20110623000000070,
+    NULL,
+    NULL
+  );
+  --------------------------------------RT03-----------------------------------------------------------------------
+INSERT
+INTO CMS_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    (SELECT MAX(ID)+ 1 FROM CMS_RISK_TYPE
+    ),
+    0,
+    'Non-Customer Risk',
+    'RT03',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  ---------------------
+  
+  INSERT
+INTO CMS_STAGE_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    (SELECT MAX(ID)+ 1 FROM CMS_RISK_TYPE
+    ),
+    0,
+    'Non-Customer Risk',
+    'RT03',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  
+  ----------------------------------------------------------------------------------
+INSERT
+INTO TRANSACTION
+  (
+    TRANSACTION_ID,
+    FROM_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    TRX_REFERENCE_ID,
+    OPSDESC,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    USER_INFO,
+    CUR_TRX_HISTORY_ID,
+    TEAM_TYPE_ID,
+    TRANSACTION_SUBTYPE,
+    TO_GROUP_TYPE_ID,
+    TO_GROUP_ID,
+    TO_USER_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    SYSTEM_DATE,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+    (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      ),
+    'PENDING_CREATE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    to_date('02-05-22','DD-MM-RR'),
+    to_date('02-05-22','DD-MM-RR'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT03'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT03'),
+    20110623000000034,
+    1663041094443,
+    -999999999,
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    '--',
+    '--',
+    -999999999,
+    NULL,
+    '--',
+    'CPU Checker ( CPU_CHK )',
+    (SELECT MAX(TR_HISTORY_ID)+ 1 FROM TRANS_HISTORY),
+    102,
+    NULL,
+    '-999999999',
+    -999999999,
+    -999999999,
+    NULL,
+    20110623000000070,
+    to_timestamp('13-09-22 09:21:34.421000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    NULL
+  );
+  
+  ----------------------------------------------------------------------
+  INSERT
+INTO TRANS_HISTORY
+  (
+    TR_HISTORY_ID,
+    TRANSACTION_ID,
+    FROM_STATE,
+    TO_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    TRANSACTION_SUBTYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    REMARKS,
+    OPSDESC,
+    CURCYCLE,
+    TO_USER_ID,
+    TO_GROUP_ID,
+    TRX_REFERENCE_ID,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    TEAM_TYPE_ID,
+    TO_GROUP_TYPE_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    IP_ADDRESS,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+     (SELECT MAX(CUR_TRX_HISTORY_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    (SELECT MAX(TRANSACTION_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    'PENDING_CREATE',
+    'ACTIVE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    NULL,
+    to_timestamp('02-05-22 09:20:28.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    to_timestamp('02-05-22 09:21:34.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT03'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT03'),
+    20110623000000034,
+    NULL,
+    'APPROVE',
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    -999999999,
+    -999999999,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    102,
+    NULL,
+    NULL,
+    20110623000000070,
+    NULL,
+    NULL
+  );
+  --------------------------------------RT04-----------------------------------------------------------------------
+INSERT
+INTO CMS_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    (SELECT MAX(ID)+ 1 FROM CMS_RISK_TYPE
+    ),
+    0,
+    'Noted Exposure',
+    'RT04',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  ---------------------
+  
+  INSERT
+INTO CMS_STAGE_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    (SELECT MAX(ID)+ 1 FROM CMS_RISK_TYPE
+    ),
+    0,
+    'Noted Exposure',
+    'RT04',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  
+  ----------------------------------------------------------------------------------
+INSERT
+INTO TRANSACTION
+  (
+    TRANSACTION_ID,
+    FROM_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    TRX_REFERENCE_ID,
+    OPSDESC,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    USER_INFO,
+    CUR_TRX_HISTORY_ID,
+    TEAM_TYPE_ID,
+    TRANSACTION_SUBTYPE,
+    TO_GROUP_TYPE_ID,
+    TO_GROUP_ID,
+    TO_USER_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    SYSTEM_DATE,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+    (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      ),
+    'PENDING_CREATE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    to_date('02-05-22','DD-MM-RR'),
+    to_date('02-05-22','DD-MM-RR'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT04'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT04'),
+    20110623000000034,
+    1663041094443,
+    -999999999,
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    '--',
+    '--',
+    -999999999,
+    NULL,
+    '--',
+    'CPU Checker ( CPU_CHK )',
+    (SELECT MAX(TR_HISTORY_ID)+ 1 FROM TRANS_HISTORY),
+    102,
+    NULL,
+    '-999999999',
+    -999999999,
+    -999999999,
+    NULL,
+    20110623000000070,
+    to_timestamp('13-09-22 09:21:34.421000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    NULL
+  );
+  
+  ----------------------------------------------------------------------
+  INSERT
+INTO TRANS_HISTORY
+  (
+    TR_HISTORY_ID,
+    TRANSACTION_ID,
+    FROM_STATE,
+    TO_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    TRANSACTION_SUBTYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    REMARKS,
+    OPSDESC,
+    CURCYCLE,
+    TO_USER_ID,
+    TO_GROUP_ID,
+    TRX_REFERENCE_ID,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    TEAM_TYPE_ID,
+    TO_GROUP_TYPE_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    IP_ADDRESS,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+     (SELECT MAX(CUR_TRX_HISTORY_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    (SELECT MAX(TRANSACTION_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    'PENDING_CREATE',
+    'ACTIVE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    NULL,
+    to_timestamp('02-05-22 09:20:28.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    to_timestamp('02-05-22 09:21:34.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT04'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT04'),
+    20110623000000034,
+    NULL,
+    'APPROVE',
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    -999999999,
+    -999999999,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    102,
+    NULL,
+    NULL,
+    20110623000000070,
+    NULL,
+    NULL
+  );
+  -------------------------------------------------------RT05--------------------------------------
+INSERT
+INTO CMS_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    (SELECT MAX(ID)+ 1 FROM CMS_RISK_TYPE
+    ),
+    0,
+    'NA',
+    'RT05',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  ---------------------
+  
+  INSERT
+INTO CMS_STAGE_RISK_TYPE
+  (
+    ID,
+    VERSION_TIME,
+    RISK_TYPE_NAME,
+    RISK_TYPE_CODE,
+    STATUS,
+    CREATED_BY,
+    CREATION_DATE,
+    LAST_UPDATE_BY,
+    LAST_UPDATE_DATE,
+    DEPRECATED
+  )
+  VALUES
+  (
+    (SELECT MAX(ID)+ 1 FROM CMS_RISK_TYPE
+    ),
+    0,
+    'NA',
+    'RT05',
+    'ACTIVE',
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'CPU_ADM',
+    to_timestamp('13-09-22 09:20:27.723000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    'N'
+  );
+  
+  
+  ----------------------------------------------------------------------------------
+INSERT
+INTO TRANSACTION
+  (
+    TRANSACTION_ID,
+    FROM_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    TRX_REFERENCE_ID,
+    OPSDESC,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    USER_INFO,
+    CUR_TRX_HISTORY_ID,
+    TEAM_TYPE_ID,
+    TRANSACTION_SUBTYPE,
+    TO_GROUP_TYPE_ID,
+    TO_GROUP_ID,
+    TO_USER_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    SYSTEM_DATE,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+    (SELECT MAX(TRANSACTION_ID)+ 1 FROM TRANSACTION
+      ),
+    'PENDING_CREATE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    to_date('02-05-22','DD-MM-RR'),
+    to_date('02-05-22','DD-MM-RR'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT05'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT05'),
+    20110623000000034,
+    1663041094443,
+    -999999999,
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    '--',
+    '--',
+    -999999999,
+    NULL,
+    '--',
+    'CPU Checker ( CPU_CHK )',
+    (SELECT MAX(TR_HISTORY_ID)+ 1 FROM TRANS_HISTORY),
+    102,
+    NULL,
+    '-999999999',
+    -999999999,
+    -999999999,
+    NULL,
+    20110623000000070,
+    to_timestamp('13-09-22 09:21:34.421000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    NULL
+  );
+  
+  ----------------------------------------------------------------------
+  INSERT
+INTO TRANS_HISTORY
+  (
+    TR_HISTORY_ID,
+    TRANSACTION_ID,
+    FROM_STATE,
+    TO_STATE,
+    USER_ID,
+    LOGIN_ID,
+    TRANSACTION_TYPE,
+    TRANSACTION_SUBTYPE,
+    CREATION_DATE,
+    TRANSACTION_DATE,
+    REFERENCE_ID,
+    STATUS,
+    STAGING_REFERENCE_ID,
+    TEAM_ID,
+    VERSION,
+    REMARKS,
+    OPSDESC,
+    CURCYCLE,
+    TO_USER_ID,
+    TO_GROUP_ID,
+    TRX_REFERENCE_ID,
+    LEGAL_NAME,
+    LEGAL_ID,
+    CUSTOMER_NAME,
+    CUSTOMER_ID,
+    TRX_ORIGIN_COUNTRY,
+    TRX_ORIGIN_ORGANISATION,
+    LIMIT_PROFILE_ID,
+    LIMIT_PROFILE_REF_NUM,
+    TRX_SEGMENT,
+    TEAM_TYPE_ID,
+    TO_GROUP_TYPE_ID,
+    DEAL_NO,
+    TEAM_MEMBERSHIP_ID,
+    IP_ADDRESS,
+    MIN_EMPLOYEE_GRADE
+  )
+  VALUES
+  (
+     (SELECT MAX(CUR_TRX_HISTORY_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    (SELECT MAX(TRANSACTION_ID) FROM TRANSACTION where TRANSACTION_TYPE='RISK_TYPE'),
+    'PENDING_CREATE',
+    'ACTIVE',
+    20110708000000259,
+    'CPU_CHK',
+    'RISK_TYPE',
+    NULL,
+    to_timestamp('02-05-22 09:20:28.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    to_timestamp('02-05-22 09:21:34.000000000 AM','DD-MM-RR HH12:MI:SSXFF AM'),
+    (select id from CMS_RISK_TYPE where RISK_TYPE_CODE='RT05'),
+    'ACTIVE',
+    (select id from CMS_STAGE_RISK_TYPE where RISK_TYPE_CODE='RT05'),
+    20110623000000034,
+    NULL,
+    'APPROVE',
+    'APPROVE_CREATE_RISK_TYPE',
+    NULL,
+    -999999999,
+    -999999999,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    -999999999,
+    NULL,
+    NULL,
+    102,
+    NULL,
+    NULL,
+    20110623000000070,
+    NULL,
+    NULL
+  );
+
+COMMIT;

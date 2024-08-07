@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+	
+  <bean id="CollateralAction.ReloadAssetValuationProfileSingletonCommand" class="com.integrosys.cms.ui.collateral.ReloadValuationProfileSingletonCommand">
+    <constructor-arg ref="valuationProfileSingletonListener" />
+    <constructor-arg>
+    	<bean class="com.integrosys.cms.app.collateral.bus.OBCollateralSubType">
+    		<constructor-arg value="AB" />
+    		<constructor-arg><null></null></constructor-arg>
+    	</bean>
+    </constructor-arg>
+  </bean>
+  
+  <bean id="CollateralAction.ReloadMarketableSecValuationProfileSingletonCommand" class="com.integrosys.cms.ui.collateral.ReloadValuationProfileSingletonCommand">
+    <constructor-arg ref="valuationProfileSingletonListener" />
+    <constructor-arg>
+    	<bean class="com.integrosys.cms.app.collateral.bus.OBCollateralSubType">
+    		<constructor-arg value="MS" />
+    		<constructor-arg><null></null></constructor-arg>
+    	</bean>
+    </constructor-arg>
+  </bean>
+  
+  <bean id="CollateralAction.ReloadPropertyIndexValuationProfileSingletonCommand" class="com.integrosys.cms.ui.collateral.ReloadValuationProfileSingletonCommand">
+    <constructor-arg ref="valuationProfileSingletonListener" />
+    <constructor-arg>
+    	<bean class="com.integrosys.cms.app.collateral.bus.OBCollateralSubType">
+    		<constructor-arg value="PT" />
+    		<constructor-arg><null></null></constructor-arg>
+    	</bean>
+    </constructor-arg>
+  </bean>
+  
+  <bean id="CollateralAction.ReloadVehicleFeedsValuationProfileSingletonCommand" class="com.integrosys.cms.ui.collateral.ReloadValuationProfileSingletonCommand">
+    <constructor-arg ref="valuationProfileSingletonListener" />
+    <constructor-arg>
+    	<bean class="com.integrosys.cms.app.collateral.bus.OBCollateralSubType">
+    		<constructor-arg value="AB102" />
+    	</bean>
+    </constructor-arg>
+  </bean>
+
+   <bean
+		id="CollateralAction.SubmitInsuranceGCCommand"
+		class="com.integrosys.cms.ui.collateral.SubmitInsuranceGCCommand">
+		<property name="insuranceGcDao" ref="insuranceGcDao" />
+	</bean>
+
+
+</beans>

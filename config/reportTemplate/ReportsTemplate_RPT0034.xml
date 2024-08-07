@@ -1,0 +1,869 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT sp.LSP_SHORT_NAME,
+			  cc_constit.entry_name AS constitution,
+			  sp.PAN,
+			  lc.CUSTOMER_RAM_ID,
+			  lc.CUSTOMER_APR_CODE,
+			  lc.CUSTOMER_EXT_RATING,
+			  lc.IS_NBFS,
+			  cc_nbfc_a.entry_name AS NBFS_A,
+			  cc_nbfc_b.entry_name AS NBFS_B,
+			  lc.IS_PRIORITY_SECTOR,
+			  cc_msme.entry_name AS MSMEClassificationlc,
+			  lc.IS_PERMENENT_SSI_CERT,
+			  lc.IS_WEAKER_SECTION,
+			  cc_type.entry_name AS Type,
+			  lc.IS_KISAN_CREDIT_CARD,
+			  cff_kcc.FACILITY_NAME   AS KCC_FACILITY_NAME,
+			  cff_kcc.FACILITY_AMOUNT AS KCC_FACILITY_AMOUNT,
+			  lc.IS_MINORITY_COMMUNITY,
+			  lc.IS_CAPITAL_MARKET_EXPOS,
+			  lc.IS_REAL_ESTATE_EXPOS,
+			  lc.IS_COMMODITIES_EXPOSER,
+			  lc.IS_SENSITIVE,
+			  cc_commodity.entry_name AS CommodityName,
+			  lc.GROSS_INVS_IN_PM,
+			  'INR' AS PM_currency,
+			  lc.GROSS_INVS_IN_EQUIP,
+			  'INR' AS EQUIP_currency,
+			  pg.GROUP_EXP_LIMIT,
+			  lc.PSU,
+			  lc.PSU_PERCENTAGE,
+			  lc.IS_BACKED_BY_GOVT,
+			  cff_bgovt.FACILITY_NAME   AS GOVT_FACILITY_NAME,
+			  cff_bgovt.FACILITY_AMOUNT AS GOVT_FACILITY_AMOUNT,
+			  'INR'                     AS faci_currency,
+			  lc.GOVT_UNDER_TAKING,
+			  <!-- cc_bank_method.entry_name AS BankingMethod, -->
+			  ( SELECT get_banking_method(SP.LSP_LE_ID) AS BANKING_METHOD
+     			FROM   CMS_BANKING_METHOD_CUST WHERE ROWNUM = 1)  As BankingMethod,
+			  lc.IS_INFRASTRUCTURE_FINANACE,
+			  cff_InfrFin.FACILITY_NAME   AS INFRA_FACILITY_NAME,
+			  cff_InfrFin.FACILITY_AMOUNT AS INFRA_FACILITY_AMOUNT,
+			  'INR'                       AS faci1_currency,
+			  cc_infra_fin.entry_name     AS InfrastructureFinanceType,
+			  lc.IS_SEMS_GUIDE_APPLICABLE,
+			  lc.IS_FAIL_IFC_EXCLU_LIST,
+			  lc.IS_TUFS,
+			  lc.IS_RBI_DEFAULTER,
+			  lc.IS_LITIGATION,
+			  IS_INTEREST_OF_BANK,
+			  lc.IS_ADVERSE_REMARK,
+			  lc.AUDIT_TYPE,
+			  lc.AVG_ANNUAL_TURNOVER,
+			  sp.rbi_ind_code
+			  ||'-'
+			  ||cc_rbi.entry_name    AS rbi,
+			  cc_industry.ENTRY_NAME AS industryName,
+			  lc.INDUSTRY_EXPOSER,
+			  lc.IS_DIREC_OTHER_BANK,
+			  lc.IS_PARTNER_OTHER_BANK,
+			  lc.IS_SUBSTANTIAL_OTHER_BANK,
+			  lc.IS_HDFC_DIREC_RLTV,
+			  lc.IS_OBK_DIREC_RLTV,
+			  lc.IS_PARTNER_DIREC_RLTV,
+			  lc.IS_SUBSTANTIAL_RLTV_HDFC_OTHER,
+			  (select entry_name from common_code_category_entry where entry_code=lc.ENTITY_TYPE and category_code='ENTITY_TYPE') as entity_type,
+				(CASE WHEN lc.IS_SPV_FUNDING is NULL THEN 'No' ELSE lc.IS_SPV_FUNDING END) AS IS_SPV_FUNDING,
+				(CASE WHEN lc.INDIRECT_COUNTRY_RISK_EXPOSURE is NULL THEN 'No' ELSE lc.INDIRECT_COUNTRY_RISK_EXPOSURE END) AS INDIRECT_COUNTRY_RISK_EXPOSURE,
+				(select country_name from cms_country where id=lc.COUNTRYNAME) as country,
+				lc.SALESPERCENTAGE,
+				(CASE WHEN lc.ISCGTMSE is NULL THEN 'No' ELSE lc.ISCGTMSE END) AS ISCGTMSE,
+				(CASE WHEN lc.ISIPRE is NULL THEN 'No' ELSE lc.ISIPRE END) AS ISIPRE,
+				(CASE WHEN lc.FINANCE_FOR_ACCQUISITION is NULL THEN 'No' ELSE lc.FINANCE_FOR_ACCQUISITION END) AS FINANCE_FOR_ACCQUISITION,
+				(select new_facility_name from cms_facility_new_master where new_facility_code=lc.FACILITY_APPROVED) approved_facility,
+				lc.FACILITY_AMOUNT,
+				(select new_collateral_description from cms_collateral_new_master where new_collateral_code=lc.SECURITY_NAME) security_name,
+				(select entry_name from common_code_category_entry where entry_code = lc.SECURITY_TYPE and category_code='31') security_type,
+				lc.SECURITY_VALUE,
+				(CASE WHEN lc.COMPANY_TYPE is NULL THEN 'No' ELSE lc.COMPANY_TYPE END) AS COMPANY_TYPE,
+				lc.NAME_OF_HOLDING_COMPANY,
+				(select entry_name from common_code_category_entry where entry_code= lc.TYPE and category_code='TYPE_OF_COMPANY') type_comp,
+				(CASE WHEN lc.IF_BREACH_WITH_PRESCRIPTION is NULL THEN 'No' ELSE lc.IF_BREACH_WITH_PRESCRIPTION END) AS IF_BREACH_WITH_PRESCRIPTION,
+				lc.COMMENTS,
+				(select entry_name from common_code_category_entry where entry_code=lc.CATEGORY_OF_FARMER and category_code='CATEGORY_OF_FARMER') category_of_farmer,
+				lc.LANDHOLDING,
+				(select country_name from cms_country where id=lc.COUNTRY_OF_GAURANTOR) COUNTRY_OF_GAURANTOR,
+				(CASE WHEN lc.IS_AFFORDABLE_HOUSING_FINANCE is NULL THEN 'No' ELSE lc.IS_AFFORDABLE_HOUSING_FINANCE END) AS IS_AFFORDABLE_HOUSING_FINANCE,
+				(CASE WHEN lc.IS_INRESTRICTED_LIST is NULL THEN 'No' ELSE lc.IS_INRESTRICTED_LIST END) AS IS_INRESTRICTED_LIST,
+				(select entry_name from common_code_category_entry where category_code='RESTRICTED_FINANCING' and entry_code=lc.RESTRICTED_FINANCING) RESTRICTED_FINANCING,
+				(CASE WHEN lc.RESTRICTED_INDUSTRIES is NULL THEN 'No' ELSE lc.RESTRICTED_INDUSTRIES END) AS RESTRICTED_INDUSTRIES,
+				(select entry_name from common_code_category_entry where category_code='CREDIT_LIST_RESTRICTED_INDUSTRIES' and entry_code=lc.RESTRICTEDLISTINDUSTRIES) as restricted_industries_value,
+				(CASE WHEN lc.IS_QUALIFYING_NOTES_PRESENT is NULL THEN 'No' ELSE lc.IS_QUALIFYING_NOTES_PRESENT END) AS IS_QUALIFYING_NOTES_PRESENT,
+				lc.STATE_IMPLICATIONS,
+				(CASE WHEN lc.IS_BORROWER_IN_REJECT_DATABASE is NULL THEN 'No' ELSE lc.IS_BORROWER_IN_REJECT_DATABASE END) AS IS_BORROWER_IN_REJECT_DATABASE,
+				lc.REJECT_HISTORY_REASON,
+				(CASE WHEN lc.CAPITAL_FOR_COMMODITY is NULL THEN 'Non Broker' ELSE lc.CAPITAL_FOR_COMMODITY END) AS CAPITAL_FOR_COMMODITY,
+				(CASE WHEN lc.OBJECTFINANCE is NULL THEN 'No' ELSE lc.OBJECTFINANCE END) AS OBJECTFINANCE,
+				(CASE WHEN lc.IS_COMMODITY_FINANCE_CUST is NULL THEN 'No' ELSE lc.IS_COMMODITY_FINANCE_CUST END) AS IS_COMMODITY_FINANCE_CUST,
+				(CASE WHEN lc.RESTRUCTURED_BOR_FAC is NULL THEN 'No' ELSE lc.RESTRUCTURED_BOR_FAC END) AS RESTRUCTURED_BOR_FAC,
+				(select new_facility_name from cms_facility_new_master where new_facility_code=lc.FACILITY) facility,
+				lc.LIMIT_AMOUNT,
+				(CASE WHEN lc.CONDUCT_OTHER_BANK is NULL THEN 'Satisfactory' ELSE lc.CONDUCT_OTHER_BANK END) AS CONDUCT_OTHER_BANK,
+				lc.CRILIC_STATUS,
+				lc.COMMENT_CRILIC,
+				(CASE WHEN lc.SUBSIDY_FLAG is NULL THEN 'No' ELSE lc.SUBSIDY_FLAG END) AS SUBSIDY_FLAG,
+				lc.HOLDING_COMPANY,
+				(CASE WHEN lc.CAUTION_LIST is NULL THEN 'No' ELSE lc.CAUTION_LIST END) AS CAUTION_LIST,
+				lc.DATE_CAUTION_LIST,
+				lc.COMPANY,
+				lc.DIRECTORS,
+				lc.GROUP_COMPANIES,
+				(CASE WHEN lc.DEFAULTERS_LIST is NULL THEN 'No' ELSE lc.DEFAULTERS_LIST END) AS DEFAULTERS_LIST,
+				lc.RBI_DATE_CAUTION_LIST,
+				lc.RBI_COMPANY,
+				lc.RBI_DIRECTORS,
+				lc.RBI_GROUP_COMPANIES,
+				(CASE WHEN lc.COMMERICIAL_REAL_EASTATE is NULL THEN 'No' ELSE lc.COMMERICIAL_REAL_EASTATE END) AS COMMERICIAL_REAL_EASTATE,
+				(select entry_name from common_code_category_entry where category_code='COMMERCIAL_REAL_ESTATE' and entry_code=lc.COMMERICIAL_REAL_EASTATE_VALUE) as COMMERICIAL_REAL_EASTATE_VALUE,
+				(CASE WHEN lc.COMM_REAL_EASTATE_HOUSING is NULL THEN 'No' ELSE lc.COMM_REAL_EASTATE_HOUSING END) AS COMM_REAL_EASTATE_HOUSING,
+				(CASE WHEN lc.RESIDENTIAL_REAL_ESTATE is NULL THEN 'No' ELSE lc.RESIDENTIAL_REAL_ESTATE END) AS RESIDENTIAL_REAL_ESTATE,
+				(CASE WHEN lc.INDIRECT_REAL_ESTATE is NULL THEN 'No' ELSE lc.INDIRECT_REAL_ESTATE END) AS INDIRECT_REAL_ESTATE,
+				DECODE(lc.BROKER_TYPE_SHARE,'Y','Share Borrower ') || DECODE(lc.BROKER_TYPE_COMMODITY,'Y','Commodity Borrower')  as BROKER_TYPE,
+			  cc_segment.entry_name AS segment,
+			  (SELECT region_name FROM cms_region WHERE ID = addr.lra_region
+			  ) AS region,
+			  (SELECT rm.rm_mgr_name
+			  FROM cms_relationship_mgr rm
+			  WHERE rm.id = sp.relation_mgr
+			  ) AS RM,
+			  (SELECT pg.party_group_name
+			  FROM cms_party_group pg
+			  WHERE pg.id= sp.party_grp_nm
+			  )                     AS PartyGroup,
+			  lc.is_project_finance AS cff_project_finance,
+			  cam.rbi_asset_classification,
+			  sp.LEI_CODE,
+  			  to_char(sp.LEI_EXPIRY_DATE,'DD-Mon-YYYY') as LEI_EXPIRY_DATE,
+  			  lc.CUSTOMER_FY_CLOUSER
+			FROM SCI_LE_CRI lc,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code = 'HDFC_RBI_CODE'
+			  ) cc_rbi,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code = 'HDFC_INDUSTRY'
+			  ) cc_industry,
+			  CMS_PARTY_GROUP pg,
+			  SCI_LE_SUB_PROFILE sp,
+			  common_code_category_entry cc_type,
+			  common_code_category_entry cc_msme,
+			  common_code_category_entry cc_constit,
+			  common_code_category_entry cc_nbfc_a,
+			  common_code_category_entry cc_nbfc_b,
+			  common_code_category_entry cc_bank_method,
+			  common_code_category_entry cc_commodity,
+			  common_code_category_entry cc_infra_fin,
+			  (SELECT * FROM SCI_LE_CRI_FAC WHERE facility_for = 'Kisan Credit Card'
+			  ) cff_kcc,
+			  (SELECT * FROM SCI_LE_CRI_FAC WHERE facility_for = 'Backed by Govt.'
+			  ) cff_bgovt,
+			  (SELECT * FROM SCI_LE_CRI_FAC WHERE facility_for = 'Infrastructure Finance'
+			  ) cff_InfrFin,
+			  (SELECT * FROM SCI_LE_CRI_FAC WHERE facility_for = 'Project Finance'
+			  ) cff_project_finance,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code = 'HDFC_SEGMENT'
+			  ) cc_segment,
+			  SCI_LE_REG_ADDR addr,
+			  SCI_LSP_LMT_PROFILE cam
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				sp.CMS_LE_MAIN_PROFILE_ID =                       lc.CMS_LE_MAIN_PROFILE_ID(+)
+				AND sp.PARTY_GRP_NM                               = pg.ID(+)
+				AND lc.WEAKER_SECTION                             = cc_type.entry_code(+)
+				AND lc.MSME_CLASSIFICATION                        = cc_msme.entry_code(+)
+				AND sp.ENTITY                                     = cc_constit.entry_code(+)
+				AND lc.NBFS_A                                     = cc_nbfc_a.entry_code(+)
+				AND lc.NBFS_B                                     = cc_nbfc_b.entry_code(+)
+				AND sp.BANKING_METHOD                             = cc_bank_method.entry_code(+)
+				AND cc_rbi.entry_code(+)                          =sp.rbi_ind_code
+				AND cc_industry.entry_code(+)                     =sp.ind_nm
+				AND lc.COMMODITIES_NAME                           = cc_commodity.entry_code(+)
+				AND lc.INFRASTRUCTURE_FINANACE_TYPE               = cc_infra_fin.entry_code(+)
+				AND (cc_type.category_code                        = 'WEAKER_SEC'
+				OR cc_type.category_code                         IS NULL)
+				AND (cc_msme.category_code                        = 'MSME_CLASSIC'
+				OR cc_msme.category_code                         IS NULL)
+				AND (cc_constit.category_code                     = 'Entity'
+				OR cc_constit.category_code                      IS NULL)
+				AND (cc_nbfc_a.category_code                      = 'NBFC_A'
+				OR cc_nbfc_a.category_code                       IS NULL)
+				AND (cc_nbfc_b.category_code                      = 'NBFC_B'
+				OR cc_nbfc_b.category_code                       IS NULL)
+				AND (cc_bank_method.category_code                 = 'BANKING_METHOD'
+				OR cc_bank_method.category_code                  IS NULL)
+				AND (cc_commodity.category_code                   = 'COMMODITY_NAMES'
+				OR cc_commodity.category_code                    IS NULL)
+				AND (cc_infra_fin.category_code                   = 'INFRA_FINANACE_TYPE'
+				OR cc_infra_fin.category_code                    IS NULL)
+				AND cff_kcc.cms_le_main_profile_id(+)             =sp.CMS_LE_MAIN_PROFILE_ID
+				AND cff_bgovt.cms_le_main_profile_id(+)           =sp.CMS_LE_MAIN_PROFILE_ID
+				AND cff_InfrFin.cms_le_main_profile_id(+)         =sp.CMS_LE_MAIN_PROFILE_ID
+				AND cff_project_finance.cms_le_main_profile_id(+) =sp.CMS_LE_MAIN_PROFILE_ID
+				AND sp.cms_le_sub_profile_id                      = cam.cms_customer_id(+)
+				AND cc_segment.entry_code(+)                      = sp.lsp_sgmnt_code_value
+				AND sp.CMS_LE_MAIN_PROFILE_ID                     = addr.CMS_LE_MAIN_PROFILE_ID(+)
+				and (addr.lra_type_value                           = 'CORPORATE'
+				OR addr.lra_type_value                    IS NULL)
+				AND sp.status != 'INACTIVE'
+		 
+            </mandatoryClause>			
+			<param>
+				<name>segment</name>
+				<condition> AND sp.lsp_sgmnt_code_value = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sp.cms_le_sub_profile_id = </condition>
+			</param>					
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Name of the customer</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Constitution</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PAN</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer RAM Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer APR Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Customer external Rating</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>NBFC</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>a)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>B)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Priority/Non priority Sector</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>MSME Classification</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Permanent SSI Certificate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Weaker Section </header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>KCC(Kisan Credit Card Scheme)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Facility Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Minority Community</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Capital Market Exposure</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Real Estate Exposure</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Commodities Exposure</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Sensitive</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Commodity Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Gross Investment(In plant and machinery)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn><reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Gross Investment(In equipment)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Group Exposure</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PSU</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Percentage of Shareholding</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Backed by Govt. Guarantee</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Facility Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Govt. Undertaking</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Banking Method</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Infrastructure Finance</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Facility Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Type</header>
+				</reportColumn><reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>SEMS Guidelines Applicable</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Whether fails under IFC's Exclusion List</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>TUFS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Defaulter's list/Caution List</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Litigations Pending / contemplated by Banks / Financiers</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Interest of Directors / senior officers / (Credit approvers)of the bank</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Adverse Remark (if Any)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Audit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Average Annual turnover</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Industry Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Industry</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>industry Exposure %</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Is the borrower a director (including the chairman/Managing Director)of other banks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Is the partner/guarantor of the borrowing firm a director of other banks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Is the "substantial" shareholder / director / guarantor of the borrowing company a director of other banks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Is the borrower a relative of HDFC Bank's Chairman / managing Directors  or other director</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Is the borrower a relative of the Chairman / managing Directors / or other directors of other banks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Is the partner/ guarantor / of the borrowing firm a relative of the Chairman / Managing Director or other directors of HDFC Bank or other Banks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Is the "substantial" shareholder / director / guarantor of the borrowing company a relative of the Chairman / managing directors or other directors of HDFC Bank or other Banks</header>
+				</reportColumn>
+				
+				<!-- Newly Added CRI fields : Start -->
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Entity Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>SPV Funding</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Indirect Credit Risk Exposure</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Country Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Sales or Gross Revenue</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CGTMSE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Income Producing Real Estate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Financing for acquisition of equity in overseas company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Approved</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Type of Company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Name of Holding Company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Breach ,if any,in compliance with statutory prescriptions</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Comments</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Category of Farmer</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Land Holding</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Country of Guarantor</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Affordable Housing Finance</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Exposure in Restricted List of Financing</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Exposure in Restricted Financing value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Credit to Restricted List of Industries</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Restricted List of Industry Value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Qualifying Notes on Accounts</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>State Implications</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Borrower in Reject Database of Credit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Reason for Reject History</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Catgory of Capital and Commodity Exchange Business</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Object Finance</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Commodities Finance Customer</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Restructured Borrower / Facility</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Conduct of Accounts With Other Banks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Crilc Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Crilc Comments</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Subsidy Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Name of the Holding Company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Caution List</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of Caution List</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Directors</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Group companies</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Defaulter List</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Date of Caution List</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Defaulter Company</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Defaulter Directors</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Defaulter Group Companies</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Commercial Real Estate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Commercial Real Estate Value</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Commercial Real Estate - Residential Housing</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Residential Real Estate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Indirect Real Estate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Broker Type</header>
+				</reportColumn>
+				
+				<!-- Newly Added CRI fields : End -->
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Group Name</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Project finance</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Asset Classification</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>LEI Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LEI Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer FY closure</header>
+				</reportColumn>				
+			</reportColumns>
+			<reportName>CRI Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

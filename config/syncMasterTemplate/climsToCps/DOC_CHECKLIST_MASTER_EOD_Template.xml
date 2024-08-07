@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<syncMasterTemplateOut>
+			<query>
+			select * from (
+			select cdm.MASTERLIST_ID, cdm.CATEGORY, cdm.SECURITY_SUB_TYPE_ID, cdm.SECURITY_TYPE_ID
+				, 'I' as Action
+				from cms_document_masterlist cdm, trans_history trah , transaction tra 
+				where cdm.MASTERLIST_ID = tra.reference_id 
+				and cdm.MASTERLIST_ID = trah.reference_id  
+				and trah.transaction_type ='TEMPLATE' 
+				and trah.from_state = 'PENDING_CREATE' 
+				and trah.STATUS = 'ACTIVE'
+				and tra.STATUS != 'DELETED'
+				and to_char(trah.transaction_date,'DD-MON-YY') = (select To_Date(Param_Value,'DD-Mon-YYYY') from Cms_General_Param where param_code = 'APPLICATION_DATE')
+				)
+		</query>
+	<whereClause>
+		<mandatoryClause>
+				1=1
+		</mandatoryClause>
+	</whereClause>
+	<reportType>TXT</reportType>
+	<delimiter>|||</delimiter>
+	<secondaryDelimiter>~~~</secondaryDelimiter>
+	
+	<reportParamters>
+		<reportColumns>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>MASTERLIST_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>CATEGORY</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>SECURITY_SUB_TYPE_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>SECURITY_TYPE_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ACTION</header>
+			</reportColumn>
+		</reportColumns>
+		<reportName>CLIMS_DocumnetMaster_Mst</reportName>
+	</reportParamters>
+	</syncMasterTemplateOut>

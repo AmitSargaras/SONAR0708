@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+	
+	<bean id="GeneralParamTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.generalparam.trx.CheckerApproveUpdateOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+
+	<bean id="GeneralParamTrx.CheckerRejectOperation" class="com.integrosys.cms.app.generalparam.trx.CheckerRejectOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+	
+	<bean id="GeneralParamTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.generalparam.trx.MakerCloseDraftOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+	
+	<bean id="GeneralParamTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.generalparam.trx.MakerCloseRejectedOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+	
+	<bean id="GeneralParamTrx.MakerSubmitOperation" class="com.integrosys.cms.app.generalparam.trx.MakerSubmitOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+	
+	<bean id="GeneralParamTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.generalparam.trx.MakerSubmitRejectedOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+	
+	<bean id="GeneralParamTrx.MakerUpdateOperation" class="com.integrosys.cms.app.generalparam.trx.MakerUpdateOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+	
+	<bean id="GeneralParamTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.generalparam.trx.MakerUpdateRejectedOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+	
+	<bean id="GeneralParamTrx.ReadGeneralParamGroupOperation" class="com.integrosys.cms.app.generalparam.trx.ReadGeneralParamGroupOperation">
+		<property name="generalParamBusManager" ref="generalParamBusManager" />
+		<property name="generalParamBusManagerStaging" ref="stagingGeneralParamBusManager" />
+	</bean>
+
+	<bean id="GeneralParamGroupReadController" class="com.integrosys.cms.app.generalparam.trx.GeneralParamGroupReadController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="ReadGeneralParamGroupOperation" value-ref="GeneralParamTrx.ReadGeneralParamGroupOperation" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="GeneralParamGroupTrxController" class="com.integrosys.cms.app.generalparam.trx.GeneralParamGroupTrxController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="CheckerApproveUpdateOperation" value-ref="GeneralParamTrx.CheckerApproveUpdateOperation" />
+				<entry key="CheckerRejectOperation" value-ref="GeneralParamTrx.CheckerRejectOperation" />
+				<entry key="MakerCloseDraftOperation" value-ref="GeneralParamTrx.MakerCloseDraftOperation" />
+				<entry key="MakerCloseRejectedOperation" value-ref="GeneralParamTrx.MakerCloseRejectedOperation" />
+				<entry key="MakerSubmitOperation" value-ref="GeneralParamTrx.MakerSubmitOperation" />
+				<entry key="MakerSubmitRejectedOperation" value-ref="GeneralParamTrx.MakerSubmitRejectedOperation" />
+				<entry key="MakerUpdateOperation" value-ref="GeneralParamTrx.MakerUpdateOperation" />
+				<entry key="MakerUpdateRejectedOperation" value-ref="GeneralParamTrx.MakerUpdateRejectedOperation" />
+			</map>
+		</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+	</bean>
+
+	<bean id="generalParamTrxControllerFactory" class="com.integrosys.cms.app.generalparam.trx.GeneralParamGroupTrxControllerFactory">
+		<property name="generalParamGroupReadController" ref="GeneralParamGroupReadController" />
+		<property name="generalParamGroupTrxContoller" ref="GeneralParamGroupTrxController" />
+	</bean>
+
+</beans>

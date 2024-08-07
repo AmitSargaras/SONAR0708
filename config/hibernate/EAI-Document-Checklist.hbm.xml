@@ -1,0 +1,114 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.host.eai.document.bus">
+	<class entity-name="actualCheckListEntity" name="CheckList" table="CMS_CHECKLIST" lazy="false">
+		<id name="checkListID" column="CHECKLIST_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CHECKLIST_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long" />
+		
+		<property name="templateID" column="MASTERLIST_ID" type="long"/>
+		<property name="checklistType" column="CATEGORY"/>
+		<component name="ccChecklist" class="CCChecklist">
+			<property name="customerType" column="SUB_CATEGORY"/>
+		</component>
+		<component name="scChecklist" class="SCChecklist">
+			<property name="cmsCollateralID" column="CMS_COLLATERAL_ID" type="long"/>
+		</component>
+		<property name="applicationType" column="APPLICATION_TYPE"/>
+		<property name="origCountry" column="DOC_ORIG_COUNTRY"/>
+		<property name="origOrganisation" column="DOC_ORIG_ORGANISATION"/>
+		<property name="limitProfileId" column="CMS_LSP_LMT_PROFILE_ID" type="long" />
+		<property name="customerId" column="CMS_LMP_SUB_PROFILE_ID" type="long" />
+		<property name="pledgorId" column="CMS_PLEDGOR_DTL_ID" type="long" />
+		<property name="status" column="STATUS" />
+	</class>
+	
+	<class entity-name = "actualCheckListItemEntity" name="CheckListItem"	
+		table="CMS_CHECKLIST_ITEM" lazy="false">
+		<id name="cmsDocItemID" column="DOC_ITEM_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CHECKLIST_ITEM_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="checklistID" column="CHECKLIST_ID"/>
+		<property name="docCode" column="DOCUMENT_CODE"/>
+		<property name="docNo" column="DOC_ITEM_REF"/>
+		<property name="mandatoryInd" column="IS_MANDATORY" type="char"/>
+		<property name="description" column="DOC_DESCRIPTION"/>
+		<property name="JDOExpiryDate" column="EXPIRY_DATE" type="timestamp"/>
+		<property name="status" column="STATUS"/>
+		<property name="JDOReceivedDate" column="RECEIVED_DATE" type="timestamp"/>
+		<property name="JDOWaivedDate" column="WAIVED_DATE" type="timestamp"/>
+		<property name="isDeleted" column="IS_DELETED" type="char"/>
+		<property name="preApprove" column="IS_PRE_APPROVE" type="yes_no" />
+	</class>
+	
+	<class entity-name="stagingCheckListEntity" name="CheckList" table="STAGE_CHECKLIST" lazy="false">
+		<id name="checkListID" column="CHECKLIST_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_CHECKLIST_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long" />
+
+		<property name="templateID" column="MASTERLIST_ID" type="long"/>
+		<property name="checklistType" column="CATEGORY"/>
+		<component name="ccChecklist" class="CCChecklist">
+			<property name="customerType" column="SUB_CATEGORY"/>
+		</component>
+		<component name="scChecklist" class="SCChecklist">
+			<property name="cmsCollateralID" column="CMS_COLLATERAL_ID" type="long"/>
+		</component>
+		<property name="applicationType" column="APPLICATION_TYPE"/>
+		<property name="origCountry" column="DOC_ORIG_COUNTRY"/>
+		<property name="origOrganisation" column="DOC_ORIG_ORGANISATION"/>
+		<property name="limitProfileId" column="CMS_LSP_LMT_PROFILE_ID" type="long" />
+		<property name="customerId" column="CMS_LMP_SUB_PROFILE_ID" type="long" />
+		<property name="pledgorId" column="CMS_PLEDGOR_DTL_ID" type="long" />
+		<property name="status" column="STATUS" />
+	</class>
+	
+	<class entity-name="stagingCheckListItemEntity" name="CheckListItem" 
+		table="STAGE_CHECKLIST_ITEM" lazy="false">
+		<id name="cmsDocItemID" column="DOC_ITEM_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_CHECKLIST_ITEM_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="checklistID" column="CHECKLIST_ID"/>
+		<property name="docCode" column="DOCUMENT_CODE"/>
+		<property name="docNo" column="DOC_ITEM_REF"/>
+		<property name="mandatoryInd" column="IS_MANDATORY" type="char"/>
+		<property name="description" column="DOC_DESCRIPTION"/>
+		<property name="JDOExpiryDate" column="EXPIRY_DATE" type="timestamp"/>
+		<property name="status" column="STATUS"/>
+		<property name="JDOReceivedDate" column="RECEIVED_DATE" type="timestamp"/>
+		<property name="JDOWaivedDate" column="WAIVED_DATE" type="timestamp"/>
+		<property name="isDeleted" column="IS_DELETED" type="char"/>
+		<property name="preApprove" column="IS_PRE_APPROVE" type="yes_no" />
+	</class>
+
+	<class name="DocumentTemplate" table="CMS_DOCUMENT_MASTERLIST" lazy="false">
+		<id name="masterlistID" column="MASTERLIST_ID" type="long"/>
+		<version name="versionTime" column="VERSION_TIME" type="long"/>
+		<property name="country" column="COUNTRY_ISO_CODE" />
+		<property name="category" column="CATEGORY" />
+		<property name="applicableLaw" column="APPLICABLE_LAW" />
+		<property name="securitySubType" column="SECURITY_SUB_TYPE_ID" />
+		<property name="customerType" column="CUSTOMER_TYPE_CODE" />
+		<property name="securityType" column="SECURITY_TYPE_ID" />
+		<property name="collateralId" column="COLLATERAL_ID" />
+	</class>	
+
+</hibernate-mapping>

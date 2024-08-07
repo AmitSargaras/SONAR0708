@@ -1,0 +1,91 @@
+/* Patch pledgor plg_id_num_text from customer main profile if values was given */
+
+-- 518084
+select count(*)
+from SCI_LE_MAIN_PROFILE mainprf, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, CMS_SECURITY sec, SCI_SEC_PLDGR_MAP spm, SCI_PLEDGOR_DTL plg
+where mainprf.LMP_LE_ID = lmt.LMT_LE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.CMS_COLLATERAL_ID = spm.CMS_COLLATERAL_ID
+and spm.CMS_PLEDGOR_DTL_ID = plg.CMS_PLEDGOR_DTL_ID
+and LMP_ID_NUMBER is not null
+and plg.PLG_ID_NUM_TEXT is null;
+
+-- 517154
+select count(*)
+from SCI_LE_MAIN_PROFILE mainprf, SCI_LSP_APPR_LMTS lmt, CMS_STAGE_LIMIT_SECURITY_MAP lsm, CMS_STAGE_SECURITY sec, STAGE_SEC_PLDGR_MAP spm, STAGE_PLEDGOR_DTL plg
+where mainprf.LMP_LE_ID = lmt.LMT_LE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.CMS_COLLATERAL_ID = spm.CMS_COLLATERAL_ID
+and spm.CMS_PLEDGOR_DTL_ID = plg.CMS_PLEDGOR_DTL_ID
+and LMP_ID_NUMBER is not null
+and plg.PLG_ID_NUM_TEXT is null;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE INDEX IDX909030956030000 ON 
+"EONCMS  "."SCI_LE_MAIN_PROFILE" 
+("LMP_LE_ID" ASC, "LMP_ID_NUMBER" ASC, "LMP_ID_TYPE_VALUE" ASC, "LMP_ID_TYPE_NUM" ASC) 
+ALLOW REVERSE SCANS; 
+
+CREATE INDEX IDX909030955260000 ON 
+"EONCMS  "."CMS_LIMIT_SECURITY_MAP" 
+("CMS_COLLATERAL_ID" ASC, "CMS_LSP_APPR_LMTS_ID" ASC) 
+ALLOW REVERSE SCANS; 
+
+CREATE UNIQUE INDEX IDX909030955300000 ON 
+"EONCMS  "."SCI_LSP_APPR_LMTS" 
+("CMS_LSP_APPR_LMTS_ID" ASC) 
+INCLUDE ( "LMT_LE_ID") 
+ALLOW REVERSE SCANS; 
+
+CREATE INDEX IDX909030955230000 ON 
+"EONCMS  "."SCI_SEC_PLDGR_MAP" 
+("CMS_PLEDGOR_DTL_ID" ASC, "CMS_COLLATERAL_ID" DESC) 
+ALLOW REVERSE SCANS; 
+
+CREATE INDEX IDX909031000080000 ON 
+"EONCMS  "."STAGE_SEC_PLDGR_MAP" 
+("CMS_PLEDGOR_DTL_ID" ASC, "CMS_COLLATERAL_ID" DESC) 
+ALLOW REVERSE SCANS; 
+
+CREATE INDEX IDX909031000110000 ON 
+"EONCMS  "."CMS_STAGE_LIMIT_SECURITY_MAP" 
+("CMS_COLLATERAL_ID" ASC, "CMS_LSP_APPR_LMTS_ID" ASC) 
+ALLOW REVERSE SCANS; 
+
+DROP INDEX IDX909030956030000;
+DROP INDEX IDX909030955260000;
+DROP INDEX IDX909030955300000;
+DROP INDEX IDX909030955230000;
+
+DROP INDEX IDX909031000080000;
+DROP INDEX IDX909031000110000;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Update id type and ic number for STAGING pledgor table
+update STAGE_PLEDGOR_DTL plg
+set (PLG_ID_TYPE_NUM, PLG_ID_TYPE_VALUE, PLG_ID_NUM_TEXT) = (select LMP_ID_TYPE_NUM, LMP_ID_TYPE_VALUE, LMP_ID_NUMBER 
+    from SCI_LE_MAIN_PROFILE mainprf, SCI_LSP_APPR_LMTS lmt, CMS_STAGE_LIMIT_SECURITY_MAP lsm, CMS_STAGE_SECURITY sec, STAGE_SEC_PLDGR_MAP spm
+    where mainprf.LMP_LE_ID = lmt.LMT_LE_ID
+    and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+    and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+    and sec.CMS_COLLATERAL_ID = spm.CMS_COLLATERAL_ID
+    and spm.CMS_PLEDGOR_DTL_ID = plg.CMS_PLEDGOR_DTL_ID
+    and LMP_ID_NUMBER is not null fetch first row only)
+where plg.PLG_ID_NUM_TEXT is null;
+
+-- Update id type and ic number forACTUAL pledgor table
+update SCI_PLEDGOR_DTL plg
+set (PLG_ID_TYPE_NUM, PLG_ID_TYPE_VALUE, PLG_ID_NUM_TEXT) = (select LMP_ID_TYPE_NUM, LMP_ID_TYPE_VALUE, LMP_ID_NUMBER 
+    from SCI_LE_MAIN_PROFILE mainprf, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, CMS_SECURITY sec, SCI_SEC_PLDGR_MAP spm
+    where mainprf.LMP_LE_ID = lmt.LMT_LE_ID
+    and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+    and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+    and sec.CMS_COLLATERAL_ID = spm.CMS_COLLATERAL_ID
+    and spm.CMS_PLEDGOR_DTL_ID = plg.CMS_PLEDGOR_DTL_ID
+    and LMP_ID_NUMBER is not null fetch first row only)
+where plg.PLG_ID_NUM_TEXT is null;
+
+

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+  
+    <bean id="SecEnvelopeTrx.ReadSecEnvOperation" 
+    			class="com.integrosys.cms.app.securityenvelope.trx.ReadSecEnvOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean>
+    <bean id="SecEnvelopeTrx.ReadSecEnvIDOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.ReadSecEnvIDOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean><!-- 
+    <bean id="SecEnvelopeTrx.ReadSecEnvelopeLimitProfOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.ReadSecEnvelopeLimitProfOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean>--> 
+    
+    <bean id="SecEnvelopeTrx.MakerCloseRejectedCreateSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.MakerCloseRejectedSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean>    
+    <bean id="SecEnvelopeTrx.MakerCloseRejectedUpdateSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.MakerCloseRejectedSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+        <property name="operationName" value="CLOSE_REJECTED_UPDATE_SECENV"/>
+    </bean>
+    <!--
+    <bean id="PropertyIdxTrx.MakerCloseRejectedDeletePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerCloseRejectedPrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+        <property name="operationName" value="CLOSE_REJECTED_DELETE_PRIDX"/>
+    </bean>-->
+    <bean id="SecEnvelopeTrx.MakerEditRejectedCreateSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.MakerEditRejectedCreateSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean>
+    <bean id="SecEnvelopeTrx.MakerEditRejectedUpdateSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.MakerEditRejectedUpdateSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean><!--
+    <bean id="PropertyIdxTrx.MakerEditRejectedDeletePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerEditRejectedDeletePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.CheckerApproveDeletePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.CheckerApproveDeletePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>-->
+    <bean id="SecEnvelopeTrx.CheckerRejectSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.CheckerRejectSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean>
+    <bean id="SecEnvelopeTrx.CheckerApproveUpdateSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.CheckerApproveUpdateSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean>
+    <bean id="SecEnvelopeTrx.MakerUpdateSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.MakerUpdateSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean><!--
+    <bean id="PropertyIdxTrx.MakerDeletePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerDeletePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>-->
+    <bean id="SecEnvelopeTrx.CheckerApproveCreateSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.CheckerApproveCreateSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean>
+    <bean id="SecEnvelopeTrx.MakerCreateSecEnvelopeOperation"
+          class="com.integrosys.cms.app.securityenvelope.trx.MakerCreateSecEnvelopeOperation">
+        <property name="secEnvelopeBusManager" ref="secEnvelopeBusManager"/>
+        <property name="stagingSecEnvelopeBusManager" ref="stagingSecEnvelopeBusManager"/>
+    </bean>
+
+    <bean id="secEnvelopeReadController" class="com.integrosys.cms.app.securityenvelope.trx.SecEnvelopeReadController">
+       <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadSecEnvOperation" value-ref="SecEnvelopeTrx.ReadSecEnvOperation"/>
+                <entry key="ReadSecEnvIDOperation" value-ref="SecEnvelopeTrx.ReadSecEnvIDOperation"/>
+                <!--<entry key="ReadSecEnvelopeLimitProfOperation" value-ref="SecEnvelopeTrx.ReadSecEnvelopeLimitProfOperation"/>-->
+            </map>
+        </property>
+    </bean>
+
+    <bean id="secEnvelopeTrxController" class="com.integrosys.cms.app.securityenvelope.trx.SecEnvelopeTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="CheckerApproveCreateSecEnvelopeOperation" value-ref="SecEnvelopeTrx.CheckerApproveCreateSecEnvelopeOperation"/>
+                <!--
+                <entry key="CheckerApproveDeletePrIdxOperation" value-ref="PropertyIdxTrx.CheckerApproveDeletePrIdxOperation"/>-->
+                <entry key="CheckerApproveUpdateSecEnvelopeOperation" value-ref="SecEnvelopeTrx.CheckerApproveUpdateSecEnvelopeOperation"/>                
+                <entry key="CheckerRejectSecEnvelopeOperation" value-ref="SecEnvelopeTrx.CheckerRejectSecEnvelopeOperation"/>
+                <entry key="MakerCreateSecEnvelopeOperation" value-ref="SecEnvelopeTrx.MakerCreateSecEnvelopeOperation"/>
+                <!--
+                <entry key="MakerDeletePrIdxOperation" value-ref="PropertyIdxTrx.MakerDeletePrIdxOperation"/>-->
+                <entry key="MakerEditRejectedCreateSecEnvelopeOperation" value-ref="SecEnvelopeTrx.MakerEditRejectedCreateSecEnvelopeOperation"/>
+                <!--
+                <entry key="MakerEditRejectedDeletePrIdxOperation" value-ref="PropertyIdxTrx.MakerEditRejectedDeletePrIdxOperation"/>-->
+                <entry key="MakerEditRejectedUpdateSecEnvelopeOperation" value-ref="SecEnvelopeTrx.MakerEditRejectedUpdateSecEnvelopeOperation"/>
+                <entry key="MakerUpdateSecEnvelopeOperation" value-ref="SecEnvelopeTrx.MakerUpdateSecEnvelopeOperation"/>
+                
+                <entry key="MakerCloseRejectedCreateSecEnvelopeOperation" value-ref="SecEnvelopeTrx.MakerCloseRejectedCreateSecEnvelopeOperation"/>                
+                <entry key="MakerCloseRejectedUpdateSecEnvelopeOperation" value-ref="SecEnvelopeTrx.MakerCloseRejectedUpdateSecEnvelopeOperation"/>
+                <!--
+                <entry key="MakerCloseRejectedDeletePrIdxOperation" value-ref="PropertyIdxTrx.MakerCloseRejectedDeletePrIdxOperation"/>-->
+            </map>
+        </property> 
+         <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="secEnvelopeTrxControllerFactory" class="com.integrosys.cms.app.securityenvelope.trx.SecEnvelopeTrxControllerFactory">
+        <property name="secEnvelopeReadController" ref="secEnvelopeReadController"/>
+        <property name="secEnvelopeTrxController" ref="secEnvelopeTrxController"/>        
+    </bean>
+</beans>

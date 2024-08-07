@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_User">
+   <display-name>User</display-name>
+   <enterprise-beans>
+      <session id="session_SBCommonUserManagerBean">
+         <ejb-name>SBCommonUserManagerBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.SBCommonUserManagerHome</home>
+         <remote>com.integrosys.component.user.app.bus.SBCommonUserManager</remote>
+         <ejb-class>com.integrosys.component.user.app.bus.SBCommonUserManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCommonUserManagerBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCommonUserManagerStagingBean">
+         <ejb-name>SBCommonUserManagerStagingBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.SBCommonUserManagerHome</home>
+         <remote>com.integrosys.component.user.app.bus.SBCommonUserManager</remote>
+         <ejb-class>com.integrosys.component.user.app.bus.SBCommonUserManagerStagingBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCommonUserManagerStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCommonUserProxyBean">
+         <ejb-name>SBCommonUserProxyBean</ejb-name>
+         <home>com.integrosys.component.user.app.proxy.SBCommonUserProxyHome</home>
+         <remote>com.integrosys.component.user.app.proxy.SBCommonUserProxy</remote>
+         <ejb-class>com.integrosys.component.user.app.proxy.SBCommonUserProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCommonUserProxyBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBStdUserProxyBean">
+         <ejb-name>SBStdUserProxyBean</ejb-name>
+         <home>com.integrosys.cms.app.user.proxy.SBStdUserProxyHome</home>
+         <remote>com.integrosys.cms.app.user.proxy.SBStdUserProxy</remote>
+         <ejb-class>com.integrosys.cms.app.user.proxy.SBStdUserProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBStdUserProxyBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBUserTeamManagerBean">
+         <ejb-name>SBUserTeamManagerBean</ejb-name>
+         <home>com.integrosys.cms.app.user.bus.SBUserTeamManagerHome</home>
+         <remote>com.integrosys.cms.app.user.bus.SBUserTeamManager</remote>
+         <ejb-class>com.integrosys.cms.app.user.bus.SBUserTeamManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBUserTeamManagerBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBRoleTypeBean">
+         <ejb-name>EBRoleTypeBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.EBRoleTypeHome</home>
+         <remote>com.integrosys.component.user.app.bus.EBRoleType</remote>
+         <local-home>com.integrosys.component.user.app.bus.EBRoleTypeLocalHome</local-home>
+         <local>com.integrosys.component.user.app.bus.EBRoleTypeLocal</local>
+         <ejb-class>com.integrosys.component.user.app.bus.EBRoleTypeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRoleTypeBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRoleTypeBean_roleTypeID">
+            <field-name>roleTypeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRoleTypeBean_roleTypeName">
+            <field-name>roleTypeName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRoleTypeBean_index">
+            <field-name>index</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRoleTypeBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRoleTypeBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>roleTypeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBRoleTypeBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBRoleTypeBean o]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCommonUserBean">
+         <ejb-name>EBCommonUserBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.EBCommonUserHome</home>
+         <remote>com.integrosys.component.user.app.bus.EBCommonUser</remote>
+         <local-home>com.integrosys.component.user.app.bus.EBCommonUserLocalHome</local-home>
+         <local>com.integrosys.component.user.app.bus.EBCommonUserLocal</local>
+         <ejb-class>com.integrosys.cms.app.user.bus.EBCMSUserBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommonUserBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbUserID">
+            <field-name>ejbUserID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_loginID">
+            <field-name>loginID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_password">
+            <field-name>password</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_userName">
+            <field-name>userName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_employeeID">
+            <field-name>employeeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_department">
+            <field-name>department</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_position">
+            <field-name>position</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_phoneNumber">
+            <field-name>phoneNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_email">
+            <field-name>email</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_country">
+            <field-name>country</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_organisation">
+            <field-name>organisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbRoleID">
+            <field-name>ejbRoleID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_validFromDate">
+            <field-name>validFromDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_validToDate">
+            <field-name>validToDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbTeamTypeMembershipID">
+            <field-name>ejbTeamTypeMembershipID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbCityId">
+            <field-name>ejbCityId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbStateId">
+            <field-name>ejbStateId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbCountryId">
+            <field-name>ejbCountryId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbAddress">
+            <field-name>ejbAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbRegion">
+            <field-name>ejbRegion</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserBean_ejbBranchCode">
+            <field-name>ejbBranchCode</field-name>
+         </cmp-field>
+         <primkey-field>ejbUserID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCommonUserBean_EBRoleTypeBean">
+            <ejb-ref-name>EBRoleTypeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.user.app.bus.EBRoleTypeLocalHome</local-home>
+            <local>com.integrosys.component.user.app.bus.EBRoleTypeLocal</local>
+            <ejb-link>EBRoleTypeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCommonUserBean_EBCommonUserSegmentBean">
+            <ejb-ref-name>EBUserSegmentLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.user.app.bus.EBUserSegmentLocalHome</local-home>
+            <local>com.integrosys.component.user.app.bus.EBUserSegmentLocal</local>
+            <ejb-link>EBCommonUserSegmentBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCommonUserBean_EBCommonUserRegionBean">
+            <ejb-ref-name>EBUserRegionLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.user.app.bus.EBUserRegionLocalHome</local-home>
+            <local>com.integrosys.component.user.app.bus.EBUserRegionLocal</local>
+            <ejb-link>EBCommonUserRegionBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCommonUserBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLoginID</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonUserBean o WHERE o.loginID = ?1 AND o.status = 'A']]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCommonUserStagingBean">
+         <ejb-name>EBCommonUserStagingBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.EBCommonUserHome</home>
+         <remote>com.integrosys.component.user.app.bus.EBCommonUser</remote>
+         <local-home>com.integrosys.component.user.app.bus.EBCommonUserLocalHome</local-home>
+         <local>com.integrosys.component.user.app.bus.EBCommonUserLocal</local>
+         <ejb-class>com.integrosys.cms.app.user.bus.EBCMSUserBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommonUserStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbUserID">
+            <field-name>ejbUserID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_loginID">
+            <field-name>loginID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_password">
+            <field-name>password</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_userName">
+            <field-name>userName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_employeeID">
+            <field-name>employeeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_department">
+            <field-name>department</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_position">
+            <field-name>position</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_phoneNumber">
+            <field-name>phoneNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_email">
+            <field-name>email</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_country">
+            <field-name>country</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_organisation">
+            <field-name>organisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbRoleID">
+            <field-name>ejbRoleID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_validFromDate">
+            <field-name>validFromDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_validToDate">
+            <field-name>validToDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbTeamTypeMembershipID">
+            <field-name>ejbTeamTypeMembershipID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbCityId">
+            <field-name>ejbCityId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbStateId">
+            <field-name>ejbStateId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbCountryId">
+            <field-name>ejbCountryId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbAddress">
+            <field-name>ejbAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbRegion">
+            <field-name>ejbRegion</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserStagingBean_ejbBranchCode">
+            <field-name>ejbBranchCode</field-name>
+         </cmp-field>
+         <primkey-field>ejbUserID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCommonUserStagingBean_EBRoleTypeBean">
+            <ejb-ref-name>EBRoleTypeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.user.app.bus.EBRoleTypeLocalHome</local-home>
+            <local>com.integrosys.component.user.app.bus.EBRoleTypeLocal</local>
+            <ejb-link>EBRoleTypeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCommonUserStagingBean_EBCommonUserSegmentStagingBean">
+            <ejb-ref-name>EBUserSegmentLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.user.app.bus.EBUserSegmentLocalHome</local-home>
+            <local>com.integrosys.component.user.app.bus.EBUserSegmentLocal</local>
+            <ejb-link>EBCommonUserSegmentStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCommonUserStagingBean_EBCommonUserRegionStagingBean">
+            <ejb-ref-name>EBUserRegionLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.user.app.bus.EBUserRegionLocalHome</local-home>
+            <local>com.integrosys.component.user.app.bus.EBUserRegionLocal</local>
+            <ejb-link>EBCommonUserRegionStagingBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCommonUserStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLoginID</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonUserStagingBean o WHERE o.loginID = ?1 AND o.status <> 'D']]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCommonUserSegmentBean">
+         <ejb-name>EBCommonUserSegmentBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.EBCommonUserSegmentHome</home>
+         <remote>com.integrosys.component.user.app.bus.EBCommonUserSegment</remote>
+         <local-home>com.integrosys.component.user.app.bus.EBUserSegmentLocalHome</local-home>
+         <local>com.integrosys.component.user.app.bus.EBUserSegmentLocal</local>
+         <ejb-class>com.integrosys.component.user.app.bus.EBCommonUserSegmentBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommonUserSegmentBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCommonUserSegmentBean_ejbUserID">
+            <field-name>ejbUserID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserSegmentBean_id">
+            <field-name>id</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserSegmentBean_segmentCode">
+            <field-name>segmentCode</field-name>
+         </cmp-field>
+         <primkey-field>id</primkey-field>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonUserSegmentBean o WHERE o.ejbUserID = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCommonUserSegmentStagingBean">
+         <ejb-name>EBCommonUserSegmentStagingBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.EBCommonUserSegmentHome</home>
+         <remote>com.integrosys.component.user.app.bus.EBCommonUserSegment</remote>
+         <local-home>com.integrosys.component.user.app.bus.EBUserSegmentLocalHome</local-home>
+         <local>com.integrosys.component.user.app.bus.EBUserSegmentLocal</local>
+         <ejb-class>com.integrosys.component.user.app.bus.EBCommonUserSegmentBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommonUserSegmentStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCommonUserSegmentStagingBean_ejbUserID">
+            <field-name>ejbUserID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserSegmentStagingBean_id">
+            <field-name>id</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserSegmentStagingBean_segmentCode">
+            <field-name>segmentCode</field-name>
+         </cmp-field>
+         <primkey-field>id</primkey-field>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonUserSegmentStagingBean o WHERE o.ejbUserID = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCommonUserRegionBean">
+         <ejb-name>EBCommonUserRegionBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.EBCommonUserRegionHome</home>
+         <remote>com.integrosys.component.user.app.bus.EBCommonUserRegion</remote>
+         <local-home>com.integrosys.component.user.app.bus.EBUserRegionLocalHome</local-home>
+         <local>com.integrosys.component.user.app.bus.EBUserRegionLocal</local>
+         <ejb-class>com.integrosys.component.user.app.bus.EBCommonUserRegionBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommonUserRegionBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCommonUserRegionBean_ejbUserID">
+            <field-name>ejbUserID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserRegionBean_id">
+            <field-name>id</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserRegionBean_regionCode">
+            <field-name>regionCode</field-name>
+         </cmp-field>
+         <primkey-field>id</primkey-field>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonUserRegionBean o WHERE o.ejbUserID = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCommonUserRegionStagingBean">
+         <ejb-name>EBCommonUserRegionStagingBean</ejb-name>
+         <home>com.integrosys.component.user.app.bus.EBCommonUserRegionHome</home>
+         <remote>com.integrosys.component.user.app.bus.EBCommonUserRegion</remote>
+         <local-home>com.integrosys.component.user.app.bus.EBUserRegionLocalHome</local-home>
+         <local>com.integrosys.component.user.app.bus.EBUserRegionLocal</local>
+         <ejb-class>com.integrosys.component.user.app.bus.EBCommonUserRegionBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommonUserRegionStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCommonUserRegionStagingBean_ejbUserID">
+            <field-name>ejbUserID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserRegionStagingBean_id">
+            <field-name>id</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonUserRegionStagingBean_regionCode">
+            <field-name>regionCode</field-name>
+         </cmp-field>
+         <primkey-field>id</primkey-field>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonUserRegionStagingBean o WHERE o.ejbUserID = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_CommonUserStaging-UserSegmentStaging">
+         <ejb-relation-name>CommonUserStaging-UserSegmentStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CommonUserStaging-Has-UserSegmentStaging">
+            <ejb-relationship-role-name>CommonUserStaging-Has-UserSegmentStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCommonUserStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRUserSegment</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_UserSegmentStaging-BelongsTo-CommonUserStaging">
+            <ejb-relationship-role-name>UserSegmentStaging-BelongsTo-CommonUserStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCommonUserSegmentStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_CommonUser-UserSegment">
+         <ejb-relation-name>CommonUser-UserSegment</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CommonUser-Has-UserSegment">
+            <ejb-relationship-role-name>CommonUser-Has-UserSegment</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCommonUserBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRUserSegment</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_UserSegment-BelongsTo-CommonUser">
+            <ejb-relationship-role-name>UserSegment-BelongsTo-CommonUser</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCommonUserSegmentBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_CommonUserStaging-UserRegionStaging">
+         <ejb-relation-name>CommonUserStaging-UserRegionStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CommonUserStaging-Has-UserRegionStaging">
+            <ejb-relationship-role-name>CommonUserStaging-Has-UserRegionStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCommonUserStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRUserRegion</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_UserRegionStaging-BelongsTo-CommonUserStaging">
+            <ejb-relationship-role-name>UserRegionStaging-BelongsTo-CommonUserStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCommonUserRegionStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_CommonUser-UserRegion">
+         <ejb-relation-name>CommonUser-UserRegion</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_CommonUser-Has-UserRegion">
+            <ejb-relationship-role-name>CommonUser-Has-UserRegion</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCommonUserBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRUserRegion</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_UserRegion-BelongsTo-CommonUser">
+            <ejb-relationship-role-name>UserRegion-BelongsTo-CommonUser</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCommonUserRegionBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBCommonUserManagerBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCommonUserManagerStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCommonUserProxyBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRoleTypeBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCommonUserBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCommonUserStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBStdUserProxyBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBUserTeamManagerBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCommonUserSegmentStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCommonUserSegmentBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCommonUserRegionStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCommonUserRegionBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

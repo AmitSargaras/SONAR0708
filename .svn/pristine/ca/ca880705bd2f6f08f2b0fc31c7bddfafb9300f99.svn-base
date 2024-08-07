@@ -1,0 +1,1413 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.limit.bus">
+	<class entity-name="actualFacilityMaster" name="OBFacilityMaster" table="CMS_FACILITY_MASTER" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FACILITY_MASTER_SEQ</param>
+			</generator>
+		</id>
+
+		<!--<property name="productDesc" column="LMT_PRD_TYPE_VALUE" />-->
+		<property name="facilityCurrencyCode" column="CURRENCY_CODE" />
+		<property name="acfNo" column="ACF_NO" />
+		<property name="retentionPeriod" column="RETENTION_PERIOD" type="short" />
+		<property name="dateInstructed" column="DATE_INSTRUCTED" type="timestamp" />
+
+		<component name="limit" class="OBLimit">
+			<property name="limitID" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+		</component>
+
+		<component name="actualPledgedLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="ACTUAL_PLEDGED_LIMIT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<component name="drawingLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="CMS_DRAWING_LIMIT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+		<property name="requiredSecurityCoverage" column="CMS_REQ_SEC_COVERAGE"></property>
+
+		<property name="allowIncentive" column="ALLOW_INCENTIVE_IND" type="yes_no" />
+
+		<property name="alternateRate" column="ALT_RATE" />
+		<property name="altSchedule" column="ALT_SCHEDULE" type="yes_no" />
+		<property name="applicationSourceCategoryCode" column="APPL_SRC_CODE_NUM" />
+		<property name="applicationSourceEntryCode" column="APPL_SRC_CODE_VALUE" />
+		<property name="availPeriodInDays" column="AVAIL_PERIOD_DAY" type="integer" />
+		<property name="availPeriodInMonths" column="AVAIL_PERIOD_MONTH" type="integer" />
+		<property name="calFirstInstlDate" column="CAL_FIRST_INSTL_DATE" />
+		<property name="cgcBnmApprovedDate" column="CGC_BNM_APPROVED_DATE" type="timestamp" />
+		<property name="creditLineIndicator" column="CREDIT_LINE_IND" />
+		<property name="dealerNumberOrLppCodeCategoryCode" column="DEALER_NUM_LPP_CODE_NUM" />
+		<property name="dealerNumberOrLppCodeEntryCode" column="DEALER_NUM_LPP_CODE_VALUE" />
+		<property name="departmentCodeCategoryCode" column="DEPARTMENT_CODE_NUM" />
+		<property name="departmentCodeEntryCode" column="DEPARTMENT_CODE_VALUE" />
+		<property name="disbursementManner" column="DISBURSEMENT_MANNER" />
+		<property name="toBeCancelledInd" column="TO_BE_CANCELLED_IND" />
+
+		<component name="ecofAdministrationCostAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="ECOF_ADMIN_COST" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="ecofRate" column="ECOF_RATE" type="double" />
+		<property name="ecofVariance" column="ECOF_VARIANCE" type="double" />
+		<property name="ecofVarianceCode" column="ECOF_VARIANCE_CODE" />
+		<property name="effectiveCostOfFund" column="EFFECTIVE_COSE_OF_FUND" type="yes_no" />
+		<property name="facilityAvailDate" column="AVAIL_DATE" type="timestamp" />
+		<property name="facilityAvailPeriod" column="AVAIL_PERIOD" />
+
+		<set name="facilityInsuranceSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="actualFacilityInsurance" />
+		</set>
+
+		<set name="facilityOfficerSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="actualFacilityOfficer" />
+		</set>
+
+		<set name="facilityRelationshipSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="actualFacilityRelationship" />
+		</set>
+		
+		<set name="facilityMultiTierFinancingSet" cascade="save-update, delete-orphan" fetch="select" lazy="false" 
+			sort="com.integrosys.cms.ui.limit.facility.multitierfin.FacilityMultiTierFinComparator">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="actualFacilityMultiTierFin" />
+		</set>
+		
+		<set name="facilityMessages" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="actualFacilityMessage" />
+		</set>
+		
+		<set name="facilityIncrementals" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="actualFacilityIncremental" />
+		</set>
+		
+		<set name="facilityReductions" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="actualFacilityReduction" />
+		</set>
+
+		<component name="floorPledgedLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="FLOOR_PLEDGED_LIMIT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="intInSuspense" column="INT_IN_SUSPENSE" type="big_decimal" />
+		<property name="isoReferralNumber" column="ISO_REFERRAL_NUM" />
+		<property name="lastMaintenanceDate" column="LAST_MAINTENANCE_DATE" type="timestamp" />
+		<property name="lawyerCodeCategoryCode" column="LAWYER_CODE_NUM" />
+		<property name="lawyerCodeEntryCode" column="LAWYER_CODE_VALUE" />
+		<property name="level" column="LEVEL" type="integer" />
+		<property name="mainFacility" column="MAIN_FACILITY_IND" type="yes_no" />
+		<property name="mainFacilityAaNumber" column="MAIN_FACILITY_AA_NUM" />
+		<property name="mainFacilityCode" column="MAIN_FACILITY_CODE" />
+		<property name="mainFacilitySequenceNumber" column="MAIN_FACILITY_SEQ" type="long" />
+		<property name="odExcessRateVar" column="OD_EXCESS_RATE_VAR" type="double" />
+		<property name="odExcessRateVarCode" column="OD_EXCESS_RATE_VAR_CODE" />
+		<property name="parValueShares" column="PAR_VALUE_SHARES" />
+		<property name="productPackageCodeCategoryCode" column="PROD_PACKAGE_CODE_NUM" />
+		<property name="productPackageCodeEntryCode" column="PROD_PACKAGE_CODE_VALUE" />
+		<property name="refinanceFromBankCategoryCode" column="REFINANCE_FROM_BANK_CODE_NUM" />
+		<property name="refinanceFromBankEntryCode" column="REFINANCE_FROM_BANK_CODE_VALUE" />
+		<property name="retentionPeriodCode" column="RETENTION_PERIOD_CODE" />
+
+		<component name="retentionSumAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="RETENTION_SUM" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="revolvingIndicator" column="REVOLVING_IND" />
+		<property name="revolvingOnCriteriaIndicator" column="REVOLVING_ON_CRITERIA_IND" />
+		<property name="solicitorName" column="SOLICITOR_NAME" />
+		<property name="solicitorReference" column="SOLICITOR_REFERENCE" />
+		<property name="specProvision" column="SPEC_PROVISION" type="big_decimal" />
+		<property name="standbyLine" column="STANDBY_LINE" />
+		<property name="standByLineFacilityCode" column="STANDBY_LINE_FAC_CODE" />
+		<property name="standByLineFacilityCodeSequence" column="STANDBY_LINE_FAC_SEQ" type="long" />
+		
+		<join table="CMS_FAC_RENTAL_RENEWAL" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityIslamicRentalRenewal" class="OBFacilityIslamicRentalRenewal">
+			  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+			  	<property name="renewalTerm" column="RENEWAL_TERM" />
+			    <property name="renewalTermCodeCategoryCode" column="RENEWAL_TERM_CODE_NUM" />
+			    <property name="renewalTermCodeEntryCode" column="RENEWAL_TERM_CODE_VALUE" />
+			    <property name="primeRateNumberCategoryCode" column="PRIME_RATE_CODE_NUM" />
+			    <property name="primeRateNumberEntryCode" column="PRIME_RATE_CODE_VALUE" />
+			  	<property name="renewalRate" column="RENEWAL_RATE" type="big_decimal" />
+			  	<property name="primeVariance" column="PRIME_VARIANCE" type="big_decimal" />
+			  	<property name="primeVarianceCode" column="PRIME_VARIANCE_CODE" />
+				<property name="status" column="STATUS" />
+			</component>
+		</join>
+
+		<join table="CMS_FAC_SECURITY_DEPOSIT" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityIslamicSecurityDeposit" class="OBFacilityIslamicSecurityDeposit">
+			  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+			  	<property name="numberOfMonth" column="NUM_OF_MONTH" type="integer" />
+			  	<property name="securityDeposit" column="SECURITY_DEPOSIT" type="big_decimal" />
+			  	<property name="fixSecurityDepositAmount" column="FIX_SECURITY_DEPOSIT_AMOUNT" type="big_decimal" />
+			  	<property name="originalSecurityDepositAmount" column="ORIG_SECURITY_DEPOSIT_AMOUNT" type="big_decimal" />
+			  	<property name="isRecalculateUponReview" column="IS_RECAL_UPON_REVIEW" type="yes_no" />
+			  	<property name="monthBeforePrintRenewalReport" column="MTH_BEFORE_PRINT_REN_RPT" type="integer" />
+			  	<property name="remarks" column="REMARKS" />
+				<property name="status" column="STATUS" />
+			</component>
+		</join>
+
+		<join table="CMS_FAC_GENERAL" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityGeneral" class="OBFacilityGeneral">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="currencyCode" column="CURRENCY_CODE" />
+				<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+				<property name="approvedDate" column="APPROVED_DATE" type="timestamp" />
+				<property name="cancelOrRejectCategoryCode" column="CANCEL_REJECT_CODE_NUM" />
+				<property name="cancelOrRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+				<property name="cancelOrRejectEntryCode" column="CANCEL_REJECT_CODE_VALUE" />
+				<property name="carCategoryCode" column="CAR_CODE_NUM" />
+				<property name="carCodeFlag" column="CAR_CODE_FLAG" type="yes_no" />
+				<property name="carEntryCode" column="CAR_CODE_VALUE" />
+				<property name="enteredDate" column="ENTERED_DATE" type="timestamp" />
+				<property name="facilityStatusCategoryCode" column="FAC_STATUS_CODE_NUM" />
+				<property name="facilityStatusEntryCode" column="FAC_STATUS_CODE_VALUE" />
+
+				<component name="finalPaymentAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FINAL_PAYMENT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="financedAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FINANCED_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="installmentAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="INSTALLMENT_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="approvedAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="APPROVED_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<property name="limitStatusCategoryCode" column="LMT_STATUS_CODE_NUM" />
+				<property name="limitStatusEntryCode" column="LMT_STATUS_CODE_VALUE" />
+				<property name="loanPurposeCategoryCode" column="LOAN_PURPOSE_CODE_NUM" />
+				<property name="loanPurposeEntryCode" column="LOAN_PURPOSE_CODE_VALUE" />
+				<property name="offerAcceptedDate" column="OFFER_ACCEPTED_DATE" type="timestamp" />
+				<property name="offerDate" column="OFFER_DATE" type="timestamp" />
+				<property name="officerCategoryCode" column="OFFICER_CODE_NUM" />
+				<property name="officerEntryCode" column="OFFICER_CODE_VALUE" />
+
+				<component name="originalAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="ORIGINAL_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="oustandingBalanceAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="OUTSTANDING_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<property name="personApprovedCategoryCode" column="PERSON_APPROVED_CODE_NUM" />
+				<property name="personApprovedEntryCode" column="PERSON_APPROVED_CODE_VALUE" />
+				<property name="term" column="TERM" type="integer" />
+				<property name="termCodeCategoryCode" column="TERM_CODE_NUM" />
+				<property name="termCodeEntryCode" column="TERM_CODE_VALUE" />
+
+				<component name="utilisedAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="UTILISED_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+			</component>
+		</join>
+
+		<join table="CMS_FAC_BNM_CODES" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityBnmCodes" class="OBFacilityBnmCodes">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="bumiOrNrccCodeCategoryCode" column="BUMI_NRCC_CODE_NUM" />
+				<property name="bumiOrNrccCodeEntryCode" column="BUMI_NRCC_CODE_VALUE" />
+				<property name="exemptedCodeCategoryCode" column="EXEMPTED_CODE_NUM" />
+				<property name="exemptedCodeEntryCode" column="EXEMPTED_CODE_VALUE" />
+				<property name="exemptedCodeIndicator" column="EXEMPTED_CODE_IND" />
+				<property name="goodsFinancedCodeOneCategoryCode" column="GOODS_FINANCED_ONE_CODE_NUM" />
+				<property name="goodsFinancedCodeOneEntryCode" column="GOODS_FINANCED_ONE_CODE_VALUE" />
+				<property name="goodsFinancedCodeTwoCategoryCode" column="GOODS_FINANCED_TWO_CODE_NUM" />
+				<property name="goodsFinancedCodeTwoEntryCode" column="GOODS_FINANCED_TWO_CODE_VALUE" />
+				<property name="bnmTierSeqCategoryCode" column="TIER_SEQ_NUM_CODE_NUM" />
+				<property name="bnmTierSeqEntryCode" column="TIER_SEQ_NUM_CODE_VALUE" />
+				<property name="hostTierSequenceNumber" column="HOST_TIER_SEQ" type="long" />
+				<property name="industryCodeCategoryCode" column="INDUSTRY_CODE_NUM" />
+				<property name="industryCodeEntryCode" column="INDUSTRY_CODE_VALUE" />
+				<property name="prescribedRateCodeCategoryCode" column="PRESCRIBED_RATE_CODE_NUM" />
+				<property name="prescribedRateCodeEntryCode" column="PRESCRIBED_RATE_CODE_VALUE" />
+				<property name="purposeCodeCategoryCode" column="PURPOSE_CODE_NUM" />
+				<property name="purposeCodeEntryCode" column="PURPOSE_CODE_VALUE" />
+				<property name="relationshipCodeCategoryCode" column="RELATIONSHIP_CODE_NUM" />
+				<property name="relationshipCodeEntryCode" column="RELATIONSHIP_CODE_VALUE" />
+				<property name="sectorCodeCategoryCode" column="SECTOR_CODE_NUM" />
+				<property name="sectorCodeEntryCode" column="SECTOR_CODE_VALUE" />
+				<property name="smallScaleCodeCodeCategoryCode" column="SMALL_SCALE_CODE_NUM" />
+				<property name="smallScaleCodeCodeEntryCode" column="SMALL_SCALE_CODE_VALUE" />
+				<property name="stateCodeCategoryCode" column="STATE_CODE_NUM" />
+				<property name="stateCodeEntryCode" column="STATE_CODE_VALUE" />
+		    	<property name="baselSAFinalisedCategoryCode" column="BASEL_SA_FINALISED_NUM"/>
+		    	<property name="baselSAFinalisedEntryCode" column="BASEL_SA_FINALISED_VALUE" />
+		    	<property name="baselIRBCategoryCode" column="BASEL_IRB_NUM"/>
+		    	<property name="baselIRBEntryCode" column="BASEL_IRB_VALUE" />
+		    	<property name="baselSAConceptCategoryCode" column="BASEL_SA_CONCEPT_NUM"/>
+		    	<property name="baselSAConceptEntryCode" column="BASEL_SA_CONCEPT_VALUE" />
+			</component>
+		</join>
+
+		<join table="CMS_FAC_FEE_CHARGE" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityFeeCharge" class="OBFacilityFeeCharge">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="currencyCode" column="CURRENCY_CODE" />
+				<property name="commissionBasisCategoryCode" column="COMMISSION_BASIS_CODE_NUM" />
+				<property name="commissionBasisEntryCode" column="COMMISSION_BASIS_CODE_VALUE" />
+
+				<component name="commissionFeesAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="COMMISSION_FEES" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<property name="commissionRate" column="COMMISSION_RATE" type="double" />
+				<property name="facilityCommitmentRate" column="COMMITMENT_RATE" type="double" />
+				<property name="facilityCommitmentRateNumberCategoryCode" column="COMTMT_RATE_NUM_CODE_NUM" />
+				<property name="facilityCommitmentRateNumberEntryCode" column="COMTMT_RATE_NUM_CODE_VALUE" />
+
+				<component name="handlingFeesAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="HANDLING_FEES" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<property name="lateChargeType" column="LATE_CHARGE_TYPE" type="integer" />
+
+				<component name="maximumCommissionAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="MAX_COMSSN_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="minimumCommissionAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="MIN_COMSSN_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="othersFeeAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="OTHERS_FEE" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="subsidyAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="SUBSIDY_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+			</component>
+		</join>
+
+		<join table="CMS_FAC_INTEREST" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityInterest" class="OBFacilityInterest">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="interestRate" column="INTEREST_RATE" type="double" />
+				<property name="interestRateTypeCategoryCode" column="INTEREST_TYPE_CODE_NUM" />
+				<property name="interestRateTypeEntryCode" column="INTEREST_TYPE_CODE_VALUE" />
+				<property name="primeRateCeiling" column="PRIME_RATE_CEILING" type="double" />
+				<property name="primeRateFloor" column="PRIME_RATE_FLOOR" type="double" />
+				<property name="primeReviewDate" column="PRIME_REVIEW_DATE" type="timestamp" />
+				<property name="primeReviewTerm" column="PRIME_REVIEW_TERM" type="integer" />
+				<property name="primeReviewTermCodeCategoryCode" column="PRIME_REVIEW_TERM_CODE_NUM" />
+				<property name="primeReviewTermCodeEntryCode" column="PRIME_REVIEW_TERM_CODE_VALUE" />
+				<property name="spread" column="SPREAD" type="double" />
+				<property name="spreadSign" column="SPREAD_SIGN" type="character"  />
+                <property name="interestBase" column="INTEREST_BASE" type="integer" />
+                <property name="interestMode" column="INTEREST_MODE" type="character" />
+			    <property name="interestYearBase" column="INTEREST_YEAR_BASE" type="integer" />
+            </component>
+		</join>
+
+		<join table="CMS_FAC_PAYMENT" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityPayment" class="OBFacilityPayment">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="gracePeriodCategoryCode" column="GRADE_PERIOD_CODE_NUM" />
+				<property name="gracePeriodEntryCode" column="GRADE_PERIOD_CODE_VALUE" />
+				<property name="gracePeriodCodeCategoryCode" column="GRADE_PERIOD_CD_CODE_NUM" />
+				<property name="gracePeriodCodeEntryCode" column="GRADE_PERIOD_CD_CODE_VALUE" />
+				<property name="interestPaymentFrequencyCategoryCode" column="INT_PAYMENT_FREQ_CODE_NUM" />
+				<property name="interestPaymentFrequencyEntryCode" column="INT_PAYMENT_FREQ_CODE_VALUE" />
+                <property name="interestPaymentFrequencyCodeCategoryCode" column="INT_PAYMENT_FREQ_CD_CODE_NUM" />
+                <property name="interestPaymentFrequencyCodeEntryCode" column="INT_PAYMENT_FREQ_CD_CODE_VALUE" />
+                <property name="paymentCodeCategoryCode" column="PAYMENT_CD_CODE_NUM" />
+				<property name="paymentCodeEntryCode" column="PAYMENT_CD_CODE_VALUE" />
+				<property name="paymentFrequencyCategoryCode" column="PAYMENT_FREQ_CODE_NUM" />
+				<property name="paymentFrequencyEntryCode" column="PAYMENT_FREQ_CODE_VALUE" />
+				<property name="paymentFrequencyCodeCategoryCode" column="PAYMENT_FREQ_CD_CODE_NUM" />
+				<property name="paymentFrequencyCodeEntryCode" column="PAYMENT_FREQ_CD_CODE_VALUE" />
+			</component>
+		</join>
+		
+		<join table="CMS_FAC_ISLAMIC_MASTER" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityIslamicMaster" class="OBFacilityIslamicMaster">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="gppTerm" column="GPP_TERM" type="short" />
+				<property name="gppTermCode" column="GPP_TERM_CODE" type="character" />
+				<property name="gppPaymentModeNum" column="GPP_PAYMENT_MODE_NUM" />
+				<property name="gppPaymentModeValue" column="GPP_PAYMENT_MODE_VALUE"  />
+				<property name="currencyCode" column="CURRENCY_CODE" />
+				
+				<component name="sellingPriceAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="SELLING_PRICE" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="gppTotalAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="TOTAL_GPP_AMT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<property name="securityDepOfMonth" column="SECURITY_DEP_OF_MTH" type="short" />
+				<property name="securityDepPercentage" column="SECURITY_DEP_PERCENTAGE" type="double" />
+				
+				<component name="securityDepAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="SECURITY_DEP_AMT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<property name="customerInterestRate" column="CUSOTMER_INTEREST_RATE" type="double" />
+				<property name="gppCalculationMethodNum" column="GPP_CALCULATION_METHOD_NUM" />
+				<property name="gppCalculationMethodValue" column="GPP_CALCULATION_MEHTOD_VALUE"  />
+				<property name="fulrelProfitCalcMethod" column="FULREL_PROFIC_CALC_METHOD"  />
+				<property name="compoundingMethod" column="COMPOUNDING_METHOD"  type="yes_no" />	
+				<property name="dateStopCompounding" column="DATE_STOP_COMPOUNDING"  type="timestamp" />
+				<property name="refundGppProfitNum" column="REFUND_GPP_PROFIT_NUM" />
+				<property name="refundGppProfitValue" column="REFUND_GPP_PROFIT_VALUE"  />
+				<property name="refundFulrelProfitNum" column="REFUND_FULREL_PROFIT_NUM" />
+				<property name="refundFulrelProfitValue" column="REFUND_FULREL_PROFIT_VALUE"  />				
+				<property name="commissionRate" column="COMMISSION_RATE"  type="double" />							
+				
+				<component name="fixedCommissionAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FIXED_COM_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<property name="commissionTerm" column="COMMISSION_TERM"  type="short" />
+				<property name="commissionExpiryDate" column="COMMISSION_EXPIRY_DATE"  type="timestamp" />
+				<property name="excCmpInPmtAmt" column="EXC_CMP_IN_PMT_AMT"  type="yes_no" />
+				<property name="sptfDualPaymentModeNum" column="SPTF_DUAL_REPAYMENT_MODE_NUM" />
+				<property name="sptfDualPaymentModeValue" column="SPTF_DUAL_REPAYMENT_MODE_VALUE"  />
+				<property name="snpAgreementDate" column="SNP_AGREEMENT_DATE"  type="timestamp" />
+				<property name="gppDurationForSnp" column="GPP_DURATION_FOR_SNP"  type="character" />				
+				<property name="snpTerm" column="SNP_TERM"  type="short" />
+				<property name="snpTermCodeNum" column="SNP_TERM_CODE_NUM" />
+				<property name="snpTermCodeValue" column="SNP_TERM_CODE_VALUE"  />
+				<property name="fullRelPft12Method" column="FULL_REL_PFT_12_METHOD"  type="yes_no" />	
+				<property name="graceExpSPTFDate" column="SPTF_GRACE_EXP_DATE"  type="timestamp" />
+				
+				<component name="fixedRefundAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FIXED_AMT_REFUND" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+												
+			</component>
+		</join>
+		
+		<join table="CMS_FAC_BBA_VARI_PACKAGE" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityIslamicBbaVariPackage" class="OBFacilityIslamicBbaVariPackage">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="custProfRate" column="CUST_PROF_RATE" type="double" />
+				<property name="rebateMethod" column="REBATE_METHOD" type="character" />
+				<property name="gppPaymentMode" column="GPP_PAYMENT_MODE" />
+				<property name="currencyCode" column="CURRENCY_CODE" />
+				<property name="gppCalculationMethod" column="GPP_CAL_METHOD"  />	
+				<property name="gppTerm" column="GPP_TERM" type="short" />
+				<property name="gppTermCode" column="GPP_TERM_CODE" type="character" />	
+				<property name="fullReleaseProfit" column="FULL_RELEASE_PROFIT" type="yes_no" />
+				<property name="refundFullReleaseProfit" column="REFUND_FULL_RELEASE_PROFIT" type="character"  />	
+				<property name="fulrelProfitCalMethod" column="FUL_REL_PROFIT_CAL_METHOD" type="character" />
+				
+				<component name="installment" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="INSTALLMENT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="finalPaymentAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FINAL_PAYMENT_AMT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="totalGppAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="TOTAL_GPP_AMT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="sellingPrice" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="SELLING_PRICE" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="totalProfit" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="TOTAL_PROFIT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				<property name="lastMaintainDate" column="LAST_MAINTAIN_DATE" type="timestamp" />	
+			</component>
+		</join>
+	</class>
+
+	<class entity-name="actualFacilityInsurance" name="OBFacilityInsurance" table="CMS_FAC_INSURANCE" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_INSR_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="order" column="DISPLAY_ORDER" type="short" />
+		<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		<property name="cmsRefId" column="CMS_REF_ID" type="long" />
+		<property name="currencyCode" column="CURRENCY_CODE" />
+		<property name="arrangementIndicator" column="ARRANGEMENT_IND" type="character" />
+		<property name="coverageTypeCategoryCode" column="COVERAGE_TYPE_CODE_NUM" />
+		<property name="coverageTypeEntryCode" column="COVERAGE_TYPE_CODE_VALUE" />
+		<property name="effectiveDate" column="EFFECTIVE_DATE" type="timestamp" />
+		<property name="expiryDate" column="EXPIRY_DATE" type="timestamp" />
+		<property name="insuranceCompanyCategoryCode" column="INSR_COMPANY_CODE_NUM" />
+		<property name="insuranceCompanyEntryCode" column="INSR_COMPANY_CODE_VALUE" />
+
+		<component name="insurancePremiumAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="INSURANCE_PREMIUM" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<component name="insuredAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="INSURED_AMOUNT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="issuedDate" column="ISSUED_DATE" type="timestamp" />
+		<property name="policyNumber" column="POLICY_NUMBER" />
+		<property name="propNumberOrCvNote" column="POLICY_NUMBER_CV_NOTE" />
+		<property name="remarks" column="REMARKS" />
+
+	</class>
+
+	<class entity-name="actualFacilityOfficer" name="OBFacilityOfficer" table="CMS_FAC_OFFICER" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_OFFICER_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		<property name="cmsRefId" column="CMS_REF_ID" type="long" />
+		<property name="hostSequenceNumber" column="HOST_SEQ_NUM" type="long" />
+		<property name="officerCategoryCode" column="OFFICER_CODE_NUM" />
+		<property name="officerEntryCode" column="OFFICER_CODE_VALUE" />
+		<property name="officerTypeCategoryCode" column="OFFICER_TYPE_CODE_NUM" />
+		<property name="officerTypeEntryCode" column="OFFICER_TYPE_CODE_VALUE" />
+		<property name="relationshipCodeCategoryCode" column="RELATIONSHIP_CODE_NUM" />
+		<property name="relationshipCodeEntryCode" column="RELATIONSHIP_CODE_VALUE" />
+		<property name="sequenceNumber" column="SEQ_NUM" type="long" />
+		<property name="status" column="STATUS" />
+	</class>
+
+	<class entity-name="actualFacilityRelationship" name="OBFacilityRelationship" table="CMS_FAC_RELATIONSHIP" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_RELATIONSHIP_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		<property name="cmsRefId" column="CMS_REF_ID" type="long" />
+		<property name="currencyCode" column="CURRENCY_CODE" />
+		<property name="accountRelationshipCategoryCode" column="ACCT_RELATIONSHIP_CODE_NUM" />
+		<property name="accountRelationshipEntryCode" column="ACCT_RELATIONSHIP_CODE_VALUE" />
+		<property name="cifNumber" column="CIF_NUMBER" insert="false" update="false" />
+		<property name="customerName" column="CUSTOMER_NAME" insert="false" update="false" />
+		<component name="cmsLegalEntity" class="com.integrosys.cms.app.customer.bus.OBCMSLegalEntity">
+			<property name="LEReference" column="CIF_NUMBER" />
+			<property name="legalName" column="CUSTOMER_NAME" />
+			<!-- <property name="LEID" column="CMS_LE_MAIN_PROFILE_ID" /> -->
+		</component>
+		<property name="dividendRatio" column="DIVIDEND_RATIO" type="double" />
+
+		<component name="guaranteeAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="GUARANTEE_AMOUNT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="guaranteePercentage" column="GUARANTEE_PERCENTAGE" type="double" />
+		<property name="guaranteeTypeIndicator" column="GUARANTEE_TYPE_IND" type="character" />
+		<property name="holdMailCodeCategoryCode" column="HOLD_MAIN_CODE_NUM" />
+		<property name="holdMailCodeEntryCode" column="HOLD_MAIN_CODE_VALUE" />
+		<property name="hostAddressSequenceNumber" column="HOST_ADD_SEQ_NUM" type="long" />
+		<property name="nameAssociateWithFacilityOrder" column="NAME_ASSOC_WITH_FAC_ORDER" type="int" />
+		<property name="nameConjunction" column="NAME_CONJUNCTION" />
+		<property name="nameConjunctionPosition" column="NAME_CONJUNCTION_POSITION" type="character" />
+		<property name="profitRatio" column="PROFIT_RATIO" type="double" />
+		<property name="receiveMailCode" column="RECEIVE_MAIL_CODE" type="yes_no" />
+		<property name="shareHolderPercentage" column="SHARE_HOLDER_PERCENTAGE" type="double" />
+		<property name="status" column="STATUS" />
+	</class>
+	
+	<class entity-name="actualFacilityMultiTierFin" name="OBFacilityMultiTierFinancing" table="CMS_FAC_MULTI_TIER_FINANCING" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_MULTI_TIER_SEQ</param>
+			</generator>
+		</id>
+		<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		<property name="cmsRefId" column="CMS_REF_ID" type="long" />
+		<property name="tierSeqNo" column="TIER_SEQ_NO" type="short" />
+		<property name="tierTerm" column="TIER_TERM" type="short" />	
+		<property name="tierTermCode" column="TIER_TERM_CODE" type="character" />
+		<property name="rate" column="RATE" type="double" />	
+		<property name="status" column="STATUS" />
+		<property name="rateNumber" column="RATE_NUM" type="long" />
+		<property name="rateVariance" column="RATE_VARIANCE" type="double" />
+		<property name="varianceCode" column="VARIANCE_CODE" />
+		<property name="gracePeriod" column="GRACE_PERIOD" />
+		<property name="currencyCode" column="CURRENCY_CODE" />
+		
+		<component name="paymentAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="PAYMENT_AMOUNT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+	</class>
+	
+	<class entity-name="actualFacilityMessage" name="OBFacilityMessage" table="CMS_FAC_MESSAGE" lazy="false" polymorphism="explicit">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_MSG_SEQ</param>
+			</generator>
+		</id>
+		<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+		<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false"/>
+		<property name="message" column="MESSAGE" />
+		<property name="messageTypeCodeCategoryCode" column="MSG_TYPE_CODE_NUM" />
+		<property name="messageTypeCodeEntryCode" column="MSG_TYPE_CODE_VALUE" />
+		<property name="messageSeverityCodeCategoryCode" column="MSG_SEVERITY_CODE_NUM" />
+		<property name="messageSeverityCodeEntryCode" column="MSG_SEVERITY_CODE_VALUE" />
+		<property name="expirationDate" column="EXPIRATION_DATE" type="timestamp" />
+		<property name="sequenceNumber" column="SEQ_NO" type="long" />
+		<property name="status" column="STATUS" />
+	</class>
+
+	<class entity-name="actualFacilityIncremental" name="OBFacilityIncremental" table="CMS_FAC_INCREMENTAL" lazy="false" polymorphism="explicit">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_INCREMENTAL_SEQ</param>
+			</generator>
+		</id>
+		<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+		<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false"/>
+		<property name="incrementalNumber" column="INCREMENTAL_NUMBER" type="integer" />
+		<property name="amountApplied" column="AMOUNT_APPLIED" type="big_decimal" />
+		<property name="incrementalLimit" column="INCREMENTAL_LIMIT" type="big_decimal" />
+		<property name="originalLimit" column="ORIGINAL_LIMIT" type="big_decimal" />
+		<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+		<property name="loanPurposeCodeCategoryCode" column="LOAN_PURPOSE_CODE_NUM" />
+		<property name="loanPurposeCodeEntryCode" column="LOAN_PURPOSE_CODE_VALUE" />
+		<property name="dateOfOffer" column="DATE_OF_OFFER" type="timestamp" />
+		<property name="dateOfferAccepted" column="DATE_OFFER_ACCEPTED" type="timestamp" />
+		<property name="dateApproved" column="DATE_APPROVED" type="timestamp" />
+		<property name="approvedByCategoryCode" column="PERSON_APPROVED_CODE_NUM" />
+		<property name="approvedByEntryCode" column="PERSON_APPROVED_CODE_VALUE" />    
+		<property name="cancelRejectCodeCategoryCode" column="CANCEL_REJECT_CODE_NUM" />
+		<property name="cancelRejectCodeEntryCode" column="CANCEL_REJECT_CODE_VALUE" />  	
+		<property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+		<property name="facilityStatusCategoryCode" column="FACILITY_STATUS_CODE_NUM" />
+		<property name="facilityStatus" column="FACILITY_STATUS_CODE_VALUE" />
+		<property name="dealerLLPCodeCategoryCode" column="DEALER_LLP_CODE_NUM" />
+		<property name="dealerLLPCodeEntryCode" column="DEALER_LLP_CODE_VALUE" />
+		<property name="solicitorName" column="SOLICITOR_NAME" />
+		<property name="requestReasonCategoryCode" column="REQUEST_REASON_CODE_NUM" />
+		<property name="requestReasonEntryCode" column="REQUEST_REASON_CODE_VALUE" />    
+		<property name="documentationStatusCategoryCode" column="DOC_STATUS_CODE_NUM" />
+		<property name="documentationStatusEntryCode" column="DOC_STATUS_CODE_VALUE" />    
+		<property name="lawyerCodeCategoryCode" column="LAWYER_CODE_NUM" />
+		<property name="lawyerCodeEntryCode" column="LAWYER_CODE_VALUE" />
+		<property name="status" column="STATUS" />
+		<property name="primeReviewDate" column="PRIME_REVIEW_DATE" type="timestamp" />
+		<property name="primeReviewTerm" column="PRIME_REVIEW_TERM" type="integer" />
+		<property name="primeReviewTermEntryCode" column="PRIME_REVIEW_TERM_VALUE"/>
+		<property name="primeReviewTermCategoryCode" column="PRIME_REVIEW_TERM_NUM"/>
+		<property name="dateSendToDecisionCenter" column="DATE_SEND_DECISION_CENTER" type="timestamp"/>
+		<property name="dateReceiveFromDecisionCenter" column="DATE_RECEIVE_DECISION_CENTER" type="timestamp"/>
+		<property name="dateApprovedByCGCBNM" column="DATE_APPROVE_BY_CGC_BNM" type="timestamp"/>
+		<property name="dateEnteredForOffer" column="DATE_ENTER_OFFER" type="timestamp"/>
+		<property name="dateEnteredForApplied" column="DATE_ENTER_APPLIED" type="timestamp"/>
+		<property name="dateEnteredForApproved" column="DATE_ENTER_APPROVE" type="timestamp"/>
+		<property name="dateEnteredForOfferAcceptance" column="DATE_ENTER_OFFER_ACCEPTANCE" type="timestamp"/>
+		<property name="dateEnteredForCancelRejected" column="DATE_ENTER_CANCEL_REJECT" type="timestamp"/>
+		<property name="documentationDate" column="DOCUMENTATION_DATE" type="timestamp"/>
+		<property name="dateInstructed" column="DATE_INSTRUCTED" type="timestamp"/>
+		<property name="solicitorReference" column="SOLICITOR_REFERENCE"/>
+		<property name="dateEntered" column="DATE_ENTERED" type="timestamp"/>
+	</class>
+	
+	<class entity-name="actualFacilityReduction" name="OBFacilityReduction" table="CMS_FAC_REDUCTION" lazy="false" polymorphism="explicit">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_INCREMENTAL_SEQ</param>
+			</generator>
+		</id>
+		<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+		<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false"/>
+		<property name="incrementalNumber" column="INCREMENTAL_NUMBER" type="integer" />
+		<property name="amountApplied" column="AMOUNT_APPLIED" type="big_decimal" />
+		<property name="incrementalLimit" column="INCREMENTAL_LIMIT" type="big_decimal" />
+		<property name="originalLimit" column="ORIGINAL_LIMIT" type="big_decimal" />
+		<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+		<property name="dateOfferAccepted" column="DATE_OFFER_ACCEPTED" type="timestamp" />
+		<property name="dateApproved" column="DATE_APPROVED" type="timestamp" />
+		<property name="approvedByCategoryCode" column="PERSON_APPROVED_CODE_NUM" />
+		<property name="approvedByEntryCode" column="PERSON_APPROVED_CODE_VALUE" />    
+		<property name="cancelRejectCodeCategoryCode" column="CANCEL_REJECT_CODE_NUM" />
+		<property name="cancelRejectCodeEntryCode" column="CANCEL_REJECT_CODE_VALUE" />  	
+		<property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+		<property name="facilityStatusCategoryCode" column="FACILITY_STATUS_CODE_NUM" />
+		<property name="facilityStatus" column="FACILITY_STATUS_CODE_VALUE" />
+		<property name="solicitorName" column="SOLICITOR_NAME" />
+		<property name="requestReasonCategoryCode" column="REQUEST_REASON_CODE_NUM" />
+		<property name="requestReasonEntryCode" column="REQUEST_REASON_CODE_VALUE" />    
+		<property name="documentationStatusCategoryCode" column="DOC_STATUS_CODE_NUM" />
+		<property name="documentationStatusEntryCode" column="DOC_STATUS_CODE_VALUE" />    
+		<property name="lawyerCodeCategoryCode" column="LAWYER_CODE_NUM" />
+		<property name="lawyerCodeEntryCode" column="LAWYER_CODE_VALUE" />
+		<property name="status" column="STATUS" />	
+		<property name="dateEnteredForOffer" column="DATE_ENTER_OFFER" type="timestamp"/>
+		<property name="dateEnteredForApplied" column="DATE_ENTER_APPLIED" type="timestamp"/>
+		<property name="dateEnteredForApproved" column="DATE_ENTER_APPROVE" type="timestamp"/>
+		<property name="dateEnteredForOfferAcceptance" column="DATE_ENTER_OFFER_ACCEPTANCE" type="timestamp"/>
+		<property name="dateEnteredForCancelRejected" column="DATE_ENTER_CANCEL_REJECT" type="timestamp"/>
+		<property name="documentationDate" column="DOCUMENTATION_DATE" type="timestamp"/>
+		<property name="dateInstructed" column="DATE_INSTRUCTED" type="timestamp"/>
+		<property name="solicitorReference" column="SOLICITOR_REFERENCE"/>
+		<property name="dateEntered" column="DATE_ENTERED" type="timestamp"/>			
+	</class>
+
+	<class entity-name="stageFacilityMaster" name="OBFacilityMaster" table="CMS_STG_FACILITY_MASTER" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FACILITY_MASTER_SEQ</param>
+			</generator>
+		</id>
+
+		<!--<property name="productDesc" column="LMT_PRD_TYPE_VALUE" />-->
+		<property name="facilityCurrencyCode" column="CURRENCY_CODE" />
+		<property name="acfNo" column="ACF_NO" />
+		<property name="retentionPeriod" column="RETENTION_PERIOD" type="short" />
+		<property name="dateInstructed" column="DATE_INSTRUCTED" type="timestamp" />
+
+		<component name="limit" class="OBLimit"> 
+			<property name="limitID" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+		</component>
+
+		<component name="actualPledgedLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="ACTUAL_PLEDGED_LIMIT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<component name="drawingLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="CMS_DRAWING_LIMIT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+		<property name="requiredSecurityCoverage" column="CMS_REQ_SEC_COVERAGE"></property>
+
+		<property name="allowIncentive" column="ALLOW_INCENTIVE_IND" type="yes_no" />
+		<property name="alternateRate" column="ALT_RATE" />
+		<property name="altSchedule" column="ALT_SCHEDULE" type="yes_no" />
+		<property name="applicationSourceCategoryCode" column="APPL_SRC_CODE_NUM" />
+		<property name="applicationSourceEntryCode" column="APPL_SRC_CODE_VALUE" />
+		<property name="availPeriodInDays" column="AVAIL_PERIOD_DAY" type="integer" />
+		<property name="availPeriodInMonths" column="AVAIL_PERIOD_MONTH" type="integer" />
+		<property name="calFirstInstlDate" column="CAL_FIRST_INSTL_DATE" />
+		<property name="cgcBnmApprovedDate" column="CGC_BNM_APPROVED_DATE" type="timestamp" />
+		<property name="creditLineIndicator" column="CREDIT_LINE_IND" />
+		<property name="dealerNumberOrLppCodeCategoryCode" column="DEALER_NUM_LPP_CODE_NUM" />
+		<property name="dealerNumberOrLppCodeEntryCode" column="DEALER_NUM_LPP_CODE_VALUE" />
+		<property name="departmentCodeCategoryCode" column="DEPARTMENT_CODE_NUM" />
+		<property name="departmentCodeEntryCode" column="DEPARTMENT_CODE_VALUE" />
+		<property name="disbursementManner" column="DISBURSEMENT_MANNER" />
+		<property name="toBeCancelledInd" column="TO_BE_CANCELLED_IND" />
+
+		<component name="ecofAdministrationCostAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="ECOF_ADMIN_COST" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="ecofRate" column="ECOF_RATE" type="double" />
+		<property name="ecofVariance" column="ECOF_VARIANCE" type="double" />
+		<property name="ecofVarianceCode" column="ECOF_VARIANCE_CODE" />
+		<property name="effectiveCostOfFund" column="EFFECTIVE_COSE_OF_FUND" type="yes_no" />
+		<property name="facilityAvailDate" column="AVAIL_DATE" type="timestamp" />
+		<property name="facilityAvailPeriod" column="AVAIL_PERIOD" />
+
+		<set name="facilityInsuranceSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="stageFacilityInsurance" />
+		</set>
+
+		<set name="facilityOfficerSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="stageFacilityOfficer" />
+		</set>
+
+		<set name="facilityRelationshipSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="stageFacilityRelationship" />
+		</set>
+
+		<set name="facilityMultiTierFinancingSet" cascade="save-update, delete-orphan" fetch="select" lazy="false"
+			sort="com.integrosys.cms.ui.limit.facility.multitierfin.FacilityMultiTierFinComparator">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="stageFacilityMultiTierFin" />
+		</set>
+		
+		<set name="facilityMessages" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="stageFacilityMessage" />
+		</set>
+
+		<set name="facilityIncrementals" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="stageFacilityIncremental" />
+		</set>
+
+		<set name="facilityReductions" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+			<key column="CMS_FAC_MASTER_ID" />
+			<one-to-many entity-name="stageFacilityReduction" />
+		</set>
+
+		<component name="floorPledgedLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="FLOOR_PLEDGED_LIMIT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="intInSuspense" column="INT_IN_SUSPENSE" type="big_decimal" />
+		<property name="isoReferralNumber" column="ISO_REFERRAL_NUM" />
+		<property name="lastMaintenanceDate" column="LAST_MAINTENANCE_DATE" type="timestamp" />
+		<property name="lawyerCodeCategoryCode" column="LAWYER_CODE_NUM" />
+		<property name="lawyerCodeEntryCode" column="LAWYER_CODE_VALUE" />
+		<property name="level" column="LEVEL" type="integer" />
+		<property name="mainFacility" column="MAIN_FACILITY_IND" type="yes_no" />
+		<property name="mainFacilityAaNumber" column="MAIN_FACILITY_AA_NUM" />
+		<property name="mainFacilityCode" column="MAIN_FACILITY_CODE" />
+		<property name="mainFacilitySequenceNumber" column="MAIN_FACILITY_SEQ" type="long" />
+		<property name="odExcessRateVar" column="OD_EXCESS_RATE_VAR" type="double" />
+		<property name="odExcessRateVarCode" column="OD_EXCESS_RATE_VAR_CODE" />
+		<property name="parValueShares" column="PAR_VALUE_SHARES" />
+		<property name="productPackageCodeCategoryCode" column="PROD_PACKAGE_CODE_NUM" />
+		<property name="productPackageCodeEntryCode" column="PROD_PACKAGE_CODE_VALUE" />
+		<property name="refinanceFromBankCategoryCode" column="REFINANCE_FROM_BANK_CODE_NUM" />
+		<property name="refinanceFromBankEntryCode" column="REFINANCE_FROM_BANK_CODE_VALUE" />
+		<property name="retentionPeriodCode" column="RETENTION_PERIOD_CODE" />
+
+		<component name="retentionSumAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="RETENTION_SUM" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="revolvingIndicator" column="REVOLVING_IND" />
+		<property name="revolvingOnCriteriaIndicator" column="REVOLVING_ON_CRITERIA_IND" />
+		<property name="solicitorName" column="SOLICITOR_NAME" />
+		<property name="solicitorReference" column="SOLICITOR_REFERENCE" />
+		<property name="specProvision" column="SPEC_PROVISION" type="big_decimal" />
+		<property name="standbyLine" column="STANDBY_LINE" />
+		<property name="standByLineFacilityCode" column="STANDBY_LINE_FAC_CODE" />
+		<property name="standByLineFacilityCodeSequence" column="STANDBY_LINE_FAC_SEQ" type="long" />
+		
+		<join table="CMS_STG_FAC_RENTAL_RENEWAL" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityIslamicRentalRenewal" class="OBFacilityIslamicRentalRenewal">
+			  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+			  	<property name="renewalTerm" column="RENEWAL_TERM" />
+			    <property name="renewalTermCodeCategoryCode" column="RENEWAL_TERM_CODE_NUM" />
+			    <property name="renewalTermCodeEntryCode" column="RENEWAL_TERM_CODE_VALUE" />
+			    <property name="primeRateNumberCategoryCode" column="PRIME_RATE_CODE_NUM" />
+			    <property name="primeRateNumberEntryCode" column="PRIME_RATE_CODE_VALUE" />
+			  	<property name="renewalRate" column="RENEWAL_RATE" type="big_decimal" />
+			  	<property name="primeVariance" column="PRIME_VARIANCE" type="big_decimal" />
+			  	<property name="primeVarianceCode" column="PRIME_VARIANCE_CODE" />
+				<property name="status" column="STATUS" />
+			</component>
+		</join>
+
+		<join table="CMS_STG_FAC_SECURITY_DEPOSIT" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityIslamicSecurityDeposit" class="OBFacilityIslamicSecurityDeposit">
+			  	<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+			  	<property name="numberOfMonth" column="NUM_OF_MONTH" type="integer" />
+			  	<property name="securityDeposit" column="SECURITY_DEPOSIT" type="big_decimal" />
+			  	<property name="fixSecurityDepositAmount" column="FIX_SECURITY_DEPOSIT_AMOUNT" type="big_decimal" />
+			  	<property name="originalSecurityDepositAmount" column="ORIG_SECURITY_DEPOSIT_AMOUNT" type="big_decimal" />
+			  	<property name="isRecalculateUponReview" column="IS_RECAL_UPON_REVIEW" type="yes_no" />
+			  	<property name="monthBeforePrintRenewalReport" column="MTH_BEFORE_PRINT_REN_RPT" type="integer" />
+			  	<property name="remarks" column="REMARKS" />
+				<property name="status" column="STATUS" />
+			</component>
+		</join>
+
+		<join table="CMS_STG_FAC_GENERAL" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityGeneral" class="OBFacilityGeneral">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="currencyCode" column="CURRENCY_CODE" />
+				<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+				<property name="approvedDate" column="APPROVED_DATE" type="timestamp" />
+				<property name="cancelOrRejectCategoryCode" column="CANCEL_REJECT_CODE_NUM" />
+				<property name="cancelOrRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+				<property name="cancelOrRejectEntryCode" column="CANCEL_REJECT_CODE_VALUE" />
+				<property name="carCategoryCode" column="CAR_CODE_NUM" />
+				<property name="carCodeFlag" column="CAR_CODE_FLAG" type="yes_no" />
+				<property name="carEntryCode" column="CAR_CODE_VALUE" />
+				<property name="enteredDate" column="ENTERED_DATE" type="timestamp" />
+				<property name="facilityStatusCategoryCode" column="FAC_STATUS_CODE_NUM" />
+				<property name="facilityStatusEntryCode" column="FAC_STATUS_CODE_VALUE" />
+
+				<component name="finalPaymentAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FINAL_PAYMENT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="financedAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FINANCED_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="installmentAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="INSTALLMENT_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="approvedAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="APPROVED_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<property name="limitStatusCategoryCode" column="LMT_STATUS_CODE_NUM" />
+				<property name="limitStatusEntryCode" column="LMT_STATUS_CODE_VALUE" />
+				<property name="loanPurposeCategoryCode" column="LOAN_PURPOSE_CODE_NUM" />
+				<property name="loanPurposeEntryCode" column="LOAN_PURPOSE_CODE_VALUE" />
+				<property name="offerAcceptedDate" column="OFFER_ACCEPTED_DATE" type="timestamp" />
+				<property name="offerDate" column="OFFER_DATE" type="timestamp" />
+				<property name="officerCategoryCode" column="OFFICER_CODE_NUM" />
+				<property name="officerEntryCode" column="OFFICER_CODE_VALUE" />
+
+				<component name="originalAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="ORIGINAL_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="oustandingBalanceAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="OUTSTANDING_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<property name="personApprovedCategoryCode" column="PERSON_APPROVED_CODE_NUM" />
+				<property name="personApprovedEntryCode" column="PERSON_APPROVED_CODE_VALUE" />
+				<property name="term" column="TERM" type="integer" />
+				<property name="termCodeCategoryCode" column="TERM_CODE_NUM" />
+				<property name="termCodeEntryCode" column="TERM_CODE_VALUE" />
+
+				<component name="utilisedAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="UTILISED_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+			</component>
+		</join>
+
+		<join table="CMS_STG_FAC_BNM_CODES" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityBnmCodes" class="OBFacilityBnmCodes">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="bumiOrNrccCodeCategoryCode" column="BUMI_NRCC_CODE_NUM" />
+				<property name="bumiOrNrccCodeEntryCode" column="BUMI_NRCC_CODE_VALUE" />
+				<property name="exemptedCodeCategoryCode" column="EXEMPTED_CODE_NUM" />
+				<property name="exemptedCodeEntryCode" column="EXEMPTED_CODE_VALUE" />
+				<property name="exemptedCodeIndicator" column="EXEMPTED_CODE_IND" />
+				<property name="goodsFinancedCodeOneCategoryCode" column="GOODS_FINANCED_ONE_CODE_NUM" />
+				<property name="goodsFinancedCodeOneEntryCode" column="GOODS_FINANCED_ONE_CODE_VALUE" />
+				<property name="goodsFinancedCodeTwoCategoryCode" column="GOODS_FINANCED_TWO_CODE_NUM" />
+				<property name="goodsFinancedCodeTwoEntryCode" column="GOODS_FINANCED_TWO_CODE_VALUE" />
+				<property name="bnmTierSeqCategoryCode" column="TIER_SEQ_NUM_CODE_NUM" />
+				<property name="bnmTierSeqEntryCode" column="TIER_SEQ_NUM_CODE_VALUE" />
+				<property name="hostTierSequenceNumber" column="HOST_TIER_SEQ" type="long" />
+				<property name="industryCodeCategoryCode" column="INDUSTRY_CODE_NUM" />
+				<property name="industryCodeEntryCode" column="INDUSTRY_CODE_VALUE" />
+				<property name="prescribedRateCodeCategoryCode" column="PRESCRIBED_RATE_CODE_NUM" />
+				<property name="prescribedRateCodeEntryCode" column="PRESCRIBED_RATE_CODE_VALUE" />
+				<property name="purposeCodeCategoryCode" column="PURPOSE_CODE_NUM" />
+				<property name="purposeCodeEntryCode" column="PURPOSE_CODE_VALUE" />
+				<property name="relationshipCodeCategoryCode" column="RELATIONSHIP_CODE_NUM" />
+				<property name="relationshipCodeEntryCode" column="RELATIONSHIP_CODE_VALUE" />
+				<property name="sectorCodeCategoryCode" column="SECTOR_CODE_NUM" />
+				<property name="sectorCodeEntryCode" column="SECTOR_CODE_VALUE" />
+				<property name="smallScaleCodeCodeCategoryCode" column="SMALL_SCALE_CODE_NUM" />
+				<property name="smallScaleCodeCodeEntryCode" column="SMALL_SCALE_CODE_VALUE" />
+				<property name="stateCodeCategoryCode" column="STATE_CODE_NUM" />
+				<property name="stateCodeEntryCode" column="STATE_CODE_VALUE" />
+		    	<property name="baselSAFinalisedCategoryCode" column="BASEL_SA_FINALISED_NUM"/>
+		    	<property name="baselSAFinalisedEntryCode" column="BASEL_SA_FINALISED_VALUE" />
+		    	<property name="baselIRBCategoryCode" column="BASEL_IRB_NUM"/>
+		    	<property name="baselIRBEntryCode" column="BASEL_IRB_VALUE" />
+		    	<property name="baselSAConceptCategoryCode" column="BASEL_SA_CONCEPT_NUM"/>
+		    	<property name="baselSAConceptEntryCode" column="BASEL_SA_CONCEPT_VALUE" />
+			</component>
+		</join>
+
+		<join table="CMS_STG_FAC_FEE_CHARGE" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityFeeCharge" class="OBFacilityFeeCharge">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="currencyCode" column="CURRENCY_CODE" />
+				<property name="commissionBasisCategoryCode" column="COMMISSION_BASIS_CODE_NUM" />
+				<property name="commissionBasisEntryCode" column="COMMISSION_BASIS_CODE_VALUE" />
+
+				<component name="commissionFeesAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="COMMISSION_FEES" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<property name="commissionRate" column="COMMISSION_RATE" type="double" />
+				<property name="facilityCommitmentRate" column="COMMITMENT_RATE" type="double" />
+				<property name="facilityCommitmentRateNumberCategoryCode" column="COMTMT_RATE_NUM_CODE_NUM" />
+				<property name="facilityCommitmentRateNumberEntryCode" column="COMTMT_RATE_NUM_CODE_VALUE" />
+
+				<component name="handlingFeesAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="HANDLING_FEES" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<property name="lateChargeType" column="LATE_CHARGE_TYPE" type="integer" />
+
+				<component name="maximumCommissionAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="MAX_COMSSN_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="minimumCommissionAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="MIN_COMSSN_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="othersFeeAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="OTHERS_FEE" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="subsidyAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="SUBSIDY_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+			</component>
+		</join>
+
+		<join table="CMS_STG_FAC_INTEREST" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityInterest" class="OBFacilityInterest">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="interestRate" column="INTEREST_RATE" type="double" />
+				<property name="interestRateTypeCategoryCode" column="INTEREST_TYPE_CODE_NUM" />
+				<property name="interestRateTypeEntryCode" column="INTEREST_TYPE_CODE_VALUE" />
+				<property name="primeRateCeiling" column="PRIME_RATE_CEILING" type="double" />
+				<property name="primeRateFloor" column="PRIME_RATE_FLOOR" type="double" />
+				<property name="primeReviewDate" column="PRIME_REVIEW_DATE" type="timestamp" />
+				<property name="primeReviewTerm" column="PRIME_REVIEW_TERM" type="integer" />
+				<property name="primeReviewTermCodeCategoryCode" column="PRIME_REVIEW_TERM_CODE_NUM" />
+				<property name="primeReviewTermCodeEntryCode" column="PRIME_REVIEW_TERM_CODE_VALUE" />
+				<property name="spread" column="SPREAD" type="double" />
+				<property name="spreadSign" column="SPREAD_SIGN" type="character" />
+                <property name="interestBase" column="INTEREST_BASE" type="integer" />
+                <property name="interestMode" column="INTEREST_MODE" type="character" />
+			    <property name="interestYearBase" column="INTEREST_YEAR_BASE" type="integer" />
+			</component>
+		</join>
+
+		<join table="CMS_STG_FAC_PAYMENT" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityPayment" class="OBFacilityPayment">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="gracePeriodCategoryCode" column="GRADE_PERIOD_CODE_NUM" />
+				<property name="gracePeriodEntryCode" column="GRADE_PERIOD_CODE_VALUE" />
+				<property name="gracePeriodCodeCategoryCode" column="GRADE_PERIOD_CD_CODE_NUM" />
+				<property name="gracePeriodCodeEntryCode" column="GRADE_PERIOD_CD_CODE_VALUE" />
+				<property name="interestPaymentFrequencyCategoryCode" column="INT_PAYMENT_FREQ_CODE_NUM" />
+				<property name="interestPaymentFrequencyEntryCode" column="INT_PAYMENT_FREQ_CODE_VALUE" />
+				<property name="interestPaymentFrequencyCodeCategoryCode" column="INT_PAYMENT_FREQ_CD_CODE_NUM" />
+                <property name="interestPaymentFrequencyCodeEntryCode" column="INT_PAYMENT_FREQ_CD_CODE_VALUE" />
+                <property name="paymentCodeCategoryCode" column="PAYMENT_CD_CODE_NUM" />
+				<property name="paymentCodeEntryCode" column="PAYMENT_CD_CODE_VALUE" />
+				<property name="paymentFrequencyCategoryCode" column="PAYMENT_FREQ_CODE_NUM" />
+				<property name="paymentFrequencyEntryCode" column="PAYMENT_FREQ_CODE_VALUE" />
+				<property name="paymentFrequencyCodeCategoryCode" column="PAYMENT_FREQ_CD_CODE_NUM" />
+				<property name="paymentFrequencyCodeEntryCode" column="PAYMENT_FREQ_CD_CODE_VALUE" />
+			</component>
+		</join>
+
+		<join table="CMS_STG_FAC_ISLAMIC_MASTER" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityIslamicMaster" class="OBFacilityIslamicMaster">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="gppTerm" column="GPP_TERM" type="short" />
+				<property name="gppTermCode" column="GPP_TERM_CODE" type="character" />
+				<property name="gppPaymentModeNum" column="GPP_PAYMENT_MODE_NUM" />
+				<property name="gppPaymentModeValue" column="GPP_PAYMENT_MODE_VALUE"  />
+				<property name="currencyCode" column="CURRENCY_CODE" />
+				
+				<component name="sellingPriceAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="SELLING_PRICE" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="gppTotalAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="TOTAL_GPP_AMT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<property name="securityDepOfMonth" column="SECURITY_DEP_OF_MTH" type="short" />
+				<property name="securityDepPercentage" column="SECURITY_DEP_PERCENTAGE" type="double" />
+				
+				<component name="securityDepAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="SECURITY_DEP_AMT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<property name="customerInterestRate" column="CUSOTMER_INTEREST_RATE" type="double" />
+				<property name="gppCalculationMethodNum" column="GPP_CALCULATION_METHOD_NUM" />
+				<property name="gppCalculationMethodValue" column="GPP_CALCULATION_MEHTOD_VALUE"  />
+				<property name="fulrelProfitCalcMethod" column="FULREL_PROFIC_CALC_METHOD"  />
+				<property name="compoundingMethod" column="COMPOUNDING_METHOD"  type="yes_no" />
+				<property name="dateStopCompounding" column="DATE_STOP_COMPOUNDING"  type="timestamp" />
+				<property name="refundGppProfitNum" column="REFUND_GPP_PROFIT_NUM" />
+				<property name="refundGppProfitValue" column="REFUND_GPP_PROFIT_VALUE"  />
+				<property name="refundFulrelProfitNum" column="REFUND_FULREL_PROFIT_NUM" />
+				<property name="refundFulrelProfitValue" column="REFUND_FULREL_PROFIT_VALUE"  />				
+				<property name="commissionRate" column="COMMISSION_RATE"  type="double" />							
+				
+				<component name="fixedCommissionAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FIXED_COM_AMOUNT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<property name="commissionTerm" column="COMMISSION_TERM"  type="short" />
+				<property name="commissionExpiryDate" column="COMMISSION_EXPIRY_DATE"  type="timestamp" />
+				<property name="excCmpInPmtAmt" column="EXC_CMP_IN_PMT_AMT"  type="yes_no" />
+				<property name="sptfDualPaymentModeNum" column="SPTF_DUAL_REPAYMENT_MODE_NUM" />
+				<property name="sptfDualPaymentModeValue" column="SPTF_DUAL_REPAYMENT_MODE_VALUE"  />
+				<property name="snpAgreementDate" column="SNP_AGREEMENT_DATE"  type="timestamp" />
+				<property name="gppDurationForSnp" column="GPP_DURATION_FOR_SNP"  type="character" />				
+				<property name="snpTerm" column="SNP_TERM"  type="short" />
+				<property name="snpTermCodeNum" column="SNP_TERM_CODE_NUM" />
+				<property name="snpTermCodeValue" column="SNP_TERM_CODE_VALUE"  />
+				<property name="fullRelPft12Method" column="FULL_REL_PFT_12_METHOD"  type="yes_no" />	
+				<property name="graceExpSPTFDate" column="SPTF_GRACE_EXP_DATE"  type="timestamp" />
+				
+				<component name="fixedRefundAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FIXED_AMT_REFUND" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+												
+			</component>
+		</join>
+		
+		<join table="CMS_STG_FAC_BBA_VARI_PACKAGE" optional="true">
+			<key column="CMS_FAC_MASTER_ID" />
+			<component name="facilityIslamicBbaVariPackage" class="OBFacilityIslamicBbaVariPackage">
+				<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+				<property name="custProfRate" column="CUST_PROF_RATE" type="double" />
+				<property name="rebateMethod" column="REBATE_METHOD" type="character" />
+				<property name="gppPaymentMode" column="GPP_PAYMENT_MODE" />
+				<property name="gppCalculationMethod" column="GPP_CAL_METHOD"  />	
+				<property name="gppTerm" column="GPP_TERM" type="short" />
+				<property name="gppTermCode" column="GPP_TERM_CODE" type="character" />	
+				<property name="fullReleaseProfit" column="FULL_RELEASE_PROFIT" type="yes_no" />
+				<property name="refundFullReleaseProfit" column="REFUND_FULL_RELEASE_PROFIT" type="character"  />	
+				<property name="fulrelProfitCalMethod" column="FUL_REL_PROFIT_CAL_METHOD" type="character" />	
+				<property name="currencyCode" column="CURRENCY_CODE" />
+				<component name="installment" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="INSTALLMENT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="finalPaymentAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="FINAL_PAYMENT_AMT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="totalGppAmount" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="TOTAL_GPP_AMT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+				
+				<component name="sellingPrice" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="SELLING_PRICE" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>
+
+				<component name="totalProfit" class="com.integrosys.base.businfra.currency.Amount">
+					<property name="amountAsBigDecimal" column="TOTAL_PROFIT" />
+					<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+				</component>				
+				<property name="lastMaintainDate" column="LAST_MAINTAIN_DATE" type="timestamp" />	
+			</component>
+		</join>
+
+	</class>
+
+	<class entity-name="stageFacilityInsurance" name="OBFacilityInsurance" table="CMS_STG_FAC_INSURANCE" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_INSR_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="order" column="DISPLAY_ORDER" type="short" />
+		<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		<property name="cmsRefId" column="CMS_REF_ID" type="long" />
+		<property name="currencyCode" column="CURRENCY_CODE" />
+		<property name="arrangementIndicator" column="ARRANGEMENT_IND" type="character" />
+		<property name="coverageTypeCategoryCode" column="COVERAGE_TYPE_CODE_NUM" />
+		<property name="coverageTypeEntryCode" column="COVERAGE_TYPE_CODE_VALUE" />
+		<property name="effectiveDate" column="EFFECTIVE_DATE" type="timestamp" />
+		<property name="expiryDate" column="EXPIRY_DATE" type="timestamp" />
+		<property name="insuranceCompanyCategoryCode" column="INSR_COMPANY_CODE_NUM" />
+		<property name="insuranceCompanyEntryCode" column="INSR_COMPANY_CODE_VALUE" />
+
+		<component name="insurancePremiumAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="INSURANCE_PREMIUM" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<component name="insuredAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="INSURED_AMOUNT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="issuedDate" column="ISSUED_DATE" type="timestamp" />
+		<property name="policyNumber" column="POLICY_NUMBER" />
+		<property name="propNumberOrCvNote" column="POLICY_NUMBER_CV_NOTE" />
+		<property name="remarks" column="REMARKS" />
+
+	</class>
+
+	<class entity-name="stageFacilityOfficer" name="OBFacilityOfficer" table="CMS_STG_FAC_OFFICER" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_OFFICER_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		<property name="cmsRefId" column="CMS_REF_ID" type="long" />
+		<property name="hostSequenceNumber" column="HOST_SEQ_NUM" type="long" />
+		<property name="officerCategoryCode" column="OFFICER_CODE_NUM" />
+		<property name="officerEntryCode" column="OFFICER_CODE_VALUE" />
+		<property name="officerTypeCategoryCode" column="OFFICER_TYPE_CODE_NUM" />
+		<property name="officerTypeEntryCode" column="OFFICER_TYPE_CODE_VALUE" />
+		<property name="relationshipCodeCategoryCode" column="RELATIONSHIP_CODE_NUM" />
+		<property name="relationshipCodeEntryCode" column="RELATIONSHIP_CODE_VALUE" />
+		<property name="sequenceNumber" column="SEQ_NUM" type="long" />
+		<property name="status" column="STATUS" />
+	</class>
+
+	<class entity-name="stageFacilityRelationship" name="OBFacilityRelationship" table="CMS_STG_FAC_RELATIONSHIP" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_RELATIONSHIP_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		<property name="cmsRefId" column="CMS_REF_ID" type="long" />
+		<property name="currencyCode" column="CURRENCY_CODE" />
+		<property name="accountRelationshipCategoryCode" column="ACCT_RELATIONSHIP_CODE_NUM" />
+		<property name="accountRelationshipEntryCode" column="ACCT_RELATIONSHIP_CODE_VALUE" />
+		<property name="cifNumber" column="CIF_NUMBER" insert="false" update="false" />
+		<property name="customerName" column="CUSTOMER_NAME" insert="false" update="false" />
+		<component name="cmsLegalEntity" class="com.integrosys.cms.app.customer.bus.OBCMSLegalEntity">
+			<property name="LEReference" column="CIF_NUMBER" />
+			<property name="legalName" column="CUSTOMER_NAME" />
+			<!-- <property name="LEID" column="CMS_LE_MAIN_PROFILE_ID" /> -->
+		</component>
+		<property name="dividendRatio" column="DIVIDEND_RATIO" type="double" />
+
+		<component name="guaranteeAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="GUARANTEE_AMOUNT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="guaranteePercentage" column="GUARANTEE_PERCENTAGE" type="double" />
+		<property name="guaranteeTypeIndicator" column="GUARANTEE_TYPE_IND" type="character" />
+		<property name="holdMailCodeCategoryCode" column="HOLD_MAIN_CODE_NUM" />
+		<property name="holdMailCodeEntryCode" column="HOLD_MAIN_CODE_VALUE" />
+		<property name="hostAddressSequenceNumber" column="HOST_ADD_SEQ_NUM" type="long" />
+		<property name="nameAssociateWithFacilityOrder" column="NAME_ASSOC_WITH_FAC_ORDER" type="int" />
+		<property name="nameConjunction" column="NAME_CONJUNCTION" />
+		<property name="nameConjunctionPosition" column="NAME_CONJUNCTION_POSITION" type="character" />
+		<property name="profitRatio" column="PROFIT_RATIO" type="double" />
+		<property name="receiveMailCode" column="RECEIVE_MAIL_CODE" type="yes_no" />
+		<property name="shareHolderPercentage" column="SHARE_HOLDER_PERCENTAGE" type="double" />
+		<property name="status" column="STATUS" />
+	</class>
+	
+	<class entity-name="stageFacilityMultiTierFin" name="OBFacilityMultiTierFinancing" table="STAGE_FAC_MULTI_TIER_FINANCING" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_MULTI_TIER_SEQ</param>
+			</generator>
+		</id>
+		<property name="facilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false" />
+		<property name="cmsRefId" column="CMS_REF_ID" type="long" />
+		<property name="tierSeqNo" column="TIER_SEQ_NO" type="short" />
+		<property name="tierTerm" column="TIER_TERM" type="short" />	
+		<property name="tierTermCode" column="TIER_TERM_CODE" type="character" />
+		<property name="rate" column="RATE" type="double" />	
+		<property name="status" column="STATUS" />
+		<property name="rateNumber" column="RATE_NUM" type="long" />
+		<property name="rateVariance" column="RATE_VARIANCE" type="double" />
+		<property name="varianceCode" column="VARIANCE_CODE" />
+		<property name="gracePeriod" column="GRACE_PERIOD" />
+		<property name="currencyCode" column="CURRENCY_CODE" />
+		
+		<component name="paymentAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="PAYMENT_AMOUNT" />
+			<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+		</component>
+	</class>
+	
+	<class entity-name="stageFacilityMessage" name="OBFacilityMessage" table="CMS_STG_FAC_MESSAGE" lazy="false" polymorphism="explicit">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_MSG_SEQ</param>
+			</generator>
+		</id>
+		<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+		<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false"/>
+		<property name="message" column="MESSAGE" />
+		<property name="messageTypeCodeCategoryCode" column="MSG_TYPE_CODE_NUM" />
+		<property name="messageTypeCodeEntryCode" column="MSG_TYPE_CODE_VALUE" />
+		<property name="messageSeverityCodeCategoryCode" column="MSG_SEVERITY_CODE_NUM" />
+		<property name="messageSeverityCodeEntryCode" column="MSG_SEVERITY_CODE_VALUE" />
+		<property name="expirationDate" column="EXPIRATION_DATE" type="timestamp" />
+		<property name="sequenceNumber" column="SEQ_NO" type="long" />
+		<property name="status" column="STATUS" />
+	</class>
+	
+	<class entity-name="stageFacilityIncremental" name="OBFacilityIncremental" table="CMS_STG_FAC_INCREMENTAL" lazy="false" polymorphism="explicit">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_INCREMENTAL_SEQ</param>
+			</generator>
+		</id>
+		<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+		<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false"/>
+		<property name="incrementalNumber" column="INCREMENTAL_NUMBER" type="integer" />
+		<property name="amountApplied" column="AMOUNT_APPLIED" type="big_decimal" />
+		<property name="incrementalLimit" column="INCREMENTAL_LIMIT" type="big_decimal" />
+		<property name="originalLimit" column="ORIGINAL_LIMIT" type="big_decimal" />
+		<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+		<property name="loanPurposeCodeCategoryCode" column="LOAN_PURPOSE_CODE_NUM" />
+		<property name="loanPurposeCodeEntryCode" column="LOAN_PURPOSE_CODE_VALUE" />
+		<property name="dateOfOffer" column="DATE_OF_OFFER" type="timestamp" />
+		<property name="dateOfferAccepted" column="DATE_OFFER_ACCEPTED" type="timestamp" />
+		<property name="dateApproved" column="DATE_APPROVED" type="timestamp" />
+		<property name="approvedByCategoryCode" column="PERSON_APPROVED_CODE_NUM" />
+		<property name="approvedByEntryCode" column="PERSON_APPROVED_CODE_VALUE" />    
+		<property name="cancelRejectCodeCategoryCode" column="CANCEL_REJECT_CODE_NUM" />
+		<property name="cancelRejectCodeEntryCode" column="CANCEL_REJECT_CODE_VALUE" />  	
+		<property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+		<property name="facilityStatusCategoryCode" column="FACILITY_STATUS_CODE_NUM" />
+		<property name="facilityStatus" column="FACILITY_STATUS_CODE_VALUE" />
+		<property name="dealerLLPCodeCategoryCode" column="DEALER_LLP_CODE_NUM" />
+		<property name="dealerLLPCodeEntryCode" column="DEALER_LLP_CODE_VALUE" />
+		<property name="solicitorName" column="SOLICITOR_NAME" />
+		<property name="requestReasonCategoryCode" column="REQUEST_REASON_CODE_NUM" />
+		<property name="requestReasonEntryCode" column="REQUEST_REASON_CODE_VALUE" />    
+		<property name="documentationStatusCategoryCode" column="DOC_STATUS_CODE_NUM" />
+		<property name="documentationStatusEntryCode" column="DOC_STATUS_CODE_VALUE" />    
+		<property name="lawyerCodeCategoryCode" column="LAWYER_CODE_NUM" />
+		<property name="lawyerCodeEntryCode" column="LAWYER_CODE_VALUE" />
+		<property name="status" column="STATUS" />
+		<property name="primeReviewDate" column="PRIME_REVIEW_DATE" type="timestamp" />
+		<property name="primeReviewTerm" column="PRIME_REVIEW_TERM" type="integer" />
+		<property name="primeReviewTermEntryCode" column="PRIME_REVIEW_TERM_VALUE"/>
+		<property name="primeReviewTermCategoryCode" column="PRIME_REVIEW_TERM_NUM"/>
+		<property name="dateSendToDecisionCenter" column="DATE_SEND_DECISION_CENTER" type="timestamp"/>
+		<property name="dateReceiveFromDecisionCenter" column="DATE_RECEIVE_DECISION_CENTER" type="timestamp"/>
+		<property name="dateApprovedByCGCBNM" column="DATE_APPROVE_BY_CGC_BNM" type="timestamp"/>
+		<property name="dateEnteredForOffer" column="DATE_ENTER_OFFER" type="timestamp"/>
+		<property name="dateEnteredForApplied" column="DATE_ENTER_APPLIED" type="timestamp"/>
+		<property name="dateEnteredForApproved" column="DATE_ENTER_APPROVE" type="timestamp"/>
+		<property name="dateEnteredForOfferAcceptance" column="DATE_ENTER_OFFER_ACCEPTANCE" type="timestamp"/>
+		<property name="dateEnteredForCancelRejected" column="DATE_ENTER_CANCEL_REJECT" type="timestamp"/>
+		<property name="documentationDate" column="DOCUMENTATION_DATE" type="timestamp"/>
+		<property name="dateInstructed" column="DATE_INSTRUCTED" type="timestamp"/>
+		<property name="solicitorReference" column="SOLICITOR_REFERENCE"/>
+		<property name="dateEntered" column="DATE_ENTERED" type="timestamp"/>		
+	</class>
+	
+	<class entity-name="stageFacilityReduction" name="OBFacilityReduction" table="CMS_STG_FAC_REDUCTION" lazy="false" polymorphism="explicit">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">FAC_INCREMENTAL_SEQ</param>
+			</generator>
+		</id>
+		<property name="cmsReferenceId" column="CMS_REF_ID" type="long" />
+		<property name="cmsFacilityMasterId" column="CMS_FAC_MASTER_ID" type="long" insert="false" update="false"/>
+		<property name="incrementalNumber" column="INCREMENTAL_NUMBER" type="integer" />
+		<property name="amountApplied" column="AMOUNT_APPLIED" type="big_decimal" />
+		<property name="incrementalLimit" column="INCREMENTAL_LIMIT" type="big_decimal" />
+		<property name="originalLimit" column="ORIGINAL_LIMIT" type="big_decimal" />
+		<property name="applicationDate" column="APPLICATION_DATE" type="timestamp" />
+		<property name="dateOfferAccepted" column="DATE_OFFER_ACCEPTED" type="timestamp" />
+		<property name="dateApproved" column="DATE_APPROVED" type="timestamp" />
+		<property name="approvedByCategoryCode" column="PERSON_APPROVED_CODE_NUM" />
+		<property name="approvedByEntryCode" column="PERSON_APPROVED_CODE_VALUE" />    
+		<property name="cancelRejectCodeCategoryCode" column="CANCEL_REJECT_CODE_NUM" />
+		<property name="cancelRejectCodeEntryCode" column="CANCEL_REJECT_CODE_VALUE" />  	
+		<property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp" />
+		<property name="facilityStatusCategoryCode" column="FACILITY_STATUS_CODE_NUM" />
+		<property name="facilityStatus" column="FACILITY_STATUS_CODE_VALUE" />
+		<property name="solicitorName" column="SOLICITOR_NAME" />
+		<property name="requestReasonCategoryCode" column="REQUEST_REASON_CODE_NUM" />
+		<property name="requestReasonEntryCode" column="REQUEST_REASON_CODE_VALUE" />    
+		<property name="documentationStatusCategoryCode" column="DOC_STATUS_CODE_NUM" />
+		<property name="documentationStatusEntryCode" column="DOC_STATUS_CODE_VALUE" />    
+		<property name="lawyerCodeCategoryCode" column="LAWYER_CODE_NUM" />
+		<property name="lawyerCodeEntryCode" column="LAWYER_CODE_VALUE" />
+		<property name="status" column="STATUS" />
+		<property name="dateEnteredForOffer" column="DATE_ENTER_OFFER" type="timestamp"/>
+		<property name="dateEnteredForApplied" column="DATE_ENTER_APPLIED" type="timestamp"/>
+		<property name="dateEnteredForApproved" column="DATE_ENTER_APPROVE" type="timestamp"/>
+		<property name="dateEnteredForOfferAcceptance" column="DATE_ENTER_OFFER_ACCEPTANCE" type="timestamp"/>
+		<property name="dateEnteredForCancelRejected" column="DATE_ENTER_CANCEL_REJECT" type="timestamp"/>
+		<property name="documentationDate" column="DOCUMENTATION_DATE" type="timestamp"/>
+		<property name="dateInstructed" column="DATE_INSTRUCTED" type="timestamp"/>
+		<property name="solicitorReference" column="SOLICITOR_REFERENCE"/>
+		<property name="dateEntered" column="DATE_ENTERED" type="timestamp"/>			
+	</class>
+
+</hibernate-mapping>

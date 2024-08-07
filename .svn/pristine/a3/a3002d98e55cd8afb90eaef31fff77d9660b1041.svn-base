@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT sub_profile.lsp_short_name      AS party_name,
+				  cc_segment.entry_name                AS segmentName,
+				  lmts.facility_name                   AS facilityName,
+				  lmts.facility_type                   AS facilityType,
+				  cc_fac_catg.entry_name                     AS facilityCat,
+				  lmts.lmt_crrncy_iso_code             AS Currency,
+				  cashdeposit.deposit_reference_number AS FDNumber,
+				  cashdeposit.deposit_amount           AS FDAmount,
+				  case when cashdeposit.depositor_name is null
+          then sub_profile.lsp_short_name
+          when cashdeposit.depositor_name is not null
+          then
+          cashdeposit.depositor_name   
+          end AS depositorName,
+				  liendata.lien_number                 AS lienNumber,
+				  liendata.lien_amount                 AS lienAmount,
+				  cashdeposit.deposit_interest_rate    AS FDRate,
+				  to_char(cashdeposit.issue_date,'DD-Mon-YYYY')               AS FDDate,
+				  to_char(cashdeposit.deposit_maturity_date,'DD-Mon-YYYY')    AS dateOfMatur,	
+            (TRUNC(cashdeposit.deposit_maturity_date)- TRUNC(cashdeposit.issue_date) )+1 ||' days'      AS Tenure,
+				  uploadData.upload_satus AS uploadStatus,
+				  uploaddata.error_msg    AS reasonForUnmatch
+				FROM SCI_LSP_APPR_LMTS lmts,
+				  CMS_LIMIT_SECURITY_MAP lsm,
+				  SCI_LSP_LMT_PROFILE pf,
+				  SCI_LE_SUB_PROFILE sub_profile,
+				  (SELECT entry_name,
+				    entry_code
+				  FROM common_code_category_entry
+				  WHERE (category_code = 'HDFC_SEGMENT' OR category_code IS null)
+				  ) cc_segment ,
+				  (SELECT entry_name,
+					entry_code
+				  FROM common_code_category_entry
+				  WHERE (category_code = 'FACILITY_CATEGORY'
+				  OR category_code    IS NULL)
+				  ) cc_fac_catg ,
+				  CMS_LMT_UPD_DET_ERR_LOG uploadData,
+				  CMS_LIEN lienData,
+				  CMS_CASH_DEPOSIT cashDeposit
+
+
+				  where 
+
+				  cc_segment.entry_code(+)             =sub_profile.lsp_sgmnt_code_value
+				AND sub_profile.CMS_LE_SUB_PROFILE_ID   = pf.CMS_CUSTOMER_ID
+				AND pf.CMS_LSP_LMT_PROFILE_ID           = lmts.CMS_LIMIT_PROFILE_ID
+				AND cc_fac_catg.entry_code(+)           =lmts.facility_cat
+				AND lmts.CMS_LSP_APPR_LMTS_ID           = lsm.CMS_LSP_APPR_LMTS_ID
+				AND (lsm.UPDATE_STATUS_IND             != 'D'	OR lsm.UPDATE_STATUS_IND               IS NULL)
+				AND lsm.CMS_COLLATERAL_ID               = cashDeposit.CMS_COLLATERAL_ID  
+				AND cashDeposit.CASH_DEPOSIT_ID         = lienData.CASH_DEPOSIT_ID
+				AND cashdeposit.deposit_reference_number = uploaddata.facility_sys_id  
+				AND uploaddata.upload_satus!='Failed'
+				AND uploaddata.upload_satus!='Succeed'
+				AND To_Date(uploadData.TIME) = To_Date(SYSDATE)
+				AND cashDeposit.status='ACTIVE'
+				AND SUB_PROFILE.status                 !=   'INACTIVE'
+        
+  union 
+        select null      AS party_name,
+				  null AS segmentName,
+				  null AS facilityName,
+				  null AS facilityType,
+				  null AS facilityCat,
+				  null AS Currency,
+				  facility_sys_id AS FDNumber,
+				  null AS FDAmount,
+				  null AS depositorName,
+				  null AS lienNumber,
+				  to_number(line_no) AS lienAmount,
+				  null AS FDRate,
+				  null AS FDDate,
+				  null AS dateOfMatur,
+				  null AS Tenure,          
+				  upload_satus AS uploadStatus,
+				  error_msg    AS reasonForUnmatch
+          
+          from cms_lmt_upd_det_err_log where error_msg like '%Available in Finware FD not in CLIMS.'
+		</query>
+			<whereClause>
+			</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>FD Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>FD Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Depositor Name</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Lien Number</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Lien Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>FD Rate</header>
+				</reportColumn>	
+			    <reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>FD Date</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date Of Maturity</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Tenure</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Reason For Unmatched</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>FD Recon (Upload) to identify whether FD amount as per FWS System </reportName>
+		</reportParamters>
+	</report>
+</reports>

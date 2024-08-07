@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.app.propertyindex.bus">
+
+    <class entity-name="actualPropertyIdx" name="OBPropertyIdx" table="CMS_PROPERTY_IDX" lazy="false">
+        <id name="propertyIdxId" column="PROPERTY_IDX_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">PROPERTY_IDX_SEQ</param>
+			</generator>
+		</id>
+        <version name="versionTime" column="VERSION_TIME" type="long" />
+        <property name="valDescr" column="VAL_DESCR"/>
+        <property name="countryCode" column="COUNTRY_CODE"/>
+        <property name="status" column="STATUS"/>
+        <set name="propertyIdxSecSubTypeList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ID" not-null="true" />
+		    <one-to-many entity-name="actualPropertyIdxSecSubType" />
+	    </set>
+        <set name="propertyIdxItemList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ID" not-null="true" />
+		    <one-to-many entity-name="actualPropertyIdxItem" />
+	    </set>
+    </class>
+
+    <class entity-name="stagePropertyIdx" name="OBPropertyIdx" table="CMS_STAGE_PROPERTY_IDX" lazy="false">
+        <id name="propertyIdxId" column="PROPERTY_IDX_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_PROPERTY_IDX_SEQ</param>
+			</generator>
+		</id>
+        <version name="versionTime" column="VERSION_TIME" type="long" />
+        <property name="valDescr" column="VAL_DESCR"/>
+        <property name="countryCode" column="COUNTRY_CODE"/>
+        <property name="status" column="STATUS"/>
+        <set name="propertyIdxSecSubTypeList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ID" not-null="true" />
+		    <one-to-many entity-name="stagePropertyIdxSecSubType" />
+	    </set>
+        <set name="propertyIdxItemList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ID" not-null="true" />
+		    <one-to-many entity-name="stagePropertyIdxItem" />
+	    </set>
+    </class>
+
+    <class entity-name="actualPropertyIdxItem" name="OBPropertyIdxItem" table="CMS_PROPERTY_IDX_ITEM" lazy="false">
+        <id name="propertyIdxItemId" column="PROPERTY_IDX_ITEM_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">PROPERTY_IDX_ITEM_SEQ</param>
+			</generator>
+		</id>
+        <property name="idxYear" column="IDX_YEAR"/>
+        <property name="idxType" column="IDX_TYPE"/>
+        <property name="idxValue" column="IDX_VALUE"/>
+        <property name="stateCode" column="STATE_CODE"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID"/>
+        <set name="propertyTypeList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ITEM_ID" not-null="true" />
+		    <one-to-many entity-name="actualPropertyIdxPropertyType" />
+	    </set>
+        <set name="mukimList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ITEM_ID" not-null="true" />
+		    <one-to-many entity-name="actualPropertyIdxMukim" />
+	    </set>
+        <set name="districtList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ITEM_ID" not-null="true" />
+		    <one-to-many entity-name="actualPropertyIdxDistrict" />
+	    </set>
+    </class>
+
+    <class entity-name="stagePropertyIdxItem" name="OBPropertyIdxItem" table="CMS_STAGE_PROPERTY_IDX_ITEM" lazy="false">
+        <id name="propertyIdxItemId" column="PROPERTY_IDX_ITEM_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_PROPERTY_IDX_ITEM_SEQ</param>
+			</generator>
+		</id>
+        <property name="idxYear" column="IDX_YEAR"/>
+        <property name="idxType" column="IDX_TYPE"/>
+        <property name="idxValue" column="IDX_VALUE"/>
+        <property name="stateCode" column="STATE_CODE"/>
+        <property name="status" column="STATUS"/>
+        <property name="cmsRefId" column="CMS_REF_ID"/>
+        <set name="propertyTypeList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ITEM_ID" not-null="true" />
+		    <one-to-many entity-name="stagePropertyIdxPropertyType" />
+	    </set>
+        <set name="mukimList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ITEM_ID" not-null="true" />
+		    <one-to-many entity-name="stagePropertyIdxMukim" />
+	    </set>
+        <set name="districtList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="PROPERTY_IDX_ITEM_ID" not-null="true" />
+		    <one-to-many entity-name="stagePropertyIdxDistrict" />
+	    </set>
+    </class>
+
+    <class entity-name="actualPropertyIdxSecSubType" name="OBPropertyIdxSecSubType" table="CMS_PROPERTY_IDX_SEC_SUBTYPE" lazy="false">
+        <id name="propertyIdxSecSubTypeId" column="PROPERTY_IDX_SEC_SUBTYPE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">PROPERTY_IDX_SEC_SUBTYPE_SEQ</param>
+			</generator>
+		</id>
+        <property name="securitySubTypeId" column="SECURITY_SUB_TYPE_ID"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="stagePropertyIdxSecSubType" name="OBPropertyIdxSecSubType" table="CMS_STAGE_PROP_IDX_SEC_SUBTYPE" lazy="false">
+        <id name="propertyIdxSecSubTypeId" column="PROPERTY_IDX_SEC_SUBTYPE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_PROP_IDX_SEC_SUBTYPE_SEQ</param>
+			</generator>
+		</id>
+        <property name="securitySubTypeId" column="SECURITY_SUB_TYPE_ID"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="actualPropertyIdxMukim" name="OBPropertyIdxMukim" table="CMS_PROPERTY_IDX_MUKIM_CODE" lazy="false">
+        <id name="propertyIdxMukimCodeId" column="PROPERTY_IDX_MUKIM_CODE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">PROPERTY_IDX_MUKIM_CODE_SEQ</param>
+			</generator>
+		</id>
+        <property name="mukimCode" column="MUKIM_CODE"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="stagePropertyIdxMukim" name="OBPropertyIdxMukim" table="CMS_STAGE_PROP_IDX_MUKIM_CODE" lazy="false">
+        <id name="propertyIdxMukimCodeId" column="PROPERTY_IDX_MUKIM_CODE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_PROP_IDX_MUKIM_CODE_SEQ</param>
+			</generator>
+		</id>
+        <property name="mukimCode" column="MUKIM_CODE"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="actualPropertyIdxDistrict" name="OBPropertyIdxDistrict" table="CMS_PROPERTY_IDX_DISTRICT_CODE" lazy="false">
+        <id name="propertyIdxDistrictCodeId" column="PROPERTY_IDX_DISTRICT_CODE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">PROPERTY_IDX_DISTRICT_CODE_SEQ</param>
+			</generator>
+		</id>
+        <property name="districtCode" column="DISTRICT_CODE"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="stagePropertyIdxDistrict" name="OBPropertyIdxDistrict" table="CMS_STG_PROP_IDX_DISTRICT_CODE" lazy="false">
+        <id name="propertyIdxDistrictCodeId" column="PROPERTY_IDX_DISTRICT_CODE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_PROP_IDX_DIST_CODE_SEQ</param>
+			</generator>
+		</id>
+        <property name="districtCode" column="DISTRICT_CODE"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="actualPropertyIdxPropertyType" name="OBPropertyIdxPropertyType" table="CMS_PROPERTY_IDX_PROPERTY_TYPE" lazy="false">
+        <id name="propertyIdxPropertyTypeId" column="PROPERTY_IDX_PROPERTY_TYPE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">PROPERTY_IDX_PROPERTY_TYPE_SEQ</param>
+			</generator>
+		</id>
+        <property name="propertyTypeId" column="PROPERTY_TYPE_ID"/>
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <class entity-name="stagePropertyIdxPropertyType" name="OBPropertyIdxPropertyType" table="CMS_STAGE_PROP_IDX_PROP_TYPE" lazy="false">
+        <id name="propertyIdxPropertyTypeId" column="PROPERTY_IDX_PROPERTY_TYPE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_PROP_IDX_PROP_TYPE_SEQ</param>
+			</generator>
+		</id>
+        <property name="propertyTypeId" column="PROPERTY_TYPE_ID"/>
+        <property name="status" column="STATUS"/>
+    </class>
+</hibernate-mapping>

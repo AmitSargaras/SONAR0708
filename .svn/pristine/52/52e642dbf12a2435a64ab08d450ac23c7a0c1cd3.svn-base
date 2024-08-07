@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>Collateral Inquiry Mapping XML - CO010I, Message Type : SECURITY.INQUIRY</description>
+	<class name="com.integrosys.cms.host.eai.EAIMessage">
+		<map-to xml="Msg"/>
+		<field name="MsgHeader" type="com.integrosys.cms.host.eai.EAIHeader"/>
+		<field name="MsgBody" type="com.integrosys.cms.host.eai.security.inquiry.SecurityInquiryMessageBody"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.EAIHeader">
+		<map-to xml="MsgHeader"/>
+		<field name="MessageId" type="string"/>
+		<field name="MessageType" type="string"/>
+		<field name="MessageRefNum" type="string"/>
+		<field name="PublishType" type="string"/>
+		<field name="PublishDate" type="string"/>
+		<field name="Source" type="string"/>
+	</class>
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.security.inquiry.SecurityInquiryMessageBody" >
+		<map-to xml="MsgBody"/>
+		<field name="SecurityInquiry" type="com.integrosys.cms.host.eai.security.inquiry.SecurityInquiry">
+			<bind-xml name="SecurityInquiry"/>
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.security.inquiry.SecurityInquiry">
+		<map-to xml="SecurityInquiry"/>
+		<field name="CmsSecurityId" type="long">
+			<bind-xml name="CMSSecurityId" />
+		</field>
+	</class>
+
+</mapping>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT subprofile.lsp_short_name AS party_name,
+					  address.lra_addr_line_1|| ' '|| address.lra_addr_line_2|| ' '|| address.lra_addr_line_3     AS party_address,
+					  cty.city_name                  AS city,
+					  address.lra_post_code          AS pincode,
+					  address.LRA_STD_CODE_TEL       AS STD_CODE,
+					  address.lra_telephone_text     AS telephone,
+					  address.lra_email_text         AS email,
+					  address.LRA_STD_CODE_TELEX     AS STD_CODE,
+					  address.LRA_TELEX_TEXT         AS fax,
+					  cc_segment.entry_name          AS segmentName,
+					  subprofile. lsp_le_id          AS partyid,
+					  pf.CMS_APPR_OFFICER_GRADE      AS riskgrade,
+					  cc_industry.entry_name         AS industryName,
+					  subprofile.RBI_IND_CODE||'-'||cc_rbi.entry_name    AS rbi_Code_Categoty_Name,
+					  cc.entry_name              AS entity,
+					  rm.rm_mgr_name                 AS rmname,
+					  partygr.party_group_name       AS partydesc,
+					  lmts.is_adhoc                  AS adhocflag,
+					  lmts.facility_name             AS facilityName,
+					  lmts.facility_type             AS facilityType,
+					  lmts.cms_req_sec_coverage      AS facilityamount,
+                      reg.region_name                   AS Region,
+                      lmts.lmt_crrncy_iso_code       AS currency,
+                      lmts.adhoc_lmt_amount          AS adhocAmount
+           
+            
+					FROM SCI_LE_SUB_PROFILE subprofile,
+					  COMMON_CODE_CATEGORY_ENTRY CC_INDUSTRY,
+					  common_code_category_entry cc_rbi,
+					  common_code_category_entry cc_segment,					 
+					  SCI_LE_REG_ADDR address ,
+					  SCI_LSP_APPR_LMTS lmts ,
+					  SCI_LSP_LMT_PROFILE pf ,
+					  cms_relationship_mgr rm ,
+					  cms_city cty ,
+					  cms_party_group partygr ,           
+					  transaction trans ,
+					  common_code_category_entry cc,
+                      CMS_REGION reg
+			</query>
+			<whereClause>
+			<mandatoryClause>
+		  subprofile.cms_le_main_profile_id 		 = 	address.cms_le_main_profile_id(+)
+          AND pf.cms_lsp_lmt_profile_id            = 	lmts.CMS_LIMIT_PROFILE_ID
+		  AND subprofile.CMS_LE_SUB_PROFILE_ID     = 	PF.CMS_CUSTOMER_ID
+		  AND trans.reference_id                   = 	subprofile.cms_le_sub_profile_id
+          AND subprofile.party_grp_nm              = 	partygr.id(+)
+          AND  cty.id(+)                               = 	address.lra_city_text		
+          AND subprofile.rbi_ind_code=cc_rbi.entry_code(+)
+          AND cc_rbi.category_code                 = 	'HDFC_RBI_CODE'
+		  AND rm.id(+)                                = 	subprofile.relation_mgr
+          AND subprofile.IND_NM =CC_INDUSTRY.ENTRY_CODE(+)
+          AND cc_industry.category_code            = 	'HDFC_INDUSTRY'
+          AND cc_industry.entry_code(+)               =	subprofile.ind_nm
+          AND ADDRESS.LRA_TYPE_VALUE               =	'CORPORATE'
+		  AND cc_segment.category_code             = 	'HDFC_SEGMENT'
+		  AND cc.entry_code = subprofile.ENTITY
+		  AND cc.category_code = 'Entity'
+		  AND subprofile.lsp_sgmnt_code_value=cc_segment.entry_code
+          AND cc_segment.entry_code(+)                =	subprofile.lsp_sgmnt_code_value
+		  AND lmts.IS_ADHOC &lt;&gt;'N'
+          AND address.LRA_TYPE_VALUE = 'CORPORATE'
+          AND address.lra_region = reg.id
+          AND subprofile.status                 !=   'INACTIVE'
+          and lmts.cms_limit_status = 'ACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> AND subprofile.cms_le_sub_profile_id = </condition>
+			</param>			
+			<param>
+				<name>transDate</name>
+				<condition> and TRUNC(trans.transaction_date) = </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Address</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PinCode</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>STD CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Telephone</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>E-mail</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>STD CODE</header>
+				</reportColumn>							
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Fax</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Risk Grade</header>
+				</reportColumn><reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Industry Name</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RBI Code Category</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Entity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Group Description</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Adhoc Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Adhoc Amount</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Adhoc related report (at facility - CAM)</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+	SELECT DISTINCT
+	SLSP.LSP_SHORT_NAME AS PARTY_NAME,
+	SLSP.LSP_LE_ID AS PARTY_ID,
+	SLSP.PAN AS PAN_NO,
+	CRM.RM_MGR_NAME AS RELATIONSHIP_MGR_NAME,
+	APPR.LMT_ID AS FACILITY_ID,
+	APPR.FACILITY_NAME AS FACILITY_NAME,
+	CSEC.CMS_COLLATERAL_ID AS CMS_COLLATERAL_ID,
+	CSEC.TYPE_NAME AS SECURITY_TYPE,
+	CSEC.SUBTYPE_NAME AS SECURITY_SUBTYPE,
+	CAGD_STAGE.CALCULATEDDP AS DRAWING_POWER_STOCK,
+	TO_CHAR(CAGD_STAGE.DUE_DATE,'DD/MM/YYYY') AS DUE_DATE_STOCK,
+	(SELECT SUM(LONABLE) FROM CMS_STAGE_ASSET_GC_STOCK_DET WHERE STOCK_TYPE =
+	'CurrentAsset' AND APPLICABLE_FOR_DP = 'YES' AND GC_DET_ID =
+	CAGD_STAGE.GC_DET_ID) AS TOTAL_LONABLE_CUR_ASSET,
+	(SELECT SUM(LONABLE) FROM CMS_STAGE_ASSET_GC_STOCK_DET WHERE STOCK_TYPE =
+	'CurrentLiabilities' AND APPLICABLE_FOR_DP = 'YES' AND GC_DET_ID =
+	CAGD_STAGE.GC_DET_ID) AS TOTAL_LONABLE_CUR_LIABILITY,
+	CNBS_STAGE.DRAWING_POWER AS DRAWING_POWER_BANK_LEAD,
+	CNBS_STAGE.DEBTOR_AMOUNT AS DEBTOR_AMT_BANK_LEAD,
+	CNBS_STAGE.CREDITORS_AMOUNT AS CREDITOR_AMT_BANK_LEAD,
+	CNBS_STAGE.BANK_SHARE_PCT AS BANK_SHARE,
+
+	CASE
+	WHEN trx.from_state = 'PENDING_PERFECTION'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.transaction_id = trx.transaction_id
+	AND hist.from_state = 'PENDING_PERFECTION'
+	AND hist.to_state ='DRAFT'
+	)
+	WHEN trx.from_state = 'PENDING_CREATE'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.transaction_id = trx.transaction_id
+	AND hist.from_state IN ('ND','DRAFT')
+	AND hist.to_state ='PENDING_CREATE'
+	)
+	WHEN trx.from_state = 'PENDING_UPDATE'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.TR_HISTORY_ID=
+	(SELECT MAX(TR_HISTORY_ID)
+	FROM trans_history
+	WHERE transaction_id = trx.transaction_id
+	AND from_state IN ('ACTIVE','DRAFT')
+	AND to_state = 'PENDING_UPDATE'
+	)
+	)
+	WHEN trx.from_state = 'PENDING_DELETE'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.TR_HISTORY_ID=
+	(SELECT MAX(TR_HISTORY_ID)
+	FROM trans_history
+	WHERE transaction_id = trx.transaction_id
+	AND from_state ='ACTIVE'
+	AND to_state ='PENDING_DELETE'
+	)
+	)
+	WHEN trx.from_state = 'ACTIVE'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.TR_HISTORY_ID=
+	(SELECT MAX(TR_HISTORY_ID)
+	FROM trans_history
+	WHERE transaction_id = trx.transaction_id
+	AND from_state ='ACTIVE'
+	AND to_state IN ('PENDING_UPDATE','PENDING_DELETE')
+	)
+	)
+	WHEN trx.from_state = 'REJECTED'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.TR_HISTORY_ID=
+	(SELECT MAX(TR_HISTORY_ID)
+	FROM trans_history
+	WHERE transaction_id = trx.transaction_id
+	AND from_state = 'REJECTED'
+	AND to_state ='ACTIVE'
+	)
+	)
+	WHEN trx.from_state = 'DRAFT'
+	THEN
+	CASE
+	WHEN trx.status = 'PENDING_UPDATE'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.TR_HISTORY_ID=
+	(SELECT MAX(TR_HISTORY_ID)
+	FROM trans_history
+	WHERE transaction_id = trx.transaction_id
+	AND from_state = 'DRAFT'
+	AND to_state ='PENDING_UPDATE'
+	)
+	)
+	WHEN trx.status = 'ACTIVE'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.TR_HISTORY_ID=
+	(SELECT MAX(TR_HISTORY_ID)
+	FROM trans_history
+	WHERE transaction_id = trx.transaction_id
+	AND from_state = 'DRAFT'
+	AND to_state ='ACTIVE'
+	)
+	)
+	END
+	END AS Maker,
+	CASE
+	WHEN trx.status = 'PENDING_CREATE'
+	OR trx.from_state = 'PENDING_PERFECTION'
+	THEN ''
+	WHEN trx.status = 'PENDING_UPDATE'
+	THEN
+	(SELECT hist.login_id
+	FROM trans_history hist
+	WHERE hist.TR_HISTORY_ID=
+	(SELECT MAX(TR_HISTORY_ID)
+	FROM trans_history
+	WHERE transaction_id = trx.transaction_id
+	AND from_state IN ('PENDING_UPDATE','ACTIVE')
+	AND to_state IN ('PENDING_UPDATE','ACTIVE')
+	)
+	)
+	WHEN ((trx.status != 'PENDING_CREATE'
+	AND trx.from_state != 'PENDING_PERFECTION')
+	AND trx.status != 'PENDING_UPDATE')
+	THEN TO_CHAR(trx.login_id)
+	END AS Approved_By
+	FROM
+	CMS_SECURITY CSEC,
+	SCI_LSP_APPR_LMTS APPR,
+	CMS_LIMIT_SECURITY_MAP MAP,
+	SCI_LSP_LMT_PROFILE LMT,
+	SCI_LE_SUB_PROFILE SLSP,
+	CMS_RELATIONSHIP_MGR CRM,
+	TRANS_HISTORY trx,
+	CMS_STAGE_SECURITY CSEC_STAGE,
+	CMS_STAGE_ASSET_GC_DET CAGD_STAGE,
+	CMS_STAGE_ASSET_GC_STOCK_DET CAGSD_STAGE,
+	CMS_STG_LEAD_NODAL_BANK_STOCK CNBS_STAGE					   
+					
+
+  		</query>
+		<whereClause>
+			<mandatoryClause>
+	CSEC.CMS_COLLATERAL_ID = MAP.CMS_COLLATERAL_ID
+	AND APPR.CMS_LSP_APPR_LMTS_ID = MAP.CMS_LSP_APPR_LMTS_ID
+	AND LMT.CMS_LSP_LMT_PROFILE_ID = APPR.CMS_LIMIT_PROFILE_ID
+	AND LMT.LLP_LE_ID =SLSP.LSP_LE_ID
+	AND SLSP.STATUS = 'ACTIVE'
+	AND APPR.CMS_LIMIT_STATUS = 'ACTIVE'
+	AND CSEC.STATUS = 'ACTIVE'
+	AND APPR.CMS_LSP_APPR_LMTS_ID = MAP.CMS_LSP_APPR_LMTS_ID
+	AND MAP.CHARGE_ID in
+	(SELECT MAX(maps2.CHARGE_ID)
+	from cms_limit_security_map maps2
+	where maps2.cms_lsp_appr_lmts_id = APPR.cms_lsp_appr_lmts_id
+	AND maps2.cms_collateral_id =MAP.cms_collateral_id
+	)
+	AND (MAP.UPDATE_STATUS_IND != 'D' OR MAP.UPDATE_STATUS_IND IS NULL)
+	AND SLSP.RELATION_MGR = CRM.ID
+	AND CSEC.SECURITY_SUB_TYPE_ID = 'AB100'
+	AND CSEC.CMS_COLLATERAL_ID = TRX.REFERENCE_ID
+	AND SLSP.RELATION_MGR = CRM.ID
+	AND CSEC_STAGE.CMS_COLLATERAL_ID = TRX.STAGING_REFERENCE_ID
+	AND CSEC_STAGE.CMS_COLLATERAL_ID = CAGD_STAGE.CMS_COLLATERAL_ID
+	AND CAGD_STAGE.GC_DET_ID = CNBS_STAGE.GC_DET_ID(+)
+	AND CAGSD_STAGE.GC_DET_ID = CAGD_STAGE.GC_DET_ID
+	
+
+			</mandatoryClause>
+			<param>
+				<name>systemDateAudit</name>
+				<condition>  </condition>
+			</param>
+			 <param>
+				<name>party</name>
+				<condition> and SLSP.LSP_LE_ID = </condition>
+			</param>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>PAN No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Level RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Source Security ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Security Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Security Sub-type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Drawing Power  (As per stock statement)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Due date(as per stock statement)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Total Lonable Current Asset(Debtor )</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Total Lonable Current Liabilities (Creditor)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Drawing Power Amount (as per Lead bank)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Debtor amount (as per Lead bank)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Creditor Amount (as per Lead bank)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Bank Share (%)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Maker</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Checker</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Stock DP Audit Report
+			</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="leiccilUploadedLeiValidationSchedulerTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="leiccilUploadedLeiValidationSchedulerTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="leiccilUploadedLeiValidationSchedulerDetail" />
+		<property name="cronExpression" value="${uploaded.lei.validation.schedular.time}" />
+	</bean>
+	
+	<bean id="leiccilUploadedLeiValidationSchedulerDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="leiccilUploadedLeiValidationScheduler" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean id="leiccilUploadedLeiValidationScheduler" class="com.integrosys.cms.batch.leiInterface.schedular.LeiInterfaceJob"/>
+
+</beans>

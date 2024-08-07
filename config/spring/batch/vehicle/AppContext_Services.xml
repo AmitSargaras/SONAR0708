@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		To be used for delimited file process, vehicle HP auction price feed file.
+	</description>
+
+	<bean name="vehicleJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+
+    <bean id="westMalaysiaVehicleFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">
+		<property name="firstLineIsHeader" value="false" />
+        <property name="linesToSkip" value="7" />
+        <property name="fieldSetMapper" ref="vehicleFeedFieldSetMapper" />
+		<property name="resource" value="${resource.vehicle.wm.feed.path}" />
+	</bean>
+	
+	<bean id="eastMalaysiaVehicleFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">
+		<property name="firstLineIsHeader" value="false" />
+        <property name="linesToSkip" value="7" />
+        <property name="fieldSetMapper" ref="vehicleFeedFieldSetMapper" />
+		<property name="resource" value="${resource.vehicle.em.feed.path}" />
+	</bean>
+
+	<bean id="langkawiVehicleFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">
+		<property name="firstLineIsHeader" value="false" />
+        <property name="linesToSkip" value="7" />
+        <property name="fieldSetMapper" ref="vehicleFeedFieldSetMapper" />
+		<property name="resource" value="${resource.vehicle.lkw.feed.path}" />
+	</bean>
+
+	<bean id="vehicleFeedFieldSetMapper" class="com.integrosys.cms.batch.feeds.vehicle.VehicleFieldSetMapper" />
+	
+	<bean id="emVehicleFeedLoaderBatchJob" class="com.integrosys.cms.batch.feeds.vehicle.VehicleFeedsLoader">
+		<property name="vehicleFeedsFlatFileItemReader" ref="eastMalaysiaVehicleFlatFileItemReader" />
+        <property name="region" value="EM" />
+		<property name="vehicleDao" ref="vehicleDao" />
+		<property name="feedBatchSize" value="${feed.batch.size}" />
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="batchFeedErrorLogger">
+			<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">
+				<property name="logFileLocation" value="${log.em.vehicle.feed.path}" />
+			</bean>
+		</property>
+		<property name="jdbcTemplate" ref="vehicleJdbcTemplate" />
+		<property name="tempTableName" value="SI_TEMP_OTHR_PF004" />
+		<property name="validationProcedureName" value="SI_VALIDATE_TEMP_OTHR_PF004" />
+		<property name="runProcedureName" value="SI_RUN_TEMP_OTHR_PF004" />
+    </bean>
+	
+	<bean id="wmVehicleFeedLoaderBatchJob" class="com.integrosys.cms.batch.feeds.vehicle.VehicleFeedsLoader">
+		<property name="vehicleFeedsFlatFileItemReader" ref="westMalaysiaVehicleFlatFileItemReader" />
+		<property name="region" value="WM" />
+		<property name="vehicleDao" ref="vehicleDao" />
+		<property name="feedBatchSize" value="${feed.batch.size}" />
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="batchFeedErrorLogger">
+			<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">
+				<property name="logFileLocation" value="${log.wm.vehicle.feed.path}" />
+			</bean>
+		</property>
+		<property name="jdbcTemplate" ref="vehicleJdbcTemplate" />
+		<property name="tempTableName" value="SI_TEMP_OTHR_PF004" />
+		<property name="validationProcedureName" value="SI_VALIDATE_TEMP_OTHR_PF004" />
+		<property name="runProcedureName" value="SI_RUN_TEMP_OTHR_PF004" />
+    </bean>
+	
+	<bean id="lkwVehicleFeedLoaderBatchJob" class="com.integrosys.cms.batch.feeds.vehicle.VehicleFeedsLoader">
+		<property name="vehicleFeedsFlatFileItemReader" ref="langkawiVehicleFlatFileItemReader" />
+		<property name="region" value="LKW" />
+		<property name="vehicleDao" ref="vehicleDao" />
+		<property name="feedBatchSize" value="${feed.batch.size}" />
+		<property name="transactionTemplate">
+			<bean class="org.springframework.transaction.support.TransactionTemplate">
+				<property name="transactionManager" ref="txManager" />
+			</bean>
+		</property>
+		<property name="batchFeedErrorLogger">
+			<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">
+				<property name="logFileLocation" value="${log.lkw.vehicle.feed.path}" />
+			</bean>
+		</property>
+		<property name="jdbcTemplate" ref="vehicleJdbcTemplate" />
+		<property name="tempTableName" value="SI_TEMP_OTHR_PF004" />
+		<property name="validationProcedureName" value="SI_VALIDATE_TEMP_OTHR_PF004" />
+		<property name="runProcedureName" value="SI_RUN_TEMP_OTHR_PF004" />
+    </bean>
+
+</beans>

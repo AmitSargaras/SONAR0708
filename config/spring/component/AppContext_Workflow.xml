@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+	<bean id="ComponentTrx.MakerCreateComponentOperation"
+	class="com.integrosys.cms.app.component.trx.MakerCreateComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+			
+	<bean id="ComponentTrx.ReadComponentOperation" class="com.integrosys.cms.app.component.trx.ReadComponentOperation">
+        <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+    </bean>
+    
+    <bean id="ComponentTrx.ReadComponentIDOperation" class="com.integrosys.cms.app.component.trx.ReadComponentIDOperation">
+        <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+    </bean>
+    <bean id="ComponentTrx.CheckerApproveCreateComponentOperation"
+		class="com.integrosys.cms.app.component.trx.CheckerApproveCreateComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.CheckerRejectComponentOperation"
+		class="com.integrosys.cms.app.component.trx.CheckerRejectComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.MakerEditRejectedCreateComponentOperation"
+		class="com.integrosys.cms.app.component.trx.MakerEditRejectedCreateComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.MakerDeleteComponentOperation"
+		class="com.integrosys.cms.app.component.trx.MakerDeleteComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.CheckerApproveUpdateComponentOperation"
+		class="com.integrosys.cms.app.component.trx.CheckerApproveUpdateComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.MakerUpdateComponentOperation"
+		class="com.integrosys.cms.app.component.trx.MakerUpdateComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.MakerCloseRejectedDeleteComponentOperation"
+		class="com.integrosys.cms.app.component.trx.MakerCloseRejectedDeleteComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.MakerCloseRejectedUpdateComponentOperation"
+		class="com.integrosys.cms.app.component.trx.MakerCloseRejectedUpdateComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.MakerCloseRejectedCreateComponentOperation"
+		class="com.integrosys.cms.app.component.trx.MakerCloseRejectedCreateComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.MakerEditRejectedUpdateComponentOperation"
+		class="com.integrosys.cms.app.component.trx.MakerEditRejectedUpdateComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+	<bean id="ComponentTrx.MakerEditRejectedDeleteComponentOperation"
+		class="com.integrosys.cms.app.component.trx.MakerEditRejectedDeleteComponentOperation">
+		 <property name="componentBusManager" ref="componentBusManager"/>
+        <property name="stagingComponentBusManager" ref="stagingComponentBusManager"/>
+	</bean>
+    
+    
+    
+    
+			
+			
+			
+	<bean id="componentReadController" class="com.integrosys.cms.app.component.trx.ComponentReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadComponentOperation" value-ref="ComponentTrx.ReadComponentOperation"/>
+                 <entry key="ReadComponentIDOperation" value-ref="ComponentTrx.ReadComponentIDOperation"/>
+                               
+                
+            </map>
+        </property>
+    </bean>
+			
+			
+	 <bean id="componentTrxController" class="com.integrosys.cms.app.component.trx.ComponentTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            <entry key="MakerEditRejectedDeleteComponentOperation" value-ref="ComponentTrx.MakerEditRejectedDeleteComponentOperation"/>
+             <entry key="MakerEditRejectedUpdateComponentOperation" value-ref="ComponentTrx.MakerEditRejectedUpdateComponentOperation"/>
+            	 <entry key="MakerCreateComponentOperation" value-ref="ComponentTrx.MakerCreateComponentOperation"/>
+            	  <entry key="CheckerApproveCreateComponentOperation" value-ref="ComponentTrx.CheckerApproveCreateComponentOperation"/>
+            	  <entry key="CheckerRejectComponentOperation" value-ref="ComponentTrx.CheckerRejectComponentOperation"/>
+            	  <entry key="MakerEditRejectedCreateComponentOperation" value-ref="ComponentTrx.MakerEditRejectedCreateComponentOperation"/>
+            	  <entry key="MakerDeleteComponentOperation" value-ref="ComponentTrx.MakerDeleteComponentOperation"/>
+            	  <entry key="CheckerApproveUpdateComponentOperation" value-ref="ComponentTrx.CheckerApproveUpdateComponentOperation"/>
+            	  <entry key="MakerUpdateComponentOperation" value-ref="ComponentTrx.MakerUpdateComponentOperation"/>
+            	   <entry key="MakerCloseRejectedDeleteComponentOperation" value-ref="ComponentTrx.MakerCloseRejectedDeleteComponentOperation"/>
+            	   <entry key="MakerCloseRejectedUpdateComponentOperation" value-ref="ComponentTrx.MakerCloseRejectedUpdateComponentOperation"/>
+            	   <entry key="MakerCloseRejectedCreateComponentOperation" value-ref="ComponentTrx.MakerCloseRejectedCreateComponentOperation"/>
+             </map>
+         </property>
+     </bean>		
+			
+			
+	<bean id="componentTrxControllerFactory" class="com.integrosys.cms.app.component.trx.ComponentTrxControllerFactory">
+       
+        <property name="componentTrxController" ref="componentTrxController"/>
+        <property name="componentReadController" ref="componentReadController"/>
+       
+    </bean>
+			
+	
+</beans>

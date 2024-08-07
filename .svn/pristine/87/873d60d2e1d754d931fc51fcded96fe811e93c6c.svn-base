@@ -1,0 +1,415 @@
+/* Patching to clean the data due to funny character ¦ or – was migrated causing UI to encounter TD */
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+DROP TABLE PATCH_DD_CUSTOMER_ADDRESS;
+DROP TABLE PATCH_DD_FACILITY_MASTER;
+DROP TABLE PATCH_DD_COL_ASSET_VEHICLE;
+DROP TABLE PATCH_DD_COL_VEHICLE;
+DROP TABLE PATCH_DD_COL_PROPERTY;
+DROP TABLE PATCH_DD_COL_OTHERS;
+DROP TABLE PATCH_DD_COL_INSURANCE;
+DROP TABLE PATCH_DD_CLEAN_COL;
+DROP TABLE PATCH_DD_COL_INSURANCE_POL;
+
+CREATE TABLE PATCH_DD_CUSTOMER_ADDRESS (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	LRA_TYPE_VALUE			VARCHAR(1),
+	LRA_ADDR_LINE_3			VARCHAR(100),
+	LRA_CITY_TEXT			VARCHAR(50)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+CREATE TABLE PATCH_DD_FACILITY_MASTER (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	SOLICITOR_REFERENCE		VARCHAR(255),
+	ACF_NO					VARCHAR(40)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+CREATE TABLE PATCH_DD_COL_ASSET_VEHICLE (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	SECURITY_ID				VARCHAR(20),
+	REG_NO                  VARCHAR(25), 
+	ASSET_DESCRIPTION		VARCHAR(250),
+	RL_SERIAL_NO			VARCHAR(50)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+CREATE TABLE PATCH_DD_COL_VEHICLE (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	SECURITY_ID				VARCHAR(20),
+	ENGINE_NUMBER           VARCHAR(25), 
+	VEHICLE_COLOR			VARCHAR(250)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+CREATE TABLE PATCH_DD_COL_PROPERTY (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	SECURITY_ID				VARCHAR(20),
+	TITLE_NUMBER	        VARCHAR(40), 
+	PROPERTY_ADDRESS		VARCHAR(40),
+	PROPERTY_ADDRESS_2		VARCHAR(40),
+	PROPERTY_ADDRESS_3		VARCHAR(40)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+CREATE TABLE PATCH_DD_COL_OTHERS (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	SECURITY_ID				VARCHAR(20),
+	SECURITY_REF_NOTE	    VARCHAR(40)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+CREATE TABLE PATCH_DD_COL_INSURANCE (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	SECURITY_ID				VARCHAR(20),
+	SECURITY_REF_NOTE	    VARCHAR(40)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+CREATE TABLE PATCH_DD_CLEAN_COL (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	SECURITY_ID				VARCHAR(20),
+	SECURITY_REF_NOTE	    VARCHAR(40)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+CREATE TABLE PATCH_DD_COL_INSURANCE_POL (
+	CIF_ID					VARCHAR(20),
+	LIMIT_ID 				VARCHAR(43),
+	AA_NUMBER 				VARCHAR(35),
+	SECURITY_ID				VARCHAR(20),
+	POLICY_NO				VARCHAR(50),
+	REMARK1				    VARCHAR(60),
+	REMARK2				    VARCHAR(60),
+	REMARK3				    VARCHAR(60)
+) in CMS_MIG index in CMS_MIG_INDEX;
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- This is to update the correct values into cms
+
+-- Update customer address
+update SCI_LE_REG_ADDR addr
+set (LRA_ADDR_LINE_3, LRA_CITY_TEXT) = (select LRA_ADDR_LINE_3, LRA_CITY_TEXT from PATCH_DD_CUSTOMER_ADDRESS temp
+										where temp.LRA_TYPE_VALUE = addr.LRA_TYPE_VALUE
+										and temp.CIF_ID = addr.LRA_LE_ID)
+where exists (select 1 from PATCH_DD_CUSTOMER_ADDRESS temp1
+				where temp1.LRA_TYPE_VALUE = addr.LRA_TYPE_VALUE
+				and temp1.CIF_ID = addr.LRA_LE_ID);
+
+-- Update facility master
+update CMS_FACILITY_MASTER facmas
+set (SOLICITOR_REFERENCE, ACF_NO) = (select SOLICITOR_REFERENCE, ACF_NO from PATCH_DD_FACILITY_MASTER temp, SCI_LSP_APPR_LMTS lmt
+										where temp.LIMIT_ID = lmt.LMT_ID
+										and temp.AA_NUMBER = lmt.LMT_BCA_REF_NUM
+										and lmt.CMS_LSP_APPR_LMTS_ID = facmas.CMS_LSP_APPR_LMTS_ID)
+where exists (select 1 from PATCH_DD_FACILITY_MASTER temp1, SCI_LSP_APPR_LMTS lmt1
+				where temp1.LIMIT_ID = lmt1.LMT_ID
+				and temp1.AA_NUMBER = lmt1.LMT_BCA_REF_NUM
+				and lmt1.CMS_LSP_APPR_LMTS_ID = facmas.CMS_LSP_APPR_LMTS_ID);
+				
+update CMS_STG_FACILITY_MASTER facmas
+set (SOLICITOR_REFERENCE, ACF_NO) = (select SOLICITOR_REFERENCE, ACF_NO from PATCH_DD_FACILITY_MASTER temp, SCI_LSP_APPR_LMTS lmt
+										where temp.LIMIT_ID = lmt.LMT_ID
+										and temp.AA_NUMBER = lmt.LMT_BCA_REF_NUM
+										and lmt.CMS_LSP_APPR_LMTS_ID = facmas.CMS_LSP_APPR_LMTS_ID)
+where exists (select 1 from PATCH_DD_FACILITY_MASTER temp1, SCI_LSP_APPR_LMTS lmt1
+				where temp1.LIMIT_ID = lmt1.LMT_ID
+				and temp1.AA_NUMBER = lmt1.LMT_BCA_REF_NUM
+				and lmt1.CMS_LSP_APPR_LMTS_ID = facmas.CMS_LSP_APPR_LMTS_ID);		
+
+-- Update ab asset vehicle
+update CMS_ASSET asst
+set (ASSET_DESCRIPTION, RL_SERIAL_NO) = (select ASSET_DESCRIPTION, RL_SERIAL_NO from PATCH_DD_COL_ASSET_VEHICLE temp, CMS_SECURITY sec
+											where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID
+											and sec.CMS_COLLATERAL_ID = asst.CMS_COLLATERAL_ID)
+where exists (select 1 from PATCH_DD_COL_ASSET_VEHICLE temp1, CMS_SECURITY sec1
+				where temp1.SECURITY_ID = sec1.SCI_SECURITY_DTL_ID
+				and sec1.CMS_COLLATERAL_ID = asst.CMS_COLLATERAL_ID);
+				
+update CMS_STAGE_ASSET asst
+set (ASSET_DESCRIPTION, RL_SERIAL_NO) = (select ASSET_DESCRIPTION, RL_SERIAL_NO from PATCH_DD_COL_ASSET_VEHICLE temp, CMS_STAGE_SECURITY sec
+											where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID
+											and sec.CMS_COLLATERAL_ID = asst.CMS_COLLATERAL_ID)
+where exists (select 1 from PATCH_DD_COL_ASSET_VEHICLE temp1, CMS_STAGE_SECURITY sec1
+				where temp1.SECURITY_ID = sec1.SCI_SECURITY_DTL_ID
+				and sec1.CMS_COLLATERAL_ID = asst.CMS_COLLATERAL_ID);
+
+-- Update vehicle
+update CMS_ASSET_VEHICLE veh
+set VEHICLE_COLOR = (select VEHICLE_COLOR from PATCH_DD_COL_VEHICLE temp, CMS_SECURITY sec
+						where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID
+						and sec.CMS_COLLATERAL_ID = veh.CMS_COLLATERAL_ID)				
+where exists (select 1 from PATCH_DD_COL_VEHICLE temp1, CMS_SECURITY sec1
+				where temp1.SECURITY_ID = sec1.SCI_SECURITY_DTL_ID
+				and sec1.CMS_COLLATERAL_ID = veh.CMS_COLLATERAL_ID);
+
+update CMS_STAGE_ASSET_VEHICLE veh
+set VEHICLE_COLOR = (select VEHICLE_COLOR from PATCH_DD_COL_VEHICLE temp, CMS_STAGE_SECURITY sec
+						where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID
+						and sec.CMS_COLLATERAL_ID = veh.CMS_COLLATERAL_ID)				
+where exists (select 1 from PATCH_DD_COL_VEHICLE temp1, CMS_STAGE_SECURITY sec1
+				where temp1.SECURITY_ID = sec1.SCI_SECURITY_DTL_ID
+				and sec1.CMS_COLLATERAL_ID = veh.CMS_COLLATERAL_ID);
+
+-- Update collateral property
+update CMS_PROPERTY pty
+set (TITLE_NUMBER, PROPERTY_ADDRESS, PROPERTY_ADDRESS_2, PROPERTY_ADDRESS_3) = 
+		(select TITLE_NUMBER, PROPERTY_ADDRESS, PROPERTY_ADDRESS_2, PROPERTY_ADDRESS_3 from PATCH_DD_COL_PROPERTY temp, CMS_SECURITY sec
+			where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID
+			and sec.CMS_COLLATERAL_ID = pty.CMS_COLLATERAL_ID)
+where exists (select 1 from PATCH_DD_COL_PROPERTY temp1, CMS_SECURITY sec1
+				where temp1.SECURITY_ID = sec1.SCI_SECURITY_DTL_ID
+				and sec1.CMS_COLLATERAL_ID = pty.CMS_COLLATERAL_ID);
+
+update CMS_STAGE_PROPERTY pty
+set (TITLE_NUMBER, PROPERTY_ADDRESS, PROPERTY_ADDRESS_2, PROPERTY_ADDRESS_3) = 
+		(select TITLE_NUMBER, PROPERTY_ADDRESS, PROPERTY_ADDRESS_2, PROPERTY_ADDRESS_3 from PATCH_DD_COL_PROPERTY temp, CMS_STAGE_SECURITY sec
+			where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID
+			and sec.CMS_COLLATERAL_ID = pty.CMS_COLLATERAL_ID)
+where exists (select 1 from PATCH_DD_COL_PROPERTY temp1, CMS_STAGE_SECURITY sec1
+				where temp1.SECURITY_ID = sec1.SCI_SECURITY_DTL_ID
+				and sec1.CMS_COLLATERAL_ID = pty.CMS_COLLATERAL_ID);
+
+-- Update collateral others
+update CMS_SECURITY sec
+set SCI_REFERENCE_NOTE = (select SECURITY_REF_NOTE from PATCH_DD_COL_OTHERS temp
+							where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID)
+where exists (select 1 from PATCH_DD_COL_OTHERS temp1
+				where temp1.SECURITY_ID = sec.SCI_SECURITY_DTL_ID);						
+				
+update CMS_STAGE_SECURITY sec
+set SCI_REFERENCE_NOTE = (select SECURITY_REF_NOTE from PATCH_DD_COL_OTHERS temp
+							where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID)
+where exists (select 1 from PATCH_DD_COL_OTHERS temp1
+				where temp1.SECURITY_ID = sec.SCI_SECURITY_DTL_ID);					
+				
+-- Update collateral insurance				
+update CMS_SECURITY sec
+set SCI_REFERENCE_NOTE = (select SECURITY_REF_NOTE from PATCH_DD_COL_INSURANCE temp
+							where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID)
+where exists (select 1 from PATCH_DD_COL_INSURANCE temp1
+				where temp1.SECURITY_ID = sec.SCI_SECURITY_DTL_ID);						
+				
+update CMS_STAGE_SECURITY sec
+set SCI_REFERENCE_NOTE = (select SECURITY_REF_NOTE from PATCH_DD_COL_INSURANCE temp
+							where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID)
+where exists (select 1 from PATCH_DD_COL_INSURANCE temp1
+				where temp1.SECURITY_ID = sec.SCI_SECURITY_DTL_ID);		
+	
+-- Update clean collateral/ no collateral
+update CMS_SECURITY sec
+set SCI_REFERENCE_NOTE = (select SECURITY_REF_NOTE from PATCH_DD_CLEAN_COL temp
+							where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID)
+where exists (select 1 from PATCH_DD_CLEAN_COL temp1
+				where temp1.SECURITY_ID = sec.SCI_SECURITY_DTL_ID);						
+				
+update CMS_STAGE_SECURITY sec
+set SCI_REFERENCE_NOTE = (select SECURITY_REF_NOTE from PATCH_DD_CLEAN_COL temp
+							where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID)
+where exists (select 1 from PATCH_DD_CLEAN_COL temp1
+				where temp1.SECURITY_ID = sec.SCI_SECURITY_DTL_ID);		
+
+-- Update collateral insurance policy
+update CMS_INSURANCE_POLICY inspol
+set (REMARK1, REMARK2, REMARK3)	= (select REMARK1, REMARK2, REMARK3 from PATCH_DD_COL_INSURANCE_POL temp, CMS_SECURITY sec
+									where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID
+									and sec.CMS_COLLATERAL_ID = inspol.CMS_COLLATERAL_ID)
+where exists (select 1 from PATCH_DD_COL_INSURANCE_POL temp1, CMS_SECURITY sec1
+				where temp1.SECURITY_ID = sec1.SCI_SECURITY_DTL_ID
+				and sec1.CMS_COLLATERAL_ID = inspol.CMS_COLLATERAL_ID);
+	
+update CMS_STAGE_INSURANCE_POLICY inspol
+set (REMARK1, REMARK2, REMARK3)	= (select REMARK1, REMARK2, REMARK3 from PATCH_DD_COL_INSURANCE_POL temp, CMS_SECURITY sec
+									where temp.SECURITY_ID = sec.SCI_SECURITY_DTL_ID
+									and sec.CMS_COLLATERAL_ID = inspol.CMS_COLLATERAL_ID
+									and temp.POLICY_NO = inspol.POLICY_NO)
+where exists (select 1 from PATCH_DD_COL_INSURANCE_POL temp1, CMS_SECURITY sec1
+				where temp1.SECURITY_ID = sec1.SCI_SECURITY_DTL_ID
+				and sec1.CMS_COLLATERAL_ID = inspol.CMS_COLLATERAL_ID
+				and temp1.POLICY_NO = inspol.POLICY_NO);		
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- This is to extract the value from excel into cms database
+
+="insert into PATCH_DD_CUSTOMER_ADDRESS (CIF_ID, LIMIT_ID, AA_NUMBER, LRA_TYPE_VALUE, LRA_ADDR_LINE_3, LRA_CITY_TEXT) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(I2)&"', '"&trim(N2)&"', '"&trim(O2)&"');"
+				
+="insert into PATCH_DD_FACILITY_MASTER (CIF_ID, LIMIT_ID, AA_NUMBER, SOLICITOR_REFERENCE, ACF_NO) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(L2)&"', '"&trim(M2)&"');"
+	
+="insert into PATCH_DD_COL_ASSET_VEHICLE (CIF_ID, LIMIT_ID, AA_NUMBER, SECURITY_ID, REG_NO, ASSET_DESCRIPTION, RL_SERIAL_NO) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(I2)&"', '"&trim(J2)&"', '"&trim(Q2)&"', '"&trim(R2)&"');"
+	
+="insert into PATCH_DD_COL_VEHICLE (CIF_ID, LIMIT_ID, AA_NUMBER, SECURITY_ID, ENGINE_NUMBER, VEHICLE_COLOR) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(I2)&"', '"&trim(K2)&"', '"&trim(Q2)&"');"
+
+="insert into PATCH_DD_COL_PROPERTY (CIF_ID, LIMIT_ID, AA_NUMBER, SECURITY_ID, TITLE_NUMBER, PROPERTY_ADDRESS, PROPERTY_ADDRESS_2, PROPERTY_ADDRESS_3) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(I2)&"', '"&trim(S2)&"', '"&trim(T2)&"', '"&trim(U2)&"', '"&trim(V2)&"');"
+
+="insert into PATCH_DD_COL_OTHERS (CIF_ID, LIMIT_ID, AA_NUMBER, SECURITY_ID, SECURITY_REF_NOTE) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(I2)&"', '"&trim(N2)&"');"
+
+="insert into PATCH_DD_COL_INSURANCE (CIF_ID, LIMIT_ID, AA_NUMBER, SECURITY_ID, SECURITY_REF_NOTE) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(I2)&"', '"&trim(N2)&"');"
+
+="insert into PATCH_DD_CLEAN_COL (CIF_ID, LIMIT_ID, AA_NUMBER, SECURITY_ID, SECURITY_REF_NOTE) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(I2)&"', '"&trim(N2)&"');"
+
+="insert into PATCH_DD_COL_OTHERS (CIF_ID, LIMIT_ID, AA_NUMBER, SECURITY_ID, POLICY_NO, REMARK1, REMARK2, REMARK3) values ('"&trim(C2)&"', '"&trim(F2)&"', '"&trim(G2)&"', '"&trim(I2)&"', '"&trim(J2)&"', '"&trim(R2)&"', '"&trim(S2)&"', '"&trim(T2)&"');"
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+-- This was for extraction into excel for user to determine the correct values to be patching.
+
+-- Customer address
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER,
+custaddr.LRA_TYPE_VALUE, custaddr.LRA_ADDR_LINE_1, custaddr.LRA_ADDR_LINE_2, custaddr.LRA_ADDR_LINE_3, custaddr.LRA_CITY_TEXT 
+from SCI_LE_MAIN_PROFILE cust, SCI_LE_REG_ADDR custaddr, SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt
+where cust.LMP_LE_ID = custaddr.LRA_LE_ID
+and cust.LMP_LE_ID = aa.LLP_LE_ID
+and aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and custaddr.LRA_LE_ID in ('10186972', '20042684', '40031065', '40031258', '120180159', '160058831', '230074860')
+and CMS_LE_REG_ADDR_ID not in (20090801000480162, 20090801000120444);
+
+
+-- Facility Master
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER,
+facmas.SOLICITOR_NAME, facmas.SOLICITOR_REFERENCE, facmas.ACF_NO
+from SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt, CMS_FACILITY_MASTER facmas
+where aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = facmas.CMS_LSP_APPR_LMTS_ID
+and lmt.LMT_ID in ('7040002212711', '7050005482711', '12050008892721', '18050077804211', '18080188644211', '24960001832101', '25010000462111', '32030002362201', 
+'32060012692741', '32060012982701', '32060012982702', '38070017662701', '40010000592131', '49020001142131', '53050018404211', '53050023844211', '68020002202131',
+'85050005882712', '99050005524211', '180090020344211', '507060001627331', '582060007557881', '595050000377881', '665030001017191', '665050010207881', 
+'2005052784734211', '2006052800172721', '2006052800172722', '2008042763844211', '2018072896114211', '2019041481952781', '2019052806212701', '2019052806232701',
+'2019052807372701', '2019082858362701', '2031042843744211', '7019083344467171', '7019083344467331', '7049043309117881');
+
+
+-- AB Asset Vehicle
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER, sec.SCI_SECURITY_DTL_ID as SECURITY_ID,
+ast.REG_NO, ast.REG_DATE, ast.BRAND, ast.MODEL_NO, ast.PURCHASE_DATE, ast.ASSET_DESCRIPTION, ast.RL_SERIAL_NO 
+from SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm,
+CMS_SECURITY sec, CMS_ASSET ast
+where aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.CMS_COLLATERAL_ID = ast.CMS_COLLATERAL_ID
+and sec.SCI_SECURITY_DTL_ID in ('338726', '371399', '434969', '508671', '521108', '621945', '726000', '751226', '771102', '789677', '791659', '796634', '822370', 
+'861156', '879620', '1448477', '1601032', '1705419', '1893288', '2252883', '2740205', '2872232', '2945962', '2958086', '3050448', '3242556', '3331938', '3483309', 
+'3506119', '3510328', '3954143', '4006986', '4018723', '4037575', '4209442', '4212545', '4221099', '4340193');
+
+
+-- AB Vehicle
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER, sec.SCI_SECURITY_DTL_ID as SECURITY_ID,
+veh.CHASSIS_NUMBER, veh.ENGINE_NUMBER, veh.ROAD_TAX_EXPIRY_DATE, veh.LOG_BOOK_NUMBER, veh.ENGINE_CAPACITY, veh.E_HAK_MILIK_NUMBER, veh.VEHICLE_COLOR 
+from SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, CMS_SECURITY sec, CMS_ASSET_VEHICLE veh
+where aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.CMS_COLLATERAL_ID = veh.CMS_COLLATERAL_ID
+and sec.SCI_SECURITY_DTL_ID in ('601778', '662982', '663157', '715488', '731024', '766861', '783171', '822706', '841858', '855004', '881032', '918052', '953988',
+'1003286', '1381650', '1576375', '2153477', '2636290', '3684866', '4243411', '4272305', '4296478');
+
+
+-- Collateral property
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER, sec.SCI_SECURITY_DTL_ID as SECURITY_ID,
+pty.MUKIM, pty.DISTRICT, (select ENTRY_NAME as STATE from common_code_category_entry comm1
+                            where comm1.ENTRY_CODE = pty.STATE
+                            and comm1.CATEGORY_CODE = 'STATE'), 
+pty.TITLE_TYPE, pty.TITLE_NUMBER_PREFIX, pty.TITLE_NUMBER, 
+pty.PROPERTY_ADDRESS, pty.PROPERTY_ADDRESS_2, pty.PROPERTY_ADDRESS_3 
+from SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, CMS_SECURITY sec, CMS_PROPERTY pty
+where aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.CMS_COLLATERAL_ID = pty.CMS_COLLATERAL_ID
+and sec.SCI_SECURITY_DTL_ID in ('57590', '123594', '165854', '749925', '1656811');
+
+
+-- Collateral others
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER, sec.SCI_SECURITY_DTL_ID as SECURITY_ID,
+sec.SECURITY_SUB_TYPE_ID, sec.SUBTYPE_NAME, sec.TYPE_NAME, sec.SCI_REFERENCE_NOTE as COLLATERAL_NAME
+from SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, cms_security sec
+where aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.SCI_SECURITY_DTL_ID in ('2064114', '3310157');
+
+
+-- Collateral insurance
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER, sec.SCI_SECURITY_DTL_ID as SECURITY_ID,
+sec.SECURITY_SUB_TYPE_ID, sec.SUBTYPE_NAME, sec.TYPE_NAME, sec.SCI_REFERENCE_NOTE as COLLATERAL_NAME
+from SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, cms_security sec
+where aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.SCI_SECURITY_DTL_ID in ('2127790', '2528035', '2598919', '2898470', '3843191');
+
+
+-- Clean collateral
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER, sec.SCI_SECURITY_DTL_ID as SECURITY_ID,
+sec.SECURITY_SUB_TYPE_ID, sec.SUBTYPE_NAME, sec.TYPE_NAME, sec.SCI_REFERENCE_NOTE as COLLATERAL_NAME
+from SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, cms_security sec
+where aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.SCI_SECURITY_DTL_ID in ('4311347', '4344142', '4307002');
+
+
+-- Collateral insurance policy
+select aa.APPLICATION_TYPE, aa.APPLICATION_LAW_TYPE, aa.LLP_LE_ID as CIF_ID, lmt.CMS_BKG_ORGANISATION as BRANCH_CODE, 
+    (select comm.REF_ENTRY_CODE as CENTER from COMMON_CODE_CATEGORY_ENTRY comm
+        where comm.ENTRY_CODE = lmt.CMS_BKG_ORGANISATION
+        and comm.CATEGORY_CODE = '40'),
+lmt.LMT_ID, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LOS_BCA_REF_NUM as LOS_AA_NUMBER, sec.SCI_SECURITY_DTL_ID as SECURITY_ID,
+inspol.POLICY_NO, (select comm1.ENTRY_NAME as INSURER_NAME from COMMON_CODE_CATEGORY_ENTRY comm1
+                        where comm1.ENTRY_CODE = inspol.INSURER_NAME
+                        and comm1.CATEGORY_CODE = 'INSURER_NAME'), 
+(select comm2.ENTRY_NAME as INSURANCE_TYPE from COMMON_CODE_CATEGORY_ENTRY comm2
+        where comm2.ENTRY_CODE = inspol.INSURANCE_TYPE
+        and comm2.CATEGORY_CODE = 'INSURANCE_TYPE'), 
+inspol.POLICY_SEQ_NO, inspol.EXPIRY_DATE, inspol.REMARK1, inspol.REMARK2, inspol.REMARK3
+from SCI_LSP_LMT_PROFILE aa, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, CMS_SECURITY sec, CMS_INSURANCE_POLICY inspol
+where aa.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and sec.CMS_COLLATERAL_ID = inspol.CMS_COLLATERAL_ID
+and sec.SCI_SECURITY_DTL_ID in ('116025', '455017', '664455', '763383', '2308464', '2419846', '2623702', '2799540', '3155885', 
+'3343405', '115642', '156826', '690181', '1509962', '1539769', '1543655', '1544059', '1548366', '1567167', '1567672', '1580402', 
+'1604723', '1644091', '1728966', '1735799', '1756548', '1756663', '1756692', '1762425', '1816524', '1833940', '1889622', '1907037', 
+'2053062', '2420021', '2438571')
+and inspol.INSURANCE_POLICY_ID not in (20090801000180457); 
+
+-----------------------------------------------------------------------------------------------------------------------------------------

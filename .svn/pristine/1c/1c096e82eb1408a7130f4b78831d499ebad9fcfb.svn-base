@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+    <description>
+        Transaction Manager, DataSource, Hibernate goes here. Take notes of 'ofaPool' and 'txManager',
+        which might be different implementation used for development and production
+    </description>
+
+    <bean id="ofaPool" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/CMSPool"/>
+        <property name="lookupOnStartup" value="false"/>
+        <property name="cache" value="true"/>
+        <property name="proxyInterface" value="javax.sql.DataSource"/>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.transaction.jta.WebSphereUowTransactionManager">
+    </bean>
+
+    <bean id="taskExecutor"
+          class="org.springframework.scheduling.commonj.WorkManagerTaskExecutor">
+        <property name="workManagerName" value="wm/default" />
+    </bean>
+
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="pointcut2" expression="execution(* *..*DaoImpl.*(..))"/>
+        <aop:pointcut id="pointcut3" expression="execution(* *..*DAOImpl.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut2"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut3"/>
+    </aop:config>
+
+    <bean id="ofaSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="ofaPool"/>
+        <property name="configLocations">
+            <list>
+                <value>classpath:hibernate.cfg.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="org.hibernate.service.jta.platform.internal.TransactionManagerLookupBridge">org.hibernate.transaction.WebSphereExtendedJTATransactionLookup</prop>
+                <prop key="hibernate.transaction.jta.platform">org.hibernate.service.jta.platform.internal.WebSphereExtendedJtaPlatform</prop>
+                <prop key="hibernate.transaction.factory_class">org.hibernate.engine.transaction.internal.jta.CMTTransactionFactory</prop>
+            </props>
+        </property>
+    </bean>
+</beans>

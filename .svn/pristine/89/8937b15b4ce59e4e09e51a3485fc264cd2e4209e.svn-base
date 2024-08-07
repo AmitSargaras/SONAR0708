@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+	<form-beans type="org.apache.struts.action.ActionFormBean">
+		<form-bean name="PledgeForm"
+			type="com.integrosys.cms.ui.collateral.pledge.PledgeForm">
+		</form-bean>
+	</form-beans>
+
+	<action-mappings
+		type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+		<action path="/AssetPledge"
+			type="com.integrosys.cms.ui.collateral.pledge.AssetPledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_asset.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_asset.jsp" />
+			</forward>
+			
+            <forward name="AssetAircraft_update" path="/AssetAircraftCollateral.do?event=update_return"/>
+            <forward name="AssetAircraft_read" path="/AssetAircraftCollateral.do?event=read_return"/>
+            <forward name="AssetAircraft_process" path="/AssetAircraftCollateral.do?event=process_return"/>
+            <forward name="AssetAircraft_close" path="/AssetAircraftCollateral.do?event=close_return"/>
+            <forward name="AssetAircraft_track" path="/AssetAircraftCollateral.do?event=track_return"/>
+
+            <forward name="AssetSpecOther_update" path="/AssetSpecOtherCollateral.do?event=update_return"/>
+            <forward name="AssetSpecOther_read" path="/AssetSpecOtherCollateral.do?event=read_return"/>
+            <forward name="AssetSpecOther_process" path="/AssetSpecOtherCollateral.do?event=process_return"/>
+            <forward name="AssetSpecOther_close" path="/AssetSpecOtherCollateral.do?event=close_return"/>
+            <forward name="AssetSpecOther_track" path="/AssetSpecOtherCollateral.do?event=track_return"/>
+
+            <forward name="AssetSpecPlant_update" path="/AssetSpecPlantCollateral.do?event=update_return"/>
+            <forward name="AssetSpecPlant_read" path="/AssetSpecPlantCollateral.do?event=read_return"/>
+            <forward name="AssetSpecPlant_process" path="/AssetSpecPlantCollateral.do?event=process_return"/>
+            <forward name="AssetSpecPlant_close" path="/AssetSpecPlantCollateral.do?event=close_return"/>
+            <forward name="AssetSpecPlant_track" path="/AssetSpecPlantCollateral.do?event=track_return"/>
+
+            <forward name="AssetSpecVehicles_update" path="/AssetSpecVehiclesCollateral.do?event=update_return"/>
+            <forward name="AssetSpecVehicles_read" path="/AssetSpecVehiclesCollateral.do?event=read_return"/>
+            <forward name="AssetSpecVehicles_process" path="/AssetSpecVehiclesCollateral.do?event=process_return"/>
+            <forward name="AssetSpecVehicles_close" path="/AssetSpecVehiclesCollateral.do?event=close_return"/>
+            <forward name="AssetSpecVehicles_track" path="/AssetSpecVehiclesCollateral.do?event=track_return"/>
+
+            <forward name="AssetVessel_update" path="/AssetVesselCollateral.do?event=update_return"/>
+		    <forward name="AssetVessel_read" path="/AssetVesselCollateral.do?event=read_return"/>
+		    <forward name="AssetVessel_process" path="/AssetVesselCollateral.do?event=process_return"/>
+	    	<forward name="AssetVessel_close" path="/AssetVesselCollateral.do?event=close_return"/>
+            <forward name="AssetVessel_track" path="/AssetVesselCollateral.do?event=track_return"/>
+            
+            <forward name="AssetRecGenAgent_update" path="/AssetRecGenAgentCollateral.do?event=update_return"/>
+            <forward name="AssetRecGenAgent_read" path="/AssetRecGenAgentCollateral.do?event=read_return"/>
+            <forward name="AssetRecGenAgent_process" path="/AssetRecGenAgentCollateral.do?event=process_return"/>
+            <forward name="AssetRecGenAgent_close" path="/AssetRecGenAgentCollateral.do?event=close_return"/>
+            <forward name="AssetRecGenAgent_track" path="/AssetRecGenAgentCollateral.do?event=track_return"/>
+
+            <forward name="AssetRecOpen_update" path="/AssetRecOpenCollateral.do?event=update_return"/>
+            <forward name="AssetRecOpen_read" path="/AssetRecOpenCollateral.do?event=read_return"/>
+            <forward name="AssetRecOpen_process" path="/AssetRecOpenCollateral.do?event=process_return"/>
+            <forward name="AssetRecOpen_close" path="/AssetRecOpenCollateral.do?event=close_return"/>
+            <forward name="AssetRecOpen_track" path="/AssetRecOpenCollateral.do?event=track_return"/>
+
+            <forward name="AssetRecSpecAgent_update" path="/AssetRecSpecAgentCollateral.do?event=update_return"/>
+            <forward name="AssetRecSpecAgent_read" path="/AssetRecSpecAgentCollateral.do?event=read_return"/>
+            <forward name="AssetRecSpecAgent_process" path="/AssetRecSpecAgentCollateral.do?event=process_return"/>
+            <forward name="AssetRecSpecAgent_close" path="/AssetRecSpecAgentCollateral.do?event=close_return"/>
+            <forward name="AssetRecSpecAgent_track" path="/AssetRecSpecAgentCollateral.do?event=track_return"/>
+
+            <forward name="AssetRecSpecNonAgent_update" path="/AssetRecSpecNonAgentCollateral.do?event=update_return"/>
+            <forward name="AssetRecSpecNonAgent_read" path="/AssetRecSpecNonAgentCollateral.do?event=read_return"/>
+            <forward name="AssetRecSpecNonAgent_process" path="/AssetRecSpecNonAgentCollateral.do?event=process_return"/>
+            <forward name="AssetRecSpecNonAgent_close" path="/AssetRecSpecNonAgentCollateral.do?event=close_return"/>
+            <forward name="AssetRecSpecNonAgent_track" path="/AssetRecSpecNonAgentCollateral.do?event=track_return"/>
+
+            <forward name="AssetGenCharge_update" path="/AssetGenChargeCollateral.do?event=update_return"/>
+            <forward name="AssetGenCharge_read" path="/AssetGenChargeCollateral.do?event=read_return"/>
+            <forward name="AssetGenCharge_process" path="/AssetGenChargeCollateral.do?event=process_return"/>
+            <forward name="AssetGenCharge_close" path="/AssetGenChargeCollateral.do?event=close_return"/>
+            <forward name="AssetGenCharge_track" path="/AssetGenChargeCollateral.do?event=track_return"/>
+            
+            <forward name="AssetSpecGold_update" path="/AssetSpecGoldCollateral.do?event=update_return"/>
+            <forward name="AssetSpecGold_read" path="/AssetSpecGoldCollateral.do?event=read_return"/>
+            <forward name="AssetSpecGold_process" path="/AssetSpecGoldCollateral.do?event=process_return"/>
+            <forward name="AssetSpecGold_close" path="/AssetSpecGoldCollateral.do?event=close_return"/>
+            <forward name="AssetSpecGold_track" path="/AssetSpecGoldCollateral.do?event=track_return"/>       
+            
+            <forward name="AssetPostDatedChqs_update" path="/AssetPostDatedChqsCollateral.do?event=update_return"/>
+            <forward name="AssetPostDatedChqs_read" path="/AssetPostDatedChqsCollateral.do?event=read_return"/>
+            <forward name="AssetPostDatedChqs_process" path="/AssetPostDatedChqsCollateral.do?event=process_return"/>
+            <forward name="AssetPostDatedChqs_close" path="/AssetPostDatedChqsCollateral.do?event=close_return"/>
+            <forward name="AssetPostDatedChqs_track" path="/AssetPostDatedChqsCollateral.do?event=track_return"/>                   
+		</action>
+		<action path="/CashPledge"
+			type="com.integrosys.cms.ui.collateral.pledge.CashPledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_cash.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_cash.jsp" />
+			</forward>
+			
+            <forward name="CashCash_update" path="/CashCashCollateral.do?event=update_return"/>
+	    	<forward name="CashRepo_update" path="/CashRepoCollateral.do?event=update_return"/>
+            <forward name="CashFd_update" path="/CashFdCollateral.do?event=update_return"/>
+            <forward name="CashCash_read" path="/CashCashCollateral.do?event=read_return"/>
+            <forward name="CashRepo_read" path="/CashRepoCollateral.do?event=read_return"/>
+            <forward name="CashFd_read" path="/CashFdCollateral.do?event=read_return"/>
+            <forward name="CashCash_process" path="/CashCashCollateral.do?event=process_return"/>
+            <forward name="CashRepo_process" path="/CashRepoCollateral.do?event=process_return"/>
+            <forward name="CashFd_process" path="/CashFdCollateral.do?event=process_return"/>
+            <forward name="CashCash_close" path="/CashCashCollateral.do?event=close_return"/>
+            <forward name="CashRepo_close" path="/CashRepoCollateral.do?event=close_return"/>
+            <forward name="CashFd_close" path="/CashFdCollateral.do?event=close_return"/>
+            <forward name="CashCash_track" path="/CashCashCollateral.do?event=track_return"/>
+            <forward name="CashRepo_track" path="/CashRepoCollateral.do?event=track_return"/>
+            <forward name="CashFd_track" path="/CashFdCollateral.do?event=track_return"/>
+		</action>
+		<action path="/DocumentPledge"
+			type="com.integrosys.cms.ui.collateral.pledge.DocumentPledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_document.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_document.jsp" />
+			</forward>
+			
+	        <forward name="DocLoU_update" path="/DocLoUCollateral.do?event=update_return"/>
+	        <forward name="DocLoU_read" path="/DocLoUCollateral.do?event=read_return"/>
+	        <forward name="DocLoU_process" path="/DocLoUCollateral.do?event=process_return"/>
+	        <forward name="DocLoU_close" path="/DocLoUCollateral.do?event=close_return"/>
+	        <forward name="DocLoU_track" path="/DocLoUCollateral.do?event=track_return"/>
+	
+	        <forward name="DocComfort_update" path="/DocComfortCollateral.do?event=update_return"/>
+	        <forward name="DocComfort_read" path="/DocComfortCollateral.do?event=read_return"/>
+	        <forward name="DocComfort_process" path="/DocComfortCollateral.do?event=process_return"/>
+	        <forward name="DocComfort_close" path="/DocComfortCollateral.do?event=close_return"/>
+	        <forward name="DocComfort_track" path="/DocComfortCollateral.do?event=track_return"/>
+	
+	        <forward name="DocPledge_update" path="/DocPledgeCollateral.do?event=update_return"/>
+	        <forward name="DocPledge_read" path="/DocPledgeCollateral.do?event=read_return"/>
+	        <forward name="DocPledge_process" path="/DocPledgeCollateral.do?event=process_return"/>
+	        <forward name="DocPledge_close" path="/DocPledgeCollateral.do?event=close_return"/>
+	        <forward name="DocPledge_track" path="/DocPledgeCollateral.do?event=track_return"/>
+	        
+	        <forward name="DocGenCredit_update" path="/DocGenCreditCollateral.do?event=update_return"/>
+	        <forward name="DocGenCredit_read" path="/DocGenCreditCollateral.do?event=read_return"/>
+	        <forward name="DocGenCredit_process" path="/DocGenCreditCollateral.do?event=process_return"/>
+	        <forward name="DocGenCredit_close" path="/DocGenCreditCollateral.do?event=close_return"/>
+	        <forward name="DocGenCredit_track" path="/DocGenCreditCollateral.do?event=track_return"/>
+	
+	        <forward name="DocDervNet_update" path="/DocDervNetCollateral.do?event=update_return"/>
+	        <forward name="DocDervNet_read" path="/DocDervNetCollateral.do?event=read_return"/>
+	        <forward name="DocDervNet_process" path="/DocDervNetCollateral.do?event=process_return"/>
+	        <forward name="DocDervNet_close" path="/DocDervNetCollateral.do?event=close_return"/>
+	        <forward name="DocDervNet_track" path="/DocDervNetCollateral.do?event=track_return"/>  
+	
+	        <forward name="DocDervISD_update" path="/DocDervISDCollateral.do?event=update_return"/>
+	        <forward name="DocDervISD_read" path="/DocDervISDCollateral.do?event=read_return"/>
+	        <forward name="DocDervISD_process" path="/DocDervISDCollateral.do?event=process_return"/>
+	        <forward name="DocDervISD_close" path="/DocDervISDCollateral.do?event=close_return"/>
+	        <forward name="DocDervISD_track" path="/DocDervISDCollateral.do?event=track_return"/>
+	
+	        <forward name="DocDoA_update" path="/DocDoACollateral.do?event=update_return"/>
+	        <forward name="DocDoA_read" path="/DocDoACollateral.do?event=read_return"/>
+	        <forward name="DocDoA_process" path="/DocDoACollateral.do?event=process_return"/>
+	        <forward name="DocDoA_close" path="/DocDoACollateral.do?event=close_return"/>
+	        <forward name="DocDoA_track" path="/DocDoACollateral.do?event=track_return"/>
+	
+	        <forward name="DocLoI_update" path="/DocLoICollateral.do?event=update_return"/>
+	        <forward name="DocLoI_read" path="/DocLoICollateral.do?event=read_return"/>
+	        <forward name="DocLoI_process" path="/DocLoICollateral.do?event=process_return"/>
+	        <forward name="DocLoI_close" path="/DocLoICollateral.do?event=close_return"/>
+	        <forward name="DocLoI_track" path="/DocLoICollateral.do?event=track_return"/>
+	        
+	        <forward name="DocAgreement_update" path="/DocAgreementCollateral.do?event=update_return"/>
+	        <forward name="DocAgreement_read" path="/DocAgreementCollateral.do?event=read_return"/>
+	        <forward name="DocAgreement_process" path="/DocAgreementCollateral.do?event=process_return"/>
+	        <forward name="DocAgreement_close" path="/DocAgreementCollateral.do?event=close_return"/>
+	        <forward name="DocAgreement_track" path="/DocAgreementCollateral.do?event=track_return"/>	
+
+			<forward name="DocDeedSub_update" path="/DocDeedSubCollateral.do?event=update_return"/>
+	        <forward name="DocDeedSub_read" path="/DocDeedSubCollateral.do?event=read_return"/>
+	        <forward name="DocDeedSub_process" path="/DocDeedSubCollateral.do?event=process_return"/>
+	        <forward name="DocDeedSub_close" path="/DocDeedSubCollateral.do?event=close_return"/>
+	        <forward name="DocDeedSub_track" path="/DocDeedSubCollateral.do?event=track_return"/>
+		</action>
+		<action path="/GuaranteesPledge"
+			type="com.integrosys.cms.ui.collateral.pledge.GuaranteesPledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_guarantees.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_guarantees.jsp" />
+			</forward>
+			
+	        <forward name="GteIndiv_update" path="/GteIndivCollateral.do?event=update_return"/>
+	        <forward name="GteIndiv_read" path="/GteIndivCollateral.do?event=read_return"/>
+	        <forward name="GteIndiv_process" path="/GteIndivCollateral.do?event=process_return"/>
+	        <forward name="GteIndiv_close" path="/GteIndivCollateral.do?event=close_return"/>
+	        <forward name="GteIndiv_track" path="/GteIndivCollateral.do?event=track_return"/>
+	
+	        <forward name="GteIndem_update" path="/GteIndemCollateral.do?event=update_return"/>
+	        <forward name="GteIndem_read" path="/GteIndemCollateral.do?event=read_return"/>
+	        <forward name="GteIndem_process" path="/GteIndemCollateral.do?event=process_return"/>
+	        <forward name="GteIndem_close" path="/GteIndemCollateral.do?event=close_return"/>
+	        <forward name="GteIndem_track" path="/GteIndemCollateral.do?event=track_return"/>
+	
+	        <forward name="GteGovt_update" path="/GteGovtCollateral.do?event=update_return"/>
+	        <forward name="GteGovt_read" path="/GteGovtCollateral.do?event=read_return"/>
+	        <forward name="GteGovt_process" path="/GteGovtCollateral.do?event=process_return"/>
+	        <forward name="GteGovt_close" path="/GteGovtCollateral.do?event=close_return"/>
+	        <forward name="GteGovt_track" path="/GteGovtCollateral.do?event=track_return"/>
+	        
+	        <forward name="GteGovtLink_update" path="/GteGovtLinkCollateral.do?event=update_return"/>
+	        <forward name="GteGovtLink_read" path="/GteGovtLinkCollateral.do?event=read_return"/>
+	        <forward name="GteGovtLink_process" path="/GteGovtLinkCollateral.do?event=process_return"/>
+	        <forward name="GteGovtLink_close" path="/GteGovtLinkCollateral.do?event=close_return"/>
+	        <forward name="GteGovtLink_track" path="/GteGovtLinkCollateral.do?event=track_return"/>	        
+	
+	        <forward name="GteCorp3rd_update" path="/GteCorp3rdCollateral.do?event=update_return"/>
+	        <forward name="GteCorp3rd_read" path="/GteCorp3rdCollateral.do?event=read_return"/>
+	        <forward name="GteCorp3rd_process" path="/GteCorp3rdCollateral.do?event=process_return"/>
+	        <forward name="GteCorp3rd_close" path="/GteCorp3rdCollateral.do?event=close_return"/>
+	        <forward name="GteCorp3rd_track" path="/GteCorp3rdCollateral.do?event=track_return"/>
+	
+	        <forward name="GteCorpRel_update" path="/GteCorpRelCollateral.do?event=update_return"/>
+	        <forward name="GteCorpRel_read" path="/GteCorpRelCollateral.do?event=read_return"/>
+	        <forward name="GteCorpRel_process" path="/GteCorpRelCollateral.do?event=process_return"/>
+	        <forward name="GteCorpRel_close" path="/GteCorpRelCollateral.do?event=close_return"/>
+	        <forward name="GteCorpRel_track" path="/GteCorpRelCollateral.do?event=track_return"/>
+	
+	        <forward name="GteSLCDiff_update" path="/GteSLCDiffCollateral.do?event=update_return"/>
+	        <forward name="GteSLCDiff_read" path="/GteSLCDiffCollateral.do?event=read_return"/>
+	        <forward name="GteSLCDiff_process" path="/GteSLCDiffCollateral.do?event=process_return"/>
+	        <forward name="GteSLCDiff_close" path="/GteSLCDiffCollateral.do?event=close_return"/>
+	        <forward name="GteSLCDiff_track" path="/GteSLCDiffCollateral.do?event=track_return"/>
+	
+	        <forward name="GteSLCSame_update" path="/GteSLCSameCollateral.do?event=update_return"/>
+	        <forward name="GteSLCSame_read" path="/GteSLCSameCollateral.do?event=read_return"/>
+	        <forward name="GteSLCSame_process" path="/GteSLCSameCollateral.do?event=process_return"/>
+	        <forward name="GteSLCSame_close" path="/GteSLCSameCollateral.do?event=close_return"/>
+	        <forward name="GteSLCSame_track" path="/GteSLCSameCollateral.do?event=track_return"/>
+	
+	        <forward name="GteBankDiff_update" path="/GteBankDiffCollateral.do?event=update_return"/>
+	        <forward name="GteBankDiff_read" path="/GteBankDiffCollateral.do?event=read_return"/>
+	        <forward name="GteBankDiff_process" path="/GteBankDiffCollateral.do?event=process_return"/>
+	        <forward name="GteBankDiff_close" path="/GteBankDiffCollateral.do?event=close_return"/>
+	        <forward name="GteBankDiff_track" path="/GteBankDiffCollateral.do?event=track_return"/>
+	
+	        <forward name="GteBankSame_update" path="/GteBankSameCollateral.do?event=update_return"/>
+	        <forward name="GteBankSame_read" path="/GteBankSameCollateral.do?event=read_return"/>
+	        <forward name="GteBankSame_process" path="/GteBankSameCollateral.do?event=process_return"/>
+	        <forward name="GteBankSame_close" path="/GteBankSameCollateral.do?event=close_return"/>
+	        <forward name="GteBankSame_track" path="/GteBankSameCollateral.do?event=track_return"/>
+
+	        <forward name="GteInwardLC_update" path="/GteInwardLCCollateral.do?event=update_return"/>
+	        <forward name="GteInwardLC_read" path="/GteInwardLCCollateral.do?event=read_return"/>
+	        <forward name="GteInwardLC_process" path="/GteInwardLCCollateral.do?event=process_return"/>
+	        <forward name="GteInwardLC_close" path="/GteInwardLCCollateral.do?event=close_return"/>
+	        <forward name="GteInwardLC_track" path="/GteInwardLCCollateral.do?event=track_return"/>
+	        
+		</action>
+		<action path="/InsurancePledge"
+			type="com.integrosys.cms.ui.collateral.pledge.InsurancePledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_insurance.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_insurance.jsp" />
+			</forward>
+	        <forward name="InsKeyman_update" path="/InsKeymanCollateral.do?event=update_return"/>
+	        <forward name="InsKeyman_read" path="/InsKeymanCollateral.do?event=read_return"/>
+	        <forward name="InsKeyman_process" path="/InsKeymanCollateral.do?event=process_return"/>
+	        <forward name="InsKeyman_close" path="/InsKeymanCollateral.do?event=close_return"/>
+	        <forward name="InsKeyman_track" path="/InsKeymanCollateral.do?event=track_return"/>
+	
+	        <forward name="InsCrdt_update" path="/InsCrdtCollateral.do?event=update_return"/>
+	        <forward name="InsCrdt_read" path="/InsCrdtCollateral.do?event=read_return"/>
+	        <forward name="InsCrdt_process" path="/InsCrdtCollateral.do?event=process_return"/>
+	        <forward name="InsCrdt_close" path="/InsCrdtCollateral.do?event=close_return"/>
+	        <forward name="InsCrdt_track" path="/InsCrdtCollateral.do?event=track_return"/>
+	
+	        <forward name="InsCrdtDeriv_update" path="/InsCrdtDerivCollateral.do?event=update_return"/>
+	        <forward name="InsCrdtDeriv_read" path="/InsCrdtDerivCollateral.do?event=read_return"/>
+	        <forward name="InsCrdtDeriv_process" path="/InsCrdtDerivCollateral.do?event=process_return"/>
+	        <forward name="InsCrdtDeriv_close" path="/InsCrdtDerivCollateral.do?event=close_return"/>
+	        <forward name="InsCrdtDeriv_track" path="/InsCrdtDerivCollateral.do?event=track_return"/>
+	
+	        <forward name="InsSwap_update" path="/InsSwapCollateral.do?event=update_return"/>
+	        <forward name="InsSwap_read" path="/InsSwapCollateral.do?event=read_return"/>
+	        <forward name="InsSwap_process" path="/InsSwapCollateral.do?event=process_return"/>
+	        <forward name="InsSwap_close" path="/InsSwapCollateral.do?event=close_return"/>
+	        <forward name="InsSwap_track" path="/InsSwapCollateral.do?event=track_return"/>    
+		</action>
+		<action path="/SecuritiesPledge"
+			type="com.integrosys.cms.ui.collateral.pledge.SecuritiesPledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_securities.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_securities.jsp" />
+			</forward>
+			
+	        <forward name="MarksecMainLocal_update" path="/MarksecMainLocalCollateral.do?event=update_return"/>
+	        <forward name="MarksecMainLocal_read" path="/MarksecMainLocalCollateral.do?event=read_return"/>
+	        <forward name="MarksecMainLocal_process" path="/MarksecMainLocalCollateral.do?event=process_return"/>
+	        <forward name="MarksecMainLocal_close" path="/MarksecMainLocalCollateral.do?event=close_return"/>
+	        <forward name="MarksecMainLocal_track" path="/MarksecMainLocalCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecMainForeign_update" path="/MarksecMainForeignCollateral.do?event=update_return"/>
+	        <forward name="MarksecMainForeign_read" path="/MarksecMainForeignCollateral.do?event=read_return"/>
+	        <forward name="MarksecMainForeign_process" path="/MarksecMainForeignCollateral.do?event=process_return"/>
+	        <forward name="MarksecMainForeign_close" path="/MarksecMainForeignCollateral.do?event=close_return"/>
+	        <forward name="MarksecMainForeign_track" path="/MarksecMainForeignCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecOtherListedLocal_update" path="/MarksecOtherListedLocalCollateral.do?event=update_return"/>
+	        <forward name="MarksecOtherListedLocal_read" path="/MarksecOtherListedLocalCollateral.do?event=read_return"/>
+	        <forward name="MarksecOtherListedLocal_process" path="/MarksecOtherListedLocalCollateral.do?event=process_return"/>
+	        <forward name="MarksecOtherListedLocal_close" path="/MarksecOtherListedLocalCollateral.do?event=close_return"/>
+	        <forward name="MarksecOtherListedLocal_track" path="/MarksecOtherListedLocalCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecOtherListedForeign_update" path="/MarksecOtherListedForeignCollateral.do?event=update_return"/>
+	        <forward name="MarksecOtherListedForeign_read" path="/MarksecOtherListedForeignCollateral.do?event=read_return"/>
+	        <forward name="MarksecOtherListedForeign_process" path="/MarksecOtherListedForeignCollateral.do?event=process_return"/>
+	        <forward name="MarksecOtherListedForeign_close" path="/MarksecOtherListedForeignCollateral.do?event=close_return"/>
+	        <forward name="MarksecOtherListedForeign_track" path="/MarksecOtherListedForeignCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecBill_update" path="/MarksecBillCollateral.do?event=update_return"/>
+	        <forward name="MarksecBill_read" path="/MarksecBillCollateral.do?event=read_return"/>
+	        <forward name="MarksecBill_process" path="/MarksecBillCollateral.do?event=process_return"/>
+	        <forward name="MarksecBill_close" path="/MarksecBillCollateral.do?event=close_return"/>
+	        <forward name="MarksecBill_track" path="/MarksecBillCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecGovtForeignSame_update" path="/MarksecGovtForeignSameCollateral.do?event=update_return"/>
+	        <forward name="MarksecGovtForeignSame_read" path="/MarksecGovtForeignSameCollateral.do?event=read_return"/>
+	        <forward name="MarksecGovtForeignSame_process" path="/MarksecGovtForeignSameCollateral.do?event=process_return"/>
+	        <forward name="MarksecGovtForeignSame_close" path="/MarksecGovtForeignSameCollateral.do?event=close_return"/>
+	        <forward name="MarksecGovtForeignSame_track" path="/MarksecGovtForeignSameCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecGovtForeignDiff_update" path="/MarksecGovtForeignDiffCollateral.do?event=update_return"/>
+	        <forward name="MarksecGovtForeignDiff_read" path="/MarksecGovtForeignDiffCollateral.do?event=read_return"/>
+	        <forward name="MarksecGovtForeignDiff_process" path="/MarksecGovtForeignDiffCollateral.do?event=process_return"/>
+	        <forward name="MarksecGovtForeignDiff_close" path="/MarksecGovtForeignDiffCollateral.do?event=close_return"/>
+	        <forward name="MarksecGovtForeignDiff_track" path="/MarksecGovtForeignDiffCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecNonListedLocal_update" path="/MarksecNonListedLocalCollateral.do?event=update_return"/>
+	        <forward name="MarksecNonListedLocal_read" path="/MarksecNonListedLocalCollateral.do?event=read_return"/>
+	        <forward name="MarksecNonListedLocal_process" path="/MarksecNonListedLocalCollateral.do?event=process_return"/>
+	        <forward name="MarksecNonListedLocal_close" path="/MarksecNonListedLocalCollateral.do?event=close_return"/>
+	        <forward name="MarksecNonListedLocal_track" path="/MarksecNonListedLocalCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecCustSec_update" path="/MarksecCustSecCollateral.do?event=update_return"/>
+	        <forward name="MarksecCustSec_read" path="/MarksecCustSecCollateral.do?event=read_return"/>
+	        <forward name="MarksecCustSec_process" path="/MarksecCustSecCollateral.do?event=process_return"/>
+	        <forward name="MarksecCustSec_close" path="/MarksecCustSecCollateral.do?event=close_return"/>
+	        <forward name="MarksecCustSec_track" path="/MarksecCustSecCollateral.do?event=track_return"/>
+	   
+	        <forward name="MarksecSCBSec_update" path="/MarksecSCBSecCollateral.do?event=update_return"/>
+	        <forward name="MarksecSCBSec_read" path="/MarksecSCBSecCollateral.do?event=read_return"/>
+	        <forward name="MarksecSCBSec_process" path="/MarksecSCBSecCollateral.do?event=process_return"/>
+	        <forward name="MarksecSCBSec_close" path="/MarksecSCBSecCollateral.do?event=close_return"/>
+	        <forward name="MarksecSCBSec_track" path="/MarksecSCBSecCollateral.do?event=track_return"/>
+	   
+	        <forward name="MarksecBondLocal_update" path="/MarksecBondLocalCollateral.do?event=update_return"/>
+	        <forward name="MarksecBondLocal_read" path="/MarksecBondLocalCollateral.do?event=read_return"/>
+	        <forward name="MarksecBondLocal_process" path="/MarksecBondLocalCollateral.do?event=process_return"/>
+	        <forward name="MarksecBondLocal_close" path="/MarksecBondLocalCollateral.do?event=close_return"/>
+	        <forward name="MarksecBondLocal_track" path="/MarksecBondLocalCollateral.do?event=track_return"/>
+	
+	        <forward name="MarksecBondForeign_update" path="/MarksecBondForeignCollateral.do?event=update_return"/>
+	        <forward name="MarksecBondForeign_read" path="/MarksecBondForeignCollateral.do?event=read_return"/>
+	        <forward name="MarksecBondForeign_process" path="/MarksecBondForeignCollateral.do?event=process_return"/>
+	        <forward name="MarksecBondForeign_close" path="/MarksecBondForeignCollateral.do?event=close_return"/>
+	        <forward name="MarksecBondForeign_track" path="/MarksecBondForeignCollateral.do?event=track_return"/>		</action>
+		<action path="/OthersPledge"
+			type="com.integrosys.cms.ui.collateral.pledge.OthersPledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_others.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_others.jsp" />
+			</forward>
+            <forward name="Othersa_update" path="/OthersaCollateral.do?event=update_return"/>
+            <forward name="Othersa_read" path="/OthersaCollateral.do?event=read_return"/>
+            <forward name="Othersa_process" path="/OthersaCollateral.do?event=process_return"/>
+            <forward name="Othersa_close" path="/OthersaCollateral.do?event=close_return"/>
+            <forward name="Othersa_track" path="/OthersaCollateral.do?event=track_return"/>
+		</action>
+		<action path="/PropertyPledge"
+			type="com.integrosys.cms.ui.collateral.pledge.PropertyPledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_property.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_property.jsp" />
+			</forward>
+	        <forward name="PropAgri_update" path="/PropAgriCollateral.do?event=update_return"/>
+	        <forward name="PropAgri_read" path="/PropAgriCollateral.do?event=read_return"/>
+	        <forward name="PropAgri_process" path="/PropAgriCollateral.do?event=process_return"/>
+	        <forward name="PropAgri_close" path="/PropAgriCollateral.do?event=close_return"/>
+	        <forward name="PropAgri_track" path="/PropAgriCollateral.do?event=track_return"/>
+	  
+	        <forward name="PropRural_update" path="/PropRuralCollateral.do?event=update_return"/>
+	        <forward name="PropRural_read" path="/PropRuralCollateral.do?event=read_return"/>
+	        <forward name="PropRural_process" path="/PropRuralCollateral.do?event=process_return"/>
+	        <forward name="PropRural_close" path="/PropRuralCollateral.do?event=close_return"/>
+	        <forward name="PropRural_track" path="/PropRuralCollateral.do?event=track_return"/>
+	
+	        <forward name="PropCommGeneral_update" path="/PropCommGeneralCollateral.do?event=update_return"/>
+	        <forward name="PropCommGeneral_read" path="/PropCommGeneralCollateral.do?event=read_return"/>
+	        <forward name="PropCommGeneral_process" path="/PropCommGeneralCollateral.do?event=process_return"/>
+	        <forward name="PropCommGeneral_close" path="/PropCommGeneralCollateral.do?event=close_return"/>
+	        <forward name="PropCommGeneral_track" path="/PropCommGeneralCollateral.do?event=track_return"/>  
+	
+	        <forward name="PropCommShop_update" path="/PropCommShopCollateral.do?event=update_return"/>
+	        <forward name="PropCommShop_read" path="/PropCommShopCollateral.do?event=read_return"/>
+	        <forward name="PropCommShop_process" path="/PropCommShopCollateral.do?event=process_return"/>
+	        <forward name="PropCommShop_close" path="/PropCommShopCollateral.do?event=close_return"/>
+	        <forward name="PropCommShop_track" path="/PropCommShopCollateral.do?event=track_return"/>
+	
+	        <forward name="PropCommServiceApt_update" path="/PropCommServiceAptCollateral.do?event=update_return"/>
+	        <forward name="PropCommServiceApt_read" path="/PropCommServiceAptCollateral.do?event=read_return"/>
+	        <forward name="PropCommServiceApt_process" path="/PropCommServiceAptCollateral.do?event=process_return"/>
+	        <forward name="PropCommServiceApt_close" path="/PropCommServiceAptCollateral.do?event=close_return"/>
+	        <forward name="PropCommServiceApt_track" path="/PropCommServiceAptCollateral.do?event=track_return"/>
+	        
+	        <forward name="PropIndusSpec_update" path="/PropIndusSpecCollateral.do?event=update_return"/>
+	        <forward name="PropIndusSpec_read" path="/PropIndusSpecCollateral.do?event=read_return"/>
+	        <forward name="PropIndusSpec_process" path="/PropIndusSpecCollateral.do?event=process_return"/>
+	        <forward name="PropIndusSpec_close" path="/PropIndusSpecCollateral.do?event=close_return"/>
+	        <forward name="PropIndusSpec_track" path="/PropIndusSpecCollateral.do?event=track_return"/>        
+	
+	        <forward name="PropIndus_update" path="/PropIndusCollateral.do?event=update_return"/>
+	        <forward name="PropIndus_read" path="/PropIndusCollateral.do?event=read_return"/>
+	        <forward name="PropIndus_process" path="/PropIndusCollateral.do?event=process_return"/>
+	        <forward name="PropIndus_close" path="/PropIndusCollateral.do?event=close_return"/>
+	        <forward name="PropIndus_track" path="/PropIndusCollateral.do?event=track_return"/>
+	
+	        <forward name="PropResStd_update" path="/PropResStdCollateral.do?event=update_return"/>
+	        <forward name="PropResStd_read" path="/PropResStdCollateral.do?event=read_return"/>
+	        <forward name="PropResStd_process" path="/PropResStdCollateral.do?event=process_return"/>
+	        <forward name="PropResStd_close" path="/PropResStdCollateral.do?event=close_return"/>
+	        <forward name="PropResStd_track" path="/PropResStdCollateral.do?event=track_return"/>
+	
+	        <forward name="PropResLux_update" path="/PropResLuxCollateral.do?event=update_return"/>
+	        <forward name="PropResLux_read" path="/PropResLuxCollateral.do?event=read_return"/>
+	        <forward name="PropResLux_process" path="/PropResLuxCollateral.do?event=process_return"/>
+	        <forward name="PropResLux_close" path="/PropResLuxCollateral.do?event=close_return"/>
+	        <forward name="PropResLux_track" path="/PropResLuxCollateral.do?event=track_return"/>  
+	
+	        <forward name="PropSpHotel_update" path="/PropSpHotelCollateral.do?event=update_return"/>
+	        <forward name="PropSpHotel_read" path="/PropSpHotelCollateral.do?event=read_return"/>
+	        <forward name="PropSpHotel_process" path="/PropSpHotelCollateral.do?event=process_return"/>
+	        <forward name="PropSpHotel_close" path="/PropSpHotelCollateral.do?event=close_return"/>
+	        <forward name="PropSpHotel_track" path="/PropSpHotelCollateral.do?event=track_return"/>  
+	        
+	        <forward name="PropSpOther_update" path="/PropSpOtherCollateral.do?event=update_return"/>
+	        <forward name="PropSpOther_read" path="/PropSpOtherCollateral.do?event=read_return"/>
+	        <forward name="PropSpOther_process" path="/PropSpOtherCollateral.do?event=process_return"/>
+	        <forward name="PropSpOther_close" path="/PropSpOtherCollateral.do?event=close_return"/>
+	        <forward name="PropSpOther_track" path="/PropSpOtherCollateral.do?event=track_return"/>  
+	
+	        <forward name="PropLandUrban_update" path="/PropLandUrbanCollateral.do?event=update_return"/>
+	        <forward name="PropLandUrban_read" path="/PropLandUrbanCollateral.do?event=read_return"/>
+	        <forward name="PropLandUrban_process" path="/PropLandUrbanCollateral.do?event=process_return"/>
+	        <forward name="PropLandUrban_close" path="/PropLandUrbanCollateral.do?event=close_return"/>
+	        <forward name="PropLandUrban_track" path="/PropLandUrbanCollateral.do?event=track_return"/>  
+		</action>
+		<action path="/CleanPledge"
+			type="com.integrosys.cms.ui.collateral.pledge.CleanPledgeAction"
+			name="PledgeForm" validate="false" scope="request">
+			<forward name="add_pledge_prepare" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_clean.jsp" />
+			</forward>
+			<forward name="view" path="/template/common_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="rightFrame" value="/collateral/pledge/pledge_detail_clean.jsp" />
+			</forward>
+	        <forward name="NoCollateral_update" path="/NoCollateral.do?event=update_return"/>
+	        <forward name="NoCollateral_read" path="/NoCollateral.do?event=read_return"/>
+	        <forward name="NoCollateral_process" path="/NoCollateral.do?event=process_return"/>
+	        <forward name="NoCollateral_close" path="/NoCollateral.do?event=close_return"/>
+	        <forward name="NoCollateral_track" path="/NoCollateral.do?event=track_return"/>
+		</action>			
+	</action-mappings>
+
+
+	<message-resources key="message-col-pledge"
+		parameter="ApplicationResources-col-pledge" />
+</struts-config>

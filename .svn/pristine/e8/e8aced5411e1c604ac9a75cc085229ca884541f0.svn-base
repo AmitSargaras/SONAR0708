@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+	SELECT DISTINCT 
+	 ROW_NUMBER()
+   OVER (ORDER BY SYSTEM_ID) AS sr_no,
+	FILE_NAME                      ,
+REJECT_DATE AS REJECT_DATE     ,
+REJECT_REASON,
+SYSTEM_ID                       ,
+LIEN_NUMBER                     ,
+SERIAL_NO                       ,
+CMS_COLLATERAL_ID              ,
+COLLATERAL_CODE                ,
+SUBTYPE_NAME                    ,
+DEPOSIT_RECEIPT_NUMBER          ,
+DEPOSIT_AMOUNT                  ,
+LIEN_AMOUNT                    ,
+DEPOSIT_AMOUNT_CURRENCY        ,
+SCI_SECURITY_CURRENCY          ,
+SYSTEM_NAME
+
+
+from CMS_FCC_COL_DOWNLOAD_FILE 
+  		</query>
+		<whereClause>
+			<mandatoryClause>
+				FD_SYSTEMS_NAME = 
+			</mandatoryClause>
+			<param>
+				<name>systemName</name>
+				<condition>  </condition>
+			</param>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Sr No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>File Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>Rejection Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Reject Reason</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Liability ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Line ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>Serial No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Collateral Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Collateral Description</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Collateral Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Collateral Number (FD Number)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Collateral Amount (FD Amount)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>FD Lien Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>Line Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>System Name where FD is booked</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>NPA-FD-HK-Reject Report
+			</reportName>
+		</reportParamters>
+	</report>
+</reports>

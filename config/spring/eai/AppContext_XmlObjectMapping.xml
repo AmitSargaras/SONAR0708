@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		All the castor's marshaller and unmarshaller for XOM
+	</description>
+
+	<bean id="messageMarshallerFactory" class="com.integrosys.cms.host.eai.castor.CastorMessageIdBaseMessageMarshallerFactory">
+		<property name="messageIdUnmarshallerMap">
+			<map key-type="java.lang.String" value-type="org.exolab.castor.xml.Unmarshaller">
+				<entry key="AC001" value-ref="eaiAcknowlegmentUnmarshaller" />
+				<entry key="CU001" value-ref="eaiCustomerUnmarshaller" />
+				<entry key="CA001" value-ref="eaiCreditApplicationUnmarshaller" />
+				<entry key="CA002I" value-ref="eaiLimitProfileListingInquiryUnmarshaller" />
+				<entry key="CA003I" value-ref="eaiLimitProfileInquiryUnmarshaller" />
+				<entry key="CO001" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO002" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO003" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO004" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO005" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO006" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO007" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO008" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO009" value-ref="eaiCollateralUnmarshaller" />
+				<entry key="CO010I" value-ref="eaiCollateralInquiryUnmarshaller" />
+				<entry key="DC001I" value-ref="eaiTemplateInquiryUnmarshaller" />
+				<entry key="DC002I" value-ref="eaiDocumentInquiryUnmarshaller" />
+				<entry key="DC003" value-ref="eaiDocumentInputUnmarshaller" />
+				<entry key="CV001" value-ref="eaiCovenantInputUnmarshaller" />
+				<entry key="CV002I" value-ref="eaiConvenantInquiryUnmarshaller" />
+				<entry key="SS001I" value-ref="eaiSharedSecurityInquiryUnmarshaller" />
+			</map>
+		</property>
+		<property name="messageIdMarshallerMap">
+			<map key-type="java.lang.String" value-type="org.exolab.castor.xml.Marshaller">
+				<entry key="AC001" value-ref="eaiAcknowlegmentMarshaller" />
+				<entry key="AC002" value-ref="eaiLimitProfileAcknowledgmentMarshaller" />
+                <entry key="CA002R" value-ref="eaiLimitProfileListingResponseMarshaller" />
+				<entry key="CA003R" value-ref="eaiLimitProfileResponseMarshaller" />
+				<entry key="CO001R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="CO002R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="CO003R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="CO004R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="CO005R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="CO006R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="CO007R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="CO008R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="CO009R" value-ref="eaiCollateralResponseMarshaller" />
+				<entry key="DC001R" value-ref="eaiTemplateResponseMarshaller" />
+				<entry key="DC002R" value-ref="eaiDocumentResponseMarshaller" />
+				<entry key="CV002R" value-ref="eaiConvenantResponseMarshaller" />
+				<entry key="SS001R" value-ref="eaiSharedSecurityResponseMarshaller" />
+                <entry key="CU001" value-ref="eaiCustomerMarshaller" />
+            </map>
+		</property>
+	</bean>
+	
+	<bean id="eaiAcknowlegmentUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:response.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiAcknowlegmentMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:response.cm.xml" />
+	</bean>
+	
+	<bean id="eaiCreditApplicationUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:EaiMapping-aa_Master.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+
+	<bean id="eaiLimitProfileAcknowledgmentMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:aa-ack-response.cm.xml" />
+	</bean>
+	
+	<bean id="eaiLimitProfileListingInquiryUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:aa-listing-inquiry.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiLimitProfileListingResponseMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:aa-listing-response.cm.xml" />
+	</bean>
+	
+	<bean id="eaiLimitProfileInquiryUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:aa-inquiry.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiLimitProfileResponseMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:aa-response.cm.xml" />
+	</bean>
+
+	<bean id="eaiCustomerMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:EaiMapping-customer_Master.xml" />
+	</bean>
+
+    <bean id="eaiCustomerUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:EaiMapping-customer_Master.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiCollateralUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:EaiMapping-collateral_Master.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiCollateralInquiryUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:collateral-inquiry.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiCollateralResponseMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:EaiMapping-collateral-response_Master.xml" />
+	</bean>
+	
+	<bean id="eaiCovenantInputUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:EaiMapping-covenant_Master.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiConvenantResponseMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:convenant-response.cm.xml" />
+	</bean>
+	
+	<bean id="eaiConvenantInquiryUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:convenant-inquiry.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiTemplateInquiryUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:checklisttemplate-inquiry.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiTemplateResponseMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:checklisttemplate-response.cm.xml" />
+	</bean>
+	
+	<bean id="eaiDocumentInquiryUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:document-chkinquiry.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiDocumentResponseMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:document-chkresponse.cm.xml" />
+	</bean>
+	
+	<bean id="eaiDocumentInputUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:document-input.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiSharedSecurityInquiryUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:sharedsecurity-inquiry.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="eaiSharedSecurityResponseMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:sharedsecurity-response.cm.xml" />
+	</bean>
+
+</beans>

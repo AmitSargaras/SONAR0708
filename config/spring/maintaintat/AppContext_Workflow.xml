@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+	
+
+    <!-- tat transaction read and trx controller -->
+
+
+    <bean id="tatParamTrxController" class="com.integrosys.cms.app.maintaintat.trx.TatParamTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="MakerSaveStageDurationOperation" value-ref="TatParamTrx.MakerSaveStageDurationOperation" />
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager" />
+    </bean>
+
+
+    <!-- tat transaction operations -->
+    <bean id="TatParamTrx.MakerSaveStageDurationOperation" class="com.integrosys.cms.app.maintaintat.trx.MakerSaveStageDurationOperation">
+        <property name="tatParamBusManager" ref="tatParamBusManager" />
+        <property name="stageTatParamBusManager" ref="stageTatParamBusManager" />
+    </bean>
+
+    
+
+</beans>

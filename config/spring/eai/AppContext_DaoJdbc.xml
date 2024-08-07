@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		All the Hibernate and Jdbc DAOs go here.
+	</description>
+
+	<bean id="logMessageJdbc" class="com.integrosys.cms.host.eai.log.LogMessageJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter">
+			<bean class="com.integrosys.base.techinfra.dbsupport.DateSequencerFormatter" />
+		</property>
+	</bean>
+	
+	<bean id="securityJdbc" class="com.integrosys.cms.host.eai.security.bus.SecurityJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="securitySearchCount" value="50" />
+	</bean>
+	
+	<bean id="chargeDetailJdbc" class="com.integrosys.cms.host.eai.limit.bus.ChargeDetailJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>	
+	
+	<bean id="customerDao" class="com.integrosys.cms.host.eai.customer.bus.CustomerDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="limitDao" class="com.integrosys.cms.host.eai.limit.bus.LimitDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="securityDao" class="com.integrosys.cms.host.eai.security.bus.SecurityDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+
+	<bean id="documentDao" class="com.integrosys.cms.host.eai.document.bus.DocumentDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="documentDaoJdbc" class="com.integrosys.cms.host.eai.document.bus.DocumentDaoJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+	
+	<bean id="covenantDao" class="com.integrosys.cms.host.eai.covenant.bus.CovenantDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+		
+	<bean id="limitJdbc" class="com.integrosys.cms.host.eai.limit.bus.LimitJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+</beans>

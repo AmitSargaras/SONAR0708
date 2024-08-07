@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select rate.CURRENCY_CODE,rate.EXCHANGE_RATE_OLD,
+			rate.EXCHANGE_RATE_NEW,to_char(rate.EXCHANGE_DATE,'dd-Mon-yyyy'),
+			rate.UPLOAD_STATUS,rate.FILE_NAME,
+			rate.UPLOAD_TIME 
+			from cms_exchange_rate_report rate
+		</query>
+		<whereClause>
+			<param>
+				<name>fromDate</name>
+				<condition> TRUNC(rate.upload_date) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CURRENCY CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>EXCHANGE RATE OLD</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>EXCHANGE RATE NEW</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>EXCHANGE DATE NEW</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>UPLOAD STATUS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>FILE NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>UPLOAD TIME</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Exchange Rate Upload</reportName>
+		</reportParamters>
+	</report>
+</reports>

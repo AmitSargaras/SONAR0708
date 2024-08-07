@@ -1,0 +1,14 @@
+SELECT rpt.module_name AS "Master Type",
+  th.transaction_date AS "Transaction Date",
+  th.transaction_id AS "Transaction ID",
+  usr.login_id                               AS "Maker ID",
+  usr.user_name                              AS "Maker Name",
+  GET_ACTIVITY_MESSAGE(FROM_STATE,TO_STATE)  AS "Status",
+  TO_CHAR(th.transaction_date,'DD-Mon-YYYY') AS "Maker Date",
+  TO_CHAR(th.transaction_date,'HH:MI AM')    AS "Maker Time"
+FROM TRANS_HISTORY th,
+  CMS_USER usr,
+  trx_type_report rpt
+WHERE usr.user_id       = th.user_id
+AND th.transaction_type = rpt.transaction_type
+AND rpt.belongs_to      ='MASTERS';

@@ -1,0 +1,225 @@
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+
+<html:hidden name="ManualInputCustomerInfoForm" property="udf1" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf2" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf3" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf4" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf5" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf6" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf7" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf8" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf9" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf10" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf11" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf12" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf13" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf14" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf15" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf16" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf17" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf18" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf19" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf20" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf21" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf22" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf23" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf24" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf25" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf26" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf27" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf28" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf29" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf30" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf31" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf32" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf33" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf34" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf35" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf36" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf37" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf38" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf39" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf40" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf41" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf42" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf43" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf44" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf45" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf46" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf47" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf48" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf49" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf50" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf51" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf52" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf53" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf54" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf55" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf56" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf57" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf58" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf59" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf60" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf61" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf62" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf63" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf64" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf65" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf66" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf67" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf68" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf69" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf70" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf71" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf72" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf73" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf74" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf75" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf76" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf77" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf78" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf79" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf80" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf81" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf82" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf83" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf84" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf85" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf86" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf87" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf88" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf89" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf90" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf91" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf92" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf93" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf94" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf95" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf96" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf97" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf98" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf99" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf100" />
+
+<html:hidden name="ManualInputCustomerInfoForm" property="udf101" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf102" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf103" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf104" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf105" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf106" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf107" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf108" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf109" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf110" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf111" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf112" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf113" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf114" />
+<html:hidden name="ManualInputCustomerInfoForm" property="udf115" />
+
+                <html:hidden name="ManualInputCustomerInfoForm" property="udf116" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf117" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf118" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf119" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf120" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf121" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf122" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf123" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf124" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf125" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf126" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf127" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf128" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf129" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf130" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf131" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf132" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf133" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf134" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf135" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf136" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf137" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf138" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf139" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf140" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf141" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf142" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf143" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf144" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf145" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf146" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf147" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf148" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf149" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf150" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf151" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf152" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf153" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf154" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf155" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf156" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf157" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf158" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf159" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf160" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf161" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf162" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf163" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf164" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf165" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf166" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf167" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf168" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf169" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf170" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf171" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf172" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf173" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf174" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf175" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf176" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf177" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf178" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf179" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf180" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf181" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf182" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf183" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf184" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf185" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf186" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf187" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf188" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf189" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf190" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf191" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf192" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf193" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf194" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf195" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf196" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf197" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf198" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf199" />
+			    <html:hidden name="ManualInputCustomerInfoForm" property="udf200" />
+			    
+			    <html:hidden name="ManualInputCustomerInfoForm" property="udf201" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf202" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf203" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf204" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf205" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf206" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf207" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf208" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf209" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf210" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf211" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf212" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf213" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf214" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="udf215" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="coBorrowerId" />
+				<html:hidden name="ManualInputCustomerInfoForm" property="coBorrowerName" />
+
+<script language="javascript">
+</script>

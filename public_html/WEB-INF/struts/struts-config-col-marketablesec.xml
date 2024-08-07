@@ -1,0 +1,1638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="MarksecMainLocalForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecmainlocal.MarksecMainLocalForm">
+        </form-bean>
+
+        <form-bean name="MarksecMainForeignForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecmainforeign.MarksecMainForeignForm">
+        </form-bean>
+
+        <form-bean name="MarksecOtherListedLocalForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecotherlistedlocal.MarksecOtherListedLocalForm">
+        </form-bean>
+
+        <form-bean name="MarksecOtherListedForeignForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecotherlistedforeign.MarksecOtherListedForeignForm">
+        </form-bean>
+
+        <form-bean name="MarksecBillForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecbill.MarksecBillForm">
+        </form-bean>
+
+        <form-bean name="MarksecGovtForeignSameForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecgovtforeignsame.MarksecGovtForeignSameForm">
+        </form-bean>
+
+        <form-bean name="MarksecGovtForeignDiffForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecgovtforeigndiff.MarksecGovtForeignDiffForm">
+        </form-bean>
+
+        <form-bean name="MarksecNonListedLocalForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecnonlistedlocal.MarksecNonListedLocalForm">
+        </form-bean>
+
+        <form-bean name="MarksecCustSecForm" type="com.integrosys.cms.ui.collateral.marketablesec.markseccustsec.MarksecCustSecForm">
+        </form-bean>
+
+        <form-bean name="MarksecSCBSecForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecscbsec.MarksecSCBSecForm">
+        </form-bean>
+
+        <form-bean name="MarksecBondLocalForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecbondlocal.MarksecBondLocalForm">
+        </form-bean>
+
+        <form-bean name="MarksecBondForeignForm" type="com.integrosys.cms.ui.collateral.marketablesec.marksecbondforeign.MarksecBondForeignForm">
+        </form-bean>
+
+        <form-bean name="PortItemForm" type="com.integrosys.cms.ui.collateral.marketablesec.PortItemForm">
+        </form-bean>
+        
+        <form-bean name="MarkValuationFromLOSForm" type="com.integrosys.cms.ui.collateral.valuationfromlos.MarkValuationFromLOSForm">
+        </form-bean>
+    
+    	<form-bean name="MarketableEquityLineDetailForm" type="com.integrosys.cms.ui.collateral.marketablesec.linedetail.MarketableEquityLineDetailForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/MarksecMainLocalCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecmainlocal.MarksecMainLocalAction" name="MarksecMainLocalForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecmainlocal_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecmainlocal_prepare_PORTITEM" path="/MarketPortItem.do"/>             
+            <forward name="prepare_update_code_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="prepare_update_code" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_scriptcode" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/MarksecMainLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+            
+            <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+            <forward name="refresh_city_id" path="/collateral/common/refresh_maker_create_city.jsp"/>
+        </action>
+
+        <action path="/MarksecMainForeignCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecmainforeign.MarksecMainForeignAction" name="MarksecMainForeignForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecmainforeign_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecmainforeign_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/MarksecMainForeign_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+        </action>
+
+        <action path="/MarksecOtherListedLocalCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecotherlistedlocal.MarksecOtherListedLocalAction" name="MarksecOtherListedLocalForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecotherlistedlocal_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecotherlistedlocal_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/MarksecOtherListedLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+            
+            <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+            <forward name="refresh_city_id" path="/collateral/common/refresh_maker_create_city.jsp"/>
+        </action>
+
+        <action path="/MarksecOtherListedForeignCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecotherlistedforeign.MarksecOtherListedForeignAction" name="MarksecOtherListedForeignForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecotherlistedforeign_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecotherlistedforeign_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/MarksecOtherListedForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+        </action>
+
+        <action path="/MarksecBillCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecbill.MarksecBillAction" name="MarksecBillForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbill_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecbill_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/MarksecBill_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+        </action>
+
+        <action path="/MarksecGovtForeignSameCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecgovtforeignsame.MarksecGovtForeignSameAction" name="MarksecGovtForeignSameForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecgovtforeignsame_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecgovtforeignsame_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/MarksecGovtForeignSame_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+        </action>
+
+        <action path="/MarksecGovtForeignDiffCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecgovtforeigndiff.MarksecGovtForeignDiffAction" name="MarksecGovtForeignDiffForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecgovtforeigndiff_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecgovtforeigndiff_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/MarksecGovtForeignDiff_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+        </action>
+
+        <action path="/MarksecNonListedLocalCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecnonlistedlocal.MarksecNonListedLocalAction" name="MarksecNonListedLocalForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecnonlistedlocal_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecnonlistedlocal_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/MarksecNonListedLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+        </action>
+
+        <action path="/MarksecCustSecCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.markseccustsec.MarksecCustSecAction" name="MarksecCustSecForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="markseccustsec_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="markseccustsec_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/MarksecCustSec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+        </action>
+
+        <action path="/MarksecSCBSecCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecscbsec.MarksecSCBSecAction" name="MarksecSCBSecForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecscbsec_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecscbsec_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/MarksecSCBSec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+        </action>
+
+        <action path="/MarksecBondLocalCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecbondlocal.MarksecBondLocalAction" name="MarksecBondLocalForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbondlocal_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecbondlocal_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/MarksecBondLocal_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+            
+            <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+            <forward name="refresh_city_id" path="/collateral/common/refresh_maker_create_city.jsp"/>
+        </action>
+
+        <action path="/MarksecBondForeignCollateral" type="com.integrosys.cms.ui.collateral.marketablesec.marksecbondforeign.MarksecBondForeignAction" name="MarksecBondForeignForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbondforeign_prepare_update_sub_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="marksecbondforeign_prepare_PORTITEM" path="/MarketPortItem.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="title" value="title.security"/>
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_update.jsp"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/MarksecBondForeign_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/MarkSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/SecuritiesPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/SecuritiesPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/SecuritiesPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/SecuritiesPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/SecuritiesPledge.do?event=view"/>
+        </action>
+
+        <action path="/MarketPortItem" type="com.integrosys.cms.ui.collateral.marketablesec.PortItemAction" name="PortItemForm" validate="false" scope="request">
+            <forward name="marksecbill_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbill_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbill_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbill/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbondforeign_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbondforeign_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>            
+            <forward name="marksecbondforeign_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondforeign/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbondlocal_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbondlocal_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecbondlocal_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecbondlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="markseccustsec_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="markseccustsec_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="markseccustsec_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/markseccustsec/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecgovtforeigndiff_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecgovtforeigndiff_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecgovtforeigndiff_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeigndiff/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecgovtforeignsame_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecgovtforeignsame_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecgovtforeignsame_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecgovtforeignsame/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecmainforeign_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecmainforeign_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecmainforeign_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainforeign/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecmainlocal_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecmainlocal_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecmainlocal_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecmainlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecnonlistedlocal_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecnonlistedlocal_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecnonlistedlocal_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecnonlistedlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecotherlistedforeign_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecotherlistedforeign_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecotherlistedforeign_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedforeign/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecotherlistedlocal_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecotherlistedlocal_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecotherlistedlocal_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecotherlistedlocal/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecscbsec_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/portItem_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecscbsec_prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="marksecscbsec_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/marketablesec/marksecscbsec/portItem_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="MarksecBill_update" path="/MarksecBillCollateral.do?event=update_return"/>
+            <forward name="MarksecBondForeign_update" path="/MarksecBondForeignCollateral.do?event=update_return"/>
+            <forward name="MarksecBondLocal_update" path="/MarksecBondLocalCollateral.do?event=update_return"/>
+            <forward name="MarksecCustSec_update" path="/MarksecCustSecCollateral.do?event=update_return"/>
+            <forward name="MarksecGovtForeignDiff_update" path="/MarksecGovtForeignDiffCollateral.do?event=update_return"/>
+            <forward name="MarksecGovtForeignSame_update" path="/MarksecGovtForeignSameCollateral.do?event=update_return"/>
+            <forward name="MarksecMainForeign_update" path="/MarksecMainForeignCollateral.do?event=update_return"/>
+            <forward name="MarksecMainLocal_update" path="/MarksecMainLocalCollateral.do?event=update_return"/>
+            <forward name="MarksecNonListedLocal_update" path="/MarksecNonListedLocalCollateral.do?event=update_return"/>
+            <forward name="MarksecOtherListedForeign_update" path="/MarksecOtherListedForeignCollateral.do?event=update_return"/>
+            <forward name="MarksecOtherListedLocal_update" path="/MarksecOtherListedLocalCollateral.do?event=update_return"/>
+            <forward name="MarksecSCBSec_update" path="/MarksecSCBSecCollateral.do?event=update_return"/>
+            <forward name="MarksecBill_read" path="/MarksecBillCollateral.do?event=read_return"/>
+            <forward name="MarksecBondForeign_read" path="/MarksecBondForeignCollateral.do?event=read_return"/>
+            <forward name="MarksecBondLocal_read" path="/MarksecBondLocalCollateral.do?event=read_return"/>
+            <forward name="MarksecCustSec_read" path="/MarksecCustSecCollateral.do?event=read_return"/>
+            <forward name="MarksecGovtForeignDiff_read" path="/MarksecGovtForeignDiffCollateral.do?event=read_return"/>
+            <forward name="MarksecGovtForeignSame_read" path="/MarksecGovtForeignSameCollateral.do?event=read_return"/>
+            <forward name="MarksecMainForeign_read" path="/MarksecMainForeignCollateral.do?event=read_return"/>
+            <forward name="MarksecMainLocal_read" path="/MarksecMainLocalCollateral.do?event=read_return"/>
+            <forward name="MarksecNonListedLocal_read" path="/MarksecNonListedLocalCollateral.do?event=read_return"/>
+            <forward name="MarksecOtherListedForeign_read" path="/MarksecOtherListedForeignCollateral.do?event=read_return"/>
+            <forward name="MarksecOtherListedLocal_read" path="/MarksecOtherListedLocalCollateral.do?event=read_return"/>
+            <forward name="MarksecSCBSec_read" path="/MarksecSCBSecCollateral.do?event=read_return"/>
+            <forward name="MarksecBill_process" path="/MarksecBillCollateral.do?event=process_return"/>
+            <forward name="MarksecBondForeign_process" path="/MarksecBondForeignCollateral.do?event=process_return"/>
+            <forward name="MarksecBondLocal_process" path="/MarksecBondLocalCollateral.do?event=process_return"/>
+            <forward name="MarksecCustSec_process" path="/MarksecCustSecCollateral.do?event=process_return"/>
+            <forward name="MarksecGovtForeignDiff_process" path="/MarksecGovtForeignDiffCollateral.do?event=process_return"/>
+            <forward name="MarksecGovtForeignSame_process" path="/MarksecGovtForeignSameCollateral.do?event=process_return"/>
+            <forward name="MarksecMainForeign_process" path="/MarksecMainForeignCollateral.do?event=process_return"/>
+            <forward name="MarksecMainLocal_process" path="/MarksecMainLocalCollateral.do?event=process_return"/>
+            <forward name="MarksecNonListedLocal_process" path="/MarksecNonListedLocalCollateral.do?event=process_return"/>
+            <forward name="MarksecOtherListedForeign_process" path="/MarksecOtherListedForeignCollateral.do?event=process_return"/>
+            <forward name="MarksecOtherListedLocal_process" path="/MarksecOtherListedLocalCollateral.do?event=process_return"/>
+            <forward name="MarksecSCBSec_process" path="/MarksecSCBSecCollateral.do?event=process_return"/>
+
+            <forward name="MarksecBill_close" path="/MarksecBillCollateral.do?event=close_return"/>
+            <forward name="MarksecBondForeign_close" path="/MarksecBondForeignCollateral.do?event=close_return"/>
+            <forward name="MarksecBondLocal_close" path="/MarksecBondLocalCollateral.do?event=close_return"/>
+            <forward name="MarksecCustSec_close" path="/MarksecCustSecCollateral.do?event=close_return"/>
+            <forward name="MarksecGovtForeignDiff_close" path="/MarksecGovtForeignDiffCollateral.do?event=close_return"/>
+            <forward name="MarksecGovtForeignSame_close" path="/MarksecGovtForeignSameCollateral.do?event=close_return"/>
+            <forward name="MarksecMainForeign_close" path="/MarksecMainForeignCollateral.do?event=close_return"/>
+            <forward name="MarksecMainLocal_close" path="/MarksecMainLocalCollateral.do?event=close_return"/>
+            <forward name="MarksecNonListedLocal_close" path="/MarksecNonListedLocalCollateral.do?event=close_return"/>
+            <forward name="MarksecOtherListedForeign_close" path="/MarksecOtherListedForeignCollateral.do?event=close_return"/>
+            <forward name="MarksecOtherListedLocal_close" path="/MarksecOtherListedLocalCollateral.do?event=close_return"/>
+            <forward name="MarksecSCBSec_close" path="/MarksecSCBSecCollateral.do?event=close_return"/>
+
+            <forward name="MarksecBill_track" path="/MarksecBillCollateral.do?event=track_return"/>
+            <forward name="MarksecBondForeign_track" path="/MarksecBondForeignCollateral.do?event=track_return"/>
+            <forward name="MarksecBondLocal_track" path="/MarksecBondLocalCollateral.do?event=track_return"/>
+            <forward name="MarksecCustSec_track" path="/MarksecCustSecCollateral.do?event=track_return"/>
+            <forward name="MarksecGovtForeignDiff_track" path="/MarksecGovtForeignDiffCollateral.do?event=track_return"/>
+            <forward name="MarksecGovtForeignSame_track" path="/MarksecGovtForeignSameCollateral.do?event=track_return"/>
+            <forward name="MarksecMainForeign_track" path="/MarksecMainForeignCollateral.do?event=track_return"/>
+            <forward name="MarksecMainLocal_track" path="/MarksecMainLocalCollateral.do?event=track_return"/>
+            <forward name="MarksecNonListedLocal_track" path="/MarksecNonListedLocalCollateral.do?event=track_return"/>
+            <forward name="MarksecOtherListedForeign_track" path="/MarksecOtherListedForeignCollateral.do?event=track_return"/>
+            <forward name="MarksecOtherListedLocal_track" path="/MarksecOtherListedLocalCollateral.do?event=track_return"/>
+            <forward name="MarksecSCBSec_track" path="/MarksecSCBSecCollateral.do?event=track_return"/>
+            
+            <forward name="marksecmainlocal_prepare_create_line_detail" path="/MarketableEquityLineDetail.do?event=prepare_create_line_detail"/>
+            <forward name="marksecotherlistedlocal_prepare_create_line_detail" path="/MarketableEquityLineDetail.do?event=prepare_create_line_detail"/>
+            <forward name="marksecbondlocal_prepare_create_line_detail" path="/MarketableEquityLineDetail.do?event=prepare_create_line_detail"/>
+        </action>
+    
+      <action path="/MarkSecurityApportionment" type="com.integrosys.cms.ui.collateral.marketablesec.SecApportionmentAction"
+      name="SecurityApportionmentDtlForm" scope="request">
+        <forward name="read" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare_update_sub" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="refresh" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="process" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="MarksecMainLocal_update" path="/MarksecMainLocalCollateral.do?event=update_return"/>
+        <forward name="MarksecMainLocal_read" path="/MarksecMainLocalCollateral.do?event=read_return"/>
+        <forward name="MarksecMainLocal_process" path="/MarksecMainLocalCollateral.do?event=process_return"/>
+        <forward name="MarksecMainLocal_close" path="/MarksecMainLocalCollateral.do?event=close_return"/>
+        <forward name="MarksecMainLocal_track" path="/MarksecMainLocalCollateral.do?event=track_return"/>
+
+        <forward name="MarksecMainForeign_update" path="/MarksecMainForeignCollateral.do?event=update_return"/>
+        <forward name="MarksecMainForeign_read" path="/MarksecMainForeignCollateral.do?event=read_return"/>
+        <forward name="MarksecMainForeign_process" path="/MarksecMainForeignCollateral.do?event=process_return"/>
+        <forward name="MarksecMainForeign_close" path="/MarksecMainForeignCollateral.do?event=close_return"/>
+        <forward name="MarksecMainForeign_track" path="/MarksecMainForeignCollateral.do?event=track_return"/>
+
+        <forward name="MarksecOtherListedLocal_update" path="/MarksecOtherListedLocalCollateral.do?event=update_return"/>
+        <forward name="MarksecOtherListedLocal_read" path="/MarksecOtherListedLocalCollateral.do?event=read_return"/>
+        <forward name="MarksecOtherListedLocal_process" path="/MarksecOtherListedLocalCollateral.do?event=process_return"/>
+        <forward name="MarksecOtherListedLocal_close" path="/MarksecOtherListedLocalCollateral.do?event=close_return"/>
+        <forward name="MarksecOtherListedLocal_track" path="/MarksecOtherListedLocalCollateral.do?event=track_return"/>
+
+        <forward name="MarksecOtherListedForeign_update" path="/MarksecOtherListedForeignCollateral.do?event=update_return"/>
+        <forward name="MarksecOtherListedForeign_read" path="/MarksecOtherListedForeignCollateral.do?event=read_return"/>
+        <forward name="MarksecOtherListedForeign_process" path="/MarksecOtherListedForeignCollateral.do?event=process_return"/>
+        <forward name="MarksecOtherListedForeign_close" path="/MarksecOtherListedForeignCollateral.do?event=close_return"/>
+        <forward name="MarksecOtherListedForeign_track" path="/MarksecOtherListedForeignCollateral.do?event=track_return"/>
+
+        <forward name="MarksecBill_update" path="/MarksecBillCollateral.do?event=update_return"/>
+        <forward name="MarksecBill_read" path="/MarksecBillCollateral.do?event=read_return"/>
+        <forward name="MarksecBill_process" path="/MarksecBillCollateral.do?event=process_return"/>
+        <forward name="MarksecBill_close" path="/MarksecBillCollateral.do?event=close_return"/>
+        <forward name="MarksecBill_track" path="/MarksecBillCollateral.do?event=track_return"/>
+
+        <forward name="MarksecGovtForeignSame_update" path="/MarksecGovtForeignSameCollateral.do?event=update_return"/>
+        <forward name="MarksecGovtForeignSame_read" path="/MarksecGovtForeignSameCollateral.do?event=read_return"/>
+        <forward name="MarksecGovtForeignSame_process" path="/MarksecGovtForeignSameCollateral.do?event=process_return"/>
+        <forward name="MarksecGovtForeignSame_close" path="/MarksecGovtForeignSameCollateral.do?event=close_return"/>
+        <forward name="MarksecGovtForeignSame_track" path="/MarksecGovtForeignSameCollateral.do?event=track_return"/>
+
+        <forward name="MarksecGovtForeignDiff_update" path="/MarksecGovtForeignDiffCollateral.do?event=update_return"/>
+        <forward name="MarksecGovtForeignDiff_read" path="/MarksecGovtForeignDiffCollateral.do?event=read_return"/>
+        <forward name="MarksecGovtForeignDiff_process" path="/MarksecGovtForeignDiffCollateral.do?event=process_return"/>
+        <forward name="MarksecGovtForeignDiff_close" path="/MarksecGovtForeignDiffCollateral.do?event=close_return"/>
+        <forward name="MarksecGovtForeignDiff_track" path="/MarksecGovtForeignDiffCollateral.do?event=track_return"/>
+
+        <forward name="MarksecNonListedLocal_update" path="/MarksecNonListedLocalCollateral.do?event=update_return"/>
+        <forward name="MarksecNonListedLocal_read" path="/MarksecNonListedLocalCollateral.do?event=read_return"/>
+        <forward name="MarksecNonListedLocal_process" path="/MarksecNonListedLocalCollateral.do?event=process_return"/>
+        <forward name="MarksecNonListedLocal_close" path="/MarksecNonListedLocalCollateral.do?event=close_return"/>
+        <forward name="MarksecNonListedLocal_track" path="/MarksecNonListedLocalCollateral.do?event=track_return"/>
+
+        <forward name="MarksecCustSec_update" path="/MarksecCustSecCollateral.do?event=update_return"/>
+        <forward name="MarksecCustSec_read" path="/MarksecCustSecCollateral.do?event=read_return"/>
+        <forward name="MarksecCustSec_process" path="/MarksecCustSecCollateral.do?event=process_return"/>
+        <forward name="MarksecCustSec_close" path="/MarksecCustSecCollateral.do?event=close_return"/>
+        <forward name="MarksecCustSec_track" path="/MarksecCustSecCollateral.do?event=track_return"/>
+   
+        <forward name="MarksecSCBSec_update" path="/MarksecSCBSecCollateral.do?event=update_return"/>
+        <forward name="MarksecSCBSec_read" path="/MarksecSCBSecCollateral.do?event=read_return"/>
+        <forward name="MarksecSCBSec_process" path="/MarksecSCBSecCollateral.do?event=process_return"/>
+        <forward name="MarksecSCBSec_close" path="/MarksecSCBSecCollateral.do?event=close_return"/>
+        <forward name="MarksecSCBSec_track" path="/MarksecSCBSecCollateral.do?event=track_return"/>
+   
+        <forward name="MarksecBondLocal_update" path="/MarksecBondLocalCollateral.do?event=update_return"/>
+        <forward name="MarksecBondLocal_read" path="/MarksecBondLocalCollateral.do?event=read_return"/>
+        <forward name="MarksecBondLocal_process" path="/MarksecBondLocalCollateral.do?event=process_return"/>
+        <forward name="MarksecBondLocal_close" path="/MarksecBondLocalCollateral.do?event=close_return"/>
+        <forward name="MarksecBondLocal_track" path="/MarksecBondLocalCollateral.do?event=track_return"/>
+
+        <forward name="MarksecBondForeign_update" path="/MarksecBondForeignCollateral.do?event=update_return"/>
+        <forward name="MarksecBondForeign_read" path="/MarksecBondForeignCollateral.do?event=read_return"/>
+        <forward name="MarksecBondForeign_process" path="/MarksecBondForeignCollateral.do?event=process_return"/>
+        <forward name="MarksecBondForeign_close" path="/MarksecBondForeignCollateral.do?event=close_return"/>
+        <forward name="MarksecBondForeign_track" path="/MarksecBondForeignCollateral.do?event=track_return"/>
+   
+      </action>      
+      
+        <action path="/MarkValuationFromLOS"
+              type="com.integrosys.cms.ui.collateral.valuationfromlos.MarkValuationFromLOSAction"
+              name="MarkValuationFromLOSForm"
+              validate="false"
+              scope="request">
+          <forward name="read" path="/template/common_template.jsp">
+              <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+              <set-property property="title" value="title.security"/>
+          </forward>
+        </action>
+        
+        <action path="/MarketableEquityLineDetail"
+              type="com.integrosys.cms.ui.collateral.marketablesec.linedetail.MarketableEquityLineDetailAction"
+              name="MarketableEquityLineDetailForm"
+              validate="false"
+              scope="request">
+          <forward name="prepare_create_line_detail" path="/template/common_template.jsp">
+              <set-property property="rightFrame" value="/collateral/marketablesec/linedetail/line_detail_create.jsp"/>
+              <set-property property="title" value="title.security"/>
+          </forward>
+          <forward name="prepare_edit_line_detail" path="/template/common_template.jsp">
+              <set-property property="rightFrame" value="/collateral/marketablesec/linedetail/line_detail_update.jsp"/>
+              <set-property property="title" value="title.security"/>
+          </forward>
+          <forward name="view_line_detail" path="/template/common_template.jsp">
+              <set-property property="rightFrame" value="/collateral/marketablesec/linedetail/line_detail_read.jsp"/>
+              <set-property property="title" value="title.security"/>
+          </forward>
+          <forward name="refresh_facility_dropdown" path="/collateral/marketablesec/linedetail/dropdown_list.jsp"/>
+          
+           <forward name="MarksecMainLocal_prepare" path="/MarketPortItem.do?event=marksecmainlocal_prepare"/>
+           <forward name="MarksecMainLocal_prepare_update_sub" path="/MarketPortItem.do?event=marksecmainlocal_prepare_update_sub"/>
+           <forward name="MarksecMainLocal_read" path="/MarketPortItem.do?event=marksecmainlocal_read"/>
+           
+           <forward name="MarksecOtherListedLocal_prepare" path="/MarketPortItem.do?event=marksecotherlistedlocal_prepare"/>
+           <forward name="MarksecOtherListedLocal_prepare_update_sub" path="/MarketPortItem.do?event=marksecotherlistedlocal_prepare_update_sub"/>
+           <forward name="MarksecOtherListedLocal_read" path="/MarketPortItem.do?event=marksecotherlistedlocal_read"/>
+           
+           <forward name="MarksecBondLocal_prepare" path="/MarketPortItem.do?event=marksecbondlocal_prepare"/>
+           <forward name="MarksecBondLocal_prepare_update_sub" path="/MarketPortItem.do?event=marksecbondlocal_prepare_update_sub"/>
+           <forward name="MarksecBondLocal_read" path="/MarketPortItem.do?event=marksecbondlocal_read"/>
+           
+        </action>
+        
+    </action-mappings>
+    
+    <message-resources key="message-col-marketablesec" parameter="ApplicationResources-col-marketablesec"/>
+</struts-config>

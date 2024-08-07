@@ -1,0 +1,267 @@
+<%@ page import="com.integrosys.cms.ui.checklist.secreceipt.*,
+                 com.integrosys.cms.app.limit.bus.ILimitProfile,
+                 com.integrosys.base.uiinfra.common.ICommonEventConstant,
+                 com.integrosys.cms.ui.common.constant.IGlobalConstant,
+                 com.integrosys.base.techinfra.logger.DefaultLogger,
+				 com.integrosys.cms.app.checklist.bus.ICheckListItem,
+				 com.integrosys.cms.app.common.util.*,
+                 java.util.*"
+%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+<%@ taglib uri="/WEB-INF/IntegroTag.tld" prefix="integro" %>
+
+<%
+OtherReceiptForm form = (OtherReceiptForm)request.getAttribute("OtherReceiptForm");
+    String lableDocDate = "Doc Expiry Date";
+    ICheckListItem checkListItem =(ICheckListItem)session.getAttribute("com.integrosys.cms.ui.checklist.otherreceipt.OtherReceiptAction.checkListItem");
+    List deferCreditApproverList = (List)session.getAttribute("com.integrosys.cms.ui.checklist.otherreceipt.OtherReceiptAction.deferCreditApproverList");
+    System.out.println("::::::deferCreditApproverList:::::"+deferCreditApproverList);
+    if(deferCreditApproverList!=null){
+    	pageContext.setAttribute("deferCreditApproverList",deferCreditApproverList);
+    }
+    
+    
+    /*String monitorType = (String) request.getAttribute("monitorType");
+	String isPolicy = request.getParameter("isPolicy");
+	if(isPolicy == null|| isPolicy.trim().length()==0)
+	{
+		
+		isPolicy = (monitorType!=null && monitorType.equals(ICMSConstant.INSURANCE_POLICY)) ? "true" : "";
+	}
+	if(monitorType!=null && monitorType.equals(ICMSConstant.PREMIUM_RECEIPT))
+	{
+				lableDocDate = "Due Date to Receive Premium Receipt";
+	}*/
+	
+	
+%>
+<%@page import="com.integrosys.cms.ui.checklist.otherreceipt.OtherReceiptForm"%>
+<%@page import="org.apache.struts.util.LabelValueBean"%>
+<%@page import="java.text.DateFormat"%>
+<%@page import="java.text.SimpleDateFormat"%><html><!-- InstanceBegin template="/Templates/ContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Untitled Document</title>
+<!-- InstanceEndEditable -->
+
+<!-- InstanceBeginEditable name="CssStyle" -->
+
+<link rel="stylesheet" type="text/css" media="all" href="css/calendar-blue.css" />
+<!-- InstanceEndEditable -->
+<!-- InstanceBeginEditable name="head" -->
+
+<script language="JavaScript" src="js/calendar.js"></script>
+<script language="JavaScript" src="js/calDriver.js"></script>
+<script>
+
+function saveForm() {
+	document.forms["OtherReceiptForm"].event.value="view_ok";
+	document.forms["OtherReceiptForm"].submit();
+}
+</script>
+
+<style>
+table.tblInput tbody tr td.fieldname {
+	width : 150 px;
+}
+</style>
+<!-- InstanceEndEditable --></head>
+<body onload="MM_preloadImages('img/save2.gif','img/cancel2.gif')">
+<!-- InstanceBeginEditable name="Content" -->
+<html:form action="OtherReceipt" >
+<html:hidden property="event" />
+
+<html:hidden property="limitProfileID" />
+<html:hidden property="legalID" />
+<html:hidden property="custCategory" />
+<html:hidden property="limitBkgLoc" />
+<html:hidden property="actionTypeName" />
+<html:hidden property="index" />
+<html:hidden property="secType" />
+<html:hidden property="secSubType" />
+<html:hidden property="secName"/>
+<html:hidden property="collateralID" />
+<html:hidden property="collateralRef" />
+
+
+<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+  <thead>
+    <tr>
+      <td><h3>Update Other Doc Receipt </h3></td>
+    </tr>
+    <tr>
+      <td>
+      <h3> View Doc Description - Pending Deferred Request</h3>
+    </td>
+    </tr>
+    <tr>
+      <td><hr /></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+          <thead>
+          </thead>
+          <tbody>
+            <tr class="odd">
+              <td class="fieldname">Code</td>
+              <td>&nbsp;<bean:write name="OtherReceiptForm" property="docCode" /></td>
+            </tr>
+<!--            <tr class="even">-->
+<!--              <td class="fieldname">Doc No</td>-->
+<!--              <td>&nbsp;<bean:write name="OtherReceiptForm" property="docNo" /></td>-->
+<!--            </tr>-->
+            <tr class="odd">
+              <td class="fieldname">Description</td>
+              <td>&nbsp;<bean:write name="OtherReceiptForm" property="docDesc" /></td>
+            </tr>
+              <tr class="even">
+              <td class="fieldname">Doc Date</td>
+              <td>&nbsp;<bean:write name="OtherReceiptForm" property="docDate" /></td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname"><%=lableDocDate%></td>
+              <td>&nbsp;<bean:write name="OtherReceiptForm" property="docExpDate" /></td>
+            </tr>
+<!--            <tr class="even">-->
+<!--              <td class="fieldname">Identify Date</td>-->
+<!--              <td>&nbsp;<bean:write name="OtherReceiptForm" property="identifyDate" /></td>-->
+<!--            </tr>-->
+            <tr class="odd">
+              <td class="fieldname">Date Defer &nbsp;<font color="RED">* </font></td>
+              <td>&nbsp;<bean:write name="OtherReceiptForm" property="deferDate" /></td>
+            </tr>
+            <%-- // cr 36 --%>
+            <tr class="even">
+              <td class="fieldname">Last Due Date</td>
+              <td>&nbsp;<bean:write name="OtherReceiptForm" property="expectedReturnDate" /></td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Next Due Date</td>
+              <td>&nbsp;<bean:write name="OtherReceiptForm" property="deferExtendedDate" /></td>
+            </tr>
+<%--            <tr class="odd">
+              <td class="fieldname" >DDN valid for </td>
+              <td >
+            	  <% if (bcaApprovedDate == null) { %>
+	                 &nbsp;
+	              <% } else {
+		               Date d1 = null;
+	                   if (item.getDeferExtendedDate() != null) {
+	                     d1 = item.getDeferExtendedDate();
+                       } else {
+ 	                     d1 = item.getDeferExpiryDate();
+                       }
+ 	                   Date d2 = cal.getTime();
+ 	                   if (d1.before(d2)) {
+		          %>
+		             &nbsp;         
+	              <%   } else { %>
+		              <%= CommonUtil.dateDiff(d1, d2, Calendar.DATE)%> days
+	              <%
+                       }
+                     }
+                  %>
+              </td>
+            </tr>
+--%>            
+<!--            <tr class="odd">-->
+<!--              <td class="fieldname">Action Party</td>-->
+<!--              <td>&nbsp;<integro:common-code categoryCode="ACTION_PARTY" entryCode="<%=form.getActionParty()%>" display="true" descWithCode="false"/></td>-->
+<!--            </tr>-->
+ <%-- start here for cr-17 --%>
+             <%--<tr class="even">--%>
+               <%--<td class="fieldname" >Shared</td>--%>
+               <%--<td >--%>
+                    <%--<html:radio property="shared" disabled="true" value="true" />Yes--%>
+                    <%--<html:radio property="shared" disabled="true" value="false"  />No--%>
+               <%--</td>--%>
+               <%--</tr>--%>
+             </tbody>
+         </table>
+         <%--<jsp:include page="/checklist/secreceipt/ViewShareCheckList.jsp" />--%>
+<!--         <table width="100%" border="0" align="center" cellspacing="0" cellpadding="0" class="tblInput">-->
+<!--            <tbody>-->
+<!--            <tr class="even">-->
+<!--                <td class="fieldname">Narration</td>-->
+<!--                <td>-->
+<!--                   <% OtherReceiptForm aForm = (OtherReceiptForm)request.getAttribute("OtherReceiptForm"); %>-->
+<!--                    <integro:htmltext value="<%=aForm.getDocRemarks()%>" lineLength="80" />&nbsp;-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<tr class="even">
+              <td class="fieldname">Defer Counter</td>
+              <td><bean:write name="OtherReceiptForm" property="deferCount"/> &nbsp;
+               
+              </td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname">Defered Days</td>
+              <td><bean:write name="OtherReceiptForm" property="deferedDays"/> &nbsp;
+               
+              </td>
+            </tr>
+            
+<html:hidden property="deferCount" value="<%=form.getDeferCount() %>" />
+<html:hidden property="deferedDays" value="<%=form.getDeferedDays() %>" />
+<%--            <tr class="odd">
+              <td class="fieldname" >DDN valid for </td><td ><input type="text" name="ddnDays" size="5" readonly="true"> &nbsp;&nbsp;<a href="#" onclick="calculateDaysDiff()">Days</a></td>
+            </tr>
+--%>            
+            <tr class="even">
+              <td class="fieldname">Credit Approver &nbsp;<font color="RED">* </font> </td>
+              <td><html:select property="creditApprover"  >
+											<option value="">Please Select</option>
+											<html:options collection="deferCreditApproverList" labelProperty="label" property="value" />
+											</html:select>
+                  <html:errors property="creditApprover" />
+              </td>
+            </tr>
+<%-- start here for cr-17
+            <tr class="even">
+              <td class="fieldname" >Shared</td>
+              <td >                  
+                    <html:radio property="shared" value="true" />Yes
+                    <html:radio property="shared" value="false"  />No
+                    <html:errors property="shared" />                  
+              </td>
+              </tr>
+--%>
+            </tbody>
+        </table>
+<%--
+             <jsp:include page="/checklist/secreceipt/update_sharechecklist.jsp" />
+--%>
+            <table width="100%"  border="0" cellspacing="0" cellpadding="0" class="tblInput">
+                <tbody>
+                <tr class="odd">
+                    <td class="fieldname">Remarks</td>
+                    <td><html:textarea name="OtherReceiptForm" rows="5" cols="80" property="docRemarks" onkeyup="limitTextInput(this,1600,'Narration')"/><html:errors property="docRemarks" /></td>
+                </tr>
+                </tbody>
+            </table>
+        <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td align="center" valign="middle">
+                    <a href="#" onClick="saveForm()" ><img src="img/return1.gif" name="Image4411"  border="0" id="Image4411" /></a>
+                </td>
+              </tr>
+        </table>
+<%-- End here for cr-17 --%>
+    </td>
+    </tr>
+  </tbody>
+</table>
+
+</html:form>
+<!-- InstanceEndEditable -->
+</body>
+<!-- InstanceEnd --></html>

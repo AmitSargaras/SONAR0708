@@ -1,0 +1,26 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+   
+
+    <!-- this is the actual advice itself -->
+    <bean id="exceptionHandler" class="com.integrosys.cms.app.ws.jax.common.ExceptionHandler"/>
+    <bean id="auditHandler" class="com.integrosys.cms.app.ws.aop.AuditHandler"/>
+
+   <!--  <aop:config>
+        <aop:aspect ref="exceptionHandler">
+
+            <aop:pointcut id="onWebServiceException"
+                expression="@annotation(com.integrosys.cms.app.ws.aop.CLIMSWebServiceMethod)" />
+
+            <aop:after-throwing pointcut-ref="onWebServiceException"
+                method="handleException"/>
+
+        </aop:aspect>
+    </aop:config> -->
+
+</beans>

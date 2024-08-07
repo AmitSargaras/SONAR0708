@@ -1,0 +1,1368 @@
+<?xml version="1.0" encoding="UTF-8"?><ejb-jar id="ejb_BizStructure">
+   <display-name>BizStructure</display-name>
+   <enterprise-beans>
+      <session id="session_SBBizStructureManagerBean">
+         <ejb-name>SBBizStructureManagerBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.SBBizStructureManagerHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.SBBizStructureManager</remote>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.SBBizStructureManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBBizStructureManagerBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBBizStructureManagerStagingBean">
+         <ejb-name>SBBizStructureManagerStagingBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.SBBizStructureManagerHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.SBBizStructureManager</remote>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.SBBizStructureManagerStagingBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBBizStructureManagerStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBBizStructureProxyBean">
+         <ejb-name>SBBizStructureProxyBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.proxy.SBBizStructureProxyHome</home>
+         <remote>com.integrosys.component.bizstructure.app.proxy.SBBizStructureProxy</remote>
+         <ejb-class>com.integrosys.component.bizstructure.app.proxy.SBBizStructureProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBBizStructureProxyBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBTeamTypeBean">
+         <ejb-name>EBTeamTypeBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBTeamType</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamTypeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamTypeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamTypeBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamTypeBean_ejbTeamTypeID">
+            <field-name>ejbTeamTypeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeBean_businessCode">
+            <field-name>businessCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeBean_description">
+            <field-name>description</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeBean_isAddAllowed">
+            <field-name>isAddAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeBean_ejbParentID">
+            <field-name>ejbParentID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeBean_peerOrder">
+            <field-name>peerOrder</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>ejbTeamTypeID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBTeamTypeBean_EBTeamTypeBean">
+            <ejb-ref-name>EBTeamTypeLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamTypeLocal</local>
+            <ejb-link>EBTeamTypeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamTypeBean_EBTeamTypeMembershipBean">
+            <ejb-ref-name>EBTeamTypeMembershipLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipLocal</local>
+            <ejb-link>EBTeamTypeMembershipBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBTeamTypeBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findAll</method-name>
+               <method-params/>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBTeamTypeBean o WHERE o.ejbParentID = 0 ORDER BY o.peerOrder]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTeamTypeMembershipBean">
+         <ejb-name>EBTeamTypeMembershipBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembership</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamTypeMembershipBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamTypeMembershipBean_ejbMembershipID">
+            <field-name>ejbMembershipID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeMembershipBean_membershipName">
+            <field-name>membershipName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeMembershipBean_includeInRouting">
+            <field-name>includeInRouting</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeMembershipBean_maxAllowed">
+            <field-name>maxAllowed</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeMembershipBean_ejbRoleTypeID">
+            <field-name>ejbRoleTypeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeMembershipBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamTypeMembershipBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <primkey-field>ejbMembershipID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBTeamTypeMembershipBean_EBMembershipTypeBean">
+            <ejb-ref-name>EBMembershipTypeLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBMembershipTypeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBMembershipTypeLocal</local>
+            <ejb-link>EBMembershipTypeBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBTeamTypeMembershipBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBMembershipTypeBean">
+         <ejb-name>EBMembershipTypeBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBMembershipTypeHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBMembershipType</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBMembershipTypeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBMembershipTypeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBMembershipTypeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBMembershipTypeBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBMembershipTypeBean_ejbMembershipTypeID">
+            <field-name>ejbMembershipTypeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBMembershipTypeBean_membershipTypeName">
+            <field-name>membershipTypeName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBMembershipTypeBean_priority">
+            <field-name>priority</field-name>
+         </cmp-field>
+         <primkey-field>ejbMembershipTypeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBMembershipTypeBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamBean">
+         <ejb-name>EBTeamBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBTeamHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBTeam</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamBean_ejbTeamID">
+            <field-name>ejbTeamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamBean_teamTypeID">
+            <field-name>teamTypeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamBean_code">
+            <field-name>code</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamBean_abbreviation">
+            <field-name>abbreviation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamBean_description">
+            <field-name>description</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamBean_cCRISCode">
+            <field-name>cCRISCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamBean_parentTeamID">
+            <field-name>parentTeamID</field-name>
+         </cmp-field>
+         <primkey-field>ejbTeamID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBTeamBean_EBTeamTypeBean">
+            <ejb-ref-name>EBTeamTypeLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamTypeLocal</local>
+            <ejb-link>EBTeamTypeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamBean_EBTeamMembershipBean">
+            <ejb-ref-name>EBTeamMembershipLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipLocal</local>
+            <ejb-link>EBTeamMembershipBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamBean_EBTeamBean">
+            <ejb-ref-name>EBTeamLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamLocal</local>
+            <ejb-link>EBTeamBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamBean_EBTeamCountryCodeBean">
+            <ejb-ref-name>EBTeamCountryCodeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeLocal</local>
+            <ejb-link>EBTeamCountryCodeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamBean_EBTeamOrganisationCodeBean">
+            <ejb-ref-name>EBTeamOrganisationCodeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeLocal</local>
+            <ejb-link>EBTeamOrganisationCodeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamBean_EBTeamSegmentCodeBean">
+            <ejb-ref-name>EBTeamSegmentCodeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeLocal</local>
+            <ejb-link>EBTeamSegmentCodeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamBean_EBTeamCMSSegmentCodeBean">
+            <ejb-ref-name>EBTeamCMSSegmentCodeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeLocal</local>
+            <ejb-link>EBTeamCMSSegmentCodeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamBean_EBTeamOrgGroupCodeBean">
+            <ejb-ref-name>EBTeamOrgGroupCodeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeLocal</local>
+            <ejb-link>EBTeamOrgGroupCodeBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBTeamBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByTeamTypeID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBTeamBean o WHERE o.teamTypeID = ?1 AND o.status <> ?2]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(T) FROM EBTeamBean T,  in(T.teamMembershipsCMR) M, in(M.teamMembersCMR) U WHERE U.ejbUserID = ?1]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByParentTeamID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBTeamBean o WHERE o.parentTeamID = ?1 ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByCode</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBTeamBean o WHERE o.code = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTeamStagingBean">
+         <ejb-name>EBTeamStagingBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBTeamHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBTeam</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamStagingBean_ejbTeamID">
+            <field-name>ejbTeamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamStagingBean_teamTypeID">
+            <field-name>teamTypeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamStagingBean_code">
+            <field-name>code</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamStagingBean_abbreviation">
+            <field-name>abbreviation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamStagingBean_description">
+            <field-name>description</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamStagingBean_cCRISCode">
+            <field-name>cCRISCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamStagingBean_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamStagingBean_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamStagingBean_parentTeamID">
+            <field-name>parentTeamID</field-name>
+         </cmp-field>
+         <primkey-field>ejbTeamID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBTeamStagingBean_EBTeamTypeBean">
+            <ejb-ref-name>EBTeamTypeLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamTypeLocal</local>
+            <ejb-link>EBTeamTypeBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamStagingBean_EBTeamMembershipStagingBean">
+            <ejb-ref-name>EBTeamMembershipLocalBeanStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipLocal</local>
+            <ejb-link>EBTeamMembershipStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamStagingBean_EBTeamBean">
+            <ejb-ref-name>EBTeamLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamLocal</local>
+            <ejb-link>EBTeamBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamStagingBean_EBTeamCountryCodeStagingBean">
+            <ejb-ref-name>EBTeamCountryCodeLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeLocal</local>
+            <ejb-link>EBTeamCountryCodeStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamStagingBean_EBTeamOrganisationCodeStagingBean">
+            <ejb-ref-name>EBTeamOrganisationCodeLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeLocal</local>
+            <ejb-link>EBTeamOrganisationCodeStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamStagingBean_EBTeamSegmentCodeStagingBean">
+            <ejb-ref-name>EBTeamSegmentCodeLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeLocal</local>
+            <ejb-link>EBTeamSegmentCodeStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamStagingBean_EBTeamCMSSegmentCodeStagingBean">
+            <ejb-ref-name>EBTeamCMSSegmentCodeLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeLocal</local>
+            <ejb-link>EBTeamCMSSegmentCodeStagingBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamStagingBean_EBTeamOrgGroupCodeStagingBean">
+            <ejb-ref-name>EBTeamOrgGroupCodeLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeLocal</local>
+            <ejb-link>EBTeamOrgGroupCodeStagingBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBTeamStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByTeamTypeID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBTeamStagingBean o WHERE o.teamTypeID = ?1 AND o.status <> ?2]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(T) FROM EBTeamStagingBean T,  in(T.teamMembershipsCMR) M, in(M.teamMembersCMR) U WHERE U.ejbUserID = ?1]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByParentTeamID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBTeamStagingBean o WHERE o.parentTeamID = ?1 ]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByCode</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBTeamStagingBean o WHERE o.code = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTeamMembershipBean">
+         <ejb-name>EBTeamMembershipBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBTeamMembership</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamMembershipBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamMembershipBean_ejbTeamMembershipID">
+            <field-name>ejbTeamMembershipID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamMembershipBean_ejbTeamTypeMembershipID">
+            <field-name>ejbTeamTypeMembershipID</field-name>
+         </cmp-field>
+         <primkey-field>ejbTeamMembershipID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBTeamMembershipBean_EBTeamTypeMembershipBean">
+            <ejb-ref-name>EBTeamTypeMembershipLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipLocal</local>
+            <ejb-link>EBTeamTypeMembershipBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamMembershipBean_EBTeamMemberBean">
+            <ejb-ref-name>EBTeamMemberLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamMemberLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamMemberLocal</local>
+            <ejb-link>EBTeamMemberBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBTeamMembershipBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(M) FROM EBTeamMembershipBean M, in(M.teamMembersCMR) U WHERE U.ejbUserID = ?1]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByTeamTypeMembershipID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(M) FROM EBTeamMembershipBean M WHERE M.ejbTeamTypeMembershipID = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTeamMembershipStagingBean">
+         <ejb-name>EBTeamMembershipStagingBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBTeamMembership</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamMembershipStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamMembershipStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamMembershipStagingBean_ejbTeamMembershipID">
+            <field-name>ejbTeamMembershipID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamMembershipStagingBean_ejbTeamTypeMembershipID">
+            <field-name>ejbTeamTypeMembershipID</field-name>
+         </cmp-field>
+         <primkey-field>ejbTeamMembershipID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBTeamMembershipStagingBean_EBTeamTypeMembershipBean">
+            <ejb-ref-name>EBTeamTypeMembershipLocalBean</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamTypeMembershipLocal</local>
+            <ejb-link>EBTeamTypeMembershipBean</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBTeamMembershipStagingBean_EBTeamMemberStagingBean">
+            <ejb-ref-name>EBTeamMemberLocalBeanStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamMemberLocalHome</local-home>
+            <local>com.integrosys.component.bizstructure.app.bus.EBTeamMemberLocal</local>
+            <ejb-link>EBTeamMemberStagingBean</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBTeamMembershipStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(M) FROM EBTeamMembershipStagingBean M, in(M.teamMembersCMR) U WHERE U.ejbUserID = ?1]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByTeamTypeMembershipID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(M) FROM EBTeamMembershipStagingBean M WHERE M.ejbTeamTypeMembershipID = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTeamMemberBean">
+         <ejb-name>EBTeamMemberBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBTeamMemberHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBTeamMember</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamMemberLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamMemberLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamMemberBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamMemberBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamMemberBean_ejbTeamMemberID">
+            <field-name>ejbTeamMemberID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamMemberBean_ejbUserID">
+            <field-name>ejbUserID</field-name>
+         </cmp-field>
+         <primkey-field>ejbTeamMemberID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamMemberBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBTeamMemberBean o WHERE o.ejbUserID = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTeamMemberStagingBean">
+         <ejb-name>EBTeamMemberStagingBean</ejb-name>
+         <home>com.integrosys.component.bizstructure.app.bus.EBTeamMemberHome</home>
+         <remote>com.integrosys.component.bizstructure.app.bus.EBTeamMember</remote>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamMemberLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamMemberLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamMemberBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamMemberStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamMemberStagingBean_ejbTeamMemberID">
+            <field-name>ejbTeamMemberID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamMemberStagingBean_ejbUserID">
+            <field-name>ejbUserID</field-name>
+         </cmp-field>
+         <primkey-field>ejbTeamMemberID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamMemberStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByUserID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBTeamMemberStagingBean o WHERE o.ejbUserID = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTeamCountryCodeBean">
+         <ejb-name>EBTeamCountryCodeBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamCountryCodeBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamCountryCodeBean_codeID">
+            <field-name>codeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamCountryCodeBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamCountryCodeBean_countryCode">
+            <field-name>countryCode</field-name>
+         </cmp-field>
+         <primkey-field>codeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamCountryCodeBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamCountryCodeStagingBean">
+         <ejb-name>EBTeamCountryCodeStagingBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamCountryCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamCountryCodeStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamCountryCodeStagingBean_codeID">
+            <field-name>codeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamCountryCodeStagingBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamCountryCodeStagingBean_countryCode">
+            <field-name>countryCode</field-name>
+         </cmp-field>
+         <primkey-field>codeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamCountryCodeStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamOrgGroupCodeBean">
+         <ejb-name>EBTeamOrgGroupCodeBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamOrgGroupCodeBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamOrgGroupCodeBean_id">
+            <field-name>id</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamOrgGroupCodeBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamOrgGroupCodeBean_orgGroupCode">
+            <field-name>orgGroupCode</field-name>
+         </cmp-field>
+         <primkey-field>id</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamOrgGroupCodeBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamOrgGroupCodeStagingBean">
+         <ejb-name>EBTeamOrgGroupCodeStagingBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamOrgGroupCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamOrgGroupCodeStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamOrgGroupCodeStagingBean_id">
+            <field-name>id</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamOrgGroupCodeStagingBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamOrgGroupCodeStagingBean_orgGroupCode">
+            <field-name>orgGroupCode</field-name>
+         </cmp-field>
+         <primkey-field>id</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamOrgGroupCodeStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamOrganisationCodeBean">
+         <ejb-name>EBTeamOrganisationCodeBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamOrganisationCodeBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamOrganisationCodeBean_codeID">
+            <field-name>codeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamOrganisationCodeBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamOrganisationCodeBean_organisationCode">
+            <field-name>organisationCode</field-name>
+         </cmp-field>
+         <primkey-field>codeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamOrganisationCodeBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamOrganisationCodeStagingBean">
+         <ejb-name>EBTeamOrganisationCodeStagingBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamOrganisationCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamOrganisationCodeStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamOrganisationCodeStagingBean_codeID">
+            <field-name>codeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamOrganisationCodeStagingBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamOrganisationCodeStagingBean_organisationCode">
+            <field-name>organisationCode</field-name>
+         </cmp-field>
+         <primkey-field>codeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamOrganisationCodeStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamSegmentCodeBean">
+         <ejb-name>EBTeamSegmentCodeBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamSegmentCodeBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamSegmentCodeBean_codeID">
+            <field-name>codeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamSegmentCodeBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamSegmentCodeBean_segmentCode">
+            <field-name>segmentCode</field-name>
+         </cmp-field>
+         <primkey-field>codeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamSegmentCodeBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamSegmentCodeStagingBean">
+         <ejb-name>EBTeamSegmentCodeStagingBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamSegmentCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamSegmentCodeStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamSegmentCodeStagingBean_codeID">
+            <field-name>codeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamSegmentCodeStagingBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamSegmentCodeStagingBean_segmentCode">
+            <field-name>segmentCode</field-name>
+         </cmp-field>
+         <primkey-field>codeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamSegmentCodeStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamCMSSegmentCodeBean">
+         <ejb-name>EBTeamCMSSegmentCodeBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamCMSSegmentCodeBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamCMSSegmentCodeBean_codeID">
+            <field-name>codeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamCMSSegmentCodeBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamCMSSegmentCodeBean_cMSSegmentCode">
+            <field-name>cMSSegmentCode</field-name>
+         </cmp-field>
+         <primkey-field>codeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamCMSSegmentCodeBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTeamCMSSegmentCodeStagingBean">
+         <ejb-name>EBTeamCMSSegmentCodeStagingBean</ejb-name>
+         <local-home>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeLocalHome</local-home>
+         <local>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeLocal</local>
+         <ejb-class>com.integrosys.component.bizstructure.app.bus.EBTeamCMSSegmentCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTeamCMSSegmentCodeStagingBean</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTeamCMSSegmentCodeStagingBean_codeID">
+            <field-name>codeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamCMSSegmentCodeStagingBean_teamID">
+            <field-name>teamID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTeamCMSSegmentCodeStagingBean_cMSSegmentCode">
+            <field-name>cMSSegmentCode</field-name>
+         </cmp-field>
+         <primkey-field>codeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTeamCMSSegmentCodeStagingBean">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_TeamType-TeamTypeChildNodes">
+         <ejb-relation-name>TeamType-TeamTypeChildNodes</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamType-Has-TeamTypeChildNodes">
+            <ejb-relationship-role-name>TeamType-Has-TeamTypeChildNodes</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamTypeBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>childNodesCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamTypeChildNodes-BelongsTo-TeamType">
+            <ejb-relationship-role-name>TeamTypeChildNodes-BelongsTo-TeamType</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamTypeBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamType-TeamTypeMemberships">
+         <ejb-relation-name>TeamType-TeamTypeMemberships</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamType-Has-TeamTypeMemberships">
+            <ejb-relationship-role-name>TeamType-Has-TeamTypeMemberships</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamTypeBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>teamTypeMembershipsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamTypeMemberships-BelongsTo-TeamType">
+            <ejb-relationship-role-name>TeamTypeMemberships-BelongsTo-TeamType</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamTypeMembershipBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamTypeMembership-MembershipType">
+         <ejb-relation-name>TeamTypeMembership-MembershipType</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamTypeMembership-Belongs-MembershipType">
+            <ejb-relationship-role-name>TeamTypeMembership-Belongs-MembershipType</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamTypeMembershipBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>membershipTypeCMR</cmr-field-name>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_MembershipType-Has-TeamTypeMembership">
+            <ejb-relationship-role-name>MembershipType-Has-TeamTypeMembership</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBMembershipTypeBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Team-TeamMembership">
+         <ejb-relation-name>Team-TeamMembership</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Team-Has-TeamMembership">
+            <ejb-relationship-role-name>Team-Has-TeamMembership</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>teamMembershipsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamMembership-Belongs-Team">
+            <ejb-relationship-role-name>TeamMembership-Belongs-Team</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamMembershipBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamStaging-TeamMembershipStaging">
+         <ejb-relation-name>TeamStaging-TeamMembershipStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamStaging-Has-TeamMembershipStaging">
+            <ejb-relationship-role-name>TeamStaging-Has-TeamMembershipStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>teamMembershipsCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamMembershipStaging-Belongs-TeamStaging">
+            <ejb-relationship-role-name>TeamMembershipStaging-Belongs-TeamStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamMembershipStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamMembership-TeamMember">
+         <ejb-relation-name>TeamMembership-TeamMember</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamMembership-Has-TeamMember">
+            <ejb-relationship-role-name>TeamMembership-Has-TeamMember</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamMembershipBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>teamMembersCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamMember-Belongs-TeamMembership">
+            <ejb-relationship-role-name>TeamMember-Belongs-TeamMembership</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamMemberBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamMembershipStaging-TeamMemberStaging">
+         <ejb-relation-name>TeamMembershipStaging-TeamMemberStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamMembershipStaging-Has-TeamMemberStaging">
+            <ejb-relationship-role-name>TeamMembershipStaging-Has-TeamMemberStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamMembershipStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>teamMembersCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamMemberStaging-Belongs-TeamMembershipStaging">
+            <ejb-relationship-role-name>TeamMemberStaging-Belongs-TeamMembershipStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamMemberStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Team-TeamCountryCode">
+         <ejb-relation-name>Team-TeamCountryCode</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Team-Has-TeamCountryCode">
+            <ejb-relationship-role-name>Team-Has-TeamCountryCode</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCountryCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamCountryCode-Belongs-Team">
+            <ejb-relationship-role-name>TeamCountryCode-Belongs-Team</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamCountryCodeBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamStaging-TeamCountryCodeStaging">
+         <ejb-relation-name>TeamStaging-TeamCountryCodeStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamStaging-Has-TeamCountryCodeStaging">
+            <ejb-relationship-role-name>TeamStaging-Has-TeamCountryCodeStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCountryCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamCountryCodeStaging-Belongs-TeamStaging">
+            <ejb-relationship-role-name>TeamCountryCodeStaging-Belongs-TeamStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamCountryCodeStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Team-OrgGroupCode">
+         <ejb-relation-name>Team-OrgGroupCode</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Team-Has-OrgGroupCode">
+            <ejb-relationship-role-name>Team-Has-OrgGroupCode</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMROrgGroupCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamOrgGroupCode-Belongs-Team">
+            <ejb-relationship-role-name>TeamOrgGroupCode-Belongs-Team</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamOrgGroupCodeBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamStaging-OrgGroupCodeStaging">
+         <ejb-relation-name>TeamStaging-OrgGroupCodeStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamStaging-Has-OrgGroupCodeStaging">
+            <ejb-relationship-role-name>TeamStaging-Has-OrgGroupCodeStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMROrgGroupCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamOrgGroupCodeStaging-Belongs-TeamStaging">
+            <ejb-relationship-role-name>TeamOrgGroupCodeStaging-Belongs-TeamStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamOrgGroupCodeStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Team-TeamOrganisationCode">
+         <ejb-relation-name>Team-TeamOrganisationCode</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Team-Has-TeamOrganisationCode">
+            <ejb-relationship-role-name>Team-Has-TeamOrganisationCode</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMROrganisationCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamOrganisationCode-Belongs-Team">
+            <ejb-relationship-role-name>TeamOrganisationCode-Belongs-Team</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamOrganisationCodeBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamStaging-TeamOrganisationCodeStaging">
+         <ejb-relation-name>TeamStaging-TeamOrganisationCodeStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamStaging-Has-TeamOrganisationCodeStaging">
+            <ejb-relationship-role-name>TeamStaging-Has-TeamOrganisationCodeStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMROrganisationCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamOrganisationCodeStaging-Belongs-TeamStaging">
+            <ejb-relationship-role-name>TeamOrganisationCodeStaging-Belongs-TeamStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamOrganisationCodeStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Team-TeamSegmentCode">
+         <ejb-relation-name>Team-TeamSegmentCode</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Team-Has-TeamSegmentCode">
+            <ejb-relationship-role-name>Team-Has-TeamSegmentCode</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRSegmentCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamSegmentCode-Belongs-Team">
+            <ejb-relationship-role-name>TeamSegmentCode-Belongs-Team</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamSegmentCodeBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamStaging-TeamSegmentCodeStaging">
+         <ejb-relation-name>TeamStaging-TeamSegmentCodeStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamStaging-Has-TeamSegmentCodeStaging">
+            <ejb-relationship-role-name>TeamStaging-Has-TeamSegmentCodeStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRSegmentCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamSegmentCodeStaging-Belongs-TeamStaging">
+            <ejb-relationship-role-name>TeamSegmentCodeStaging-Belongs-TeamStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamSegmentCodeStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Team-TeamCMSSegmentCode">
+         <ejb-relation-name>Team-TeamCMSSegmentCode</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Team-Has-TeamCMSSegmentCode">
+            <ejb-relationship-role-name>Team-Has-TeamCMSSegmentCode</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCMSSegmentCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamCMSSegmentCode-Belongs-Team">
+            <ejb-relationship-role-name>TeamCMSSegmentCode-Belongs-Team</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamCMSSegmentCodeBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_TeamStaging-TeamCMSSegmentCodeStaging">
+         <ejb-relation-name>TeamStaging-TeamCMSSegmentCodeStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_TeamStaging-Has-TeamCMSSegmentCodeStaging">
+            <ejb-relationship-role-name>TeamStaging-Has-TeamCMSSegmentCodeStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamStagingBean</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCMSSegmentCodes</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_TeamCMSSegmentCodeStaging-Belongs-TeamStaging">
+            <ejb-relationship-role-name>TeamCMSSegmentCodeStaging-Belongs-TeamStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBTeamCMSSegmentCodeStagingBean</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>EBTeamTypeBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamTypeMembershipBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBMembershipTypeBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamMembershipBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamMembershipStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamMemberBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamMemberStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamCountryCodeBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamCountryCodeStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamOrganisationCodeBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamOrganisationCodeStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamSegmentCodeBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamSegmentCodeStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamCMSSegmentCodeBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTeamCMSSegmentCodeStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBBizStructureProxyBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBBizStructureManagerBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBBizStructureManagerStagingBean</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class entity-name="actualOtherBank" 
+		name="com.integrosys.cms.app.otherbank.bus.OBOtherBank" table="CMS_OTHER_BANK" lazy="false">
+            <id name="id">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_OTHER_BANK_SEQ</param>
+			</generator>
+            </id>
+            <property name="versionTime" column="VERSION_TIME" type="long"/>
+
+			<property name="otherBankCode" column="BANK_CODE"/>
+			<property name="otherBankName" column="BANK_NAME"/>
+			<property name="address" column="ADDRESS"/>
+			<property name="contactNo" column="CONTACT_NO"/>
+			<property name="contactMailId" column="CONTACT_MAIL_ID"/>
+			<property name="faxNo" column="FAX_NO"/>
+			
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+			
+			<many-to-one name="city" column="CITY" entity-name="actualCity" lazy="false" />
+			
+			<many-to-one name="state" column="STATE" entity-name="actualState" lazy="false" />
+			
+			<many-to-one name="region" column="REGION" entity-name="actualRegion" lazy="false" />
+			
+			<many-to-one name="country" column="COUNTRY" entity-name="actualCountry" lazy="false" />
+			
+    </class>    
+    
+    
+    <class entity-name="stagingOtherBank" 
+		name="com.integrosys.cms.app.otherbank.bus.OBOtherBank" table="CMS_STAGE_OTHER_BANK" lazy="false">
+            <id name="id">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STAGE_OTHER_BANK_SEQ</param>
+			</generator>
+            </id>
+            <property name="versionTime" column="VERSION_TIME" type="long"/>
+
+			<property name="otherBankCode" column="BANK_CODE"/>
+			<property name="otherBankName" column="BANK_NAME"/>
+			<property name="address" column="ADDRESS"/>
+			<property name="contactNo" column="CONTACT_NO"/>
+			<property name="contactMailId" column="CONTACT_MAIL_ID"/>
+			<property name="faxNo" column="FAX_NO"/>
+			
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+			
+			<many-to-one name="city" column="CITY" entity-name="actualCity" lazy="false" />
+			
+			<many-to-one name="state" column="STATE" entity-name="actualState" lazy="false" />
+			
+			<many-to-one name="region" column="REGION" entity-name="actualRegion" lazy="false" />
+			
+			<many-to-one name="country" column="COUNTRY" entity-name="actualCountry" lazy="false" />
+			
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,842 @@
+<?xml version="1.0" encoding="UTF-8"?><ejb-jar id="ejb_Liquidation">
+   <display-name>Liquidation</display-name>
+   <enterprise-beans>
+      <session id="session_SBLiquidationProxy">
+         <ejb-name>SBLiquidationProxy</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.proxy.SBLiquidationProxyHome</home>
+         <remote>com.integrosys.cms.app.liquidation.proxy.SBLiquidationProxy</remote>
+         <ejb-class>com.integrosys.cms.app.liquidation.proxy.SBLiquidationProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBLiquidationProxy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBLiquidationBusManager">
+         <ejb-name>SBLiquidationBusManager</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.SBLiquidationBusManagerHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.SBLiquidationBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.SBLiquidationBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBLiquidationBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBLiquidationBusManagerStaging">
+         <ejb-name>SBLiquidationBusManagerStaging</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.SBLiquidationBusManagerHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.SBLiquidationBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.SBLiquidationBusManagerStagingBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBLiquidationBusManagerStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBLiquidation">
+         <ejb-name>EBLiquidation</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBLiquidationHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBLiquidation</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBLiquidationLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBLiquidationLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBLiquidationBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLiquidation</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLiquidation_liquidationID">
+            <field-name>liquidationID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLiquidation_collateralID">
+            <field-name>collateralID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLiquidation_securityID">
+            <field-name>securityID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLiquidation_securityType">
+            <field-name>securityType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLiquidation_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>liquidationID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBLiquidation_EBRecovery">
+            <ejb-ref-name>EBRecoveryLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryLocalHome</local-home>
+            <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryLocal</local>
+            <ejb-link>EBRecovery</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLiquidation_EBRecoveryExpense">
+            <ejb-ref-name>EBRecoveryExpenseLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseLocalHome</local-home>
+            <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseLocal</local>
+            <ejb-link>EBRecoveryExpense</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLiquidation_EBNPLInfo">
+            <ejb-ref-name>EBNPLInfoLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.liquidation.bus.EBNPLInfoLocalHome</local-home>
+            <local>com.integrosys.cms.app.liquidation.bus.EBNPLInfoLocal</local>
+            <ejb-link>EBNPLInfo</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBLiquidation">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBLiquidationStaging">
+         <ejb-name>EBLiquidationStaging</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBLiquidationHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBLiquidation</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBLiquidationLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBLiquidationLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBLiquidationStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLiquidationStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLiquidationStaging_liquidationID">
+            <field-name>liquidationID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLiquidationStaging_collateralID">
+            <field-name>collateralID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLiquidationStaging_securityID">
+            <field-name>securityID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLiquidationStaging_securityType">
+            <field-name>securityType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLiquidationStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>liquidationID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBLiquidationStaging_EBNPLInfoStaging">
+            <ejb-ref-name>EBNPLInfoStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.liquidation.bus.EBNPLInfoLocalHome</local-home>
+            <local>com.integrosys.cms.app.liquidation.bus.EBNPLInfoLocal</local>
+            <ejb-link>EBNPLInfoStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLiquidationStaging_EBRecoveryStaging">
+            <ejb-ref-name>EBRecoveryStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryLocalHome</local-home>
+            <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryLocal</local>
+            <ejb-link>EBRecoveryStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLiquidationStaging_EBRecoveryExpenseStaging">
+            <ejb-ref-name>EBRecoveryExpenseStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseLocalHome</local-home>
+            <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseLocal</local>
+            <ejb-link>EBRecoveryExpenseStaging</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBLiquidationStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBNPLInfo">
+         <ejb-name>EBNPLInfo</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBNPLInfoHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBNPLInfo</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBNPLInfoLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBNPLInfoLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBNPLInfoBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBNPLInfo</abstract-schema-name>
+         <cmp-field id="cmpfield_EBNPLInfo_nplID">
+            <field-name>nplID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_accountNo">
+            <field-name>accountNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_limitID">
+            <field-name>limitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_bcaRefNum">
+            <field-name>bcaRefNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_delinquent">
+            <field-name>delinquent</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_accountStatus">
+            <field-name>accountStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_facilityType">
+            <field-name>facilityType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_partPaymentReceived">
+            <field-name>partPaymentReceived</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_latestDateDoubtful">
+            <field-name>latestDateDoubtful</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_firstDateDoubtful">
+            <field-name>firstDateDoubtful</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_dateNPLRegularised">
+            <field-name>dateNPLRegularised</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_interestinSuspense">
+            <field-name>interestinSuspense</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_amountWrittenOff">
+            <field-name>amountWrittenOff</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_judgementDate">
+            <field-name>judgementDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_judgementSum">
+            <field-name>judgementSum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_dateWriteOff">
+            <field-name>dateWriteOff</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_civilSuitNo">
+            <field-name>civilSuitNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_monthsInstalmentsArrears">
+            <field-name>monthsInstalmentsArrears</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_monthsInterestArrears">
+            <field-name>monthsInterestArrears</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_dateVehicleDisposed">
+            <field-name>dateVehicleDisposed</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_dateRepossesed">
+            <field-name>dateRepossesed</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_carCode">
+            <field-name>carCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_carDate">
+            <field-name>carDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_refID">
+            <field-name>refID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_settled">
+            <field-name>settled</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_amountPartialWrittenOff">
+            <field-name>amountPartialWrittenOff</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_specProvisionChrgAcc">
+            <field-name>specProvisionChrgAcc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfo_nplDate">
+            <field-name>nplDate</field-name>
+         </cmp-field>
+         <primkey-field>nplID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBNPLInfo">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBNPLInfoStaging">
+         <ejb-name>EBNPLInfoStaging</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBNPLInfoHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBNPLInfo</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBNPLInfoLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBNPLInfoLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBNPLInfoStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBNPLInfoStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_nplID">
+            <field-name>nplID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_accountNo">
+            <field-name>accountNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_limitID">
+            <field-name>limitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_bcaRefNum">
+            <field-name>bcaRefNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_delinquent">
+            <field-name>delinquent</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_accountStatus">
+            <field-name>accountStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_facilityType">
+            <field-name>facilityType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_partPaymentReceived">
+            <field-name>partPaymentReceived</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_latestDateDoubtful">
+            <field-name>latestDateDoubtful</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_firstDateDoubtful">
+            <field-name>firstDateDoubtful</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_dateNPLRegularised">
+            <field-name>dateNPLRegularised</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_interestinSuspense">
+            <field-name>interestinSuspense</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_amountWrittenOff">
+            <field-name>amountWrittenOff</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_judgementDate">
+            <field-name>judgementDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_judgementSum">
+            <field-name>judgementSum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_dateWriteOff">
+            <field-name>dateWriteOff</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_civilSuitNo">
+            <field-name>civilSuitNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_monthsInstalmentsArrears">
+            <field-name>monthsInstalmentsArrears</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_monthsInterestArrears">
+            <field-name>monthsInterestArrears</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_dateVehicleDisposed">
+            <field-name>dateVehicleDisposed</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_dateRepossesed">
+            <field-name>dateRepossesed</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_carCode">
+            <field-name>carCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_carDate">
+            <field-name>carDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_refID">
+            <field-name>refID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_settled">
+            <field-name>settled</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_amountPartialWrittenOff">
+            <field-name>amountPartialWrittenOff</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_specProvisionChrgAcc">
+            <field-name>specProvisionChrgAcc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBNPLInfoStaging_nplDate">
+            <field-name>nplDate</field-name>
+         </cmp-field>
+         <primkey-field>nplID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBNPLInfoStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBRecoveryExpense">
+         <ejb-name>EBRecoveryExpense</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpense</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecoveryExpense</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecoveryExpense_recoveryExpenseID">
+            <field-name>recoveryExpenseID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_expenseType">
+            <field-name>expenseType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_dateOfExpense">
+            <field-name>dateOfExpense</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_expenseAmt">
+            <field-name>expenseAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_expenseAmtCurrency">
+            <field-name>expenseAmtCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_refID">
+            <field-name>refID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpense_settled">
+            <field-name>settled</field-name>
+         </cmp-field>
+         <primkey-field>recoveryExpenseID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBRecoveryExpense">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBRecoveryExpenseStaging">
+         <ejb-name>EBRecoveryExpenseStaging</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpense</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBRecoveryExpenseStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecoveryExpenseStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_recoveryExpenseID">
+            <field-name>recoveryExpenseID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_expenseType">
+            <field-name>expenseType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_dateOfExpense">
+            <field-name>dateOfExpense</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_expenseAmt">
+            <field-name>expenseAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_expenseAmtCurrency">
+            <field-name>expenseAmtCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_refID">
+            <field-name>refID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryExpenseStaging_settled">
+            <field-name>settled</field-name>
+         </cmp-field>
+         <primkey-field>recoveryExpenseID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBRecoveryExpenseStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBRecovery">
+         <ejb-name>EBRecovery</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBRecoveryHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBRecovery</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBRecoveryBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecovery</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecovery_recoveryID">
+            <field-name>recoveryID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecovery_recoveryType">
+            <field-name>recoveryType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecovery_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecovery_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecovery_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecovery_refID">
+            <field-name>refID</field-name>
+         </cmp-field>
+         <primkey-field>recoveryID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBRecovery_EBRecoveryIncome">
+            <ejb-ref-name>EBRecoveryIncomeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeLocalHome</local-home>
+            <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeLocal</local>
+            <ejb-link>EBRecoveryIncome</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBRecovery">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBRecoveryStaging">
+         <ejb-name>EBRecoveryStaging</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBRecoveryHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBRecovery</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBRecoveryStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecoveryStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecoveryStaging_recoveryID">
+            <field-name>recoveryID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryStaging_recoveryType">
+            <field-name>recoveryType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryStaging_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryStaging_refID">
+            <field-name>refID</field-name>
+         </cmp-field>
+         <primkey-field>recoveryID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBRecoveryStaging_EBRecoveryIncomeStaging">
+            <ejb-ref-name>EBRecoveryIncomeStagingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeLocalHome</local-home>
+            <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeLocal</local>
+            <ejb-link>EBRecoveryIncomeStaging</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBRecoveryStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBRecoveryIncome">
+         <ejb-name>EBRecoveryIncome</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncome</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecoveryIncome</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecoveryIncome_recoveryIncomeID">
+            <field-name>recoveryIncomeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncome_recoveryDate">
+            <field-name>recoveryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncome_totalAmtRecovered">
+            <field-name>totalAmtRecovered</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncome_totalAmtRecoveredCurrency">
+            <field-name>totalAmtRecoveredCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncome_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncome_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncome_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncome_refID">
+            <field-name>refID</field-name>
+         </cmp-field>
+         <primkey-field>recoveryIncomeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBRecoveryIncome">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBRecoveryIncomeStaging">
+         <ejb-name>EBRecoveryIncomeStaging</ejb-name>
+         <home>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeHome</home>
+         <remote>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncome</remote>
+         <local-home>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeLocalHome</local-home>
+         <local>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeLocal</local>
+         <ejb-class>com.integrosys.cms.app.liquidation.bus.EBRecoveryIncomeStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRecoveryIncomeStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRecoveryIncomeStaging_recoveryIncomeID">
+            <field-name>recoveryIncomeID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncomeStaging_recoveryDate">
+            <field-name>recoveryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncomeStaging_totalAmtRecovered">
+            <field-name>totalAmtRecovered</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncomeStaging_totalAmtRecoveredCurrency">
+            <field-name>totalAmtRecoveredCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncomeStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncomeStaging_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncomeStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRecoveryIncomeStaging_refID">
+            <field-name>refID</field-name>
+         </cmp-field>
+         <primkey-field>recoveryIncomeID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBRecoveryIncomeStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_Liquidation-RecoveryExpense">
+         <ejb-relation-name>Liquidation-RecoveryExpense</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Liquidation-Has-RecoveryExpense">
+            <ejb-relationship-role-name>Liquidation-Has-RecoveryExpense</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLiquidation</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>recoveryExpenseCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_RecoveryExpense-BelongTo-Liquidation">
+            <ejb-relationship-role-name>RecoveryExpense-BelongTo-Liquidation</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecoveryExpense</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Liquidation-RecoveryExpense-Staging">
+         <ejb-relation-name>Liquidation-RecoveryExpense-Staging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Liquidation-Has-RecoveryExpense-Stage">
+            <ejb-relationship-role-name>Liquidation-Has-RecoveryExpense-Stage</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLiquidationStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>recoveryExpenseCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_RecoveryExpense-BelongTo-Liquidation-Stage">
+            <ejb-relationship-role-name>RecoveryExpense-BelongTo-Liquidation-Stage</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecoveryExpenseStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Liquidation-Recovery">
+         <ejb-relation-name>Liquidation-Recovery</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Liquidation-Has-Recovery">
+            <ejb-relationship-role-name>Liquidation-Has-Recovery</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLiquidation</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>recoveryCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_Recovery-BelongTo-Liquidation">
+            <ejb-relationship-role-name>Recovery-BelongTo-Liquidation</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecovery</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Liquidation-Recovery-Staging">
+         <ejb-relation-name>Liquidation-Recovery-Staging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Liquidation-Has-Recovery-Stage">
+            <ejb-relationship-role-name>Liquidation-Has-Recovery-Stage</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLiquidationStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>recoveryCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_Recovery-BelongTo-Liquidation-Stage">
+            <ejb-relationship-role-name>Recovery-BelongTo-Liquidation-Stage</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecoveryStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Recovery-RecoveryIncome">
+         <ejb-relation-name>Recovery-RecoveryIncome</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Recovery-Has-RecoveryIncome">
+            <ejb-relationship-role-name>Recovery-Has-RecoveryIncome</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecovery</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>recoveryIncomeCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_RecoveryIncome-BelongTo-Recovery">
+            <ejb-relationship-role-name>RecoveryIncome-BelongTo-Recovery</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecoveryIncome</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Recovery-RecoveryIncome-Staging">
+         <ejb-relation-name>Recovery-RecoveryIncome-Staging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Recovery-Has-RecoveryIncome-Stage">
+            <ejb-relationship-role-name>Recovery-Has-RecoveryIncome-Stage</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecoveryStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>recoveryIncomeCMR</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_RecoveryIncome-BelongTo-Recovery-Stage">
+            <ejb-relationship-role-name>RecoveryIncome-BelongTo-Recovery-Stage</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRecoveryIncomeStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBLiquidationProxy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBLiquidationBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBLiquidationBusManagerStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBNPLInfo</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecoveryExpense</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecovery</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecoveryIncome</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecoveryExpenseStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecoveryStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRecoveryIncomeStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLiquidation</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLiquidationStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBNPLInfoStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

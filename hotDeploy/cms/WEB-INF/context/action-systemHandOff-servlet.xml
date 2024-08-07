@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<bean name="/systemHandOff" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.systemHandOff.SystemHandOffAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="performEod" value-ref="SystemHandOffAction.EODCmd" />	
+				<entry key="performAdfRbi" value-ref="SystemHandOffAction.AdfRbiCmd" />	
+				<entry key="performEoy" value-ref="SystemHandOffAction.EOYCmd" />
+				<!-- Added By Dayananda Laishram for Basel Report Generation on 12-May-2015 BASEL_REPORT_ON_EOD || Starts -->
+				<entry key="performBaselUpdateReport" value-ref="SystemHandOffAction.BASELCmd" />	
+				<!-- Added By Dayananda Laishram for Basel Report Generation on 12-May-2015 BASEL_REPORT_ON_EOD || Ends -->
+				
+				<entry key="downloadFcubsFile" value-ref="SystemHandOffAction.DownloadFcUbsFileCmd" />	
+			</map>
+		</property>
+	</bean>
+
+</beans>

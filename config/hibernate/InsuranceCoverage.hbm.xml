@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class entity-name="actualInsuranceCoverage" 
+		name="com.integrosys.cms.app.insurancecoverage.bus.OBInsuranceCoverage" table="CMS_INSURANCE_COVERAGE" lazy="false">
+            <id name="id">
+               <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_INSURANCE_COVRG_SEQ</param>
+			</generator>
+            </id>
+
+			<property name="insuranceCoverageCode" column="INSURANCE_COVERAGE_CODE"/>
+			<property name="companyName" column="COMPANY_NAME"/>
+			<property name="address" column="ADDRESS"/>
+			<property name="contactNumber" column="CONTACT_NUMBER"/>
+
+			<property name="versionTime" column="VERSION_TIME" type="long"/>
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>            
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+			
+    </class>    
+    
+    <class entity-name="stagingInsuranceCoverage" 
+		name="com.integrosys.cms.app.insurancecoverage.bus.OBInsuranceCoverage" table="CMS_STAGE_INSURANCE_COVERAGE" lazy="false">
+            <id name="id">
+               <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_INSURANCE_COVRG_SEQ</param>
+			</generator>
+            </id>
+            <property name="insuranceCoverageCode" column="INSURANCE_COVERAGE_CODE"/>
+			<property name="companyName" column="COMPANY_NAME"/>
+			<property name="address" column="ADDRESS"/>
+			<property name="contactNumber" column="CONTACT_NUMBER"/>
+
+			<property name="versionTime" column="VERSION_TIME" type="long"/>
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>            
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+			
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="LeiDetailsUploadForm" type="com.integrosys.cms.app.leiDetailsUpload.LeiDetailsUploadForm">
+        </form-bean>
+
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/leidetailsupload" type="com.integrosys.cms.app.leiDetailsUpload.LeiDetailsUploadAction" name="LeiDetailsUploadForm" validate="false" scope="request">
+            <forward name="txtupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/upload_leidetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward>
+            <forward name="excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/upload_leidetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward>
+            <forward name="leidetailsupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/list_leidetails_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward>
+             <forward name="downloadReport" path="/file/popup.jsp" />
+             <forward name="checker_approve_create_leidetails" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/chk_approve_leidetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward> 
+            <forward name="checker_reject_create_leidetails" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/checker_reject_create_leidetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward> 
+            <forward name="maker_prepare_leidetails_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/maker_prepare_leidetails_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward> 
+            <forward name="checker_process_create_leidetails" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/checker_process_create_leidetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward> 
+            <forward name="error_reject_leidetails" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/checker_process_create_leidetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward> 
+            <forward name="maker_close_leidetails_file" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/maker_close_leidetails_file.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward> 
+            <forward name="error_excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/upload_leidetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.leidetailsupload"/>
+            </forward> 
+             <forward name="rejected_delete_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/leidetailsupload/process_leidetails_file.jsp"/>
+                <set-property property="title" value="menu.maual_feeds.file_upload"/>
+            </forward> 
+        </action>
+		
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+    </struts-config>

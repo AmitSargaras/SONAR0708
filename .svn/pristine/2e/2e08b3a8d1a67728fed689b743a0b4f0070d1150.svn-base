@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT UPLOADED_FILE_NAME,TO_CHAR(UPLOAD_DATE ,'DD-Mon-yy HH:MI:SS'),NO_OF_RECORDS FROM CMS_FILE_UPLOAD_LOG
+		</query>
+		<whereClause>
+			<mandatoryClause>
+			</mandatoryClause>
+			<param>
+				<name>fromDate</name>
+				<condition> TRUNC(UPLOAD_DATE) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>FILE NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>File Upload Date/Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Number of Records</header>
+				</reportColumn>								
+			</reportColumns>
+			<reportName>Document master upload to dl</reportName>
+		</reportParamters>
+	</report>
+</reports>

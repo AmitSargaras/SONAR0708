@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="AutoValuationParameterForm" type="com.integrosys.cms.ui.systemparameters.autoval.AutoValuationParameterForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/AutoValParam"
+            type="com.integrosys.cms.ui.systemparameters.autoval.AutoValuationParameterAction"
+            name="AutoValuationParameterForm" scope="request">
+            <forward name="after_auto_val_param_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/systemparameters/autoval/auto_valuation_params_list.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_view_auto_val_param"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/systemparameters/autoval/auto_valuation_params_view.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_maker_prepare_edit"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/systemparameters/autoval/auto_valuation_params_edit.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_maker_prepare_create"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/systemparameters/autoval/auto_valuation_params_create.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_maker_confirm_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_maker_confirm_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_checker_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/systemparameters/autoval/checker_auto_valuation_params_view.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_checker_confirm_approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_checker_confirm_reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_maker_confirm_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_maker_prepare_resubmit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/systemparameters/autoval/maker_resubmit_add_edit_params.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_maker_prepare_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/systemparameters/autoval/maker_resubmit_delete_params.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="after_maker_confirm_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+            <forward name="trx_disallowed" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+			<forward name="checker_view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/systemparameters/autoval/checker_view.jsp"/>
+                <set-property property="title" value="title.auto.valuation.parameter"/>
+            </forward>
+			
+        </action>
+    
+    </action-mappings>
+    
+    <message-resources key="message-autovaluation" parameter="ApplicationResources-param-autovaluation"/>
+</struts-config>

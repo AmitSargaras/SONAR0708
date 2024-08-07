@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
+<ejb-jar>
+<display-name>DiaryItem</display-name>
+    <enterprise-beans>
+        <session id="session_SBDiaryItemProxyManager">
+            <ejb-name>SBDiaryItemProxyManager</ejb-name>
+            <home>com.integrosys.cms.app.diary.proxy.SBDiaryItemProxyManagerHome</home>
+            <remote>com.integrosys.cms.app.diary.proxy.SBDiaryItemProxyManager</remote>
+            <ejb-class>com.integrosys.cms.app.diary.proxy.SBDiaryItemProxyManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session id="session_SBDiaryItemBusManager">
+            <ejb-name>SBDiaryItemBusManager</ejb-name>
+            <home>com.integrosys.cms.app.diary.bus.SBDiaryItemBusManagerHome</home>
+            <remote>com.integrosys.cms.app.diary.bus.SBDiaryItemBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.diary.bus.SBDiaryItemBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <entity id="entity_EBDiaryItem">
+            <ejb-name>EBDiaryItem</ejb-name>
+            <home>com.integrosys.cms.app.diary.bus.EBDiaryItemHome</home>
+            <remote>com.integrosys.cms.app.diary.bus.EBDiaryItem</remote>
+            <local-home>com.integrosys.cms.app.diary.bus.EBDiaryItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.diary.bus.EBDiaryItemLocal</local>
+            <ejb-class>com.integrosys.cms.app.diary.bus.EBDiaryItemBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBDiaryItem</abstract-schema-name>
+            <cmp-field id="cmp_EBDiaryItem_cMPItemID">
+                <field-name>cMPItemID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDiaryItem_cMPTeamTypeID">
+                <field-name>cMPTeamTypeID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDiaryItem_allowedCountry">
+                <field-name>allowedCountry</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDiaryItem_isObsoleteStr">
+                <field-name>isObsoleteStr</field-name>
+            </cmp-field>  
+            <cmp-field id="cmp_EBDiaryItem_customerReference">
+                <field-name>customerReference</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDiaryItem_customerName">
+                <field-name>customerName</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBDiaryItem_description">
+                <field-name>description</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBDiaryItem_narration">
+                <field-name>narration</field-name>
+            </cmp-field>                    
+            <cmp-field id="cmp_EBDiaryItem_dueDate">
+                <field-name>dueDate</field-name>
+            </cmp-field>    
+            <cmp-field id="cmp_EBDiaryItem_expiryDate">
+                <field-name>expiryDate</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBDiaryItem_lastUpdatedBy">
+                <field-name>lastUpdatedBy</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDiaryItem_lastUpdatedTime">
+                <field-name>lastUpdatedTime</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBDiaryItem_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field>  
+            <cmp-field id="cmp_EBDiaryItem_customerSegment">
+                <field-name>customerSegment</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBDiaryItem_fAM">
+                <field-name>fAM</field-name>
+            </cmp-field>   
+            <primkey-field>cMPItemID</primkey-field>         
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>                      
+           </entity>        
+    </enterprise-beans>    
+                
+    <assembly-descriptor>
+        <container-transaction>            
+            <method>
+                <ejb-name>SBDiaryItemProxyManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBDiaryItemBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBDiaryItem</ejb-name>
+                <method-name>*</method-name>
+            </method>            
+           <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

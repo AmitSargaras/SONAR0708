@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="PartyCamUploadForm" type="com.integrosys.cms.ui.partycamupload.PartyCamUploadForm">
+        </form-bean>
+
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/Partycamupload" type="com.integrosys.cms.ui.partycamupload.PartyCamUploadAction" name="PartyCamUploadForm" validate="false" scope="request">
+            <forward name="txtupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/upload_partycam.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward>
+            <forward name="csvupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/upload_partycam.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward>
+            <forward name="partycamupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/list_partycam_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward>
+             <forward name="downloadReport" path="/file/popup.jsp" />
+             <forward name="checker_approve_create_partycam" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/chk_approve_partycam.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward> 
+            <forward name="checker_reject_create_partycam" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/checker_reject_create_partycam.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward> 
+            <forward name="maker_prepare_partycam_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/maker_prepare_partycam_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward> 
+            <forward name="checker_process_create_partycam" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/checker_process_create_partycam.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward> 
+            <forward name="error_reject_partycam" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/checker_process_create_partycam.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward> 
+            <forward name="maker_close_partycam_file" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/maker_close_partycam_file.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward> 
+            <forward name="error_csvupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/upload_partycam.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.partycamupload"/>
+            </forward> 
+             <forward name="rejected_delete_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/partycamupload/process_partycam_file.jsp"/>
+                <set-property property="title" value="menu.maual_feeds.file_upload"/>
+            </forward> 
+        </action>
+		
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+</struts-config>

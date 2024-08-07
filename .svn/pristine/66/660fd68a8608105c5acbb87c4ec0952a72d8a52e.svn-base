@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CustodianForm" type="com.integrosys.cms.ui.custodian.CustodianForm">
+        </form-bean>
+        <form-bean name="CustodianSearchForm" type="com.integrosys.cms.ui.custodian.CustodianSearchForm">
+        </form-bean>
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/custodian" type="com.integrosys.cms.ui.custodian.CustodianAction" name="CustodianForm" validate="false" scope="request">
+            <forward name="cpc_custodian_doc_list" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/cpc_maker_custodian_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="prepare_create_custodian_doc_maker" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/cpc_maker_create_custodian.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="create_custodian_doc_maker" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/cpc_maker_custodian_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="cc_doc_list" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/maker_cc_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="security_doc_list" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/maker_security_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+
+            <forward name="prepare_custodian_maker" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/maker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="doc_error" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/maker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="read_custodian_doc_checker" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/checker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="confirm_submitted" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="confirm_submitted_noframe" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="confirm_submitted_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="confirm_closed_noframe" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="confirm_approved" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="confirm_rejected" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="list_lodgement" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/lodgement_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="list_withdrawal" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/withdrawal_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="print_memo" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/memo.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="forward" path="/custodian/forward.jsp"/>
+            <forward name="forward_WF" path="/custodian/forward.jsp"/>
+            <forward name="edit_reject_page" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="cncl_reject_page" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+
+            <forward name="back_cc_doc_list" path="/custodian.do?event=session_cc_doc_list">
+            </forward>
+            <forward name="back_security_doc_list" path="/custodian.do?event=session_security_doc_list">
+            </forward>
+            <forward name="back_doc_list_todo" path="/custodian.do?event=custodian_doc_list">
+            </forward>
+            <forward name="session_cc_doc_list" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/maker_cc_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="session_security_doc_list" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/maker_security_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="session_cc_doc_list_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_cc_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="session_security_doc_list_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_security_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="custodian_doc_checker_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/checker_cc_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="submit_custodian_doc" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="submit_custodian_doc_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="save_custodian_doc" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="save_custodian_doc_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="submit_todo_custodian_doc_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="save_todo_custodian_doc_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="approve_doc_checker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="reject_doc_checker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="custodian_doc_list_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_cc_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="view_item_todo" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="view_item_todo_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="cust_sec_doc_list_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_security_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="view_sec_item_todo_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="close_custodian_doc_maker_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="prepare_custodian_maker_WF" path="/template/common_view_template.jsp">
+                <set-property property="rightFrame" value="/custodian/maker_custodiandoc.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="wip" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+
+            <forward name="list_reversal" path="/template/common_frame_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/reversal_list.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+        </action>    
+        
+        <action path="/custodian_search" type="com.integrosys.cms.ui.custodian.CustodianSearchAction" name="CustodianSearchForm" validate="false" scope="request">     
+      	<forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/custodian/customer_search.jsp"/>
+                <set-property property="title" value="title.maint.custodian"/>
+            </forward>
+            <forward name="after_list" path="/template/common_template.jsp">
+                <set-property property="title" value="title.customer.search"/>
+                <set-property property="rightFrame" value="/customer/CustomerList.jsp"/>
+            </forward>
+            <forward name="after_return" path="/template/common_template.jsp">
+                <set-property property="title" value="title.customer.search"/>
+                <set-property property="rightFrame" value="/customer/CustomerList.jsp"/>
+            </forward>
+            <forward name="after_prepare" path="/template/common_template.jsp">
+                <set-property property="title" value="title.customer.search"/>
+                <set-property property="rightFrame" value="/custodian/customer_search.jsp"/>
+            </forward>
+        </action> 
+        
+    </action-mappings>
+     
+           
+
+    
+    <!--<message-resources parameter="ApplicationResources-custodian"/>-->
+</struts-config>

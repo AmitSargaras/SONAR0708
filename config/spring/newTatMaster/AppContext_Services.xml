@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+	<bean id="tatMasterProxy" class="com.integrosys.cms.app.newtatmaster.proxy.TatmasterProxyManagerImpl">
+		<property name="tatMasterBusManager" ref="tatMasterBusManager" />
+		<property name="stagingtatMasterBusManager" ref="stagingtatMasterBusManager" />
+		<property name="trxControllerFactory" ref="tatMasterTrxControllerFactory" />
+		<property name="stagingtatMasterFileMapperIdBusManager" ref="stagingtatMasterFileMapperIdBusManager" />
+		<property name="tatMasterFileMapperIdBusManager" ref="tatMasterFileMapperIdBusManager" />
+		
+	</bean>
+	<bean id="tatMasterBusManager" class="com.integrosys.cms.app.newtatmaster.bus.TatMasterBusManagerImpl">
+		<property name="tatMasterDao" ref="tatMasterDao" />
+		<property name="tatMasterJdbc" ref="tatMasterJdbc" /> 
+	</bean>
+	<bean id="stagingtatMasterBusManager" class="com.integrosys.cms.app.newtatmaster.bus.TatMasterBusManagerStagingImpl">
+		<property name="tatMasterDao" ref="tatMasterDao" />
+		<property name="tatMasterJdbc" ref="tatMasterJdbc" />
+	</bean>
+	<bean id="stagingtatMasterFileMapperIdBusManager" class="com.integrosys.cms.app.newtatmaster.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="tatMasterDao" ref="tatMasterDao" />
+		<property name="tatMasterJdbc" ref="tatMasterJdbc" />
+	</bean>
+	<bean id="tatMasterFileMapperIdBusManager" class="com.integrosys.cms.app.newtatmaster.bus.FileMapperIdBusManagerImpl">
+		<property name="tatMasterDao" ref="tatMasterDao" />
+		<property name="tatMasterJdbc" ref="tatMasterJdbc" />
+	</bean>
+	
+			
+</beans>

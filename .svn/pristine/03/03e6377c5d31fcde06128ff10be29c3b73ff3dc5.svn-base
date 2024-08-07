@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Domain Name="eoncms" ConfigurationVersion="8.1.5.0">
+
+<!--
+	config.xml for weblogic, used for Weblogic cms.ear deployment purpose.
+	After start Weblogic server. Deploy cms.ear from the console.
+-->
+
+    <JDBCConnectionPool DriverName="com.ibm.db2.jcc.DB2Driver"
+        InitialCapacity="1" MaxCapacity="10" Name="CMSPool"
+        Properties="user=db2admin;password=db2admin;currentSchema=EONCMS_LOCAL;currentFunctionPath=EONCMS_LOCAL"
+        Targets="myserver" TestTableName="sysibm.sysdummy1" URL="jdbc:db2://localhost:50000/EONCMS"/>
+
+    <JDBCTxDataSource Name="CMSPool" JNDIName="CMSPool" PoolName="CMSPool" Targets="myserver"/>
+
+    <Server Name="myserver" ListenAddress="" ListenPort="7005"
+        ReliableDeliveryPolicy="RMDefaultPolicy" NativeIOEnabled="true"
+		StdoutSeverityLevel="16" EnabledForDomainLog="false">
+        <SSL Name="myserver" Enabled="false" HostnameVerificationIgnored="false"/>
+    </Server>
+
+    <JMSFileStore Name="FileStore" Directory="rmfilestore"/>
+
+    <WSReliableDeliveryPolicy Name="RMDefaultPolicy" Store="FileStore" 
+    	DefaultRetryCount="10" DefaultTimeToLive="60000"/>
+
+	<JTA TimeoutSeconds="600"/>
+
+</Domain>

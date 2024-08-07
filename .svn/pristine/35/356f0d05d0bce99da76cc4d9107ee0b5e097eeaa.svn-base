@@ -1,0 +1,92 @@
+SELECT  COUNT(1) FROM  cms_stage_forex;
+
+SELECT  COUNT(1) FROM  cms_forex;
+
+SELECT  COUNT(1) FROM  cms_stage_city;
+
+SELECT  COUNT(1) FROM  cms_city;
+
+SELECT  COUNT(1) FROM  cms_state;
+
+SELECT  COUNT(1) FROM  cms_stage_state;
+
+SELECT  COUNT(1) FROM  cms_stage_region;
+
+SELECT  COUNT(1) FROM  cms_region;
+
+SELECT  COUNT(1) FROM  cms_stage_country;
+
+SELECT  COUNT(1) FROM  cms_country;
+
+SELECT  COUNT(1)  FROM cms_stage_system_bank where ID > 1;
+
+SELECT  COUNT(1)  FROM cms_system_bank where ID > 1;
+
+SELECT  COUNT(1) FROM  cms_stage_system_bank_branch;
+
+SELECT  COUNT(1) FROM  cms_system_bank_branch;
+
+SELECT  COUNT(1) FROM  cms_stage_other_bank;
+
+SELECT  COUNT(1) FROM  cms_other_bank;
+
+SELECT  COUNT(1) FROM  cms_stage_other_bank_branch;
+
+SELECT  COUNT(1) FROM  cms_other_bank_branch;
+
+SELECT  COUNT(1) FROM  cms_stage_valuation_agency;
+
+SELECT  COUNT(1) FROM  cms_valuation_agency;
+
+SELECT  COUNT(1) FROM  cms_stage_credit_approval;
+
+SELECT  COUNT(1) FROM  cms_credit_approval;
+
+SELECT  COUNT(1) FROM  cms_stage_relationship_mgr;
+
+SELECT  COUNT(1) FROM  cms_relationship_mgr;
+
+SELECT  COUNT(1) FROM  cms_stage_rbi_category;
+
+SELECT  COUNT(1) FROM  cms_rbi_category;
+
+SELECT  COUNT(1) FROM  cms_stage_facility_new_master;
+
+SELECT  COUNT(1) FROM  cms_facility_new_master;
+
+SELECT  COUNT(1) FROM  cms_stage_party_group;
+
+SELECT  COUNT(1) FROM  cms_party_group;
+
+SELECT  COUNT(1) FROM  cms_stage_insurance_coverage;
+
+SELECT  COUNT(1) FROM  cms_insurance_coverage;
+
+SELECT  COUNT(1) FROM  cms_stg_collateral_new_master;
+
+SELECT  COUNT(1) FROM  cms_collateral_new_master;
+
+SELECT  COUNT(1)  FROM stage_document_masterlist where UPPER (CATEGORY) <> 'CAM';
+
+SELECT  COUNT(1)  FROM cms_document_masterlist where UPPER (CATEGORY) <> 'CAM';
+
+SELECT  COUNT(1) FROM  stage_document_globallist;
+
+SELECT  COUNT(1) FROM  cms_document_globallist;
+
+SELECT  COUNT(1) FROM  stage_document_item;
+
+SELECT  COUNT(1) FROM  cms_document_item;
+
+SELECT  COUNT(1) FROM TRANSACTION   WHERE TRANSACTION_TYPE IN (
+'VALUATION_AGENCY','COUNTRY','REGION','STATE','CITY',
+'SYSTEM_BANK_BRANCH','OTHER_BANK','OTHER_BANK_BRANCH','CREDIT_APPROVAL',
+'RELATIONSHIP_MGR','RBI_CATEGORY','FACILITY_NEW_MASTER','PARTY_GROUP',
+'INSURANCE_COVERAGE','COLLATERAL_MASTER','DOCITEM','TEMPLATE')
+AND REFERENCE_ID NOT IN (SELECT MASTERLIST_ID FROM cms_document_masterlist
+WHERE UPPER (CATEGORY) = 'CAM');
+
+
+--HDFC_MIG_CLIMS/HDFC_MIG_CLIMS@PC617:1521/ORCL
+
+

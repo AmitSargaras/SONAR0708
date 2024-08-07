@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+    
+    <!-- ############################ Other Bank ############################### -->
+
+    <bean id="OtherBankTrx.ReadOtherBankOperation" class="com.integrosys.cms.app.otherbank.trx.ReadOtherBankOperation">
+        <property name="otherBankBusManager" ref="otherBankBusManager"/>
+        <property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager"/>
+    </bean>
+    
+    <bean id="OtherBankTrx.ReadOtherBankIDOperation" class="com.integrosys.cms.app.otherbank.trx.ReadOtherBankIDOperation">
+        <property name="otherBankBusManager" ref="otherBankBusManager"/>
+        <property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager"/>
+    </bean>
+	<bean id="OtherBankTrx.MakerUpdateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerUpdateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	<bean id="OtherBankTrx.MakerCreateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerCreateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.MakerDeleteOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerDeleteOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	<bean id="OtherBankTrx.MakerEditRejectedUpdateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerEditRejectedUpdateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	<bean id="OtherBankTrx.MakerEditRejectedDeleteOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerEditRejectedDeleteOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	<bean id="OtherBankTrx.MakerCloseRejectedCreateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerCloseRejectedCreateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	<bean id="OtherBankTrx.MakerCloseRejectedUpdateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerCloseRejectedUpdateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	<bean id="OtherBankTrx.CheckerApproveUpdateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.CheckerApproveUpdateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.CheckerApproveDeleteOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.CheckerApproveDeleteOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.CheckerApproveCreateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.CheckerApproveCreateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	<bean id="OtherBankTrx.CheckerRejectOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.CheckerRejectOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.MakerCloseRejectedDeleteOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerCloseRejectedDeleteOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.MakerEditRejectedCreateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerEditRejectedCreateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	
+	
+	<bean id="OtherBankTrx.MakerSaveCreateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerSaveCreateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.MakerSubmitSaveCreateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerSubmitSaveCreateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.MakerCloseDraftCreateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerCloseDraftCreateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.MakerSubmitSaveUpdateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerSubmitSaveUpdateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+	<bean id="OtherBankTrx.MakerSaveUpdateOtherBankOperation"
+		class="com.integrosys.cms.app.otherbank.trx.MakerSaveUpdateOtherBankOperation">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+	</bean>
+	
+    <bean id="otherBankReadController" class="com.integrosys.cms.app.otherbank.trx.OtherBankReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadOtherBankOperation" value-ref="OtherBankTrx.ReadOtherBankOperation"/>
+                 <entry key="ReadOtherBankIDOperation" value-ref="OtherBankTrx.ReadOtherBankIDOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="otherBankTrxController" class="com.integrosys.cms.app.otherbank.trx.OtherBankTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateOtherBankOperation" value-ref="OtherBankTrx.MakerCreateOtherBankOperation"/>
+            	  
+            	  <entry key="MakerSaveCreateOtherBankOperation" value-ref="OtherBankTrx.MakerSaveCreateOtherBankOperation"/>
+            	  <entry key="MakerSubmitSaveCreateOtherBankOperation" value-ref="OtherBankTrx.MakerSubmitSaveCreateOtherBankOperation"/>
+            	  <entry key="MakerCloseDraftCreateOtherBankOperation" value-ref="OtherBankTrx.MakerCloseDraftCreateOtherBankOperation"/>
+            	  <entry key="MakerSubmitSaveUpdateOtherBankOperation" value-ref="OtherBankTrx.MakerSubmitSaveUpdateOtherBankOperation"/>
+            	  <entry key="MakerSaveUpdateOtherBankOperation" value-ref="OtherBankTrx.MakerSaveUpdateOtherBankOperation"/>
+            	  	
+				  <entry key="MakerUpdateOtherBankOperation" value-ref="OtherBankTrx.MakerUpdateOtherBankOperation"/>
+				  <entry key="MakerDeleteOtherBankOperation" value-ref="OtherBankTrx.MakerDeleteOtherBankOperation"/>
+            	  <entry key="MakerEditRejectedCreateOtherBankOperation" value-ref="OtherBankTrx.MakerEditRejectedCreateOtherBankOperation"/>
+            	  <entry key="MakerEditRejectedUpdateOtherBankOperation" value-ref="OtherBankTrx.MakerEditRejectedUpdateOtherBankOperation"/>
+            	  <entry key="MakerEditRejectedDeleteOtherBankOperation" value-ref="OtherBankTrx.MakerEditRejectedDeleteOtherBankOperation"/>
+            	  <entry key="MakerCloseRejectedCreateOtherBankOperation" value-ref="OtherBankTrx.MakerCloseRejectedCreateOtherBankOperation"/>
+                  <entry key="MakerCloseRejectedUpdateOtherBankOperation" value-ref="OtherBankTrx.MakerCloseRejectedUpdateOtherBankOperation"/>
+                  <entry key="MakerCloseRejectedDeleteOtherBankOperation" value-ref="OtherBankTrx.MakerCloseRejectedDeleteOtherBankOperation"/>
+
+                  <entry key="CheckerRejectOtherBankOperation" value-ref="OtherBankTrx.CheckerRejectOtherBankOperation"/>
+                  <entry key="CheckerApproveUpdateOtherBankOperation" value-ref="OtherBankTrx.CheckerApproveUpdateOtherBankOperation"/>
+                  <entry key="CheckerApproveCreateOtherBankOperation" value-ref="OtherBankTrx.CheckerApproveCreateOtherBankOperation"/>
+                  <entry key="CheckerApproveDeleteOtherBankOperation" value-ref="OtherBankTrx.CheckerApproveDeleteOtherBankOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+	<bean id="otherBankTrxControllerFactory" class="com.integrosys.cms.app.otherbank.trx.OtherBankTrxControllerFactory">
+        <property name="otherBankReadController" ref="otherBankReadController"/>
+        <property name="otherBankTrxController" ref="otherBankTrxController"/>
+        <property name="otherBankInsertFileTrxController" ref="otherBankInsertFileTrxController"/>
+        <property name="readOtherBankInsertFileTrxController" ref="readOtherBankInsertFileTrxController"/>
+    </bean>
+
+    <!-- ################## Lines added for File Upload ############## -->
+
+    <bean id="MakerOtherBankInsertFileOperation" class="com.integrosys.cms.app.otherbank.trx.MakerOtherBankInsertFileOperation">
+		 <property name="otherBankFileMapperIdBusManager" ref="otherBankFileMapperIdBusManager"/>
+        <property name="stagingOtherBankFileMapperIdBusManager" ref="stagingOtherBankFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerApproveInsertOtherBankMasterOperation"	class="com.integrosys.cms.app.otherbank.trx.CheckerApproveInsertOtherBankMasterOperation">
+		 <property name="otherBankFileMapperIdBusManager" ref="otherBankFileMapperIdBusManager"/>
+        <property name="stagingOtherBankFileMapperIdBusManager" ref="stagingOtherBankFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerRejectInsertOtherBankMasterOperation"	class="com.integrosys.cms.app.otherbank.trx.CheckerRejectInsertOtherBankMasterOperation">
+		 <property name="otherBankFileMapperIdBusManager" ref="otherBankFileMapperIdBusManager"/>
+        <property name="stagingOtherBankFileMapperIdBusManager" ref="stagingOtherBankFileMapperIdBusManager"/>
+	</bean>
+	<bean id="FileInsertOtherBankReadOperation"	class="com.integrosys.cms.app.otherbank.trx.FileInsertOtherBankReadOperation">
+		<property name="otherBankFileMapperIdBusManager" ref="otherBankFileMapperIdBusManager"/>
+        <property name="stagingOtherBankFileMapperIdBusManager" ref="stagingOtherBankFileMapperIdBusManager"/>
+	</bean>
+	<bean id="MakerCloseRejectedInsertOtherBankMasterOperation"	class="com.integrosys.cms.app.otherbank.trx.MakerCloseRejectedInsertOtherBankMasterOperation">
+		 <property name="otherBankFileMapperIdBusManager" ref="otherBankFileMapperIdBusManager"/>
+        <property name="stagingOtherBankFileMapperIdBusManager" ref="stagingOtherBankFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerCreateOtherBankOperation"	class="com.integrosys.cms.app.otherbank.trx.CheckerCreateOtherBankOperation">
+		<property name="otherBankFileMapperIdBusManager" ref="otherBankFileMapperIdBusManager"/>
+        <property name="stagingOtherBankFileMapperIdBusManager" ref="stagingOtherBankFileMapperIdBusManager"/>
+	</bean>  
+    
+    
+    <bean id="otherBankInsertFileTrxController" class="com.integrosys.cms.app.otherbank.trx.InsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>        	 
+                  <entry key="MakerOtherBankInsertFileOperation" value-ref="MakerOtherBankInsertFileOperation" />
+                  <entry key="CheckerApproveInsertOtherBankMasterOperation" value-ref="CheckerApproveInsertOtherBankMasterOperation" />
+                  <entry key="CheckerRejectInsertOtherBankMasterOperation" value-ref="CheckerRejectInsertOtherBankMasterOperation" />
+                  <entry key="MakerCloseRejectedInsertOtherBankMasterOperation" value-ref="MakerCloseRejectedInsertOtherBankMasterOperation"/>
+                   <entry key="CheckerCreateOtherBankOperation" value-ref="CheckerCreateOtherBankOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+     <bean id="readOtherBankInsertFileTrxController" class="com.integrosys.cms.app.otherbank.trx.ReadInsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="FileInsertOtherBankReadOperation" value-ref="FileInsertOtherBankReadOperation"/>                   
+            </map>
+        </property>
+    </bean>
+    
+    
+    <!-- ############################ Other Bank Branch ############################### -->
+    
+    <bean id="OtherBranchTrx.ReadOtherBranchOperation" class="com.integrosys.cms.app.otherbranch.trx.ReadOtherBankBranchOperation">
+        <property name="otherBranchBusManager" ref="otherBranchBusManager"/>
+        <property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager"/>
+    </bean>
+    
+    <bean id="OtherBranchTrx.ReadOtherBranchIDOperation" class="com.integrosys.cms.app.otherbranch.trx.ReadOtherBankBranchIDOperation">
+        <property name="otherBranchBusManager" ref="otherBranchBusManager"/>
+        <property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager"/>
+    </bean>
+	<bean id="OtherBranchTrx.MakerUpdateOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerUpdateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	<bean id="OtherBranchTrx.MakerCreateOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerCreateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.MakerDeleteOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerDeleteOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	<bean id="OtherBranchTrx.MakerEditRejectedUpdateOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerEditRejectedUpdateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	<bean id="OtherBranchTrx.MakerEditRejectedDeleteOtherBankBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerEditRejectedDeleteOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	<bean id="OtherBranchTrx.MakerCloseRejectedUpdateOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerCloseRejectedUpdateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.MakerCloseRejectedCreateOtherBankBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerCloseRejectedCreateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	<bean id="OtherBranchTrx.CheckerApproveUpdateOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.CheckerApproveUpdateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.CheckerApproveDeleteOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.CheckerApproveDeleteOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.CheckerApproveCreateOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.CheckerApproveCreateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	<bean id="OtherBranchTrx.CheckerRejectOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.CheckerRejectOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.MakerCloseRejectedDeleteOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerCloseRejectedDeleteOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.MakerEditRejectedCreateOtherBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerEditRejectedCreateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	
+	<bean id="OtherBranchTrx.MakerSaveCreateOtherBankBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerSaveCreateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.MakerSubmitSaveCreateOtherBankBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerSubmitSaveCreateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.MakerCloseDraftCreateOtherBankBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerCloseDraftCreateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.MakerSubmitSaveUpdateOtherBankBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerSubmitSaveUpdateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	<bean id="OtherBranchTrx.MakerSaveUpdateOtherBankBranchOperation"
+		class="com.integrosys.cms.app.otherbranch.trx.MakerSaveUpdateOtherBankBranchOperation">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+	</bean>
+	
+	
+    <bean id="otherBranchReadController" class="com.integrosys.cms.app.otherbranch.trx.OtherBankBranchReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadOtherBranchOperation" value-ref="OtherBranchTrx.ReadOtherBranchOperation"/>
+                 <entry key="ReadOtherBranchIDOperation" value-ref="OtherBranchTrx.ReadOtherBranchIDOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="otherBranchTrxController" class="com.integrosys.cms.app.otherbranch.trx.OtherBankBranchTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerCreateOtherBranchOperation"/>	
+            	  
+            	  <entry key="MakerSaveCreateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerSaveCreateOtherBankBranchOperation"/>
+            	  <entry key="MakerSubmitSaveCreateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerSubmitSaveCreateOtherBankBranchOperation"/>
+            	  <entry key="MakerCloseDraftCreateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerCloseDraftCreateOtherBankBranchOperation"/>
+            	  <entry key="MakerSubmitSaveUpdateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerSubmitSaveUpdateOtherBankBranchOperation"/>
+            	  <entry key="MakerSaveUpdateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerSaveUpdateOtherBankBranchOperation"/>
+            	  
+            	  
+				  <entry key="MakerUpdateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerUpdateOtherBranchOperation"/>
+				  <entry key="MakerDeleteOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerDeleteOtherBranchOperation"/>
+            	  <entry key="MakerEditRejectedUpdateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerEditRejectedUpdateOtherBranchOperation"/>
+            	  <entry key="MakerEditRejectedDeleteOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerEditRejectedDeleteOtherBankBranchOperation"/>
+                  <entry key="MakerCloseRejectedUpdateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerCloseRejectedUpdateOtherBranchOperation"/>
+                  <entry key="MakerCloseRejectedCreateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerCloseRejectedCreateOtherBankBranchOperation"/>
+                  <entry key="CheckerRejectOtherBankBranchOperation" value-ref="OtherBranchTrx.CheckerRejectOtherBranchOperation"/>
+                  <entry key="MakerCloseRejectedDeleteOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerCloseRejectedDeleteOtherBranchOperation"/>
+                  <entry key="MakerEditRejectedCreateOtherBankBranchOperation" value-ref="OtherBranchTrx.MakerEditRejectedCreateOtherBranchOperation"/>
+                  
+                  <entry key="CheckerApproveUpdateOtherBankBranchOperation" value-ref="OtherBranchTrx.CheckerApproveUpdateOtherBranchOperation"/>
+                  <entry key="CheckerApproveCreateOtherBankBranchOperation" value-ref="OtherBranchTrx.CheckerApproveCreateOtherBranchOperation"/>
+                  <entry key="CheckerApproveDeleteOtherBankBranchOperation" value-ref="OtherBranchTrx.CheckerApproveDeleteOtherBranchOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="otherBranchTrxControllerFactory" class="com.integrosys.cms.app.otherbranch.trx.OtherBranchTrxControllerFactory">
+        <property name="otherBranchReadController" ref="otherBranchReadController"/>
+        <property name="otherBranchTrxController" ref="otherBranchTrxController"/>  
+         <property name="otherBankBranchInsertFileTrxController" ref="otherBankBranchInsertFileTrxController"/>     
+          <property name="readOtherBankBranchInsertFileTrxController" ref="readOtherBankBranchInsertFileTrxController"/>    
+    </bean>
+    
+      <!-- ################## Lines added for File Upload ############## -->
+                            
+    <bean id="MakerOtherBankBranchInsertFileOperation" class="com.integrosys.cms.app.otherbranch.trx.MakerOtherBankBranchInsertFileOperation">
+		 <property name="otherBankBranchFileMapperIdBusManager" ref="otherBankBranchFileMapperIdBusManager"/>
+        <property name="stagingOtherBankBranchFileMapperIdBusManager" ref="stagingOtherBankBranchFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerApproveInsertOtherBankBranchMasterOperation"	class="com.integrosys.cms.app.otherbranch.trx.CheckerApproveInsertOtherBankBranchMasterOperation">
+		 <property name="otherBankBranchFileMapperIdBusManager" ref="otherBankBranchFileMapperIdBusManager"/>
+        <property name="stagingOtherBankBranchFileMapperIdBusManager" ref="stagingOtherBankBranchFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerRejectInsertOtherBankBranchMasterOperation"	class="com.integrosys.cms.app.otherbranch.trx.CheckerRejectInsertOtherBankBranchMasterOperation">
+		 <property name="otherBankBranchFileMapperIdBusManager" ref="otherBankBranchFileMapperIdBusManager"/>
+        <property name="stagingOtherBankBranchFileMapperIdBusManager" ref="stagingOtherBankBranchFileMapperIdBusManager"/>
+	</bean>
+	<bean id="FileInsertOtherBankBranchReadOperation"	class="com.integrosys.cms.app.otherbranch.trx.FileInsertOtherBankBranchReadOperation">
+		<property name="otherBankBranchFileMapperIdBusManager" ref="otherBankBranchFileMapperIdBusManager"/>
+        <property name="stagingOtherBankBranchFileMapperIdBusManager" ref="stagingOtherBankBranchFileMapperIdBusManager"/>
+	</bean>
+	<bean id="MakerCloseRejectedInsertOtherBankBranchMasterOperation"	class="com.integrosys.cms.app.otherbranch.trx.MakerCloseRejectedInsertOtherBankBranchMasterOperation">
+		 <property name="otherBankBranchFileMapperIdBusManager" ref="otherBankBranchFileMapperIdBusManager"/>
+        <property name="stagingOtherBankBranchFileMapperIdBusManager" ref="stagingOtherBankBranchFileMapperIdBusManager"/>
+	</bean>
+	<bean id="CheckerCreateOtherBankBranchOperation"	class="com.integrosys.cms.app.otherbranch.trx.CheckerCreateOtherBankBranchOperation">
+		<property name="otherBankBranchFileMapperIdBusManager" ref="otherBankBranchFileMapperIdBusManager"/>
+        <property name="stagingOtherBankBranchFileMapperIdBusManager" ref="stagingOtherBankBranchFileMapperIdBusManager"/>
+	</bean>  
+    
+    
+    <bean id="otherBankBranchInsertFileTrxController" class="com.integrosys.cms.app.otherbranch.trx.InsertFileOtherBankBranchTrxController">
+        <property name="nameTrxOperationMap">
+            <map>        	 
+                  <entry key="MakerOtherBankBranchInsertFileOperation" value-ref="MakerOtherBankBranchInsertFileOperation" />
+                  <entry key="CheckerApproveInsertOtherBankBranchMasterOperation" value-ref="CheckerApproveInsertOtherBankBranchMasterOperation" />
+                  <entry key="CheckerRejectInsertOtherBankBranchMasterOperation" value-ref="CheckerRejectInsertOtherBankBranchMasterOperation" />
+                  <entry key="MakerCloseRejectedInsertOtherBankBranchMasterOperation" value-ref="MakerCloseRejectedInsertOtherBankBranchMasterOperation"/>
+                   <entry key="CheckerCreateOtherBankBranchOperation" value-ref="CheckerCreateOtherBankBranchOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+     <bean id="readOtherBankBranchInsertFileTrxController" class="com.integrosys.cms.app.otherbranch.trx.ReadInsertFileOtherBankBranchTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="FileInsertOtherBankBranchReadOperation" value-ref="FileInsertOtherBankBranchReadOperation"/>                   
+            </map>
+        </property>
+    </bean>
+    
+    
+</beans>

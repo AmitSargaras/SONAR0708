@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		Context to start the scheduler, such as JDK Timer, Quartz Scheduler, CommonJ TimerWorker etc.
+	</description>
+
+	<bean id="stpScheduledTask" class="org.springframework.scheduling.concurrent.ScheduledExecutorTask">
+		<property name="delay" value="${stp.async.poller.interval}" />
+		<property name="period" value="${stp.async.poller.interval}" />
+	    <property name="runnable" ref="stpAsyncProxy" />
+	</bean>
+	
+	<!--<bean id="tradeScheduledTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<property name="delay" value="${trade.async.poller.interval}" />
+		<property name="period" value="${trade.async.poller.interval}" />
+	  <property name="timerTask" ref="tradeAsyncProxy" />
+	</bean>-->
+
+	<bean id="cmsPollerTimer" class="org.springframework.scheduling.concurrent.ScheduledExecutorFactoryBean">
+		<property name="scheduledExecutorTasks">
+			<list>
+				<ref bean="stpScheduledTask" />
+				<!--<ref bean="tradeScheduledTask" />-->
+			</list>
+		</property>
+	</bean>
+</beans>

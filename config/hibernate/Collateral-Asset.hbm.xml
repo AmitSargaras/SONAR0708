@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.collateral.bus.type.asset.subtype">
+  <class entity-name="actualTradeInInfo" name="OBTradeInInfo" table="CMS_ASSET_TRADE_IN" lazy="false">
+  	<id name="id" type="long" column="ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_ASSET_TRADE_IN_A_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="VERSION_TIME" type="long" />
+  
+    <property name="collateralId" column="COLLATERAL_ID" />
+    <property name="refId" column="REF_ID" />
+    <property name="make" column="MAKE" />
+    <property name="model" column="MODEL" />
+    <property name="yearOfManufacture" column="YEAR_OF_MANUFACTURE"/>
+    <property name="registrationNo" column="REGISTRATION_NO"/>
+	<component name="tradeInValue" class="com.integrosys.base.businfra.currency.Amount">
+		<property name="amountAsBigDecimal" column="TRADE_IN_VALUE" />
+		<property name="currencyCode" column="CURRENCY_CODE"/>
+	</component>
+	<component name="tradeInDeposit" class="com.integrosys.base.businfra.currency.Amount">
+		<property name="amountAsBigDecimal" column="TRADE_IN_DEPOSIT" />
+		<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+	</component>
+  </class>
+
+  <class entity-name="stageTradeInInfo" name="OBTradeInInfo" table="STAGE_ASSET_TRADE_IN" lazy="false">
+  	<id name="id" type="long" column="ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_ASSET_TRADE_IN_S_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="VERSION_TIME" type="long" />
+  
+    <property name="collateralId" column="COLLATERAL_ID" />
+    <property name="refId" column="REF_ID" />
+    <property name="make" column="MAKE" />
+    <property name="model" column="MODEL" />
+    <property name="yearOfManufacture" column="YEAR_OF_MANUFACTURE"/>
+    <property name="registrationNo" column="REGISTRATION_NO"/>
+	<component name="tradeInValue" class="com.integrosys.base.businfra.currency.Amount">
+		<property name="amountAsBigDecimal" column="TRADE_IN_VALUE" />
+		<property name="currencyCode" column="CURRENCY_CODE"/>
+	</component>
+	<component name="tradeInDeposit" class="com.integrosys.base.businfra.currency.Amount">
+		<property name="amountAsBigDecimal" column="TRADE_IN_DEPOSIT" />
+		<property name="currencyCode" column="CURRENCY_CODE" insert="false" update="false" />
+	</component>
+  </class>
+</hibernate-mapping>

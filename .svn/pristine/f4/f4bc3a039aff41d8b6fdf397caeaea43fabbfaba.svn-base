@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CommDealSearchForm" type="com.integrosys.cms.ui.commoditydeal.CommDealSearchForm">
+        </form-bean>
+
+        <form-bean name="CommodityDealForm" type="com.integrosys.cms.ui.commoditydeal.CommodityDealForm">
+        </form-bean>
+
+        <form-bean name="GeneralInfoForm" type="com.integrosys.cms.ui.commoditydeal.generalinfo.GeneralInfoForm">
+        </form-bean>
+
+        <form-bean name="CashDepositForm" type="com.integrosys.cms.ui.commoditydeal.generalinfo.cashdeposit.CashDepositForm">
+        </form-bean>
+
+        <form-bean name="FinanceForm" type="com.integrosys.cms.ui.commoditydeal.finance.FinanceForm">
+        </form-bean>
+
+        <form-bean name="HedgingForm" type="com.integrosys.cms.ui.commoditydeal.finance.hedging.HedgingForm">
+        </form-bean>
+
+        <form-bean name="PurchaseSaleForm" type="com.integrosys.cms.ui.commoditydeal.finance.purchasesale.PurchaseSaleForm">
+        </form-bean>
+
+        <form-bean name="SettlementForm" type="com.integrosys.cms.ui.commoditydeal.finance.settlementdetails.SettlementForm">
+        </form-bean>
+
+        <form-bean name="ReleaseForm" type="com.integrosys.cms.ui.commoditydeal.finance.release.ReleaseForm">
+        </form-bean>
+
+        <form-bean name="DealInfoForm" type="com.integrosys.cms.ui.commoditydeal.dealinfo.DealInfoForm">
+        </form-bean>
+
+        <form-bean name="CommodityDocForm" type="com.integrosys.cms.ui.commoditydeal.commoditydoc.CommDocForm">
+        </form-bean>
+
+        <form-bean name="TitleDocForm" type="com.integrosys.cms.ui.commoditydeal.commoditydoc.titledoc.TitleDocForm">
+        </form-bean>
+
+        <form-bean name="TitleDocWarehouseForm" type="com.integrosys.cms.ui.commoditydeal.commoditydoc.titledoc.warehouse.TitleDocWarehouseForm">
+        </form-bean>
+
+        <form-bean name="FinancingDocForm" type="com.integrosys.cms.ui.commoditydeal.commoditydoc.financingdoc.FinancingDocForm">
+        </form-bean>    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	    <action path="/CommDealSearch"
+	        type="com.integrosys.cms.ui.commoditydeal.CommDealSearchAction"
+	        name="CommDealSearchForm" validate="false" scope="request">
+	        <forward name="after_list" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/deal_list.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="after_search" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/deal_search.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	    </action>
+    
+	    <action path="/CommodityDeal"
+	        type="com.integrosys.cms.ui.commoditydeal.CommodityDealAction"
+	        name="CommodityDealForm" validate="false" scope="request">
+	        <forward name="list" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commodity_deal_list.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="list_closed" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commodity_deal_list_closed.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_cal_position" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/calculate_position.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="revalue_deals" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commodity_deal_list.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="calculate_position" path="/commoditydeal/calculate_position.jsp"/>
+	        <forward name="read" path="/GeneralInfo.do"></forward>
+	        <forward name="prepare_update" path="/GeneralInfo.do"></forward>
+	        <forward name="prepare_close_deal" path="/GeneralInfo.do"></forward>
+	        <forward name="process_update" path="/GeneralInfo.do"></forward>
+	        <forward name="prepare_close" path="/GeneralInfo.do"></forward>
+	        <forward name="track" path="/GeneralInfo.do"></forward>
+	        <forward name="process" path="/GeneralInfo.do"></forward>
+	        <forward name="prepare_add_deal" path="/GeneralInfo.do"></forward>
+	        <forward name="user_process" path="/GeneralInfo.do"></forward>
+	        <forward name="user_to_track" path="/GeneralInfo.do"></forward>
+	        <forward name="forward_deal" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_forward.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	    </action>
+	
+	    <action path="/GeneralInfo"
+	        type="com.integrosys.cms.ui.commoditydeal.generalinfo.GeneralInfoAction"
+	        name="GeneralInfoForm" validate="false" scope="request">
+	        <forward name="read" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="track" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_process.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="submit" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="close_deal" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="approve" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="reject" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="wip" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/wip.html"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="amountEx" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/ack_amount_conversion_err.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="CloseDealErr" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/ack_close_deal_err.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="forward_deal" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_forward.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="add_cash_deposit" path="/DealCashDeposit.do?event=prepare"></forward>
+	        <forward name="update_cash_deposit" path="/DealCashDeposit.do?event=prepare_update_sub"></forward>
+	        <forward name="view_cash_deposit" path="/DealCashDeposit.do?event=read"></forward>
+	        <forward name="read_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="close_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="track_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/general_info_process.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/generalinfo/general_info_view.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+		    
+	    <action path="/DealCashDeposit"
+	        type="com.integrosys.cms.ui.commoditydeal.generalinfo.cashdeposit.CashDepositAction"
+	        name="CashDepositForm" validate="false" scope="request">
+	        <forward name="process_return" path="/GeneralInfo.do?event=process_return"></forward>
+	        <forward name="update_return" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="read_return" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="close_return" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="track_return" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/cashdeposit/update_cash_deposit.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="view_cash_deposit" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/cashdeposit/view_cash_deposit.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_cash_deposit" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/generalinfo/cashdeposit/chk_view_cash_deposit.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/generalinfo/cashdeposit/view_cash_deposit.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+    
+	    <action path="/Finance"
+	        type="com.integrosys.cms.ui.commoditydeal.finance.FinanceAction"
+	        name="FinanceForm" validate="false" scope="request">
+	        <forward name="process_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/finance_process.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/finance_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/finance_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="read_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/finance_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="close_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/finance_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/finance_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="track_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/finance_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="print_approval_sheet" path="/commoditydeal/finance/print_approval_sheet.jsp"></forward>
+	        <forward name="print_authorisation_release" path="/commoditydeal/finance/print_authorisation_release.jsp"></forward>
+	        <forward name="user_process" path="/commoditydeal/finance/finance_view.jsp"></forward>
+	        <forward name="add_settlement" path="/Settlement.do?event=prepare"></forward>
+	        <forward name="update_settlement" path="/Settlement.do?event=prepare_update_sub"></forward>
+	        <forward name="view_settlement" path="/Settlement.do?event=read"></forward>
+	        <forward name="add_release" path="/Release.do?event=prepare"></forward>
+	        <forward name="update_release" path="/Release.do?event=prepare_update_sub"></forward>
+	        <forward name="view_release" path="/Release.do?event=read"></forward>
+	        <forward name="update_purchase_sale" path="/PurchaseSale.do?event=prepare_update_sub"></forward>
+	        <forward name="view_purchase_sale" path="/PurchaseSale.do?event=read"></forward>
+	        <forward name="update_hedging" path="/Hedging.do?event=prepare_update_sub"></forward>
+	        <forward name="view_hedging" path="/Hedging.do?event=read"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+	    
+	    <action path="/Hedging"
+	        type="com.integrosys.cms.ui.commoditydeal.finance.hedging.HedgingAction"
+	        name="HedgingForm" validate="false" scope="request">
+	        <forward name="process_return" path="/Finance.do?event=process_return"></forward>
+	        <forward name="update_return" path="/Finance.do?event=update_return"></forward>
+	        <forward name="read_return" path="/Finance.do?event=read_return"></forward>
+	        <forward name="close_return" path="/Finance.do?event=close_return"></forward>
+	        <forward name="track_return" path="/Finance.do?event=track_return"></forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/hedging/update_hedging.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="view_hedging" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/hedging/view_hedging.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_hedging" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/hedging/chk_view_hedging.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/finance/hedging/view_hedging.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>	    
+	    
+	    <action path="/PurchaseSale"
+	        type="com.integrosys.cms.ui.commoditydeal.finance.purchasesale.PurchaseSaleAction"
+	        name="PurchaseSaleForm" validate="false" scope="request">
+	        <forward name="process_return" path="/Finance.do?event=process_return"></forward>
+	        <forward name="update_return" path="/Finance.do?event=update_return"></forward>
+	        <forward name="read_return" path="/Finance.do?event=read_return"></forward>
+	        <forward name="close_return" path="/Finance.do?event=close_return"></forward>
+	        <forward name="track_return" path="/Finance.do?event=track_return"></forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/purchasesale/update_purchase_sale.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="view_purchase_sale" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/purchasesale/view_purchase_sale.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_purchase_sale" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/purchasesale/chk_view_purchase_sale.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/finance/purchasesale/view_purchase_sale.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+		    
+	    <action path="/Settlement"
+	        type="com.integrosys.cms.ui.commoditydeal.finance.settlementdetails.SettlementAction"
+	        name="SettlementForm" validate="false" scope="request">
+	        <forward name="process_return" path="/Finance.do?event=process_return"></forward>
+	        <forward name="update_return" path="/Finance.do?event=update_return"></forward>
+	        <forward name="read_return" path="/Finance.do?event=read_return"></forward>
+	        <forward name="close_return" path="/Finance.do?event=close_return"></forward>
+	        <forward name="track_return" path="/Finance.do?event=track_return"></forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/settlementdetails/update_settlement.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="view_settlement" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/settlementdetails/view_settlement.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_settlement" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/settlementdetails/chk_view_settlement.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/finance/settlementdetails/view_settlement.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+    
+	    <action path="/Release"
+	        type="com.integrosys.cms.ui.commoditydeal.finance.release.ReleaseAction"
+	        name="ReleaseForm" validate="false" scope="request">
+	        <forward name="process_return" path="/Finance.do?event=process_return"></forward>
+	        <forward name="update_return" path="/Finance.do?event=update_return"></forward>
+	        <forward name="read_return" path="/Finance.do?event=read_return"></forward>
+	        <forward name="close_return" path="/Finance.do?event=close_return"></forward>
+	        <forward name="track_return" path="/Finance.do?event=track_return"></forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/release/update_release.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="view_release" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/release/view_release.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_release" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/finance/release/chk_view_release.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/finance/release/view_release.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+	    
+	    <action path="/DealInfo"
+	        type="com.integrosys.cms.ui.commoditydeal.dealinfo.DealInfoAction"
+	        name="DealInfoForm" validate="false" scope="request">
+	        <forward name="read" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/dealinfo/deal_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/dealinfo/deal_info_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/dealinfo/deal_info_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="track" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/dealinfo/deal_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/dealinfo/deal_info_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/dealinfo/deal_info_process.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/dealinfo/deal_info_view.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+		    
+	    <action path="/CommodityDoc"
+	        type="com.integrosys.cms.ui.commoditydeal.commoditydoc.CommDocAction"
+	        name="CommodityDocForm" validate="false" scope="request">
+	        <forward name="process_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/commodity_doc_process.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/commodity_doc_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/commodity_doc_update.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="read_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/commodity_doc_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="close_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/commodity_doc_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="prepare_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/commodity_doc_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="track_return" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/commodity_doc_view.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/commoditydoc/commodity_doc_view.jsp"></forward>
+	
+	        <forward name="add_financing_document" path="/FinancingDoc.do?event=prepare"></forward>
+	        <forward name="update_financing_document" path="/FinancingDoc.do?event=prepare_update_sub"></forward>
+	        <forward name="view_financing_document" path="/FinancingDoc.do?event=read"></forward>
+	        <forward name="add_title_document" path="/TitleDoc.do?event=prepare"></forward>
+	        <forward name="update_title_document" path="/TitleDoc.do?event=prepare_update_sub"></forward>
+	        <forward name="view_title_document" path="/TitleDoc.do?event=read"></forward>
+	        <forward name="list_title_doc" path="/TitleDoc.do"></forward>
+	        <forward name="view_sec_doc" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/view_security_doc.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+    
+	    <action path="/TitleDoc"
+	        type="com.integrosys.cms.ui.commoditydeal.commoditydoc.titledoc.TitleDocAction"
+	        name="TitleDocForm" validate="false" scope="request">
+	        <forward name="process_return" path="/CommodityDoc.do?event=process_return"></forward>
+	        <forward name="update_return" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="read_return" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="close_return" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="track_return" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/titledoc/update_title_doc.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="view_title_doc" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/titledoc/view_title_doc.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_title_doc" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/titledoc/chk_view_title_doc.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="list_title_doc" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/titledoc/list_title_doc.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/commoditydoc/titledoc/chk_view_title_doc.jsp"></forward>
+	        <forward name="prepare_add_warehouse" path="/TitleDocWarehouse.do"></forward>
+	        <forward name="prepare_edit_warehouse" path="/TitleDocWarehouse.do"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+	    
+	    <action path="/TitleDocWarehouse"
+	        type="com.integrosys.cms.ui.commoditydeal.commoditydoc.titledoc.warehouse.TitleDocWarehouseAction"
+	        name="TitleDocWarehouseForm" validate="false" scope="request">
+	        <forward name="edit_return" path="/TitleDoc.do?event=edit_return"></forward>
+	        <forward name="return" path="/TitleDoc.do"></forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/titledoc/warehouse/update_titledoc_warehouse.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="view_titledoc_warehouse" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/titledoc/warehouse/view_titledoc_warehouse.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_titledoc_warehouse" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/titledoc/warehouse/chk_view_titledoc_warehouse.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/commoditydoc/titledoc/warehouse/view_titledoc_warehouse.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+	    
+	    <action path="/FinancingDoc"
+	        type="com.integrosys.cms.ui.commoditydeal.commoditydoc.financingdoc.FinancingDocAction"
+	        name="FinancingDocForm" validate="false" scope="request">
+	        <forward name="process_return" path="/CommodityDoc.do?event=process_return"></forward>
+	        <forward name="update_return" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="read_return" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="close_return" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="track_return" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/financingdoc/update_financing_doc.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="view_financing_doc" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/financingdoc/view_financing_doc.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="process_financing_doc" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commoditydeal/commoditydoc/financingdoc/chk_view_financing_doc.jsp"/>
+	            <set-property property="title" value="title.commodity.deal"/>
+	        </forward>
+	        <forward name="user_process" path="/commoditydeal/commoditydoc/financingdoc/view_financing_doc.jsp"></forward>
+	
+	        <forward name="general_info_read" path="/GeneralInfo.do?event=read_return"></forward>
+	        <forward name="general_info_prepare_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_process_update" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_add_deal" path="/GeneralInfo.do?event=update_return"></forward>
+	        <forward name="general_info_prepare_close" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_prepare_close_deal" path="/GeneralInfo.do?event=close_return"></forward>
+	        <forward name="general_info_track" path="/GeneralInfo.do?event=track_return"></forward>
+	        <forward name="general_info_process" path="/GeneralInfo.do?event=process_return"></forward>
+	
+	        <forward name="doc_read" path="/CommodityDoc.do?event=read_return"></forward>
+	        <forward name="doc_prepare_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_process_update" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_add_deal" path="/CommodityDoc.do?event=update_return"></forward>
+	        <forward name="doc_prepare_close" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_prepare_close_deal" path="/CommodityDoc.do?event=close_return"></forward>
+	        <forward name="doc_track" path="/CommodityDoc.do?event=track_return"></forward>
+	        <forward name="doc_process" path="/CommodityDoc.do?event=process_return"></forward>
+	
+	        <forward name="deal_info_read" path="/DealInfo.do?event=read"></forward>
+	        <forward name="deal_info_prepare_update" path="/DealInfo.do?event=prepare_update"></forward>
+	        <forward name="deal_info_process_update" path="/DealInfo.do?event=process_update"></forward>
+	        <forward name="deal_info_prepare_add_deal" path="/DealInfo.do?event=prepare_add_deal"></forward>
+	        <forward name="deal_info_prepare_close" path="/DealInfo.do?event=prepare_close"></forward>
+	        <forward name="deal_info_prepare_close_deal" path="/DealInfo.do?event=prepare_close_deal"></forward>
+	        <forward name="deal_info_track" path="/DealInfo.do?event=track"></forward>
+	        <forward name="deal_info_process" path="/DealInfo.do?event=process"></forward>
+	
+	        <forward name="finance_read" path="/Finance.do?event=read_return"></forward>
+	        <forward name="finance_prepare_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_process_update" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_add_deal" path="/Finance.do?event=update_return"></forward>
+	        <forward name="finance_prepare_close" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_prepare_close_deal" path="/Finance.do?event=close_return"></forward>
+	        <forward name="finance_track" path="/Finance.do?event=track_return"></forward>
+	        <forward name="finance_process" path="/Finance.do?event=process_return"></forward>
+	    </action>
+	    
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-commodity-deal"/>-->
+</struts-config>

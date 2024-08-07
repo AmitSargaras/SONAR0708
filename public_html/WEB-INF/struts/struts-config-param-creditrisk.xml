@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CreditRiskParamUnitTrustForm" type="com.integrosys.cms.ui.creditriskparam.unittrust.CreditRiskParamUnitTrustForm">
+        </form-bean>
+
+        <form-bean name="PolicyCapForm" type="com.integrosys.cms.ui.creditriskparam.policycap.PolicyCapForm">
+        </form-bean>
+
+		<form-bean name="ShareCounterForm" type="com.integrosys.cms.ui.creditriskparam.sharecounter.ShareCounterForm">
+        </form-bean>    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+      <action path="/CreditRiskParamUnitTrust" type="com.integrosys.cms.ui.creditriskparam.unittrust.CreditRiskParamUnitTrustAction"
+          name="CreditRiskParamUnitTrustForm" validate="false" scope="request">
+
+        <forward name="select" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/creditriskparam/unittrust/credit_risk_param_unittrust_select.jsp"/>           
+           <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+        <forward name="list" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/creditriskparam/unittrust/credit_risk_param_unittrust_list.jsp"/>
+           <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+        <forward name="submit" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+        <forward name="list2ForChecker" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/creditriskparam/unittrust/credit_risk_param_unittrust_list2.jsp"/>
+            <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+        <forward name="approve" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+        <forward name="reject" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+        <forward name="close" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+            <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+        <forward name="workInProgress" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/wip.html"/>
+            <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+        <forward name="view" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/creditriskparam/unittrust/credit_risk_param_unittrust_view.jsp"/>
+            <set-property property="title" value="title.credit.risk.parameter.unit.trust"/>
+        </forward>
+      </action>
+    
+      <action path="/PolicyCap" type="com.integrosys.cms.ui.creditriskparam.policycap.PolicyCapAction"
+        name="PolicyCapForm" scope="request">
+        <forward name="after_prepare" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/creditriskparam/policycap/policycap_maker_edit_prepare.jsp"/>
+           <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_maker_edit" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/creditriskparam/policycap/policycap_maker_edit.jsp"/>
+           <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_maker_edit_error" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/creditriskparam/policycap/policycap_maker_edit.jsp"/>
+            <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_maker_update" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_checker_process" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/creditriskparam/policycap/policycap_checker.jsp"/>
+            <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_checker_approve" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_checker_reject" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_maker_close" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+            <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_read" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/creditriskparam/policycap/policycap_view.jsp"/>
+           <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="after_to_track" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/creditriskparam/policycap/policycap_view.jsp"/>
+           <set-property property="title" value="title.policycap"/>
+        </forward>
+        <forward name="wip" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/wip.html"/>
+            <set-property property="title" value="title.policycap"/>
+        </forward>
+      </action>
+      
+		<action path="/MaintainShareCounter" type="com.integrosys.cms.ui.creditriskparam.sharecounter.MaintainShareCounterAction" 
+			name="ShareCounterForm" scope="request">
+      
+      		<forward name="maker_share_counter_start" path="/template/common_template.jsp">
+           		<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_maker_list_type.jsp"/>
+           		<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>            
+      		<forward name="maker_share_counter_select_stock_exchange" path="/template/common_template.jsp">
+		   		<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_maker_list_type.jsp"/>
+		   		<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>      
+      		<forward name="maker_share_counter_select_type" path="/template/common_template.jsp">
+	   			<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_maker_edit_entries.jsp"/>
+	   			<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>      
+			<forward name="wip" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/common/wip.html"/>
+				<set-property property="title" value="title.creditriskparam.sharecounters"/>
+			</forward>     	
+			<forward name="policy_not_set" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_maker_set_policy.jsp"/>
+				<set-property property="title" value="title.creditriskparam.sharecounters"/>
+			</forward>      	
+        	<forward name="view" path="/template/common_template.jsp">
+         		<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_maker_prepare_view.jsp"/>
+         		<set-property property="title" value="title.creditriskparam.sharecounters"/>
+        	</forward>
+      		<forward name="maker_share_counter_update" path="/template/common_template.jsp">
+	   			<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	   			<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>      
+      		<forward name="maker_share_counter_prepare_close" path="/template/common_template.jsp">
+      	   		<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_maker_prepare_close.jsp"/>
+      	   		<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>       
+      		<forward name="maker_share_counter_close" path="/template/common_template.jsp">
+	   			<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	   			<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>        
+      		<forward name="maker_share_counter_prepare_update_rejected" path="/template/common_template.jsp">
+      	   		<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_maker_edit_rejected.jsp"/>
+	      	   	<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>       
+      		<forward name="maker_share_counter_update_rejected" path="/template/common_template.jsp">
+	   			<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	   			<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>      
+      		<forward name="to_track" path="/template/common_template.jsp">
+	   			<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_maker_track.jsp"/>
+	   			<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>                       
+      		<forward name="checker_process" path="/template/common_template.jsp">
+      	   		<set-property property="rightFrame" value="/creditriskparam/sharecounters/credit_risk_checker_prepare_process.jsp"/>
+	      	   	<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>      
+     		<forward name="checker_share_counter_approve" path="/template/common_template.jsp">
+	   			<set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+	   			<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>      
+     		<forward name="checker_share_counter_reject" path="/template/common_template.jsp">
+	   			<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	   			<set-property property="title" value="title.creditriskparam.sharecounters"/>
+      		</forward>            
+      </action>     
+      
+    </action-mappings>
+    
+    <message-resources key="message-param-creditrisk" parameter="ApplicationResources-param-creditrisk"/>
+</struts-config>

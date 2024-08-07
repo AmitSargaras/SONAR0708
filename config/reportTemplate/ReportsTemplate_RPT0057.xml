@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select 
+subprofile.lsp_le_id,subprofile.lsp_short_name,
+subprofile.pan,subprofile.form6061_checked,subprofile.PANVAL_GENPARAM_FLAG
+from sci_le_sub_profile subprofile
+		</query>
+			<whereClause>
+			<mandatoryClause>
+         			subprofile.is_pan_validated = 'N' and subprofile.pan is not null
+			</mandatoryClause>			
+			</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PARTY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PARTY NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>10</width>
+					<format>textFormat</format>
+					<header>PAN NUMBER</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>FORM60_61 CHECKED</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>NSDL SERVICE ON/OFF</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Non validated PAN No Details Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

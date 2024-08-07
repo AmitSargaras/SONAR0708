@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		Actual Business Logic Handler to deal with the domain objects. Such Actual TrxHandler and Trx Handler.
+	</description>
+	
+	<!-- Customer module  -->
+
+
+	<bean id="customerActualTrxHandler" class="com.integrosys.cms.host.eai.customer.actualtrxhandler.MainProfileActualTrxHandler">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+
+	<bean id="customerFusionActualTrxHandler" class="com.integrosys.cms.host.eai.customer.actualtrxhandler.CustomerFusionActualTrxHandler">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+
+	<bean id="customerSearchActualTrxHandler" class="com.integrosys.cms.host.eai.customer.actualtrxhandler.CustomerSearchMultipleActualTrxHandler">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+	
+	<bean id="customerUpdateActualTrxHandler" class="com.integrosys.cms.host.eai.customer.actualtrxhandler.CustomerUpdateActualTrxHandler">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+	
+	<bean id="customerTrxHandler" class="com.integrosys.cms.host.eai.customer.trxhandler.MainProfileTrxHandler">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+	
+	<!-- AA module -->
+	
+	<bean id="limitInternalKeyCheckingHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitInternalKeyCheckingHandler">
+		<property name="limitJdbc" ref="limitJdbc"/>
+		<property name="chargeDetailJdbc" ref="chargeDetailJdbc" />
+		<property name="securityJdbcDao" ref="securityJdbc"/>
+	</bean>
+	
+	<bean id="limitRepublishInternalKeyCheckingHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitRepublishInternalKeyCheckingHandler">
+		<property name="limitJdbc" ref="limitJdbc"/>
+		<property name="chargeDetailJdbc" ref="chargeDetailJdbc" />
+		<property name="securityJdbcDao" ref="securityJdbc"/>
+	</bean>
+	
+	<bean id="limitActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitActualTrxHandler">
+		<property name="limitDao" ref="limitDao"/>
+		<property name="helper" ref="limitHelper"/>
+		<property name="facilityStatusForLimitDeletion" value="R,C" />
+		<property name="variationProperties" ref="limitActualTrxHandlerVariationProperties" />
+	</bean>
+	
+	<bean id="limitNonVariedInfoPopulatorActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitNonVariedInfoPopulatorHandler">
+		<property name="limitDao" ref="limitDao"/>
+	</bean>
+
+	<bean id="limitPrePopulationActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitPrePopulationActualTrxHandler" />
+
+	<bean id="limitApprovedSecurityMapActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitApprovedSecurityMapActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="securityDao" ref="securityDao" />
+		<property name="variationProperties" ref="limitActualTrxHandlerVariationProperties" />
+		<property name="sourceIdsRequiredDefaultDrawPercentage" value="RLOS" />
+	</bean>
+	
+	<bean id="limitApprovedSecurityMapRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitApprovedSecurityMapRepublishActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="securityDao" ref="securityDao" />
+		<property name="variationProperties" ref="limitActualTrxHandlerVariationProperties" />
+		<property name="sourceIdsRequiredDefaultDrawPercentage" value="RLOS" />
+	</bean>
+	
+	<bean id="limitSecMapChargeInfoActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitSecMapChargeInfoActualTrxHandler">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="limitProfileActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitProfileActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="variationProperties" ref="limitProfileActualTrxHandlerVariationProperties" />
+	</bean>
+	
+	<bean id="limitRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitRepublishActualTrxHandler">
+		<property name="limitDao" ref="limitDao"/>
+		<property name="helper" ref="limitHelper"/>
+		<property name="facilityStatusForLimitDeletion" value="R,C" />
+		<property name="variationProperties" ref="limitActualTrxHandlerVariationProperties" />
+	</bean>
+	
+	<bean id="limitProfileResponseCleanupActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitProfileResponseCleanupActualTrxHandler">
+		<property name="limitJdbcDao" ref="limitJdbcDao"/>
+		<property name="filteredApplicationTypes" value="CC" />
+	</bean>
+
+	<bean id="limitProfileRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.LimitProfileRepublishActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="variationProperties" ref="limitProfileActualTrxHandlerVariationProperties" />
+	</bean>
+	
+	<bean id="chargeDetailActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.ChargeDetailActualTrxHandler">
+		<property name="chargeDetailJdbcDao" ref="chargeDetailJdbc" />
+		<property name="limitDao" ref="limitDao" />
+		<property name="republish" value="false" />
+		<property name="variationProperties" ref="chargeDetailActualTrxHandlerVariationProperties" />
+	</bean>
+	
+	<bean id="chargeDetailRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.ChargeDetailActualTrxHandler">
+		<property name="chargeDetailJdbcDao" ref="chargeDetailJdbc" />
+		<property name="limitDao" ref="limitDao" />
+		<property name="republish" value="true" />
+		<property name="variationProperties" ref="chargeDetailActualTrxHandlerVariationProperties" />
+	</bean>
+	
+	<!--<bean id="facilityCodeBasedCollateralUpdateHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.FacilityCodeBasedCollateralUpdateHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="metaInfos" ref="tradingFacilityCollateralUpdateMetaInfo" />
+	</bean> -->
+
+<!--	<bean id="sharedSecurityActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.SharedSecurityActualTrxHandler" />-->
+
+	<bean id="limitTrxHandler" class="com.integrosys.cms.host.eai.limit.trxhandler.LimitTrxHandler">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+	
+	<bean id="limitProfileTrxHandler" class="com.integrosys.cms.host.eai.limit.trxhandler.LimitProfileTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+	</bean>
+	
+	<bean id="limitRepublishTrxHandler" class="com.integrosys.cms.host.eai.limit.trxhandler.LimitRepublishTrxHandler">
+		<property name="customerDao" ref="customerDao" />
+	</bean>
+	
+	<bean id="limitProfileRepublishTrxHandler" class="com.integrosys.cms.host.eai.limit.trxhandler.LimitProfileRepublishTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+	</bean>
+	
+	<bean id="tatDocCreationActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.TatDocCreationActualTrxHandler">
+		<property name="actualTatDocBusManager" ref="tatDocBusManager" />
+		<property name="stagingTatDocBusManager" ref="stageTatDocBusManager" />
+		<property name="workflowManager" ref="workflowManager" />
+		<property name="sourceIdsRequiredCreateTat" value="CLOS,RLOS" />
+		<property name="sourceIdsRequiredUpdateTat" value="CLOS" />
+		<property name="requiredUpdateFacilityMasterInstructedDateUponUpdate" value="true" />
+	</bean>
+	
+    <bean id="facilityActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.FacilityActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="customerDao" ref="customerDao"/>
+		<property name="helper" ref="limitHelper"/>
+		<property name="facilityNotRequiredAppTypeList">
+			<list>
+				<value>CC</value>
+			</list>
+		</property>
+		<property name="variationProperties" ref="facilityActualTrxHandlerVariationProperties" />
+		<property name="facilityStatusForNonRevolvingIndicator" value="R,C" />
+	</bean>
+	
+    <bean id="updateFacilityActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.UpdateFacilityActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="customerDao" ref="customerDao"/>
+		<property name="facilityNotRequiredAppTypeList">
+			<list>
+				<value>CC</value>
+			</list>
+		</property>
+		<property name="variationProperties" ref="facilityActualTrxHandlerVariationProperties" />
+		<property name="facilityStatusForNonRevolvingIndicator" value="R,C" />
+	</bean>
+
+    <bean id="facilityRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.FacilityRepublishActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="customerDao" ref="customerDao"/>	
+		<property name="facilityNotRequiredAppTypeList">
+			<list>
+				<value>CC</value>
+			</list>
+		</property>
+		<property name="helper" ref="limitHelper"/>
+		<property name="variationProperties" ref="facilityActualTrxHandlerVariationProperties" />
+		<property name="facilityStatusForNonRevolvingIndicator" value="R,C" />
+	</bean>
+	
+	<bean id="updateFacilityRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.UpdateFacilityActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+		<property name="customerDao" ref="customerDao"/>
+		<property name="facilityNotRequiredAppTypeList">
+			<list>
+				<value>CC</value>
+			</list>
+		</property>
+		<property name="variationProperties" ref="facilityActualTrxHandlerVariationProperties" />
+		<property name="facilityStatusForNonRevolvingIndicator" value="R,C" />
+	</bean>
+	
+	<bean id="facilityTrxHandler" class="com.integrosys.cms.host.eai.limit.trxhandler.FacilityTrxHandler">
+		<property name="cmsTrxManager" ref="workflowManager" />
+		<property name="facilityProxy" ref="facilityProxy" />
+		<property name="facilityNotRequiredAppTypeList">
+			<list>
+				<value>CC</value>
+			</list>
+		</property>
+        <property name="facilityStatusDirectStpList">
+			<list>
+				<value>R</value>
+                <value>C</value>
+			</list>
+		</property>
+		<property name="accessStpSystem" value="${has.access.stp.system}" />
+	</bean>
+	
+	<bean id="facilityRepublishTrxHandler" class="com.integrosys.cms.host.eai.limit.trxhandler.FacilityRepublishTrxHander">
+		<property name="cmsTrxManager" ref="workflowManager" />
+		<property name="facilityProxy" ref="facilityProxy" />
+		<property name="facilityNotRequiredAppTypeList">
+			<list>
+				<value>CC</value>
+			</list>
+		</property>
+        <property name="facilityStatusDirectStpList">
+			<list>
+				<value>R</value>
+                <value>C</value>
+			</list>
+		</property>
+        <property name="accessStpSystem" value="${has.access.stp.system}" />
+	</bean>
+
+    <bean id="facilityTrxHandlerAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames" value="stpTrxHandlerMethodInterceptor"/>
+		<property name="target" ref="facilityTrxHandler"/>
+	</bean>
+
+    <bean id="facilityRepublishTrxHandlerAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames" value="stpTrxHandlerMethodInterceptor"/>
+		<property name="target" ref="facilityRepublishTrxHandler"/>
+	</bean>
+	
+	<bean id="limitHelper" class="com.integrosys.cms.host.eai.limit.support.LimitHelper"/>
+	
+	<bean id="jointBorrowerActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.JointBorrowerActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+	</bean>
+	
+	<bean id="jointBorrowerRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.limit.actualtrxhandler.JointBorrowerRepublishActualTrxHandler">
+		<property name="limitDao" ref="limitDao" />
+	</bean>
+	
+	
+	<!-- Collateral module -->
+	<bean id="securityInternalKeyCheckingHandler" class="com.integrosys.cms.host.eai.security.handler.actualtrxhandler.SecurityInternalKeyCheckingHandler">
+		<property name="securityJdbc" ref="securityJdbc"/>
+	</bean>
+	
+	<bean id="securityRepublishInternalKeyCheckingHandler" class="com.integrosys.cms.host.eai.security.handler.actualtrxhandler.SecurityRepublishInternalKeyCheckingHandler">
+		<property name="securityJdbc" ref="securityJdbc"/>
+	</bean>		
+		
+	<bean id="securityHandlerHelper" class="com.integrosys.cms.host.eai.security.handler.SecurityHandlerHelper">
+		<property name="securityDao" ref="securityDao" />
+		<property name="valuationHandler" ref="valuationHandler" />
+		<property name="variationProperties" ref="securityHandlerHelperVariationProperties" />
+	</bean> 
+
+	<!--	
+	<bean id="securityRepublishHandlerHelper" class="com.integrosys.cms.host.eai.security.handler.SecurityRepublishHandlerHelper">
+		<property name="securityDao" ref="securityDao" />
+		<property name="valuationHandler" ref="valuationHandler" />
+	</bean>
+	--> 
+	
+	<bean id="limitChargeHelper" class="com.integrosys.cms.host.eai.security.handler.LimitChargeHelper">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="securityActualTrxHandler" class="com.integrosys.cms.host.eai.security.handler.actualtrxhandler.SecurityActualTrxHandler">
+		<property name="securityHandlerHelper" ref="securityHandlerHelper" />
+		<property name="limitChargeHelper" ref="limitChargeHelper" />
+		<property name="securityDao" ref="securityDao" />
+		<property name="variationProperties" ref="securityActualTrxHandlerVariationProperties" />
+	</bean>
+	
+	<bean id="pledgorActualTrxHandler" class="com.integrosys.cms.host.eai.security.handler.actualtrxhandler.PledgorActualTrxHandler">
+		<property name="securityDao" ref="securityDao" />
+		<property name="variationProperties" ref="pledgorVariationProperties" />
+	</bean>
+	
+	<bean id="securityRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.security.handler.actualtrxhandler.SecurityRepublishActualTrxHandler">
+		<property name="securityHandlerHelper" ref="securityHandlerHelper" />
+		<property name="limitChargeHelper" ref="limitChargeHelper" />
+		<property name="securityDao" ref="securityDao" />
+		<property name="variationProperties" ref="securityActualTrxHandlerVariationProperties" />
+	</bean>
+	
+	<bean id="valuationAmountActualTrxHandler" class="com.integrosys.cms.host.eai.security.handler.actualtrxhandler.ValuationAmountActualTrxHandler">
+		<property name="securityDao" ref="securityDao" />
+		<property name="securityHandlerHelper" ref="securityHandlerHelper" />
+	</bean>
+
+	<bean id="pledgorRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.security.handler.actualtrxhandler.PledgorRepublishActualTrxHandler">
+		<property name="securityDao" ref="securityDao" />
+		<property name="variationProperties" ref="pledgorVariationProperties" />
+	</bean>
+
+	<bean id="securityTrxHandler" class="com.integrosys.cms.host.eai.security.handler.trxhandler.SecurityTrxHandler">
+		<property name="securityDao" ref="securityDao" />
+		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+	
+	<bean id="securityRepublishTrxHandler" class="com.integrosys.cms.host.eai.security.handler.trxhandler.SecurityRepublishTrxHandler">
+		<property name="securityDao" ref="securityDao" />
+		<property name="collateralProxy" ref="collateralProxy" />
+	</bean>
+	
+	<bean id="assetTradeInInformationActualTrxHandler" class="com.integrosys.cms.host.eai.security.handler.actualtrxhandler.AssetTradeInInformationActualTrxHandler">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+
+	<bean id="checkListInternalKeyCheckHandler" class="com.integrosys.cms.host.eai.document.actualtrxhandler.CheckListInternalKeyCheckHandler">
+		<property name="documentDao" ref="documentDao" />
+		<property name="documentJdbcDao" ref="documentDaoJdbc" />
+	</bean>
+	
+	<bean id="checkListInternalKeyPopulatorHandler" class="com.integrosys.cms.host.eai.document.actualtrxhandler.CheckListInternalKeyPopulatorHandler">
+		<property name="documentDao" ref="documentDao" />
+		<property name="documentJdbcDao" ref="documentDaoJdbc" />
+	</bean>
+	
+	<bean id="checkListObjectsMergerHandler" class="com.integrosys.cms.host.eai.document.actualtrxhandler.CheckListObjectsMergerHandler">
+		<property name="documentDao" ref="documentDao" />
+	</bean>
+	
+	<bean id="checkListItemsNonPreApprovalDocHandler" class="com.integrosys.cms.host.eai.document.actualtrxhandler.CheckListItemsNonPreApprovalDocHandler">
+		<property name="documentDao" ref="documentDao" />
+		<property name="templateProxy" ref="templateProxy" />
+		<property name="securityJdbcDao" ref="securityJdbc" />
+	</bean>
+	
+	<bean id="checkListPersistentHandler" class="com.integrosys.cms.host.eai.document.actualtrxhandler.CheckListPersistentHandler">
+		<property name="checklistProxyManager" ref="checklistProxy" />
+	</bean>
+	
+	<!-- COVENANT Module -->
+	
+	<bean id="convenantHandlerHelper" class="com.integrosys.cms.host.eai.covenant.handler.ConvenantHandlerHelper"/>
+	
+	<bean id="convenantRepublichHandlerHelper" class="com.integrosys.cms.host.eai.covenant.handler.CovenantRepublishHandlerHelper"/>
+	
+	<bean id="covenantActualTrxHandler" class="com.integrosys.cms.host.eai.covenant.handler.actualtrxhandler.CovenantActualTrxHandler">
+		<property name="covenantDao" ref="covenantDao" />
+		<property name="convenantHandlerHelper" ref="convenantHandlerHelper" />
+		<property name="defaultRemarksIfBlank" value="Retrieved from RLOS." />
+	</bean>
+	<bean id="covenantRepublishActualTrxHandler" class="com.integrosys.cms.host.eai.covenant.handler.actualtrxhandler.CovenantRepublishActualTrxHandler">
+		<property name="covenantDao" ref="covenantDao" />
+		<property name="convenantRepublichHandlerHelper" ref="convenantRepublichHandlerHelper" />
+		<property name="convenantHandlerHelper" ref="convenantHandlerHelper" />
+		<property name="defaultRemarksIfBlank" value="Retrieved from RLOS." />
+	</bean>
+	
+	<bean id="covenantTrxHandler" class="com.integrosys.cms.host.eai.covenant.handler.trxhandler.CovenantTrxHandler">
+		<property name="covenantDao" ref="covenantDao" />
+		<property name="convenantHandlerHelper" ref="convenantHandlerHelper" />
+		<property name="recurrentProxy" ref="recurrentProxy" />
+	</bean>
+	
+	<bean id="covenantRepublishTrxHandler" class="com.integrosys.cms.host.eai.covenant.handler.trxhandler.CovenantRepublishTrxHandler">
+		<property name="covenantDao" ref="covenantDao" />
+		<property name="recurrentProxy" ref="recurrentProxy" />
+		<property name="convenantHandlerHelper" ref="convenantHandlerHelper" />
+		
+	</bean>
+	
+	<bean id="assetVehicleSharedSecuritySearchHandler" class="com.integrosys.cms.host.eai.security.sharedsecurity.bus.AssetVehicleSharedSecuritySearchHandler">
+		<property name="collateralJdbcDao" ref="collateralDao" />
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+
+	<bean id="assetAircraftSharedSecuritySearchHandler"
+		class="com.integrosys.cms.host.eai.security.sharedsecurity.bus.AssetAircraftSharedSecuritySearchHandler">
+		<property name="collateralJdbcDao" ref="collateralDao" />
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+
+	<bean id="assetVesselSharedSecuritySearchHandler"
+		class="com.integrosys.cms.host.eai.security.sharedsecurity.bus.AssetVesselSharedSecuritySearchHandler">
+		<property name="collateralJdbcDao" ref="collateralDao" />
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+
+	<bean id="assetPlantEquipSharedSecuritySearchHandler"
+		class="com.integrosys.cms.host.eai.security.sharedsecurity.bus.AssetPlantEquipSharedSecuritySearchHandler">
+		<property name="collateralJdbcDao" ref="collateralDao" />
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+
+	<bean id="propertySecuritySearchHandler"
+		class="com.integrosys.cms.host.eai.security.sharedsecurity.bus.PropertySecuritySharedSecuritySearchHandler">
+		<property name="collateralJdbcDao" ref="collateralDao" />
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+
+	<bean id="defaultSharedSecuritySearchHandler"
+		class="com.integrosys.cms.host.eai.security.sharedsecurity.bus.DefaultSharedSecuritySearchHandler">
+		<property name="collateralJdbcDao" ref="collateralDao" />
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="assetSecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.AssetSecurityDetailsPopulator">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="cashSecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.CashSecurityDetailsPopulator">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="documentSecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.DocumentSecurityDetailsPopulator">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="guaranteeSecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.GuaranteeSecurityDetailsPopulator">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="insuranceSecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.InsuranceSecurityDetailsPopulator">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="marketableSecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.MarketableSecurityDetailsPopulator">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="noCollateralSecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.NoCollateralSecurityDetailsPopulator" />
+	
+	<bean id="othersSecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.OthersSecurityDetailsPopulator">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="propertySecurityDetailsPopulator" class="com.integrosys.cms.host.eai.security.inquiry.PropertySecurityDetailsPopulator">
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+</beans>

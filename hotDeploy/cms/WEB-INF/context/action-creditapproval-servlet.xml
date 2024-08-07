@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts config to context mapping files for credit approval
+	</description>
+  	
+  	<bean name="/credit_approval" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.creditApproval.CreditApprovalAction">
+  		<property name="nameCommandMap">
+      		<map>
+      		    <entry key="ReadCreditApprovalListCommand" value-ref="CreditApprovalAction.ReadCreditApprovalListCommand"/> 
+        		<entry key="PrepareCreditApprovalCommand" value-ref="CreditApprovalAction.PrepareCreditApprovalCommand"/>
+        		<entry key="MakerSubmitCreditApprovalCommand" value-ref="CreditApprovalAction.MakerSubmitCreditApprovalCommand"/>
+        		<entry key="MakerReadCreditApprovalCommand" value-ref="CreditApprovalAction.MakerReadCreditApprovalCommand"/>
+        		<entry key="CheckerApproveCreateCreditApprovalCommand" value-ref="CreditApprovalAction.CheckerApproveCreateCreditApprovalCommand"/>
+        		<entry key="RejectCreditApprovalCommand" value-ref="CreditApprovalAction.RejectCreditApprovalCommand"/>
+        		<entry key="CloseCreditApprovalCommand" value-ref="CreditApprovalAction.CloseCreditApprovalCommand"/>
+        	    <entry key="MakerReadCreditApprovalByIdCommand" value-ref="CreditApprovalAction.MakerReadCreditApprovalByIdCommand"/>
+        	    <entry key="MakerEditCreditApprovalCommand" value-ref="CreditApprovalAction.MakerEditCreditApprovalCommand"/>
+        	    <entry key="MakerSaveCreditApprovalCommand" value-ref="CreditApprovalAction.MakerSaveCreditApprovalCommand"/>
+        	    <entry key="SearchListCreditApprovalCommand" value-ref="CreditApprovalAction.SearchListCreditApprovalCommand"/>
+        	    <entry key="MakerPrepareUploadCreditApprovalCommand" value-ref="CreditApprovalAction.MakerPrepareUploadCreditApprovalCommand"/>
+        	    <entry key="MakerUploadCreditApprovalCommand" value-ref="CreditApprovalAction.MakerUploadCreditApprovalCommand"/>
+
+				<entry key="CheckerReadFileInsertListCommand" value-ref="CreditApprovalAction.CheckerReadFileInsertListCommand" />
+				<entry key="CheckerApproveInsertCreditApprovalCommand" value-ref="CreditApprovalAction.CheckerApproveInsertCreditApprovalCommand" />
+				<entry key="CheckerRejectInsertCreditApprovalCommand" value-ref="CreditApprovalAction.CheckerRejectInsertCreditApprovalCommand" />
+				<entry key="MakerInsertCloseCreditApprovalCommand" value-ref="CreditApprovalAction.MakerInsertCloseCreditApprovalCommand" />
+				
+				<entry key="PaginateCreditApprovalListCommand" value-ref="PaginateCreditApprovalListCommand" />
+	
+	
+      		</map>
+    	</property>
+  	</bean>
+
+</beans>

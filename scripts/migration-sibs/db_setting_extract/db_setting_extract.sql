@@ -1,0 +1,3 @@
+select distinct i.name, i.TBNAME, i.COLNAMES, i.stats_time, i.PAGE_FETCH_PAIRS from sysibm.SYSINDEXES i, sysibm.SYSPLANDEP p where i.name = p.BNAME and i.CREATOR = '<DB_SCHEMA>' order by 2;
+
+select distinct i.name, i.TBNAME, i.COLNAMES, i.stats_time, i.PAGE_FETCH_PAIRS from sysibm.SYSINDEXES i where not exists (select '1' from sysibm.sysplandep p where i.NAME = p.bname) and i.CREATOR = '<DB_SCHEMA>' order by 2;

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+			
+			
+		<bean id="excLineForSTPSRMBusManager" class="com.integrosys.cms.app.excLineforstpsrm.bus.BusManagerImpl">
+			<property name="dao" ref="excLineForSTPSRMDao" />
+			<property name="jdbc" ref="excLineForSTPSRMJdbc" />
+		</bean>
+
+		<bean id="excLineForSTPSRMProxy" class="com.integrosys.cms.app.excLineforstpsrm.proxy.ProxyManagerImpl">
+			<property name="busManager" ref="excLineForSTPSRMBusManager" />
+			<property name="stagingBusManager" ref="stagingExcLineForSTPSRMBusManager" />
+			<property name="trxControllerFactory" ref="excLineForSTPSRMTrxControllerFactory" />
+		</bean>
+		
+		<bean id="stagingExcLineForSTPSRMBusManager" class="com.integrosys.cms.app.excLineforstpsrm.bus.BusManagerStagingImpl">
+			<property name="dao" ref="excLineForSTPSRMDao" />
+			<property name="jdbc" ref="excLineForSTPSRMJdbc" />
+		</bean>	
+</beans>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+
+	<bean id="batchJobFactory" class="com.integrosys.cms.batch.factory.BatchJobFactory">
+		<property name="batchJobLauncher" ref="batchJobLauncher" />
+	</bean>
+
+	<bean id="batchJobLauncher" class="com.integrosys.cms.batch.factory.BatchJobLauncherImpl">
+		<property name="batchJobDao" ref="batchJobDao" />
+	</bean>
+
+</beans>

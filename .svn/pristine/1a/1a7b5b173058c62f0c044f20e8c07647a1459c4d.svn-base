@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="facilityBusManager" class="com.integrosys.cms.app.limit.bus.FacilityBusManagerImpl">
+		<property name="facilityDao" ref="facilityDao" />
+		<property name="facilityJdbc" ref="facilityJdbc" />
+	</bean>
+	
+	<bean id="stagingFacilityBusManager" class="com.integrosys.cms.app.limit.bus.FacilityBusManagerStagingImpl">
+		<property name="facilityDao" ref="facilityDao" />
+		<property name="facilityJdbc" ref="facilityJdbc" />
+	</bean>
+	
+	<bean id="facilityProxy" class="com.integrosys.cms.app.limit.proxy.FacilityProxyImpl">
+		<property name="facilityTrxController" ref="facilityTrxController" />
+		<property name="facilityReadController" ref="facilityReadController" />
+		<property name="actualFacilityBusManager" ref="facilityBusManager" />
+		<property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+	</bean>
+	
+  	<bean id="facilityTrxStatusMapper" class="com.integrosys.cms.app.limit.bus.support.FacilityStatusMapper">
+  		<property name="facilityJdbcDao" ref="facilityJdbc" />
+  		<property name="facilityTrxStatusDisplayMap">
+  			<map>
+  				<entry key="PENDING_PERFECTION" value="Pending Perfection" />
+  				<entry key="PENDING_UPDATE" value="Pending Approval" />
+  				<entry key="PENDING_CREATE" value="Pending Approval" />
+  				<entry key="PENDING_DELETE" value="Pending Approval" />
+  				<entry key="PENDING_RETRY" value="Pending Retry" />
+  				<entry key="DRAFT" value="Draft" />
+  				<entry key="LOADING" value="Loading" />
+  				<entry key="LOADING_DELETE" value="Loading" />
+  				<entry key="REJECTED_UPDATE" value="Rejected" />
+  				<entry key="IMPLEMENTED" value="Implemented" />
+  				<entry key="ACTIVE" value="Implemented" />
+  				<entry key="NEW" value="New" />
+  				<entry key="CANCELLED" value="Cancelled" />
+  				<entry key="TO_BE_CANCELLED" value="To Be Cancelled" />
+  			</map>
+  		</property>
+  	</bean>
+
+</beans>

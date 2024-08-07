@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.integrosys.cms.host.eai.covenant.bus.CovenantItem" table="CMS_CONVENANT" polymorphism="explicit">
+		<id name="CMSCovenantItemID" column="CONVENANT_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CONVENANT_SEQ</param>
+			</generator>
+		</id>
+		<property name="CMSconvenantItemRefID" column="CONVENANT_REF_ID" type="long"/>
+		<property name="covenantCondition" column="CONV_DESCRIPTION" />
+		<property name="JDODocEndDate" column="DOC_END_DATE" type="timestamp" />
+		<property name="JDODueDate" column="DUE_DATE" type="timestamp" />
+		<property name="frequencyUnit" column="FREQUENCY" type="long" />
+		<property name="frequencyUom" column="FREQUENCY_UNIT" />
+		<property name="remarks" column="REMARKS" />
+		<property name="isParameterized" column="IS_PARAMETERIZED_DESC" />
+		<property name="recurrentDocId" column="RECURRENT_DOC_ID" type="long" />
+		<property name="isDeleted" column="IS_DELETED" />
+		<property name="oneOff" column="ONE_OFF" />
+		<property name="riskTrigger" column="RISK_TRIGGER" />
+		<property name="sourceID" column="SOURCE_ID" />
+	</class>
+	
+	<class name="com.integrosys.cms.host.eai.covenant.bus.StageConvenantItem" table="STAGE_CONVENANT" polymorphism="explicit">
+		<id name="CMSCovenantItemID" column="CONVENANT_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CONVENANT_SEQ</param>
+			</generator>
+		</id>
+		<property name="CMSconvenantItemRefID" column="CONVENANT_REF_ID" type="long"/>
+		<property name="covenantCondition" column="CONV_DESCRIPTION" />
+		<property name="JDODocEndDate" column="DOC_END_DATE" type="timestamp" />
+		<property name="JDODueDate" column="DUE_DATE" type="timestamp" />
+		<property name="frequencyUnit" column="FREQUENCY" type="long" />
+		<property name="frequencyUom" column="FREQUENCY_UNIT" />
+		<property name="remarks" column="REMARKS" />
+		<property name="isParameterized" column="IS_PARAMETERIZED_DESC" />
+		<property name="recurrentDocId" column="RECURRENT_DOC_ID" type="long" />
+		<property name="isDeleted" column="IS_DELETED" />
+		<property name="oneOff" column="ONE_OFF" />
+		<property name="riskTrigger" column="RISK_TRIGGER" />
+		<property name="sourceID" column="SOURCE_ID" />
+	</class>
+</hibernate-mapping>

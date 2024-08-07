@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT cc_segment.entry_name AS segmentName,
+			  rgn.region_name                     AS Region,
+			  rm.rm_mgr_name                      AS rmname,
+			  (select region_name from cms_region where id=sub_profile.rm_region) as rm_region,
+			  sub_profile.lsp_short_name AS party_name,
+			  (select entry_name from common_code_category_entry 
+			  where category_code='RBI_ASSET_ClASSIFICATION' 
+			  and entry_code=lmt_profile.rbi_asset_classification) AS Asset_classifica,
+			  checklist_item.doc_description AS Doc_name,
+			  TO_CHAR(checklist_item.completed_date,'DD/Mon/YYYY')
+			FROM SCI_LE_SUB_PROFILE sub_profile ,
+			  SCI_LE_MAIN_PROFILE main_profile ,
+			  SCI_LE_REG_ADDR address ,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code = 'HDFC_SEGMENT'
+			  ) cc_segment ,
+			  cms_relationship_mgr rm ,
+			  cms_region rgn ,
+			  cms_party_group partygr ,
+			  sci_lsp_lmt_profile lmt_profile,
+			  cms_checklist checklist,
+			  cms_checklist_item checklist_item
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				sub_profile.cms_le_main_profile_id = address.cms_le_main_profile_id
+				AND sub_profile.cms_le_main_profile_id   = main_profile.cms_le_main_profile_id
+				AND sub_profile.lsp_le_id                =lmt_profile.llp_le_id
+				AND cc_segment.entry_code                =main_profile.lmp_sgmnt_code_value
+				AND address.lra_type_value               ='CORPORATE'
+				AND rm.id                                = sub_profile.relation_mgr
+				AND rgn.id                               =address.lra_region
+				AND sub_profile.party_grp_nm             = partygr.id(+)
+				AND TRUNC(
+				  (SELECT add_months(sysdate, 6) FROM DUAL
+				  ))                                >=TRUNC(checklist_item.completed_date)
+				AND sub_profile.status              != 'INACTIVE'
+				AND CHECKLIST.CATEGORY               = 'LAD'
+				AND sub_profile.cycle_nm             = 'LAD'
+				AND checklist.cms_lsp_lmt_profile_id = lmt_profile.CMS_LSP_LMT_PROFILE_ID
+				AND checklist.checklist_id           = checklist_item.checklist_id
+				AND CHECKLIST_ITEM.CHECKLIST_ID NOT IN ('20200718001981789','20190701001609420')
+				AND checklist_item.status            = 'AWAITING'
+				AND sub_profile.status              != 'INACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and cc_segment.entry_code = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RBI Asset Classification</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Document Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LAD Due Date</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>LAD Due Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

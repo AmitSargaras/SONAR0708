@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="com.integrosys.cms.host.eai.security.bus.insurance.InsuranceSecurity" table="CMS_INSURANCE" polymorphism="explicit">
+    <id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+
+    <property name="insuranceDescription" column="DESCRIPTION" />
+    <component name="insuranceName" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="INSURER_NAME" />
+    </component>
+    <component name="insuranceType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="INSURANCE_TYPE" />
+    </component>
+
+    <property name="insuredAmount" column="INSURED_AMOUNT" type="double" />
+    <property name="insuredAmountCurrency" column="INSURED_AMT_CURR" />
+    <property name="JDOEffectiveDate" column="EFFECTIVE_DATE" type="timestamp" />
+    <property name="policyNo" column="POLICY_NO" />
+    <property name="JDOExpiryDate" column="EXPIRY_DATE" type="timestamp" />
+    <property name="externalLegalCounsel" column="EXT_LEGAL_COUNSEL" />
+    <property name="accelerationClause" column="ACCELERATION_CLAUSE" />
+    <property name="localCurrencyInCM" column="LOCAL_CCY_IN_CM" />
+    
+    <component name="coreMarket" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="CORE_MARKET" />
+    </component>
+    
+    <component name="bankCustArrangeIns" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="ARR_INSURER" />
+    </component>
+
+    <property name="JDOISDADate" column="ISDA_DATE" type="timestamp" />
+    <property name="JDOTreasuryDate" column="TREASURY_DATE" type="timestamp" />
+    <property name="bankInterestNoted" column="BANK_INT_NOTED" />
+    <property name="insurancePremium" column="INSURANCE_PREMIUM" type="double" />
+    <property name="insurancePremiumCurrency" column="INSURANCE_PREMIUM_CURRENCY" />
+    <property name="issuanceDate" column="ISSUANCE_DATE" type="timestamp" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.insurance.StageInsuranceSecurity" table="CMS_STAGE_INSURANCE">
+    <id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+
+    <property name="insuranceDescription" column="DESCRIPTION" />
+    <component name="insuranceName" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="INSURER_NAME" />
+    </component>
+    <component name="insuranceType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="INSURANCE_TYPE" />
+    </component>
+
+    <property name="insuredAmount" column="INSURED_AMOUNT" type="double" />
+    <property name="insuredAmountCurrency" column="INSURED_AMT_CURR" />
+    <property name="JDOEffectiveDate" column="EFFECTIVE_DATE" type="timestamp" />
+    <property name="policyNo" column="POLICY_NO" />
+    <property name="JDOExpiryDate" column="EXPIRY_DATE" type="timestamp" />
+    <property name="externalLegalCounsel" column="EXT_LEGAL_COUNSEL" />
+    <property name="accelerationClause" column="ACCELERATION_CLAUSE" />
+    <property name="localCurrencyInCM" column="LOCAL_CCY_IN_CM" />
+
+    <component name="coreMarket" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="CORE_MARKET" />
+    </component>
+    <component name="bankCustArrangeIns" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="ARR_INSURER" />
+    </component>
+    <property name="JDOISDADate" column="ISDA_DATE" type="timestamp" />
+    <property name="JDOTreasuryDate" column="TREASURY_DATE" type="timestamp" />
+    <property name="bankInterestNoted" column="BANK_INT_NOTED" />
+    <property name="insurancePremium" column="INSURANCE_PREMIUM" type="double" />
+    <property name="insurancePremiumCurrency" column="INSURANCE_PREMIUM_CURRENCY" />
+    <property name="issuanceDate" column="ISSUANCE_DATE" type="timestamp" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.insurance.CreditDefaultSwapsDetail" table="CMS_INSURANCE_CDS" polymorphism="explicit">
+	<id name="CDSId" column="CDS_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CDS_SEQ</param>
+		</generator>
+	</id>
+
+    <property name="collateralId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="bankEntity" column="BANK_ENTITY" />
+    <property name="hedgeType" column="HEDGE_TYPE" />
+    <property name="hedgeReference" column="HEDGE_REF" />
+    <property name="CDSReference" column="CDS_REF" />
+    <property name="tradeId" column="TRADE_ID" />
+    <property name="JDOTradeDate" column="TRADE_DATE" type="timestamp" />
+    <property name="JDODealDate" column="DEAL_DATE" type="timestamp" />
+    <property name="JDOStartDate" column="START_DATE" type="timestamp" />
+    <property name="JDOCDSMaturityDate" column="CDS_MATURITY_DATE" type="timestamp" />
+    <property name="tenor" column="TENOR" type="long" />
+    <property name="tenorUnit" column="TENOR_UNIT" />
+    <property name="tradeCurrency" column="TRADE_CURRENCY" />
+    <property name="notionalHedgedAmount" column="NOTIONAL_HEDGED_AMT" type="double" />
+    <property name="referenceEntity" column="REFERENCE_ENTITY" />
+    <component name="CDSBookingLocation" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="CDS_BOOKING_LOCATION" />
+    </component>
+    <component name="loanBondBookingLocation" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="LOAN_BOND_BOOKING_LOC" />
+    </component>
+    <property name="referenceAsset" column="REFERENCE_ASSET" />
+    <property name="issuer" column="ISSUER" />
+    <property name="issuerId" column="ISSUER_ID" />
+    <property name="issuerDetail" column="ISSUER_DETAILS" />
+    <property name="dealtPrice" column="DEALT_PRICE" type="double" />
+    <property name="residualMaturity" column="RESIDUAL_MATURITY" type="double" />
+    <property name="settlement" column="SETTLEMENT" />
+    <property name="parValue" column="PAR_VALUE" type="double" />
+    <property name="declineMarketValue" column="DECLINE_MARKET_VALUE" type="double" />
+    <property name="JDOEventDeterminationDate" column="EVENT_DETERMINATION_DATE" type="timestamp" />
+    <property name="complianceCertificate" column="COMPLIANCE_CERTIFICATE" />
+    <property name="JDOValuationDate" column="VALUATION_DATE" type="timestamp" />
+    <property name="valuationCurrency" column="VALUATION_CURRENCY" />
+    <property name="margin" column="MARGIN" type="double" /> 
+    <property name="nominalValue" column="NOMINAL_VALUE" type="double" />
+    <property name="CMV" column="VALUATION_CMV" type="double" />
+    <property name="FSV" column="VALUTION_FSV" type="double" />
+    <property name="securityId" column="SOURCE_SECURITY_ID" />
+    <property name="sourceId" column="SOURCE_ID" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.insurance.StageCreditDefaultSwapsDetail" table="CMS_STAGE_INSURANCE_CDS">
+	<id name="CDSId" column="CDS_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CDS_SEQ</param>
+		</generator>
+	</id>
+
+    <property name="collateralId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="bankEntity" column="BANK_ENTITY" />
+    <property name="hedgeType" column="HEDGE_TYPE" />
+    <property name="hedgeReference" column="HEDGE_REF" />
+    <property name="CDSReference" column="CDS_REF" />
+    <property name="tradeId" column="TRADE_ID" />
+    <property name="JDOTradeDate" column="TRADE_DATE" type="timestamp" />
+    <property name="JDODealDate" column="DEAL_DATE" type="timestamp" />
+    <property name="JDOStartDate" column="START_DATE" type="timestamp" />
+    <property name="JDOCDSMaturityDate" column="CDS_MATURITY_DATE" type="timestamp" />
+    <property name="tenor" column="TENOR" type="long" />
+    <property name="tenorUnit" column="TENOR_UNIT" />
+    <property name="tradeCurrency" column="TRADE_CURRENCY" />
+    <property name="notionalHedgedAmount" column="NOTIONAL_HEDGED_AMT" type="double" />
+    <property name="referenceEntity" column="REFERENCE_ENTITY" />
+    <component name="CDSBookingLocation" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="CDS_BOOKING_LOCATION" />
+    </component>
+    <component name="loanBondBookingLocation" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="LOAN_BOND_BOOKING_LOC" />
+    </component>
+    <property name="referenceAsset" column="REFERENCE_ASSET" />
+    <property name="issuer" column="ISSUER" />
+    <property name="issuerId" column="ISSUER_ID" />
+    <property name="issuerDetail" column="ISSUER_DETAILS" />
+    <property name="dealtPrice" column="DEALT_PRICE" type="double" />
+    <property name="residualMaturity" column="RESIDUAL_MATURITY" type="double" />
+    <property name="settlement" column="SETTLEMENT" />
+    <property name="parValue" column="PAR_VALUE" type="double" />
+    <property name="declineMarketValue" column="DECLINE_MARKET_VALUE" type="double" />
+    <property name="JDOEventDeterminationDate" column="EVENT_DETERMINATION_DATE" type="timestamp" />
+    <property name="complianceCertificate" column="COMPLIANCE_CERTIFICATE" />
+    <property name="JDOValuationDate" column="VALUATION_DATE" type="timestamp" />
+    <property name="valuationCurrency" column="VALUATION_CURRENCY" />
+    <property name="margin" column="MARGIN" type="double" />
+    <property name="nominalValue" column="NOMINAL_VALUE" type="double" />
+    <property name="CMV" column="VALUATION_CMV" type="double" />
+    <property name="FSV" column="VALUTION_FSV" type="double" />
+    <property name="securityId" column="SOURCE_SECURITY_ID" />
+    <property name="sourceId" column="SOURCE_ID" />
+  </class>
+</hibernate-mapping>

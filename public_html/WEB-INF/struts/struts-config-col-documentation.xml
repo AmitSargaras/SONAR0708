@@ -1,0 +1,1030 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="DocLoUForm" type="com.integrosys.cms.ui.collateral.document.doclou.DocLoUForm">
+        </form-bean>
+
+        <form-bean name="DocComfortForm" type="com.integrosys.cms.ui.collateral.document.doccomfort.DocComfortForm">
+        </form-bean>
+
+        <form-bean name="DocPledgeForm" type="com.integrosys.cms.ui.collateral.document.docpledge.DocPledgeForm">
+        </form-bean>
+        
+        <form-bean name="DocDoAForm" type="com.integrosys.cms.ui.collateral.document.docdoa.DocDoAForm">
+        </form-bean>    
+        
+        <form-bean name="DocLoIForm" type="com.integrosys.cms.ui.collateral.document.docloi.DocLoIForm">
+        </form-bean>
+
+        <form-bean name="DocGenCreditForm" type="com.integrosys.cms.ui.collateral.document.docgencredit.DocGenCreditForm">
+        </form-bean>
+
+        <form-bean name="DocDervNetForm" type="com.integrosys.cms.ui.collateral.document.docdervnet.DocDervNetForm">
+        </form-bean>
+
+        <form-bean name="DocDervISDForm" type="com.integrosys.cms.ui.collateral.document.docdervisd.DocDervISDForm">
+        </form-bean>
+        
+        <form-bean name="DocDeedSubForm" type="com.integrosys.cms.ui.collateral.document.docdeedsub.DocDeedSubForm">
+        </form-bean>    
+        <form-bean name="DocAgreementForm" type="com.integrosys.cms.ui.collateral.document.docagreement.DocAgreementForm">
+        </form-bean>      
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/DocLoUCollateral" type="com.integrosys.cms.ui.collateral.document.doclou.DocLoUAction" name="DocLoUForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+             <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doclou/DocLoU_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+    
+        <action path="/DocComfortCollateral" type="com.integrosys.cms.ui.collateral.document.doccomfort.DocComfortAction" name="DocComfortForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+             <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/doccomfort/DocComfort_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+        
+        <action path="/DocPledgeCollateral" type="com.integrosys.cms.ui.collateral.document.docpledge.DocPledgeAction" name="DocPledgeForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+             <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docpledge/DocPledge_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+        
+        <action path="/DocDoACollateral" type="com.integrosys.cms.ui.collateral.document.docdoa.DocDoAAction" name="DocDoAForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+             <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdoa/docdoa_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+        
+        <action path="/DocLoICollateral" type="com.integrosys.cms.ui.collateral.document.docloi.DocLoIAction" name="DocLoIForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+             <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docloi/docloi_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+        
+        <action path="/DocGenCreditCollateral" type="com.integrosys.cms.ui.collateral.document.docgencredit.DocGenCreditAction" name="DocGenCreditForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docgencredit/DocGenCredit_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+        
+        <action path="/DocDervNetCollateral" type="com.integrosys.cms.ui.collateral.document.docdervnet.DocDervNetAction" name="DocDervNetForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervnet/DocDervNet_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+        
+        <action path="/DocDervISDCollateral" type="com.integrosys.cms.ui.collateral.document.docdervisd.DocDervISDAction" name="DocDervISDForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdervisd/DocDervISD_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>        
+        
+		<action path="/DocDeedSubCollateral" type="com.integrosys.cms.ui.collateral.document.docdeedsub.DocDeedSubAction" name="DocDeedSubForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docdeedsub/doc_deed_sub_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+        
+        
+        <action path="/DocAgreementCollateral" type="com.integrosys.cms.ui.collateral.document.docagreement.DocAgreementAction" name="DocAgreementForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+           <forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>            
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+             <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/document/docagreement/Docagreement_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/DocSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/DocumentPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/DocumentPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/DocumentPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/DocumentPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/DocumentPledge.do?event=view"/>
+        </action>
+        
+        
+        
+      <action path="/DocSecurityApportionment" type="com.integrosys.cms.ui.collateral.document.SecApportionmentAction"
+      name="SecurityApportionmentDtlForm" scope="request">
+        <forward name="read" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare_update_sub" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="refresh" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="process" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="DocLoU_update" path="/DocLoUCollateral.do?event=update_return"/>
+        <forward name="DocLoU_read" path="/DocLoUCollateral.do?event=read_return"/>
+        <forward name="DocLoU_process" path="/DocLoUCollateral.do?event=process_return"/>
+        <forward name="DocLoU_close" path="/DocLoUCollateral.do?event=close_return"/>
+        <forward name="DocLoU_track" path="/DocLoUCollateral.do?event=track_return"/>
+
+        <forward name="DocComfort_update" path="/DocComfortCollateral.do?event=update_return"/>
+        <forward name="DocComfort_read" path="/DocComfortCollateral.do?event=read_return"/>
+        <forward name="DocComfort_process" path="/DocComfortCollateral.do?event=process_return"/>
+        <forward name="DocComfort_close" path="/DocComfortCollateral.do?event=close_return"/>
+        <forward name="DocComfort_track" path="/DocComfortCollateral.do?event=track_return"/>
+
+        <forward name="DocPledge_update" path="/DocPledgeCollateral.do?event=update_return"/>
+        <forward name="DocPledge_read" path="/DocPledgeCollateral.do?event=read_return"/>
+        <forward name="DocPledge_process" path="/DocPledgeCollateral.do?event=process_return"/>
+        <forward name="DocPledge_close" path="/DocPledgeCollateral.do?event=close_return"/>
+        <forward name="DocPledge_track" path="/DocPledgeCollateral.do?event=track_return"/>
+        
+        <forward name="DocGenCredit_update" path="/DocGenCreditCollateral.do?event=update_return"/>
+        <forward name="DocGenCredit_read" path="/DocGenCreditCollateral.do?event=read_return"/>
+        <forward name="DocGenCredit_process" path="/DocGenCreditCollateral.do?event=process_return"/>
+        <forward name="DocGenCredit_close" path="/DocGenCreditCollateral.do?event=close_return"/>
+        <forward name="DocGenCredit_track" path="/DocGenCreditCollateral.do?event=track_return"/>
+
+        <forward name="DocDervNet_update" path="/DocDervNetCollateral.do?event=update_return"/>
+        <forward name="DocDervNet_read" path="/DocDervNetCollateral.do?event=read_return"/>
+        <forward name="DocDervNet_process" path="/DocDervNetCollateral.do?event=process_return"/>
+        <forward name="DocDervNet_close" path="/DocDervNetCollateral.do?event=close_return"/>
+        <forward name="DocDervNet_track" path="/DocDervNetCollateral.do?event=track_return"/>  
+
+        <forward name="DocDervISD_update" path="/DocDervISDCollateral.do?event=update_return"/>
+        <forward name="DocDervISD_read" path="/DocDervISDCollateral.do?event=read_return"/>
+        <forward name="DocDervISD_process" path="/DocDervISDCollateral.do?event=process_return"/>
+        <forward name="DocDervISD_close" path="/DocDervISDCollateral.do?event=close_return"/>
+        <forward name="DocDervISD_track" path="/DocDervISDCollateral.do?event=track_return"/>
+
+        <forward name="DocDoA_update" path="/DocDoACollateral.do?event=update_return"/>
+        <forward name="DocDoA_read" path="/DocDoACollateral.do?event=read_return"/>
+        <forward name="DocDoA_process" path="/DocDoACollateral.do?event=process_return"/>
+        <forward name="DocDoA_close" path="/DocDoACollateral.do?event=close_return"/>
+        <forward name="DocDoA_track" path="/DocDoACollateral.do?event=track_return"/>
+
+        <forward name="DocLoI_update" path="/DocLoICollateral.do?event=update_return"/>
+        <forward name="DocLoI_read" path="/DocLoICollateral.do?event=read_return"/>
+        <forward name="DocLoI_process" path="/DocLoICollateral.do?event=process_return"/>
+        <forward name="DocLoI_close" path="/DocLoICollateral.do?event=close_return"/>
+        <forward name="DocLoI_track" path="/DocLoICollateral.do?event=track_return"/>
+      </action>        
+    </action-mappings>
+    
+    <message-resources key="message-col-documentation" parameter="ApplicationResources-col-documentation"/>
+</struts-config>

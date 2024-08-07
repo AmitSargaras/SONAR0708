@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	<description>
+		To be used for ORM/JDBC based Dao having property of 'sessionFactory' or 'dataSource'.
+		All these DAOs have to be intercept by Transaction, set in 'AppContext_TrxPlugin.xml'.
+	</description>
+
+    <bean id="stpTransDao" class="com.integrosys.cms.host.stp.bus.StpTransDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+    <bean id="stpTransJdbc" class="com.integrosys.cms.host.stp.bus.StpTransJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+        <property name="sequenceFormatter">
+			<bean class="com.integrosys.base.techinfra.dbsupport.DateSequencerFormatter" />
+		</property>
+    </bean>
+
+    <bean id="tradeTransDao" class="com.integrosys.cms.host.stp.trade.bus.TradeTransDaoImpl">
+  		<property name="sessionFactory" ref="ofaSessionFactory" />
+  	</bean>
+
+    <bean id="tradeTransJdbc" class="com.integrosys.cms.host.stp.trade.bus.TradeTransJdbcImpl">
+  		<property name="dataSource" ref="ofaPool" />
+          <property name="sequenceFormatter">
+  			<bean class="com.integrosys.base.techinfra.dbsupport.DateSequencerFormatter" />
+  		</property>
+    </bean>
+    
+    <bean id="tradeLogMessageJdbc" class="com.integrosys.cms.host.stp.trade.log.LogTradeMessageJdbcImpl">
+  		<property name="dataSource" ref="ofaPool" />
+  		<property name="sequenceFormatter">
+  			<bean class="com.integrosys.base.techinfra.dbsupport.DateSequencerFormatter" />
+  		</property>
+	</bean>
+
+    <bean id="stpLogMessageJdbc" class="com.integrosys.cms.host.stp.log.LogMessageJdbcImpl">
+  		<property name="dataSource" ref="ofaPool" />
+  		<property name="sequenceFormatter">
+  			<bean class="com.integrosys.base.techinfra.dbsupport.DateSequencerFormatter" />
+  		</property>
+	</bean>
+</beans>

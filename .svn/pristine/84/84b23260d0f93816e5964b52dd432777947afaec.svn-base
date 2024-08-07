@@ -1,0 +1,3 @@
+update MIG_CO001_AB set CMS_SECURITY_SUBTYPE_ID = 'AB102' where ASSET_TYPE_CODE IN ('DUT', 'EXC', 'MCA', 'MCN', 'MPA', 'MVB', 'MVC', 'MVI', 'MVN', 'TRC');
+
+update MIG_CO009_PT set TITLE_NUMBER_PREFIX = null where length(TITLE_NUMBER_PREFIX) > 10;

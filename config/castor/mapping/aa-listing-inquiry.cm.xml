@@ -1,0 +1,56 @@
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+<mapping>
+	<description>AA Listing Inquiry - CA002I</description>
+	
+	<include href="common.cm.xml" /> 
+	
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.limit.inquiry.listing.CreditApplicationListingInquiryMessageBody">
+		<map-to xml="MsgBody" />
+		<field name="CreditApplicationSearchCritiria" type="com.integrosys.cms.host.eai.limit.inquiry.listing.SearchCriteria">
+			<bind-xml name="CASearchCriteria" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.inquiry.listing.SearchCriteria">
+		<map-to xml="CASearchCriteria" />
+		<field name="CustomerIdInfo" type="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo">
+			<bind-xml name="PrimaryIDInfo" />
+		</field>
+		<field name="OtherCriteria" type="com.integrosys.cms.host.eai.limit.inquiry.listing.OtherCriteria">
+			<bind-xml name="OtherCriteria" />
+		</field>
+	</class>
+	
+	<class name="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo">
+		<map-to xml="PrimaryIDInfo" />
+		<field name="IdNumber" type="string">
+			<bind-xml name="IdNumber" />
+		</field>
+		<field name="IdType" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="IdType" />
+		</field>
+		<field name="CountryIssued" type="string">
+			<bind-xml name="CountryIssued" />
+		</field>
+	</class>
+	
+	<class name="com.integrosys.cms.host.eai.limit.inquiry.listing.OtherCriteria">
+		<map-to xml="OtherCriteria" />
+		<field name="HostAANumber" type="string">
+			<bind-xml name="HostAANumber" />
+		</field>
+		<field name="ApplicationType" type="string">
+			<bind-xml name="AAType" />
+		</field>
+		<field name="ApplicationLawType" type="string">
+			<bind-xml name="AALawType" />
+		</field>
+		<field name="ShortCustomerName" type="string">
+			<bind-xml name="CustomerNameShort" />
+		</field>
+		<field name="CifSource" type="string">
+			<bind-xml name="CIFSource" />
+		</field>
+	</class>
+
+</mapping>

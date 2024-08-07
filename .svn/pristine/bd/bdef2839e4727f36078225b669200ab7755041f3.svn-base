@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="WarehouseListForm" type="com.integrosys.cms.ui.commodityglobal.warehouse.list.WarehouseListForm">
+        </form-bean>
+
+        <form-bean name="WarehouseItemForm" type="com.integrosys.cms.ui.commodityglobal.warehouse.item.WarehouseItemForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+    <action path="/WarehouseList"
+        type="com.integrosys.cms.ui.commodityglobal.warehouse.list.WarehouseListAction"
+        name="WarehouseListForm" validate="false" scope="request">
+        <forward name="select" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/list/select.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="prepare" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/list/update_warehouse_list.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="process" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/list/chk_view_warehouse_list.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="prepare_close" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/list/view_warehouse_list.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="read" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/list/view_warehouse_list.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="to_track" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/list/view_warehouse_list.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="submit" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="update" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="approve" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="reject" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="close" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="wip" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/wip.html"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="prepare_add" path="/WarehouseItem.do?event=prepare_add"></forward>
+        <forward name="edit_item" path="/WarehouseItem.do?event=prepare"></forward>
+        <forward name="view" path="/WarehouseItem.do?event=read"></forward>
+    </action>
+
+    <action path="/WarehouseItem"
+        type="com.integrosys.cms.ui.commodityglobal.warehouse.item.WarehouseItemAction"
+        name="WarehouseItemForm" validate="false" scope="request">
+        <forward name="prepare" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/item/update_warehouse_item.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="view_warehouse_item" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/item/view_warehouse_item.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="process_warehouse_item" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/commodityglobal/warehouse/item/chk_view_warehouse_item.jsp"/>
+            <set-property property="title" value="title.commodityglobal.warehouse"/>
+        </forward>
+        <forward name="return" path="/WarehouseList.do?event=return"></forward>
+        <forward name="close_return" path="/WarehouseList.do?event=close_return"></forward>
+        <forward name="track_return" path="/WarehouseList.do?event=track_return"></forward>
+        <forward name="process_return" path="/WarehouseList.do?event=process_return"></forward>
+        <forward name="read_return" path="/WarehouseList.do?event=read_return"></forward>
+    </action>
+    
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-param-commodity-warehouse"/>-->
+</struts-config>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+	</description>
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="ubsFileUploadTrigger1" />
+				<ref bean="ubsFileUploadTrigger2" />
+				<ref bean="ubsFileUploadTrigger3" />
+				<ref bean="ubsFileUploadTrigger4" />
+				<ref bean="finwareFileUploadTrigger" />
+				<ref bean="hongkongFileUploadTrigger" />
+				<ref bean="bahrainFileUploadTrigger" />
+				<ref bean="fdFileUploadTrigger" />
+			</list>
+		</property>
+	</bean>
+	<!--UBS File Upload-->
+	<bean id="ubsFileUploadTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="ubsFileUploadJobDetail" />
+		<!--<property name="cronExpression" value="0 0/05 * * * ?" />-->
+		<property name="cronExpression" value="0 30 09 * * ?" />
+	</bean>
+	
+	<bean id="ubsFileUploadTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="ubsFileUploadJobDetail" />
+		<property name="cronExpression" value="0 30 12 * * ?" />
+	</bean>
+	
+	<bean id="ubsFileUploadTrigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="ubsFileUploadJobDetail" />
+		<property name="cronExpression" value="0 30 15 * * ?" />
+	</bean>
+	
+	<bean id="ubsFileUploadTrigger4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="ubsFileUploadJobDetail" />
+		<property name="cronExpression" value="0 30 18 * * ?" />
+	</bean>
+	
+	<bean id="ubsFileUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ubsFileUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	
+	<bean name="ubsFileUploadJob" class="com.integrosys.cms.batch.fileUpload.schedular.UbsFileUploadJob"></bean>
+	
+	<!--Finware/ Finware FW File upload-->
+		<bean id="finwareFileUploadTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="finwareFileUploadJobDetail" />
+		<!--<property name="cronExpression" value="0 0/05 * * * ?" />-->
+		<property name="cronExpression" value="0 30 10 * * ?" />
+	</bean>
+	
+	<bean id="finwareFileUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="finwareFileUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	
+	<bean name="finwareFileUploadJob" class="com.integrosys.cms.batch.fileUpload.schedular.FinwareFileUploadJob"></bean>
+	
+	<!--Hongkong File Upload-->
+	<bean id="hongkongFileUploadTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="hongkongFileUploadJobDetail" />
+		<!--<property name="cronExpression" value="0 0/05 * * * ?" />
+		--><property name="cronExpression" value="0 30 10 * * ?" />
+	</bean>
+	
+	<bean id="hongkongFileUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="hongkongFileUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	
+	<bean name="hongkongFileUploadJob" class="com.integrosys.cms.batch.fileUpload.schedular.HongkongFileUploadJob"></bean>
+	
+	<!--Bahrain File Upload-->
+	<bean id="bahrainFileUploadTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="bahrainFileUploadJobDetail" />
+		<!--<property name="cronExpression" value="0 0/05 * * * ?" />-->
+		<property name="cronExpression" value="0 30 10 * * ?" />
+	</bean>
+	
+	<bean id="bahrainFileUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="bahrainFileUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	
+	<bean name="bahrainFileUploadJob" class="com.integrosys.cms.batch.fileUpload.schedular.BahrainFileUploadJob"></bean>
+	
+	<!--FD File Upload-->
+	<bean id="fdFileUploadTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="fdFileUploadJobDetail" />
+		<!--<property name="cronExpression" value="0 0/05 * * * ?" />-->
+		<property name="cronExpression" value="0 30 10 * * ?" />
+	</bean>
+	
+	<bean id="fdFileUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="fdFileUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	
+	<bean name="fdFileUploadJob" class="com.integrosys.cms.batch.fileUpload.schedular.FdFileUploadJob"></bean>
+	
+</beans>

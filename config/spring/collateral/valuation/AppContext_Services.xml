@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <bean id="collateralValuationProxy" class="com.integrosys.cms.app.collateral.proxy.valuation.CollateralValuationProxyImpl">
+  	<property name="collateralValuationTrxController" ref="collateralValuationTrxController" />
+  	<property name="collateralValuationReadController" ref="collateralValuationReadController" />
+  </bean>
+  
+  <bean id="valuationProfileSingletonListener" class="com.integrosys.cms.app.collateral.bus.valuation.support.ValuationProfileSingletonListener">
+  	<constructor-arg>
+		<map key-type="java.lang.String"
+			 value-type="java.util.List">
+			<entry key="PT">
+				<list value-type="com.integrosys.cms.app.collateral.bus.valuation.support.ValuationProfileSingleton">
+					<ref bean="propertyProfileSingleton" />
+				</list>
+			</entry>
+			<entry key="AB">
+				<list value-type="com.integrosys.cms.app.collateral.bus.valuation.support.ValuationProfileSingleton">
+					<ref bean="assetLifeProfileSingleton"/>
+					<ref bean="commonCodeRegionSingleton"/>
+					<ref bean="goldFeedProfileSingleton"/>
+				</list>
+			</entry>
+			<entry key="MS">
+				<list value-type="com.integrosys.cms.app.collateral.bus.valuation.support.ValuationProfileSingleton">
+					<ref bean="mktFeedSingleton" />
+				</list>
+			</entry>
+		</map>
+  	</constructor-arg>
+  	<constructor-arg>
+		<map key-type="java.lang.String"
+			 value-type="java.util.List">
+			<entry key="AB102">
+				<list value-type="com.integrosys.cms.app.collateral.bus.valuation.support.ValuationProfileSingleton">
+					<ref bean="vehicleFeedProfileSingleton"/>
+				</list>
+			</entry>
+		</map>
+  	</constructor-arg>
+  </bean>
+  
+  <!-- Start of Lines added by Dattatray Thorat -->
+  
+  <bean id="bhavCopyProxy" class="com.integrosys.cms.app.collateral.proxy.BhavCopyProxyImpl">
+  	<property name="bhavCopyBusManager" ref="bhavCopyBusManager"></property>
+  </bean>
+  
+  <bean id="bhavCopyBusManager" class="com.integrosys.cms.app.collateral.bus.BhavCopyBusManagerImpl">
+  	<property name="bhavCopyDao" ref="bhavCopyDao"></property>
+  </bean>
+	
+	<bean id="stockFeedBusManager" class="com.integrosys.cms.app.feed.bus.stock.StockFeedBusManagerImpl">
+		<property name="stockDao" ref="stockDao" />
+		<property name="stockExchangeJdbc" ref="stockExchangeJdbc" />
+	</bean>
+	
+	<bean id="stagingStockFeedBusManager" class="com.integrosys.cms.app.feed.bus.stock.StockFeedBusManagerStagingImpl">
+		<property name="stockDao" ref="stockDao" />
+		<property name="stockExchangeJdbc" ref="stockExchangeJdbc" />
+	</bean>
+	<!--Govind S: File Upload(Stock) -->
+		<bean id="stagingStockFeedFileMapperIdBusManager" class="com.integrosys.cms.app.feed.bus.stock.FileMapperIdBusManagerStagingImpl">
+			<property name="stockDao" ref="stockDao" />
+			<property name="stockExchangeJdbc" ref="stockExchangeJdbc" />
+		</bean>
+		<bean id="stockFeedFileMapperIdBusManager" class="com.integrosys.cms.app.feed.bus.stock.FileMapperIdBusManagerImpl">
+			<property name="stockDao" ref="stockDao" />
+			<property name="stockExchangeJdbc" ref="stockExchangeJdbc" />
+		</bean>
+		<!-- End File Upload(Stock) Govind S: -->
+
+	<bean id="stockFeedProxy" class="com.integrosys.cms.app.feed.proxy.stock.StockFeedProxyImpl">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+		<property name="trxControllerFactory" ref="stockTrxControllerFactory" />
+		<!--Govind S: File Upload(Stock) -->
+		<property name="stagingStockFeedFileMapperIdBusManager" ref="stagingStockFeedFileMapperIdBusManager" />
+		<property name="stockFeedFileMapperIdBusManager" ref="stockFeedFileMapperIdBusManager" />
+		<!-- End File Upload(Stock) Govind S: -->
+	</bean>
+	
+	<!-- End of Lines added by Dattatray Thorat -->
+</beans>

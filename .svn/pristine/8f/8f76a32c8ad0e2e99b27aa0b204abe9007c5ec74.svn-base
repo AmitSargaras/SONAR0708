@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+
+			select Row_Number() Over (Order By Ranking_Of_Sequence) As Sno,Employee_Grade, Ranking_Of_Sequence,
+			(Select ENTRY_NAME From Common_Code_Category_Entry Where CATEGORY_CODE = 'HDFC_SEGMENT' and ENTRY_CODE = Segment) AS Segment,
+			Limit_Release_Amt, Total_Sanctioned_Limit, 
+			PROPERTY_VALUATION_AMT, FD_AMOUNT, DRAWING_POWER, SBLC_SECURITY_OMV, 
+			DECODE(Facility_Cam_Covenant,'N','No','Y','Yes',null) as Facility_Cam_Covenant
+			from Cms_loa_master
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				STATUS = 'ACTIVE'
+			</mandatoryClause>
+			 			
+ 			<orderAndGroupByClause>
+ 				ORDER BY RANKING_OF_SEQUENCE
+ 			</orderAndGroupByClause>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Sr. No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Employee Grade</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Ranking Sequence</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Limit Release Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Total Sanctioned Limit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Property Valuation</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>FD Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Drawing Power</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>SBLC Security OMV</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility CAM Covenant</header>
+				</reportColumn>
+					 		  	 		
+			</reportColumns>
+			<reportName>LOA Master Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

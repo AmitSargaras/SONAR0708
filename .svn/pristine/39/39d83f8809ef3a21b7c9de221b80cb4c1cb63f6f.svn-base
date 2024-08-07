@@ -1,0 +1,1609 @@
+SET define OFF;
+---1  ------>>>  Url Access Maker <<------
+INSERT
+INTO CMS_FUNCTION_ACCESS
+  (
+    ID,
+    ACTION,
+    EVENT,
+    ROLE_TYPE
+  )
+SELECT MAX(ID)+1,'npaTraqCodeMaster','*','1004' FROM CMS_FUNCTION_ACCESS;
+COMMIT;
+--------------------------------------------------------------------------------------------------------------------------
+--2  ------>>>  Create Actual Table And Index  <<------
+CREATE TABLE "CMS_NPA_TRAQ_CODE_MASTER"
+  (
+    "ID"                      NUMBER(19,0) NOT NULL ENABLE PRIMARY KEY,
+    "VERSION_TIME"            NUMBER(19,0) NOT NULL ENABLE,
+    "CREATED_BY"              VARCHAR2(50 BYTE),
+    "CREATION_DATE"           TIMESTAMP (9) NOT NULL ENABLE,
+    "LAST_UPDATE_BY"          VARCHAR2(50 BYTE),
+    "LAST_UPDATE_DATE"        TIMESTAMP (9) NOT NULL ENABLE,
+    "STATUS"                  VARCHAR2(20 CHAR) NOT NULL ENABLE,
+    "NPA_TRAQ_CODE"           VARCHAR2(60 CHAR) NOT NULL ENABLE,
+    "SECURITY_TYPE"           VARCHAR2(100 CHAR) NOT NULL ENABLE,
+    "SECURITY_SUB_TYPE"       VARCHAR2(100 CHAR) NOT NULL ENABLE,
+    "PROPERTY_TYPE_CODE_DESC" VARCHAR2(750 BYTE),
+	"CPS_ID"                  VARCHAR2(20 CHAR),
+    "DEPRECATED"              VARCHAR2(50 CHAR)
+  ) ;
+CREATE TABLE "CMS_STAGE_NPA_TRAQ_CODE_MASTER"
+  (
+    "ID"                      NUMBER(19,0) NOT NULL ENABLE PRIMARY KEY,
+    "VERSION_TIME"            NUMBER(19,0) NOT NULL ENABLE,
+    "CREATED_BY"              VARCHAR2(50 BYTE),
+    "CREATION_DATE"           TIMESTAMP (9) NOT NULL ENABLE,
+    "LAST_UPDATE_BY"          VARCHAR2(50 BYTE),
+    "LAST_UPDATE_DATE"        TIMESTAMP (9) NOT NULL ENABLE,
+    "STATUS"                  VARCHAR2(20 CHAR) NOT NULL ENABLE,
+    "NPA_TRAQ_CODE"           VARCHAR2(60 CHAR) NOT NULL ENABLE,
+    "SECURITY_TYPE"           VARCHAR2(100 CHAR) NOT NULL ENABLE,
+    "SECURITY_SUB_TYPE"       VARCHAR2(100 CHAR) NOT NULL ENABLE,
+    "PROPERTY_TYPE_CODE_DESC" VARCHAR2(750 BYTE),
+	"CPS_ID"                  VARCHAR2(20 CHAR),
+    "DEPRECATED"              VARCHAR2(50 CHAR)
+  ) ;
+-----------------------------------------------------------------------------------------------------------------------
+---3  ------>>>  Create Sequence  <<------
+CREATE SEQUENCE CMS_NPA_TRAQ_CODE_MASTER_SEQ MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 1 NOCACHE NOORDER CYCLE;
+CREATE SEQUENCE STG_NPA_TRAQ_CODE_MASTER_SEQ MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 1 NOCACHE NOORDER CYCLE;
+  -------------------------------------------------------------------------------------------------------------------
+  ---4  ------>>> Url Access Checker <<------
+  INSERT
+  INTO CMS_FUNCTION_ACCESS
+    (
+      ID,
+      ACTION,
+      EVENT,
+      ROLE_TYPE
+    )
+  SELECT MAX(ID)+1,'npaTraqCodeMaster','*','1005' FROM CMS_FUNCTION_ACCESS;
+  COMMIT;
+  -------------------------------------------------------------------------------------------------------------------
+  --5  ------>>> Transaction Entry <<------
+  INSERT
+  INTO tr_state_matrix
+    (
+      stateid,
+      stateins,
+      operation,
+      fromstate,
+      tostate,
+      userstate,
+      enableind,
+      frontendop
+    )
+    VALUES
+    (
+      (SELECT MAX(stateid)+1 FROM tr_state_matrix
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CREATE_NPA_TRAQ_CODE_MASTER',
+      'ND',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CHECKER_APPROVE_ENABLE',
+      'PENDING_ENABLE',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'APPROVE_NPA_TRAQ_CODE_MASTER',
+      'PENDING_UPDATE',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'UPDATE_NPA_TRAQ_CODE_MASTER',
+      'ACTIVE',
+      'PENDING_UPDATE',
+      'PENDING_UPDATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'EDIT_REJECTED_DELETE_NPA_TRAQ_CODE_MASTER',
+      'REJECTED',
+      'PENDING_DELETE',
+      'PENDING_DELETE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CREATE_NPA_TRAQ_CODE_MASTER',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'APPROVE_CREATE_NPA_TRAQ_CODE_MASTER',
+      'PENDING_CREATE',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'REJECT_NPA_TRAQ_CODE_MASTER',
+      'PENDING_UPDATE',
+      'REJECTED',
+      'REJECTED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'EDIT_REJECTED_UPDATE_NPA_TRAQ_CODE_MASTER',
+      'REJECTED',
+      'PENDING_UPDATE',
+      'PENDING_UPDATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CLOSE_REJECTED_UPDATE_NPA_TRAQ_CODE_MASTER',
+      'REJECTED',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'REJECT_NPA_TRAQ_CODE_MASTER',
+      'PENDING_CREATE',
+      'REJECTED',
+      'REJECTED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CLOSE_REJECTED_CREATE_NPA_TRAQ_CODE_MASTER',
+      'REJECTED',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'EDIT_REJECTED_CREATE_NPA_TRAQ_CODE_MASTER',
+      'REJECTED',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'DELETE_NPA_TRAQ_CODE_MASTER',
+      'ACTIVE',
+      'PENDING_DELETE',
+      'PENDING_DELETE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'DELETE_NPA_TRAQ_CODE_MASTER',
+      'PENDING_DELETE',
+      'DELETED',
+      'DELETED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'REJECT_NPA_TRAQ_CODE_MASTER',
+      'PENDING_DELETE',
+      'REJECTED',
+      'REJECTED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CLOSE_REJECTED_DELETE_NPA_TRAQ_CODE_MASTER',
+      'REJECTED',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'UPDATE_NPA_TRAQ_CODE_MASTER',
+      'PENDING_UPDATE',
+      'ACTIVE',
+      'PENDING_UPDATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CHECKER_APPROVE_UPDATE',
+      'PENDING_UPDATE',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CHECKER_APPROVE_DELETE',
+      'PENDING_DELETE',
+      'DELETED',
+      'DELETED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'APPROVE_NPA_TRAQ_CODE_MASTER',
+      'PENDING_DELETE',
+      'DELETED',
+      'DELETED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CHECKER_APPROVE_UPDATE',
+      'PENDING_DELETE',
+      'DELETED',
+      'DELETED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'MAKER_SAVE',
+      'PENDING_PERFECTION',
+      'DRAFT',
+      'DRAFT',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CREATE_NPA_TRAQ_CODE_MASTER',
+      'DRAFT',
+      'PENDING_CREATE',
+      'PENDING_CREATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'MAKER_UPDATE_SAVE',
+      'ACTIVE',
+      'DRAFT',
+      'DRAFT',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'UPDATE_NPA_TRAQ_CODE_MASTER',
+      'DRAFT',
+      'PENDING_UPDATE',
+      'PENDING_UPDATE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'MAKER_UPDATE_CLOSE',
+      'DRAFT',
+      'ACTIVE',
+      'ACTIVE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'CREATE_NPA_TRAQ_CODE_MASTER',
+      'PENDING_PERFECTION',
+      'DRAFT',
+      'DRAFT',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'UPDATE_NPA_TRAQ_CODE_MASTER',
+      'DELETED',
+      'PENDING_ENABLE',
+      'PENDING_ENABLE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'REJECT_ACTIVATE_NPA_TRAQ_CODE_MASTER',
+      'PENDING_ENABLE',
+      'REJECTED',
+      'REJECTED',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'EDIT_REJECTED_ENABLE_NPA_TRAQ_CODE_MASTER',
+      'REJECTED',
+      'PENDING_ENABLE',
+      'PENDING_ENABLE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'ACTIVATE_NPA_TRAQ_CODE_MASTER',
+      'ACTIVE',
+      'PENDING_ENABLE',
+      'PENDING_ENABLE',
+      '1',
+      '1'
+    );
+  INSERT
+  INTO TR_STATE_MATRIX
+    (
+      STATEID,
+      STATEINS,
+      OPERATION,
+      FROMSTATE,
+      TOSTATE,
+      USERSTATE,
+      ENABLEIND,
+      FRONTENDOP
+    )
+    VALUES
+    (
+      (SELECT MAX(STATEID)+1 FROM TR_STATE_MATRIX
+      )
+      ,
+      'NPA_TRAQ_CODE_MASTER',
+      'ACTIVATE_NPA_TRAQ_CODE_MASTER',
+      'DELETED',
+      'PENDING_ENABLE',
+      'PENDING_ENABLE',
+      '1',
+      '1'
+    );
+  COMMIT;
+  -----------------------------------------------------------------------------------------------------------------------
+  --6  ------>>> ToTrack Entry <<------
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'PENDING_CREATE',
+      'Pending Create',
+      'NPA TRAQ Code Master',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'REJECTED',
+      'Rejected',
+      'NPA TRAQ Code Master',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'CLOSED',
+      'Closed',
+      'NPA TRAQ Code Master',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'PENDING_UPDATE',
+      'Pending Update',
+      'NPA TRAQ Code Master',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'PENDING_DELETE',
+      'Pending Delete',
+      'NPA TRAQ Code Master',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Approved',
+      'NPA TRAQ Code Master',
+      'PENDING_UPDATE',
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Approved',
+      'NPA TRAQ Code Master',
+      'PENDING_CREATE',
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Enabled',
+      'NPA TRAQ Code Master',
+      'PENDING_ENABLE',
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'DRAFT',
+      'Draft',
+      'NPA TRAQ Code Master',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'DELETED',
+      'Deleted',
+      'NPA TRAQ Code Master',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'PENDING_ENABLE',
+      'Pending Enable',
+      'NPA TRAQ Code Master',
+      NULL,
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Closed',
+      'NPA TRAQ Code Master',
+      'REJECTED',
+      NULL
+    );
+  INSERT
+  INTO CMS_TRX_TOTRACK
+    (
+      TRANSACTION_TYPE,
+      TOTRACK_URL,
+      CURR_STATE,
+      USER_STATE,
+      USER_TRX_TYPE,
+      FROM_STATE,
+      TRANSACTION_SUBTYPE
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'npaTraqCodeMaster.do?event=rejected_delete_read&toTrack=yes&TrxId=',
+      'ACTIVE',
+      'Closed',
+      'NPA TRAQ Code Master',
+      'DRAFT',
+      NULL
+    );
+  COMMIT;
+  ----------------------------------------------------------------------------------------------------------------------------
+  ------>>> 7 CMS_STATEMATRIX_ACTION <<------
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='UPDATE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='PENDING_UPDATE'
+        AND TOSTATE   ='ACTIVE'
+      )
+      ,
+      1005,
+      'Process',
+      'npaTraqCodeMaster.do?event=checker_process_edit&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='REJECT_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='PENDING_UPDATE'
+        AND TOSTATE   ='REJECTED'
+      )
+      ,
+      1005,
+      'Process',
+      'npaTraqCodeMaster.do?event=checker_process_edit&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='CREATE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='PENDING_CREATE'
+        AND TOSTATE   ='PENDING_CREATE'
+      )
+      ,
+      1005,
+      'Process',
+      'npaTraqCodeMaster.do?event=checker_process_create&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='DELETE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='PENDING_DELETE'
+        AND TOSTATE   ='DELETED'
+      )
+      ,
+      1005,
+      'Process',
+      'npaTraqCodeMaster.do?event=checker_process_delete&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='CREATE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='PENDING_PERFECTION'
+        AND TOSTATE   ='DRAFT'
+      )
+      ,
+      1004,
+      'Process',
+      'npaTraqCodeMaster.do?event=create_save_collateral_roc&trxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='EDIT_REJECTED_UPDATE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='REJECTED'
+        AND TOSTATE   ='PENDING_UPDATE'
+      )
+      ,
+      1004,
+      'Process',
+      'npaTraqCodeMaster.do?event=maker_prepare_resubmit_create&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='CLOSE_REJECTED_UPDATE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='REJECTED'
+        AND TOSTATE   ='ACTIVE'
+      )
+      ,
+      1004,
+      'Close',
+      'npaTraqCodeMaster.do?event=maker_prepare_close&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='MAKER_UPDATE_CLOSE'
+        AND FROMSTATE ='DRAFT'
+        AND TOSTATE   ='ACTIVE'
+      )
+      ,
+      1004,
+      'Close',
+      'npaTraqCodeMaster.do?event=maker_draft_close_process&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='EDIT_REJECTED_CREATE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='REJECTED'
+        AND TOSTATE   ='PENDING_CREATE'
+      )
+      ,
+      1004,
+      'Process',
+      'npaTraqCodeMaster.do?event=maker_prepare_resubmit_create&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='EDIT_REJECTED_DELETE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='REJECTED'
+        AND TOSTATE   ='PENDING_DELETE'
+      )
+      ,
+      1004,
+      'Process',
+      'npaTraqCodeMaster.do?event=maker_prepare_resubmit_delete&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='MAKER_SAVE'
+        AND FROMSTATE ='PENDING_PERFECTION'
+        AND TOSTATE   ='DRAFT'
+      )
+      ,
+      1004,
+      'Process',
+      'npaTraqCodeMaster.do?event=maker_save_process&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='CREATE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='DRAFT'
+        AND TOSTATE   ='PENDING_CREATE'
+      )
+      ,
+      1004,
+      'Process',
+      'npaTraqCodeMaster.do?event=maker_save_process&TrxId=',
+      NULL
+    );
+  INSERT
+  INTO CMS_STATEMATRIX_ACTION
+    (
+      STATE_ID,
+      TEAM_MEMBERSHIP_TYPE_ID,
+      USER_ACTION,
+      URL,
+      TOTRACK_URL
+    )
+    VALUES
+    (
+      (SELECT STATEID
+        FROM TR_STATE_MATRIX
+        WHERE STATEINS='NPA_TRAQ_CODE_MASTER'
+        AND OPERATION ='UPDATE_NPA_TRAQ_CODE_MASTER'
+        AND FROMSTATE ='DRAFT'
+        AND TOSTATE   ='PENDING_UPDATE'
+      )
+      ,
+      1004,
+      'Process',
+      'npaTraqCodeMaster.do?event=maker_update_save_process&TrxId=',
+      NULL
+    );
+  COMMIT;
+  ------------------------------------------------------------------------------------------------------------------------
+  ------>>> 8 transaction_type_name and CMS_USER_MODULE  <<------
+  INSERT
+  INTO transaction_type_name
+    (
+      TRANSACTION_TYPE,
+      NAME,
+      TRANSACTION_SUBTYPE,
+      ACCESS_NAME
+    )
+    VALUES
+    (
+      'NPA_TRAQ_CODE_MASTER',
+      'NPA TRAQ Code Master',
+      NULL,
+      '2'
+    );
+  COMMIT;
+  INSERT
+  INTO CMS_USER_MODULE
+    (
+      MODULE_ID,
+      MODULE_NAME,
+      MODULE_TYPE
+    )
+    VALUES
+    (
+      (SELECT MAX(MODULE_ID)+1 FROM cms_module_access
+      )
+      ,
+      'NPA TRAQ Code Master',
+      'MASTERS'
+    );
+  COMMIT;
+  ------------------------------------------------------------------------------------------------------------------------
+  ------>>> 9 CMS_MODULE_ACCESS<<------
+  INSERT
+  INTO CMS_MODULE_ACCESS
+    (
+      ACCESS_ID,
+      ROLE,
+      MODULE_ID,
+      ADD_ACCESS,
+      EDIT_ACCESS,
+      DELETE_ACCESS,
+      VIEW_ACCESS,
+      APPROVE_ACCESS
+    )
+    VALUES
+    (
+      (SELECT MAX(access_id)+1 FROM CMS_MODULE_ACCESS
+      )
+      ,
+      1004,
+      (SELECT module_id
+      FROM cms_user_module
+      WHERE module_name='NPA TRAQ Code Master'
+      ),
+      'Y',
+      'Y',
+      'Y',
+      'Y',
+      'N'
+    );
+  INSERT
+  INTO CMS_MODULE_ACCESS
+    (
+      ACCESS_ID,
+      ROLE,
+      MODULE_ID,
+      ADD_ACCESS,
+      EDIT_ACCESS,
+      DELETE_ACCESS,
+      VIEW_ACCESS,
+      APPROVE_ACCESS
+    )
+    VALUES
+    (
+      (SELECT MAX(access_id)+1 FROM CMS_MODULE_ACCESS
+      )
+      ,
+      1005,
+      (SELECT module_id
+      FROM cms_user_module
+      WHERE module_name='NPA TRAQ Code Master'
+      ),
+      'N',
+      'N',
+      'N',
+      'Y',
+      'Y'
+    );
+ 
+  ------------------------------------------------------------------------------------------------------------------------
+  CREATE TABLE "CMS_NPADATA_LOG"
+  (
+    "ID"               NUMBER(19,0) NOT NULL ENABLE PRIMARY KEY,
+    "FILE_NAME"        VARCHAR2(50 BYTE),
+    "STATUS"           VARCHAR2(50 BYTE),
+    "REPORTING_DATE"   TIMESTAMP (9),
+    "SYSTEM"           VARCHAR2(10 BYTE),
+    "PARTY_ID"         VARCHAR2(20 BYTE),
+    "COLLATERAL_TYPE"  VARCHAR2(60 CHAR),
+    "VALUATION_DATE"   TIMESTAMP (9),
+    "VALUATION_AMOUNT" NUMBER(38,0),
+    "ORIGINAL_VALUE"   NUMBER(38,0),
+    "START_DATE"       VARCHAR2(50 BYTE),
+    "MATURITY_DATE"    VARCHAR2(50 BYTE)
+  ) ;
+ CREATE SEQUENCE CMS_NPADATA_LOG_SEQ MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 1 NOCACHE NOORDER CYCLE;
+ 
+ CREATE TABLE "CMS_BASEL_NPA_TRACK"
+  (
+    "REPORTING_DATE"    TIMESTAMP (9),
+    "SYSTEM"            VARCHAR2(50 BYTE),
+    "PARTY_ID"          VARCHAR2(250 BYTE),
+    "SECURITY_ID"       VARCHAR2(250 BYTE),
+    "COLLATERAL_TYPE"   VARCHAR2(250 BYTE),
+    "VALUATION_DATE"    TIMESTAMP (9),
+    "VALUATION_AMT_INR" NUMBER(38,2),
+    "ORIGINAL_VALUE"    NUMBER(38,2),
+    "START_DATE"        TIMESTAMP (9),
+    "MATURITY_DATE"     TIMESTAMP (9)
+  );
+ 
+  
+  COMMIT;
+  SET define ON;

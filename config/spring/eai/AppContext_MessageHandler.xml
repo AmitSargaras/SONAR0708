@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		Class implement IMessageHandler which is the flow engine for the EAI Message.
+	</description>
+	
+	<!-- Customer Module -->
+	
+	<bean id="customerMessageHandler" class="com.integrosys.cms.host.eai.customer.bus.CustomerInquiryMessageHandlerImpl">
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="customerActualTrxHandler" />
+			</list>
+		</property>
+		<property name="trxHandlerList">
+			<list>
+				<ref bean="customerTrxHandler" />
+			</list>
+		</property>
+		<property name="validatorList">
+			<list value-type="com.integrosys.cms.host.eai.core.IEaiMessageValidator">
+				<ref bean="messageHeaderValidator" />
+				<ref bean="mainProfileValidator" />
+				<ref bean="creditGradeValidator" />
+				<ref bean="customerIdInfoValidator"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="customerFusionMessageHandler" class="com.integrosys.cms.host.eai.customer.bus.CustomerFusionMessageHandlerImpl">
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="customerFusionActualTrxHandler" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="customerRelationshipMessageHandler" class="com.integrosys.cms.host.eai.customer.bus.CustomerRelationshipMessageHandlerImpl">
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="customerFusionActualTrxHandler" />
+			</list>
+		</property>
+		<property name="validatorList">
+			<list>
+				<ref bean="customerRelationshipValidator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="customerUpdateMessageHandler" class="com.integrosys.cms.host.eai.customer.bus.CustomerUpdateMessageHandlerImpl">
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="customerUpdateActualTrxHandler" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="customerSearchMessageHandler" class="com.integrosys.cms.host.eai.customer.bus.CustomerSearchMultipleMessageHandlerImpl">
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="customerSearchActualTrxHandler" />
+			</list>
+		</property>
+		<property name="validatorList">
+			<list>
+				<ref bean="customerSearchValidator" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- AA Module -->
+	
+	<bean id="limitMessageHandler" class="com.integrosys.cms.host.eai.limit.bus.LimitMessageHandlerImpl">
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="aaValidator"/>
+				<ref bean="chargeDetailValidator"/>
+				<ref bean="facilityValidator"/> 
+				<ref bean="corporateFacilityValidator" />
+			</list>
+		</property>
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="limitInternalKeyCheckingHandler" />
+				<ref bean="limitProfileActualTrxHandler" />
+				<ref bean="jointBorrowerActualTrxHandler" />
+				<ref bean="limitProfileResponseCleanupActualTrxHandler" />
+				<ref bean="tatDocCreationActualTrxHandler" />
+				<ref bean="limitNonVariedInfoPopulatorActualTrxHandler" />
+				<ref bean="limitPrePopulationActualTrxHandler" />
+				<ref bean="limitActualTrxHandler" />
+				<ref bean="limitApprovedSecurityMapActualTrxHandler" />
+				<ref bean="chargeDetailActualTrxHandler" />
+				<ref bean="limitSecMapChargeInfoActualTrxHandler" />
+			<!--<ref bean="facilityCodeBasedCollateralUpdateHandler" />-->
+				<ref bean="facilityActualTrxHandler"/>
+				<ref bean="updateFacilityActualTrxHandler"/>
+			</list>
+		</property>
+		<property name="trxHandlerList">
+			<list>
+				<ref bean="limitProfileTrxHandler" />
+				<ref bean="limitTrxHandler" />
+				<ref bean="facilityTrxHandlerAspect" />
+			</list>
+		</property>
+		<property name="republishActualTrxHandlerList">
+			<list>
+				<ref bean="limitRepublishInternalKeyCheckingHandler" />
+				<ref bean="limitProfileRepublishActualTrxHandler" />
+				<ref bean="jointBorrowerRepublishActualTrxHandler" />
+				<ref bean="limitProfileResponseCleanupActualTrxHandler" />
+				<ref bean="tatDocCreationActualTrxHandler" />
+				<ref bean="limitPrePopulationActualTrxHandler" />
+				<ref bean="limitRepublishActualTrxHandler" />
+				<ref bean="limitApprovedSecurityMapRepublishActualTrxHandler" />
+				<ref bean="chargeDetailRepublishActualTrxHandler" />
+				<ref bean="limitSecMapChargeInfoActualTrxHandler" />
+			<!--<ref bean="facilityCodeBasedCollateralUpdateHandler" /> -->
+				<ref bean="facilityRepublishActualTrxHandler"/>
+				<ref bean="updateFacilityRepublishActualTrxHandler"/>
+			</list>
+		</property>
+		<property name="republishTrxHandlerList">
+			<list>
+				<ref bean="limitProfileRepublishTrxHandler" />
+				<ref bean="limitRepublishTrxHandler" />
+				<ref bean="facilityRepublishTrxHandlerAspect" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="creditApplicationListingInquiryMessageHandler" class="com.integrosys.cms.host.eai.limit.inquiry.listing.CreditApplicationListingInquiryMessageHandler">
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="creditApplicationListingInquiryValidator"/>
+			</list>
+		</property>
+		<property name="customerDao" ref="customerDao" />
+		<property name="limitDao" ref="limitDao" />
+	</bean>
+	
+	<bean id="creditApplicationInquiryMessageHandler" class="com.integrosys.cms.host.eai.limit.inquiry.limitprofile.CreditApplicationInquiryMessageHandler">
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="creditApplicationInquiryValidator"/>
+			</list>
+		</property>
+		<property name="limitDao" ref="limitDao" />
+		<property name="limitJdbcDao" ref="limitJdbcDao" />
+	</bean>
+	
+	<bean id="facStpReadyStatusPopulatePostProcessMsgHandler" class="com.integrosys.cms.host.eai.limit.bus.StpReadyStatusPopulatePostProcessMsgHandler">
+		<property name="facilityJdbc" ref="facilityJdbc" />
+		<property name="facilityProxy" ref="facilityProxy" />
+	</bean>
+	
+	<bean id="sharedSecurityMessageHandler" class="com.integrosys.cms.host.eai.security.sharedsecurity.bus.SharedSecurityMsgHandlerImpl">
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="sharedSecurityValidator" />
+			</list>
+		</property>
+		<property name="defaultSharedSecuritySearchHandler" ref="defaultSharedSecuritySearchHandler" />
+		<property name="securitySubTypeCodeSearchHandlerMap">
+			<map>
+				<entry key="AB101" value-ref="assetPlantEquipSharedSecuritySearchHandler" />
+				<entry key="AB102" value-ref="assetVehicleSharedSecuritySearchHandler" />
+				<entry key="AB109" value-ref="assetAircraftSharedSecuritySearchHandler" />
+				<entry key="AB111" value-ref="assetVesselSharedSecuritySearchHandler" />
+				<entry key="PT700" value-ref="propertySecuritySearchHandler" />
+				<entry key="PT701" value-ref="propertySecuritySearchHandler" />
+				<entry key="PT702" value-ref="propertySecuritySearchHandler" />
+				<entry key="PT703" value-ref="propertySecuritySearchHandler" />
+				<entry key="PT704" value-ref="propertySecuritySearchHandler" />
+				<entry key="PT706" value-ref="propertySecuritySearchHandler" />
+				<entry key="PT707" value-ref="propertySecuritySearchHandler" />
+				<entry key="PT709" value-ref="propertySecuritySearchHandler" />
+				<entry key="PT710" value-ref="propertySecuritySearchHandler" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- Collateral module -->
+	
+	<bean id="securityMessageHandler" class="com.integrosys.cms.host.eai.security.bus.SecurityMessageHandlerImpl">
+ 
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="securityInternalKeyCheckingHandler" />
+				<ref bean="securityActualTrxHandler" />
+				<ref bean="assetTradeInInformationActualTrxHandler" />
+				<ref bean="pledgorActualTrxHandler" />
+				<ref bean="valuationAmountActualTrxHandler" />
+			</list>
+		</property>
+		<property name="trxHandlerList">
+			<list>
+				<ref bean="securityTrxHandler" />
+			</list>
+		</property>
+		<property name="republishActualTrxHandlerList">
+			<list>
+				<ref bean="securityRepublishInternalKeyCheckingHandler" />
+				<ref bean="securityRepublishActualTrxHandler" />
+				<ref bean="assetTradeInInformationActualTrxHandler" />
+				<ref bean="pledgorRepublishActualTrxHandler" />
+				<ref bean="valuationAmountActualTrxHandler" />
+			</list>
+		</property>
+		<property name="republishTrxHandlerList">
+			<list>
+				<ref bean="securityRepublishTrxHandler" />
+			</list>
+		</property>
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="securityValidator" />
+				<ref bean="pledgorValidator" />
+				<ref bean="assetSecurityValidator" />
+				<ref bean="cashSecurityValidator" />
+				<ref bean="insuranceSecurityValidator" />
+				<ref bean="documentSecurityValidator" />
+				<ref bean="otherSecurityValidator" />
+				<ref bean="guaranteeSecurityValidator" />
+				<ref bean="marketableSecurityValidator" />
+				<ref bean="propertySecurityValidator" />
+				<ref bean="valuationValidator" />
+				<ref bean="insurancePolicyValidator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="colStpReadyStatusPopulatePostProcessMsgHandler" class="com.integrosys.cms.host.eai.security.bus.StpReadyStatusPopulatePostProcessMsgHandler">
+		<property name="collateralJdbcDao" ref="collateralDao" />
+		<property name="collateralProxy" ref="collateralProxy" />
+		<property name="collateralStpValidatorFactory" ref="collateralStpValidatorFactory" />
+	</bean>
+	
+	<bean id="securityInquiryMessageHandler" class="com.integrosys.cms.host.eai.security.inquiry.SecurityInquiryMessageHandler">
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="securityInquiryValidator" />
+			</list>
+		</property>
+		<property name="securityDao" ref="securityDao" />
+		<property name="securityTypeMessageIdMap">
+			<map>
+				<entry key="AB" value="CO001R" />
+				<entry key="CL" value="CO009R" />
+				<entry key="CS" value="CO002R" />
+				<entry key="DC" value="CO003R" />
+				<entry key="GT" value="CO004R" />
+				<entry key="IN" value="CO005R" />
+				<entry key="MS" value="CO006R" />
+				<entry key="OT" value="CO007R" />
+				<entry key="PT" value="CO008R" />
+			</map>
+		</property>
+		<property name="securityTypeDetailsPopulaterMap">
+			<map>
+				<entry key="AB" value-ref="assetSecurityDetailsPopulator" />
+				<entry key="CL" value-ref="noCollateralSecurityDetailsPopulator" />
+				<entry key="CS" value-ref="cashSecurityDetailsPopulator" />
+				<entry key="DC" value-ref="documentSecurityDetailsPopulator" />
+				<entry key="GT" value-ref="guaranteeSecurityDetailsPopulator" />
+				<entry key="IN" value-ref="insuranceSecurityDetailsPopulator" />
+				<entry key="MS" value-ref="marketableSecurityDetailsPopulator" />
+				<entry key="OT" value-ref="othersSecurityDetailsPopulator" />
+				<entry key="PT" value-ref="propertySecurityDetailsPopulator" />
+			</map>
+		</property>
+	</bean>
+	
+	<!-- Documentation / Checklist module -->
+
+	<!-- COVENANT module -->
+	<bean id="covenantMessageHandler" class="com.integrosys.cms.host.eai.covenant.bus.CovenantMessageHandlerImpl">
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="covenantActualTrxHandler" />
+			</list>
+		</property>
+		<property name="trxHandlerList">
+			<list>
+				<ref bean="covenantTrxHandler" />
+			</list>
+		</property>
+		<property name="republishActualTrxHandlerList">
+			<list>
+				<ref bean="covenantRepublishActualTrxHandler" />
+			</list>
+		</property>
+		<property name="republishTrxHandlerList">
+			<list>
+				<ref bean="covenantRepublishTrxHandler" />
+			</list>
+		</property>
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="covenantValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="covenantInquiryMessageHandler" class="com.integrosys.cms.host.eai.covenant.bus.CovenantInquiryMsgHandlerImpl">
+		<property name="covenantDao" ref="covenantDao"  />
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="convenantInquireValidator" />
+			</list>
+		</property>	
+	</bean>
+	
+
+	<bean id="checkListTemplateInquiryMessageHandler" class="com.integrosys.cms.host.eai.document.inquiry.template.CheckListTemplateInquiryMsgHandlerImpl">
+		<property name="templateProxy" ref="templateProxy" />
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="checklistTemplateCriteriaValidator" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="docChecklistInquiryMessageHandler" class="com.integrosys.cms.host.eai.document.inquiry.checklist.DocChecklistInquiryMsgHandlerImpl">
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="checklistCriteriaValidator" />
+			</list>
+		</property>
+		<property name="documentJdbcDao" ref="documentDaoJdbc" />
+		<property name="documentDao" ref="documentDao" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+
+	<bean id="documentInputMessageHandler" class="com.integrosys.cms.host.eai.document.bus.DocumentInputMessageHandlerImpl">
+		<property name="actualTrxHandlerList">
+			<list>
+				<ref bean="checkListInternalKeyCheckHandler" />
+				<ref bean="checkListInternalKeyPopulatorHandler" />
+				<ref bean="checkListObjectsMergerHandler" />
+				<ref bean="checkListItemsNonPreApprovalDocHandler" />
+				<ref bean="checkListPersistentHandler" />
+			</list>
+		</property>
+		<property name="republishActualTrxHandlerList">
+			<list>
+				<ref bean="checkListInternalKeyCheckHandler" />
+				<ref bean="checkListInternalKeyPopulatorHandler" />
+				<ref bean="checkListObjectsMergerHandler" />
+				<ref bean="checkListItemsNonPreApprovalDocHandler" />
+				<ref bean="checkListPersistentHandler" />
+			</list>
+		</property>
+		<property name="validatorList">
+			<list>
+				<ref bean="messageHeaderValidator" />
+				<ref bean="checklistValidator" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="facilityResponseMessageHandler" class="com.integrosys.cms.host.eai.limit.response.FacilityResponseMessageHandler">
+		<property name="facilityProxy" ref="facilityProxy" />
+		<property name="facilityJdbc" ref="facilityJdbc" />
+	</bean>
+
+</beans>

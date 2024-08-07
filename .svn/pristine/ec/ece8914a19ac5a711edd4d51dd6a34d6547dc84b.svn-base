@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>Checklist Document Mapping - DC002 (Response)</description>
+
+	<include href="common-response.cm.xml" />
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.document.inquiry.checklist.DocChecklistResponseMsgBody" >
+		<map-to xml="MsgBody"/>
+		<field name="CheckList" type="com.integrosys.cms.host.eai.document.bus.CheckList">
+			<bind-xml name="Checklist" />
+		</field>
+		<field name="CheckListItem" type="com.integrosys.cms.host.eai.document.bus.CheckListItem" collection="vector">
+			<bind-xml name="CheckListItem" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.CheckList">
+		<map-to xml="CheckList"/>
+		<field name="CheckListID" type="long" >
+			<bind-xml name="CheckListID" />
+		</field>
+		<field name="TemplateID" type="long">
+			<bind-xml name="TemplateID" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.CheckListItem">
+		<map-to xml="CheckListItem"/>
+		<field name="CmsDocItemID" type="long">
+			<bind-xml name="CmsDocItemID" />
+		</field>
+        <field name="DocCode" type="string">
+			<bind-xml name="DocCode" />
+		</field>
+		<field name="DocNo" type="long">
+			<bind-xml name="DocNo" />
+		</field>		
+        <field name="MandatoryInd" type="char">
+			<bind-xml name="MandatoryInd" />
+		</field>
+		<field name="Description" type="string">
+			<bind-xml name="Description" />
+		</field>
+        <field name="Status" type="string">
+			<bind-xml name="Status" />
+		</field>
+		<field name="ExpiryDate" type="string">
+			<bind-xml name="ExpiryDate" />
+		</field>
+        <field name="ReceivedDate" type="string">
+			<bind-xml name="ReceivedDate" />
+		</field>
+        <field name="WaivedDate" type="string">
+			<bind-xml name="WaivedDate" />
+		</field>
+	</class>
+
+</mapping>

@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
+<ejb-jar>
+<display-name>DocumentLocation</display-name>
+    <enterprise-beans>
+        <session id="session_SBDocumentLocationProxyManager">
+            <ejb-name>SBDocumentLocationProxyManager</ejb-name>
+            <home>com.integrosys.cms.app.documentlocation.proxy.SBDocumentLocationProxyManagerHome</home>
+            <remote>com.integrosys.cms.app.documentlocation.proxy.SBDocumentLocationProxyManager</remote>
+            <ejb-class>com.integrosys.cms.app.documentlocation.proxy.SBDocumentLocationProxyManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session id="session_SBDocumentLocationBusManager">
+            <ejb-name>SBDocumentLocationBusManager</ejb-name>
+            <home>com.integrosys.cms.app.documentlocation.bus.SBDocumentLocationBusManagerHome</home>
+            <remote>com.integrosys.cms.app.documentlocation.bus.SBDocumentLocationBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.documentlocation.bus.SBDocumentLocationBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session id="session_SBStagingDocumentLocationBusManager">
+            <ejb-name>SBStagingDocumentLocationBusManager</ejb-name>
+            <home>com.integrosys.cms.app.documentlocation.bus.SBDocumentLocationBusManagerHome</home>
+            <remote>com.integrosys.cms.app.documentlocation.bus.SBDocumentLocationBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.documentlocation.bus.SBStagingDocumentLocationBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>    
+
+        <entity id="entity_EBCCDocumentLocation">
+            <ejb-name>EBCCDocumentLocation</ejb-name>
+            <home>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocationHome</home>
+            <remote>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocation</remote>
+            <local-home>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocationLocalHome</local-home>
+            <local>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocationLocal</local>
+            <ejb-class>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocationBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCCDocumentLocation</abstract-schema-name>
+            <cmp-field id="cmp_EBCCDocumentLocation_cMPDocLocationID">
+                <field-name>cMPDocLocationID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCCDocumentLocation_docLocationCategory">
+                <field-name>docLocationCategory</field-name>
+            </cmp-field>  
+            <cmp-field id="cmp_EBCCDocumentLocation_cMPLimitProfileID">
+                <field-name>cMPLimitProfileID</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBCCDocumentLocation_cMPSubProfileID">
+                <field-name>cMPSubProfileID</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBCCDocumentLocation_cMPPledgorID">
+                <field-name>cMPPledgorID</field-name>
+            </cmp-field>                    
+            <cmp-field id="cmp_EBCCDocumentLocation_cMPDocLocationCountry">
+                <field-name>cMPDocLocationCountry</field-name>
+            </cmp-field>    
+            <cmp-field id="cmp_EBCCDocumentLocation_cMPDocLocationOrgCode">
+                <field-name>cMPDocLocationOrgCode</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBCCDocumentLocation_remarks">
+                <field-name>remarks</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCCDocumentLocation_isDeletedIndStr">
+                <field-name>isDeletedIndStr</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBCCDocumentLocation_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field>  
+            <primkey-field>cMPDocLocationID</primkey-field>         
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>                      
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileAndSubProfile</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.Long</method-param>                        
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCCDocumentLocation o WHERE o.cMPLimitProfileID = ?1 AND o.cMPSubProfileID = ?2 AND o.isDeletedIndStr = 'N']]></ejb-ql>
+            </query>
+                       
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileAndPledgorID</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.Long</method-param>                        
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCCDocumentLocation o WHERE o.cMPLimitProfileID = ?1 AND o.cMPPledgorID = ?2 AND o.isDeletedIndStr = 'N']]></ejb-ql>
+            </query>
+        </entity>        
+
+        <entity id="entity_EBStagingCCDocumentLocation">
+            <ejb-name>EBStagingCCDocumentLocation</ejb-name>
+            <home>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocationHome</home>
+            <remote>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocation</remote>
+            <local-home>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocationLocalHome</local-home>
+            <local>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocationLocal</local>
+            <ejb-class>com.integrosys.cms.app.documentlocation.bus.EBCCDocumentLocationBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingCCDocumentLocation</abstract-schema-name>
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_cMPDocLocationID">
+                <field-name>cMPDocLocationID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_docLocationCategory">
+                <field-name>docLocationCategory</field-name>
+            </cmp-field>  
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_cMPLimitProfileID">
+                <field-name>cMPLimitProfileID</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_cMPSubProfileID">
+                <field-name>cMPSubProfileID</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_cMPPledgorID">
+                <field-name>cMPPledgorID</field-name>
+            </cmp-field>                    
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_cMPDocLocationCountry">
+                <field-name>cMPDocLocationCountry</field-name>
+            </cmp-field>    
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_cMPDocLocationOrgCode">
+                <field-name>cMPDocLocationOrgCode</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_remarks">
+                <field-name>remarks</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_isDeletedIndStr">
+                <field-name>isDeletedIndStr</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBStagingCCDocumentLocation_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field>  
+            <primkey-field>cMPDocLocationID</primkey-field>          
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>            
+            
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileAndSubProfile</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.Long</method-param>                        
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCCDocumentLocation o WHERE o.cMPLimitProfileID = ?1 AND o.cMPSubProfileID = ?2 AND o.isDeletedIndStr = 'N']]></ejb-ql>
+            </query>
+                       
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileAndPledgorID</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.Long</method-param>                        
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCCDocumentLocation o WHERE o.cMPLimitProfileID = ?1 AND o.cMPPledgorID = ?2 AND o.isDeletedIndStr = 'N']]></ejb-ql>
+            </query>                     
+        </entity>
+    </enterprise-beans>    
+                
+    <assembly-descriptor>
+        <container-transaction>            
+            <method>
+                <ejb-name>SBDocumentLocationProxyManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBDocumentLocationBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBStagingDocumentLocationBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBCCDocumentLocation</ejb-name>
+                <method-name>*</method-name>
+            </method>            
+            <method>
+                <ejb-name>EBStagingCCDocumentLocation</ejb-name>
+                <method-name>*</method-name>
+            </method>
+           <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

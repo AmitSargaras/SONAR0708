@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejbext:EJBJarExtension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:xmi="http://www.omg.org/XMI"
+                        xmlns:ejbext="ejbext.xmi"
+                        xmlns:ejb="ejb.xmi"
+                        xmlns:commonext.localtran="commonext.localtran.xmi"
+                        xmi:version="2.0"
+                        xmi:id="ejbjarext_ejb_Transaction">
+   <ejbJar href="META-INF/ejb-jar.xml#ejb_Transaction"/>
+   <ejbExtensions xmi:id="ejbext_SBCMSTrxManager" xmi:type="ejbext:SessionExtension">
+      <enterpriseBean xmi:type="ejb:Session" href="META-INF/ejb-jar.xml#session_SBCMSTrxManager"/>
+      <structure xmi:id="structure_SBCMSTrxManager" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_SBCMSTrxManager" activateAt="ONCE"/>
+      <localTransaction xmi:id="localtrx_SBCMSTrxManager" resolver="Application"/>
+      <resourceRefExtensions xmi:id="resrefext_SBCMSTrxManager" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_SBCMSTrxManager"/>
+      </resourceRefExtensions>
+   </ejbExtensions>
+   <ejbExtensions xmi:id="ejbext_SBCompTrxManager" xmi:type="ejbext:SessionExtension">
+      <enterpriseBean xmi:type="ejb:Session" href="META-INF/ejb-jar.xml#session_SBCompTrxManager"/>
+      <structure xmi:id="structure_SBCompTrxManager" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_SBCompTrxManager" activateAt="ONCE"/>
+      <localTransaction xmi:id="localtrx_SBCompTrxManager" resolver="Application"/>
+      <resourceRefExtensions xmi:id="resrefext_SBCompTrxManager" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_SBCompTrxManager"/>
+      </resourceRefExtensions>
+   </ejbExtensions>
+   <ejbExtensions xmi:id="ejbext_EBCMSTrxValue" xmi:type="ejbext:ContainerManagedEntityExtension">
+      <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                      href="META-INF/ejb-jar.xml#entity_EBCMSTrxValue"/>
+      <structure xmi:id="structure_EBCMSTrxValue" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_EBCMSTrxValue" activateAt="TRANSACTION" loadAt="TRANSACTION"/>
+      <localTransaction xmi:id="localtrx_EBCMSTrxValue" resolver="ContainerAtBoundary"/>
+      <resourceRefExtensions xmi:id="resrefext_EBCMSTrxValue" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCMSTrxValue"/>
+      </resourceRefExtensions>
+      <dataCache xmi:id="datacache_EBCMSTrxValue" lifetimeInCache="0" lifetimeInCacheUsage="OFF"/>
+   </ejbExtensions>
+   <ejbExtensions xmi:id="ejbext_EBTrxStateMatrix"
+                  xmi:type="ejbext:ContainerManagedEntityExtension">
+      <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                      href="META-INF/ejb-jar.xml#entity_EBTrxStateMatrix"/>
+      <structure xmi:id="structure_EBTrxStateMatrix" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_EBTrxStateMatrix" activateAt="TRANSACTION"
+                 loadAt="TRANSACTION"/>
+      <localTransaction xmi:id="localtrx_EBTrxStateMatrix" resolver="ContainerAtBoundary"/>
+      <resourceRefExtensions xmi:id="resrefext_EBTrxStateMatrix" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBTrxStateMatrix"/>
+      </resourceRefExtensions>
+      <dataCache xmi:id="datacache_EBTrxStateMatrix" lifetimeInCache="0"
+                 lifetimeInCacheUsage="OFF"/>
+   </ejbExtensions>
+   <ejbExtensions xmi:id="ejbext_EBTrxHistory" xmi:type="ejbext:ContainerManagedEntityExtension">
+      <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                      href="META-INF/ejb-jar.xml#entity_EBTrxHistory"/>
+      <structure xmi:id="structure_EBTrxHistory" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_EBTrxHistory" activateAt="TRANSACTION" loadAt="TRANSACTION"/>
+      <localTransaction xmi:id="localtrx_EBTrxHistory" resolver="ContainerAtBoundary"/>
+      <resourceRefExtensions xmi:id="resrefext_EBTrxHistory" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBTrxHistory"/>
+      </resourceRefExtensions>
+      <dataCache xmi:id="datacache_EBTrxHistory" lifetimeInCache="0" lifetimeInCacheUsage="OFF"/>
+   </ejbExtensions>
+   <appliedAccessIntents xmi:id="accessintents_ejb_Transaction"
+                         accessIntentName="wsPessimisticUpdate-NoCollision">
+      <name xsi:nil="true"/>
+      <description xsi:nil="true"/>
+      <methodElements xmi:id="methodelements_EBCMSTrxValue" name="*" type="Unspecified">
+         <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                         href="META-INF/ejb-jar.xml#entity_EBCMSTrxValue"/>
+      </methodElements>
+      <methodElements xmi:id="methodelements_EBTrxHistory" name="*" type="Unspecified">
+         <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                         href="META-INF/ejb-jar.xml#entity_EBTrxHistory"/>
+      </methodElements>
+      <methodElements xmi:id="methodelements_EBTrxStateMatrix" name="*" type="Unspecified">
+         <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                         href="META-INF/ejb-jar.xml#entity_EBTrxStateMatrix"/>
+      </methodElements>
+   </appliedAccessIntents>
+</ejbext:EJBJarExtension>

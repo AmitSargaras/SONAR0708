@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+	SELECT MODULE,
+  			PARTYID,
+  			PARTYNAME,
+ 			SEGMENTS,
+  			CHECKLISTID,
+  			CHECKLISTTYPE,
+ 		 	DOCID,
+  			DISCREPANCYID,
+  			LADCODE,
+  			ACTION,
+  			to_char(DATEDEFERRED) as DATEDEFERRED,
+  			to_char(PREVIOUSNEXTDUEDATE) as PREVIOUSNEXTDUEDATE,
+            to_char(NEXTDUEDATE) as NEXTDUEDATE,
+            CREDITAPPROVER,
+            REMARKS,
+            FILENAME,
+            to_char(DATEOFREQUEST) as DATEOFREQUEST,
+            to_char(DATEOFPROCESS) as DATEOFPROCESS,
+            STATUS,
+            FAILREASON
+			FROM CMS_DEFERRAL_UPLOAD
+		</query>
+		<whereClause>			
+			<param>
+				<name>fromDate</name>
+				<condition>  TRUNC(DATEOFREQUEST) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>MODULE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>PARTY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>PARTY NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SEGMENT</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Check List ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Check List Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Doc ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Discrepancy ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>LAD Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Action</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date Deferred</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Previous_ Next Due Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Next Due date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Credit Approver</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Remarks</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>CADPro file name(handoff filename)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Date of request</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Date of process</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Fail Reason</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Deferral Extension Interface Upload status</reportName>
+		</reportParamters>
+	</report>
+</reports>

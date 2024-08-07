@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+    <bean id="PropertyIdxTrx.ReadPrIdxOperation" class="com.integrosys.cms.app.propertyindex.trx.ReadPrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.ReadPrIdxIDOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.ReadPrIdxIDOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerCloseRejectedCreatePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerCloseRejectedPrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerCloseRejectedUpdatePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerCloseRejectedPrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+        <property name="operationName" value="CLOSE_REJECTED_UPDATE_PRIDX"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerCloseRejectedDeletePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerCloseRejectedPrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+        <property name="operationName" value="CLOSE_REJECTED_DELETE_PRIDX"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerEditRejectedCreatePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerEditRejectedCreatePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerEditRejectedUpdatePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerEditRejectedUpdatePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerEditRejectedDeletePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerEditRejectedDeletePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.CheckerApproveDeletePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.CheckerApproveDeletePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.CheckerRejectPrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.CheckerRejectPrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.CheckerApproveUpdatePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.CheckerApproveUpdatePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerUpdatePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerUpdatePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerDeletePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerDeletePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.CheckerApproveCreatePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.CheckerApproveCreatePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+    <bean id="PropertyIdxTrx.MakerCreatePrIdxOperation"
+          class="com.integrosys.cms.app.propertyindex.trx.MakerCreatePrIdxOperation">
+        <property name="propertyIdxBusManager" ref="propertyIdxBusManager"/>
+        <property name="stagingPropertyIdxBusManager" ref="stagingPropertyIdxBusManager"/>
+    </bean>
+
+    <bean id="prIdxReadController" class="com.integrosys.cms.app.propertyindex.trx.PrIdxReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadPrIdxOperation" value-ref="PropertyIdxTrx.ReadPrIdxOperation"/>
+                <entry key="ReadPrIdxIDOperation" value-ref="PropertyIdxTrx.ReadPrIdxIDOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="prIdxTrxController" class="com.integrosys.cms.app.propertyindex.trx.PrIdxTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="CheckerApproveCreatePrIdxOperation" value-ref="PropertyIdxTrx.CheckerApproveCreatePrIdxOperation"/>
+                <entry key="CheckerApproveDeletePrIdxOperation" value-ref="PropertyIdxTrx.CheckerApproveDeletePrIdxOperation"/>
+                <entry key="CheckerApproveUpdatePrIdxOperation" value-ref="PropertyIdxTrx.CheckerApproveUpdatePrIdxOperation"/>
+                <entry key="CheckerRejectPrIdxOperation" value-ref="PropertyIdxTrx.CheckerRejectPrIdxOperation"/>
+                <entry key="MakerCreatePrIdxOperation" value-ref="PropertyIdxTrx.MakerCreatePrIdxOperation"/>
+                <entry key="MakerDeletePrIdxOperation" value-ref="PropertyIdxTrx.MakerDeletePrIdxOperation"/>
+                <entry key="MakerEditRejectedCreatePrIdxOperation" value-ref="PropertyIdxTrx.MakerEditRejectedCreatePrIdxOperation"/>
+                <entry key="MakerEditRejectedDeletePrIdxOperation" value-ref="PropertyIdxTrx.MakerEditRejectedDeletePrIdxOperation"/>
+                <entry key="MakerEditRejectedUpdatePrIdxOperation" value-ref="PropertyIdxTrx.MakerEditRejectedUpdatePrIdxOperation"/>
+                <entry key="MakerUpdatePrIdxOperation" value-ref="PropertyIdxTrx.MakerUpdatePrIdxOperation"/>
+                <entry key="MakerCloseRejectedCreatePrIdxOperation" value-ref="PropertyIdxTrx.MakerCloseRejectedCreatePrIdxOperation"/>
+                <entry key="MakerCloseRejectedUpdatePrIdxOperation" value-ref="PropertyIdxTrx.MakerCloseRejectedUpdatePrIdxOperation"/>
+                <entry key="MakerCloseRejectedDeletePrIdxOperation" value-ref="PropertyIdxTrx.MakerCloseRejectedDeletePrIdxOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="prIdxTrxControllerFactory" class="com.integrosys.cms.app.propertyindex.trx.PrIdxTrxControllerFactory">
+        <property name="prIdxReadController" ref="prIdxReadController"/>
+        <property name="prIdxTrxController" ref="prIdxTrxController"/>
+    </bean>
+</beans>

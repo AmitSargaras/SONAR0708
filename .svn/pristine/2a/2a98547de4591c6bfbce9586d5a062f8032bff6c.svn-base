@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.LimitProfile" table="SCI_LSP_LMT_PROFILE" lazy="false">
+	<id name="limitProfileId" column="CMS_LSP_LMT_PROFILE_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">LIMIT_PROFILE_SEQ</param>
+		</generator>
+	</id>
+    <property name="CIFId" column="LLP_LE_ID" />
+    <property name="AASource" column="SOURCE_ID" />
+    <property name="CIFSource" column="CIF_SOURCE_ID" />
+	<property name="subProfileId" column="LLP_LSP_ID" type="long" />
+    <property name="cmsSubProfileId" column="CMS_CUSTOMER_ID" type="long" />
+    <property name="LOSAANumber" column="LOS_BCA_REF_NUM" />
+	<property name="hostAANumber" column="LLP_BCA_REF_NUM" />
+    <!-- <property name="oldLOSAANumber" column="LSP_LMT_PROFILE_SRC_ID_OLD" /> -->
+
+    <property name="JDOAAApproveDate" column="LLP_BCA_REF_APPR_DATE" type="timestamp" />
+	<component name="originatingLocation" class="com.integrosys.cms.host.eai.OriginatingBookingLocation">
+		<property name="originatingLocationCountry" column="CMS_ORIG_COUNTRY" />
+		<property name="originatingLocationOrganisation" column="CMS_ORIG_ORGANISATION" />
+	</component>
+    <property name="JDOAnnualReviewDate" column="LLP_NEXT_ANNL_RVW_DATE" type="timestamp" />
+    <property name="JDOExtensionDate" column="LLP_EXTD_NEXT_RVW_DATE" type="timestamp" />
+    <property name="JDOSolicitorInstructionDate" column="LI_GENERATION_DATE" type="timestamp" />
+    <property name="AAStatus" column="CMS_BCA_STATUS" />
+    <property name="JDOAACreateDate" column="CMS_BCA_CREATE_DATE" type="timestamp" />
+    <property name="LORequired" column="CMS_BFL_REQUIRED_IND"  />
+    <property name="AAType" column="APPLICATION_TYPE" />
+    <property name="AALawType" column="APPLICATION_LAW_TYPE" />
+    <property name="JDOExtensionDateLOAcceptance" column="CMS_EXTENDED_BFL_DATE" type="timestamp" />
+    <property name="limitProfileType" column="LMT_PROFILE_TYPE" />
+    <property name="isMigratedIndicator" column="IS_MIGRATED_IND" />
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+  </class>
+  <class entity-name="actualLimitGeneral" name="com.integrosys.cms.host.eai.limit.bus.LimitGeneral" table="SCI_LSP_APPR_LMTS" lazy="false"  >
+	<id name="cmsId"  column="CMS_LSP_APPR_LMTS_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">LIMIT_SEQ</param>
+		</generator>
+	</id>
+	<property name="sourceId" column="SOURCE_ID" />
+    <property name="cmsLimitProfileId" column="CMS_LIMIT_PROFILE_ID" type="long" />
+    <property name="CIFId" column="LMT_LE_ID" />
+    <property name="subProfileId" type="long" >
+    	<column name="LMT_LSP_ID" default="0" />
+    </property>
+    
+    <component name="limitType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LMT_TYPE_NUM" />
+    	<property name="standardCodeValue" column="LMT_TYPE_VALUE" />
+    </component>
+    
+    <property name="LOSAANumber" column="LOS_BCA_REF_NUM" />
+    <property name="hostAANumber" column="LMT_BCA_REF_NUM" />
+    <property name="limitId" column="LMT_ID" />
+	<property name="LOSLimitId" column="LOS_LMT_ID" />
+	<property name="acfNo" column="ACF_NO" />
+
+    <property name="LOSOuterLimitId" column="CMS_OUTER_LMT_REF" />
+    <property name="CMSOuterLimitId" column="LMT_OUTER_LMT_ID" type="long"/>
+	<component name="originatingBookingLocation" class="com.integrosys.cms.host.eai.OriginatingBookingLocation">
+		<property name="originatingLocationCountry" column="CMS_BKG_COUNTRY" />
+		<property name="originatingLocationOrganisation" column="CMS_BKG_ORGANISATION" />
+	</component>
+    <component name="productType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LMT_PRD_TYPE_NUM" />
+    	<property name="standardCodeValue" column="LMT_PRD_TYPE_VALUE" />
+    </component>
+    <component name="facilityType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LMT_FAC_TYPE_NUM" />
+    	<property name="standardCodeValue" column="LMT_FAC_TYPE_VALUE" />
+    	<property name="standardCodeValue" column="LMT_FAC_CODE" />
+    </component>
+    
+    <property name="limitCurrency" column="LMT_CRRNCY_ISO_CODE" />
+    <property name="limitTenor" type="long" >
+    	<column name="LMT_TENOR" default="0"/>
+    </property>
+    <component name="limitTenorBasis" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LMT_TENOR_BASIS_NUM" />
+    	<property name="standardCodeValue" column="LMT_TENOR_BASIS_VALUE" />
+    </component>
+    <property name="interestRate" column="INTEREST_RATE" type="double" />
+    <property name="approvedLimit" column="LMT_AMT" type="double" />
+    <property name="drawingLimit" type="double">
+    	<column name="CMS_DRAWING_LIMIT" default="0"/>
+    </property>
+	<property name="status" column="CMS_LIMIT_STATUS" />
+	<property name="accountType" column="ACCOUNT_TYPE" />
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.SystemXReference" table="SCI_LSP_SYS_XREF">
+	<id name="cmsId" column="CMS_LSP_SYS_XREF_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CUSTOMER_X_REF_SEQ</param>
+		</generator>
+	</id>
+    <property name="CIFId" column="LSX_LE_ID" />
+    <property name="subProfileId" column="LSX_LSP_ID" type="long" />
+    <property name="cmsSubProfileId" column="CMS_LE_SUB_PROFILE_ID" type="long" />
+    <property name="hostAANumber" column="LSX_BCA_REF_NUM" />
+	<property name="accountNumber" column="LSX_EXT_SYS_ACCT_NUM" />
+	<property name="accountType" column="LSX_EXT_SYS_ACCT_TYPE" />
+	<property name="accountSequence" column="LSX_EXT_SYS_ACCT_SEQ" />
+
+	<component name="facilityType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="" /> -->
+    	<property name="standardCodeValue" column="LSX_FAC_CODE" />
+    </component>
+
+	<property name="facilitySequenceNumber" column="LSX_FAC_SEQ" />
+	<property name="accountDelinquentIndicator" column="ACCT_DELQ_IND	" />
+	<property name="accountStatus" column="ACCT_STATUS	" />
+	<property name="firstDisbursementDate" column="FIRST_DISBURSEMENT_DATE" type="timestamp" />
+	<property name="finalDisbursementDate" column="FINAL_DISBURSEMENT_DATE" type="timestamp" />
+ 
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+    
+	<set name="limitsSysXRefMapSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+		<key column="CMS_LSP_SYS_XREF_ID" />
+		<one-to-many class="com.integrosys.cms.host.eai.limit.bus.LimitsSysXRefMap" />
+	</set>    
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.LimitsSysXRefMap" table="SCI_LSP_LMTS_XREF_MAP">
+	<id name="cmsId" column="CMS_LSP_LMTS_XREF_MAP_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">LIMIT_X_REF_SEQ</param>
+		</generator>
+	</id>
+    <property name="cmsLimitId" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+    <property name="cifId" column="LXM_LE_ID" />
+    <property name="subProfileId" column="LXM_LSP_ID" type="long" />
+    <property name="cmsSystemXRefId" column="CMS_LSP_SYS_XREF_ID" type="long" />
+    <property name="status" column="CMS_STATUS" />
+    <property name="referenceId" column="CMS_SID" type="long" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.LimitsApprovedSecurityMap"  table="CMS_LIMIT_SECURITY_MAP" >
+	<id name="cmsId" column="CHARGE_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">COL_LIMIT_MAP_SEQ</param>
+		</generator>
+	</id>
+	<property name="source" column="SOURCE_ID" />
+    <property name="cmsLimitId" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+    <property name="cmsSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="cmsRefId" column="SCI_LAS_SYS_GEN_ID" type="long" />
+    <property name="CIFId" column="SCI_LAS_LE_ID" />
+    <property name="subProfileId" column="SCI_LAS_LSP_ID" type="long" />
+    <property name="AANumber" column="SCI_LAS_BCA_REF_NUM" />
+    <property name="limitId" column="SCI_LAS_LMT_ID" />
+    <property name="securityId" column="SCI_LAS_SEC_ID" />
+    <property name="customerCategory" column="CUSTOMER_CATEGORY" />
+    <property name="limitProfileId" column="CMS_LSP_LMT_PROFILE_ID" type="long" />    
+    <property name="amtPledgeCcy" column="PLEDGE_AMOUNT_CURRENCY" />
+    <property name="amtPledge" column="PLEDGE_AMOUNT" type="double"  />
+    <property name="percentPledge" column="PLEDGE_AMOUNT_PERCENTAGE" type="double"  />
+	<property name="amtDraw" column="DRAW_AMOUNT" type="double" />
+	<property name="amtDrawCcy" column="DRAW_AMOUNT_CURRENCY" />
+	<property name="percentDraw" column="DRAW_AMOUNT_PERCENTAGE" type="double" />
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.JointBorrower" table="SCI_LSP_JOINT_BORROWER">
+	<id name="cmsId" column="CMS_LSP_JOINT_BORROWER_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">SCI_LSP_JOINT_BORROWER_SEQ</param>
+		</generator>
+	</id>
+    <property name="cmsLimitProfileId" column="CMS_LMP_LIMIT_PROFILE_ID" type="long" />
+    <property name="CIFId" column="LJB_LE_ID" />
+    <property name="cifSource" column="SOURCE_ID" />
+    <property name="subProfileId" column="LJB_LSP_ID" />
+    <property name="cmsSubProfileId" column="CMS_LE_SUB_PROFILE_ID" type="long" />
+    <property name="AANumber" column="LJB_BCA_REF_NUM" />
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+  </class>
+
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.ChargeDetail" table="CMS_CHARGE_DETAIL">
+	<id name="chargeDetailId" column="CHARGE_DETAIL_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">COL_LIMIT_CHARGE_SEQ</param>
+		</generator>
+	</id>
+	
+    <component name="chargeNature" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="CHARGE_NATURE" />
+    </component>
+
+    <property name="chargeAmount" column="CHARGE_AMOUNT" type="double" />
+    <property name="chargeCurrency" column="CHARGE_CURRENCY_CODE" />
+    <property name="priorChargeCurrency" column="PRIOR_CHARGE_CURRENCY" />
+    <property name="JDOLegallyChargedDate" column="LEGAL_CHARGE_DATE" type="timestamp" />
+    <property name="priorChargeAmount" column="PRIOR_CHARGE_AMOUNT" type="double" />
+    <property name="securityRanking" column="SECURITY_RANK" />
+    <property name="priorChargeChargee" column="PRIOR_CHARGEE" />
+    <property name="chargeType" column="CHARGE_TYPE"  />
+    <property name="cmsSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="JDOConfirmChargedDate" column="CONFIRM_CHARGE_DATE" type="timestamp" />
+    <property name="cmsRefId" column="CMS_REF_ID" type="long" />
+    <property name="priorChargeType" column="PRIOR_CHARGE_TYPE" />
+    <property name="caveatWaivedInd" column="CAVEAT_WAIVED_IND"  />
+    <property name="caveatRefNo" column="CAVEAT_REF_NO" />
+    <property name="JDOExpiryDate" column="EXPIRY_DATE" type="timestamp" />
+    <property name="presentationNo" column="PRESENTATION_NO" />
+    <property name="JDOPresentationDate" column="PRESENTATION_DATE" type="timestamp" />
+    <property name="JDODateLodged" column="LODGED_DATE" type="timestamp" />
+    <property name="partyCharge" column="PARTY_CHARGE" />
+    <property name="solicitorName" column="SOLICITOR_NAME" />
+    <property name="chargePendingRedemption" column="CHARGE_PENDING_REDEMPTION" />
+    <property name="status" column="STATUS" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.LimitChargeMap" table="CMS_LIMIT_CHARGE_MAP">
+	<id name="chargeMapID" column="LIMIT_CHARGE_MAP_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">LIMIT_CHARGE_MAP_SEQ</param>
+		</generator>
+	</id>
+
+    <property name="limitID" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+    <property name="coborrowerLimitID" type="long">
+    	<column name="CMS_LSP_CO_BORROW_LMT_ID" default="0"/> 
+    </property>
+    <property name="chargeID" column="CHARGE_ID" type="long" />
+    <property name="chargeDetailID" column="CHARGE_DETAIL_ID" type="long" />
+    <property name="collateralID" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="status" column="STATUS" />
+    <property name="customerCategory" column="CUSTOMER_CATEGORY" />
+    <property name="limitProfileId" type="long">
+    	<column name="CMS_LSP_LMT_PROFILE_ID" default="0"/> 
+    </property>
+  </class>
+  
+  <class name="com.integrosys.cms.host.eai.limit.bus.StagingLimitChargeMap" table="CMS_STAGE_LIMIT_CHARGE_MAP" polymorphism="explicit">
+	<id name="chargeMapID" column="LIMIT_CHARGE_MAP_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">LIMIT_CHARGE_MAP_SEQ</param>
+		</generator>
+	</id>
+
+    <property name="limitID" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+    <property name="coborrowerLimitID" type="long">
+    	<column name="CMS_LSP_CO_BORROW_LMT_ID" default="0"/> 
+    </property>
+    <property name="chargeID" column="CHARGE_ID" type="long" />
+    <property name="chargeDetailID" column="CHARGE_DETAIL_ID" type="long" />
+    <property name="collateralID" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="status" column="STATUS" />
+    <property name="customerCategory" column="CUSTOMER_CATEGORY" />
+    <property name="limitProfileId" type="long">
+    	<column name="CMS_LSP_LMT_PROFILE_ID" default="0"/> 
+    </property>
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.StagingLimitProfile" table="STAGE_LIMIT_PROFILE" polymorphism="explicit" >
+	<id name="limitProfileId" column="CMS_LSP_LMT_PROFILE_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">LIMIT_PROFILE_SEQ</param>
+		</generator>
+	</id>
+
+    <property name="CIFId" column="LLP_LE_ID" />
+    <property name="AASource" column="SOURCE_ID" />
+    <property name="CIFSource" column="CIF_SOURCE_ID" />
+    <property name="subProfileId" column="LLP_LSP_ID" type="long" />
+    <property name="LOSAANumber" column="LOS_BCA_REF_NUM" />
+	<property name="hostAANumber" column="LLP_BCA_REF_NUM" />
+    <!-- <property name="oldLOSAANumber" column="LSP_LMT_PROFILE_SRC_ID_OLD" /> -->
+    <property name="cmsSubProfileId" column="CMS_CUSTOMER_ID" type="long" />
+    <!--  <property name="jointBorrowerIndicator" column="CMS_BCA_JOINT_IND"  /> -->	
+    <property name="JDOAAApproveDate" column="LLP_BCA_REF_APPR_DATE" type="timestamp" />
+
+	<component name="originatingLocation" class="com.integrosys.cms.host.eai.OriginatingBookingLocation">
+		<property name="originatingLocationCountry" column="CMS_ORIG_COUNTRY" />
+		<property name="originatingLocationOrganisation" column="CMS_ORIG_ORGANISATION" />
+	</component>
+
+    <property name="JDOAnnualReviewDate" column="LLP_NEXT_ANNL_RVW_DATE" type="timestamp" />
+    <property name="JDOExtensionDate" column="LLP_EXTD_NEXT_RVW_DATE" type="timestamp" />
+    <property name="JDOSolicitorInstructionDate" column="LI_GENERATION_DATE" type="timestamp" />
+    <property name="AAStatus" column="CMS_BCA_STATUS" />
+    <property name="JDOAACreateDate" column="CMS_BCA_CREATE_DATE" type="timestamp" />
+    <property name="LORequired" column="CMS_BFL_REQUIRED_IND"  />
+    <property name="AAType" column="APPLICATION_TYPE" />
+    <property name="JDOExtensionDateLOAcceptance" column="CMS_EXTENDED_BFL_DATE" type="timestamp" />
+    <property name="limitProfileType" column="LMT_PROFILE_TYPE" />
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+  </class>
+
+  <class entity-name="stageLimitGeneral" name="com.integrosys.cms.host.eai.limit.bus.LimitGeneral" table="STAGE_LIMIT"  polymorphism="explicit">
+	<id name="cmsId" column="CMS_LSP_APPR_LMTS_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">LIMIT_SEQ</param>
+		</generator>
+	</id>
+	<property name="sourceId" column="SOURCE_ID" />
+    <property name="cmsLimitProfileId" column="CMS_LIMIT_PROFILE_ID" type="long" />
+    <property name="CIFId" column="LMT_LE_ID" />
+    <property name="subProfileId" type="long" >
+    	<column name="LMT_LSP_ID" default="0" />
+    </property>
+    
+    <component name="limitType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LMT_TYPE_NUM" />
+    	<property name="standardCodeValue" column="LMT_TYPE_VALUE" />
+    </component>
+    
+    <property name="LOSAANumber" column="LOS_BCA_REF_NUM" />
+	<property name="hostAANumber" column="LMT_BCA_REF_NUM" />
+    <property name="limitId" column="LMT_ID" />
+	<property name="LOSLimitId" column="LOS_LMT_ID" />
+	<property name="acfNo" column="ACF_NO" />
+
+    <property name="LOSOuterLimitId" column="CMS_OUTER_LMT_REF" />
+    <property name="CMSOuterLimitId" column="LMT_OUTER_LMT_ID" type="long"/>
+	<component name="originatingBookingLocation" class="com.integrosys.cms.host.eai.OriginatingBookingLocation">
+		<property name="originatingLocationCountry" column="CMS_BKG_COUNTRY" />
+		<property name="originatingLocationOrganisation" column="CMS_BKG_ORGANISATION" />
+	</component>
+    <component name="productType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LMT_PRD_TYPE_NUM" />
+    	<property name="standardCodeValue" column="LMT_PRD_TYPE_VALUE" />
+    </component>
+    <component name="facilityType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LMT_FAC_TYPE_NUM" />
+    	<property name="standardCodeValue" column="LMT_FAC_TYPE_VALUE" />
+    	<property name="standardCodeValue" column="LMT_FAC_CODE" />
+    </component>
+    <property name="limitCurrency" column="LMT_CRRNCY_ISO_CODE" />
+    <property name="limitTenor" type="long" >
+    	<column name="LMT_TENOR" default="0"/>
+    </property>
+    <component name="limitTenorBasis" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LMT_TENOR_BASIS_NUM" />
+    	<property name="standardCodeValue" column="LMT_TENOR_BASIS_VALUE" />
+    </component>
+    <property name="interestRate" column="INTEREST_RATE" type="double" />
+    <property name="approvedLimit" column="LMT_AMT" type="double" />
+    <property name="drawingLimit" type="double">
+    	<column name="CMS_DRAWING_LIMIT" default="0"/>
+    </property>
+	<property name="status" column="CMS_LIMIT_STATUS" />
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.StagingLimitsSysXRefMap"   table="STAGE_LIMIT_XREF">
+	<id name="cmsId" column="CMS_LSP_LMTS_XREF_MAP_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">LIMIT_X_REF_SEQ</param>
+		</generator>
+	</id>
+    <property name="cmsLimitId" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+    <property name="cifId" column="LXM_LE_ID" />
+    <property name="subProfileId" column="LXM_LSP_ID" type="long" />
+    <property name="cmsSystemXRefId" column="CMS_LSP_SYS_XREF_ID" type="long" />
+    <property name="status" column="CMS_STATUS" />
+    <property name="referenceId" column="CMS_SID" type="long" />
+  </class>
+
+  <class  name="com.integrosys.cms.host.eai.limit.bus.StagingLimitsApprovedSecurityMap"  table="CMS_STAGE_LIMIT_SECURITY_MAP"  polymorphism="explicit">
+	<id name="cmsId" column="CHARGE_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">COL_LIMIT_MAP_SEQ</param>
+		</generator>
+	</id>
+	<property name="source" column="SOURCE_ID" />
+    <property name="cmsLimitId" column="CMS_LSP_APPR_LMTS_ID" type="long" />
+    <property name="cmsSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="cmsRefId" column="SCI_LAS_SYS_GEN_ID" type="long" />
+    <property name="CIFId" column="SCI_LAS_LE_ID" />
+    <property name="subProfileId" type="long">
+    	<column name="SCI_LAS_LSP_ID" default="0" /> 
+    </property>
+    <property name="AANumber" column="SCI_LAS_BCA_REF_NUM" />
+    <property name="limitId" column="SCI_LAS_LMT_ID" />
+    <property name="securityId" column="SCI_LAS_SEC_ID" />
+    <property name="customerCategory" column="CUSTOMER_CATEGORY" />
+    <property name="limitProfileId" column="CMS_LSP_LMT_PROFILE_ID" type="long" />
+    <property name="amtPledgeCcy" column="PLEDGE_AMOUNT_CURRENCY" />
+    <property name="amtPledge" column="PLEDGE_AMOUNT" type="double"  />
+    <property name="percentPledge" column="PLEDGE_AMOUNT_PERCENTAGE" type="double"  />
+	<property name="amtDraw" column="DRAW_AMOUNT" type="double" />
+	<property name="amtDrawCcy" column="DRAW_AMOUNT_CURRENCY" />
+	<property name="percentDraw" column="DRAW_AMOUNT_PERCENTAGE" type="double" />
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.StagingChargeDetail" table="CMS_STAGE_CHARGE_DETAIL" polymorphism="explicit">
+	<id name="chargeDetailId" column="CHARGE_DETAIL_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">COL_LIMIT_CHARGE_SEQ</param>
+		</generator>
+	</id>
+	
+    <component name="chargeNature" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="CHARGE_NATURE" />
+    </component>
+
+    <property name="chargeAmount" column="CHARGE_AMOUNT" type="double" />
+    <property name="chargeCurrency" column="CHARGE_CURRENCY_CODE" />
+    <property name="priorChargeCurrency" column="PRIOR_CHARGE_CURRENCY" />
+    <property name="JDOLegallyChargedDate" column="LEGAL_CHARGE_DATE" type="timestamp" />
+    <property name="priorChargeAmount" column="PRIOR_CHARGE_AMOUNT" type="double" />
+    <property name="securityRanking" column="SECURITY_RANK" />
+    <property name="priorChargeChargee" column="PRIOR_CHARGEE" />
+    <property name="chargeType" column="CHARGE_TYPE"  />
+    <property name="cmsSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="JDOConfirmChargedDate" column="CONFIRM_CHARGE_DATE" type="timestamp" />
+    <property name="cmsRefId" column="CMS_REF_ID" type="long" />
+    <property name="priorChargeType" column="PRIOR_CHARGE_TYPE" />
+    <property name="caveatWaivedInd" column="CAVEAT_WAIVED_IND"  />
+    <property name="caveatRefNo" column="CAVEAT_REF_NO" />
+    <property name="JDOExpiryDate" column="EXPIRY_DATE" type="timestamp" />
+    <property name="presentationNo" column="PRESENTATION_NO" />
+    <property name="JDOPresentationDate" column="PRESENTATION_DATE" type="timestamp" />
+    <property name="JDODateLodged" column="LODGED_DATE" type="timestamp" />
+    <property name="partyCharge" column="PARTY_CHARGE" />
+    <property name="solicitorName" column="SOLICITOR_NAME" />
+    <property name="chargePendingRedemption" column="CHARGE_PENDING_REDEMPTION" />
+    <property name="status" column="STATUS" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.limit.bus.CMSTransaction" table="TRANSACTION">
+	<id name="transactionID" column="TRANSACTION_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">TRX_SEQ</param>
+		</generator>
+	</id>
+
+    <property name="referenceID" type="long" >
+    	<column name="REFERENCE_ID" default="0"/>
+    </property>
+    <property name="stageReferenceID" column="STAGING_REFERENCE_ID" type="long" />
+    <property name="transactionType" column="TRANSACTION_TYPE" />
+    <property name="status" column="STATUS" />
+  </class>
+  
+  <class   name="com.integrosys.cms.host.eai.limit.bus.LimitCreditGrade" table="SCI_LMT_CREDIT_GRADE">
+	<id name="cmsId" type="long" column="CMS_LMT_CREDIT_GRADE_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CREDIT_GRADE_SEQ</param>
+		</generator>
+	</id>
+    <!-- <property name="CIFId" column="LCG_LE_ID" />  -->
+    <property name="LOSAANumber" column="LOS_AA_NUMBER" />
+    <property name="creditGradeId" column="LCG_ID" type="long" />
+    <component name="creditGradeType" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LCG_CRDT_GRADE_TYPE_NUM" />
+    	<property name="standardCodeValue" column="LCG_CRDT_GRADE_TYPE_VALUE" />
+    </component>
+    
+    <component name="creditGradeCode" class="com.integrosys.cms.host.eai.StandardCode">
+    	<property name="standardCodeNumber" column="LCG_CRDT_GRADE_CODE_NUM" />
+    	<property name="standardCodeValue" column="LCG_CRDT_GRADE_CODE_VALUE" />
+    </component>
+
+    <property name="JDOCreditGradeEffectiveDate" column="LCG_CRDT_GRADE_START_DATE" type="timestamp" />
+    <property name="creditGradeReasonForChange" column="LCG_CRDT_GRADE_DESC" />
+    <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"  />
+    <property name="changeIndicator" column="CHANGE_IND"  />
+    <property name="JDOUpdateDate" column="LAST_UPDATE_DATE" type="timestamp" />
+  </class>
+
+	<class entity-name="EAICoBorrower" name="com.integrosys.cms.host.eai.limit.bus.CoBorrower" table="SCI_LSP_CO_BORROW_LMT" lazy="false">
+		<id name="limitID" column="CMS_LSP_CO_BORROW_LMT_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">COBORROWER_LIMIT_SEQ</param>
+			</generator>
+		</id>
+		<property name="limitRef" column="LCL_ID" />
+		<property name="outerLimitID" column="CMS_LIMIT_ID" type="long" insert="false" update="false" />
+		<property name="outerLimitRef" column="CMS_OUTER_LIMIT_REF" />
+		<property name="CIFId" column="LCL_COBO_LE_ID" />
+		<property name="status" column="CMS_LIMIT_STATUS" />
+	</class>
+
+</hibernate-mapping>

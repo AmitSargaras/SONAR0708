@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+	SELECT distinct
+
+				os.CMS_LE_OTHER_SYS_CUST_ID,
+			  sp.lsp_short_name      AS party_name,
+				sp.lsp_le_id      AS party_id,
+				os.CMS_LE_SYSTEM_NAME,
+				ce.ENTRY_NAME,
+				cc_party_entity.entry_name AS partyEntity,
+				rm.RM_MGR_NAME ,
+               cc_industry.ENTRY_code AS industryId,	
+				<!-- sp.BANKING_METHOD, -->
+				( SELECT get_banking_method(SP.LSP_LE_ID) AS BANKING_METHOD
+     			FROM   CMS_BANKING_METHOD_CUST WHERE ROWNUM = 1)  As BANKING_METHOD,
+				sp.SUB_LINE,
+				sp.STATUS,
+				lp.CMS_APPR_OFFICER_GRADE,
+				cc_industry.ENTRY_NAME As INDUSTRYNAME,
+				sp.RBI_IND_CODE||'-'||cc_rbi.entry_name AS rbiIndustryCode,
+				pg.PARTY_GROUP_NAME,
+                 ra.LRA_ADDR_LINE_1||' '||ra.LRA_ADDR_LINE_2||' '||ra.LRA_ADDR_LINE_3 as Address,
+				cc.CITY_NAME,
+				cs.STATE_NAME,
+				lc.CUSTOMER_RAM_ID,
+				to_char(lp.RAM_RATING_FINALIZATION_DATE,'DD-Mon-YYYY') as RAM_RATING_FINALIZATION_DATE,
+                reg.region_name                   AS Region,
+                sp.LEI_CODE,
+  				to_char(sp.LEI_EXPIRY_DATE,'DD-Mon-YYYY') as LEI_EXPIRY_DATE
+			    FROM 
+            	SCI_LE_SUB_PROFILE sp,
+				SCI_LE_REG_ADDR ra ,
+				SCI_LSP_LMT_PROFILE
+				lp,SCI_LE_CRI lc ,
+				SCI_LE_OTHER_SYSTEM os ,
+			
+				COMMON_CODE_CATEGORY_ENTRY ce,
+				CMS_RELATIONSHIP_MGR rm,
+				CMS_PARTY_GROUP pg,
+				CMS_CITY cc,
+				CMS_STATE cs,
+                CMS_REGION reg,
+				COMMON_CODE_CATEGORY_ENTRY ci,
+                common_code_category_entry cc_industry,
+				common_code_category_entry cc_rbi,
+                common_code_category_entry cc_party_entity
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				     (sp.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID
+				AND ra.LRA_TYPE_VALUE = 'CORPORATE')
+				AND sp.LSP_LE_ID = lp.LLP_LE_ID 
+				AND sp.CMS_LE_MAIN_PROFILE_ID = lc.CMS_LE_MAIN_PROFILE_ID(+)
+				AND sp.CMS_LE_MAIN_PROFILE_ID = os.CMS_LE_MAIN_PROFILE_ID
+	            AND sp.ENTITY = cc_party_entity.entry_code
+				AND sp.LSP_SGMNT_CODE_VALUE=ce.ENTRY_CODE
+                AND sp.IND_NM =cc_industry.entry_code
+				AND sp.RBI_IND_CODE = cc_rbi.entry_code 
+				AND rm.ID(+) = sp.RELATION_MGR
+				AND pg.ID(+) = sp.PARTY_GRP_NM
+				AND cc.ID(+) = ra.LRA_CITY_TEXT
+				AND cs.ID(+) = ra.LRA_STATE
+				AND sp.IND_NM =ci.ENTRY_CODE
+                AND ra.lra_region = reg.id
+                AND cc_industry.category_code = 'HDFC_INDUSTRY'
+				AND cc_rbi.category_code = 'HDFC_RBI_CODE'
+                AND cc_party_entity.category_code = 'Entity'
+				AND sp.status                 !=   'INACTIVE'
+				AND ce.category_code     = 'HDFC_SEGMENT'
+			</mandatoryClause>
+			<param>
+				<name>industry</name>
+				<condition> and sp.IND_NM = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> AND sp.LMP_SGMNT_CODE_VALUE = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sp.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>System</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Entity</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Industry Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Bank Method</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Sub line Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Close Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Risk Graded</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Industry Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Industry Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Group Description</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party address</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>State Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM Rating Finalization Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>LEI Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LEI Expiry Date</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Master Data for look up with Industry</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_CommonCodeType">
+   <display-name>CommonCodeType</display-name>
+   <enterprise-beans>
+      <session id="session_SBCommonCodeTypeProxyManager">
+         <ejb-name>SBCommonCodeTypeProxyManager</ejb-name>
+         <home>com.integrosys.cms.app.commoncode.proxy.SBCommonCodeTypeProxyManagerHome</home>
+         <remote>com.integrosys.cms.app.commoncode.proxy.SBCommonCodeTypeProxyManager</remote>
+         <ejb-class>com.integrosys.cms.app.commoncode.proxy.SBCommonCodeTypeProxyManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCommonCodeTypeProxyManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCommonCodeTypeBusManager">
+         <ejb-name>SBCommonCodeTypeBusManager</ejb-name>
+         <home>com.integrosys.cms.app.commoncode.bus.SBCommonCodeTypeBusManagerHome</home>
+         <remote>com.integrosys.cms.app.commoncode.bus.SBCommonCodeTypeBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.commoncode.bus.SBCommonCodeTypeBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCommonCodeTypeBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBStagingCommonCodeTypeBusManager">
+         <ejb-name>SBStagingCommonCodeTypeBusManager</ejb-name>
+         <home>com.integrosys.cms.app.commoncode.bus.SBCommonCodeTypeBusManagerHome</home>
+         <remote>com.integrosys.cms.app.commoncode.bus.SBCommonCodeTypeBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.commoncode.bus.SBStagingCommonCodeTypeBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBStagingCommonCodeTypeBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBCommonCodeType">
+         <ejb-name>EBCommonCodeType</ejb-name>
+         <home>com.integrosys.cms.app.commoncode.bus.EBCommonCodeTypeHome</home>
+         <remote>com.integrosys.cms.app.commoncode.bus.EBCommonCodeType</remote>
+         <ejb-class>com.integrosys.cms.app.commoncode.bus.EBCommonCodeTypeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCommonCodeType</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCommonCodeType_cMPCommonCodeTypeId">
+            <field-name>cMPCommonCodeTypeId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonCodeType_cMPCommonCodeTypeCode">
+            <field-name>cMPCommonCodeTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonCodeType_cMPCommonCodeTypeName">
+            <field-name>cMPCommonCodeTypeName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonCodeType_cMPCommonCodeType">
+            <field-name>cMPCommonCodeType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonCodeType_cMPActiveStatus">
+            <field-name>cMPActiveStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonCodeType_cMPVersionTime">
+            <field-name>cMPVersionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonCodeType_cMPStatus">
+            <field-name>cMPStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCommonCodeType_refCategoryCode">
+            <field-name>refCategoryCode</field-name>
+         </cmp-field>
+         <primkey-field>cMPCommonCodeTypeId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCommonCodeType">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCategoryListByType</method-name>
+               <method-params>
+                  <method-param>int</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBCommonCodeType o WHERE o.cMPCommonCodeType = ?1]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByCategoryCode</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBCommonCodeType o WHERE o.cMPCommonCodeTypeCode = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingCommonCodeType">
+         <ejb-name>EBStagingCommonCodeType</ejb-name>
+         <home>com.integrosys.cms.app.commoncode.bus.EBCommonCodeTypeHome</home>
+         <remote>com.integrosys.cms.app.commoncode.bus.EBCommonCodeType</remote>
+         <ejb-class>com.integrosys.cms.app.commoncode.bus.EBStgCommonCodeTypeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingCommonCodeType</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingCommonCodeType_cMPCommonCodeTypeId">
+            <field-name>cMPCommonCodeTypeId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCommonCodeType_cMPCommonCodeTypeCode">
+            <field-name>cMPCommonCodeTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCommonCodeType_cMPCommonCodeTypeName">
+            <field-name>cMPCommonCodeTypeName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCommonCodeType_cMPCommonCodeType">
+            <field-name>cMPCommonCodeType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCommonCodeType_cMPActiveStatus">
+            <field-name>cMPActiveStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCommonCodeType_cMPVersionTime">
+            <field-name>cMPVersionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCommonCodeType_cMPStatus">
+            <field-name>cMPStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingCommonCodeType_refCategoryCode">
+            <field-name>refCategoryCode</field-name>
+         </cmp-field>
+         <primkey-field>cMPCommonCodeTypeId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBStagingCommonCodeType">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCategoryListByType</method-name>
+               <method-params>
+                  <method-param>int</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingCommonCodeType o WHERE o.cMPCommonCodeType = ?1]]></ejb-ql>
+         </query>
+         <query>
+            <query-method>
+               <method-name>findByCategoryCode</method-name>
+               <method-params>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingCommonCodeType o WHERE o.cMPCommonCodeTypeCode = ?1]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBCommonCodeTypeProxyManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCommonCodeTypeBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBStagingCommonCodeTypeBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCommonCodeType</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingCommonCodeType</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

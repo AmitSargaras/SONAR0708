@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="matchRecurrentMethodTxInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="txManager" />
+		<property name="transactionAttributeSource">
+			<bean
+				class="org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource">
+				<property name="nameMap">
+					<map>
+						<entry key="checkerApproveCheckList*"  value="PROPAGATION_REQUIRED" />
+						<entry key="createDueDateEntries*"  value="PROPAGATION_REQUIRED" />
+						<entry key="makerCreateCheckListWithoutApproval*"  value="PROPAGATION_REQUIRED" />
+						<entry key="makerUpdateCheckListWithoutApproval*"  value="PROPAGATION_REQUIRED" />
+					</map>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="recurrentTxProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="interceptorNames">
+			<list>
+				<idref bean="matchRecurrentMethodTxInterceptor" />
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<idref bean="recurrentProxy" />
+			</list>
+		</property>
+	</bean>
+</beans>

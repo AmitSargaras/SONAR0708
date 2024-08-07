@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?><ejb-jar id="ejb_Authentication">
+   <display-name>Authentication</display-name>
+   <enterprise-beans>
+      <session id="session_SBPersistentBroker">
+         <ejb-name>SBPersistentBroker</ejb-name>
+         <home>com.integrosys.component.login.app.SBPersistentBrokerHome</home>
+         <remote>com.integrosys.component.login.app.SBPersistentBroker</remote>
+         <ejb-class>com.integrosys.component.login.app.SBPersistentBrokerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBPersistentBroker">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBAuthenticationManager">
+         <ejb-name>SBAuthenticationManager</ejb-name>
+         <home>com.integrosys.base.businfra.login.SBAuthenticationManagerHome</home>
+         <remote>com.integrosys.base.businfra.login.SBAuthenticationManager</remote>
+         <ejb-class>com.integrosys.base.businfra.login.SBAuthenticationManagerFactoryBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBAuthenticationManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBPasswordManager">
+         <ejb-name>SBPasswordManager</ejb-name>
+         <home>com.integrosys.component.login.app.SBPasswordManagerHome</home>
+         <remote>com.integrosys.component.login.app.SBPasswordManager</remote>
+         <ejb-class>com.integrosys.component.login.app.SBPasswordManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBPasswordManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBSMEAuthenticationManager">
+         <ejb-name>SBSMEAuthenticationManager</ejb-name>
+         <home>com.integrosys.base.businfra.login.SBAuthenticationManagerHome</home>
+         <remote>com.integrosys.base.businfra.login.SBAuthenticationManager</remote>
+         <ejb-class>com.integrosys.component.login.app.SBSMEAuthenticationManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBSMEAuthenticationManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBSessionController">
+         <ejb-name>SBSessionController</ejb-name>
+         <home>com.integrosys.component.login.app.SBSessionControllerHome</home>
+         <remote>com.integrosys.component.login.app.SBSessionController</remote>
+         <ejb-class>com.integrosys.component.login.app.SBSessionControllerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBSessionController">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBPinManager">
+         <ejb-name>SBPinManager</ejb-name>
+         <home>com.integrosys.component.login.app.SBPinManagerHome</home>
+         <remote>com.integrosys.component.login.app.SBPinManager</remote>
+         <ejb-class>com.integrosys.component.login.app.SBPinManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBPinManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBPersistentBroker">
+         <ejb-name>EBPersistentBroker</ejb-name>
+         <home>com.integrosys.component.login.app.EBPersistentBrokerHome</home>
+         <remote>com.integrosys.component.login.app.EBPersistentBroker</remote>
+         <ejb-class>com.integrosys.component.login.app.EBSMEPersistentBrokerBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class> com.integrosys.component.login.app.EBPersistentBrokerBeanPK</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBPersistentBroker</abstract-schema-name>
+         <cmp-field id="cmpfield_EBPersistentBroker_loginId">
+            <field-name>loginId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_password">
+            <field-name>password</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_pwdSetDate">
+            <field-name>pwdSetDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_forcePwdChange">
+            <field-name>forcePwdChange</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_lastLoginTime">
+            <field-name>lastLoginTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_lastLogoutTime">
+            <field-name>lastLogoutTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_loginAttempts">
+            <field-name>loginAttempts</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_forceLoginIdChange">
+            <field-name>forceLoginIdChange</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_secondaryPwd">
+            <field-name>secondaryPwd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_secondaryPwdSetDate">
+            <field-name>secondaryPwdSetDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_forceSecondaryPwdChange">
+            <field-name>forceSecondaryPwdChange</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_secondaryPwdAttempts">
+            <field-name>secondaryPwdAttempts</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_secondaryPwdStatus">
+            <field-name>secondaryPwdStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_sessionExpiry">
+            <field-name>sessionExpiry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_role">
+            <field-name>role</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_passwordPolicyId">
+            <field-name>passwordPolicyId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_credentialsRefId">
+            <field-name>credentialsRefId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_lastLoginIp">
+            <field-name>lastLoginIp</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPersistentBroker_lastLogoutIp">
+            <field-name>lastLogoutIp</field-name>
+         </cmp-field>
+         <resource-ref id="resourceref_jdbc_EBPersistentBroker">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBPasswordPolicy">
+         <ejb-name>EBPasswordPolicy</ejb-name>
+         <home>com.integrosys.component.login.app.EBPasswordPolicyHome</home>
+         <remote>com.integrosys.component.login.app.EBPasswordPolicy</remote>
+         <ejb-class>com.integrosys.component.login.app.EBPasswordPolicyBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBPasswordPolicy</abstract-schema-name>
+         <cmp-field id="cmpfield_EBPasswordPolicy_policyId">
+            <field-name>policyId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_numberWarnDays">
+            <field-name>numberWarnDays</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_pwdMaxAge">
+            <field-name>pwdMaxAge</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_maxRepeatedChars">
+            <field-name>maxRepeatedChars</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_pwdMinAge">
+            <field-name>pwdMinAge</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_minAlphaChars">
+            <field-name>minAlphaChars</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_pwdMinLength">
+            <field-name>pwdMinLength</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_pwdMaxLength">
+            <field-name>pwdMaxLength</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_timeExpireLockout">
+            <field-name>timeExpireLockout</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordPolicy_pwdHistory">
+            <field-name>pwdHistory</field-name>
+         </cmp-field>
+         <primkey-field>policyId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBPasswordPolicy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBPasswordHistory">
+         <ejb-name>EBPasswordHistory</ejb-name>
+         <home>com.integrosys.component.login.app.EBPasswordHistoryHome</home>
+         <remote>com.integrosys.component.login.app.EBPasswordHistory</remote>
+         <ejb-class>com.integrosys.component.login.app.EBPasswordHistoryBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBPasswordHistory</abstract-schema-name>
+         <cmp-field id="cmpfield_EBPasswordHistory_pwdHistoryId">
+            <field-name>pwdHistoryId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordHistory_credentialsRefId">
+            <field-name>credentialsRefId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordHistory_pwdType">
+            <field-name>pwdType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordHistory_password">
+            <field-name>password</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordHistory_pwdSetDate">
+            <field-name>pwdSetDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPasswordHistory_pwdExpiryDate">
+            <field-name>pwdExpiryDate</field-name>
+         </cmp-field>
+         <primkey-field>pwdHistoryId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBPasswordHistory">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByRefAndPwdType</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBPasswordHistory o WHERE ((?1 = o.credentialsRefId) AND (?2 = o.pwdType) )]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBUserSession">
+         <ejb-name>EBUserSession</ejb-name>
+         <home>com.integrosys.component.login.app.EBUserSessionHome</home>
+         <remote>com.integrosys.component.login.app.EBUserSession</remote>
+         <ejb-class>com.integrosys.component.login.app.EBUserSessionBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBUserSession</abstract-schema-name>
+         <cmp-field id="cmpfield_EBUserSession_userId">
+            <field-name>userId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBUserSession_sessionId">
+            <field-name>sessionId</field-name>
+         </cmp-field>
+         <primkey-field>userId</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBUserSession">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBSSLToken">
+         <ejb-name>EBSSLToken</ejb-name>
+         <home>com.integrosys.component.login.app.EBSSLTokenHome</home>
+         <remote>com.integrosys.component.login.app.EBSSLToken</remote>
+         <ejb-class>com.integrosys.component.login.app.EBSSLTokenBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.String</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBSSLToken</abstract-schema-name>
+         <cmp-field id="cmpfield_EBSSLToken_userID">
+            <field-name>userID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSSLToken_token">
+            <field-name>token</field-name>
+         </cmp-field>
+         <primkey-field>userID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBSSLToken">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+   </enterprise-beans>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBPersistentBroker</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBAuthenticationManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBSMEAuthenticationManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBPasswordManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBSessionController</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBPinManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBPersistentBroker</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBPasswordPolicy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBPasswordHistory</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBUserSession</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBSSLToken</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

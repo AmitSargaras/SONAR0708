@@ -1,0 +1,920 @@
+SELECT
+  
+  CASE
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND cam.cms_lsp_lmt_profile_id=trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        STAGE_LIMIT_PROFILE cam
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND cam.cms_lsp_lmt_profile_id=trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        sci_lsp_appr_lmts fac
+      WHERE cam.cms_customer_id   =sub.cms_le_sub_profile_id
+      AND fac.cms_limit_profile_id=cam.cms_lsp_lmt_profile_id
+      AND fac.CMS_LSP_APPR_LMTS_ID=trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        stage_limit fac
+      WHERE cam.cms_customer_id   =sub.cms_le_sub_profile_id
+      AND fac.cms_limit_profile_id=cam.cms_lsp_lmt_profile_id
+      AND fac.CMS_LSP_APPR_LMTS_ID=trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CHECKLIST'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        cms_checklist chk
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND chk.cms_lsp_lmt_profile_id=cam.cms_lsp_lmt_profile_id
+      AND chk.checklist_id          =trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CHECKLIST'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        STAGE_CHECKLIST chk
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND chk.cms_lsp_lmt_profile_id=cam.cms_lsp_lmt_profile_id
+      AND chk.checklist_id          =trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sp.lsp_le_id
+      FROM cms_limit_security_map lsm,
+        sci_lsp_appr_lmts lmts,
+        sci_lsp_lmt_profile pf,
+        sci_le_sub_profile sp
+      WHERE sp.cms_le_sub_profile_id = pf.cms_customer_id
+      AND pf.cms_lsp_lmt_profile_id  = lmts.CMS_LIMIT_PROFILE_ID
+      AND lmts.cms_lsp_appr_lmts_id  = lsm.cms_lsp_appr_lmts_id
+        --    AND (lsm.update_status_ind    != 'D'
+        --   OR lsm.update_status_ind      IS NULL)
+      AND transaction_type      = 'COL'
+      AND lsm.cms_collateral_id =trx.REFERENCE_ID
+      AND rownum                =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sp.lsp_le_id
+      FROM cms_stage_limit_security_map lsm,
+        sci_lsp_appr_lmts lmts,
+        sci_lsp_lmt_profile pf,
+        sci_le_sub_profile sp
+      WHERE sp.cms_le_sub_profile_id = pf.cms_customer_id
+      AND pf.cms_lsp_lmt_profile_id  = lmts.CMS_LIMIT_PROFILE_ID
+      AND lmts.cms_lsp_appr_lmts_id  = lsm.cms_lsp_appr_lmts_id
+        --    AND (lsm.update_status_ind    != 'D'
+        --   OR lsm.update_status_ind      IS NULL)
+      AND transaction_type      = 'COL'
+      AND lsm.cms_collateral_id =trx.staging_reference_id
+      AND rownum                =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        CMS_RECURRENT_DOC recChk
+      WHERE recchk.cms_lmp_sub_profile_id =sub.cms_le_sub_profile_id
+      AND recchk.recurrent_doc_id         =trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        stage_recurrent_doc recChk
+      WHERE recchk.cms_lmp_sub_profile_id =sub.cms_le_sub_profile_id
+      AND recchk.recurrent_doc_id         =trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        CMS_DISCREPENCY dis
+      WHERE dis.customer_id =sub.cms_le_sub_profile_id
+      AND dis.id            =trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub,
+        CMS_STAGE_DISCREPENCY dis
+      WHERE dis.customer_id =sub.cms_le_sub_profile_id
+      AND dis.id            =trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT imgtag.cust_id
+      FROM cms_image_tag_details imgtag
+      WHERE imgtag.id =trx.REFERENCE_ID
+      AND rownum      =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT imgtag.cust_id
+      FROM cms_stage_image_tag_details imgtag
+      WHERE imgtag.id =trx.staging_reference_id
+      AND rownum      =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM sci_le_sub_profile sub
+      WHERE sub.cms_le_sub_profile_id =trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_le_id
+      FROM stage_sci_le_sub_profile sub
+      WHERE sub.cms_le_sub_profile_id =trx.staging_reference_id
+      )
+  END AS "Party ID/ Security ID",
+  CASE
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND cam.cms_lsp_lmt_profile_id=trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        STAGE_LIMIT_PROFILE cam
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND cam.cms_lsp_lmt_profile_id=trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        sci_lsp_appr_lmts fac
+      WHERE cam.cms_customer_id   =sub.cms_le_sub_profile_id
+      AND fac.cms_limit_profile_id=cam.cms_lsp_lmt_profile_id
+      AND fac.CMS_LSP_APPR_LMTS_ID=trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        stage_limit fac
+      WHERE cam.cms_customer_id   =sub.cms_le_sub_profile_id
+      AND fac.cms_limit_profile_id=cam.cms_lsp_lmt_profile_id
+      AND fac.CMS_LSP_APPR_LMTS_ID=trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CHECKLIST'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        cms_checklist chk
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND chk.cms_lsp_lmt_profile_id=cam.cms_lsp_lmt_profile_id
+      AND chk.checklist_id          =trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CHECKLIST'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        STAGE_CHECKLIST chk
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND chk.cms_lsp_lmt_profile_id=cam.cms_lsp_lmt_profile_id
+      AND chk.checklist_id          =trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sp.lsp_short_name
+      FROM cms_limit_security_map lsm,
+        sci_lsp_appr_lmts lmts,
+        sci_lsp_lmt_profile pf,
+        sci_le_sub_profile sp
+      WHERE sp.cms_le_sub_profile_id = pf.cms_customer_id
+      AND pf.cms_lsp_lmt_profile_id  = lmts.CMS_LIMIT_PROFILE_ID
+      AND lmts.cms_lsp_appr_lmts_id  = lsm.cms_lsp_appr_lmts_id
+        --   AND (lsm.update_status_ind    != 'D'
+        --   OR lsm.update_status_ind      IS NULL)
+      AND TRANSACTION_TYPE      = 'COL'
+      AND lsm.cms_collateral_id =trx.REFERENCE_ID
+      AND rownum                =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sp.lsp_short_name
+      FROM cms_stage_limit_security_map lsm,
+        sci_lsp_appr_lmts lmts,
+        sci_lsp_lmt_profile pf,
+        sci_le_sub_profile sp
+      WHERE sp.cms_le_sub_profile_id = pf.cms_customer_id
+      AND pf.cms_lsp_lmt_profile_id  = lmts.CMS_LIMIT_PROFILE_ID
+      AND lmts.cms_lsp_appr_lmts_id  = lsm.cms_lsp_appr_lmts_id
+        --  AND (lsm.update_status_ind    != 'D'
+        --   OR lsm.update_status_ind      IS NULL)
+      AND TRANSACTION_TYPE      = 'COL'
+      AND lsm.cms_collateral_id =trx.staging_reference_id
+      AND rownum                =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        CMS_RECURRENT_DOC recChk
+      WHERE recchk.cms_lmp_sub_profile_id =sub.cms_le_sub_profile_id
+      AND recchk.recurrent_doc_id         =trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        stage_recurrent_doc recChk
+      WHERE recchk.cms_lmp_sub_profile_id =sub.cms_le_sub_profile_id
+      AND recchk.recurrent_doc_id         =trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        CMS_DISCREPENCY dis
+      WHERE dis.customer_id =sub.cms_le_sub_profile_id
+      AND dis.id            =trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        CMS_STAGE_DISCREPENCY dis
+      WHERE dis.customer_id =sub.cms_le_sub_profile_id
+      AND dis.id            =trx.staging_reference_id
+      )
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        cms_image_tag_details imgtag
+      WHERE sub.lsp_le_id=imgtag.cust_id
+      AND imgtag.id      =trx.REFERENCE_ID
+      AND rownum         =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub,
+        cms_stage_image_tag_details imgtag
+      WHERE sub.lsp_le_id=imgtag.cust_id
+      AND imgtag.id      =trx.staging_reference_id
+      AND rownum         =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM sci_le_sub_profile sub
+      WHERE sub.cms_le_sub_profile_id =trx.REFERENCE_ID
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT sub.lsp_short_name
+      FROM stage_sci_le_sub_profile sub
+      WHERE sub.cms_le_sub_profile_id =trx.staging_reference_id
+      )
+  END AS "Party Name / Security Name",
+  CASE
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        common_code_category_entry cc_segment
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND cam.cms_lsp_lmt_profile_id=trx.REFERENCE_ID
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        STAGE_LIMIT_PROFILE cam,
+        common_code_category_entry cc_segment
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND cam.cms_lsp_lmt_profile_id=trx.staging_reference_id
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        sci_lsp_appr_lmts fac,
+        common_code_category_entry cc_segment
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND fac.cms_limit_profile_id  =cam.cms_lsp_lmt_profile_id
+      AND fac.CMS_LSP_APPR_LMTS_ID  =trx.REFERENCE_ID
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        stage_limit fac,
+        common_code_category_entry cc_segment
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND fac.cms_limit_profile_id  =cam.cms_lsp_lmt_profile_id
+      AND fac.CMS_LSP_APPR_LMTS_ID  =trx.staging_reference_id
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CHECKLIST'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        cms_checklist chk,
+        common_code_category_entry cc_segment
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND chk.cms_lsp_lmt_profile_id=cam.cms_lsp_lmt_profile_id
+      AND chk.checklist_id          =trx.REFERENCE_ID
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CHECKLIST'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        STAGE_CHECKLIST chk,
+        common_code_category_entry cc_segment
+      WHERE cam.cms_customer_id     =sub.cms_le_sub_profile_id
+      AND chk.cms_lsp_lmt_profile_id=cam.cms_lsp_lmt_profile_id
+      AND chk.checklist_id          =trx.staging_reference_id
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM cms_limit_security_map lsm,
+        sci_lsp_appr_lmts lmts,
+        sci_lsp_lmt_profile pf,
+        sci_le_sub_profile sp,
+        common_code_category_entry cc_segment
+      WHERE sp.cms_le_sub_profile_id = pf.cms_customer_id
+      AND pf.cms_lsp_lmt_profile_id  = lmts.CMS_LIMIT_PROFILE_ID
+      AND lmts.cms_lsp_appr_lmts_id  = lsm.cms_lsp_appr_lmts_id
+      AND sp.LSP_SGMNT_CODE_VALUE    = cc_segment.entry_code
+      AND (cc_segment.category_code  = 'HDFC_SEGMENT'
+      OR cc_segment.category_code   IS NULL)
+        --   AND (lsm.update_status_ind    != 'D'
+        --   OR lsm.update_status_ind      IS NULL)
+      AND transaction_type      = 'COL'
+      AND lsm.cms_collateral_id =trx.REFERENCE_ID
+      AND rownum                =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM cms_stage_limit_security_map lsm,
+        sci_lsp_appr_lmts lmts,
+        sci_lsp_lmt_profile pf,
+        sci_le_sub_profile sp,
+        common_code_category_entry cc_segment
+      WHERE sp.cms_le_sub_profile_id = pf.cms_customer_id
+      AND pf.cms_lsp_lmt_profile_id  = lmts.CMS_LIMIT_PROFILE_ID
+      AND sp.LSP_SGMNT_CODE_VALUE    = cc_segment.entry_code
+      AND (cc_segment.category_code  = 'HDFC_SEGMENT'
+      OR cc_segment.category_code   IS NULL)
+      AND lmts.cms_lsp_appr_lmts_id  = lsm.cms_lsp_appr_lmts_id
+        --  AND (lsm.update_status_ind    != 'D'
+        --  OR lsm.update_status_ind      IS NULL)
+      AND transaction_type      = 'COL'
+      AND lsm.cms_collateral_id =trx.staging_reference_id
+      AND rownum                =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        CMS_RECURRENT_DOC recChk,
+        common_code_category_entry cc_segment
+      WHERE recchk.cms_lmp_sub_profile_id =sub.cms_le_sub_profile_id
+      AND recchk.recurrent_doc_id         =trx.REFERENCE_ID
+      AND sub.LSP_SGMNT_CODE_VALUE        = cc_segment.entry_code
+      AND (cc_segment.category_code       = 'HDFC_SEGMENT'
+      OR cc_segment.category_code        IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        stage_recurrent_doc recChk,
+        common_code_category_entry cc_segment
+      WHERE recchk.cms_lmp_sub_profile_id =sub.cms_le_sub_profile_id
+      AND recchk.recurrent_doc_id         =trx.staging_reference_id
+      AND sub.LSP_SGMNT_CODE_VALUE        = cc_segment.entry_code
+      AND (cc_segment.category_code       = 'HDFC_SEGMENT'
+      OR cc_segment.category_code        IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        CMS_DISCREPENCY dis,
+        common_code_category_entry cc_segment
+      WHERE sub.LSP_SGMNT_CODE_VALUE = cc_segment.entry_code
+      AND dis.customer_id            = sub.cms_le_sub_profile_id
+      AND dis.id                     = trx.REFERENCE_ID
+      AND (cc_segment.category_code  = 'HDFC_SEGMENT'
+      OR cc_segment.category_code   IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        CMS_STAGE_DISCREPENCY dis,
+        common_code_category_entry cc_segment
+      WHERE dis.customer_id         = sub.cms_le_sub_profile_id
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND dis.id                    =trx.staging_reference_id
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        cms_image_tag_details imgtag,
+        common_code_category_entry cc_segment
+      WHERE sub.lsp_le_id           =imgtag.cust_id
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND imgtag.id                 =trx.REFERENCE_ID
+      AND rownum                    =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        cms_stage_image_tag_details imgtag,
+        common_code_category_entry cc_segment
+      WHERE sub.lsp_le_id           =imgtag.cust_id
+      AND (cc_segment.category_code = 'HDFC_SEGMENT'
+      OR cc_segment.category_code  IS NULL)
+      AND sub.LSP_SGMNT_CODE_VALUE  = cc_segment.entry_code
+      AND imgtag.id                 =trx.staging_reference_id
+      AND rownum                    =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM sci_le_sub_profile sub,
+        common_code_category_entry cc_segment
+      WHERE sub.cms_le_sub_profile_id =trx.REFERENCE_ID
+      AND sub.LSP_SGMNT_CODE_VALUE    = cc_segment.entry_code
+      AND (cc_segment.category_code   = 'HDFC_SEGMENT'
+      OR cc_segment.category_code    IS NULL)
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT cc_segment.entry_name
+      FROM stage_sci_le_sub_profile sub,
+        common_code_category_entry cc_segment
+      WHERE sub.cms_le_sub_profile_id =trx.staging_reference_id
+      AND sub.LSP_SGMNT_CODE_VALUE    = cc_segment.entry_code
+      AND (cc_segment.category_code   = 'HDFC_SEGMENT'
+      OR cc_segment.category_code    IS NULL)
+      )
+  END AS "Segment Name",
+  CASE
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE cam.cms_customer_id      =sub.cms_le_sub_profile_id
+      AND cam.cms_lsp_lmt_profile_id =trx.REFERENCE_ID
+      AND rgn.id                     = addr.lra_region
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        STAGE_LIMIT_PROFILE cam,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE cam.cms_customer_id      =sub.cms_le_sub_profile_id
+      AND cam.cms_lsp_lmt_profile_id =trx.staging_reference_id
+      AND rgn.id                     = addr.lra_region
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        sci_lsp_appr_lmts fac,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE cam.cms_customer_id      =sub.cms_le_sub_profile_id
+      AND fac.cms_limit_profile_id   =cam.cms_lsp_lmt_profile_id
+      AND fac.CMS_LSP_APPR_LMTS_ID   =trx.REFERENCE_ID
+      AND rgn.id                     = addr.lra_region
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        stage_limit fac,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE cam.cms_customer_id      =sub.cms_le_sub_profile_id
+      AND fac.cms_limit_profile_id   =cam.cms_lsp_lmt_profile_id
+      AND fac.CMS_LSP_APPR_LMTS_ID   =trx.staging_reference_id
+      AND rgn.id                     = addr.lra_region
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CHECKLIST'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        cms_checklist chk,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE cam.cms_customer_id      =sub.cms_le_sub_profile_id
+      AND chk.cms_lsp_lmt_profile_id =cam.cms_lsp_lmt_profile_id
+      AND chk.checklist_id           =trx.REFERENCE_ID
+      AND rgn.id                     = addr.lra_region
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CHECKLIST'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        sci_lsp_lmt_profile cam,
+        STAGE_CHECKLIST chk,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE cam.cms_customer_id      =sub.cms_le_sub_profile_id
+      AND chk.cms_lsp_lmt_profile_id =cam.cms_lsp_lmt_profile_id
+      AND chk.checklist_id           =trx.staging_reference_id
+      AND rgn.id                     = addr.lra_region
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM cms_limit_security_map lsm,
+        sci_lsp_appr_lmts lmts,
+        sci_lsp_lmt_profile pf,
+        sci_le_sub_profile sp,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE sp.cms_le_sub_profile_id = pf.cms_customer_id
+      AND pf.cms_lsp_lmt_profile_id  = lmts.CMS_LIMIT_PROFILE_ID
+      AND lmts.cms_lsp_appr_lmts_id  = lsm.cms_lsp_appr_lmts_id
+      AND rgn.id                     = addr.lra_region
+      AND sp.CMS_LE_MAIN_PROFILE_ID  = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+        --  AND (lsm.update_status_ind    != 'D'
+        --  OR lsm.update_status_ind      IS NULL)
+      AND transaction_type      = 'COL'
+      AND lsm.cms_collateral_id =trx.REFERENCE_ID
+      AND rownum                =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM cms_stage_limit_security_map lsm,
+        sci_lsp_appr_lmts lmts,
+        sci_lsp_lmt_profile pf,
+        sci_le_sub_profile sp,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE sp.cms_le_sub_profile_id = pf.cms_customer_id
+      AND pf.cms_lsp_lmt_profile_id  = lmts.CMS_LIMIT_PROFILE_ID
+      AND rgn.id                     = addr.lra_region
+      AND lmts.cms_lsp_appr_lmts_id  = lsm.cms_lsp_appr_lmts_id
+      AND sp.CMS_LE_MAIN_PROFILE_ID  = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+        --   AND (lsm.update_status_ind    != 'D'
+        --  OR lsm.update_status_ind      IS NULL)
+      AND transaction_type      = 'COL'
+      AND lsm.cms_collateral_id =trx.staging_reference_id
+      AND rownum                =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        CMS_RECURRENT_DOC recChk,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE recchk.cms_lmp_sub_profile_id =sub.cms_le_sub_profile_id
+      AND recchk.recurrent_doc_id         =trx.REFERENCE_ID
+      AND rgn.id                          = addr.lra_region
+      AND sub.CMS_LE_MAIN_PROFILE_ID      = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value             = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        stage_recurrent_doc recChk,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE recchk.cms_lmp_sub_profile_id =sub.cms_le_sub_profile_id
+      AND recchk.recurrent_doc_id         =trx.staging_reference_id
+      AND rgn.id                          = addr.lra_region
+      AND sub.CMS_LE_MAIN_PROFILE_ID      = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value             = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        CMS_DISCREPENCY dis,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE rgn.id                   = addr.lra_region
+      AND dis.customer_id            = sub.cms_le_sub_profile_id
+      AND dis.id                     = trx.REFERENCE_ID
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        CMS_STAGE_DISCREPENCY dis,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE dis.customer_id          = sub.cms_le_sub_profile_id
+      AND rgn.id                     = addr.lra_region
+      AND dis.id                     = trx.staging_reference_id
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND addr.lra_type_value        = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        cms_image_tag_details imgtag,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE sub.lsp_le_id            =imgtag.cust_id
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND rgn.id                     = addr.lra_region
+      AND addr.lra_type_value        = 'CORPORATE'
+      AND imgtag.id                  =trx.REFERENCE_ID
+      AND rownum                     =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        cms_stage_image_tag_details imgtag,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE sub.lsp_le_id            =imgtag.cust_id
+      AND sub.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+      AND rgn.id                     = addr.lra_region
+      AND addr.lra_type_value        = 'CORPORATE'
+      AND imgtag.id                  =trx.staging_reference_id
+      AND rownum                     =1
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    AND trx.REFERENCE_ID     IS NOT NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM sci_le_sub_profile sub,
+        SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE sub.cms_le_sub_profile_id =trx.REFERENCE_ID
+      AND sub.CMS_LE_MAIN_PROFILE_ID  = addr.CMS_LE_MAIN_PROFILE_ID
+      AND rgn.id                      = addr.lra_region
+      AND addr.lra_type_value         = 'CORPORATE'
+      )
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    AND trx.REFERENCE_ID     IS NULL
+    THEN
+      (SELECT rgn.region_name
+      FROM stage_sci_le_sub_profile sub,
+        STAGE_SCI_LE_REG_ADDR addr,
+        cms_region rgn
+      WHERE sub.cms_le_sub_profile_id =trx.staging_reference_id
+      AND sub.CMS_LE_MAIN_PROFILE_ID  = addr.CMS_LE_MAIN_PROFILE_ID
+      AND rgn.id                      = addr.lra_region
+      AND addr.lra_type_value         = 'CORPORATE'
+      )
+  END AS "Region",
+  
+  CASE
+    WHEN trx.TRANSACTION_TYPE = 'LIMITPROFILE'
+    THEN 'Manual Input CAM'
+    WHEN trx.TRANSACTION_TYPE = 'LIMIT'
+    THEN 'Manual Input Limit'
+    WHEN trx.TRANSACTION_SUBTYPE = 'COL_CHECKLIST_REC'
+    THEN 'Maintain Security Checklist'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_SUBTYPE = 'CAM_CHECKLIST_REC'
+    THEN 'Maintain CAM Checklist'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_SUBTYPE = 'FAC_CHECKLIST_REC'
+    THEN 'Maintain Facility Checklist'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_SUBTYPE = 'HDFC_RECURRENT_CHKLST_REC'
+    THEN 'Maintain Recurrent Checklist'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_SUBTYPE = 'LAD_CHECKLIST_REC'
+    THEN 'Maintain LAD Checklist'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_SUBTYPE = 'OTHER_CHECKLIST_REC'
+    THEN 'Maintain Other Checklist'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_SUBTYPE = 'PARIPASSU_CHECKLIST_REC'
+    THEN 'Maintain Parri Passu Checklist'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_SUBTYPE = 'RECURRENTDOC_CHECKLIST'
+    THEN 'Maintain Recurrent Checklist'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_TYPE = 'COL'
+    THEN 'Update Security Details'
+      ||'('
+      || trx.customer_name
+      ||')'
+    WHEN trx.TRANSACTION_TYPE = 'RECURRENT_CHECKLIST'
+    THEN 'Maintain Recurrent Checklist'
+    WHEN trx.TRANSACTION_TYPE = 'DISCREPENCY'
+    THEN 'Discrepency'
+    WHEN trx.TRANSACTION_TYPE = 'IMAGE_TAG'
+    THEN 'Maintain Image Tag'
+    WHEN trx.TRANSACTION_TYPE = 'CUSTOMER'
+    THEN 'Customer'
+  END                                         AS "Transaction Type",
+  TO_CHAR(trx.TRANSACTION_DATE,'DD-Mon-YYYY') AS "Transaction Date",
+  trx.CUR_TRX_HISTORY_ID                      AS "Transaction ID",
+  CASE
+    WHEN UPPER(trx.STATUS) = 'PENDING_UPDATE'
+    THEN 'Pending Update'
+    WHEN UPPER(trx.STATUS) = 'PENDING_INSERT'
+    THEN 'Pending Insert'
+    WHEN UPPER(trx.STATUS) = 'PENDING_ENABLE'
+    THEN 'Pending Enable'
+    WHEN UPPER(trx.STATUS) = 'PENDING_DISABLE'
+    THEN 'Pending Disable'
+    WHEN UPPER(trx.STATUS) = 'PENDING_DELETE'
+    THEN 'Pending Delete'
+    WHEN UPPER(trx.STATUS) = 'PENDING_CREATE'
+    THEN 'Pending Create'
+    WHEN upper(trx.status) = 'CLOSED'
+    THEN 'Closed'
+    WHEN upper(trx.status) = 'PENDING_PERFECTION'
+    THEN 'Draft'
+    WHEN upper(trx.status) = 'DRAFT'
+    THEN 'Draft'
+    WHEN upper(trx.status) = 'DELETED'
+    THEN 'Deleted'
+    WHEN upper(trx.status) = 'REJECTED'
+    THEN 'Rejected'
+    WHEN upper(trx.status) = 'NEW'
+    THEN 'New'
+    WHEN upper(trx.status) = 'DISABLE'
+    THEN 'Disable'
+    WHEN upper(trx.status) = 'ACTIVE'
+    THEN 'Active'
+    WHEN UPPER(trx.STATUS) = 'ENABLE'
+    THEN 'Enable'
+    WHEN upper(trx.status) = 'REJECT'
+    THEN 'Reject'
+    WHEN upper(trx.status) = 'loading_delete'
+    THEN 'Loading Delete'
+  END                                         AS "Status",
+  cu.user_name                                AS "Action Performed By" ,
+  TO_CHAR(trx.TRANSACTION_DATE,'DD-Mon-YYYY') AS "Action Performed Date"
+  
+FROM TRANSACTION trx,
+  CMS_USER cu
+WHERE trx.STATUS         IN('PENDING_UPDATE','PENDING_INSERT','PENDING_ENABLE','PENDING_DISABLE','PENDING_DELETE','PENDING_CREATE','PENDING_PERFECTION','DRAFT','REJECTED')
+AND cu.login_id           =trx.login_id
+AND trx.transaction_type IN ('LIMITPROFILE','LIMIT','CHECKLIST','COL','RECURRENT_CHECKLIST','DISCREPENCY','IMAGE_TAG','CUSTOMER') ;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<description>
+		To be used for Batch Job. Probably inject Services or DAO.
+	</description>
+	
+	<bean id="generateEmailNotificationBatchJob" class="com.integrosys.cms.batch.email.notification.EmailNotificationMain">
+		<!-- <property name="emailNotificationDao" ref="emailNotificationDao" /> -->
+		<property name="emailNotificationJdbc" ref="emailNotificationJdbc" />
+		<property name="emailNotificationService" ref="emailNotificationService" />
+	</bean>
+	<!-- <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				  <ref bean="generateEmailNotificationTrigger" />
+				 <ref bean="sendEmailNotificationTrigger" /> 
+			</list>
+		</property>
+	</bean> -->
+	<bean id="generateEmailNotificationTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="generateEmailNotificationJobDetail" />
+		<property name="cronExpression" value="0 0 23 * * ?" />
+	</bean>
+	<bean id="generateEmailNotificationJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="generateEmailNotificationJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	<bean name="generateEmailNotificationJob" class="com.integrosys.cms.batch.email.notification.GenerateEmailNotificationJob">
+		<property name="batchJobFactory" ref="batchJobFactory" />
+	</bean>
+
+	<bean id="sendEmailNotificationTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="sendEmailNotificationJobDetail" />
+		<property name="cronExpression" value="0 0/05 * * * ?" />
+	</bean>
+	<bean id="sendEmailNotificationJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="sendEmailNotificationJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	<bean id="sendEmailNotificationJob" class="com.integrosys.cms.batch.email.notification.SendEmailNotificationJob">
+		<property name="emailNotificationDao" ref="emailNotificationDao" />
+		<property name="mailUtil" ref="mailUtil" />
+	</bean>
+	
+	<bean id="mailUtil" class="com.integrosys.cms.batch.email.notification.MailUtil">
+	</bean>
+	
+</beans>

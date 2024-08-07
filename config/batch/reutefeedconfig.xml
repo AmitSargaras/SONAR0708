@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<feedconfigs>
+  <feedconfig feedfilename="E:\\myfeed.csv" includeheadercol="false" format="csv" batchsize="100">
+    <fieldsmapping table="CMS_PRICE_FEED">
+      <field name="isinCode"  type="string" column="ISIN_CODE"  required="true"/>
+      <field name="ric"       type="string" column="RIC"        required="true"/>
+      <field name="whatever"  type="integer"                    required="false"/>	
+      <field name="country"   type="string" column="COUNTRY"    required="true"/>
+      <field name="unitPrice" type="double" column="UNIT_PRICE" required="true"/>	
+      <field name="currency"  type="string" column="CURRENCY"   required="true"/>
+      <field name="feedref"   type="string" column="FEED_REF"   required="true"/>				
+    </fieldsmapping>
+    <validators>		
+      <validator  class="com.mbb.cms.app.batch.reuterfeed.DefaultFeedValidator"/>
+    </validators>
+    <postprocessors>	
+      <postprocessor class="com.mbb.cms.app.batch.reuterfeed.MappingFeedPostProcessor"/>
+    </postprocessors>
+    <persistence>
+      <persister type="customized" class="com.mbb.cms.app.batch.reuterfeed.FeedHistoryPersister">
+	<properties>
+	  <property name="histtbname" value="CMS_PRICE_FEED_HISTORY"/>
+	  <property name="histkeycol" value="HISTORY_ID"/>
+	  <property name="histkeyseq" value="CMS_PRICE_FEED_HISTORY_SEQ"/>
+	  <property name="feedidcol" value="ISIN_CODE"/>
+	  <property name="unitpricefield" value="UNIT_PRICE"/>	
+	</properties>
+      </persister>
+      <!--	
+      <persister type="update" allfields="false" >
+	<fields>
+	 <field name="country"/>
+	 <field name="unitPrice"/>
+	</fields>
+	<condfields>
+	  <condfield name="isinCode"/>
+	</condfields>
+      </persister>	
+      <persister type="insert" allfields="true" autogenkey="true" keycolumn="FEED_ID" sequence="CMS_PRICE_FEED_SEQ">
+      </persister>
+      --> 	
+    </persistence>			
+  </feedconfig>
+</feedconfigs>

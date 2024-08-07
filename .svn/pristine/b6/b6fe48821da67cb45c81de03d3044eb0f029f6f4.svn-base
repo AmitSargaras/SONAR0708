@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select subprof.lsp_le_id as PartyId,subprof.lsp_short_name as PartyName,
+			lmt.lmt_id as LimitId,lmt.facility_name as facilityname,lmt.facility_type as facilitytype,
+			(select entry_name from common_code_category_entry where category_code='FACILITY_CATEGORY' and entry_code= lmt.facility_cat and  ACTIVE_STATUS='1') as facilitycategory,
+			lmt.CMS_REQ_SEC_COVERAGE as SactionedLimit  
+			from sci_lsp_appr_lmts lmt,sci_lsp_lmt_profile lmtprof,sci_le_sub_profile subprof
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				is_from_camonline_req in('N') and
+				lmtprof.cms_lsp_lmt_profile_id = lmt.cms_limit_profile_id and
+				subprof.cms_le_sub_profile_id = lmtprof.cms_customer_id
+				AND subprof.status !=   'INACTIVE'
+			</mandatoryClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Limit ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Sanctioned Limit</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>CAM Online Exceptional Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

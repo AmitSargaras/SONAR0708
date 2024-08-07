@@ -1,0 +1,83 @@
+select 
+PartyName AS "Party Name",
+   PartyID AS "Party ID",
+   Segment AS "Segment",
+   RMName AS "RM Name",
+   RMRegion AS "RM Region",
+   SecurityType AS "Security Type",
+  SecuritySubtype AS "Security Sub-type",
+   CollateralName AS "Collateral Name",
+   SecurityID AS "Security ID",  
+  SecurityAmount AS "OMV/Security Amount",
+   InsuredAmount AS "Insured Amount",
+   CASE
+      WHEN count1 = rnum
+      THEN InadequateAmount
+      ELSE 0
+    END  AS "Inadequate Amount" ,
+  InsurancePolicyNo AS "Insurance Policy No",
+  InsuranceCompanyName AS "Insurance Company Name",
+   CoverageType AS "Coverage Type",
+   Expirydate AS "Expiry Date"
+from(
+
+select 
+PartyName,
+   PartyID,
+   Segment,
+   RMName,
+   RMRegion,
+   SecurityType,
+  SecuritySubtype,
+   CollateralName,
+   SecurityID,  
+  SecurityAmount,
+   InsuredAmount,
+  InadequateAmount,
+  InsurancePolicyNo,
+  InsuranceCompanyName,
+   CoverageType,
+   Expirydate,
+    row_number() over (partition BY SecurityID order by SecurityID) AS rnum,
+      COUNT(1) over (partition BY SecurityID order by SecurityID)     AS count1
+  
+
+from(
+SELECT Distinct sp.lsp_short_name               AS PartyName,
+  sp.lsp_le_id                         AS PartyID,
+  sp.lsp_sgmnt_code_value              AS Segment,
+  (select rm_mgr_name from cms_relationship_mgr 
+  where id=sp.relation_mgr)                      AS RMName,
+  (select region_name from cms_region where id=sp.rm_region  )    AS RMRegion,
+  cs.type_name                         AS SecurityType,
+  cs.subtype_name                      AS SecuritySubtype,
+  colmaster.new_collateral_description AS CollateralName,
+  cs.cms_collateral_id                 as SecurityID,  
+  cs.cmv                               AS SecurityAmount,
+  ip.insured_amt                       AS InsuredAmount,
+  (NVL((select sum(insured_amt) from cms_insurance_policy 
+  where cms_collateral_id=cs.cms_collateral_id),0)-NVL(cs.cmv ,0) )   AS InadequateAmount,
+  ip.policy_no                         AS InsurancePolicyNo,
+  ic.company_name                      AS InsuranceCompanyName,
+  lsm.lmt_security_coverage            AS CoverageType,
+  TO_CHAR(ip.EXPIRY_DATE,'DD/Mon/YYYY')AS Expirydate
+
+FROM CMS_LIMIT_SECURITY_MAP lsm,
+  SCI_LSP_APPR_LMTS lmts,
+  SCI_LSP_LMT_PROFILE pf,
+  SCI_LE_SUB_PROFILE sp,
+  CMS_SECURITY cs,
+  cms_insurance_policy ip,
+  CMS_INSURANCE_COVERAGE ic,
+  cms_collateral_new_master colMaster
+WHERE cs.CMS_COLLATERAL_ID        = lsm.CMS_COLLATERAL_ID
+AND cs.CMS_COLLATERAL_ID          = ip.CMS_COLLATERAL_ID
+AND sp.CMS_LE_SUB_PROFILE_ID      = pf.CMS_CUSTOMER_ID
+AND pf.CMS_LSP_LMT_PROFILE_ID     = lmts.CMS_LIMIT_PROFILE_ID
+AND lmts.CMS_LSP_APPR_LMTS_ID     = lsm.CMS_LSP_APPR_LMTS_ID
+AND (lsm.UPDATE_STATUS_IND       != 'D'
+OR lsm.UPDATE_STATUS_IND         IS NULL)
+AND ip.INSURER_NAME               = ic.id(+)
+AND ip.EXPIRY_DATE                > SYSDATE
+AND colMaster.new_collateral_code = cs.collateral_code
+Order by cs.cms_collateral_id)); 

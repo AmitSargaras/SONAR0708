@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="OthersaForm" type="com.integrosys.cms.ui.collateral.others.othersa.OthersaForm">
+        </form-bean>
+
+         <form-bean name="OthersChargeForm" type="com.integrosys.cms.ui.collateral.others.ChargeForm">
+        </form-bean>
+        
+         <form-bean name="OthersInsurancePolicyForm" type="com.integrosys.cms.ui.collateral.insurancepolicy.InsurancePolicyForm">
+        </form-bean>
+    
+        <form-bean name="OthersValuationFromLOSForm" type="com.integrosys.cms.ui.collateral.valuationfromlos.OthersValuationFromLOSForm">
+        </form-bean>
+        
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+ 	<action path="/OthersaCollateral" type="com.integrosys.cms.ui.collateral.others.othersa.OthersaAction" name="OthersaForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/OthersCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/OthersCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/OthersInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/OthersInsurancePolicy.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/othersa/Othersa_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/OtherSecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/OtherSecurityApportionment.do"/>
+			<forward name="search_pledgor_prepare" path="/OthersPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/OthersPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/OthersPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/OthersPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/OthersPledge.do?event=view"/>
+            
+            <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+            
+             <forward name="refresh_city_id" path="/collateral/common/refresh_maker_create_city.jsp"/>
+            
+        </action>
+    
+		<action path="/OthersCharge" type="com.integrosys.cms.ui.collateral.others.ChargeAction" name="OthersChargeForm" validate="false" scope="request">
+
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/charge_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/charge_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/charge_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="Othersa_update" path="/OthersaCollateral.do?event=update_return"/>
+
+            <forward name="Othersa_read" path="/OthersaCollateral.do?event=read_return"/>
+
+            <forward name="Othersa_process" path="/OthersaCollateral.do?event=process_return"/>
+
+            <forward name="Othersa_close" path="/OthersaCollateral.do?event=close_return"/>
+
+            <forward name="Othersa_track" path="/OthersaCollateral.do?event=track_return"/>
+
+      	</action>
+        
+		<action path="/OthersInsurancePolicy" type="com.integrosys.cms.ui.collateral.others.OthersInsurancePolicyAction" name="OthersInsurancePolicyForm" validate="false" scope="request">
+           <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/insurancepolicy/view_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/insurancepolicy/update_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/insurancepolicy/update_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/insurancepolicy/chk_view_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="search_account" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/others/insurancepolicy/update_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="Othersa_update" path="/OthersaCollateral.do?event=update_return"/>
+            <forward name="Othersa_read" path="/OthersaCollateral.do?event=read_return"/>
+            <forward name="Othersa_process" path="/OthersaCollateral.do?event=process_return"/>
+            <forward name="Othersa_close" path="/OthersaCollateral.do?event=close_return"/>
+            <forward name="Othersa_track" path="/OthersaCollateral.do?event=track_return"/>
+      </action>
+      	
+      <action path="/OtherSecurityApportionment" type="com.integrosys.cms.ui.collateral.others.SecApportionmentAction"
+      name="SecurityApportionmentDtlForm" scope="request">
+        <forward name="read" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare_update_sub" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="refresh" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="process" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        
+        <forward name="Othersa_update" path="/OthersaCollateral.do?event=update_return"/>
+        <forward name="Othersa_read" path="/OthersaCollateral.do?event=read_return"/>
+        <forward name="Othersa_process" path="/OthersaCollateral.do?event=process_return"/>
+        <forward name="Othersa_close" path="/OthersaCollateral.do?event=close_return"/>
+        <forward name="Othersa_track" path="/OthersaCollateral.do?event=track_return"/>   
+      </action>      
+      
+        <action path="/OthersValuationFromLOS"
+              type="com.integrosys.cms.ui.collateral.valuationfromlos.OthersValuationFromLOSAction"
+              name="OthersValuationFromLOSForm"
+              validate="false"
+              scope="request">
+          <forward name="read" path="/template/common_template.jsp">
+              <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+              <set-property property="title" value="title.security"/>
+          </forward>
+        </action>
+      
+    </action-mappings>
+    
+    <message-resources key="message-col-others" parameter="ApplicationResources-col-others"/>
+</struts-config>

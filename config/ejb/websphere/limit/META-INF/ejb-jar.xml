@@ -1,0 +1,2067 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_Limits">
+   <display-name>Limits</display-name>
+   <enterprise-beans>
+      <session id="session_SBLimitProxy">
+         <ejb-name>SBLimitProxy</ejb-name>
+         <home>com.integrosys.cms.app.limit.proxy.SBLimitProxyHome</home>
+         <remote>com.integrosys.cms.app.limit.proxy.SBLimitProxy</remote>
+         <ejb-class>com.integrosys.cms.app.limit.proxy.SBLimitProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBLimitProxy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBLimitManager">
+         <ejb-name>SBLimitManager</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.SBLimitManagerHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.SBLimitManager</remote>
+         <ejb-class>com.integrosys.cms.app.limit.bus.SBLimitManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBLimitManager_EBLimit">
+            <ejb-ref-name>EBLimitLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBLimitLocal</local>
+            <ejb-link>EBLimit</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBLimitManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBLimitManagerStaging">
+         <ejb-name>SBLimitManagerStaging</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.SBLimitManagerHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.SBLimitManager</remote>
+         <ejb-class>com.integrosys.cms.app.limit.bus.SBLimitManagerStagingBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <ejb-local-ref id="ejblocalref_SBLimitManagerStaging_EBLimitStaging">
+            <ejb-ref-name>EBLimitLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBLimitLocal</local>
+            <ejb-link>EBLimitStaging</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_SBLimitManagerStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBLimitProfile">
+         <ejb-name>EBLimitProfile</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBLimitProfileHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBLimitProfile</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBLimitProfileLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBLimitProfileLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBLimitProfileBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitProfile</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitProfile_limitProfilePK">
+            <field-name>limitProfilePK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_customerID">
+            <field-name>customerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_bCAStatus">
+            <field-name>bCAStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_bCAReference">
+            <field-name>bCAReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_losLimitProfileReference">
+            <field-name>losLimitProfileReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_productProgCompliantStr">
+            <field-name>productProgCompliantStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_creditPolicyCompliantStr">
+            <field-name>creditPolicyCompliantStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_underwriteStandardCompliantStr">
+            <field-name>underwriteStandardCompliantStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_cRApprovalRequiredStr">
+            <field-name>cRApprovalRequiredStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_limitProfileRef">
+            <field-name>limitProfileRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_originatingCountry">
+            <field-name>originatingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_originatingOrganisation">
+            <field-name>originatingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approvalDate">
+            <field-name>approvalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_nextInterimReviewDate">
+            <field-name>nextInterimReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_nextAnnualReviewDate">
+            <field-name>nextAnnualReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_extendedNextReviewDate">
+            <field-name>extendedNextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_projectedProfit">
+            <field-name>projectedProfit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_expectedLoss">
+            <field-name>expectedLoss</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approverEmployeeID1">
+            <field-name>approverEmployeeID1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approverEmployeeID2">
+            <field-name>approverEmployeeID2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_eBRequiredSecurityCoverage">
+            <field-name>eBRequiredSecurityCoverage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_eBActualSecurityCoverage">
+            <field-name>eBActualSecurityCoverage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approvingOfficerGrade">
+            <field-name>approvingOfficerGrade</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_bCACreateDate">
+            <field-name>bCACreateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_tATCreateDate">
+            <field-name>tATCreateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_bFLRequiredStr">
+            <field-name>bFLRequiredStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_renewalStr">
+            <field-name>renewalStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_fullDocReviewStr">
+            <field-name>fullDocReviewStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_hostStatus">
+            <field-name>hostStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_bCACompleteStr">
+            <field-name>bCACompleteStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_cCCCompleteStr">
+            <field-name>cCCCompleteStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_sCCCompleteStr">
+            <field-name>sCCCompleteStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_bCALocalIndStr">
+            <field-name>bCALocalIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approverEmployeeName1">
+            <field-name>approverEmployeeName1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approverEmployeeName2">
+            <field-name>approverEmployeeName2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approverEmployeeName3">
+            <field-name>approverEmployeeName3</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approverEmployeeName4">
+            <field-name>approverEmployeeName4</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_approverEmployeeName5">
+            <field-name>approverEmployeeName5</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_bflIndUpdateDate">
+            <field-name>bflIndUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_extendedBFLIssuanceDate">
+            <field-name>extendedBFLIssuanceDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_lEReference">
+            <field-name>lEReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_aAType">
+            <field-name>aAType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_sourceID">
+            <field-name>sourceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_customerReference">
+            <field-name>customerReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_cMSCreateIndStr">
+            <field-name>cMSCreateIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_segment">
+            <field-name>segment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_applicationType">
+            <field-name>applicationType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_applicationLawType">
+            <field-name>applicationLawType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_migratedInd">
+            <field-name>migratedInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_camType">
+            <field-name>camType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_camLoginDate">
+            <field-name>camLoginDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_noOfTimesExtended">
+            <field-name>noOfTimesExtended</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_totalSactionedAmount">
+            <field-name>totalSactionedAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_relationshipManager">
+            <field-name>relationshipManager</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_controllingBranch">
+            <field-name>controllingBranch</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_committeApproval">
+            <field-name>committeApproval</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_boardApproval">
+            <field-name>boardApproval</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_assetClassification">
+            <field-name>assetClassification</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfile_rbiAssetClassification">
+            <field-name>rbiAssetClassification</field-name>
+         </cmp-field>
+         <primkey-field>limitProfilePK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBLimitProfile_EBLimit">
+            <ejb-ref-name>EBLimitLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBLimitLocalBean</local>
+            <ejb-link>EBLimit</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLimitProfile_EBTATEntry">
+            <ejb-ref-name>EBTATEntryLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBTATEntryLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBTATEntryLocal</local>
+            <ejb-link>EBTATEntry</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLimitProfile_EBTradingAgreement">
+            <ejb-ref-name>EBTradingAgreementLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBTradingAgreementLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBTradingAgreementLocal</local>
+            <ejb-link>EBTradingAgreement</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBLimitProfile">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCustomerBCAStatus</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitProfile o WHERE ((?1 = o.customerID) AND (?2 = o.bCAStatus))]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBLimitProfileStaging">
+         <ejb-name>EBLimitProfileStaging</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBLimitProfileHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBLimitProfile</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBLimitProfileLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBLimitProfileLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBLimitProfileStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitProfileStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_limitProfilePK">
+            <field-name>limitProfilePK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_customerID">
+            <field-name>customerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_bCAStatus">
+            <field-name>bCAStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_bCAReference">
+            <field-name>bCAReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_losLimitProfileReference">
+            <field-name>losLimitProfileReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_productProgCompliantStr">
+            <field-name>productProgCompliantStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_creditPolicyCompliantStr">
+            <field-name>creditPolicyCompliantStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_underwriteStandardCompliantStr">
+            <field-name>underwriteStandardCompliantStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_cRApprovalRequiredStr">
+            <field-name>cRApprovalRequiredStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_limitProfileRef">
+            <field-name>limitProfileRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_originatingCountry">
+            <field-name>originatingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_originatingOrganisation">
+            <field-name>originatingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approvalDate">
+            <field-name>approvalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_nextInterimReviewDate">
+            <field-name>nextInterimReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_nextAnnualReviewDate">
+            <field-name>nextAnnualReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_extendedNextReviewDate">
+            <field-name>extendedNextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_projectedProfit">
+            <field-name>projectedProfit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_expectedLoss">
+            <field-name>expectedLoss</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approverEmployeeID1">
+            <field-name>approverEmployeeID1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approverEmployeeID2">
+            <field-name>approverEmployeeID2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_eBRequiredSecurityCoverage">
+            <field-name>eBRequiredSecurityCoverage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_eBActualSecurityCoverage">
+            <field-name>eBActualSecurityCoverage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approvingOfficerGrade">
+            <field-name>approvingOfficerGrade</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_bCACreateDate">
+            <field-name>bCACreateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_tATCreateDate">
+            <field-name>tATCreateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_bFLRequiredStr">
+            <field-name>bFLRequiredStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_renewalStr">
+            <field-name>renewalStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_fullDocReviewStr">
+            <field-name>fullDocReviewStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_hostStatus">
+            <field-name>hostStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_bCACompleteStr">
+            <field-name>bCACompleteStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_cCCCompleteStr">
+            <field-name>cCCCompleteStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_sCCCompleteStr">
+            <field-name>sCCCompleteStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_bCALocalIndStr">
+            <field-name>bCALocalIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approverEmployeeName1">
+            <field-name>approverEmployeeName1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approverEmployeeName2">
+            <field-name>approverEmployeeName2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approverEmployeeName3">
+            <field-name>approverEmployeeName3</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approverEmployeeName4">
+            <field-name>approverEmployeeName4</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_approverEmployeeName5">
+            <field-name>approverEmployeeName5</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_bflIndUpdateDate">
+            <field-name>bflIndUpdateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_extendedBFLIssuanceDate">
+            <field-name>extendedBFLIssuanceDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_lEReference">
+            <field-name>lEReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_aAType">
+            <field-name>aAType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_sourceID">
+            <field-name>sourceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_customerReference">
+            <field-name>customerReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_cMSCreateIndStr">
+            <field-name>cMSCreateIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_segment">
+            <field-name>segment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_applicationType">
+            <field-name>applicationType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_applicationLawType">
+            <field-name>applicationLawType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_camType">
+            <field-name>camType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_camLoginDate">
+            <field-name>camLoginDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_noOfTimesExtended">
+            <field-name>noOfTimesExtended</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_totalSactionedAmount">
+            <field-name>totalSactionedAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_relationshipManager">
+            <field-name>relationshipManager</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_controllingBranch">
+            <field-name>controllingBranch</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_committeApproval">
+            <field-name>committeApproval</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_boardApproval">
+            <field-name>boardApproval</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_assetClassification">
+            <field-name>assetClassification</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitProfileStaging_rbiAssetClassification">
+            <field-name>rbiAssetClassification</field-name>
+         </cmp-field>
+         <primkey-field>limitProfilePK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBLimitProfileStaging_EBLimit">
+            <ejb-ref-name>EBLimitLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBLimitLocalBean</local>
+            <ejb-link>EBLimit</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLimitProfileStaging_EBTATEntry">
+            <ejb-ref-name>EBTATEntryLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBTATEntryLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBTATEntryLocal</local>
+            <ejb-link>EBTATEntry</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLimitProfileStaging_EBTradingAgreementStaging">
+            <ejb-ref-name>EBTradingAgreementLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBTradingAgreementLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBTradingAgreementLocal</local>
+            <ejb-link>EBTradingAgreementStaging</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBLimitProfileStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCustomerBCAStatus</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitProfileStaging o WHERE ((?1 = o.customerID) AND (?2 = o.bCAStatus))]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBLimit">
+         <ejb-name>EBLimit</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBLimitHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBLimit</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBLimitLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBLimitLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBLimitBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimit</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimit_limitPK">
+            <field-name>limitPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitProfileFK">
+            <field-name>limitProfileFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_currencyCode">
+            <field-name>currencyCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_approvedLimit">
+            <field-name>approvedLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_activatedLimit">
+            <field-name>activatedLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitAdviseStr">
+            <field-name>limitAdviseStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitCommittedStr">
+            <field-name>limitCommittedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_sharedLimitStr">
+            <field-name>sharedLimitStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitRef">
+            <field-name>limitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_losLimitRef">
+            <field-name>losLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_acfNo">
+            <field-name>acfNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_outerLimitID">
+            <field-name>outerLimitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBOuterLimitProfileID">
+            <field-name>eBOuterLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_bookingCountry">
+            <field-name>bookingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_bookingOrganisation">
+            <field-name>bookingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_productDesc">
+            <field-name>productDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilityDesc">
+            <field-name>facilityDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitType">
+            <field-name>limitType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitSecuredType">
+            <field-name>limitSecuredType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitExpiryDate">
+            <field-name>limitExpiryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitTenor">
+            <field-name>limitTenor</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitTenorUnit">
+            <field-name>limitTenorUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitInterest">
+            <field-name>limitInterest</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitCMMSN">
+            <field-name>limitCMMSN</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitFee">
+            <field-name>limitFee</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitConditionText">
+            <field-name>limitConditionText</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBRequiredSecurityCoverage">
+            <field-name>eBRequiredSecurityCoverage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBActualSecurityCoverage">
+            <field-name>eBActualSecurityCoverage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitStatus">
+            <field-name>limitStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_existingStr">
+            <field-name>existingStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_hostStatus">
+            <field-name>hostStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitActivatedStr">
+            <field-name>limitActivatedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBOperationalLimit">
+            <field-name>eBOperationalLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBIsLimitZerorised">
+            <field-name>eBIsLimitZerorised</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_zerorisedReason">
+            <field-name>zerorisedReason</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_zerorisedDate">
+            <field-name>zerorisedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitDescNum">
+            <field-name>limitDescNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_productGroupNum">
+            <field-name>productGroupNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_productGroup">
+            <field-name>productGroup</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_productDescNum">
+            <field-name>productDescNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilityDescNum">
+            <field-name>facilityDescNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitTenorUnitNum">
+            <field-name>limitTenorUnitNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_drawingLimit">
+            <field-name>drawingLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_outstandingAmt">
+            <field-name>outstandingAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitDesc">
+            <field-name>limitDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_sourceId">
+            <field-name>sourceId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_loanType">
+            <field-name>loanType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_lastUpdatedDate">
+            <field-name>lastUpdatedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_limitProfileReferenceNumber">
+            <field-name>limitProfileReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBDisbursedInd">
+            <field-name>eBDisbursedInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilityCode">
+            <field-name>facilityCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilitySequence">
+            <field-name>facilitySequence</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBActualSecCoverageAmt">
+            <field-name>eBActualSecCoverageAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBOMVSecCoverageAmt">
+            <field-name>eBOMVSecCoverageAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_eBFSVSecCoverageAmt">
+            <field-name>eBFSVSecCoverageAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_interestRate">
+            <field-name>interestRate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_accountType">
+            <field-name>accountType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_lEReference">
+            <field-name>lEReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_innerLimitOrdering">
+            <field-name>innerLimitOrdering</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_omnibusEnvelopeId">
+            <field-name>omnibusEnvelopeId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_omnibusEnvelopeName">
+            <field-name>omnibusEnvelopeName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilityName">
+            <field-name>facilityName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilityType">
+            <field-name>facilityType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilitySystem">
+            <field-name>facilitySystem</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilitySystemID">
+            <field-name>facilitySystemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_lineNo">
+            <field-name>lineNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_purpose">
+            <field-name>purpose</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_isDP">
+            <field-name>isDP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_relationShipManager">
+            <field-name>relationShipManager</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_isReleased">
+            <field-name>isReleased</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_grade">
+            <field-name>grade</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_isSecured">
+            <field-name>isSecured</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_isAdhoc">
+            <field-name>isAdhoc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimit_facilityCat">
+            <field-name>facilityCat</field-name>
+         </cmp-field>
+         <primkey-field>limitPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBLimit_EBCollateralAllocation">
+            <ejb-ref-name>EBCollateralAllocationLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBCollateraAllocationLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBCollateraAllocationLocal</local>
+            <ejb-link>EBCollateralAllocation</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLimit_EBCoBorrowerLimit">
+            <ejb-ref-name>EBCoBorrowerLimitLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitLocal</local>
+            <ejb-link>EBCoBorrowerLimit</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLimit_EBLimitSysXRef">
+            <ejb-ref-name>EBLimitSysXRefLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBLimitSysXRefLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBLimitSysXRefLocal</local>
+            <ejb-link>EBLimitSysXRef</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBLimit">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimit o WHERE (?1 = o.limitProfileFK) AND o.limitStatus <> ?2 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBLimitStaging">
+         <ejb-name>EBLimitStaging</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBLimitHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBLimit</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBLimitLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBLimitLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBLimitStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitStaging_limitPK">
+            <field-name>limitPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitProfileFK">
+            <field-name>limitProfileFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_currencyCode">
+            <field-name>currencyCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_approvedLimit">
+            <field-name>approvedLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_activatedLimit">
+            <field-name>activatedLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitAdviseStr">
+            <field-name>limitAdviseStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitCommittedStr">
+            <field-name>limitCommittedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_sharedLimitStr">
+            <field-name>sharedLimitStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitRef">
+            <field-name>limitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_losLimitRef">
+            <field-name>losLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_acfNo">
+            <field-name>acfNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_outerLimitID">
+            <field-name>outerLimitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBOuterLimitProfileID">
+            <field-name>eBOuterLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_bookingCountry">
+            <field-name>bookingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_bookingOrganisation">
+            <field-name>bookingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_productDesc">
+            <field-name>productDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilityDesc">
+            <field-name>facilityDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitType">
+            <field-name>limitType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitSecuredType">
+            <field-name>limitSecuredType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitExpiryDate">
+            <field-name>limitExpiryDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitTenor">
+            <field-name>limitTenor</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitTenorUnit">
+            <field-name>limitTenorUnit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitInterest">
+            <field-name>limitInterest</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitCMMSN">
+            <field-name>limitCMMSN</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitFee">
+            <field-name>limitFee</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitConditionText">
+            <field-name>limitConditionText</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBRequiredSecurityCoverage">
+            <field-name>eBRequiredSecurityCoverage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBActualSecurityCoverage">
+            <field-name>eBActualSecurityCoverage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitStatus">
+            <field-name>limitStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_existingStr">
+            <field-name>existingStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_hostStatus">
+            <field-name>hostStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitActivatedStr">
+            <field-name>limitActivatedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBOperationalLimit">
+            <field-name>eBOperationalLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBIsLimitZerorised">
+            <field-name>eBIsLimitZerorised</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_zerorisedReason">
+            <field-name>zerorisedReason</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_zerorisedDate">
+            <field-name>zerorisedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitDescNum">
+            <field-name>limitDescNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_productGroupNum">
+            <field-name>productGroupNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_productGroup">
+            <field-name>productGroup</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_productDescNum">
+            <field-name>productDescNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilityDescNum">
+            <field-name>facilityDescNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitTenorUnitNum">
+            <field-name>limitTenorUnitNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_drawingLimit">
+            <field-name>drawingLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_outstandingAmt">
+            <field-name>outstandingAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitDesc">
+            <field-name>limitDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_sourceId">
+            <field-name>sourceId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_loanType">
+            <field-name>loanType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_lastUpdatedDate">
+            <field-name>lastUpdatedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_limitProfileReferenceNumber">
+            <field-name>limitProfileReferenceNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBDisbursedInd">
+            <field-name>eBDisbursedInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilityCode">
+            <field-name>facilityCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilitySequence">
+            <field-name>facilitySequence</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBActualSecCoverageAmt">
+            <field-name>eBActualSecCoverageAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBOMVSecCoverageAmt">
+            <field-name>eBOMVSecCoverageAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_eBFSVSecCoverageAmt">
+            <field-name>eBFSVSecCoverageAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_interestRate">
+            <field-name>interestRate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_accountType">
+            <field-name>accountType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_lEReference">
+            <field-name>lEReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_innerLimitOrdering">
+            <field-name>innerLimitOrdering</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_omnibusEnvelopeId">
+            <field-name>omnibusEnvelopeId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_omnibusEnvelopeName">
+            <field-name>omnibusEnvelopeName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilityName">
+            <field-name>facilityName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilityType">
+            <field-name>facilityType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilitySystem">
+            <field-name>facilitySystem</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilitySystemID">
+            <field-name>facilitySystemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_lineNo">
+            <field-name>lineNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_purpose">
+            <field-name>purpose</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_isDP">
+            <field-name>isDP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_relationShipManager">
+            <field-name>relationShipManager</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_isReleased">
+            <field-name>isReleased</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_grade">
+            <field-name>grade</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_isSecured">
+            <field-name>isSecured</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_isAdhoc">
+            <field-name>isAdhoc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitStaging_facilityCat">
+            <field-name>facilityCat</field-name>
+         </cmp-field>
+         <primkey-field>limitPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBLimitStaging_EBCollateralAllocationStaging">
+            <ejb-ref-name>EBCollateralAllocationLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBCollateraAllocationLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBCollateraAllocationLocal</local>
+            <ejb-link>EBCollateralAllocationStaging</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLimitStaging_EBCoBorrowerLimit">
+            <ejb-ref-name>EBCoBorrowerLimitLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitLocal</local>
+            <ejb-link>EBCoBorrowerLimit</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBLimitStaging_EBLimitSysXRefStaging">
+            <ejb-ref-name>EBLimitSysXRefLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBLimitSysXRefLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBLimitSysXRefLocal</local>
+            <ejb-link>EBLimitSysXRefStaging</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBLimitStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBLimitStaging o WHERE (?1 = o.limitProfileFK) AND o.limitStatus <> ?2 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCoBorrowerLimit">
+         <ejb-name>EBCoBorrowerLimit</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimit</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCoBorrowerLimit</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_limitPK">
+            <field-name>limitPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_limitRef">
+            <field-name>limitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_outerLimitFK">
+            <field-name>outerLimitFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_currencyCode">
+            <field-name>currencyCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_approvedLimit">
+            <field-name>approvedLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_activatedLimit">
+            <field-name>activatedLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_bookingCountry">
+            <field-name>bookingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_bookingOrganisation">
+            <field-name>bookingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_customerID">
+            <field-name>customerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_hostStatus">
+            <field-name>hostStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_limitActivatedStr">
+            <field-name>limitActivatedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_existingStr">
+            <field-name>existingStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_lEReference">
+            <field-name>lEReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_requiredSecurityCoveragesCMP">
+            <field-name>requiredSecurityCoveragesCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_actualSecurityCoveragesCMP">
+            <field-name>actualSecurityCoveragesCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_coLimitSecuredType">
+            <field-name>coLimitSecuredType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_limitZerorisedCMP">
+            <field-name>limitZerorisedCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_zerorisedDateCMP">
+            <field-name>zerorisedDateCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_zerorisedReasonsCMP">
+            <field-name>zerorisedReasonsCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimit_sourceId">
+            <field-name>sourceId</field-name>
+         </cmp-field>
+         <primkey-field>limitPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCoBorrowerLimit_EBCollateralAllocation">
+            <ejb-ref-name>EBCollateralAllocationLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBCollateraAllocationLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBCollateraAllocationLocal</local>
+            <ejb-link>EBCollateralAllocation</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCoBorrowerLimit">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCoBorrowerOuterLimitID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCoBorrowerLimit o WHERE (?1 = o.outerLimitFK)]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCoBorrowerLimitStaging">
+         <ejb-name>EBCoBorrowerLimitStaging</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimit</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBCoBorrowerLimitStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCoBorrowerLimitStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_limitPK">
+            <field-name>limitPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_limitRef">
+            <field-name>limitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_outerLimitFK">
+            <field-name>outerLimitFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_currencyCode">
+            <field-name>currencyCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_approvedLimit">
+            <field-name>approvedLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_activatedLimit">
+            <field-name>activatedLimit</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_bookingCountry">
+            <field-name>bookingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_bookingOrganisation">
+            <field-name>bookingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_customerID">
+            <field-name>customerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_hostStatus">
+            <field-name>hostStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_limitActivatedStr">
+            <field-name>limitActivatedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_existingStr">
+            <field-name>existingStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_lEReference">
+            <field-name>lEReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_requiredSecurityCoveragesCMP">
+            <field-name>requiredSecurityCoveragesCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_actualSecurityCoveragesCMP">
+            <field-name>actualSecurityCoveragesCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_coLimitSecuredType">
+            <field-name>coLimitSecuredType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_limitZerorisedCMP">
+            <field-name>limitZerorisedCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_zerorisedDateCMP">
+            <field-name>zerorisedDateCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_zerorisedReasonsCMP">
+            <field-name>zerorisedReasonsCMP</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCoBorrowerLimitStaging_sourceId">
+            <field-name>sourceId</field-name>
+         </cmp-field>
+         <primkey-field>limitPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCoBorrowerLimitStaging_EBCollateralAllocation">
+            <ejb-ref-name>EBCollateralAllocationLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBCollateraAllocationLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBCollateraAllocationLocal</local>
+            <ejb-link>EBCollateralAllocation</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCoBorrowerLimitStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByCoBorrowerOuterLimitID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCoBorrowerLimitStaging o WHERE (?1 = o.outerLimitFK)]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBCollateralAllocation">
+         <ejb-name>EBCollateralAllocation</ejb-name>
+         <local-home>com.integrosys.cms.app.limit.bus.EBCollateralAllocationLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBCollateralAllocationLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBCollateralAllocationBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCollateralAllocation</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCollateralAllocation_chargePK">
+            <field-name>chargePK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_collateralPK">
+            <field-name>collateralPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_limitPK">
+            <field-name>limitPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_hostStatus">
+            <field-name>hostStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_sCILimitSecMapID">
+            <field-name>sCILimitSecMapID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_coBorrowerLimitPK">
+            <field-name>coBorrowerLimitPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_sourceLmtId">
+            <field-name>sourceLmtId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_customerCategory">
+            <field-name>customerCategory</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_createDate">
+            <field-name>createDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_deletionDate">
+            <field-name>deletionDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_eBLimitProfileID">
+            <field-name>eBLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocation_sourceID">
+            <field-name>sourceID</field-name>
+         </cmp-field>
+         <primkey-field>chargePK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCollateralAllocation">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBCollateralAllocationStaging">
+         <ejb-name>EBCollateralAllocationStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.limit.bus.EBCollateralAllocationLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBCollateralAllocationLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBCollateralAllocationStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCollateralAllocationStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_chargePK">
+            <field-name>chargePK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_collateralPK">
+            <field-name>collateralPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_limitPK">
+            <field-name>limitPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_hostStatus">
+            <field-name>hostStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_sCILimitSecMapID">
+            <field-name>sCILimitSecMapID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_coBorrowerLimitPK">
+            <field-name>coBorrowerLimitPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_sourceLmtId">
+            <field-name>sourceLmtId</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_customerCategory">
+            <field-name>customerCategory</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_createDate">
+            <field-name>createDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_deletionDate">
+            <field-name>deletionDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_eBLimitProfileID">
+            <field-name>eBLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCollateralAllocationStaging_sourceID">
+            <field-name>sourceID</field-name>
+         </cmp-field>
+         <primkey-field>chargePK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCollateralAllocationStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBLimitSysXRef">
+         <ejb-name>EBLimitSysXRef</ejb-name>
+         <local-home>com.integrosys.cms.app.limit.bus.EBLimitSysXRefLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBLimitSysXRefLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBLimitSysXRefBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitSysXRef</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitSysXRef_xRefPK">
+            <field-name>xRefPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_limitID">
+            <field-name>limitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_customerSysXRefID">
+            <field-name>customerSysXRefID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_sID">
+            <field-name>sID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_xRefRef">
+            <field-name>xRefRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_xRefLegalRef">
+            <field-name>xRefLegalRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_xRefCustomerRef">
+            <field-name>xRefCustomerRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_xRefBCARef">
+            <field-name>xRefBCARef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_xRefLimitRef">
+            <field-name>xRefLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRef_xRefCustomerXRef">
+            <field-name>xRefCustomerXRef</field-name>
+         </cmp-field>
+         <primkey-field>xRefPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBLimitSysXRef">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBLimitSysXRefStaging">
+         <ejb-name>EBLimitSysXRefStaging</ejb-name>
+         <local-home>com.integrosys.cms.app.limit.bus.EBLimitSysXRefLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBLimitSysXRefLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBLimitSysXRefStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBLimitSysXRefStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_xRefPK">
+            <field-name>xRefPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_limitID">
+            <field-name>limitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_customerSysXRefID">
+            <field-name>customerSysXRefID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_sID">
+            <field-name>sID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_xRefRef">
+            <field-name>xRefRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_xRefLegalRef">
+            <field-name>xRefLegalRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_xRefCustomerRef">
+            <field-name>xRefCustomerRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_xRefBCARef">
+            <field-name>xRefBCARef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_xRefLimitRef">
+            <field-name>xRefLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBLimitSysXRefStaging_xRefCustomerXRef">
+            <field-name>xRefCustomerXRef</field-name>
+         </cmp-field>
+         <primkey-field>xRefPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBLimitSysXRefStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBTATEntry">
+         <ejb-name>EBTATEntry</ejb-name>
+         <local-home>com.integrosys.cms.app.limit.bus.EBTATEntryLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBTATEntryLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBTATEntryBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTATEntry</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTATEntry_tATEntryPK">
+            <field-name>tATEntryPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTATEntry_limitProfileID">
+            <field-name>limitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTATEntry_tATStamp">
+            <field-name>tATStamp</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTATEntry_tATServiceCode">
+            <field-name>tATServiceCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTATEntry_referenceDate">
+            <field-name>referenceDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTATEntry_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <primkey-field>tATEntryPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBTATEntry">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBTATEntry o WHERE (?1 = o.limitProfileID)]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTradingAgreement">
+         <ejb-name>EBTradingAgreement</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBTradingAgreementHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBTradingAgreement</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBTradingAgreementLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBTradingAgreementLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBTradingAgreementBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTradingAgreement</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTradingAgreement_agreementPK">
+            <field-name>agreementPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_limitProfileFK">
+            <field-name>limitProfileFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_agreementType">
+            <field-name>agreementType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_counterPartyBranch">
+            <field-name>counterPartyBranch</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_minTransferCurrency">
+            <field-name>minTransferCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_minTransferAmt">
+            <field-name>minTransferAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_counterPartyRatingType">
+            <field-name>counterPartyRatingType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_counterPartyRating">
+            <field-name>counterPartyRating</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_mbbRatingType">
+            <field-name>mbbRatingType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_mbbRating">
+            <field-name>mbbRating</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_eligibleMargin">
+            <field-name>eligibleMargin</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_agreeIntRateType">
+            <field-name>agreeIntRateType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_baseCurrency">
+            <field-name>baseCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_counterPartyThresholdAmt">
+            <field-name>counterPartyThresholdAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_mbbThresholdAmt">
+            <field-name>mbbThresholdAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_agentBankName">
+            <field-name>agentBankName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_agentBankAddress">
+            <field-name>agentBankAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_bankClearanceID">
+            <field-name>bankClearanceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_bankAccountID">
+            <field-name>bankAccountID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_clearingDesc">
+            <field-name>clearingDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_notificationTime">
+            <field-name>notificationTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_valuationTime">
+            <field-name>valuationTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreement_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>agreementPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBTradingAgreement_EBThresholdRating">
+            <ejb-ref-name>EBThresholdRatingLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBThresholdRatingLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBThresholdRatingLocal</local>
+            <ejb-link>EBThresholdRating</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBTradingAgreement">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBTradingAgreement o WHERE (?1 = o.limitProfileFK) AND o.status <> ?2 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBTradingAgreementStaging">
+         <ejb-name>EBTradingAgreementStaging</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBTradingAgreementHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBTradingAgreement</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBTradingAgreementLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBTradingAgreementLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBTradingAgreementStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBTradingAgreementStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_agreementPK">
+            <field-name>agreementPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_limitProfileFK">
+            <field-name>limitProfileFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_agreementType">
+            <field-name>agreementType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_counterPartyBranch">
+            <field-name>counterPartyBranch</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_minTransferCurrency">
+            <field-name>minTransferCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_minTransferAmt">
+            <field-name>minTransferAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_counterPartyRatingType">
+            <field-name>counterPartyRatingType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_counterPartyRating">
+            <field-name>counterPartyRating</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_mbbRatingType">
+            <field-name>mbbRatingType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_mbbRating">
+            <field-name>mbbRating</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_eligibleMargin">
+            <field-name>eligibleMargin</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_agreeIntRateType">
+            <field-name>agreeIntRateType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_baseCurrency">
+            <field-name>baseCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_counterPartyThresholdAmt">
+            <field-name>counterPartyThresholdAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_mbbThresholdAmt">
+            <field-name>mbbThresholdAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_agentBankName">
+            <field-name>agentBankName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_agentBankAddress">
+            <field-name>agentBankAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_bankClearanceID">
+            <field-name>bankClearanceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_bankAccountID">
+            <field-name>bankAccountID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_clearingDesc">
+            <field-name>clearingDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_notificationTime">
+            <field-name>notificationTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_valuationTime">
+            <field-name>valuationTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBTradingAgreementStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>agreementPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBTradingAgreementStaging_EBThresholdRatingStaging">
+            <ejb-ref-name>EBThresholdRatingLocalHomeStaging</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.limit.bus.EBThresholdRatingLocalHome</local-home>
+            <local>com.integrosys.cms.app.limit.bus.EBThresholdRatingLocal</local>
+            <ejb-link>EBThresholdRatingStaging</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBTradingAgreementStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfile</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBTradingAgreementStaging o WHERE (?1 = o.limitProfileFK) AND o.status <> ?2 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBThresholdRating">
+         <ejb-name>EBThresholdRating</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBThresholdRatingHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBThresholdRating</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBThresholdRatingLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBThresholdRatingLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBThresholdRatingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBThresholdRating</abstract-schema-name>
+         <cmp-field id="cmpfield_EBThresholdRating_ratingPK">
+            <field-name>ratingPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRating_agreementFK">
+            <field-name>agreementFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRating_ratingType">
+            <field-name>ratingType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRating_rating">
+            <field-name>rating</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRating_thresholdCurrency">
+            <field-name>thresholdCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRating_thresholdAmt">
+            <field-name>thresholdAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRating_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRating_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>ratingPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBThresholdRating">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByAgreement</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBThresholdRating o WHERE (?1 = o.agreementFK) AND o.status <> ?2  ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBThresholdRatingStaging">
+         <ejb-name>EBThresholdRatingStaging</ejb-name>
+         <home>com.integrosys.cms.app.limit.bus.EBThresholdRatingHome</home>
+         <remote>com.integrosys.cms.app.limit.bus.EBThresholdRating</remote>
+         <local-home>com.integrosys.cms.app.limit.bus.EBThresholdRatingLocalHome</local-home>
+         <local>com.integrosys.cms.app.limit.bus.EBThresholdRatingLocal</local>
+         <ejb-class>com.integrosys.cms.app.limit.bus.EBThresholdRatingStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBThresholdRatingStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBThresholdRatingStaging_ratingPK">
+            <field-name>ratingPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRatingStaging_agreementFK">
+            <field-name>agreementFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRatingStaging_ratingType">
+            <field-name>ratingType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRatingStaging_rating">
+            <field-name>rating</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRatingStaging_thresholdCurrency">
+            <field-name>thresholdCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRatingStaging_thresholdAmt">
+            <field-name>thresholdAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRatingStaging_status">
+            <field-name>status</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBThresholdRatingStaging_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>ratingPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBThresholdRatingStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByAgreement</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+                  <method-param>java.lang.String</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBThresholdRatingStaging o WHERE (?1 = o.agreementFK) AND o.status <> ?2 ]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_EBLimit-EBCollateralAllocation">
+         <ejb-relation-name>EBLimit-EBCollateralAllocation</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_EBLimit-Has-EBCollateralAllocation">
+            <ejb-relationship-role-name>EBLimit-Has-EBCollateralAllocation</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLimit</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCollateralAllocations</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_EBCollateralAllocation-BelongsTo-EBLimit">
+            <ejb-relationship-role-name>EBCollateralAllocation-BelongsTo-EBLimit</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCollateralAllocation</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_EBLimit-EBLimitSysXRef">
+         <ejb-relation-name>EBLimit-EBLimitSysXRef</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_EBLimit-Has-EBLimitSysXRef">
+            <ejb-relationship-role-name>EBLimit-Has-EBLimitSysXRef</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLimit</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRLimitSysXRefs</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_EBLimitSysXRef-BelongTo-EBLimit">
+            <ejb-relationship-role-name>EBLimitSysXRef-BelongTo-EBLimit</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLimitSysXRef</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_EBLimitStaging-EBLimitSysXRefStaging">
+         <ejb-relation-name>EBLimitStaging-EBLimitSysXRefStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_EBLimitStaging-Has-EBLimitSysXRefStaging">
+            <ejb-relationship-role-name>EBLimitStaging-Has-EBLimitSysXRefStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLimitStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRLimitSysXRefs</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_EBLimitSysXRefStaging-BelongTo-EBLimitStaging">
+            <ejb-relationship-role-name>EBLimitSysXRefStaging-BelongTo-EBLimitStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLimitSysXRefStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_EBLimitStaging-EBCollateralAllocationStaging">
+         <ejb-relation-name>EBLimitStaging-EBCollateralAllocationStaging</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_EBLimitStaging-Has-EBCollateralAllocationStaging">
+            <ejb-relationship-role-name>EBLimitStaging-Has-EBCollateralAllocationStaging</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBLimitStaging</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCollateralAllocations</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_EBCollateralAllocationStaging-BelongsTo-EBLimitStaging">
+            <ejb-relationship-role-name>EBCollateralAllocationStaging-BelongsTo-EBLimitStaging</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCollateralAllocationStaging</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_EBCoBorrowerLimit-EBCollateralAllocation">
+         <ejb-relation-name>EBCoBorrowerLimit-EBCollateralAllocation</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_EBCoBorrowerLimit-Has-EBCollateralAllocation">
+            <ejb-relationship-role-name>EBCoBorrowerLimit-Has-EBCollateralAllocation</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCoBorrowerLimit</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCollateralAllocations</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_EBCollateralAllocation-BelongsTo-EBCoBorrowerLimit">
+            <ejb-relationship-role-name>EBCollateralAllocation-BelongsTo-EBCoBorrowerLimit</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCollateralAllocation</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBLimitManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBLimitManagerStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLimitProfile</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLimitProfileStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLimit</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLimitStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCoBorrowerLimit</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCoBorrowerLimitStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCollateralAllocation</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLimitSysXRef</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBLimitSysXRefStaging</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBLimitProxy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBTradingAgreement</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBThresholdRating</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+      <container-transaction>
+         <method>
+            <ejb-name>SBLimitProxy</ejb-name>
+            <method-name>computeLimitThreshold</method-name>
+            <method-params>
+               <method-param>com.integrosys.cms.app.limit.bus.ILimit</method-param>
+               <method-param>com.integrosys.cms.batch.collateralthreshold.CollateralThresholdDAO</method-param>
+               <method-param>com.integrosys.cms.app.limit.proxy.ILimitProxy</method-param>
+            </method-params>
+         </method>
+         <method>
+            <ejb-name>SBLimitProxy</ejb-name>
+            <method-name>performChargeAllocation</method-name>
+            <method-params>
+               <method-param>com.integrosys.cms.app.collateral.bus.ICollateral</method-param>
+               <method-param>com.integrosys.cms.batch.collateralthreshold.CollateralThresholdDAO</method-param>
+            </method-params>
+         </method>
+         <method>
+            <ejb-name>SBLimitProxy</ejb-name>
+            <method-name>computeLimitProfileThreshold</method-name>
+            <method-params>
+               <method-param>com.integrosys.cms.app.limit.bus.ILimitProfile</method-param>
+               <method-param>com.integrosys.cms.batch.collateralthreshold.CollateralThresholdDAO</method-param>
+            </method-params>
+         </method>
+         <trans-attribute>RequiresNew</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

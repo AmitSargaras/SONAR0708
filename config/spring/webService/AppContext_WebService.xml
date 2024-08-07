@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+
+		WebService context files for WebService module.
+	</description>
+	
+
+	<bean id="camServiceFacade" class="com.integrosys.cms.app.ws.facade.CAMServiceFacade">	
+	<property name="limitJdbc" ref="limitJdbc"/> 
+	</bean>	
+		
+	<bean id="partyDetailsFacade" class="com.integrosys.cms.app.ws.facade.PartyDetailsFacade">
+<!-- 	<property name="endOfDaySyncMastersServiceImpl" ref="endOfDaySyncMastersServiceImpl"></property> -->    
+	</bean>	
+	<bean id="facilityServiceFacade" class="com.integrosys.cms.app.ws.facade.FacilityServiceFacade">
+	<property name="userProxy" ref="userProxy"/> 
+	<property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+	<property name="endOfDaySyncMastersServiceImpl" ref="endOfDaySyncMastersServiceImpl"/>
+	</bean>	
+	
+	<bean id="isacServiceFacade" class="com.integrosys.cms.app.ws.facade.ISACServiceFacade">
+	</bean>	
+	
+	<bean id="digitalLibraryServiceFacade" class="com.integrosys.cms.app.ws.facade.DigitalLibraryServiceFacade">
+	<property name="userProxy" ref="userProxy"/> 
+	<property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+	</bean>	
+	
+	
+<!-- 	<bean id="commonCodeServiceFacade" class="com.integrosys.cms.app.ws.facade.CommonCodeServiceFacade">
+	<property name="userProxy" ref="userProxy"/> 
+	<property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+	</bean>	 -->
+	
+	
+	<bean id="commonCodeRestService" class="com.aurionpro.clims.rest.service.CommonCodeRestService">
+	<property name="userProxy" ref="userProxy"/> 
+	<property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+	</bean>	
+	  <bean id="endOfDaySyncMastersServiceImpl" class="com.integrosys.cms.batch.eod.EndOfDaySyncMastersServiceImpl">
+    	<property name="generalParam" ref="generalParamDao"></property>
+    	<property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    	<property name="eodSyncStatusProxy" ref="eodSyncStatusProxyManager"></property>
+    	<property name="processMasterSyncOutData" ref="processMasterSyncOutData"></property>
+    </bean>
+	
+	<bean id="discrepancyServiceFacade" class="com.integrosys.cms.app.ws.facade.DiscrepancyServiceFacade">
+	<property name="limitJdbc" ref="limitJdbc"/> 
+	<property name="userProxy" ref="userProxy"/> 
+	<property name="cmsTeamProxy" ref="cmsTeamProxy"/> 
+	<property name="discrepencyProxy" ref="discrepencyProxy"/> 
+	<property name="creditApprovalDao" ref="creditApprovalDao" />
+	</bean>	
+	<bean id="makerCheckerUserUtil" class="com.integrosys.cms.app.common.util.MakerCheckerUserUtil">
+		<property name="userProxy" ref="userProxy"></property>
+		<property name="cmsTeamProxy" ref="cmsTeamProxy"></property>
+	</bean>	
+	
+ 	<bean id="securityFacade" class="com.integrosys.cms.app.ws.facade.SecurityFacade">
+	</bean>	
+	<bean id="documentsServiceFacade" class="com.integrosys.cms.app.ws.facade.DocumentsServiceFacade">
+	<property name="userProxy" ref="userProxy"/> 
+	<property name="cmsTeamProxy" ref="cmsTeamProxy"/> 
+	<property name="checklistProxyManager" ref="checklistProxy"/> 
+	</bean>	
+	
+	<bean id="checklistProxy" class="com.integrosys.cms.app.checklist.proxy.CheckListProxyManagerImpl">
+  		<property name="slsbCheckListProxyManager" ref="slsbCheckListProxyManager" />
+  	</bean>
+	
+	<bean id="slsbCheckListProxyManager" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean">
+	  <property name="jndiName" value="SBCheckListProxyManagerHome" />
+	  <property name="businessInterface" value="com.integrosys.cms.app.checklist.proxy.SBCheckListProxyManager" />
+	  <property name="lookupHomeOnStartup" value="false" />
+	</bean>
+
+	<bean id="userProxy" class="org.springframework.ejb.access.SimpleRemoteStatelessSessionProxyFactoryBean" >
+	  <property name="jndiName" value="SBCommonUserProxyHome" />
+	  <property name="businessInterface" value="com.integrosys.component.user.app.proxy.SBCommonUserProxy" />
+	  <property name="lookupHomeOnStartup" value="false" />
+	</bean>
+	
+	<bean id="cmsTeamProxy"  class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames" value="cmsTeamProxyApproveDeleteTeamInterceptor" />
+		<property name="targetName" value="cmsTeamProxyTarget" />
+	</bean>
+	<bean id="limitJdbc" class="com.integrosys.cms.host.eai.limit.bus.LimitJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+	<bean id="creditApprovalDao" class="com.integrosys.cms.app.creditApproval.bus.CreditApprovalDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="documentServiceFacade" class="com.integrosys.cms.app.ws.facade.DocumentsServiceFacade">
+		<property name="userProxy" ref="userProxy"/> 
+		<property name="cmsTeamProxy" ref="cmsTeamProxy"/> 
+		<property name="checklistProxyManager" ref="checklistProxy"/> 
+		<property name="limitJdbc" ref="limitJdbc"/> 
+		<property name="securityDao" ref="securityDao" />
+	</bean>
+	
+	<bean id="wmsServiceFacade" class="com.integrosys.cms.app.ws.facade.WMSServiceFacade">	
+	<property name="limitJdbc" ref="limitJdbc"/> 
+	</bean>
+		
+	<bean id="scmPartyDao" class="com.integrosys.cms.app.json.dao.ScmPartyDaoImpl">
+			<property name="dataSource" ref="ofaPool" />
+	</bean>	
+	<bean id="partyServiceEndPoint" class="com.integrosys.cms.app.json.endpoint.ScmPartyEndPoint">
+	</bean>	
+	<bean id="partyWebServiceClient" class="com.integrosys.cms.app.json.ws.PartyWebserviceClientImpl">
+	</bean>
+	<bean id="loggingDao" class="com.integrosys.cms.app.json.dao.JsInterfaceLogDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	<bean id="scmLineDao" class="com.integrosys.cms.app.json.dao.ScmLineDaoImpl">
+			<property name="dataSource" ref="ofaPool" />
+	</bean>	
+	<bean id="lineServiceEndPoint" class="com.integrosys.cms.app.json.endpoint.ScmLineEndPoint">
+	</bean>	
+	<bean id="lineWebServiceClient" class="com.integrosys.cms.app.json.ws.LineWebserviceClientImpl">
+	</bean>	
+	
+	<bean id="ecbfLimitServiceFacade" class="com.integrosys.cms.app.ws.facade.ECBFLimitServiceFacade">	
+	</bean>	
+	<bean id="camExtensionDateServiceFacade" class="com.integrosys.cms.app.ws.facade.CAMExtensionDateServiceFacade">
+		<property name="limitJdbc" ref="limitJdbc"/> 
+	</bean>
+		<bean id="leiJdbc" class="com.integrosys.cms.app.lei.bus.LeiJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+	<bean id="logLeiDao" class="com.integrosys.cms.app.lei.json.dao.LEIValidationLogDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>	
+	<bean id="leiServiceEndPoint" class="com.integrosys.cms.app.lei.json.endpoint.LEICCILEndPoint">
+	</bean>
+	<bean id="leiResponseHelper" class="com.integrosys.cms.app.lei.json.helper.LeiResponseHelperImpl">
+		<property name="leiServiceEndPoint" ref="leiServiceEndPoint" />
+	</bean>
+	<bean id="leiWebServiceClient" class="com.integrosys.cms.app.lei.json.ws.CCILWebserviceClientImpl">
+		<property name="leiResponseHelper" ref="leiResponseHelper" />
+		<property name="leiServiceEndPoint" ref="leiServiceEndPoint" />
+	</bean>
+</beans>

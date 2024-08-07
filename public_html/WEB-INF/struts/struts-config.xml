@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+
+    <!-- ========== Form Mapping Definitions ==============================  -->
+
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+
+        <form-bean name="LoginForm" type="com.integrosys.cms.ui.login.LoginRoleForm">
+        </form-bean>
+        
+        <form-bean name="ChangeRoleForm" type="com.integrosys.cms.ui.role.ChangeRoleForm">
+		</form-bean>
+
+        <form-bean name="ForceChangePasswordForm" type="com.integrosys.component.login.ui.ChangePasswordForm">
+        </form-bean>
+
+        <form-bean name="PasswordChangeForm" type="com.integrosys.cms.ui.profile.PasswordChangeForm">
+        </form-bean>
+
+        <form-bean name="WorkspaceForm" type="com.integrosys.cms.ui.workspace.WorkspaceForm">
+        </form-bean>  
+                
+        <form-bean name="WelcomeForm" type="com.integrosys.cms.ui.welcome.WelcomeForm">
+        </form-bean>
+	
+	
+    </form-beans>
+    
+	<global-exceptions>
+		<exception
+			key="error.synchronization"
+			handler="com.integrosys.base.uiinfra.common.CommonExceptionHandler"
+			type="java.lang.Exception" />
+	</global-exceptions>
+
+    <!-- ========== Action Mapping Definitions ==============================   -->
+
+    <global-forwards type="com.integrosys.base.uiinfra.common.IntegroActionForward">
+        <forward name="error" path="/template/common_template.jsp" redirect="false">
+            <set-property property="title" value="title.error"/>
+            <set-property property="rightFrame" value="/system/system_error.jsp"/>
+        </forward>
+        <forward name="ui_error" path="/template/common_template.jsp" redirect="false">
+            <set-property property="title" value="title.error"/>
+            <set-property property="rightFrame" value="/system/ui_system_error.jsp"/>
+        </forward>
+        <forward name="command_error" path="/template/common_template.jsp" redirect="false">
+            <set-property property="title" value="title.error"/>
+            <set-property property="rightFrame" value="/system/command_system_error.jsp"/>
+        </forward>
+        <forward name="access_error" path="/template/common_template.jsp" redirect="false">
+            <set-property property="title" value="title.error"/>
+            <set-property property="rightFrame" value="/system/access_error.jsp"/>
+        </forward>
+        <forward name="badflow_error" path="/template/common_template.jsp" redirect="false">
+            <set-property property="title" value="title.error"/>
+            <set-property property="rightFrame" value="/system/badflow_error.jsp"/>
+        </forward>
+        <!--<forward name="invalid_session_error" path="/system/invalid_session_error.jsp" redirect="false">-->
+		<forward name="invalid_session_error" path="/login.jsp" redirect="false">
+        </forward>
+        <forward name="multi_login_error" path="/system/invalid_session.jsp" redirect="false">
+        </forward>
+        <forward name="concurrent_error" path="/template/common_template.jsp" redirect="false">
+            <set-property property="title" value="title.error"/>
+            <set-property property="rightFrame" value="/system/concurrentupdate.jsp"/>
+        </forward>
+        <forward name="change_pwd" path="/ForceChangePassword.do" redirect="true"/>
+    </global-forwards>
+
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/ToDo" type="com.integrosys.cms.ui.todo.TodoAction"
+            name="WorkspaceForm" validate="false" scope="request">
+
+            <forward name="customertodo" path="/template/common_view_template.jsp">
+                <set-property property="title" value="title.todo.customer"/>
+                <set-property property="rightFrame" value="/todo/customertodo.jsp"/>
+            </forward>
+
+            <forward name="normaltodo" path="/template/common_template.jsp">
+                <set-property property="title" value="title.todo.page"/>
+                <set-property property="rightFrame" value="/todo/todo_list.jsp"/>
+            </forward>
+            
+             <forward name="prepare_discrepancy" path="/template/common_template.jsp">
+                <set-property property="title" value="title.todo.discrepency.page"/>
+                <set-property property="rightFrame" value="/todo/todo_list_discrepancy.jsp"/>
+            </forward>
+            
+             <forward name="totrack_discrepancy" path="/template/common_template.jsp">
+                <set-property property="title" value="title.todo.discrepency.page"/>
+                <set-property property="rightFrame" value="/todo/todo_list_discrepancy.jsp"/>
+            </forward>
+            
+            <forward name="pending_perfection_credit_folder" path="/template/common_template.jsp">
+                <set-property property="title" value="title.todo.page"/>
+                <set-property property="rightFrame" value="/todo/todo_pending_perfection_credit_folder.jsp"/>
+            </forward>
+
+            <forward name="pending_cases" path="/template/common_template.jsp">
+            	<set-property property="title" value="title.todo.page"/>
+            	<set-property property="rightFrame" value="/todo/todo_pending_cases.jsp"/>
+            </forward>
+
+            <forward name="reassign_pending_cases" path="/template/common_template.jsp">
+            	<set-property property="title" value="title.todo.page"/>
+            	<set-property property="rightFrame" value="/todo/ack_reassign.jsp"/>
+            </forward>
+            
+            <forward name="refresh_pending_cases" path="/todo/refresh_filter_list.jsp" />   
+
+            <forward name="reenter" path="/login.jsp"/>
+        </action>
+
+        <action path="/SSLLogin" type="com.integrosys.cms.ui.login.SSLLoginAction" name="LoginForm" scope="request">
+            <forward name="pre_verify" path="/ssl_verify.jsp" redirect="false"/>
+            <!--<forward name="welcome" path="/cms/Welcome.do?event=prepare" redirect="true"/>-->
+            <!--<forward name="welcome" path="/Welcome.do"/>-->
+            <forward name="reenter" path="/login.jsp"/>
+            <forward name="change_pwd" path="/ForceChangePassword.do"/>
+        </action>
+
+        <action path="/Login" type="com.integrosys.cms.ui.login.LoginAction" name="LoginForm" scope="request">
+            <!--<forward name="welcome" path="/Welcome.do"/>-->
+            <forward name="welcome" path="Welcome.do?event=prepare" redirect="true"/>
+            <forward name="reenter" path="/login.jsp"/>
+            <forward name="change_pwd" path="/ForceChangePassword.do"/>
+        </action>
+
+        <action path="/ChangeRole" type="com.integrosys.cms.ui.role.ChangeRoleAction" name="ChangeRoleForm" scope="request">
+            <!--<forward name="welcome" path="/Welcome.do"/>-->
+            <forward name="welcome" path="Welcome.do?event=prepare" redirect="true"/>
+            <forward name="reenter" path="/login.jsp"/>
+            <forward name="change_pwd" path="/ForceChangePassword.do"/>
+		</action>
+
+        <action path="/ForceChangePassword" type="com.integrosys.cms.ui.login.ForceChangePasswordAction" name="ForceChangePasswordForm" scope="request">
+            <forward name="reenter" path="/security/change_pwd.jsp"/>
+            <forward name="proceed" path="/security/change_pwd_finished.jsp"/>
+        </action>
+
+        <action path="/PasswordChange" type="com.integrosys.cms.ui.profile.PasswordChangeAction" name="PasswordChangeForm" scope="request">
+            <forward name="after_prepare" path="/security/change_login_password.jsp"/>
+            <forward name="show_confirm" path="/security/change_login_password_confirm.jsp"/>
+        </action>
+
+        <action path="/Logout" type="com.integrosys.component.login.ui.LogoutAction" name="LoginForm" scope="request">
+            <forward name="LOSUSER" path="/login.jsp"/>
+        </action>
+
+        <action path="/Welcome" type="com.integrosys.cms.ui.welcome.WelcomeAction" name="WelcomeForm" scope="request">
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="title" value="title.welcome.page"/>
+                <set-property property="rightFrame" value="/welcome/common_welcome.jsp"/>
+            </forward>
+            <forward name="loadcount" path="/welcome/load_count.jsp"/>
+            <!--
+            <forward name="reenter" path="/login.jsp"/>
+            -->
+        </action>            	
+
+    </action-mappings>
+    
+	<controller>
+		<set-property property="processorClass" value="org.springframework.web.struts.DelegatingRequestProcessor"/>
+	</controller>
+    
+    <message-resources key="message-main" parameter="ApplicationResources"/>
+    <message-resources key="message-menu" parameter="ApplicationResources-menu"/>
+
+    <plug-in className="org.springframework.web.struts.ContextLoaderPlugIn">
+		<set-property property="contextConfigLocation" 
+			value="/WEB-INF/context/action-manualfeeds-servlet.xml
+				/WEB-INF/context/action-collateral-servlet.xml
+				/WEB-INF/context/action-diary-servlet.xml
+				/WEB-INF/context/action-function-servlet.xml
+				/WEB-INF/context/action-tatdoc-servlet.xml
+				/WEB-INF/context/action-taskmgmt-servlet.xml
+				/WEB-INF/context/action-recurrentcovenant-servlet.xml
+				/WEB-INF/context/action-param-assetlife-servlet.xml
+				/WEB-INF/context/action-srp-servlet.xml
+				/WEB-INF/context/action-login-servlet.xml
+				/WEB-INF/context/action-facility-servlet.xml
+				/WEB-INF/context/action-param-propertyindex-servlet.xml
+				/WEB-INF/context/action-report-servlet.xml
+				/WEB-INF/context/action-securityenvelope-servlet.xml
+				/WEB-INF/context/action-eai-servlet.xml
+				/WEB-INF/context/action-userteam-servlet.xml
+				/WEB-INF/context/action-whatifana-servlet.xml
+				/WEB-INF/context/action-checklist-servlet.xml
+				/WEB-INF/context/action-marketabilityfactor-servlet.xml
+				/WEB-INF/context/action-tatduration-servlet.xml
+				/WEB-INF/context/action-creditriskparam-servlet.xml
+				/WEB-INF/context/action-systemBank-servlet.xml
+				/WEB-INF/context/action-systemBankBranch-servlet.xml
+				/WEB-INF/context/action-directorMaster-servlet.xml
+				/WEB-INF/context/action-holiday-servlet.xml
+				/WEB-INF/context/action-facilityNewMaster-servlet.xml
+				/WEB-INF/context/action-collateralNewMaster-servlet.xml
+				/WEB-INF/context/action-geography-servlet.xml
+				/WEB-INF/context/action-otherBankBranch-servlet.xml
+				/WEB-INF/context/action-imageupload-servlet.xml
+				/WEB-INF/context/action-imagetag-servlet.xml
+				/WEB-INF/context/action-relationshipMgr-servlet.xml
+				/WEB-INF/context/action-insurancecoverage-servlet.xml
+				/WEB-INF/context/action-insurancecoveragedtls-servlet.xml
+				/WEB-INF/context/action-creditapproval-servlet.xml
+				/WEB-INF/context/action-manualinput-servlet.xml
+				/WEB-INF/context/action-partygroup-servlet.xml
+				/WEB-INF/context/action-valuation-agency-servlet.xml
+				/WEB-INF/context/action-rbicategory-servlet.xml
+				/WEB-INF/context/action-discrepency-servlet.xml
+				/WEB-INF/context/action-generalparam-servlet.xml
+				/WEB-INF/context/action-approvalmatrix-servlet.xml
+				/WEB-INF/context/action-ubsupload-servlet.xml
+				/WEB-INF/context/action-finwareupload-servlet.xml
+				/WEB-INF/context/action-finwarefdupload-servlet.xml
+				/WEB-INF/context/action-paripassu-servlet.xml
+				/WEB-INF/context/action-userrole-servlet.xml
+				/WEB-INF/context/action-udf-servlet.xml
+				/WEB-INF/context/action-poiReport-servlet.xml
+				/WEB-INF/context/action-lad-servlet.xml
+				/WEB-INF/context/action-systemHandOff-servlet.xml
+				/WEB-INF/context/action-caseCreationUpdate-servlet.xml
+				/WEB-INF/context/action-caseBranch-servlet.xml
+				/WEB-INF/context/action-component-servlet.xml
+				/WEB-INF/context/action-insurancegc-servlet.xml
+				/WEB-INF/context/action-newtatmaster-servlet.xml
+				/WEB-INF/context/action-baselmaster-servlet.xml
+				/WEB-INF/context/action-fileUpload-servlet.xml
+				/WEB-INF/context/action-pincodeMapping-servlet.xml
+				/WEB-INF/context/action-excludedFacility-servlet.xml
+				/WEB-INF/context/action-collateralRoc-servlet.xml
+				/WEB-INF/context/action-partycamupload-servlet.xml
+				/WEB-INF/context/action-fccBranch-servlet.xml
+				/WEB-INF/context/action-releaselinedetailsupload-servlet.xml
+				/WEB-INF/context/action-createfacilitylineupload-servlet.xml
+				/WEB-INF/context/action-productMaster-servlet.xml
+				/WEB-INF/context/action-goodsMaster-servlet.xml
+				/WEB-INF/context/action-segmentWiseEmail-servlet.xml
+				/WEB-INF/context/action-cersaiMapping-servlet.xml
+				/WEB-INF/context/action-acknowledgmentupload-servlet.xml
+				/WEB-INF/context/action-facilitydetailsupload-servlet.xml		
+				/WEB-INF/context/action-leiDateValidation-servlet.xml
+				/WEB-INF/context/action-leidetailsupload-servlet.xml
+				/WEB-INF/context/action-valuationAmountAndRating-servlet.xml
+				/WEB-INF/context/action-autoupdationlmtsupload-servlet.xml		
+				/WEB-INF/context/action-leidetailsupload-servlet.xml
+				/WEB-INF/context/action-npaTraqCodeMaster-servlet.xml
+				/WEB-INF/context/action-riskType-servlet.xml			
+				/WEB-INF/context/action-bankingArrangementFacExclusion-servlet.xml		
+				/WEB-INF/context/action-mf-schemadetailsupload-servlet.xml
+				/WEB-INF/context/action-stockdetailsupload-servlet.xml
+				/WEB-INF/context/action-bonddetailsupload-servlet.xml
+				/WEB-INF/context/action-bulkudfupload-servlet.xml
+				/WEB-INF/context/action-limitsOfAuthorityMaster-servlet.xml
+				/WEB-INF/context/action-excLineforstpsrm-servlet.xml
+				/WEB-INF/context/action-digitalLibrary-servlet.xml"/>		
+	</plug-in>
+</struts-config>

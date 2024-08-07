@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+
+			Select Row_Number() Over (Order By Trh.Tr_History_Id) As Sno, Tx_Log.User_Id,
+			Stg_Loa.Employee_Grade, Stg_Loa.Segment, Tx_Log.Exceptional_User, Stg_Loa.Limit_Release_Amt, Stg_Loa.Total_Sanctioned_Limit, 
+			Stg_Loa.Property_Valuation_Amt,
+			Stg_Loa.Fd_Amount, Stg_Loa.Drawing_Power, Stg_Loa.Sblc_Security_Omv, Stg_Loa.Facility_Cam_Covenant,
+			Main_Prof.Lmp_Le_Id As Party_Id ,Trh.Legal_Name As Party_Name , 
+			Tx_Log.Trx_Limit_Release_Amt, Tx_Log.Trx_Total_Sanctioned_Limit, Tx_Log.Trx_Property_Valuation_Amt, Tx_Log.Trx_Fd_Amount, 
+			Tx_Log.Trx_Drawing_Power, Tx_Log.Trx_Sblc_Security_Omv,  Tx_Log.Maker_Id, Tx_Log.Checker_Id, 
+			TO_CHAR(Tx_Log.MAKER_DATETIME,'DD/MON/YYYY HH:MM:SS AM') AS MAKER_DATETIME,
+			TO_CHAR(Tx_Log.CHECKER_DATETIME,'DD/MON/YYYY HH:MM:SS AM') AS CHECKER_DATETIME
+			From Cms_Loa_Master_Trx_Log Tx_Log
+			Inner Join Cms_Stage_Loa_Master Stg_Loa On Stg_Loa.Id = Tx_Log.Cms_Stage_Loa_Master_Id
+			Inner Join Trans_History Trh On Trh.Tr_History_Id = Tx_Log.Trx_Hist_Id
+			Inner Join Sci_Le_Sub_Profile Sub_Prof On Sub_Prof.Cms_Le_Sub_Profile_Id = Trh.Customer_Id
+			Inner Join Sci_Le_Main_Profile main_prof on main_prof.CMS_LE_MAIN_PROFILE_ID = Sub_Prof.CMS_LE_MAIN_PROFILE_ID
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				1=1
+			</mandatoryClause>
+			
+			<param>
+				<name>isExceptionalUser</name>
+				<condition> AND Exceptional_User = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and TRUNC(CHECKER_DATETIME) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+			 			
+ 			<orderAndGroupByClause>
+ 				ORDER BY Tx_Log.ID desc
+ 			</orderAndGroupByClause>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Sr. No</header>
+				</reportColumn>
+			<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Employee Grade</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Exceptional User</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Limit Release Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Total Sanctioned Limit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Property Valuation</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>FD Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Drawing Power</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>SBLC Security OMV</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility CAM Covenant</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Limit Release Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Total Sanctioned Limit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Property Valuation</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>FD Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Drawing Power</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>SBLC Security OMV</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>MAKER ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CHECKER ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>MAKER DATETIME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CHECKER DATETIME</header>
+				</reportColumn>	
+					 		  	 		
+			</reportColumns>
+			<reportName>LOA Transaction Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

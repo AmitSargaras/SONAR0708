@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	
+	
+
+    <bean id="BulkUDFUploadAction.BulkUDFUploadCmd" class="com.integrosys.cms.ui.bulkudfupdateupload.BulkUDFUploadCmd"></bean>
+   
+    <bean id="BulkUDFUploadAction.BulkUDFFileUploadCmd" class="com.integrosys.cms.ui.bulkudfupdateupload.BulkUDFFileUploadCmd">
+        <property name="bulkudfuploadProxy" ref="bulkudfuploadProxy" />
+    </bean>
+    
+    <bean id="BulkUDFUploadAction.DownloadReportCommand" class="com.integrosys.cms.ui.bulkudfupdateupload.DownloadReportCommand"></bean>
+    
+    <bean id="BulkUDFUploadAction.CheckerReadBulkUDFFileUploadCmd" class="com.integrosys.cms.ui.bulkudfupdateupload.CheckerReadBulkUDFFileUploadCmd">
+       <property name="bulkudfuploadProxy" ref="bulkudfuploadProxy" />
+     </bean>
+    
+    <bean id="BulkUDFUploadAction.CheckerApproveBulkUDFFileUploadCmd" class="com.integrosys.cms.ui.bulkudfupdateupload.CheckerApproveBulkUDFFileUploadCmd">
+       <property name="bulkudfuploadProxy" ref="bulkudfuploadProxy" />
+     </bean>
+    <bean id="BulkUDFUploadAction.CheckerRejectBulkUDFFileCmd" class="com.integrosys.cms.ui.bulkudfupdateupload.CheckerRejectBulkUDFFileCmd">
+       <property name="bulkudfuploadProxy" ref="bulkudfuploadProxy" />
+     </bean>
+	<bean id="BulkUDFUploadAction.MakerReadBulkUDFRejectCmd" class="com.integrosys.cms.ui.bulkudfupdateupload.MakerReadBulkUDFRejectCmd">
+       <property name="bulkudfuploadProxy" ref="bulkudfuploadProxy" />
+     </bean>
+     <bean id="BulkUDFUploadAction.MakerCloseBulkUDFFileCmd" class="com.integrosys.cms.ui.bulkudfupdateupload.MakerCloseBulkUDFFileCmd">
+       <property name="bulkudfuploadProxy" ref="bulkudfuploadProxy" />
+     </bean>
+    
+      <bean id="BulkUDFUploadAction.ReadProcessBulkUDFFile" class="com.integrosys.cms.ui.bulkudfupdateupload.ReadProcessBulkUDFFile">
+       <property name="bulkudfuploadProxy" ref="bulkudfuploadProxy" /></bean>
+ </beans>
+ 
+

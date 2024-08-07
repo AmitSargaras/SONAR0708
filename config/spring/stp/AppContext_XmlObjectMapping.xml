@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		All the castor's marshaller and unmarshaller for XOM
+	</description>
+
+	<bean id="stpMessageMarshallerFactory" class="com.integrosys.cms.host.stp.castor.CastorMessageIdBaseMessageMarshallerFactory">
+        <property name="messageIdUnmarshallerMap">
+            <map key-type="java.lang.String" value-type="org.exolab.castor.xml.Unmarshaller">
+                <entry key="T001" value-ref="stpTradeResponseUnmarshaller" />
+            </map>
+        </property>
+        <property name="messageIdMarshallerMap">
+            <map key-type="java.lang.String" value-type="org.exolab.castor.xml.Marshaller">
+                <entry key="T001" value-ref="stpTradeMarshaller" />
+            </map>
+        </property>
+	</bean>
+		
+	<bean id="stpTradeUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:trade.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="stpTradeMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:trade.cm.xml" />
+	</bean>
+	
+	<bean id="stpTradeResponseUnmarshaller" class="org.exolab.castor.xml.Unmarshaller">
+		<property name="mapping" value="classpath:tradeResponse.cm.xml" />
+		<property name="whitespacePreserve" value="true" />
+	</bean>
+	
+	<bean id="stpTradeResponseMarshaller" class="org.exolab.castor.xml.Marshaller">
+		<property name="mapping" value="classpath:tradeResponse.cm.xml" />
+	</bean>
+
+</beans>

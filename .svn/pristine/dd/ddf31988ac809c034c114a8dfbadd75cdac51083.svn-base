@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  	<bean id="collateralBusManager" class="com.integrosys.cms.app.collateral.bus.CollateralBusManagerImpl" />
+
+  	<bean id="stagingCollateralBusManager" class="com.integrosys.cms.app.collateral.bus.CollateralBusManagerStagingImpl" />
+  
+  	<bean id="collateralProxy" class="com.integrosys.cms.app.collateral.proxy.CollateralProxyImpl">
+  		<property name="actualCollateralBusManager" ref="collateralBusManager" />
+  		<property name="checkListProxyManager" ref="checklistProxy" />
+  		<property name="collateralDao" ref="collateralDao" />
+  		<property name="collateralReadController" ref="collateralReadController" />
+  		<property name="collateralTrxController" ref="collateralTrxController" />
+  		<property name="collateralTrxDao" ref="collateralTrxJdbcDao" />
+  		<property name="custodianProxyManager" ref="custodianProxy" />
+  		<property name="valuationHandler" ref="valuationHandler" />
+  	</bean>
+  	
+  	<bean id="collateralTrxStatusMapper" class="com.integrosys.cms.app.collateral.bus.support.CollateralStatusMapper">
+  		<property name="collateralTrxJdbcDao" ref="collateralTrxJdbcDao" />
+  		<property name="collateralTrxStatusDisplayMap">
+  			<map>
+  				<entry key="PENDING_PERFECTION" value="Pending Perfection" />
+  				<entry key="PENDING_UPDATE" value="Pending Approval" />
+  				<entry key="PENDING_CREATE" value="Pending Approval" />
+  				<entry key="PENDING_DELETE" value="Pending Approval" />
+  				<entry key="PENDING_RETRY" value="Pending Retry" />
+  				<entry key="DRAFT" value="Draft" />
+  				<entry key="LOADING" value="Loading" />
+  				<entry key="LOADING_DELETE" value="Loading" />
+  				<entry key="REJECTED" value="Rejected" />
+  				<entry key="IMPLEMENTED" value="Implemented" />
+  				<entry key="ACTIVE" value="Implemented" />
+  				<entry key="DELETED" value="Deleted" />
+  				<entry key="NEW" value="New" />
+  				<entry key="RELEASED" value="Released" />
+  				<entry key="TO_BE_DISCHARGED" value="To Be Discharged" />
+  			</map>
+  		</property>
+  	</bean>
+
+  	 <bean id="collateralStpValidatorFactory" class="com.integrosys.cms.ui.collateral.CollateralStpValidatorFactory">
+  		<property name="collateralSubTypeStpValidatorMap">
+			<map>
+				<entry key="AB109" value-ref="assetAircraftStpValidator"/>
+				<entry key="AB100" value-ref="assetGenChargeStpValidator"/>
+				<entry key="AB108" value-ref="assetPostDatedChqsStpValidator"/>
+				<entry key="AB107" value-ref="assetRecOpenStpValidator"/>
+				<entry key="AB106" value-ref="assetRecSpecNonAgentStpValidator"/>
+				<entry key="AB110" value-ref="assetSpecGoldStpValidator"/>
+				<entry key="AB103" value-ref="assetSpecOtherStpValidator"/>
+				<entry key="AB101" value-ref="assetSpecPlantStpValidator"/>
+				<entry key="AB102" value-ref="assetSpecVehiclesStpValidator"/>
+				<entry key="AB111" value-ref="assetVesselStpValidator"/>
+
+				<entry key="CS200" value-ref="cashCashStpValidator"/>
+				<entry key="CS202" value-ref="cashFdStpValidator"/>
+				<entry key="CS203" value-ref="cashRepoStpValidator"/>
+
+				<entry key="DC309" value-ref="docAgreementStpValidator"/>
+				<entry key="DC304" value-ref="docComfortStpValidator"/>
+				<entry key="DC306" value-ref="docDeedSubStpValidator"/>
+				<entry key="DC300" value-ref="docDervIsdStpValidator"/>
+				<entry key="DC301" value-ref="docDervNetStpValidator"/>
+				<entry key="DC308" value-ref="docDoaStpValidator"/>
+				<entry key="DC302" value-ref="docGenCreditStpValidator"/>
+				<entry key="DC307" value-ref="docLoiStpValidator"/>
+				<entry key="DC303" value-ref="docLouStpValidator"/>
+				<entry key="DC305" value-ref="docPledgeStpValidator"/>
+				<entry key="DC310" value-ref="docComfortStpValidator"/>
+
+				<entry key="GT400" value-ref="gteBankSameStpValidator"/>
+				<entry key="GT405" value-ref="gteCorp3rdStpValidator"/>
+				<entry key="GT406" value-ref="gteGovtStpValidator"/>
+				<entry key="GT409" value-ref="gteGovtLinkStpValidator"/>
+				<entry key="GT407" value-ref="gteIndemStpValidator"/>
+				<entry key="GT408" value-ref="gteIndivStpValidator"/>
+				<entry key="GT410" value-ref="gteInwardLcStpValidator"/>
+				<entry key="GT402" value-ref="gteSLCSameStpValidator"/>
+				<entry key="GT411" value-ref="gteGovtStpValidator"/>
+				<entry key="GT412" value-ref="gteGovtStpValidator"/>
+				<entry key="GT413" value-ref="gteGovtStpValidator"/>
+				<entry key="GT414" value-ref="gteGovtLinkStpValidator"/>
+
+				<entry key="IN500" value-ref="insCrdtStpValidator"/>
+				<entry key="IN502" value-ref="insCrdtDerivStpValidator"/>
+				<entry key="IN501" value-ref="insKeyManStpValidator"/>
+				<entry key="IN503" value-ref="insSwapStpValidator"/>
+
+				<entry key="MS602" value-ref="markSecBillStpValidator"/>
+				<entry key="MS611" value-ref="markSecBondForeignStpValidator"/>
+				<entry key="MS610" value-ref="markSecBondLocalStpValidator"/>
+				<entry key="MS603" value-ref="markSecGovtForeignSameStpValidator"/>
+				<entry key="MS601" value-ref="markSecMainForeignStpValidator"/>
+				<entry key="MS600" value-ref="markSecMainLocalStpValidator"/>
+				<entry key="MS607" value-ref="markSecNonListedLocalStpValidator"/>
+				<entry key="MS606" value-ref="markSecOtherListedForeignStpValidator"/>
+				<entry key="MS605" value-ref="markSecOtherListedLocalStpValidator"/>
+
+				<entry key="CL001" value-ref="noCollateralaStpValidator"/>
+
+				<entry key="OT900" value-ref="othersaStpValidator"/>
+
+				<entry key="PT700" value-ref="propAgriStpValidator"/>
+				<entry key="PT701" value-ref="propCommGeneralStpValidator"/>
+				<!-- <entry key="PT710" value-ref="propCommServiceAptStpValidator"/>
+				<entry key="PT702" value-ref="propCommShopStpValidator"/> -->
+				<entry key="PT703" value-ref="propIndusStpValidator"/>
+				<entry key="PT707" value-ref="propLandUrbanStpValidator"/>
+				<entry key="PT704" value-ref="propResStdStpValidator"/>
+				<entry key="PT706" value-ref="propSpHotelStpValidator"/>
+				<entry key="PT708" value-ref="propRuralStpValidator"/>
+				<entry key="PT709" value-ref="propSpOtherStpValidator"/>
+			</map>
+		</property>
+  	</bean>
+
+</beans>

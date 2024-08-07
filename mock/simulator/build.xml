@@ -1,0 +1,90 @@
+<project name="TCP Simulator" default="deploy" basedir=".">
+
+    <!-- please refer to build.properties for properties settings -->
+	<tstamp> 
+	     <format property="DSTAMP" pattern="MMM-dd-yyyy_HH-mm"/> 
+	</tstamp>
+	
+    <target name="init">
+		<echo>${DSTAMP}</echo>
+		<property file="build.properties"/>
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+		<mkdir dir="${build.dir}/jibx"/>
+        <path id="project.class.path">
+            <pathelement path="${classes.dir}"/>
+            <fileset dir="${lib.dir}">
+                <include name="**/*.jar"/>
+            </fileset>  
+        </path>	
+		<path id="project.config.path">
+		    <pathelement location="${config.dir}"/>
+		</path>
+    </target>
+	
+	<target name="compile" depends="init">
+		<echo>${DSTAMP}</echo>
+        <depend srcdir="${src.dir}"
+            destdir="${classes.dir}"
+            closure="yes"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on"
+            deprecation="on" optimize="on">
+            <classpath refid="project.class.path"/>
+            <exclude name="jsp/**"/>
+            <exclude name="**/CVS/**"/>
+            <exclude name="**/svn/**"/>
+            <exclude name="META-INF/**"/>
+            <exclude name="**/vssver.scc"/>
+            <exclude name="**/ui/**"/>
+        </javac>
+    </target>
+	
+	<target name="jibx-bind-compile">
+			<echo>${DSTAMP}</echo>
+			<taskdef name="bind" classname="org.jibx.binding.ant.CompileTask">
+				<classpath>
+					<fileset dir="${lib.dir}">
+						<include name="**/*.jar"/>
+					</fileset>
+				</classpath>
+			</taskdef>
+			<bind verbose="false" load="true">
+				<classpathset dir="${classes.dir}"/>
+				<bindingfileset dir="${config.dir}/jibx">
+					<exclude name="fixed_length_main_map.xml"/>
+					<include name="*.xml" />
+				</bindingfileset>
+			</bind>
+		<echo message="JiBX binding compilation DONE"/>
+	</target>
+	
+	<target name="deploy" depends="compile,jibx-bind-compile">
+		<echo>${DSTAMP}</echo>
+		
+		<!--jar jarfile="${project.root}/lib/properties.jar" basedir="${project.root}/config/" includes=" **/jibx/** " excludes="**/CVS/**">
+            <exclude name="**/weblogic/**"/>
+            <exclude name="**/log4j.properties"/>
+            <exclude name="**/svn/**"/>
+			<exclude name="**/HostServices.xml"/>
+			<exclude name="**/mySrvKeystore"/>
+        </jar-->
+		
+        <jar destfile="${project.root}/lib/${filenames.commonjar}">
+            <fileset dir="${project.root}/build/classes"/>
+            <exclude name="**/*.class"/>
+            <exclude name="#**"/>
+            <exclude name="**/CVS/**"/>
+            <exclude name="**/svn/**"/>
+        </jar>
+    	 <antcall target="clean"/>
+    </target>
+	
+	<target name="clean">
+		<echo>${DSTAMP}</echo>
+        <property file="build.properties"/>
+        <delete includeEmptyDirs="true" quiet="true">
+        	<fileset dir="${build.dir}" />
+        </delete>
+    </target>
+	
+</project>

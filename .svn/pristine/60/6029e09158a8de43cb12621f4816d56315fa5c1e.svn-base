@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+			
+		<bean id="goodsMasterBusManager" class="com.integrosys.cms.app.goodsMaster.bus.GoodsMasterBusManagerImpl">
+		<property name="goodsMasterDao" ref="goodsMasterDao" />
+		<property name="goodsMasterJdbc" ref="goodsMasterJdbc" />
+		</bean>
+
+		<bean id="goodsMasterProxy" class="com.integrosys.cms.app.goodsMaster.proxy.GoodsMasterProxyManagerImpl">
+		<property name="goodsMasterBusManager" ref="goodsMasterBusManager" />
+		<property name="stagingGoodsMasterBusManager" ref="stagingGoodsMasterBusManager" />
+		<property name="trxControllerFactory" ref="goodsMasterTrxControllerFactory" />
+		</bean>
+		
+		<bean id="stagingGoodsMasterBusManager" class="com.integrosys.cms.app.goodsMaster.bus.GoodsMasterBusManagerStagingImpl">
+		<property name="goodsMasterDao" ref="goodsMasterDao" />
+		<property name="goodsMasterJdbc" ref="goodsMasterJdbc" />
+		</bean>	
+</beans>

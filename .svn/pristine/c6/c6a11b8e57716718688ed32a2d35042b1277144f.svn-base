@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT secdetail.cms_collateral_id AS sourceSecId,
+								  SUB_PROFILE.LSP_LE_ID                     AS PARTYID,
+								  SUB_PROFILE.LSP_SHORT_NAME                AS PARTY_NAME,
+								  grnt.guaranters_duns_number               AS DUNS_NUMBER,
+								  (SELECT REGION_NAME FROM CMS_REGION WHERE id = addr.lra_region
+								  ) AS REGION,
+								  (SELECT rm_mgr_name
+								  FROM CMS_RELATIONSHIP_MGR
+								  WHERE id = sub_profile.relation_mgr
+								  )                   AS RMNAME,
+								  cc.entry_name       AS SEGMENT_NAME,
+								 grnt.guaranters_pam AS PAN_NUMBER,
+								  secdetail.type_name,
+								  secdetail.subtype_name,
+								  grnt.ramid,
+								  grnt.guaranters_name AS GUARANTOR_NAME,
+								  grnt.guaranters_name_prefix,
+								  grnt.guaranters_full_name,
+								  grnt.address_line1
+								  || ' '
+								  || grnt.address_line2
+								  || ' '
+								  || grnt.address_line3 AS ADDRESS,
+								  (SELECT CITY_NAME FROM CMS_CITY WHERE id = grnt.city
+								  ) AS CITY,
+								  (SELECT STATE_NAME FROM CMS_STATE WHERE id = grnt.state
+								  )            AS STATE,
+								  grnt.pincode AS PINCODE,
+								  (SELECT COUNTRY_NAME FROM CMS_COUNTRY WHERE id = grnt.country
+								  )                                                       AS COUNTRY,
+								  grnt.telephone_area_code                                AS STDCODE,
+								  grnt.telephone_number                                   AS TELEPHONE,
+								  TO_CHAR( grnt.guarantee_date,'dd/Mon/yyyy')             AS guaStartDate,
+								  TO_CHAR(secDetail.SECURITY_MATURITY_DATE,'dd/Mon/yyyy') AS guaMaturityDate,
+								  (SELECT REGION_NAME FROM CMS_REGION WHERE id = grnt.region
+								  ) AS REGION,
+								  grnt.currency_code,
+								  sbb.custodian1              AS securityCustodian1,
+								  sbb.custodian2              AS securityCustodian2,
+								  (select country_name from cms_country where country_code= secDetail.security_location) AS securityLocation,
+								  (SELECT NEW_COLLATERAL_DESCRIPTION
+								  FROM cms_collateral_new_master
+								  WHERE NEW_COLLATERAL_CODE = secDetail.collateral_code
+								  )  AS colName,
+								  sbb.SYSTEM_BANK_BRANCH_NAME AS brancnName,
+								  (SELECT entry_name
+								  FROM COMMON_CODE_CATEGORY_ENTRY
+								  WHERE entry_code  = grnt.guarantor_nature
+								  AND category_code = 'GUARANTOR_NATURE'
+								  ) AS GuarantorNature,
+								  (SELECT entry_name
+								  FROM COMMON_CODE_CATEGORY_ENTRY
+								  WHERE entry_code  = grnt.guarantor_type
+								  AND category_code = 'GUARANTOR_TYPE'
+								  )                                                 AS GuarantorType,
+								  grnt.guarantee_amt                                AS netWorth,
+								  TO_CHAR(grnt.claim_date ,'DD/MON/YYYY')           AS netWorthDate,
+								  grnt.asset_statement                              AS assetStatement,
+								  find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+								  (
+								  CASE
+								    WHEN charge.CHARGE_TYPE='G'
+								    THEN 'General'
+								    WHEN charge.CHARGE_TYPE='S'
+								    THEN 'Specific'
+								    ELSE '-'
+								  END) AS chargeType,
+								  grnt.rating,
+								  grnt.claim_period
+								  ||''
+								  || (
+								  CASE
+								    WHEN grnt.claim_period_time_unit='D'
+								    THEN 'Day(s)'
+								    WHEN grnt.claim_period_time_unit='W'
+								    THEN 'Week(s)'
+								    WHEN grnt.claim_period_time_unit='M'
+								    THEN 'Month(s)'
+								    WHEN grnt.claim_period_time_unit='Y'
+								    THEN 'Year(s)'
+								  END) AS holdingPeriod,
+								  grnt.discription_of_assets,
+								  grnt.reference_no,
+								  secdetail.cmv             AS OMV,
+								  secdetail.margin          AS margin,
+								  (case
+				                when grnt.currency_code ='INR'
+				                then
+				                secdetail.cmv - (secdetail.cmv * secdetail.margin )/100
+				                else
+				                (secdetail.cmv * (select buy_rate from cms_forex where trim(currency_iso_code)= trim(grnt.currency_code))) - 
+				                ((secdetail.cmv * secdetail.margin * (select buy_rate from cms_forex where trim(currency_iso_code)= trim(grnt.currency_code))) / 100)
+				                end) as  lonableAmt,
+								  CASE
+								    WHEN trx.from_state = 'PENDING_PERFECTION'
+								    THEN
+								      (SELECT hist.login_id
+								      FROM trans_history hist
+								      WHERE hist.transaction_id = trx.transaction_id
+								      AND hist.from_state       = 'PENDING_PERFECTION'
+								      AND hist.to_state         ='DRAFT'
+								      )
+								    WHEN trx.from_state = 'PENDING_CREATE'
+								    THEN
+								      (SELECT hist.login_id
+								      FROM trans_history hist
+								      WHERE hist.transaction_id = trx.transaction_id
+								      AND hist.from_state      IN ('ND','DRAFT')
+								      AND hist.to_state         ='PENDING_CREATE'
+								      )
+								    WHEN trx.from_state = 'PENDING_UPDATE'
+								    THEN
+								      (SELECT hist.login_id
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state      IN ('ACTIVE','DRAFT')
+								        AND to_state         = 'PENDING_UPDATE'
+								        )
+								      )
+								    WHEN trx.from_state = 'PENDING_DELETE'
+								    THEN
+								      (SELECT hist.login_id
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       ='ACTIVE'
+								        AND to_state         ='PENDING_DELETE'
+								        )
+								      )
+								    WHEN trx.from_state = 'ACTIVE'
+								    THEN
+								      (SELECT hist.login_id
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       ='ACTIVE'
+								        AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+								        )
+								      )
+								    WHEN trx.from_state = 'REJECTED'
+								    THEN
+								      (SELECT hist.login_id
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       = 'REJECTED'
+								        AND to_state         ='ACTIVE'
+								        )
+								      )
+								    WHEN trx.from_state = 'DRAFT'
+								    THEN
+								      CASE
+								        WHEN trx.status = 'PENDING_UPDATE'
+								        THEN
+								          (SELECT hist.login_id
+								          FROM trans_history hist
+								          WHERE hist.TR_HISTORY_ID=
+								            (SELECT MAX(TR_HISTORY_ID)
+								            FROM trans_history
+								            WHERE transaction_id = trx.transaction_id
+								            AND from_state       = 'DRAFT'
+								            AND to_state         ='PENDING_UPDATE'
+								            )
+								          )
+								        WHEN trx.status = 'ACTIVE'
+								        THEN
+								          (SELECT hist.login_id
+								          FROM trans_history hist
+								          WHERE hist.TR_HISTORY_ID=
+								            (SELECT MAX(TR_HISTORY_ID)
+								            FROM trans_history
+								            WHERE transaction_id = trx.transaction_id
+								            AND from_state       = 'DRAFT'
+								            AND to_state         ='ACTIVE'
+								            )
+								          )
+								      END
+								  END AS Maker,
+								  CASE
+								    WHEN trx.from_state = 'PENDING_PERFECTION'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.transaction_id = trx.transaction_id
+								      AND hist.from_state       = 'PENDING_PERFECTION'
+								      AND hist.to_state         ='DRAFT'
+								      )
+								    WHEN trx.from_state = 'PENDING_CREATE'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.transaction_id = trx.transaction_id
+								      AND hist.from_state      IN ('ND','DRAFT')
+								      AND hist.to_state         ='PENDING_CREATE'
+								      )
+								    WHEN trx.from_state = 'PENDING_UPDATE'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state      IN ('ACTIVE','DRAFT')
+								        AND to_state         = 'PENDING_UPDATE'
+								        )
+								      )
+								    WHEN trx.from_state = 'PENDING_DELETE'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       ='ACTIVE'
+								        AND to_state         ='PENDING_DELETE'
+								        )
+								      )
+								    WHEN trx.from_state = 'ACTIVE'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       ='ACTIVE'
+								        AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+								        )
+								      )
+								    WHEN trx.from_state = 'REJECTED'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       = 'REJECTED'
+								        AND to_state         ='ACTIVE'
+								        )
+								      )
+								    WHEN trx.from_state = 'DRAFT'
+								    THEN
+								      CASE
+								        WHEN trx.status = 'PENDING_UPDATE'
+								        THEN
+								          (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								          FROM trans_history hist
+								          WHERE hist.TR_HISTORY_ID=
+								            (SELECT MAX(TR_HISTORY_ID)
+								            FROM trans_history
+								            WHERE transaction_id = trx.transaction_id
+								            AND from_state       = 'DRAFT'
+								            AND to_state         ='PENDING_UPDATE'
+								            )
+								          )
+								        WHEN trx.status = 'ACTIVE'
+								        THEN
+								          (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								          FROM trans_history hist
+								          WHERE hist.TR_HISTORY_ID=
+								            (SELECT MAX(TR_HISTORY_ID)
+								            FROM trans_history
+								            WHERE transaction_id = trx.transaction_id
+								            AND from_state       = 'DRAFT'
+								            AND to_state         ='ACTIVE'
+								            )
+								          )
+								      END
+								  END AS MakerDateTime,
+								  CASE
+								    WHEN trx.status   = 'PENDING_CREATE'
+								    OR trx.from_state = 'PENDING_PERFECTION'
+								    THEN ''
+								    WHEN trx.status = 'PENDING_UPDATE'
+								    THEN
+								      (SELECT hist.login_id
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+								        AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+								        )
+								      )
+								    WHEN ((trx.status  != 'PENDING_CREATE'
+								    AND trx.from_state != 'PENDING_PERFECTION')
+								    AND trx.status     != 'PENDING_UPDATE')
+								    THEN TO_CHAR(trx.login_id)
+								  END AS Approved_By,
+								  CASE
+								    WHEN trx.from_state = 'PENDING_CREATE'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.transaction_id = trx.transaction_id
+								      AND hist.from_state       ='PENDING_CREATE'
+								      AND hist.to_state         ='ACTIVE'
+								      )
+								    WHEN trx.from_state = 'PENDING_UPDATE'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       ='PENDING_UPDATE'
+								        AND to_state         ='ACTIVE'
+								        )
+								      )
+								    WHEN trx.from_state = 'PENDING_DELETE'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       ='PENDING_DELETE'
+								        AND to_state         ='ACTIVE'
+								        )
+								      )
+								    WHEN trx.from_state = 'ACTIVE'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+								        AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+								        )
+								      )
+								    WHEN trx.from_state = 'REJECTED'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND from_state       ='REJECTED'
+								        AND to_state         ='ACTIVE'
+								        )
+								      )
+								    WHEN trx.from_state = 'DRAFT'
+								    THEN
+								      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD/MON/YYYY HH:MI:SS')
+								      FROM trans_history hist
+								      WHERE hist.TR_HISTORY_ID=
+								        (SELECT MAX(TR_HISTORY_ID)
+								        FROM trans_history
+								        WHERE transaction_id = trx.transaction_id
+								        AND to_state         ='ACTIVE'
+								        )
+								      )
+								  END AS CheckerDateTime
+								FROM CMS_LIMIT_SECURITY_MAP lsm,
+								  SCI_LSP_APPR_LMTS lmts,
+								  SCI_LSP_LMT_PROFILE pf,
+								  SCI_LE_MAIN_PROFILE main_profile,
+								  SCI_LE_SUB_PROFILE sub_profile,
+								  (SELECT entry_name,
+								    entry_code
+								  FROM common_code_category_entry
+								  WHERE category_code = 'HDFC_SEGMENT'
+								  ) cc ,
+								  CMS_SECURITY secDetail,
+								  cms_relationship_mgr rm ,
+								  SCI_LE_REG_ADDR addr,
+								  CMS_GUARANTEE grnt,
+								  TRANSACTION trx,
+								  CMS_SYSTEM_BANK_BRANCH sbb,
+								  CMS_CHARGE_DETAIL charge
+			</query>
+		<whereClause>
+			<mandatoryClause>
+					sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+					AND trx.transaction_type                ='COL'
+					AND trx.reference_id                    = lsm.CMS_COLLATERAL_ID
+					AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = main_profile.CMS_LE_MAIN_PROFILE_ID
+					AND secdetail.cms_collateral_id         = grnt.cms_collateral_id
+					AND main_profile.CMS_LE_MAIN_PROFILE_ID = addr.CMS_LE_MAIN_PROFILE_ID
+					AND addr.lra_type_value                 = 'CORPORATE'
+					AND secDetail.SECURITY_ORGANISATION     = sbb.SYSTEM_BANK_BRANCH_CODE(+)
+					AND cc.entry_code (+)                   =sub_profile.lsp_sgmnt_code_value
+					AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+					AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+					AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = sub_profile.CMS_LE_MAIN_PROFILE_ID
+					AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+					AND rm.id                               = sub_profile.relation_mgr
+					AND secDetail.TYPE_NAME                 = 'Guarantees'
+					AND SUB_PROFILE.status                 != 'INACTIVE'
+					AND secDetail.status                 = 'ACTIVE'
+				   AND charge.CMS_COLLATERAL_ID = secdetail.cms_collateral_id
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and cc.entry_code = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>transDate</name>
+				<condition> AND TRUNC(TRANS.TRANSACTION_DATE) = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Source Security Id</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>DUNS Number</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region(Borrower)</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>PAN</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security Type</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security Sub Type</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>RAM ID</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Guarantor Name</header><!-- 12 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Guarantor Name Prefix</header><!-- 13 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Guarantor Full Name</header><!-- 14 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Address</header><!-- 15 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City</header><!-- 16 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>State</header><!-- 17 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Pin Code</header><!-- 18 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Country</header><!-- 19 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>STD Code</header><!-- 20 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Telephone Number</header><!-- 21 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Start Date Of Guarantee</header><!-- 22 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Maturity Date</header><!-- 23 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region(Guarantor)</header><!-- 24 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Currency</header><!-- 25 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Custodian 1</header><!-- 26 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Custodian 2</header><!-- 27 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Location</header><!-- 28 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Collateral Code Name</header><!-- 29 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Branch Name</header><!-- 30 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantor Nature</header><!-- 31 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantor Type</header><!-- 32 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net Worth</header><!-- 33 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net Worth Date</header><!-- 34 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Asset Statement</header><!-- 35 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Priority</header><!-- 36 -->
+				</reportColumn>		
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Charge Type</header><!-- 37 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Rating</header><!-- 38 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Holding Period</header><!-- 39 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Description Of Asset</header><!-- 40 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Reference Number Of Guarantee</header><!-- 41 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security OMV</header><!-- 42 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Margin</header><!-- 43 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Loanable Amount</header><!-- 44 --> 
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Created By</header><!-- 45 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Created On</header><!-- 46 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Last Approved By</header><!-- 47 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Last Approved On</header><!-- 48 -->
+				</reportColumn>					
+			</reportColumns>
+			<reportName>Borrower Guarantor Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

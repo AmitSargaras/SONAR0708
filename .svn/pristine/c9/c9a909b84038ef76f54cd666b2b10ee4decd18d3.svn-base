@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+
+  	<bean id="SecEnvelopeAction.CheckerApproveCreateSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.CheckerApproveCreateSecEnvelopeCmd">
+  		<property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+  	</bean>
+  	<!--
+    <bean id="PropertyIdxAction.CheckerApproveDeletePropertyIdxCmd" class="com.integrosys.cms.ui.systemparameters.propertyindex.CheckerApproveDeletePropertyIdxCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>-->
+    <bean id="SecEnvelopeAction.CheckerApproveEditSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.CheckerApproveEditSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <bean id="SecEnvelopeAction.CheckerProcessSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.CheckerProcessSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <bean id="SecEnvelopeAction.CheckerRejectCreateSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.CheckerRejectCreateSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean><!--
+    <bean id="PropertyIdxAction.CheckerRejectDeletePropertyIdxCmd" class="com.integrosys.cms.ui.systemparameters.propertyindex.CheckerRejectDeletePropertyIdxCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>-->
+    <bean id="SecEnvelopeAction.CheckerRejectEditSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.CheckerRejectEditSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <bean id="SecEnvelopeAction.ListSecEnvelopeByLocCmd" class="com.integrosys.cms.ui.securityenvelope.ListSecEnvelopeByLocCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>  
+    <bean id="SecEnvelopeAction.MakerCloseSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.MakerCloseSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <bean id="SecEnvelopeAction.MakerCreateSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.MakerCreateSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <!--<bean id="PropertyIdxAction.MakerDeletePropertyIdxCmd" class="com.integrosys.cms.ui.systemparameters.propertyindex.MakerDeletePropertyIdxCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>-->
+    <bean id="SecEnvelopeAction.MakerEditSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.MakerEditSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <bean id="SecEnvelopeAction.PrepareCreateSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.PrepareCreateSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean><!--
+    <bean id="PropertyIdxAction.PrepareDeletePropertyIdxCmd" class="com.integrosys.cms.ui.systemparameters.propertyindex.PrepareDeletePropertyIdxCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>-->
+    <bean id="SecEnvelopeAction.PrepareSecEnvelopeByLocCmd" class="com.integrosys.cms.ui.securityenvelope.PrepareSecEnvelopeByLocCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <bean id="SecEnvelopeAction.ReadSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.ReadSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <bean id="SecEnvelopeAction.ReturnSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.ReturnSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+    <bean id="SecEnvelopeAction.SaveCurWorkingSecEnvelopeCmd" class="com.integrosys.cms.ui.securityenvelope.SaveCurWorkingSecEnvelopeCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean><!--
+    <bean id="PropertyIdxAction.ReadPropertyIdxItemCmd" class="com.integrosys.cms.ui.systemparameters.propertyindex.ReadPropertyIdxItemCmd">
+  		<property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+  	</bean>-->
+    <bean id="SecEnvelopeAction.DeleteSecEnvelopeItemCmd" class="com.integrosys.cms.ui.securityenvelope.DeleteSecEnvelopeItemCmd">
+  		<property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+  	</bean>
+  	
+  	
+    <bean id="SecEnvelopeItemAction.PrepareSecEnvelopeItemCmd" class="com.integrosys.cms.ui.securityenvelope.PrepareSecEnvelopeItemCmd">
+  		<property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+  	</bean>
+    <bean id="SecEnvelopeItemAction.SaveSecEnvelopeItemCmd" class="com.integrosys.cms.ui.securityenvelope.SaveSecEnvelopeItemCmd">
+  		<property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+  	</bean><!--
+    <bean id="PropertyIdxItemAction.MakerChangeListPropertyIdxParameterCmd" class="com.integrosys.cms.ui.systemparameters.propertyindex.MakerChangeListPropertyIdxParameterCmd">
+        <property name="secEnvelopeProxy" ref="secEnvelopeProxy" />
+    </bean>
+          -->
+</beans>
+

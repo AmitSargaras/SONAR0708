@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+	 <bean id="SegmentWiseEmailTrx.MakerCreateSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.MakerCreateSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+         <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+
+	<bean id="SegmentWiseEmailTrx.ReadSegmentWiseEmailOperation" class="com.integrosys.cms.app.segmentWiseEmail.trx.ReadSegmentWiseEmailOperation">
+        <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+    </bean>
+    
+     <bean id="SegmentWiseEmailTrx.ReadSegmentWiseEmailIDOperation" class="com.integrosys.cms.app.segmentWiseEmail.trx.ReadSegmentWiseEmailIDOperation">
+        <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+    </bean>
+    
+    <bean id="SegmentWiseEmailTrx.CheckerApproveCreateSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.CheckerApproveCreateSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+	
+   <bean id="SegmentWiseEmailTrx.CheckerRejectSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.CheckerRejectSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+	
+	<bean id="SegmentWiseEmailTrx.MakerCloseRejectedCreateSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.MakerCloseRejectedCreateSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+	
+	 <bean id="SegmentWiseEmailTrx.MakerUpdateSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.MakerUpdateSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+	
+	 <bean id="SegmentWiseEmailTrx.CheckerApproveUpdateSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.CheckerApproveUpdateSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+	
+	<bean id="SegmentWiseEmailTrx.MakerEditRejectedUpdateSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.MakerEditRejectedUpdateSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+	
+	<bean id="SegmentWiseEmailTrx.MakerEditRejectedCreateSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.MakerEditRejectedCreateSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+	
+	<bean id="SegmentWiseEmailTrx.MakerCloseRejectedUpdateSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.MakerCloseRejectedUpdateSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+	
+	<bean id="SegmentWiseEmailTrx.MakerDeleteSegmentWiseEmailOperation"
+		class="com.integrosys.cms.app.segmentWiseEmail.trx.MakerDeleteSegmentWiseEmailOperation">
+		 <property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager"/>
+        <property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager"/>
+	</bean>
+    
+    <bean id="segmentWiseEmailReadController" class="com.integrosys.cms.app.segmentWiseEmail.trx.SegmentWiseEmailReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.ReadSegmentWiseEmailOperation"/>
+                <entry key="ReadSegmentWiseEmailIDOperation" value-ref="SegmentWiseEmailTrx.ReadSegmentWiseEmailIDOperation"/>  
+            </map>
+        </property>
+    </bean> 
+    <bean id="segmentWiseEmailTrxController" class="com.integrosys.cms.app.segmentWiseEmail.trx.SegmentWiseEmailTrxController">
+         <property name="nameTrxOperationMap">
+        <map>
+            <entry key="MakerCreateSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.MakerCreateSegmentWiseEmailOperation"/>
+           	<entry key="CheckerApproveCreateSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.CheckerApproveCreateSegmentWiseEmailOperation"/>
+           	<entry key="CheckerRejectSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.CheckerRejectSegmentWiseEmailOperation"/>
+          	<entry key="MakerCloseRejectedCreateSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.MakerCloseRejectedCreateSegmentWiseEmailOperation"/>
+            <entry key="MakerUpdateSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.MakerUpdateSegmentWiseEmailOperation"/>
+            <entry key="CheckerApproveUpdateSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.CheckerApproveUpdateSegmentWiseEmailOperation"/>
+            
+            <entry key="MakerEditRejectedCreateSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.MakerEditRejectedCreateSegmentWiseEmailOperation"/>
+            <entry key="MakerEditRejectedUpdateSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.MakerEditRejectedUpdateSegmentWiseEmailOperation"/>
+            <entry key="MakerCloseRejectedUpdateSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.MakerCloseRejectedUpdateSegmentWiseEmailOperation"/>
+            <entry key="MakerDeleteSegmentWiseEmailOperation" value-ref="SegmentWiseEmailTrx.MakerDeleteSegmentWiseEmailOperation"/>
+        
+        </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="segmentWiseEmailTrxControllerFactory" class="com.integrosys.cms.app.segmentWiseEmail.trx.SegmentWiseEmailTrxControllerFactory">
+        <property name="segmentWiseEmailReadController" ref="segmentWiseEmailReadController"/>
+        <property name="segmentWiseEmailTrxController" ref="segmentWiseEmailTrxController"/>
+    </bean> 
+</beans>

@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.batch.sibs.parameter.obj">
+
+
+    <!-- Common Code Wrapper Class, used for direct STP -->
+    <class entity-name="actualEntryCodeWrapper" name="com.integrosys.cms.batch.sibs.parameter.obj.OBCommonCodeEntryWrapper" table="COMMON_CODE_CATEGORY_ENTRY" lazy="false">
+		<id name="entryId" column="ENTRY_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">COMMON_CODE_CATEGORY_ENTRY_SEQ</param>
+			</generator>
+		</id>
+
+        <property name="entryCode" column="ENTRY_CODE" />
+		<property name="entryName" column="ENTRY_NAME"/>
+		<property name="activeStatusStr" column="ACTIVE_STATUS"/>
+		<property name="entrySource" column="ENTRY_SOURCE"/>
+		<property name="country" column="COUNTRY"/>
+		<property name="groupId" column="GROUP_ID" type="integer"/>
+		<property name="categoryCode" column="CATEGORY_CODE"/>
+		<property name="categoryCodeId" column="CATEGORY_CODE_ID" type="long"/>
+		<property name="refEntryCode" column="REF_ENTRY_CODE" />
+		<property name="status" column="STATUS"/>
+	</class>
+
+    <class entity-name="stageEntryCodeWrapper" name="com.integrosys.cms.batch.sibs.parameter.obj.OBCommonCodeEntryWrapper" table="STAGE_COMMON_CODE_ENTRY" lazy="false">
+        <id name="stageId" column="STAGE_ID" type="long">
+            <generator
+                class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">COMM_CODE_ENTRY_STG_SEQ</param>
+            </generator>
+        </id>
+
+        <property name="entryId" column="ENTRY_ID"/>
+        <property name="entryCode" column="ENTRY_CODE" />
+        <property name="entryName" column="ENTRY_NAME"/>
+        <property name="activeStatusStr" column="ACTIVE_STATUS" />
+        <property name="entrySource" column="ENTRY_SOURCE"/>
+        <property name="country" column="COUNTRY"/>
+        <property name="groupId" column="GROUP_ID" type="integer"/>
+        <property name="categoryCode" column="CATEGORY_CODE"/>
+        <property name="categoryCodeId" column="CATEGORY_CODE_ID" type="long"/>
+        <property name="refEntryCode" column="REF_ENTRY_CODE" />
+        <property name="status" column="STATUS"/>
+    </class>
+
+    <!-- Common Code Ignore Reference Entry Code Wrapper Class -->
+    <class entity-name="actualEntryCodeIgnoreRefEntryWrapper" name="com.integrosys.cms.batch.sibs.parameter.obj.OBCommonCodeEntryIgnoreRefEntryWrapper" table="COMMON_CODE_CATEGORY_ENTRY" lazy="false">
+		<id name="entryId" column="ENTRY_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">COMMON_CODE_CATEGORY_ENTRY_SEQ</param>
+			</generator>
+		</id>
+
+        <property name="entryCode" column="ENTRY_CODE" />
+		<property name="entryName" column="ENTRY_NAME"/>
+		<property name="activeStatusStr" column="ACTIVE_STATUS"/>
+		<property name="entrySource" column="ENTRY_SOURCE"/>
+		<property name="country" column="COUNTRY"/>
+		<property name="groupId" column="GROUP_ID" type="integer"/>
+		<property name="categoryCode" column="CATEGORY_CODE"/>
+		<property name="categoryCodeId" column="CATEGORY_CODE_ID" type="long"/>
+		<property name="refEntryCode" column="REF_ENTRY_CODE" />
+		<property name="status" column="STATUS"/>
+	</class>
+
+    <class entity-name="stageEntryCodeIgnoreRefEntryWrapper" name="com.integrosys.cms.batch.sibs.parameter.obj.OBCommonCodeEntryIgnoreRefEntryWrapper" table="STAGE_COMMON_CODE_ENTRY" lazy="false">
+        <id name="stageId" column="STAGE_ID" type="long">
+            <generator
+                class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">COMM_CODE_ENTRY_STG_SEQ</param>
+            </generator>
+        </id>
+
+        <property name="entryId" column="ENTRY_ID"/>
+        <property name="entryCode" column="ENTRY_CODE" />
+        <property name="entryName" column="ENTRY_NAME"/>
+        <property name="activeStatusStr" column="ACTIVE_STATUS" />
+        <property name="entrySource" column="ENTRY_SOURCE"/>
+        <property name="country" column="COUNTRY"/>
+        <property name="groupId" column="GROUP_ID" type="integer"/>
+        <property name="categoryCode" column="CATEGORY_CODE"/>
+        <property name="categoryCodeId" column="CATEGORY_CODE_ID" type="long"/>
+        <property name="refEntryCode" column="REF_ENTRY_CODE" />
+        <property name="status" column="STATUS"/>
+    </class>
+    
+    <!-- Mapping for CMS tables other than common code: comes in a pair (Remote, Local) -->
+    <class entity-name="paramLocalCountry" name="OBCountry" table="SCI_COUNTRY" lazy="false">
+        <id name="countryID" column="CMS_COUNTRY_ID" type="long">
+            <generator
+                class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">SCI_COUNTRY_SEQ</param>
+            </generator>
+        </id>
+        <property name="countryCode" column="CTR_CNTRY_ISO_CODE" />
+        <property name="countryName" column="CTR_CNTRY_NAME"/>
+        <property name="updateStatusIndicator" column="UPDATE_STATUS_IND"/>
+        <property name="updateDate" column="LAST_UPDATE_DATE" type="timestamp"/>
+    </class>
+
+    <!--<class entity-name="paramLocalHostBranch" name="OBHostBranch" table="HOST_BRANCH" lazy="false">-->
+        <!--&lt;!&ndash;<composite-id>&ndash;&gt;-->
+            <!--&lt;!&ndash;<key-property name="branchNumber" column="BRANCH_NUM"/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<key-property name="centreType" column="CENTRE_TYPE"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</composite-id>&ndash;&gt;-->
+        <!--<id name="hostBranchId" column="CMS_HOST_BRANCH_ID" type="long">-->
+            <!--<generator-->
+                <!--class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">-->
+                <!--<param name="sequence">HOST_BRANCH_SEQ</param>-->
+            <!--</generator>-->
+        <!--</id>-->
+        <!--&lt;!&ndash;<id name="branchNumber" column="BRANCH_NUM" type="java.lang.String">&ndash;&gt;-->
+            <!--&lt;!&ndash;<generator class="native"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</id>&ndash;&gt;-->
+        <!--<property name="branchNumber" column="BRANCH_NUM"/>-->
+        <!--<property name="centreCode" column="CENTRE_CODE"/>-->
+        <!--<property name="centreType" column="CENTRE_TYPE"/>-->
+        <!--<property name="status" column="STATUS"/>-->
+        <!--<property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramLocalHostFacilityType" name="OBHostFacilityType" table="HOST_FACILITY_TYPE" lazy="false">
+        <id name="facilityCode" column="FACILITY_CODE" type="java.lang.String">
+            <!--<generator class="native"/>-->
+        </id>
+        <property name="loanType" column="LOAN_TYPE"/>
+        <property name="currency" column="CURRENCY" />
+        <property name="revolvingIndicator" column="REVOLVING_IND"/>
+        <property name="revOsBalOrgamt" column="REV_OS_BAL_ORGAMT"/>
+        <property name="description" column="DESC"/>
+        <property name="accountType" column="ACCOUNT_TYPE"/>
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+    <class entity-name="paramLocalHostLoanProductType" name="OBHostLoanProductType" table="HOST_PRODUCT_TYPE" lazy="false">
+        <composite-id>
+            <key-property name="loanType" column="LOAN_TYPE"/>
+            <key-property name="currency" column="CURRENCY"/>
+            <key-property name="source" column="SOURCE"/>
+        </composite-id>
+        <!--<id name="loanType" column="LOAN_TYPE" type="java.lang.String">-->
+            <!--<generator class="native"/>-->
+        <!--</id>-->
+        <property name="description" column="DESC"/>
+        <property name="groupCode" column="GROUP_CODE" />
+        <property name="groupDescription" column="GROUP_DESC"/>
+        <property name="commericalRetailIndicator" column="COMMERCIAL_RETAIL_IND"/>
+        <!--<property name="currency" column="CURRENCY"/>-->
+        <property name="minInterestRate" column="MIN_INT_RATE" type="big_decimal"/>
+        <property name="maxInterestRate" column="MAX_INT_RATE" type="big_decimal"/>
+        <property name="rateFloor" column="RATE_FLOOR" type="big_decimal"/>
+        <property name="rateCeiling" column="RATE_CEILING" type="big_decimal"/>
+        <property name="staffIndicator" column="STAFF_IND"/>
+        <property name="accountIndicator" column="ACT_IND"/>
+        <property name="tierLoanIndicator" column="TIER_LOAN_IND"/>
+        <property name="sptfLoanType" column="SPTF_LOAN_TYPE"/>
+        <property name="primeRateNumber" column="PRIME_RATE_NUM"/>
+        <!--<property name="maxLoanTenure" column="MAX_LOAN_TENURE" type="integer"/>-->
+        <!--<property name="minLoanTenure" column="MIN_LOAN_TENURE" type="integer"/>-->
+        <property name="interestBase" column="INTEREST_BASE"/>
+        <property name="conceptCode" column="CONCEPT_CODE"/>
+        <property name="productGroup" column="PRODUCT_GROUP"/>
+        <property name="dealerProductIndicator" column="DEALER_PRODUCT_IND"/>
+        <property name="productLimit" column="PRODUCT_LIMIT" type="big_decimal"/>
+        <property name="productExpiryDate" column="PRODUCT_EXPIRY_DATE" type="timestamp"/>
+        <property name="productAgeLimit" column="PRODUCT_AGE_LIMIT" type="integer"/>
+        <property name="paymentFrequency" column="PAYMENT_FREQUENCY" type="integer"/>
+        <property name="paymentFrequencyCode" column="PAYMENT_FREQ_CODE"/>
+        <property name="paymentCode" column="PAYMENT_CODE" type="integer"/>
+        <!--<property name="gratuityFinancing" column="GRATUITY_FINANCING"/>-->
+        <!--<property name="source" column="SOURCE"/>-->
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+        <property name="rebateMethodBank" column="REBATE_METHOD_BANK"/>
+        <!--<property name="promoPackageCode" column="PROMO_PACKAGE_CODE"/>-->
+    </class>
+
+    <class entity-name="paramLocalHostDealer" name="OBHostDealer" table="HOST_DEALER" lazy="false">
+        <id name="dealerNumber" column="DEALER_NUM" type="java.lang.String">
+            <!--<generator class="native"/>-->
+        </id>
+        <property name="dealerName" column="DEALER_NAME"/>
+        <property name="dealerShortName" column="DEALER_SHORT_NAME" />
+        <property name="formattedShortName" column="FORMATTED_SHORT_NAME"/>
+        <property name="cif" column="CIF"/>
+        <property name="addressLine1" column="ADDR_LINE_1"/>
+        <property name="addressLine2" column="ADDR_LINE_2"/>
+        <property name="addressLine3" column="ADDR_LINE_3"/>
+        <property name="phone1" column="PHONE_1" />
+        <property name="phone2" column="PHONE_2"/>
+        <property name="limitAmount" column="LIMIT_AMT" type="big_decimal"/>
+        <property name="reserveAmount" column="RESERVE_AMT" type="big_decimal"/>
+        <property name="amountUtilised" column="AMT_UTILISED" type="big_decimal"/>
+        <property name="dealerPlan" column="DEALER_PLAN"/>
+        <property name="dealerGroup" column="DEALER_GROUP"/>
+        <property name="officerCode" column="OFFICER_CODE"/>
+        <property name="expiryDate1" column="EXPIRY_DATE_1" type="timestamp"/>
+        <property name="expiryDate2" column="EXPIRY_DATE_2" type="timestamp"/>
+        <property name="revolvingIndicator" column="REVOLVING_IND" />
+        <property name="accrualPercent" column="ACCRUAL_PERCENT" type="big_decimal"/>
+        <property name="dealerStatus" column="DEALER_STATUS" />
+        <property name="dateRecruited1" column="DATE_RECRUITED_1" type="timestamp"/>
+        <property name="dateRecruited2" column="DATE_RECRUITED_2" type="timestamp"/>
+        <property name="minIntDay" column="MIN_INT_DAYS" type="integer"/>
+        <property name="intSubsidyDays" column="INT_SUBSIDY_DAYS" type="integer"/>
+        <property name="productGroup" column="PRODUCT_GRP" />
+        <property name="branchServed" column="BRANCH_SERVED" />
+        <property name="grossDevValue" column="GROSS_DEV_VALUE" type="big_decimal"/>
+        <property name="grossDevCost" column="GROSS_DEV_COST" type="big_decimal" />
+        <property name="securityValue" column="SECURITY_VAL" type="big_decimal" />
+        <property name="underLimitFbr" column="UNDER_LIMIT_FBR" type="big_decimal" />
+        <property name="underLimitFbt" column="UNDER_LIMIT_FBT" type="big_decimal" />
+        <property name="recondIndicator" column="RECOND_IND" />
+        <property name="usedIndicator" column="USED_IND" />
+        <property name="newIndicator" column="NEW_IND" />
+        <property name="newNational" column="NEW_NATIONAL" />
+        <property name="dealerStatus2" column="DEALER_STATUS_2" />
+        <property name="dealerStatusDate1" column="DEALER_STATUS_DATE_1" type="timestamp"/>
+        <property name="dealerStatusDate2" column="DEALER_STATUS_DATE_2" type="timestamp"/>
+        <property name="rescheduleIndicator" column="RESCHEDULED_IND" />
+        <property name="deliquencyRate" column="DELIQUENCY_RATE" type="big_decimal"/>
+        <property name="fisMemberIndicator" column="FIS_MEMBER_IND" />
+        <property name="fisDealerCode" column="FIS_DEALER_CODE" />
+        <property name="remarks" column="REMARKS" />
+        <!--<property name="type" column="TYPE"/>-->
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+    <class entity-name="paramLocalHostLawyer" name="OBHostLawyer" table="HOST_LAWYER" lazy="false">
+        <id name="lawyerCode" column="LAWYER_CODE" type="java.lang.String">
+            <!--<generator class="native"/>-->
+        </id>
+        <property name="lawyerType" column="LAWYER_TYPE"/>
+        <property name="lawyerReferenceNumber" column="LAWYER_REF_NUM" />
+        <property name="lawyerName" column="LAWYER_NAME"/>
+        <property name="status" column="STATUS"/>
+        <property name="remarks" column="REMARKS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+    <!--<class entity-name="paramLocalHostProductPackage" name="OBHostProductPackage" table="HOST_PRODUCT_PACKAGE" lazy="false">-->
+        <!--<id name="packageCode" column="PACKAGE_CODE" type="java.lang.String">-->
+            <!--&lt;!&ndash;<generator class="native"/>&ndash;&gt;-->
+        <!--</id>-->
+        <!--<property name="description" column="DESCRIPTION"/>-->
+        <!--<property name="expiryDate" column="EXPIRY_DATE" />-->
+        <!--<property name="effectiveDate" column="EFFECTIVE_DATE"/>-->
+        <!--<property name="fundAllocated" column="FUND_ALLOCATED"/>-->
+        <!--<property name="status" column="STATUS"/>-->
+        <!--<property name="lastUpdatedDate" column="LAST_UPDATE_DATE"/>-->
+    <!--</class>    -->
+
+    <class entity-name="paramLocalHostInsuranceCompany" name="OBHostInsuranceCompany" table="HOST_INSURANCE_CO" lazy="false">
+        <id name="insNumber" column="INS_NUM" type="java.lang.String">
+            <!--<generator class="native"/>-->
+        </id>
+        <property name="insName" column="INS_NAME"/>
+        <property name="insAddress" column="INS_ADDRESS" />
+        <property name="insCityState" column="INS_CITY_STATE"/>
+        <property name="insPhone" column="INS_PHONE"/>
+        <property name="reservePercent" column="RESERVE_PERCENT" type="big_decimal"/>
+        <property name="panelIndicator" column="PANEL_IND" />
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+    <class entity-name="paramLocalHostCollateralProductType" name="OBHostCollateralProductType" table="HOST_PRODUCT_TYPE" lazy="false">
+        <composite-id>
+            <key-property name="loanType" column="LOAN_TYPE"/>
+            <key-property name="currency" column="CURRENCY"/>
+            <key-property name="source" column="SOURCE"/>
+        </composite-id>
+        <property name="description" column="DESC"/>
+        <property name="groupCode" column="GROUP_CODE" />
+        <property name="groupDescription" column="GROUP_DESC"/>
+        <property name="commericalRetailIndicator" column="COMMERCIAL_RETAIL_IND"/>
+        <property name="minInterestRate" column="MIN_INT_RATE" type="big_decimal"/>
+        <property name="maxInterestRate" column="MAX_INT_RATE" type="big_decimal"/>
+        <property name="rateFloor" column="RATE_FLOOR" type="big_decimal"/>
+        <property name="rateCeiling" column="RATE_CEILING" type="big_decimal"/>
+        <property name="staffIndicator" column="STAFF_IND"/>
+        <property name="accountIndicator" column="ACT_IND"/>
+        <property name="tierLoanIndicator" column="TIER_LOAN_IND"/>
+        <property name="sptfLoanType" column="SPTF_LOAN_TYPE"/>
+        <property name="primeRateNumber" column="PRIME_RATE_NUM"/>
+        <!--<property name="maxLoanTenure" column="MAX_LOAN_TENURE" type="integer"/>-->
+        <!--<property name="minLoanTenure" column="MIN_LOAN_TENURE" type="integer"/>-->
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+    <!--<class entity-name="paramLocalHostTradeFinanceProductType" name="OBHostTradeFinanceProductType" table="HOST_PRODUCT_TYPE" lazy="false">-->
+        <!--<composite-id>-->
+            <!--<key-property name="loanType" column="LOAN_TYPE"/>-->
+            <!--<key-property name="currency" column="CURRENCY"/>-->
+            <!--<key-property name="source" column="SOURCE"/>-->
+        <!--</composite-id>-->
+        <!--<property name="description" column="DESC"/>-->
+        <!--<property name="groupCode" column="GROUP_CODE" />-->
+        <!--&lt;!&ndash;<property name="currency" column="CURRENCY"/>&ndash;&gt;-->
+        <!--<property name="groupDescription" column="GROUP_DESC"/>-->
+        <!--<property name="commericalRetailIndicator" column="COMMERCIAL_RETAIL_IND"/>-->
+        <!--<property name="minInterestRate" column="MIN_INT_RATE" type="big_decimal"/>-->
+        <!--<property name="maxInterestRate" column="MAX_INT_RATE" type="big_decimal"/>-->
+        <!--<property name="rateFloor" column="RATE_FLOOR" type="big_decimal"/>-->
+        <!--<property name="rateCeiling" column="RATE_CEILING" type="big_decimal"/>-->
+        <!--<property name="staffIndicator" column="STAFF_IND"/>-->
+        <!--<property name="accountIndicator" column="ACT_IND"/>-->
+        <!--<property name="tierLoanIndicator" column="TIER_LOAN_IND"/>-->
+        <!--<property name="sptfLoanType" column="SPTF_LOAN_TYPE"/>-->
+        <!--<property name="primeRateNumber" column="PRIME_RATE_NUM"/>-->
+        <!--<property name="maxLoanTenure" column="MAX_LOAN_TENURE" type="integer"/>-->
+        <!--<property name="minLoanTenure" column="MIN_LOAN_TENURE" type="integer"/>-->
+        <!--<property name="status" column="STATUS"/>-->
+        <!--<property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalForex" name="OBForexWrapper" table="CMS_FOREX" lazy="false">-->
+        <!--<id name="forexFeedEntryID" column="FEED_ID" type="long">-->
+            <!--<generator-->
+                <!--class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">-->
+                <!--<param name="sequence">CMS_FOREX_SEQ</param>-->
+            <!--</generator>-->
+        <!--</id>-->
+        <!--<property name="buyCurrency" column="BUY_CURRENCY" />-->
+        <!--<property name="sellCurrency" column="SELL_CURRENCY"/>-->
+        <!--<property name="buyUnit" column="BUY_UNIT" />-->
+        <!--<property name="sellUnit" column="SELL_UNIT"/>-->
+        <!--<property name="buyRate" column="BUY_RATE"/>-->
+        <!--<property name="sellRate" column="SELL_RATE" />-->
+        <!--<property name="effectiveDate" column="EFFECTIVE_DATE"/>-->
+        <!--<property name="forexFeedEntryRef" column="FEED_REF" type="long"/>-->
+        <!--<property name="versionTime" column="CMS_VERSION_TIME" type="long"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalCurrency" name="OBCurrencyWrapper" table="SCI_CURRENCY" lazy="false">-->
+        <!--<id name="currencyCode" column="CUR_CRRNCY_ISO_CODE" type="long">-->
+            <!--<generator-->
+                <!--class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">-->
+                <!--<param name="sequence">SCI_CURRENCY_SEQ</param>-->
+            <!--</generator>-->
+        <!--</id>-->
+        <!--<property name="currencyDescription" column="CUR_CRRNCY_DESC"/>-->
+        <!--<property name="decimalPlace" column="CUR_DECIMAL_PLACE_NUM" type="integer"/>-->
+        <!--<property name="countryCode" column="CUR_CNTRY_ISO_CODE"/>-->
+        <!--<property name="updateStatusIndicator" column="UPDATE_STATUS_IND"/>-->
+        <!--<property name="lastUpdatedDate" column="LAST_UPDATE_DATE"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramLocalWorkingDay" name="OBWorkingDay" table="CMS_TEMP_WORKING_DAYS" lazy="false">
+        <composite-id>
+            <key-property name="processingDay" column="PROCESSING_DATE" type="timestamp"/>
+            <key-property name="branch" column="BRANCH"/>
+        </composite-id>
+        <property name="bizDayFlag" column="BIZ_DAY_FLAG"/>
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+    <class entity-name="paramLocalPublicHoliday" name="OBPublicHoliday" table="CMS_TEMP_PUBLIC_HOLIDAY" lazy="false">
+        <composite-id>
+            <key-property name="holidayDate" column="HOLIDAY_DATE" type="timestamp"/>
+            <key-property name="countryCode" column="COUNTRY_ISO_CODE"/>
+            <key-property name="stateCode" column="STATE_CODE"/>
+        </composite-id>
+        <property name="description" column="DESCRIPTION"/>
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+    <!--<class entity-name="paramLocalHostCentre" name="OBHostCentre" table="HOST_CENTRE" lazy="false">-->
+        <!--<composite-id>-->
+            <!--<key-property name="centreType" column="CENTRE_TYPE"/>-->
+            <!--<key-property name="centreCode" column="CENTRE_CODE"/>-->
+        <!--</composite-id>-->
+        <!--<property name="centreName" column="NAME"/>-->
+        <!--<property name="hasBranchStr" column="HAS_BRANCH"/>-->
+        <!--<property name="status" column="STATUS"/>-->
+        <!--<property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramLocalHostCustomerLimit" name="OBHostCustomerLimit" table="HOST_CUST_LMT" lazy="false">
+        <id name="bankNumber" column="BANK_NUM" type="java.lang.String">
+            <!--<generator class="native"/>-->
+        </id>
+        <property name="capitalFund" column="CAPITAL_FUNDS" type="big_decimal"/>
+        <property name="lastMaintenanceDate" column="LAST_MAINTENANCE_DATE" type="timestamp"/>
+        <!--<property name="isclSecuredLoan" column="ISCL_SECURED_LOAN" type="big_decimal"/>-->
+        <!--<property name="isclUnsecuredLoan" column="ISCL_UNSECURED_LOAN" type="big_decimal"/>-->
+        <!--<property name="securedIndividual" column="SECURED_INDIVIDUAL" type="big_decimal"/>-->
+        <!--<property name="unsecuredIndividual" column="UNSECURED_INDIVIDUAL" type="big_decimal"/>-->
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+    <!-- Mapping for dependency updating -->
+    <class entity-name="paramLocalBranchRefIdDependency" name="OBCommonCodeRefIdDependency" table="COMMON_CODE_CATEGORY_ENTRY" lazy="false" where="CATEGORY_CODE = '40' and ENTRY_SOURCE = 'SIBS'">
+        <id name="entryId" column="ENTRY_ID" type="long" />
+        <property name="entryCode" column="ENTRY_CODE" />
+        <property name="refEntryCode" column="REF_ENTRY_CODE"/>
+        <property name="activeStatus" column="ACTIVE_STATUS"/>
+    </class>
+
+    <!--<class entity-name="paramLocalRcBranchRefIdDependency" name="OBCommonCodeRefIdDependency" table="COMMON_CODE_CATEGORY_ENTRY" lazy="false" where="CATEGORY_CODE = 'RC_BRANCH' and ENTRY_SOURCE = 'SIBS'">-->
+        <!--<id name="entryId" column="ENTRY_ID" type="long" />-->
+        <!--<property name="entryCode" column="ENTRY_CODE" />-->
+        <!--<property name="refEntryCode" column="REF_ENTRY_CODE"/>-->
+        <!--<property name="activeStatus" column="ACTIVE_STATUS"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalHostBranchRCDependency" name="OBHostBranchRCDependency" table="HOST_BRANCH" lazy="false" where="STATUS='ACTIVE'">-->
+        <!--<id name="branchNumber" column="BRANCH_NUM" type="java.lang.String">-->
+            <!--<generator class="native"/>-->
+        <!--</id>-->
+        <!--<property name="rcCode" column="RC_CODE"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalHostBranchCACDependency_CAC" name="OBHostBranchCacDependency" table="HOST_BRANCH" lazy="false" where="STATUS='ACTIVE' AND CENTRE_TYPE='CAC'">-->
+        <!--<id name="hostBranchId" column="CMS_HOST_BRANCH_ID" type="long" />-->
+        <!--<id name="branchNumber" column="BRANCH_NUM" type="java.lang.String">-->
+            <!--<generator class="native"/>-->
+        <!--</id>-->
+        <!--<property name="branchNumber" column="BRANCH_NUM"/>-->
+        <!--<property name="branchName" column="BRANCH_NAME"/>-->
+        <!--<property name="islamicConventionalIndicator" column="CONVENTIONAL_ISLAMIC_IND" />-->
+        <!--<property name="bankBranchId" column="BANK_BRANCH_ID" />-->
+        <!--<property name="sptfBranchId" column="SPTF_BRANCH_ID" />-->
+        <!--<property name="branchOpeningDate" column="BRANCH_OPENING_DATE" type="timestamp"/>-->
+        <!--<property name="closedBranchIndicator" column="CLOSED_BRANCH_IND" />-->
+        <!--<property name="country" column="COUNTRY" />-->
+        <!--<property name="state" column="STATE"/>-->
+        <!--<property name="fisBranchId" column="FIS_BRANCH_ID"/>-->
+        <!--<property name="status" column="STATUS"/>-->
+        <!--<property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>        -->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalHostBranchCACDependency_HPC" name="OBHostBranchCacDependency" table="HOST_BRANCH" lazy="false" where="STATUS='ACTIVE' AND CENTRE_TYPE='HPC'">-->
+        <!--<id name="hostBranchId" column="CMS_HOST_BRANCH_ID" type="long" />-->
+        <!--<property name="branchNumber" column="BRANCH_NUM"/>-->
+        <!--<property name="branchName" column="BRANCH_NAME"/>-->
+        <!--<property name="islamicConventionalIndicator" column="CONVENTIONAL_ISLAMIC_IND" />-->
+        <!--<property name="bankBranchId" column="BANK_BRANCH_ID" />-->
+        <!--<property name="sptfBranchId" column="SPTF_BRANCH_ID" />-->
+        <!--<property name="branchOpeningDate" column="BRANCH_OPENING_DATE" type="timestamp"/>-->
+        <!--<property name="closedBranchIndicator" column="CLOSED_BRANCH_IND" />-->
+        <!--<property name="country" column="COUNTRY" />-->
+        <!--<property name="state" column="STATE"/>-->
+        <!--<property name="fisBranchId" column="FIS_BRANCH_ID"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalHostBranchCACDependency_RCC" name="OBHostBranchCacDependency" table="HOST_BRANCH" lazy="false" where="STATUS='ACTIVE' AND CENTRE_TYPE='RCC'">-->
+        <!--<id name="hostBranchId" column="CMS_HOST_BRANCH_ID" type="long" />-->
+        <!--<property name="branchNumber" column="BRANCH_NUM"/>-->
+        <!--<property name="branchName" column="BRANCH_NAME"/>-->
+        <!--<property name="islamicConventionalIndicator" column="CONVENTIONAL_ISLAMIC_IND" />-->
+        <!--<property name="bankBranchId" column="BANK_BRANCH_ID" />-->
+        <!--<property name="sptfBranchId" column="SPTF_BRANCH_ID" />-->
+        <!--<property name="branchOpeningDate" column="BRANCH_OPENING_DATE" type="timestamp"/>-->
+        <!--<property name="closedBranchIndicator" column="CLOSED_BRANCH_IND" />-->
+        <!--<property name="country" column="COUNTRY" />-->
+        <!--<property name="state" column="STATE"/>-->
+        <!--<property name="fisBranchId" column="FIS_BRANCH_ID"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalHostBranchCACDependency_SAB" name="OBHostBranchCacDependency" table="HOST_BRANCH" lazy="false" where="STATUS='ACTIVE' AND CENTRE_TYPE='SAB'">-->
+        <!--<id name="hostBranchId" column="CMS_HOST_BRANCH_ID" type="long" />-->
+        <!--<property name="branchNumber" column="BRANCH_NUM"/>-->
+        <!--<property name="branchName" column="BRANCH_NAME"/>-->
+        <!--<property name="islamicConventionalIndicator" column="CONVENTIONAL_ISLAMIC_IND" />-->
+        <!--<property name="bankBranchId" column="BANK_BRANCH_ID" />-->
+        <!--<property name="sptfBranchId" column="SPTF_BRANCH_ID" />-->
+        <!--<property name="branchOpeningDate" column="BRANCH_OPENING_DATE" type="timestamp"/>-->
+        <!--<property name="closedBranchIndicator" column="CLOSED_BRANCH_IND" />-->
+        <!--<property name="country" column="COUNTRY" />-->
+        <!--<property name="state" column="STATE"/>-->
+        <!--<property name="fisBranchId" column="FIS_BRANCH_ID"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalHostBranchCACDependency_MSC" name="OBHostBranchCacDependency" table="HOST_BRANCH" lazy="false" where="STATUS='ACTIVE' AND CENTRE_TYPE='MSC'">-->
+        <!--<id name="hostBranchId" column="CMS_HOST_BRANCH_ID" type="long" />-->
+        <!--<property name="branchNumber" column="BRANCH_NUM"/>-->
+        <!--<property name="branchName" column="BRANCH_NAME"/>-->
+        <!--<property name="islamicConventionalIndicator" column="CONVENTIONAL_ISLAMIC_IND" />-->
+        <!--<property name="bankBranchId" column="BANK_BRANCH_ID" />-->
+        <!--<property name="sptfBranchId" column="SPTF_BRANCH_ID" />-->
+        <!--<property name="branchOpeningDate" column="BRANCH_OPENING_DATE" type="timestamp"/>-->
+        <!--<property name="closedBranchIndicator" column="CLOSED_BRANCH_IND" />-->
+        <!--<property name="country" column="COUNTRY" />-->
+        <!--<property name="state" column="STATE"/>-->
+        <!--<property name="fisBranchId" column="FIS_BRANCH_ID"/>-->
+    <!--</class>-->
+
+    <!--<class entity-name="paramLocalHostBranchCACDependency_HO" name="OBHostBranchCacDependency" table="HOST_BRANCH" lazy="false" where="STATUS='ACTIVE' AND CENTRE_TYPE='HO'">-->
+        <!--<id name="hostBranchId" column="CMS_HOST_BRANCH_ID" type="long" />-->
+        <!--<property name="branchNumber" column="BRANCH_NUM"/>-->
+        <!--<property name="branchName" column="BRANCH_NAME"/>-->
+        <!--<property name="islamicConventionalIndicator" column="CONVENTIONAL_ISLAMIC_IND" />-->
+        <!--<property name="bankBranchId" column="BANK_BRANCH_ID" />-->
+        <!--<property name="sptfBranchId" column="SPTF_BRANCH_ID" />-->
+        <!--<property name="branchOpeningDate" column="BRANCH_OPENING_DATE" type="timestamp"/>-->
+        <!--<property name="closedBranchIndicator" column="CLOSED_BRANCH_IND" />-->
+        <!--<property name="country" column="COUNTRY" />-->
+        <!--<property name="state" column="STATE"/>-->
+        <!--<property name="fisBranchId" column="FIS_BRANCH_ID"/>-->
+    <!--</class>-->
+
+    <class entity-name="paramLocalHostBranchDependency" name="OBHostBranchCacDependency" table="HOST_BRANCH" lazy="false" where="STATUS='ACTIVE'">
+        <!--<id name="hostBranchId" column="CMS_HOST_BRANCH_ID" type="long" />-->
+        <!--<property name="branchNumber" column="BRANCH_NUM"/>-->
+        <id name="branchNumber" column="BRANCH_NUM" type="java.lang.String" />
+        <property name="branchName" column="BRANCH_NAME"/>
+        <!--<property name="islamicConventionalIndicator" column="CONVENTIONAL_ISLAMIC_IND" />-->
+        <property name="bankBranchId" column="BANK_BRANCH_ID" />
+        <property name="sptfBranchId" column="SPTF_BRANCH_ID" />
+        <property name="branchOpeningDate" column="BRANCH_OPENING_DATE" type="timestamp"/>
+        <property name="closedBranchIndicator" column="CLOSED_BRANCH_IND" />
+        <property name="country" column="COUNTRY" />
+        <property name="state" column="STATE"/>
+        <property name="fisBranchId" column="FIS_BRANCH_ID"/>
+    </class>
+
+    <!--Newly Inserted For ARBS Host Parameter Mapping by Chee Hong-->
+    <class entity-name="paramLocalExtOfProductType" name="OBExtOfProductType" table="HOST_PRODUCT_TYPE" lazy="false">
+        <composite-id>
+            <key-property name="loanType" column="LOAN_TYPE"/>
+            <key-property name="currency" column="CURR_TYPE"/>
+            <key-property name="source" column="SOURCE"/>
+        </composite-id>
+        <property name="varRate" column="VAR_RATE"/>
+        <property name="status" column="STATUS"/>
+        <property name="lastUpdatedDate" column="LAST_UPDATED_DATE"/>
+    </class>
+
+</hibernate-mapping>

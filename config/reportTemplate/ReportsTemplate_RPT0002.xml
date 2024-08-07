@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+SELECT
+ 
+  (SELECT region_name FROM cms_region WHERE id=sub_profile.rm_region
+  )                          AS rm_region,
+  cc_segment.entry_name      AS segmentName,
+  sub_profile.lsp_le_id      AS partyid,
+  rm.rm_mgr_name             AS rmname,
+  rm.RM_MGR_CODE			as rm_employee_id,
+  sub_profile.lsp_short_name AS partyname,
+  sub_profile.cycle_nm,
+  TO_CHAR(cam.LLP_BCA_REF_APPR_DATE,'DD/Mon/YYYY')  AS camdate,
+  TO_CHAR(cam.LLP_NEXT_ANNL_RVW_DATE,'DD/Mon/YYYY') AS camExpiryDate,
+  TO_CHAR(cam.llp_extd_next_rvw_date,'DD/Mon/YYYY') AS camextensiondate,
+  cam.cam_type,
+  cam.NO_OF_TIMES_EXTENDED AS noOfTimeExtended,
+  cam.llp_bca_ref_num      AS CAMNo,
+  (SELECT get_banking_method(sub_profile.LSP_LE_ID) AS BANKING_METHOD
+	FROM   CMS_BANKING_METHOD_CUST WHERE ROWNUM = 1)  As bankmethod,
+  ca1.APPROVAL_NAME AS approverID1,
+  ca2.APPROVAL_NAME AS approverID2,
+  ca3.APPROVAL_NAME AS approverID3,
+  ca4.APPROVAL_NAME AS approverID4,
+  CASE
+    WHEN UPPER(cam.BOARD_APPROVAL) = 'Y'
+    THEN 'Yes'
+    WHEN UPPER(cam.BOARD_APPROVAL) = 'N'
+    THEN 'No'
+  END AS Board,
+  CASE
+    WHEN UPPER(cam.COMMITTE_APPROVAL) = 'Y'
+    THEN 'Yes'
+    WHEN UPPER(cam.COMMITTE_APPROVAL) = 'N'
+    THEN 'No'
+  END                                AS committeeApproval,
+  sub_profile.total_sanctioned_limit AS totalSanctionAmount,
+  sub_profile.TOTAL_FUNDED_LIMIT     AS fundedAmount,
+  sub_profile.total_non_funded_limit AS nonfunded,
+  sub_profile.memo_exposure,
+  UDF1.UDF70                 AS CAMOnSrm,
+  cam.CMS_APPR_OFFICER_GRADE AS RAMRating,--same as riskGrade,
+  cam.rating_year            AS RAMRatingYear,
+  (SELECT entry_name
+  FROM common_code_category_entry
+  WHERE category_code='SEC_RATING_TYPE'
+  AND entry_code     =cam.rating_type
+  )                                                       AS ratingType,
+  TO_CHAR(cam.RAM_RATING_FINALIZATION_DATE,'DD-Mon-YYYY') AS RAM_RATING_FINALIZATION_DATE,
+  cam.rbi_asset_classification,
+  cc_industry.entry_name AS industryname,
+  sub_profile.RBI_IND_CODE
+  ||'-'
+  ||cc_rbi.entry_name AS rbiIndustryCode,
+   (SELECT entry_name from common_code_category_entry where entry_code = sub_profile.entity AND category_code = 'Entity')   AS Constitution,
+  sloc.CMS_LE_COVENANT_CATEGORY AS Covenant_Category,
+  (select listagg(COVENANT_FACILITY_NAME_VALUE,', ') within group(order by COVENANT_FACILITY_NAME_VALUE) csv
+  from SCI_LSP_OTHER_COVENANT_VALUES WHERE CMS_LE_STAGE_OC_ID=SLOC.CMS_LE_OTHER_COVENANT_ID) as FACILITY,
+  sloc.CMS_LE_COVENANT_TYPE AS Covenant_Type,
+  SLOC.CMS_LE_COVENANT_CONDITION  AS Covenant_Condition,
+  sloc.CMS_LE_COVENANT_COMPILED AS Complied_Non_Complied,
+  sloc.CMS_LE_COVENANT_ADVISED AS Advised_Non_Advised,
+  sloc.CMS_LE_COVENANT_REMARKS AS REMARKS,
+  sloc.CMS_LE_COVENANT_TARGETDATE AS TARGET_DATE,
+  (select listagg(COVENANT_MONITORING_RESP_VALUE,', ') within group(order by COVENANT_MONITORING_RESP_VALUE) csv
+  from SCI_LSP_OTHER_COVENANT_VALUES WHERE CMS_LE_STAGE_OC_ID=SLOC.CMS_LE_OTHER_COVENANT_ID) as Monitoring_Responsibility,
+  sloc.CMS_LE_COVENANT_DESCRIPTION AS DESCRIPTION,
+  
+  
+  
+  -- '' as maker,
+  -- '' as makerTime,
+  --'' as checker,
+  -- '' as checkerTime
+  CASE
+    WHEN trx.from_state = 'PENDING_PERFECTION'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.transaction_id = trx.transaction_id
+      AND hist.from_state       = 'PENDING_PERFECTION'
+      AND hist.to_state         ='DRAFT'
+      )
+    WHEN trx.from_state = 'PENDING_CREATE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.transaction_id = trx.transaction_id
+      AND hist.from_state      IN ('ND','DRAFT')
+      AND hist.to_state         ='PENDING_CREATE'
+      )
+    WHEN trx.from_state = 'PENDING_UPDATE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state      IN ('ACTIVE','DRAFT')
+        AND to_state         = 'PENDING_UPDATE'
+        )
+      )
+    WHEN trx.from_state = 'PENDING_DELETE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       ='ACTIVE'
+        AND to_state         ='PENDING_DELETE'
+        )
+      )
+    WHEN trx.from_state = 'ACTIVE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       ='ACTIVE'
+        AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+        )
+      )
+    WHEN trx.from_state = 'REJECTED'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       = 'REJECTED'
+        AND to_state         ='ACTIVE'
+        )
+      )
+    WHEN trx.from_state = 'DRAFT'
+    THEN
+      CASE
+        WHEN trx.status = 'PENDING_UPDATE'
+        THEN
+          (SELECT hist.login_id
+          FROM trans_history hist
+          WHERE hist.TR_HISTORY_ID=
+            (SELECT MAX(TR_HISTORY_ID)
+            FROM trans_history
+            WHERE transaction_id = trx.transaction_id
+            AND from_state       = 'DRAFT'
+            AND to_state         ='PENDING_UPDATE'
+            )
+          )
+        WHEN trx.status = 'ACTIVE'
+        THEN
+          (SELECT hist.login_id
+          FROM trans_history hist
+          WHERE hist.TR_HISTORY_ID=
+            (SELECT MAX(TR_HISTORY_ID)
+            FROM trans_history
+            WHERE transaction_id = trx.transaction_id
+            AND from_state       = 'DRAFT'
+            AND to_state         ='ACTIVE'
+            )
+          )
+      END
+  END AS Maker,
+  CASE
+    WHEN trx.from_state = 'PENDING_PERFECTION'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.transaction_id = trx.transaction_id
+      AND hist.from_state       = 'PENDING_PERFECTION'
+      AND hist.to_state         ='DRAFT'
+      )
+    WHEN trx.from_state = 'PENDING_CREATE'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.transaction_id = trx.transaction_id
+      AND hist.from_state      IN ('ND','DRAFT')
+      AND hist.to_state         ='PENDING_CREATE'
+      )
+    WHEN trx.from_state = 'PENDING_UPDATE'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state      IN ('ACTIVE','DRAFT')
+        AND to_state         = 'PENDING_UPDATE'
+        )
+      )
+    WHEN trx.from_state = 'PENDING_DELETE'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       ='ACTIVE'
+        AND to_state         ='PENDING_DELETE'
+        )
+      )
+    WHEN trx.from_state = 'ACTIVE'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       ='ACTIVE'
+        AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+        )
+      )
+    WHEN trx.from_state = 'REJECTED'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       = 'REJECTED'
+        AND to_state         ='ACTIVE'
+        )
+      )
+    WHEN trx.from_state = 'DRAFT'
+    THEN
+      CASE
+        WHEN trx.status = 'PENDING_UPDATE'
+        THEN
+          (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+          FROM trans_history hist
+          WHERE hist.TR_HISTORY_ID=
+            (SELECT MAX(TR_HISTORY_ID)
+            FROM trans_history
+            WHERE transaction_id = trx.transaction_id
+            AND from_state       = 'DRAFT'
+            AND to_state         ='PENDING_UPDATE'
+            )
+          )
+        WHEN trx.status = 'ACTIVE'
+        THEN
+          (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+          FROM trans_history hist
+          WHERE hist.TR_HISTORY_ID=
+            (SELECT MAX(TR_HISTORY_ID)
+            FROM trans_history
+            WHERE transaction_id = trx.transaction_id
+            AND from_state       = 'DRAFT'
+            AND to_state         ='ACTIVE'
+            )
+          )
+      END
+  END AS MakerDateTime,
+  CASE
+    WHEN trx.status   = 'PENDING_CREATE'
+    OR trx.from_state = 'PENDING_PERFECTION'
+    THEN ''
+    WHEN trx.status = 'PENDING_UPDATE'
+    THEN
+      (SELECT hist.login_id
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+        AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+        )
+      )
+    WHEN ((trx.status  != 'PENDING_CREATE'
+    AND trx.from_state != 'PENDING_PERFECTION')
+    AND trx.status     != 'PENDING_UPDATE')
+    THEN TO_CHAR(trx.login_id)
+  END AS Approved_By,
+  CASE
+    WHEN trx.from_state = 'PENDING_CREATE'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+WHERE                                                      
+transaction_id = trx.transaction_id
+        AND from_state       ='PENDING_CREATE'
+        AND to_state         ='ACTIVE'
+        )
+      )
+    WHEN trx.from_state = 'PENDING_UPDATE'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       ='PENDING_UPDATE'
+        AND to_state         ='ACTIVE'
+        )
+      )
+    WHEN trx.from_state = 'PENDING_DELETE'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       ='PENDING_DELETE'
+        AND to_state         ='ACTIVE'
+        )
+      )
+    WHEN trx.from_state = 'ACTIVE'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+        AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+        )
+      )
+    WHEN trx.from_state = 'REJECTED'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND from_state       ='REJECTED'
+        AND to_state         ='ACTIVE'
+        )
+      )
+    WHEN trx.from_state = 'DRAFT'
+    THEN
+      (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+      FROM trans_history hist
+      WHERE hist.TR_HISTORY_ID=
+        (SELECT MAX(TR_HISTORY_ID)
+        FROM trans_history
+        WHERE transaction_id = trx.transaction_id
+        AND to_state         ='ACTIVE'
+        )
+      )
+  END             AS CheckerDateTime,
+  reg.region_name AS Region
+FROM SCI_LE_SUB_PROFILE sub_profile,
+  common_code_category_entry cc_segment,
+  cms_relationship_mgr rm,
+  SCI_LSP_LMT_PROFILE cam,
+  common_code_category_entry cc_rbi,
+  common_code_category_entry cc_industry,
+  TRANSACTION trx,
+  sci_le_udf UDF1,
+  cms_credit_approval ca1,
+  cms_credit_approval ca2,
+  cms_credit_approval ca3,
+  cms_credit_approval ca4,
+  SCI_LE_REG_ADDR ra ,
+  cms_region reg,
+--  SCI_LSP_OTHER_COVENANT_VALUES slocv
+  SCI_LSP_OTHER_COVENANT SLOC
+  			</query>
+		<whereClause>
+			<mandatoryClause>
+
+	sub_profile.lsp_sgmnt_code_value =cc_segment.entry_code(+)
+
+	AND rm.id(+) = sub_profile.relation_mgr
+
+	AND UDF1.cms_le_main_profile_id(+) = sub_profile.CMS_LE_MAIN_PROFILE_ID
+	AND sub_profile.cms_le_sub_profile_id = cam.cms_customer_id(+)
+	AND cc_rbi.entry_code(+) = sub_profile.RBI_IND_CODE
+	AND sub_profile.ind_nm =cc_industry.entry_code(+)
+	AND trx.reference_id(+) = cam.cms_lsp_lmt_profile_id
+	AND cam.LLP_1ST_APPR_EMP_NAME = ca1.approval_code(+)
+	AND cam.LLP_2nd_APPR_EMP_NAME = ca2.approval_code(+)
+	AND cam.LLP_3RD_APPR_EMP_NAME = ca3.approval_code(+)
+	AND cam.LLP_4TH_APPR_EMP_NAME = ca4.approval_code(+)
+	AND (sub_profile.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+	AND ra.LRA_TYPE_VALUE = 'CORPORATE')
+	AND reg.id = ra.lra_region
+	AND trx.transaction_type = 'LIMITPROFILE'
+	AND (cc_industry.category_code = 'HDFC_INDUSTRY'
+	OR cc_industry.category_code IS NULL)
+	AND (cc_segment.category_code = 'HDFC_SEGMENT'
+	OR cc_segment.category_code IS NULL)
+	AND (cc_rbi.category_code = 'HDFC_RBI_CODE'
+	OR cc_rbi.category_code IS NULL)
+	AND sub_profile.status != 'INACTIVE'
+	AND cam.LLP_LE_ID in( sloc.CMS_LE_ID(+))
+
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>industry</name>
+				<condition> and cc_industry.entry_code = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and cc_segment.entry_code = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> and sub_profile.cms_le_sub_profile_id = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and TRUNC(trx.transaction_date) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Employee Id</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Cycle</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CAM date</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM expiry Date</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM extension Date</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Number Of Times Extended</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Number</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Bank Method</header><!-- 12 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Approver ID 1</header><!-- 13 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Approver ID 2</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Approver ID 3</header><!-- 15 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Approver ID 4</header><!-- 16 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Board</header><!-- 17 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Committee Approval</header><!-- 18 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Total CAM Sanctioned Amount (INR)</header><!-- 19 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Funded Amount</header><!-- 20 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Non Funded</header><!-- 21 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Memo Exposure</header><!-- 22 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>CAM On SRM (Y/N)</header><!-- 23 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>RAM Rating</header><!-- 24 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>RAM Rating Year</header><!-- 25 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Rating Type</header><!-- 26 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM Rating Finalization Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Asset Classification</header>
+				</reportColumn>			
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Industry Name</header><!-- 27 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Industry Code</header><!-- 28 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Constitution</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Covenant Category</header>
+				</reportColumn>
+				
+					<reportColumn>
+					<width>1000</width>
+					<format>textFormat</format>
+					<header>Facility</header><!-- 29 -->
+				</reportColumn>
+				
+					<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Covenant Type</header><!-- 29 -->
+				</reportColumn>
+				
+					<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Covenant Condition</header><!-- 29 -->
+				</reportColumn>
+				
+					<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Complied / Non-Complied</header><!-- 29 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Advised / Non-Advised</header><!-- 29 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header><!-- 29 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Target Date</header><!-- 29 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>1000</width>
+					<format>textFormat</format>
+					<header>Monitoring Responsibility</header><!-- 29 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Covenant Description</header><!-- 29 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker Id</header><!-- 29 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker Date</header><!-- 30 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker Id</header><!-- 31 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker Date</header><!-- 32 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>					
+			</reportColumns>
+			<reportName>CAM Details</reportName>
+		</reportParamters>
+	</report>
+</reports>

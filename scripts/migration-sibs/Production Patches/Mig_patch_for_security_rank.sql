@@ -1,0 +1,12 @@
+/* To be patch in SIBS  for the charge ranking */
+
+select sec.cms_collateral_id, lmt.LMT_BCA_REF_NUM as SIBS_AA_NUMBER, lmt.LMT_FAC_CODE as FAC_CODE, lmt.LMT_FAC_SEQ as FAC_SEQ, sec.SCI_SECURITY_DTL_ID as SECURITY_ID,
+chg.CHARGE_TYPE, chg.CHARGE_AMOUNT, chg.SECURITY_RANK 
+from CMS_CHARGE_DETAIL chg, CMS_LIMIT_CHARGE_MAP lcm, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP lsm, CMS_SECURITY sec
+where chg.CHARGE_DETAIL_ID = lcm.CHARGE_DETAIL_ID
+and lcm.CMS_LSP_APPR_LMTS_ID = lmt.CMS_LSP_APPR_LMTS_ID
+and lmt.CMS_LSP_APPR_LMTS_ID = lsm.CMS_LSP_APPR_LMTS_ID
+and lsm.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID
+and (char(sec.CMS_COLLATERAL_ID) like '20090801%' or char(sec.CMS_COLLATERAL_ID) like '20090808%')
+and chg.SECURITY_RANK is not null
+and sec.SCI_SECURITY_DTL_ID not in '22617';

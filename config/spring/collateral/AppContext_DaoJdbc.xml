@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ORM/JDBC based Dao having property of 'sessionFactory' or 'dataSource'.
+		All these DAOs have to be intercept by Transaction, set in 'AppContext_TrxPlugin.xml'.
+	</description>
+
+	<bean id="collateralTrxJdbcDao" class="com.integrosys.cms.app.collateral.trx.CollateralTrxDAO">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+	
+	<bean id="collateralDao" class="com.integrosys.cms.app.collateral.bus.CollateralDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="totalPageForPagination" value="${pagination.total.page}" />
+		<property name="recordsPerPageForPagination" value="${pagination.records.per.page}" />
+		<property name="paginationUtil" ref="paginationUtil" />
+		<property name="receivedStatementProc" value="PROC_STATEMENT_REC" />
+        <property name="receivedStatementProcParam" value="PROC_STATEMENT_REC_PARAM" />
+        <property name="fdDeletedBackupProc" value="FD_DELETED_BACKUP" />
+         <property name="ladExpiryUpdate" value="SP_LAD_EXPIRY" />
+         <property name="ladExpiryUpdateStage" value="SP_LAD_EXPIRY_STAGE" /> <!-- Uma Khot:added as LAD expiry taking time for exec. So Splitting into 2 parts. -->
+        <property name="facChargeIdProc" value="FACCHARGEID" />
+        <property name="facSecNewMview" value="FAC_SEC_NEW_MVIEW" />
+        <property name="recurNewMview" value="RECUR_NEW_MVIEW" />
+        <property name="custLimitMview" value="CUSTOMER_TOTAL_RPT_SP" />
+        <property name="cmsInterfaceLogbkupProc" value="SP_cms_BKP_INTERFACE_LOG" />
+         <property name="cmsFCUBSLogbkupProc" value="SP_cms_BKP_FCUBS_LOG" />
+         
+         <property name="facilityIntLogbkpProc" value="SP_faclityInterfaceLogBkp" />
+         <property name="liabilityIntLogbkpProc" value="SP_liabilityInterfaceLogBkp" />
+          <property name="cmsPSRLogbkupProc" value="SP_CMS_BKP_PSR_LOG" />
+
+         <property name="deferralInsurancePolicy" value="SP_UPDATE_DEFERRAL_INSURANCE_PROC_1_PROP" />
+         <property name="deferralGCPolicy" value="SP_UPDATE_DEFERRAL_GC_INSURANCE_PROC_1_GC" />
+         <property name="inserDeferralTBCre" value="SP_INSERT_DEFERRAL_CHECKLIST_PROC_TBCRE" />
+         <property name="insertDeferralChecklistProperty" value="SP_INSERT_DEFERRAL_CHECKLIST_PROC_NEW_PROP" />
+
+
+         <property name="ifscCodeInterfaceLogBkupProc" value="SP_IFSCCODE_INTERFACE_LOG_BKP" />
+	</bean>
+	
+	<bean id="stagingCollateralDao" class="com.integrosys.cms.app.collateral.bus.CollateralStagingDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="totalPageForPagination" value="${pagination.total.page}" />
+		<property name="recordsPerPageForPagination" value="${pagination.records.per.page}" />
+		<property name="paginationUtil" ref="paginationUtil" />
+	</bean>
+	
+	<bean id="stockNameAndCodeResultGenerator" class="com.integrosys.base.techinfra.dbsupport.RowRecordsJdbcResultGenerator">
+		<constructor-arg>
+			<value>SELECT DISTINCT pf.stock_code, pf.name 
+				FROM cms_price_feed pf, cms_security sec, cms_portfolio_item pi 
+				WHERE sec.cms_collateral_id = pi.cms_collateral_id 
+				AND sec.security_sub_type_id = ? 
+				AND pi.stock_code = pf.stock_code</value>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="org.springframework.jdbc.core.JdbcTemplate">
+				<property name="dataSource" ref="ofaPool" />
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<bean class="com.integrosys.cms.app.collateral.bus.type.marketable.StockCodeAndNameRowMapper" />
+		</constructor-arg>
+	</bean>
+	
+<bean id="propertyValuation1Dao" class="com.integrosys.cms.app.collateral.bus.type.property.PropertyValuation1DaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="propertyValuation2Dao" class="com.integrosys.cms.app.collateral.bus.type.property.PropertyValuation2DaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="propertyValuation3Dao" class="com.integrosys.cms.app.collateral.bus.type.property.PropertyValuation3DaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+
+</beans>

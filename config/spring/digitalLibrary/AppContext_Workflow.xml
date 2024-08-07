@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+	
+	<!-- bond feed -->
+	
+	<bean id="DigitalLibraryTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.digitalLibrary.trx.CheckerApproveUpdateOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+
+	<bean id="DigitalLibraryTrx.CheckerRejectOperation" class="com.integrosys.cms.app.digitalLibrary.trx.CheckerRejectOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+	
+	<bean id="DigitalLibraryTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.digitalLibrary.trx.MakerCloseDraftOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+	
+	<bean id="DigitalLibraryTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.digitalLibrary.trx.MakerCloseRejectedOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+	
+	<bean id="DigitalLibraryTrx.MakerSubmitOperation" class="com.integrosys.cms.app.digitalLibrary.trx.MakerSubmitOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+	
+	<bean id="DigitalLibraryTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.digitalLibrary.trx.MakerSubmitRejectedOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+	
+	<bean id="DigitalLibraryTrx.MakerUpdateOperation" class="com.integrosys.cms.app.digitalLibrary.trx.MakerUpdateOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+	
+	<bean id="DigitalLibraryTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.digitalLibrary.trx.MakerUpdateRejectedOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+	
+	<bean id="DigitalLibraryTrx.ReadDigitalLibraryOperation" class="com.integrosys.cms.app.digitalLibrary.trx.ReadDigitalLibraryOperation">
+		<property name="digitalLibraryBusManager" ref="digitalLibraryBusManager" />
+		<property name="digitalLibraryBusManagerStaging" ref="stagingDigitalLibraryBusManager" />
+	</bean>
+
+	<bean id="DigitalLibraryGroupReadController" class="com.integrosys.cms.app.digitalLibrary.trx.DigitalLibraryReadController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="ReadDigitalLibraryOperation" value-ref="DigitalLibraryTrx.ReadDigitalLibraryOperation" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="DigitalLibraryGroupTrxController" class="com.integrosys.cms.app.digitalLibrary.trx.DigitalLibraryTrxController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="CheckerApproveUpdateOperation" value-ref="DigitalLibraryTrx.CheckerApproveUpdateOperation" />
+				<entry key="CheckerRejectOperation" value-ref="DigitalLibraryTrx.CheckerRejectOperation" />
+				<entry key="MakerCloseDraftOperation" value-ref="DigitalLibraryTrx.MakerCloseDraftOperation" />
+				<entry key="MakerCloseRejectedOperation" value-ref="DigitalLibraryTrx.MakerCloseRejectedOperation" />
+				<entry key="MakerSubmitOperation" value-ref="DigitalLibraryTrx.MakerSubmitOperation" />
+				<entry key="MakerSubmitRejectedOperation" value-ref="DigitalLibraryTrx.MakerSubmitRejectedOperation" />
+				<entry key="MakerUpdateOperation" value-ref="DigitalLibraryTrx.MakerUpdateOperation" />
+				<entry key="MakerUpdateRejectedOperation" value-ref="DigitalLibraryTrx.MakerUpdateRejectedOperation" />
+			</map>
+		</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+	</bean>
+
+	<bean id="digitalLibraryTrxControllerFactory" class="com.integrosys.cms.app.digitalLibrary.trx.DigitalLibraryTrxControllerFactory">
+		<property name="digitalLibraryGroupReadController" ref="DigitalLibraryGroupReadController" />
+		<property name="digitalLibraryGroupTrxContoller" ref="DigitalLibraryGroupTrxController" />
+	</bean>
+	
+</beans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+	<bean id="fileUploadProxy" class="com.integrosys.cms.app.fileUpload.proxy.FileUploadProxyManagerImpl">
+		<property name="fileUploadBusManager" ref="fileUploadBusManager" />
+		<property name="stagingfileUploadBusManager" ref="stagingfileUploadBusManager" />
+		<property name="trxControllerFactory" ref="fileUploadTrxControllerFactory" />
+		<property name="stagingfileUploadFileMapperIdBusManager" ref="stagingfileUploadFileMapperIdBusManager" />
+		<property name="fileUploadFileMapperIdBusManager" ref="fileUploadFileMapperIdBusManager" />
+		
+	</bean>
+	<bean id="fileUploadBusManager" class="com.integrosys.cms.app.fileUpload.bus.FileUploadBusManagerImpl">
+		<property name="fileUploadDao" ref="fileUploadDao" />
+	
+	</bean>
+	<bean id="stagingfileUploadBusManager" class="com.integrosys.cms.app.fileUpload.bus.FileUploadtBusManagerStagingImpl">
+		<property name="fileUploadDao" ref="fileUploadDao" />
+		
+	</bean>
+	<bean id="stagingfileUploadFileMapperIdBusManager" class="com.integrosys.cms.app.fileUpload.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="fileUploadDao" ref="fileUploadDao" />
+		
+	</bean>
+	<bean id="fileUploadFileMapperIdBusManager" class="com.integrosys.cms.app.fileUpload.bus.FileMapperIdBusManagerImpl">
+		<property name="fileUploadDao" ref="fileUploadDao" />
+		
+	</bean>
+	
+			
+</beans>

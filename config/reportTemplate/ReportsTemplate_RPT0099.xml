@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT DISTINCT PARTY_ID , PARTY_NAME , SOURCE_SEC_ID,COLLATERAL_CODE_NAME,FACILITY_ID,FACILITY_NAME,
+ FAC_SANCTION_AMT,FACILITY_RELEASED_AMOUNT,DP_TO_BE_CALCULATED,DRAWING_POWER_AS_PER_STOCK_STATEMENT,
+ STOCK_DOC_MONTH,STOCK_DOC_YEAR,DUE_DATE,DP_SHARE,MAKER_ID,CHECKER_ID,MAKER_DATE,CHECKER_DATE 
+ 
+FROM
+  DP_REGUL_AUDIT_TRAIL_MV
+              
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				  1=1
+				</mandatoryClause>
+				<param>
+                <name>fromDate</name>
+                <condition> AND TRUNC(TRANSACTION_DATE) BETWEEN </condition>
+            </param>
+            <param>
+                <name>toDate</name>
+                <condition> AND </condition>
+            </param>
+            <param>
+				<name>party</name>
+				<condition> and PARTY_ID = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>				
+			<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Source Security ID</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Collateral Code-Name</header><!-- 4 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Facility Sanctioned Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>amountFormat</format>
+					<header>Facility Released Amount</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>DP to be calculated Manually</header>
+				</reportColumn>			
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Drawing Power (as per stock statement)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Stock Doc Month</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Stock Doc Year</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Due Date</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>DP Share</header>
+				</reportColumn>
+				<!-- <reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks by Maker</header>11
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Term Loan Outstanding Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Margin/ Asset Cover (%)</header>13
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Receivables given by Client</header> 
+				</reportColumn>-->
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker Date and Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Checker Date and Time</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Stock and Receivables-Audit Trail Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

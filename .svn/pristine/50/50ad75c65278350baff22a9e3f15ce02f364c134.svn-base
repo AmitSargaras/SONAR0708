@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT CMS.CERSAI_SECURITY_INTEREST_ID AS INTEREST_ID,
+			CMS.CERSAI_ASSET_ID AS ASSET_ID,
+			TO_CHAR(CMS.DELETED_DATE,'dd-MM-yyyy') AS RELEASE_DATE,
+			CMS.CMS_COLLATERAL_ID AS SECURITY_ID
+			from
+			cms_security CMS,
+			transaction
+			trx,
+			cms_stage_security cms_n,
+			CMS_COLLATERAL_NEW_MASTER colnmaster,
+			SCI_LE_SUB_PROFILE sub_profile,
+			sci_lsp_lmt_profile LMT,
+			sci_lsp_appr_lmts APPR,
+			cms_limit_security_map MAP,
+			CMS_CHECKLIST_ITEM
+			CHECKLIST_ITEM,
+			CMS_CHECKLIST CHECKLIST,
+  			CMS_BANKING_METHOD_CUST CBMC
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				CMS.COLLATERAL_CODE=COLNMASTER.NEW_COLLATERAL_CODE
+				AND
+				COLNMASTER.CERSAI_IND='Y' AND
+				(
+				(CMS.CERSAI_SECURITY_INTEREST_ID IS
+				NOT NULL AND CMS_N.CERSAI_SECURITY_INTEREST_ID IS NULL)
+				OR
+				(CMS.CERSAI_SECURITY_INTEREST_ID IS NULL AND
+				CMS_N.CERSAI_SECURITY_INTEREST_ID IS NOT NULL)
+				OR (NOT
+				(CMS.CERSAI_SECURITY_INTEREST_ID =
+				CMS_N.CERSAI_SECURITY_INTEREST_ID
+				))
+				)
+				AND
+				TRX.LEGAL_ID = CMS_N.SCI_SECURITY_DTL_ID AND
+				CMS.CMS_COLLATERAL_ID = TRX.REFERENCE_ID and
+				CMS.CMS_COLLATERAL_ID=
+				MAP.CMS_COLLATERAL_ID and
+				APPR.CMS_LSP_APPR_LMTS_ID
+				=MAP.CMS_LSP_APPR_LMTS_ID and
+				LMT.CMS_LSP_LMT_PROFILE_ID=APPR.CMS_LIMIT_PROFILE_ID and
+				LMT.LLP_LE_ID=SUB_PROFILE.LSP_LE_ID and
+				SUB_PROFILE.LSP_LE_ID         =       CBMC.CUSTOMER_ID AND 
+				CBMC.STATUS = 'ACTIVE' AND 
+				(SUB_PROFILE.STATUS='INACTIVE' OR CMS.STATUS = 'DELETED') AND
+				CHECKLIST.CHECKLIST_ID = CHECKLIST_ITEM.CHECKLIST_ID AND
+				CHECKLIST.CMS_LSP_LMT_PROFILE_ID = LMT.CMS_LSP_LMT_PROFILE_ID AND
+			</mandatoryClause>
+			<param>
+				<name>securityType</name>
+				<condition>COLNMASTER.NEW_COLLATERAL_CATEGORY = </condition>
+			</param>
+			<param>
+				<name>fromDate1</name>
+				<condition></condition>
+			</param>
+			<param>
+				<name>toDate1</name>
+				<condition></condition>
+			</param>
+			<param>
+				<name>bankingMethod</name>
+				<!-- <condition>sub_profile.banking_method= </condition> -->
+				<condition>CBMC.CMS_BANKING_METHOD_NAME= </condition>
+			</param>
+
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>15</width>
+					<format>textFormat</format>
+					<header>|</header>
+				</reportColumn>
+				<reportColumn>
+					<width>15</width>
+					<format>textFormat</format>
+					<header>|</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>|</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>|</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>CERSAI Charge Release report</reportName>
+		</reportParamters>
+	</report>
+</reports>

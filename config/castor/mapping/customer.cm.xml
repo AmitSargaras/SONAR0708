@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+<mapping>
+	<description>Customer Mapping - CU001</description>
+	<class extends="com.integrosys.cms.host.eai.EAIBody"
+		name="com.integrosys.cms.host.eai.customer.CustomerMessageBody">
+		<map-to xml="MsgBody" />
+		<field name="MainProfileDetails"
+			type="com.integrosys.cms.host.eai.customer.MainProfileDetails" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.customer.MainProfileDetails">
+		<map-to xml="MainProfileDetails" />
+		<field name="MainProfile"
+			type="com.integrosys.cms.host.eai.customer.bus.MainProfile" />
+		<field name="CreditGrade" type="com.integrosys.cms.host.eai.CreditGrade"
+			collection="vector" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.customer.bus.MainProfile">
+		<map-to xml="MainProfile" />
+		<field name="CIFId" type="string" />
+		<field name="source" type="string" >
+			<bind-xml name="CIFSource" />
+		</field>
+		<field name="CustomerNameLong" type="string" />
+		<field name="CustomerNameShort" type="string" />
+		<field name="CustomerClass" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="DomicileCountry" type="string" />
+		<field name="CustomerType" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="CustomerStartDate" type="string" />
+		<field name="Blacklisted" type="string" />
+		<field name="NatureOfBiz" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="AccountOfficerID" type="string" />
+		<field name="AccountOfficerName" type="string" />
+		<field name="IdInfo"
+			type="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo"
+			collection="vector">
+			<bind-xml name="IdInfo" />
+		</field>
+		<field name="Address"
+			type="com.integrosys.cms.host.eai.customer.bus.CustomerAddress"
+			collection="vector">
+			<bind-xml name="Address" />
+		</field>
+				<field name="customerBranch" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="CustomerBranch" />
+		</field>
+		
+		<field name="UpdateStatusIndicator" type="java.lang.Character" />
+		<field name="ChangeIndicator" type="java.lang.Character" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.customer.bus.CustomerAddress">
+		<map-to xml="Address" />
+		<field name="address1" type="string">
+			<bind-xml name="Address1" />
+		</field>
+		<field name="address2" type="string">
+			<bind-xml name="Address2" />
+		</field>
+		<field name="address3" type="string">
+			<bind-xml name="Address3" />
+		</field>
+		<field name="address4" type="string">
+			<bind-xml name="Address4" />
+		</field>
+		<field name="address5" type="string">
+			<bind-xml name="Address5" />
+		</field>
+		<field name="postCode" type="string">
+			<bind-xml name="Postcode" />
+		</field>
+		<field name="country" type="string">
+			<bind-xml name="Country" />
+		</field>
+		<field name="addressType" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="AddressType" />
+		</field>
+		<field name="state" type="string">
+			<bind-xml name="State" />
+		</field>
+		<field name="city" type="string">
+			<bind-xml name="City" />
+		</field>
+	</class>
+	<class name="com.integrosys.cms.host.eai.customer.bus.CustomerIdInfo">
+		<map-to xml="IdInfo" />
+		<field name="idNumber" type="string">
+			<bind-xml name="IdNumber" />
+		</field>
+		<field name="idType" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="IdType" />
+		</field>
+		<field name="countryIssued" type="string">
+			<bind-xml name="CountryIssued" />
+		</field>
+		<field name="IdStartDate" type="string">
+			<bind-xml name="IdStartDate" />
+		</field>
+	</class>
+	<class name="com.integrosys.cms.host.eai.CreditGrade">
+		<map-to xml="CreditGrade" />
+		<field name="CIFId" type="string" />
+		<field name="CreditGradeId" type="long" />
+		<field name="CreditGradeType" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="CreditGradeCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="CreditGradeEffectiveDate" type="string" />
+		<field name="CreditGradeReasonForChange" type="string" />
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+</mapping>

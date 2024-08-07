@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select distinct il.PARTYID,
+			il.BULKBORROWERNAME as PARTYNAME,
+			udf.UDF98 as Commodity_Borrower_Flag,
+			il.INTERFACESTATUS,
+			il.ERRORMESSAGE,
+			TO_CHAR(il.REQUESTDATETIME,'DD/Mon/YYYY') AS REQUESTDATETIME,
+			TO_CHAR(il.RESPONSEDATETIME,'DD/Mon/YYYY') AS RESPONSEDATETIME
+			from 
+			CMS_ECBF_CUST_INTERFACE_LOG il,
+			SCI_LE_UDF udf, 
+			SCI_LE_MAIN_PROFILE party 
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				 udf.CMS_LE_MAIN_PROFILE_ID = party.CMS_LE_MAIN_PROFILE_ID 
+				 AND udf.UDF98              = 'Yes'
+			</mandatoryClause>
+
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(REQUESTDATETIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Commodity Borrower Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>ECBF Interface Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>ECBF Interface Failed Reason</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Request Date and Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Response Date and Time</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Party Interface with ECBF</reportName>
+		</reportParamters>
+	</report>
+</reports>

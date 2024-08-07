@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+	</description>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="npaProvisionFileTrigger" />
+				<ref bean="npaProvisionFileWriteLogic" />
+				
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="npaProvisionFileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="npaProvisionFileJobDetail" />
+		<!--<property name="cronExpression" value="0 0/30 * * * ?" /> -->
+		<!-- <property name="cronExpression" value="0 5 5 1 * ?" /> -->
+		<!--  <property name="cronExpression" value="0 0 0 ? * 7#4" /> -->
+		<property name="cronExpression" value="${ftp.npa.provision.scheduler.time}" />
+	</bean>
+	
+	<bean id="npaProvisionFileJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="npaProvisionJob" />
+		<property name="targetMethod" value="execute" />
+		
+	</bean>
+	
+	<bean name="npaProvisionJob" class="com.integrosys.cms.batch.npaProvision.schedular.NpaProvisionJob">
+	</bean>
+	
+	
+	
+	<bean id="npaProvisionFileWriteLogic" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="npaProvisionFileWrite" />
+		<property name="cronExpression" value="${ftp.npa.provision.file.scheduler.time}" />
+	</bean>
+	
+	<bean id="npaProvisionFileWrite" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="npaProvisionJobFileWrite" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+	
+	<bean name="npaProvisionJobFileWrite" class="com.integrosys.cms.batch.npaProvision.schedular.NpaProvisionFileWriteBatch">
+	</bean>
+	
+</beans>

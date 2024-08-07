@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.app.securityenvelope.bus">
+
+	<class entity-name="actualSecEnvelope" name="OBSecEnvelope" table="CMS_SEC_ENVELOPE" lazy="false">
+  	<id name="secEnvelopeId" column="SEC_ENVELOPE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">SEC_ENVELOPE_SEQ</param>
+			</generator>
+		</id>
+    <version name="versionTime" column="VERSION_TIME" type="long" />
+    	<property name="secLspLmtProfileId" column="SEC_LSP_LMT_PROFILE_ID"/>
+      <property name="status" column="STATUS"/>
+      <set name="secEnvelopeItemList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		  	<key column="SEC_ENVELOPE_ID" not-null="true" />
+		    <one-to-many entity-name="actualSecEnvelopeItem" />
+	    </set>
+  </class>
+
+  <class entity-name="stageSecEnvelope" name="OBSecEnvelope" table="CMS_STAGE_SEC_ENVELOPE" lazy="false">
+  	<id name="secEnvelopeId" column="SEC_ENVELOPE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_SEC_ENVELOPE_SEQ</param>
+			</generator>
+		</id>
+    <version name="versionTime" column="VERSION_TIME" type="long" />
+    	<property name="secLspLmtProfileId" column="SEC_LSP_LMT_PROFILE_ID"/>
+      <property name="status" column="STATUS"/>
+      	<set name="secEnvelopeItemList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="SEC_ENVELOPE_ID" not-null="true" />
+		    <one-to-many entity-name="stageSecEnvelopeItem" />
+	    	</set>
+  </class>
+
+  <class entity-name="actualSecEnvelopeItem" name="OBSecEnvelopeItem" table="CMS_SEC_ENVELOPE_ITEM" lazy="false">
+  	<id name="secEnvelopeItemId" column="SEC_ENVELOPE_ITEM_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">SEC_ENVELOPE_ITEM_SEQ</param>
+			</generator>
+		</id>
+			 <property name="secEnvelopeItemAddr" column="SEC_ENVELOPE_ITEM_ADDR"/>
+       <property name="secEnvelopeItemCab" column="SEC_ENVELOPE_ITEM_CAB"/>
+       <property name="secEnvelopeItemDrw" column="SEC_ENVELOPE_ITEM_DRW"/>
+       <property name="secEnvelopeItemBarcode" column="SEC_ENVELOPE_ITEM_BARCODE"/>
+       <property name="status" column="STATUS"/>
+       <property name="secEnvelopeRefId" column="SEC_ENVELOPE_REF_ID"/>
+  </class>
+
+  <class entity-name="stageSecEnvelopeItem" name="OBSecEnvelopeItem" table="CMS_STAGE_SEC_ENVELOPE_ITEM" lazy="false">
+  	<id name="secEnvelopeItemId" column="SEC_ENVELOPE_ITEM_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">STG_SEC_ENVELOPE_ITEM_SEQ</param>
+			</generator>
+		</id>
+        <property name="secEnvelopeItemAddr" column="SEC_ENVELOPE_ITEM_ADDR"/>
+        <property name="secEnvelopeItemCab" column="SEC_ENVELOPE_ITEM_CAB"/>
+        <property name="secEnvelopeItemDrw" column="SEC_ENVELOPE_ITEM_DRW"/>
+        <property name="secEnvelopeItemBarcode" column="SEC_ENVELOPE_ITEM_BARCODE"/>
+        <property name="status" column="STATUS"/>
+        <property name="secEnvelopeRefId" column="SEC_ENVELOPE_REF_ID"/>
+  </class>
+  
+  	<resultset name="sec.env.item.by.limit.id.result">
+		<return-scalar column="SEC_ENVELOPE_ITEM_CAB" type="string"/>
+		<return-scalar column="SEC_ENVELOPE_ITEM_DRW" type="string"/>
+		<return-scalar column="SEC_ENVELOPE_ITEM_BARCODE" type="string"/>
+		<return-scalar column="SEC_ENVELOPE_ITEM_ADDR" type="string"/>
+	</resultset>
+  
+  	<sql-query name="sec.env.item.by.limit.id" resultset-ref="sec.env.item.by.limit.id.result">
+    <![CDATA[
+     	SELECT 
+     	SEC_ENVELOPE_ITEM_CAB,SEC_ENVELOPE_ITEM_DRW,SEC_ENVELOPE_ITEM_BARCODE,SEC_ENVELOPE_ITEM_ADDR
+    	FROM CMS_SEC_ENVELOPE_ITEM SEC_ENV_ITEM INNER JOIN CMS_SEC_ENVELOPE SEC_ENV
+    	ON SEC_ENV.SEC_ENVELOPE_ID = SEC_ENV_ITEM.SEC_ENVELOPE_ID  AND SEC_ENV.SEC_LSP_LMT_PROFILE_ID =:limitId 
+    ]]>
+    </sql-query>
+    
+    
+</hibernate-mapping>

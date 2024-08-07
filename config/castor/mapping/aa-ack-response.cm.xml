@@ -1,0 +1,42 @@
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+<mapping>
+	<description>AA Response - AC002</description>
+
+	<include href="common-response.cm.xml" /> 
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.limit.response.ResponseMessageBody">
+		<map-to xml="MsgBody" />
+		<field name="LosAANumber" type="string">
+			<bind-xml name="LOSAANumber" location="Response"/>
+		</field>
+		<field name="StpDate" type="string">
+			<bind-xml name="STPDate" location="Response"/>
+		</field>
+		<field name="UserId" type="string">
+			<bind-xml name="UserID" location="Response"/>
+		</field>
+		<field name="UserName" type="string">
+			<bind-xml name="UserName" location="Response"/>
+		</field>
+		<field name="FacilityList" type="com.integrosys.cms.host.eai.limit.response.ResponseFacilityMaster" collection="vector">
+			<bind-xml name="Facility" location="Response"/>
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.response.ResponseFacilityMaster">
+		<map-to xml="Facility" />
+		<field name="LosLimitId" type="string">
+			<bind-xml name="LOSLimitId" />
+		</field>
+		<field name="FacilityStatusEntryCode" type="string">
+			<bind-xml name="FacilityStatus" />
+		</field>
+		<field name="CancelRejectCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="CancelRejectCode" />
+		</field>
+		<field name="CancelRejectDate" type="string">
+			<bind-xml name="CancelRejectDate" />
+		</field>
+	</class>
+
+</mapping>

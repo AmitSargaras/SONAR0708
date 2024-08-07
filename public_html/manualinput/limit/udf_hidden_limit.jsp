@@ -1,0 +1,224 @@
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+
+<html:hidden name="XRefDetailForm" property="udf1" />
+<html:hidden name="XRefDetailForm" property="udf2" />
+<html:hidden name="XRefDetailForm" property="udf3" />
+<html:hidden name="XRefDetailForm" property="udf4" />
+<html:hidden name="XRefDetailForm" property="udf5" />
+<html:hidden name="XRefDetailForm" property="udf6" />
+<html:hidden name="XRefDetailForm" property="udf7" />
+<html:hidden name="XRefDetailForm" property="udf8" />
+<html:hidden name="XRefDetailForm" property="udf9" />
+<html:hidden name="XRefDetailForm" property="udf10" />
+<html:hidden name="XRefDetailForm" property="udf11" />
+<html:hidden name="XRefDetailForm" property="udf12" />
+<html:hidden name="XRefDetailForm" property="udf13" />
+<html:hidden name="XRefDetailForm" property="udf14" />
+<html:hidden name="XRefDetailForm" property="udf15" />
+<html:hidden name="XRefDetailForm" property="udf16" />
+<html:hidden name="XRefDetailForm" property="udf17" />
+<html:hidden name="XRefDetailForm" property="udf18" />
+<html:hidden name="XRefDetailForm" property="udf19" />
+<html:hidden name="XRefDetailForm" property="udf20" />
+<html:hidden name="XRefDetailForm" property="udf21" />
+<html:hidden name="XRefDetailForm" property="udf22" />
+<html:hidden name="XRefDetailForm" property="udf23" />
+<html:hidden name="XRefDetailForm" property="udf24" />
+<html:hidden name="XRefDetailForm" property="udf25" />
+<html:hidden name="XRefDetailForm" property="udf26" />
+<html:hidden name="XRefDetailForm" property="udf27" />
+<html:hidden name="XRefDetailForm" property="udf28" />
+<html:hidden name="XRefDetailForm" property="udf29" />
+<html:hidden name="XRefDetailForm" property="udf30" />
+<html:hidden name="XRefDetailForm" property="udf31" />
+<html:hidden name="XRefDetailForm" property="udf32" />
+<html:hidden name="XRefDetailForm" property="udf33" />
+<html:hidden name="XRefDetailForm" property="udf34" />
+<html:hidden name="XRefDetailForm" property="udf35" />
+<html:hidden name="XRefDetailForm" property="udf36" />
+<html:hidden name="XRefDetailForm" property="udf37" />
+<html:hidden name="XRefDetailForm" property="udf38" />
+<html:hidden name="XRefDetailForm" property="udf39" />
+<html:hidden name="XRefDetailForm" property="udf40" />
+<html:hidden name="XRefDetailForm" property="udf41" />
+<html:hidden name="XRefDetailForm" property="udf42" />
+<html:hidden name="XRefDetailForm" property="udf43" />
+<html:hidden name="XRefDetailForm" property="udf44" />
+<html:hidden name="XRefDetailForm" property="udf45" />
+<html:hidden name="XRefDetailForm" property="udf46" />
+<html:hidden name="XRefDetailForm" property="udf47" />
+<html:hidden name="XRefDetailForm" property="udf48" />
+<html:hidden name="XRefDetailForm" property="udf49" />
+<html:hidden name="XRefDetailForm" property="udf50" />
+<html:hidden name="XRefDetailForm" property="udf51" />
+<html:hidden name="XRefDetailForm" property="udf52" />
+<html:hidden name="XRefDetailForm" property="udf53" />
+<html:hidden name="XRefDetailForm" property="udf54" />
+<html:hidden name="XRefDetailForm" property="udf55" />
+<html:hidden name="XRefDetailForm" property="udf56" />
+<html:hidden name="XRefDetailForm" property="udf57" />
+<html:hidden name="XRefDetailForm" property="udf58" />
+<html:hidden name="XRefDetailForm" property="udf59" />
+<html:hidden name="XRefDetailForm" property="udf60" />
+<html:hidden name="XRefDetailForm" property="udf61" />
+<html:hidden name="XRefDetailForm" property="udf62" />
+<html:hidden name="XRefDetailForm" property="udf63" />
+<html:hidden name="XRefDetailForm" property="udf64" />
+<html:hidden name="XRefDetailForm" property="udf65" />
+<html:hidden name="XRefDetailForm" property="udf66" />
+<html:hidden name="XRefDetailForm" property="udf67" />
+<html:hidden name="XRefDetailForm" property="udf68" />
+<html:hidden name="XRefDetailForm" property="udf69" />
+<html:hidden name="XRefDetailForm" property="udf70" />
+<html:hidden name="XRefDetailForm" property="udf71" />
+<html:hidden name="XRefDetailForm" property="udf72" />
+<html:hidden name="XRefDetailForm" property="udf73" />
+<html:hidden name="XRefDetailForm" property="udf74" />
+<html:hidden name="XRefDetailForm" property="udf75" />
+<html:hidden name="XRefDetailForm" property="udf76" />
+<html:hidden name="XRefDetailForm" property="udf77" />
+<html:hidden name="XRefDetailForm" property="udf78" />
+<html:hidden name="XRefDetailForm" property="udf79" />
+<html:hidden name="XRefDetailForm" property="udf80" />
+<html:hidden name="XRefDetailForm" property="udf81" />
+<html:hidden name="XRefDetailForm" property="udf82" />
+<html:hidden name="XRefDetailForm" property="udf83" />
+<html:hidden name="XRefDetailForm" property="udf84" />
+<html:hidden name="XRefDetailForm" property="udf85" />
+<html:hidden name="XRefDetailForm" property="udf86" />
+<html:hidden name="XRefDetailForm" property="udf87" />
+<html:hidden name="XRefDetailForm" property="udf88" />
+<html:hidden name="XRefDetailForm" property="udf89" />
+<html:hidden name="XRefDetailForm" property="udf90" />
+<html:hidden name="XRefDetailForm" property="udf91" />
+<html:hidden name="XRefDetailForm" property="udf92" />
+<html:hidden name="XRefDetailForm" property="udf93" />
+<html:hidden name="XRefDetailForm" property="udf94" />
+<html:hidden name="XRefDetailForm" property="udf95" />
+<html:hidden name="XRefDetailForm" property="udf96" />
+<html:hidden name="XRefDetailForm" property="udf97" />
+<html:hidden name="XRefDetailForm" property="udf98" />
+<html:hidden name="XRefDetailForm" property="udf99" />
+<html:hidden name="XRefDetailForm" property="udf100" />
+
+	    <html:hidden name="XRefDetailForm" property="udf101" />
+		<html:hidden name="XRefDetailForm" property="udf102" />
+		<html:hidden name="XRefDetailForm" property="udf103" />
+		<html:hidden name="XRefDetailForm" property="udf104" />
+		<html:hidden name="XRefDetailForm" property="udf105" />
+	    <html:hidden name="XRefDetailForm" property="udf106" />
+	    <html:hidden name="XRefDetailForm" property="udf107" />
+	    <html:hidden name="XRefDetailForm" property="udf108" />
+	    <html:hidden name="XRefDetailForm" property="udf109" />
+	    <html:hidden name="XRefDetailForm" property="udf110" />
+	    <html:hidden name="XRefDetailForm" property="udf111" />
+	    <html:hidden name="XRefDetailForm" property="udf112" />
+	    <html:hidden name="XRefDetailForm" property="udf113" />
+	    <html:hidden name="XRefDetailForm" property="udf114" />
+	    <html:hidden name="XRefDetailForm" property="udf115" />
+	  	
+	  	
+				<html:hidden name="XRefDetailForm" property="udf116" />
+				<html:hidden name="XRefDetailForm" property="udf117" />
+				<html:hidden name="XRefDetailForm" property="udf118" />
+				<html:hidden name="XRefDetailForm" property="udf119" />
+				<html:hidden name="XRefDetailForm" property="udf120" />
+				<html:hidden name="XRefDetailForm" property="udf121" />
+				<html:hidden name="XRefDetailForm" property="udf122" />
+				<html:hidden name="XRefDetailForm" property="udf123" />
+				<html:hidden name="XRefDetailForm" property="udf124" />
+				<html:hidden name="XRefDetailForm" property="udf125" />
+				<html:hidden name="XRefDetailForm" property="udf126" />
+				<html:hidden name="XRefDetailForm" property="udf127" />
+				<html:hidden name="XRefDetailForm" property="udf128" />
+				<html:hidden name="XRefDetailForm" property="udf129" />
+				<html:hidden name="XRefDetailForm" property="udf130" />
+				<html:hidden name="XRefDetailForm" property="udf131" />
+				<html:hidden name="XRefDetailForm" property="udf132" />
+				<html:hidden name="XRefDetailForm" property="udf133" />
+				<html:hidden name="XRefDetailForm" property="udf134" />
+				<html:hidden name="XRefDetailForm" property="udf135" />
+				<html:hidden name="XRefDetailForm" property="udf136" />
+				<html:hidden name="XRefDetailForm" property="udf137" />
+				<html:hidden name="XRefDetailForm" property="udf138" />
+				<html:hidden name="XRefDetailForm" property="udf139" />
+				<html:hidden name="XRefDetailForm" property="udf140" />
+				<html:hidden name="XRefDetailForm" property="udf141" />
+				<html:hidden name="XRefDetailForm" property="udf142" />
+				<html:hidden name="XRefDetailForm" property="udf143" />
+				<html:hidden name="XRefDetailForm" property="udf144" />
+				<html:hidden name="XRefDetailForm" property="udf145" />
+				<html:hidden name="XRefDetailForm" property="udf146" />
+				<html:hidden name="XRefDetailForm" property="udf147" />
+				<html:hidden name="XRefDetailForm" property="udf148" />
+				<html:hidden name="XRefDetailForm" property="udf149" />
+				<html:hidden name="XRefDetailForm" property="udf150" />
+				<html:hidden name="XRefDetailForm" property="udf151" />
+				<html:hidden name="XRefDetailForm" property="udf152" />
+				<html:hidden name="XRefDetailForm" property="udf153" />
+				<html:hidden name="XRefDetailForm" property="udf154" />
+				<html:hidden name="XRefDetailForm" property="udf155" />
+				<html:hidden name="XRefDetailForm" property="udf156" />
+				<html:hidden name="XRefDetailForm" property="udf157" />
+				<html:hidden name="XRefDetailForm" property="udf158" />
+				<html:hidden name="XRefDetailForm" property="udf159" />
+				<html:hidden name="XRefDetailForm" property="udf160" />
+				<html:hidden name="XRefDetailForm" property="udf161" />
+				<html:hidden name="XRefDetailForm" property="udf162" />
+				<html:hidden name="XRefDetailForm" property="udf163" />
+				<html:hidden name="XRefDetailForm" property="udf164" />
+				<html:hidden name="XRefDetailForm" property="udf165" />
+				<html:hidden name="XRefDetailForm" property="udf166" />
+				<html:hidden name="XRefDetailForm" property="udf167" />
+				<html:hidden name="XRefDetailForm" property="udf168" />
+				<html:hidden name="XRefDetailForm" property="udf169" />
+				<html:hidden name="XRefDetailForm" property="udf170" />
+				<html:hidden name="XRefDetailForm" property="udf171" />
+				<html:hidden name="XRefDetailForm" property="udf172" />
+				<html:hidden name="XRefDetailForm" property="udf173" />
+				<html:hidden name="XRefDetailForm" property="udf174" />
+				<html:hidden name="XRefDetailForm" property="udf175" />
+				<html:hidden name="XRefDetailForm" property="udf176" />
+				<html:hidden name="XRefDetailForm" property="udf177" />
+				<html:hidden name="XRefDetailForm" property="udf178" />
+				<html:hidden name="XRefDetailForm" property="udf179" />
+				<html:hidden name="XRefDetailForm" property="udf180" />
+				<html:hidden name="XRefDetailForm" property="udf181" />
+				<html:hidden name="XRefDetailForm" property="udf182" />
+				<html:hidden name="XRefDetailForm" property="udf183" />
+				<html:hidden name="XRefDetailForm" property="udf184" />
+				<html:hidden name="XRefDetailForm" property="udf185" />
+				<html:hidden name="XRefDetailForm" property="udf186" />
+				<html:hidden name="XRefDetailForm" property="udf187" />
+				<html:hidden name="XRefDetailForm" property="udf188" />
+				<html:hidden name="XRefDetailForm" property="udf189" />
+				<html:hidden name="XRefDetailForm" property="udf190" />
+				<html:hidden name="XRefDetailForm" property="udf191" />
+				<html:hidden name="XRefDetailForm" property="udf192" />
+				<html:hidden name="XRefDetailForm" property="udf193" />
+				<html:hidden name="XRefDetailForm" property="udf194" />
+				<html:hidden name="XRefDetailForm" property="udf195" />
+				<html:hidden name="XRefDetailForm" property="udf196" />
+				<html:hidden name="XRefDetailForm" property="udf197" />
+				<html:hidden name="XRefDetailForm" property="udf198" />
+				<html:hidden name="XRefDetailForm" property="udf199" />
+			    <html:hidden name="XRefDetailForm" property="udf200" />
+			    
+				    <html:hidden name="XRefDetailForm" property="udf201" />
+					<html:hidden name="XRefDetailForm" property="udf202" />
+					<html:hidden name="XRefDetailForm" property="udf203" />
+					<html:hidden name="XRefDetailForm" property="udf204" />
+					<html:hidden name="XRefDetailForm" property="udf205" />
+				    <html:hidden name="XRefDetailForm" property="udf206" />
+				    <html:hidden name="XRefDetailForm" property="udf207" />
+				    <html:hidden name="XRefDetailForm" property="udf208" />
+				    <html:hidden name="XRefDetailForm" property="udf209" />
+				    <html:hidden name="XRefDetailForm" property="udf210" />
+				    <html:hidden name="XRefDetailForm" property="udf211" />
+				    <html:hidden name="XRefDetailForm" property="udf212" />
+				    <html:hidden name="XRefDetailForm" property="udf213" />
+				    <html:hidden name="XRefDetailForm" property="udf214" />
+				    <html:hidden name="XRefDetailForm" property="udf215" />
+				  	
+<script language="javascript">
+</script>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+		SELECT PARTY_ID,
+ 					PARTY_NAME,
+					SEGMENTNAME,
+					RMREGION,
+					RMNAME,
+					FACILITYNAME,
+					LINENO,
+			          ISSECURED,
+					SECTYPE,
+					SECURITYSUBTYPE,					
+					COLLATERAL_NAME,
+					STATEMENTTYPE,
+					STATUS,
+					DOCUMENT_DESCRIPTION
+					from(
+		
+ 				SELECT rpt.PARTY_ID,
+ 					rpt.PARTY_NAME,
+					rpt.SEGMENTNAME,
+					rpt.RMREGION,
+					rpt.RMNAME,
+					rpt.FACILITYNAME,
+					rpt.LINENO,
+			          (case when	rpt.ISSECURED='Y'
+			          Then 'Yes'
+			          When rpt.ISSECURED='N'
+			          Then 'No' End) AS ISSECURED,
+					rpt.SECTYPE,
+					rpt.SECURITYSUBTYPE,
+					rpt.COLLATERAL_NAME,
+					rpt.STATEMENTTYPE,
+					rpt.STATUS,
+        		 glb.category,
+        		 glb.document_description				
+								
+ 				from CMS_FAC_SEC_NEW_REPORT rpt,
+     				 cms_document_globallist glb
+			</query>
+		<whereClause>
+			<mandatoryClause>
+         			glb.document_code = rpt.document_code
+
+			</mandatoryClause>			
+			<param>
+				<name>party</name>
+				<condition> and rpt.PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>filterDocument</name>
+				<condition> and glb.category = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and rpt.entry_code = </condition>
+			</param>
+			<param>
+				<name>relationManager</name>
+				<condition> and rpt.id = </condition>
+			</param>
+			</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Facility Name</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Lien No.</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Secured(Yes/No)</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Type</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Sub Type</header><!-- 10 -->
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Collateral Name</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Mandatory Document</header><!-- 12 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status Of Tracking</header><!-- 13 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Document Name</header><!-- 14 -->
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>Document Tracking Security And Facility</reportName>
+		</reportParamters>
+	</report>
+</reports>

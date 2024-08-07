@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<bean name="/GetCountersByCollateralSubtype" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.collateral.marketablesec.GetCountersByCollateralSubtypeAction">
+		<property name="stockNameAndCodeResultGenerator" ref="stockNameAndCodeResultGenerator" />
+		<property name="validMarketableSubType" value="MS600,MS605" />
+	</bean>
+	
+	<bean name="/MarksecMainLocalCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.marketablesec.marksecmainlocal.MarksecMainLocalAction">
+		<property name="nameCommandMap">
+			<map>
+
+				<entry key="ReadCollateralCommand" value-ref="MarksecMainLocalAction.ReadCollateralCommand" />
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+				
+			</map>
+		</property>		
+	</bean>
+	
+	
+	<bean name="/GteBankSameCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.guarantees.gtebanksame.GteBankSameAction">
+		<property name="nameCommandMap">
+			<map>
+
+				<entry key="RefreshRegionCmd" value-ref="MarksecMainLocalAction.RefreshRegionCmd" />
+				<entry key="RefreshStateCmd" value-ref="MarksecMainLocalAction.RefreshStateCmd" />
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/GteGovtCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.guarantees.gtegovt.GteGovtAction">
+		<property name="nameCommandMap">
+			<map>
+
+				<entry key="RefreshRegionCmd" value-ref="MarksecMainLocalAction.RefreshRegionCmd" />
+				<entry key="RefreshStateCmd" value-ref="MarksecMainLocalAction.RefreshStateCmd" />
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/GteSLCSameCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.guarantees.gteslcsame.GteSLCSameAction">
+		<property name="nameCommandMap">
+			<map>
+
+				<entry key="RefreshRegionCmd" value-ref="MarksecMainLocalAction.RefreshRegionCmd" />
+				<entry key="RefreshStateCmd" value-ref="MarksecMainLocalAction.RefreshStateCmd" />
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/GteIndivCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.guarantees.gteindiv.GteIndivAction">
+		<property name="nameCommandMap">
+			<map>
+
+				<entry key="RefreshRegionCmd" value-ref="MarksecMainLocalAction.RefreshRegionCmd" />
+				<entry key="RefreshStateCmd" value-ref="MarksecMainLocalAction.RefreshStateCmd" />
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/PropCommGeneralCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.property.propcommgeneral.PropCommGeneralAction">
+		<property name="nameCommandMap">
+			<map>
+
+				<entry key="RefreshRegionCmd" value-ref="MarksecMainLocalAction.RefreshRegionCmd" />
+				<entry key="RefreshStateCmd" value-ref="MarksecMainLocalAction.RefreshStateCmd" />
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/OthersaCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.others.othersa.OthersaAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/NoCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.nocollateral.NoCollateralAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/MarksecBondLocalCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.marketablesec.marksecbondlocal.MarksecBondLocalAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/MarksecOtherListedLocalCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.marketablesec.marksecotherlistedlocal.MarksecOtherListedLocalAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/GteCorp3rdCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.guarantees.gtecorp3rd.GteCorp3rdAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/CashFdCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.cash.cashfd.CashFdAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/AssetGenChargeCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.assetbased.assetgencharge.AssetGenChargeAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/AssetSpecGoldCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.assetbased.assetspecgold.AssetSpecGoldAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/AssetSpecOtherCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.assetbased.assetspecother.AssetSpecOtherAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+
+	<bean name="/AssetSpecPlantCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.assetbased.assetspecplant.AssetSpecPlantAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+	<bean name="/AssetAircraftCollateral" scope="prototype" autowire="byName"
+		class="com.integrosys.cms.ui.collateral.assetbased.assetaircraft.AssetAircraftAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="RefreshCityCmd" value-ref="MarksecMainLocalAction.RefreshCityCmd" />
+			</map>
+		</property>		
+	</bean>
+	
+</beans>

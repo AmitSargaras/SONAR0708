@@ -1,0 +1,1483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		To be used for SIBS batch feed files mapping, processing purpose.
+	</description>
+	
+	<bean name="sibsTransactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+          <property name="transactionManager" ref="txManager" />
+	</bean>
+	
+	<bean name="sibsJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+
+    <bean name="sibsExternalJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="${data.source.external.bean.name}" />
+	</bean>
+
+    <!-- Customer File -->
+
+	<!--<bean name="sibsCustomerUpdateLineTokenizer" class="org.springframework.batch.item.file.transform.PrefixMatchingCompositeLineTokenizer">-->
+		<!--<property name="tokenizers">-->
+		  <!--<map>-->
+		    <!--<entry key="D">-->
+		      <!--<bean class="org.springframework.batch.item.file.transform.FixedLengthTokenizer" >-->
+		       <!--<property name="columns" value="1-1, 2-20,21-100,101-120, 121-121,122-124, 125-132,-->
+				<!--133-133, 134-141, 142-145, 146-185,186-188,189-228,229-231,232-232,233-272,273-312, 313-352,-->
+				<!--353-392,393-401,402-404,405-407,408-408,409-448, 449-488,489-528,529-568,569-577, 578-578" />-->
+			<!--</bean>-->
+		    <!--</entry>-->
+		    <!--<entry key="T">-->
+		      <!--<bean class="com.integrosys.cms.batch.common.ReturnNullLineTokenizer" />-->
+		    <!--</entry>-->
+		  <!--</map>-->
+		<!--</property>-->
+	<!--</bean>-->
+	
+	<!--<bean id="sibsCustomerUpdateFieldSetMapper" class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsFieldSetMapper">-->
+    	<!--<property name="columnMetaInfos">-->
+    		<!--<value>-->
+    			<!--1=string-->
+    			<!--2=string-->
+    			<!--3=string-->
+    			<!--4=string-->
+    			<!--5=string-->
+    			<!--6=string-->
+    			<!--7=date,DATEFORMAT_ddMMyyyy-->
+    			<!--8=string-->
+    			<!--9=date,DATEFORMAT_ddMMyyyy-->
+    			<!--10=string-->
+    			<!--11=string-->
+    			<!--12=string-->
+    			<!--13=string-->
+    			<!--14=string-->
+    			<!--15=string-->
+    			<!--16=string-->
+    			<!--17=string-->
+    			<!--18=string-->
+    			<!--19=string-->
+    			<!--20=string-->
+    			<!--21=string-->
+    			<!--22=string-->
+    			<!--23=string-->
+    			<!--24=string-->
+    			<!--25=string-->
+    			<!--26=string-->
+    			<!--27=string-->
+    			<!--28=string-->
+			<!--</value>-->
+		<!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="sibsCustomerUpdateFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">-->
+		<!--<property name="firstLineIsHeader" value="true" />-->
+		<!--<property name="fieldSetMapper" ref="sibsCustomerUpdateFieldSetMapper" />-->
+		<!--<property name="resource" value="${resource.sibs.customer.update.feed.path}" />-->
+		<!--<property name="lineTokenizer" ref="sibsCustomerUpdateLineTokenizer" />-->
+	<!--</bean>-->
+
+	<!--<bean id="sibsCustomerUpdateFeedsLoaderBatchJob" class="com.integrosys.cms.batch.sibs.customer.CustomerUpdateFeedsLoader">-->
+		<!--<property name="updateFlatFileItemReader" ref="sibsCustomerUpdateFlatFileItemReader" />-->
+		<!--<property name="customerDao" ref="sibsCustomerDao" />-->
+		<!--<property name="feedBatchSize" value="${feed.batch.size}" />-->
+		<!--<property name="transactionTemplate" ref="sibsTransactionTemplate" />-->
+		<!--<property name="batchFeedErrorLogger">-->
+			<!--<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">-->
+				<!--<property name="logFileLocation" value="${log.sibs.customer.update.feed.path}" />-->
+			<!--</bean>-->
+		<!--</property>-->
+		<!--<property name="jdbcTemplate" ref="sibsJdbcTemplate" />-->
+		<!--<property name="tempTableName" value="SI_TEMP_SIBS_CU001" />-->
+		<!--<property name="validationProcedureName" value="SI_VALIDATE_TEMP_SIBS_CU001" />-->
+		<!--<property name="runProcedureName" value="SI_RUN_TEMP_SIBS_CU001" />-->
+	<!--</bean>-->
+	
+	<!--<bean name="sibsCustomerFusionLineTokenizer" class="org.springframework.batch.item.file.transform.PrefixMatchingCompositeLineTokenizer">-->
+          <!--<property name="tokenizers">-->
+            <!--<map>-->
+              <!--<entry key="D">-->
+                <!--<bean class="org.springframework.batch.item.file.transform.FixedLengthTokenizer" >-->
+			<!--<property name="columns" value="1-1, 2-20,21-39 ,40-40" />-->
+		<!--</bean>-->
+              <!--</entry>-->
+              <!--<entry key="T">-->
+                <!--<bean class="com.integrosys.cms.batch.common.ReturnNullLineTokenizer" />-->
+              <!--</entry>-->
+            <!--</map>-->
+          <!--</property>-->
+	<!--</bean>-->
+
+	<!--<bean id="sibsCustomerFusionFieldSetMapper" class="com.integrosys.cms.batch.sibs.customer.CustomerFusionFieldSetMapper" />-->
+
+	<!--<bean id="sibsCustomerFusionFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">-->
+		<!--<property name="firstLineIsHeader" value="true" />-->
+		<!--<property name="fieldSetMapper" ref="sibsCustomerFusionFieldSetMapper" />-->
+		<!--<property name="resource" value="${resource.sibs.customer.fusion.feed.path}" />-->
+		<!--<property name="lineTokenizer" ref="sibsCustomerFusionLineTokenizer" />-->
+	<!--</bean>-->
+
+	<!--<bean id="sibsCustomerFusinFeedsLoaderBatchJob" class="com.integrosys.cms.batch.sibs.customer.CustomerFusionFeedsLoader">-->
+		<!--<property name="fusionFlatFileItemReader" ref="sibsCustomerFusionFlatFileItemReader" />-->
+		<!--<property name="customerDao" ref="sibsCustomerFusionDao" />-->
+		<!--<property name="feedBatchSize" value="${feed.batch.size}" />-->
+		<!--<property name="transactionTemplate" ref="sibsTransactionTemplate" />-->
+		<!--<property name="batchFeedErrorLogger">-->
+			<!--<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">-->
+				<!--<property name="logFileLocation" value="${log.sibs.customer.fusion.feed.path}" />-->
+			<!--</bean>-->
+		<!--</property>-->
+		<!--<property name="jdbcTemplate" ref="sibsJdbcTemplate" />-->
+		<!--<property name="tempTableName" value="SI_TEMP_SIBS_CU003" />-->
+		<!--<property name="validationProcedureName" value="SI_VALIDATE_TEMP_SIBS_CU003" />-->
+		<!--<property name="runProcedureName" value="SI_RUN_TEMP_SIBS_CU003" />-->
+	<!--</bean>-->
+	
+	<!-- Credit application  -->
+
+	<!--<bean name="sibsCaODTLLineTokenizer" class="org.springframework.batch.item.file.transform.PrefixMatchingCompositeLineTokenizer">-->
+          <!--<property name="tokenizers">-->
+            <!--<map>-->
+              <!--<entry key="D">-->
+                <!--<bean class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">-->
+                    <!--<property name="columns" value="1-1,2-20,21-63,64-106, 107-109, 110-128, 129-145, 146-146, 147-163, 164-182,-->
+                        <!--183-183, 184-202, 203-204, 205-209, 210-217, 218-225, 226-240, 241-241, 242-242, 243-257, 258-258,-->
+                        <!--259-273, 274-274, 275-289, 290-290, 291-303, 304-304, 305-317, 318-318, 319-331, 332-332, 333-345,-->
+                        <!--346-346, 347-363, 364-364, 365-381, 382-382, 383-397, 398-402, 403-403, 404-414, 415-415" />-->
+                <!--</bean>-->
+              <!--</entry>-->
+              <!--<entry key="T">-->
+                <!--<bean class="com.integrosys.cms.batch.common.ReturnNullLineTokenizer" />-->
+              <!--</entry>-->
+            <!--</map>-->
+          <!--</property>-->
+	<!--</bean>-->
+
+    <!--<bean id="sibsCaODTLFieldSetMapper" class="com.integrosys.cms.batch.common.mapping.DefaultListRecordsFieldSetMapper">-->
+    	<!--<property name="columnMetaInfos">-->
+    		<!--<value>-->
+    			<!--1=string-->
+    			<!--2=string-->
+    			<!--3=string-->
+    			<!--4=string-->
+    			<!--5=string-->
+    			<!--6=string-->
+    			<!--7=double,DECIMAL_2-->
+    			<!--8=string-->
+    			<!--9=double,DECIMAL_2-->
+    			<!--10=long-->
+    			<!--11=string-->
+    			<!--12=long-->
+    			<!--13=string-->
+    			<!--14=string-->
+    			<!--15=date,DATEFORMAT_ddMMyyyy-->
+    			<!--16=date,DATEFORMAT_ddMMyyyy-->
+    			<!--17=double,DECIMAL_2-->
+    			<!--18=string-->
+    			<!--19=string-->
+    			<!--20=double,DECIMAL_2-->
+    			<!--21=string-->
+    			<!--22=double,DECIMAL_2-->
+    			<!--23=string-->
+    			<!--24=double,DECIMAL_2-->
+    			<!--25=string-->
+    			<!--26=double,DECIMAL_2-->
+    			<!--27=string-->
+    			<!--28=double,DECIMAL_2-->
+    			<!--29=string-->
+    			<!--30=double,DECIMAL_2-->
+    			<!--31=string-->
+    			<!--32=double,DECIMAL_2-->
+    			<!--33=string-->
+    			<!--34=double,DECIMAL_5-->
+    			<!--35=string-->
+    			<!--36=double,DECIMAL_5-->
+    			<!--37=string-->
+    			<!--38=double,DECIMAL_5-->
+    			<!--39=string-->
+    			<!--40=string-->
+    			<!--41=double,DECIMAL_9-->
+			<!--</value>-->
+    	<!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="sibsCaODTLFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">-->
+		<!--<property name="firstLineIsHeader" value="true" />-->
+		<!--<property name="fieldSetMapper" ref="sibsCaODTLFieldSetMapper" />-->
+		<!--<property name="resource" value="${resource.sibs.creditappl.odtl.feed.path}" />-->
+		<!--<property name="lineTokenizer" ref="sibsCaODTLLineTokenizer" />-->
+	<!--</bean>-->
+	
+	<!--<bean id="sibsOverdrafAndTermLoanFeedsLoaderBatchJob" class="com.integrosys.cms.batch.sibs.creditapplication.OverdraftAndTermLoanFeedsLoader">-->
+		<!--<property name="overdraftAndTermLoanFlatFileItemReader" ref="sibsCaODTLFlatFileItemReader" />-->
+		<!--<property name="feedPersistentBatchSize" value="${feed.persistent.batch.size}" />-->
+        <!--<property name="feedBatchSize" value="${feed.batch.size.sibs.od.tl}" />-->
+		<!--<property name="creditAppDao" ref="sibsCreditAppJdbcDao" />-->
+        <!--<property name="transactionTemplate" ref="sibsTransactionTemplate" />-->
+		<!--<property name="batchFeedErrorLogger">-->
+			<!--<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">-->
+				<!--<property name="logFileLocation" value="${log.sibs.ca.odtl.feed.path}" />-->
+			<!--</bean>-->
+		<!--</property>-->
+		<!--<property name="jdbcTemplate" ref="sibsJdbcTemplate" />-->
+		<!--<property name="tempTableName" value="SI_TEMP_SIBS_CA001" />-->
+		<!--<property name="validationProcedureName" value="SI_VALIDATE_TEMP_SIBS_CA001" />-->
+		<!--<property name="runProcedureName" value="SI_RUN_TEMP_SIBS_CA001" />-->
+	<!--</bean>-->
+
+	<!--<bean name="sibsCaNplClosedAccLineTokenizer" class="org.springframework.batch.item.file.transform.PrefixMatchingCompositeLineTokenizer">-->
+          <!--<property name="tokenizers">-->
+            <!--<map>-->
+              <!--<entry key="D">-->
+                <!--<bean class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">-->
+                  <!--<property name="columns" value="1-1, 2-20,21-63, 64-106,107-109, 110-128, 129-129, 130-130, 131-138, 139-155, 156-163, -->
+                  	<!--164-180, 181-197, 198-214, 215-222, 223-230, 231-247, 248-255, 256-272, 273-289, 290-306, 307-325, 326-326, 327-345, -->
+                  	<!--346-347, 348-352, 353-353, 354-355, 356-363, 364-364" />-->
+                <!--</bean>-->
+              <!--</entry>-->
+              <!--<entry key="T">-->
+                <!--<bean class="com.integrosys.cms.batch.common.ReturnNullLineTokenizer" />-->
+              <!--</entry>-->
+            <!--</map>-->
+          <!--</property>-->
+	<!--</bean>-->
+
+	<!--<bean id="sibsCaNplClosedAccFieldSetMapper" class="com.integrosys.cms.batch.sibs.creditapplication.CANplClosedAccFieldSetMapper">-->
+        <!--<property name="dateFormat" value="${format.date.ddMMyyyy}" />-->
+        <!--<property name="decimalTwoPlace" value="${format.2.decimal.point.sibs.facility}" />-->
+    <!--</bean>-->
+
+    <!--<bean id="sibsCaNplClosedAccFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">-->
+		<!--<property name="firstLineIsHeader" value="true" />-->
+		<!--<property name="fieldSetMapper" ref="sibsCaNplClosedAccFieldSetMapper" />-->
+		<!--<property name="resource" value="${resource.sibs.creditappl.nplclosedacc.feed.path}" />-->
+		<!--<property name="lineTokenizer" ref="sibsCaNplClosedAccLineTokenizer" />-->
+	<!--</bean>-->
+
+	<!--<bean id="sibsClosedAndNplAccountFeedsLoaderBatchJob" class="com.integrosys.cms.batch.sibs.creditapplication.ClosedAndNplAccountFeedsLoader">-->
+		<!--<property name="closedAndNplAccountsFlatFileItemReader" ref="sibsCaNplClosedAccFlatFileItemReader" />-->
+        <!--<property name="feedBatchSize" value="${feed.batch.size}" />-->
+		<!--<property name="creditAppDao" ref="sibsCreditAppDao" />-->
+        <!--<property name="transactionTemplate" ref="sibsTransactionTemplate" />-->
+		<!--<property name="batchFeedErrorLogger">-->
+			<!--<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">-->
+				<!--<property name="logFileLocation" value="${log.sibs.ca.closednpl.feed.path}" />-->
+			<!--</bean>-->
+		<!--</property>-->
+		<!--<property name="jdbcTemplate" ref="sibsJdbcTemplate" />-->
+		<!--<property name="tempTableName" value="SI_TEMP_SIBS_CA004" />-->
+		<!--<property name="validationProcedureName" value="SI_VALIDATE_TEMP_SIBS_CA004" />-->
+		<!--<property name="runProcedureName" value="SI_RUN_TEMP_SIBS_CA004" />-->
+	<!--</bean>-->
+	
+	<!-- Collateral file FD and SMF -->
+
+	<!--<bean id="sibsCollFDFieldSetMapper" class="com.integrosys.cms.batch.sibs.collateral.CollateralFDFieldSetMapper">-->
+        <!--<property name="dateFormat" value="${format.date.ddMMyyyy}" />-->
+        <!--<property name="decimalTwoPlace" value="${format.2.decimal.point.sibs.facility}" />-->
+        <!--<property name="decimalNinePlace" value="${format.9.decimal.point.sibs.facility}" />-->
+    <!--</bean>-->
+	
+    <!--<bean name="sibsCollFDLineTokenizer" class="org.springframework.batch.item.file.transform.PrefixMatchingCompositeLineTokenizer" >-->
+      <!--<property name="tokenizers">-->
+        <!--<map>-->
+          <!--<entry key="D">-->
+             <!--<bean class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">-->
+               <!--<property name="columns" value="1-1,2-20,21-39, 40-58, 59-62, 63-79,80-80, 81-100, 101-108, 109-116, 117-117" />-->
+             <!--</bean>-->
+          <!--</entry>-->
+            <!--<entry key="T">-->
+              <!--<bean class="com.integrosys.cms.batch.common.ReturnNullLineTokenizer" />-->
+          <!--</entry>-->
+        <!--</map>-->
+      <!--</property>-->
+    <!--</bean>-->
+
+	<!--<bean id="sibsCollSMFFieldSetMapper" class="com.integrosys.cms.batch.sibs.collateral.CollateralSMFFieldSetMapper">-->
+        <!--<property name="dateFormat" value="${format.date.ddMMyyyy}" />-->
+        <!--<property name="decimalTwoPlace" value="${format.2.decimal.point.sibs.facility}" />-->
+        <!--<property name="decimalFivePlace" value="${format.5.decimal.point.sibs.facility}" />-->
+    <!--</bean>-->
+
+    <!--<bean id="sibsCollFDFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">-->
+		<!--<property name="firstLineIsHeader" value="true" />-->
+		<!--<property name="fieldSetMapper" ref="sibsCollFDFieldSetMapper" />-->
+		<!--<property name="resource" value="${resource.sibs.collateral.fd.feed.path}" />-->
+		<!--<property name="lineTokenizer" ref="sibsCollFDLineTokenizer" />-->
+	<!--</bean>-->
+
+	<!--<bean id="sibsFixedDepositFeedsLoaderBatchJob" class="com.integrosys.cms.batch.sibs.collateral.FixedDepositFeedsLoader">-->
+		<!--<property name="fixedDepositFlatFileReader" ref="sibsCollFDFlatFileItemReader" />-->
+		<!--<property name="collateralDao" ref="sibsCollateralDao" />-->
+		<!--<property name="feedBatchSize" value="${feed.batch.size}" />-->
+		<!--<property name="transactionTemplate" ref="sibsTransactionTemplate" />-->
+		<!--<property name="batchFeedErrorLogger">-->
+			<!--<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">-->
+				<!--<property name="logFileLocation" value="${log.sibs.collateral.fd.feed.path}" />-->
+			<!--</bean>-->
+		<!--</property>-->
+		<!--<property name="jdbcTemplate" ref="sibsJdbcTemplate" />-->
+		<!--<property name="tempTableName" value="SI_TEMP_SIBS_CO001" />-->
+		<!--<property name="validationProcedureName" value="SI_VALIDATE_TEMP_SIBS_CO001" />-->
+		<!--<property name="runProcedureName" value="SI_RUN_TEMP_SIBS_CO001" />-->
+	<!--</bean>-->
+
+    <!--<bean name="sibsCollSMFLineTokenizer" class="org.springframework.batch.item.file.transform.PrefixMatchingCompositeLineTokenizer" >-->
+      <!--<property name="tokenizers">-->
+        <!--<map>-->
+          <!--<entry key="D">-->
+            <!--<bean class="org.springframework.batch.item.file.transform.FixedLengthTokenizer">-->
+              <!--<property name="columns" value="1-1,2-20,21-24, 25-28, 29-31, 32-36,37-37, 38-42, 43-43, 44-51, 52-52, 53-71, 72-90, -->
+              <!--91-107, 108-129, 130-137, 138-140, 141-142, 143-162, 163-181, 182-184, 185-203, 204-204" />-->
+            <!--</bean>-->
+          <!--</entry>-->
+          <!--<entry key="T">-->
+              <!--<bean class="com.integrosys.cms.batch.common.ReturnNullLineTokenizer" />-->
+          <!--</entry>-->
+        <!--</map>-->
+      <!--</property>-->
+    <!--</bean>-->
+
+	<!--<bean id="sibsCollSMFFlatFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="prototype">-->
+		<!--<property name="firstLineIsHeader" value="true" />-->
+		<!--<property name="fieldSetMapper" ref="sibsCollSMFFieldSetMapper" />-->
+		<!--<property name="resource" value="${resource.sibs.collateral.smf.feed.path}" />-->
+		<!--<property name="lineTokenizer" ref="sibsCollSMFLineTokenizer" />-->
+	<!--</bean>-->
+
+	<!--<bean id="sibsShareMarginFinanceFeedsLoaderBatchJob" class="com.integrosys.cms.batch.sibs.collateral.ShareMarginFinanceFeedsLoader">-->
+		<!--<property name="smfFlatFileItemReader" ref="sibsCollSMFFlatFileItemReader" />-->
+		<!--<property name="collateralDao" ref="sibsCollateralDao" />-->
+		<!--<property name="feedBatchSize" value="${feed.batch.size}" />-->
+		<!--<property name="transactionTemplate" ref="sibsTransactionTemplate" />-->
+		<!--<property name="batchFeedErrorLogger">-->
+			<!--<bean class="com.integrosys.cms.batch.common.FileSystemBatchFeedErrorLogger">-->
+				<!--<property name="logFileLocation" value="${log.sibs.collateral.smf.feed.path}" />-->
+			<!--</bean>-->
+		<!--</property>-->
+		<!--<property name="jdbcTemplate" ref="sibsJdbcTemplate" />-->
+		<!--<property name="tempTableName" value="SI_TEMP_SIBS_CO002" />-->
+		<!--<property name="validationProcedureName" value="SI_VALIDATE_TEMP_SIBS_CO002" />-->
+		<!--<property name="runProcedureName" value="SI_RUN_TEMP_SIBS_CO002" />-->
+	<!--</bean>-->
+
+	<!-- SIBS Parameter -->
+
+    <bean id="parameterLoaderBatchJob" class="com.integrosys.cms.batch.sibs.parameter.ParameterBusManagerImpl">
+        <property name="commonCodeDao" ref="commonCodeDao" />
+        <property name="parameterDao" ref="parameterDao" />
+        <property name="batchParameterFeedSize" value="${feed.parameter.batch.size}" />
+        <property name="jdbcTemplate" ref="sibsJdbcTemplate" />
+        <property name="transactionTemplate">
+        	<bean class="org.springframework.transaction.support.TransactionTemplate">
+          		<property name="transactionManager" ref="txManager" />
+          		<property name="timeout" value="600" />
+			</bean>
+        </property>
+        <property name="readTransactionTemplate">
+        	<bean class="org.springframework.transaction.support.TransactionTemplate">
+          		<property name="transactionManager" ref="txManager" />
+          		<property name="timeout" value="600" />
+          		<property name="readOnly" value="true" />
+			</bean>
+        </property>
+		<property name="tempTableList">
+            <list>
+                <value>paramLocalWorkingDay|CMS_TEMP_WORKING_DAYS|SI_RUN_TEMP_WORKING_DAYS</value>
+                <value>paramLocalPublicHoliday|CMS_TEMP_PUBLIC_HOLIDAY|SI_RUN_TEMP_PUBLIC_HOLIDAY</value>
+                <!--<value>paramLocalForex|NO_TEMP_TABLE|SI_RUN_TEMP_FOREX</value>-->
+            </list>
+        </property>
+        <property name="singleParameterLoaderImpl" ref="singleParameterLoader"/>
+        <property name="valuationProfileSingletonListener" ref="valuationProfileSingletonListener"/>
+    </bean>
+
+    <bean name="singleParameterLoader" class="com.integrosys.cms.batch.sibs.parameter.SingleParameterLoaderImpl">
+        <property name="cmsJdbcTemplate" ref="sibsJdbcTemplate" />
+        <property name="externalJdbcTemplate" ref="sibsExternalJdbcTemplate"/>
+        <property name="remoteEntityNameSingleParameterLoaderMap">
+            <map>
+                <entry key="paramHostFacilityType">
+                    <map>
+                        <entry key="externalInquiryQueryMap">
+                            <value>
+                                <!--SELECT LKFCOD,LKLTYP,LKCURR,LKREVL,LKRTYP,LKDESC,LKATYP-->
+                                <!--FROM ${external.sibs.param.schema}.LNPARK WHERE LKFCOD IN-->
+                                <!--(SELECT DISTINCT LKFCOD FROM ${external.sibs.param.schema}.LNPARK)-->
+                                SELECT FACILITY_CODE, LOAN_TYPE, CURRENCY, REVOLVING_IND, REV_OS_BAL_ORGAMT, DESCRIPTION, ACCOUNT_TYPE
+                                FROM ${external.sibs.param.schema}.HP_TEMP_PF113 WHERE FACILITY_CODE IN
+                                (SELECT DISTINCT FACILITY_CODE FROM ${external.sibs.param.schema}.HP_TEMP_PF113)
+                            </value>
+                        </entry>
+                        <entry key="cmsInquiryQueryMap">
+                            <value>
+                                SELECT FACILITY_CODE FROM HOST_FACILITY_TYPE WHERE FACILITY_CODE=? WITH UR
+                            </value>
+                        </entry>
+                        <entry key="cmsInsertQueryMap">
+                            <value>
+                                INSERT INTO HOST_FACILITY_TYPE (FACILITY_CODE, LOAN_TYPE, CURRENCY, REVOLVING_IND,
+                                REV_OS_BAL_ORGAMT, DESC, ACCOUNT_TYPE, STATUS, LAST_UPDATED_DATE)
+                                VALUES (?,?,?,?,?,?,?,'ACTIVE',CURRENT TIMESTAMP)
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryMap">
+                            <value>
+                                UPDATE HOST_FACILITY_TYPE SET LOAN_TYPE=?, CURRENCY=?, REVOLVING_IND=?, REV_OS_BAL_ORGAMT=?,
+                                DESC=?, ACCOUNT_TYPE=?, STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                                WHERE FACILITY_CODE=?
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryForDeletionMap">
+                            <value>
+                                UPDATE HOST_FACILITY_TYPE SET STATUS='DELETED', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                            </value>
+                        </entry>
+                        <entry key="keysValueList">
+                            <list>
+                                <value>FACILITY_CODE=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforUpdate">
+                            <list>
+                                <value>LOAN_TYPE=java.lang.String</value>
+                                <value>CURRENCY=java.lang.String</value>
+                                <value>REVOLVING_IND=java.lang.String</value>
+                                <value>REV_OS_BAL_ORGAMT=java.lang.String</value>
+                                <value>DESCRIPTION=java.lang.String</value>
+                                <value>ACCOUNT_TYPE=java.lang.String</value>
+                                <value>FACILITY_CODE=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforCreate">
+                            <list>
+                                <value>FACILITY_CODE=java.lang.String</value>
+                                <value>LOAN_TYPE=java.lang.String</value>
+                                <value>CURRENCY=java.lang.String</value>
+                                <value>REVOLVING_IND=java.lang.String</value>
+                                <value>REV_OS_BAL_ORGAMT=java.lang.String</value>
+                                <value>DESCRIPTION=java.lang.String</value>
+                                <value>ACCOUNT_TYPE=java.lang.String</value>
+                            </list>
+                        </entry>
+                    </map>
+                </entry>
+                <entry key="paramHostLoanProductType">
+                    <map>
+                        <entry key="externalInquiryQueryMap">
+                            <value>
+                                <!--SELECT PTYPE,PCURTY,PTYDSC,PLNGRP,PGRDSC,LP2CRT,PMINRT,PMAXRT,PRFLOR,PRCEIL,PSTAFF,PANACT,-->
+                                <!--PTIERD,PISLTP,PRATN,PMIMAX,PMIMIN,PIBASE,PICEPT,PRDGRP,PRDDLR,PLIMIT,PEXPD7,PAGELM,PFREQ,-->
+                                <!--PFCODE,PPMTCD,PGRFIN,PMDINT,PPROCD,PRMTBK-->
+                                <!--FROM ${external.sibs.param.schema}.LNPAR2-->
+                                <!--WHERE (PTYPE,PCURTY) IN-->
+                                <!--(SELECT DISTINCT PTYPE,PCURTY FROM ${external.sibs.param.schema}.LNPAR2)-->
+                                SELECT LOAN_TYPE, CURRENCY_TYPE, TYPE_DESC, GRP_CODE, GRP_DESC, COMM_RETAIL, MIN_INT_RATE, MAX_INT_RATE, RATE_FLOOR, RATE_CEILING, STAFF_IND, ACT_IND,
+                                <!--TIER_LOAN, SPTF_LOAN_TYPE, DEF_PRIME_RATE, MAX_LOAN_TENU, MIN_LOAN_TENU, INTEREST_BASE, CONCEPT_CODE, PROD_GRP, DEALER_PROD, PROD_LIMIT, PROD_EXP_DATE, PROD_AGE_LMT, PAYMENT_FREQ,-->
+                                TIER_LOAN, SPTF_LOAN_TYPE, DEF_PRIME_RATE, INTEREST_BASE, CONCEPT_CODE, PROD_GRP, DEALER_PROD, PROD_LIMIT, PROD_EXP_DATE, PROD_AGE_LMT, PAYMENT_FREQ,
+                                <!--PAYMENT_FREQ_CODE, PAYMENT_CODE, GRAT_FINANCING, M_O_I, PROMO_PKG_CODE, REBATE_METH-->
+                                PAYMENT_FREQ_CODE, PAYMENT_CODE, M_O_I, REBATE_METH
+                                FROM ${external.sibs.param.schema}.HP_TEMP_PF114
+                                WHERE (LOAN_TYPE,CURRENCY_TYPE) IN
+                                (SELECT DISTINCT LOAN_TYPE,CURRENCY_TYPE FROM ${external.sibs.param.schema}.HP_TEMP_PF114)
+                            </value>
+                        </entry>
+                        <entry key="cmsInquiryQueryMap">
+                            <!--<value>-->
+                                <!--SELECT LOAN_TYPE,CURRENCY,SOURCE,DESC,GROUP_CODE,GROUP_DESC,COMMERCIAL_RETAIL_IND,MIN_INT_RATE,-->
+                                <!--MAX_INT_RATE,RATE_FLOOR,RATE_CEILING,STAFF_IND,ACT_IND,TIER_LOAN_IND,SPTF_LOAN_TYPE,PRIME_RATE_NUM,-->
+                                <!--MAX_LOAN_TENURE,MIN_LOAN_TENURE,INTEREST_BASE,CONCEPT_CODE,PRODUCT_GROUP,DEALER_PRODUCT_IND,PRODUCT_LIMIT,-->
+                                <!--PRODUCT_EXPIRY_DATE,PRODUCT_AGE_LIMIT,PAYMENT_FREQUENCY,PAYMENT_FREQ_CODE,PAYMENT_CODE,GRATUITY_FINANCING,PROMO_PACKAGE_CODE-->
+                                <!--STATUS,LAST_UPDATED_DATE,REBATE_METHOD_BANK -->
+                                <!--FROM HOST_PRODUCT_TYPE WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='LNPAR2' WITH UR-->
+                            <!--</value>-->
+                            <value>
+                                SELECT LOAN_TYPE FROM HOST_PRODUCT_TYPE
+                                WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='LNPAR2' WITH UR
+                            </value>
+                        </entry>
+                        <entry key="cmsInsertQueryMap">
+                            <value>
+                                INSERT INTO HOST_PRODUCT_TYPE (LOAN_TYPE,CURRENCY,DESC,GROUP_CODE,GROUP_DESC,COMMERCIAL_RETAIL_IND,MIN_INT_RATE,
+                                MAX_INT_RATE,RATE_FLOOR,RATE_CEILING,STAFF_IND,ACT_IND,TIER_LOAN_IND,SPTF_LOAN_TYPE,PRIME_RATE_NUM,
+                                <!--MAX_LOAN_TENURE,MIN_LOAN_TENURE,INTEREST_BASE,CONCEPT_CODE,PRODUCT_GROUP,DEALER_PRODUCT_IND,PRODUCT_LIMIT,-->
+                                INTEREST_BASE,CONCEPT_CODE,PRODUCT_GROUP,DEALER_PRODUCT_IND,PRODUCT_LIMIT,
+                                <!--PRODUCT_EXPIRY_DATE,PRODUCT_AGE_LIMIT,PAYMENT_FREQUENCY,PAYMENT_FREQ_CODE,PAYMENT_CODE,GRATUITY_FINANCING,-->
+                                PRODUCT_EXPIRY_DATE,PRODUCT_AGE_LIMIT,PAYMENT_FREQUENCY,PAYMENT_FREQ_CODE,PAYMENT_CODE,
+                                <!--SOURCE,STATUS,LAST_UPDATED_DATE,INTEREST_MODE,PROMO_PACKAGE_CODE,REBATE_METHOD_BANK)-->
+                                SOURCE,STATUS,LAST_UPDATED_DATE,INTEREST_MODE,REBATE_METHOD_BANK)
+                                <!--VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'LNPAR2','ACTIVE',CURRENT TIMESTAMP,?,?,?)-->
+                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'LNPAR2','ACTIVE',CURRENT TIMESTAMP,?,?)
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryMap">
+                            <value>
+                                UPDATE HOST_PRODUCT_TYPE SET DESC=?, GROUP_CODE=?, GROUP_DESC=?, COMMERCIAL_RETAIL_IND=?, MIN_INT_RATE=?,
+                                MAX_INT_RATE=?, RATE_FLOOR=?, RATE_CEILING=?, STAFF_IND=?, ACT_IND=?, TIER_LOAN_IND=?, SPTF_LOAN_TYPE=?,
+                                <!--PRIME_RATE_NUM=?, MAX_LOAN_TENURE=?, MIN_LOAN_TENURE=?, INTEREST_BASE=?, CONCEPT_CODE=?,-->
+                                PRIME_RATE_NUM=?, INTEREST_BASE=?, CONCEPT_CODE=?,
+                                PRODUCT_GROUP=?, DEALER_PRODUCT_IND=?, PRODUCT_LIMIT=?, PRODUCT_EXPIRY_DATE=?, PRODUCT_AGE_LIMIT=?,
+                                <!--PAYMENT_FREQUENCY=?, PAYMENT_FREQ_CODE=?, PAYMENT_CODE=?, GRATUITY_FINANCING=?,-->
+                                PAYMENT_FREQUENCY=?, PAYMENT_FREQ_CODE=?, PAYMENT_CODE=?,
+                                <!--STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP, INTEREST_MODE=?, PROMO_PACKAGE_CODE=?, REBATE_METHOD_BANK=?-->
+                                STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP, INTEREST_MODE=?, REBATE_METHOD_BANK=?
+                                WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='LNPAR2'
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryForDeletionMap">
+                            <value>
+                                UPDATE HOST_PRODUCT_TYPE SET STATUS='DELETED', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                                WHERE SOURCE='LNPAR2'
+                            </value>
+                        </entry>
+                        <entry key="keysValueList">
+                            <list>
+                                <value>LOAN_TYPE=java.lang.String</value>
+                                <value>CURRENCY_TYPE=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforUpdate">
+                            <list>
+                                <value>TYPE_DESC=java.lang.String</value>
+                                <value>GRP_CODE=java.lang.String</value>
+                                <value>GRP_DESC=java.lang.String</value>
+                                <value>COMM_RETAIL=java.lang.String</value>
+                                <value>MIN_INT_RATE=java.math.BigDecimal</value>
+                                <value>MAX_INT_RATE=java.math.BigDecimal</value>
+                                <value>RATE_FLOOR=java.math.BigDecimal</value>
+                                <value>RATE_CEILING=java.math.BigDecimal</value>
+                                <value>STAFF_IND=java.lang.String</value>
+                                <value>ACT_IND=java.lang.String</value>
+                                <value>TIER_LOAN=java.lang.String</value>
+                                <value>SPTF_LOAN_TYPE=java.lang.String</value>
+                                <value>DEF_PRIME_RATE=java.lang.String</value>
+                                <!--<value>MAX_LOAN_TENU=java.lang.Integer</value>-->
+                                <!--<value>MIN_LOAN_TENU=java.lang.Integer</value>-->
+                                <value>INTEREST_BASE=java.lang.String</value>
+                                <value>CONCEPT_CODE=java.lang.String</value>
+                                <value>PROD_GRP=java.lang.String</value>
+                                <value>DEALER_PROD=java.lang.String</value>
+                                <value>PROD_LIMIT=java.math.BigDecimal</value>
+                                <value>PROD_EXP_DATE=java.util.Date</value>
+                                <value>PROD_AGE_LMT=java.lang.Integer</value>
+                                <value>PAYMENT_FREQ=java.lang.Integer</value>
+                                <value>PAYMENT_FREQ_CODE=java.lang.String</value>
+                                <value>PAYMENT_CODE=java.lang.Integer</value>
+                                <!--<value>GRAT_FINANCING=java.lang.String</value>-->
+                                <value>M_O_I=java.lang.String</value>
+                                <!--<value>PROMO_PKG_CODE=java.lang.String</value>-->
+                                <value>REBATE_METH=java.lang.String</value>
+                                <value>LOAN_TYPE=java.lang.String</value>
+                                <value>CURRENCY_TYPE=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforCreate">
+                            <list>
+                                <value>LOAN_TYPE=java.lang.String</value>
+                                <value>CURRENCY_TYPE=java.lang.String</value>
+                                <value>TYPE_DESC=java.lang.String</value>
+                                <value>GRP_CODE=java.lang.String</value>
+                                <value>GRP_DESC=java.lang.String</value>
+                                <value>COMM_RETAIL=java.lang.String</value>
+                                <value>MIN_INT_RATE=java.math.BigDecimal</value>
+                                <value>MAX_INT_RATE=java.math.BigDecimal</value>
+                                <value>RATE_FLOOR=java.math.BigDecimal</value>
+                                <value>RATE_CEILING=java.math.BigDecimal</value>
+                                <value>STAFF_IND=java.lang.String</value>
+                                <value>ACT_IND=java.lang.String</value>
+                                <value>TIER_LOAN=java.lang.String</value>
+                                <value>SPTF_LOAN_TYPE=java.lang.String</value>
+                                <value>DEF_PRIME_RATE=java.lang.String</value>
+                                <!--<value>MAX_LOAN_TENU=java.lang.Integer</value>-->
+                                <!--<value>MIN_LOAN_TENU=java.lang.Integer</value>-->
+                                <value>INTEREST_BASE=java.lang.String</value>
+                                <value>CONCEPT_CODE=java.lang.String</value>
+                                <value>PROD_GRP=java.lang.String</value>
+                                <value>DEALER_PROD=java.lang.String</value>
+                                <value>PROD_LIMIT=java.math.BigDecimal</value>
+                                <value>PROD_EXP_DATE=java.util.Date</value>
+                                <value>PROD_AGE_LMT=java.lang.Integer</value>
+                                <value>PAYMENT_FREQ=java.lang.Integer</value>
+                                <value>PAYMENT_FREQ_CODE=java.lang.String</value>
+                                <value>PAYMENT_CODE=java.lang.Integer</value>
+                                <!--<value>GRAT_FINANCING=java.lang.String</value>-->
+                                <value>M_O_I=java.lang.String</value>
+                                <!--<value>PROMO_PKG_CODE=java.lang.String</value>-->
+                                <value>REBATE_METH=java.lang.String</value>
+                            </list>
+                        </entry>
+                    </map>
+                </entry>
+                <entry key="paramHostDealer">
+                    <map>
+                        <entry key="externalInquiryQueryMap">
+                            <value>
+                                <!--SELECT LDLNUM,LDNAME,LDSNM,LDFSNM,LDCIFN,LDADDR,LDCTST,LDCOUN,LDFONE,LDFON2,LDLIMT,LDRAMT,LDUAMT,-->
+                                <!--LDTYPE,LDGRUP,LDOFFR,LDEXP7,LDREVL,LDACCP,LDSTAT,LDRDT7,LDMIDY,LDSUBD,LDPGRP,LDBRSV,LDGVAL,LDGCOS,-->
+                                <!--LDSECV,LDUFBR,LDUFBT,LDRCOD,LDUSED,LDNEW,LDNNAT,LDSTA2,LDSTA7,LDRSCH,LDDRAT,LDFSMB,LDFSDC,LDREMK,LDPTYP-->
+                                <!--FROM ${external.sibs.param.schema}.LNDEAL-->
+                                <!--WHERE TRIM(LDSTA2) &lt;&gt; 'T'-->
+                                <!--AND LDLNUM IN-->
+                                <!--(SELECT DISTINCT LDLNUM FROM ${external.sibs.param.schema}.LNDEAL-->
+                                 <!--WHERE TRIM(LDSTA2) &lt;&gt; 'T')-->
+                                SELECT DEALER_NUM, DEALER_NAME, DEALER_SHORT_NAME, FMT_SHORT_NAME, DEALER_CIF_NUM, DEALER_ADD1, DEALER_ADD2, DEALER_ADD3, DEALER_PHONE, DEALER_PHONE2, DEALER_LMT, DEALER_RSV_AMT, DEALER_AMT_UTL,
+                                DEALER_PLAN, DEALER_GRP, OFFICER_CODE, DEALER_EXP_DATE, REVOLVING_IND, DEALER_ACC_PERC, DEALER_STATUS, DATE_RECR, MIN_INT_DAY, INT_SUB_DAY, PRODUCT_GRP, BRANCH_SERV, GRO_DEV_VAL, GRO_DEV_COST,
+                                <!--SEC_VAL, UND_LIM_FBR, UND_LIM_FBT, RECOND, USED, NEW, NEW_NTL, DEALER_STATUS2, DEALER_STATUS_DATE, RESCHDL_IND, DEL_RATE, FIS_MEMBER, FIS_DEALER_CODE, REMARKS, DEALER_PROJECT_TYPE-->
+                                SEC_VAL, UND_LIM_FBR, UND_LIM_FBT, RECOND, USED, NEW, NEW_NTL, DEALER_STATUS2, DEALER_STATUS_DATE, RESCHDL_IND, DEL_RATE, FIS_MEMBER, FIS_DEALER_CODE, REMARKS
+                                FROM ${external.sibs.param.schema}.HP_TEMP_PF121
+                                WHERE TRIM(DEALER_STATUS2) &lt;&gt; 'T'
+                                AND DEALER_NUM IN
+                                (SELECT DISTINCT DEALER_NUM FROM ${external.sibs.param.schema}.HP_TEMP_PF121
+                                WHERE TRIM(DEALER_STATUS2) &lt;&gt; 'T')
+                            </value>
+                        </entry>
+                        <entry key="cmsInquiryQueryMap">
+                            <!--<value>-->
+                                <!--SELECT DEALER_NUM,DEALER_NAME,DEALER_SHORT_NAME,FORMATTED_SHORT_NAME,CIF,ADDR_LINE_1,ADDR_LINE_2,ADDR_LINE_3,-->
+                                <!--PHONE_1,PHONE_2,LIMIT_AMT,RESERVE_AMT,AMT_UTILISED,DEALER_PLAN,DEALER_GROUP,OFFICER_CODE,-->
+                                <!--EXPIRY_DATE_1,EXPIRY_DATE_2,REVOLVING_IND,ACCRUAL_PERCENT,DEALER_STATUS,DATE_RECRUITED_1,DATE_RECRUITED_2,-->
+                                <!--MIN_INT_DAYS,INT_SUBSIDY_DAYS,PRODUCT_GRP,BRANCH_SERVED,GROSS_DEV_VALUE,GROSS_DEV_COST,SECURITY_VAL,-->
+                                <!--UNDER_LIMIT_FBR,UNDER_LIMIT_FBT,RECOND_IND,USED_IND,NEW_IND,NEW_NATIONAL,DEALER_STATUS_2,DEALER_STATUS_DATE_1,-->
+                                <!--DEALER_STATUS_DATE_2,RESCHEDULED_IND,DELIQUENCY_RATE,FIS_MEMBER_IND,FIS_DEALER_CODE,-->
+                                <!--REMARKS,TYPE,STATUS,LAST_UPDATED_DATE-->
+                                <!--FROM HOST_DEALER WHERE DEALER_NUM=? WITH UR-->
+                            <!--</value>-->
+                            <value>
+                                SELECT DEALER_NUM FROM HOST_DEALER WHERE DEALER_NUM=? WITH UR
+                            </value>
+                        </entry>
+                        <entry key="cmsInsertQueryMap">
+                            <value>
+                                INSERT INTO HOST_DEALER (DEALER_NUM,DEALER_NAME,DEALER_SHORT_NAME,FORMATTED_SHORT_NAME,CIF,
+                                ADDR_LINE_1,ADDR_LINE_2,ADDR_LINE_3,PHONE_1,PHONE_2,LIMIT_AMT,RESERVE_AMT,AMT_UTILISED,DEALER_PLAN,
+                                DEALER_GROUP,OFFICER_CODE,EXPIRY_DATE_1,EXPIRY_DATE_2,REVOLVING_IND,ACCRUAL_PERCENT,DEALER_STATUS,
+                                DATE_RECRUITED_1,DATE_RECRUITED_2,MIN_INT_DAYS,INT_SUBSIDY_DAYS,PRODUCT_GRP,BRANCH_SERVED,
+                                GROSS_DEV_VALUE,GROSS_DEV_COST,SECURITY_VAL,UNDER_LIMIT_FBR,UNDER_LIMIT_FBT,RECOND_IND,USED_IND,
+                                NEW_IND,NEW_NATIONAL,DEALER_STATUS_2,DEALER_STATUS_DATE_1,DEALER_STATUS_DATE_2,RESCHEDULED_IND,
+                                <!--DELIQUENCY_RATE,FIS_MEMBER_IND,FIS_DEALER_CODE,REMARKS,TYPE,STATUS,LAST_UPDATED_DATE)-->
+                                DELIQUENCY_RATE,FIS_MEMBER_IND,FIS_DEALER_CODE,REMARKS,STATUS,LAST_UPDATED_DATE)
+                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,
+                                <!--?,?,?,?,?,'ACTIVE',CURRENT TIMESTAMP)-->
+                                ?,?,?,?,'ACTIVE',CURRENT TIMESTAMP)
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryMap">
+                            <value>
+                                UPDATE HOST_DEALER SET DEALER_NAME=?, DEALER_SHORT_NAME=?, FORMATTED_SHORT_NAME=?, CIF=?,
+                                ADDR_LINE_1=?, ADDR_LINE_2=?, ADDR_LINE_3=?, PHONE_1=?, PHONE_2=?, LIMIT_AMT=?, RESERVE_AMT=?, AMT_UTILISED=?, DEALER_PLAN=?,
+                                DEALER_GROUP=?, OFFICER_CODE=?, EXPIRY_DATE_1=?, EXPIRY_DATE_2=?, REVOLVING_IND=?, ACCRUAL_PERCENT=?, DEALER_STATUS=?,
+                                DATE_RECRUITED_1=?, DATE_RECRUITED_2=?, MIN_INT_DAYS=?, INT_SUBSIDY_DAYS=?, PRODUCT_GRP=?, BRANCH_SERVED=?,
+                                GROSS_DEV_VALUE=?, GROSS_DEV_COST=?, SECURITY_VAL=?, UNDER_LIMIT_FBR=?, UNDER_LIMIT_FBT=?, RECOND_IND=?, USED_IND=?,
+                                NEW_IND=?, NEW_NATIONAL=?, DEALER_STATUS_2=?, DEALER_STATUS_DATE_1=?, DEALER_STATUS_DATE_2=?, RESCHEDULED_IND=?,
+                                <!--DELIQUENCY_RATE=?, FIS_MEMBER_IND=?, FIS_DEALER_CODE=?, REMARKS=?, TYPE=?,-->
+                                DELIQUENCY_RATE=?, FIS_MEMBER_IND=?, FIS_DEALER_CODE=?, REMARKS=?,
+                                STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                                WHERE DEALER_NUM=?
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryForDeletionMap">
+                            <value>
+                                UPDATE HOST_DEALER SET STATUS='DELETED', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                            </value>
+                        </entry>
+                        <entry key="keysValueList">
+                            <list>
+                                <value>DEALER_NUM=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforUpdate">
+                            <list>
+                                <value>DEALER_NAME=java.lang.String</value>
+                                <value>DEALER_SHORT_NAME=java.lang.String</value>
+                                <value>FMT_SHORT_NAME=java.lang.String</value>
+                                <value>DEALER_CIF_NUM=java.lang.String</value>
+                                <value>DEALER_ADD1=java.lang.String</value>
+                                <value>DEALER_ADD2=java.lang.String</value>
+                                <value>DEALER_ADD3=java.lang.String</value>
+                                <value>DEALER_PHONE=java.lang.String</value>
+                                <value>DEALER_PHONE2=java.lang.String</value>
+                                <value>DEALER_LMT=java.math.BigDecimal</value>
+                                <value>DEALER_RSV_AMT=java.math.BigDecimal</value>
+                                <value>DEALER_AMT_UTL=java.math.BigDecimal</value>
+                                <value>DEALER_PLAN=java.lang.String</value>
+                                <value>DEALER_GRP=java.lang.String</value>
+                                <value>OFFICER_CODE=java.lang.String</value>
+                                <value>DEALER_EXP_DATE=java.util.Date</value>
+                                <value>DEALER_EXP_DATE=java.util.Date</value>
+                                <value>REVOLVING_IND=java.lang.String</value>
+                                <value>DEALER_ACC_PERC=java.math.BigDecimal</value>
+                                <value>DEALER_STATUS=java.lang.String</value>
+                                <value>DATE_RECR=java.util.Date</value>
+                                <value>DATE_RECR=java.util.Date</value>
+                                <value>MIN_INT_DAY=java.lang.Integer</value>
+                                <value>INT_SUB_DAY=java.lang.Integer</value>
+                                <value>PRODUCT_GRP=java.lang.String</value>
+                                <value>BRANCH_SERV=java.lang.String</value>
+                                <value>GRO_DEV_VAL=java.math.BigDecimal</value>
+                                <value>GRO_DEV_COST=java.math.BigDecimal</value>
+                                <value>SEC_VAL=java.math.BigDecimal</value>
+                                <value>UND_LIM_FBR=java.math.BigDecimal</value>
+                                <value>UND_LIM_FBT=java.math.BigDecimal</value>
+                                <value>RECOND=java.lang.String</value>
+                                <value>USED=java.lang.String</value>
+                                <value>NEW=java.lang.String</value>
+                                <value>NEW_NTL=java.lang.String</value>
+                                <value>DEALER_STATUS2=java.lang.String</value>
+                                <value>DEALER_STATUS_DATE=java.util.Date</value>
+                                <value>DEALER_STATUS_DATE=java.util.Date</value>
+                                <value>RESCHDL_IND=java.lang.String</value>
+                                <value>DEL_RATE=java.math.BigDecimal</value>
+                                <value>FIS_MEMBER=java.lang.String</value>
+                                <value>FIS_DEALER_CODE=java.lang.String</value>
+                                <value>REMARKS=java.lang.String</value>
+                                <!--<value>DEALER_PROJECT_TYPE=java.lang.String</value>-->
+                                <value>DEALER_NUM=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforCreate">
+                            <list>
+                                <value>DEALER_NUM=java.lang.String</value>
+                                <value>DEALER_NAME=java.lang.String</value>
+                                <value>DEALER_SHORT_NAME=java.lang.String</value>
+                                <value>FMT_SHORT_NAME=java.lang.String</value>
+                                <value>DEALER_CIF_NUM=java.lang.String</value>
+                                <value>DEALER_ADD1=java.lang.String</value>
+                                <value>DEALER_ADD2=java.lang.String</value>
+                                <value>DEALER_ADD3=java.lang.String</value>
+                                <value>DEALER_PHONE=java.lang.String</value>
+                                <value>DEALER_PHONE2=java.lang.String</value>
+                                <value>DEALER_LMT=java.math.BigDecimal</value>
+                                <value>DEALER_RSV_AMT=java.math.BigDecimal</value>
+                                <value>DEALER_AMT_UTL=java.math.BigDecimal</value>
+                                <value>DEALER_PLAN=java.lang.String</value>
+                                <value>DEALER_GRP=java.lang.String</value>
+                                <value>OFFICER_CODE=java.lang.String</value>
+                                <value>DEALER_EXP_DATE=java.util.Date</value>
+                                <value>DEALER_EXP_DATE=java.util.Date</value>
+                                <value>REVOLVING_IND=java.lang.String</value>
+                                <value>DEALER_ACC_PERC=java.math.BigDecimal</value>
+                                <value>DEALER_STATUS=java.lang.String</value>
+                                <value>DATE_RECR=java.util.Date</value>
+                                <value>DATE_RECR=java.util.Date</value>
+                                <value>MIN_INT_DAY=java.lang.Integer</value>
+                                <value>INT_SUB_DAY=java.lang.Integer</value>
+                                <value>PRODUCT_GRP=java.lang.String</value>
+                                <value>BRANCH_SERV=java.lang.String</value>
+                                <value>GRO_DEV_VAL=java.math.BigDecimal</value>
+                                <value>GRO_DEV_COST=java.math.BigDecimal</value>
+                                <value>SEC_VAL=java.math.BigDecimal</value>
+                                <value>UND_LIM_FBR=java.math.BigDecimal</value>
+                                <value>UND_LIM_FBT=java.math.BigDecimal</value>
+                                <value>RECOND=java.lang.String</value>
+                                <value>USED=java.lang.String</value>
+                                <value>NEW=java.lang.String</value>
+                                <value>NEW_NTL=java.lang.String</value>
+                                <value>DEALER_STATUS2=java.lang.String</value>
+                                <value>DEALER_STATUS_DATE=java.util.Date</value>
+                                <value>DEALER_STATUS_DATE=java.util.Date</value>
+                                <value>RESCHDL_IND=java.lang.String</value>
+                                <value>DEL_RATE=java.math.BigDecimal</value>
+                                <value>FIS_MEMBER=java.lang.String</value>
+                                <value>FIS_DEALER_CODE=java.lang.String</value>
+                                <value>REMARKS=java.lang.String</value>
+                                <!--<value>DEALER_PROJECT_TYPE=java.lang.String</value>-->
+                            </list>
+                        </entry>
+                    </map>
+                </entry>
+                <entry key="paramHostLawyer">
+                    <map>
+                        <entry key="externalInquiryQueryMap">
+                            <value>
+                                <!--SELECT LPLWCD,LPLTYP,LPLWRF,LPLWNM,LPLWST,LPLWRM FROM ${external.sibs.param.schema}.LNNPAR-->
+                                <!--WHERE LPLWST = 'A'-->
+                                <!--AND LPLWCD IN-->
+                                <!--(SELECT DISTINCT LPLWCD FROM ${external.sibs.param.schema}.LNNPAR-->
+                                 <!--WHERE LPLWST = 'A')-->
+                                SELECT LAWY_ID_CODE, LAWY_TYPE, LAWY_REF_NUM, LAWY_NAME, LAWY_STATUS, REMARKS FROM ${external.sibs.param.schema}.HP_TEMP_PF123
+                                WHERE LAWY_STATUS = 'A'
+                                AND LAWY_ID_CODE IN
+                                (SELECT DISTINCT LAWY_ID_CODE FROM ${external.sibs.param.schema}.HP_TEMP_PF123
+                                WHERE LAWY_STATUS = 'A')
+                            </value>
+                        </entry>
+                        <entry key="cmsInquiryQueryMap">
+                            <!--<value>-->
+                                <!--SELECT LAWYER_CODE,LAWYER_TYPE,LAWYER_REF_NUM,LAWYER_NAME,STATUS,REMARKS,LAST_UPDATED_DATE -->
+                                <!--FROM HOST_LAWYER WHERE LAWYER_CODE=? WITH UR-->
+                            <!--</value>-->
+                            <value>
+                                SELECT LAWYER_CODE FROM HOST_LAWYER WHERE LAWYER_CODE=? WITH UR
+                            </value>
+                        </entry>
+                        <entry key="cmsInsertQueryMap">
+                            <value>
+                                INSERT INTO HOST_LAWYER (LAWYER_CODE, LAWYER_TYPE, LAWYER_REF_NUM, LAWYER_NAME, STATUS, REMARKS, LAST_UPDATED_DATE)
+                                VALUES (?,?,?,?,?,?,CURRENT TIMESTAMP)
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryMap">
+                            <value>
+                                UPDATE HOST_LAWYER SET LAWYER_TYPE=?, LAWYER_REF_NUM=?, LAWYER_NAME=?, STATUS=?, REMARKS=?,
+                                LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                                WHERE LAWYER_CODE=?
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryForDeletionMap">
+                            <value>
+                                UPDATE HOST_LAWYER SET STATUS='D', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                            </value>
+                        </entry>
+                        <entry key="keysValueList">
+                            <list>
+                                <value>LAWY_ID_CODE=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforUpdate">
+                            <list>
+                                <value>LAWY_TYPE=java.lang.String</value>
+                                <value>LAWY_REF_NUM=java.lang.String</value>
+                                <value>LAWY_NAME=java.lang.String</value>
+                                <value>LAWY_STATUS=java.lang.String</value>
+                                <value>REMARKS=java.lang.String</value>
+                                <value>LAWY_ID_CODE=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforCreate">
+                            <list>
+                                <value>LAWY_ID_CODE=java.lang.String</value>
+                                <value>LAWY_TYPE=java.lang.String</value>
+                                <value>LAWY_REF_NUM=java.lang.String</value>
+                                <value>LAWY_NAME=java.lang.String</value>
+                                <value>LAWY_STATUS=java.lang.String</value>
+                                <value>REMARKS=java.lang.String</value>
+                            </list>
+                        </entry>
+                    </map>
+                </entry>
+                <!-- NOT IN USE BY ABCLIMS -->
+                <!--<entry key="paramHostProductPackage">-->
+                    <!--<map>-->
+                        <!--<entry key="externalInquiryQueryMap">-->
+                            <!--&lt;!&ndash;<value>SELECT PCKCOD,PCDESC,PCEPD7,PCEFD7,PCFUND FROM ${external.sibs.param.schema}.LNPCKC</value>&ndash;&gt;-->
+                            <!--<value>SELECT PCKCOD,PCDESC,PCEPD7,PCEFD7,PCFUND FROM ${external.sibs.param.schema}.LNPCKC -->
+                                   <!--WHERE PCKCOD IN (SELECT DISTINCT PCKCOD FROM ${external.sibs.param.schema}.LNPCKC)-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInquiryQueryMap">-->
+                            <!--&lt;!&ndash;<value>&ndash;&gt;-->
+                                <!--&lt;!&ndash;SELECT PACKAGE_CODE,DESCRIPTION,EXPIRY_DATE,EFFECTIVE_DATE,FUND_ALLOCATED,STATUS,LAST_UPDATE_DATE &ndash;&gt;-->
+                                <!--&lt;!&ndash;FROM HOST_PRODUCT_PACKAGE WHERE PACKAGE_CODE=? WITH UR&ndash;&gt;-->
+                            <!--&lt;!&ndash;</value>&ndash;&gt;-->
+                            <!--<value>-->
+                                <!--SELECT PACKAGE_CODE FROM HOST_PRODUCT_PACKAGE WHERE PACKAGE_CODE=? WITH UR-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInsertQueryMap">-->
+                            <!--<value>-->
+                                <!--INSERT INTO HOST_PRODUCT_PACKAGE (PACKAGE_CODE,DESCRIPTION,EXPIRY_DATE,EFFECTIVE_DATE,FUND_ALLOCATED,STATUS,LAST_UPDATE_DATE)-->
+                                <!--VALUES (?,?,?,?,?,'ACTIVE',CURRENT TIMESTAMP)-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryMap">-->
+                            <!--<value>-->
+                                <!--UPDATE HOST_PRODUCT_PACKAGE SET DESCRIPTION=?, EXPIRY_DATE=?, EFFECTIVE_DATE=?,-->
+                                <!--FUND_ALLOCATED=?, STATUS='ACTIVE', LAST_UPDATE_DATE=CURRENT TIMESTAMP-->
+                                <!--WHERE PACKAGE_CODE=?-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryForDeletionMap">-->
+                            <!--<value>-->
+                                <!--UPDATE HOST_PRODUCT_PACKAGE SET STATUS='DELETED', LAST_UPDATE_DATE=CURRENT TIMESTAMP-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueList">-->
+                            <!--<list>-->
+                                <!--<value>PCKCOD=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforUpdate">-->
+                            <!--<list>-->
+                                <!--<value>PCDESC=java.lang.String</value>-->
+                                <!--<value>PCEPD7=java.util.Date</value>-->
+                                <!--<value>PCEFD7=java.util.Date</value>-->
+                                <!--<value>PCFUND=java.math.BigDecimal</value>-->
+                                <!--<value>PCKCOD=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforCreate">-->
+                            <!--<list>-->
+                                <!--<value>PCKCOD=java.lang.String</value>-->
+                                <!--<value>PCDESC=java.lang.String</value>-->
+                                <!--<value>PCEPD7=java.util.Date</value>-->
+                                <!--<value>PCEFD7=java.util.Date</value>-->
+                                <!--<value>PCFUND=java.math.BigDecimal</value>                                -->
+                            <!--</list>-->
+                        <!--</entry>-->
+                    <!--</map>-->
+                <!--</entry>-->
+                <entry key="paramHostInsuranceCompany">
+                    <map>
+                        <entry key="tempInquiryQueryMap">
+                            <!--<value>-->
+                                <!--SELECT LPDNUM,LPDNA1,LPDNA2,LPDNA3,LPDFON,LPDRSV,LPDPAN FROM ${external.sibs.param.schema}.LNPARD-->
+                                <!--WHERE LPDNUM IN (SELECT DISTINCT LPDNUM FROM ${external.sibs.param.schema}.LNPARD)-->
+                            <!--</value>-->
+                            <value>
+                                SELECT INS_NUM, INS_NAME, INS_ADDR, INS_CITY_STATE, INS_CO_PHONE_NUM, RSV_PERC, PANEL_IND
+                                FROM ${external.sibs.param.schema}.HP_TEMP_PF137
+                                WHERE INS_NUM IN (SELECT DISTINCT INS_NUM FROM ${external.sibs.param.schema}.HP_TEMP_PF137)
+                            </value>
+                        </entry>
+                        <entry key="cmsInquiryQueryMap">
+                            <!--<value>-->
+                                <!--SELECT INS_NUM,INS_NAME,INS_ADDRESS,INS_CITY_STATE,INS_PHONE,RESERVE_PERCENT,PANEL_IND,-->
+                                <!--STATUS,LAST_UPDATED_DATE-->
+                                <!--FROM HOST_INSURANCE_CO WHERE INS_NUM=? WITH UR-->
+                            <!--</value>-->
+                            <value>
+                                SELECT INS_NUM FROM HOST_INSURANCE_CO WHERE INS_NUM=? WITH UR
+                            </value>
+                        </entry>
+                        <entry key="cmsInsertQueryMap">
+                            <value>
+                                INSERT INTO HOST_INSURANCE_CO (INS_NUM,INS_NAME,INS_ADDRESS,INS_CITY_STATE,INS_PHONE,
+                                RESERVE_PERCENT,PANEL_IND,STATUS,LAST_UPDATED_DATE)
+                                VALUES (?,?,?,?,?,?,?,'ACTIVE',CURRENT TIMESTAMP)
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryMap">
+                            <value>
+                                UPDATE HOST_INSURANCE_CO SET INS_NAME=?, INS_ADDRESS=?, INS_CITY_STATE=?, INS_PHONE=?,
+                                RESERVE_PERCENT=?, PANEL_IND=?, STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                                WHERE INS_NUM=?
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryForDeletionMap">
+                            <value>
+                                UPDATE HOST_INSURANCE_CO SET STATUS='DELETED', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                            </value>
+                        </entry>
+                        <entry key="keysValueList">
+                            <list>
+                                <value>INS_NUM=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforUpdate">
+                            <list>
+                                <value>INS_NAME=java.lang.String</value>
+                                <value>INS_ADDR=java.lang.String</value>
+                                <value>INS_CITY_STATE=java.lang.String</value>
+                                <value>INS_CO_PHONE_NUM=java.lang.String</value>
+                                <value>RSV_PERC=java.math.BigDecimal</value>
+                                <value>PANEL_IND=java.lang.String</value>
+                                <value>INS_NUM=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforCreate">
+                            <list>
+                                <value>INS_NUM=java.lang.String</value>
+                                <value>INS_NAME=java.lang.String</value>
+                                <value>INS_ADDR=java.lang.String</value>
+                                <value>INS_CITY_STATE=java.lang.String</value>
+                                <value>INS_CO_PHONE_NUM=java.lang.String</value>
+                                <value>RSV_PERC=java.math.BigDecimal</value>
+                                <value>PANEL_IND=java.lang.String</value>
+                            </list>
+                        </entry>
+                    </map>
+                </entry>
+                <entry key="paramHostCollateralProductType">
+                    <map>
+                        <entry key="externalInquiryQueryMap">
+                            <value>
+                                <!--SELECT SCCODE,DP2CUR,PSPTF,PSCDES,PGRCOD FROM ${external.sibs.param.schema}.DDPAR2-->
+                                <!--WHERE (SCCODE,DP2CUR) IN-->
+                                <!--(SELECT DISTINCT SCCODE,DP2CUR FROM ${external.sibs.param.schema}.DDPAR2)-->
+                                SELECT DEP_TYPE_CODE, CURR_TYPE, INT_FREE_BANKING, TYPE_DESC, GROUP_CODE FROM ${external.sibs.param.schema}.HP_TEMP_PF140
+                                WHERE (DEP_TYPE_CODE,CURR_TYPE) IN
+                                (SELECT DISTINCT DEP_TYPE_CODE,CURR_TYPE FROM ${external.sibs.param.schema}.HP_TEMP_PF140)
+                            </value>
+                        </entry>
+                        <entry key="cmsInquiryQueryMap">
+                            <!--<value>-->
+                                <!--SELECT LOAN_TYPE,CURRENCY,SOURCE,SPTF_LOAN_TYPE,DESC,GROUP_CODE-->
+                                <!--STATUS,LAST_UPDATED_DATE FROM HOST_PRODUCT_TYPE-->
+                                <!--WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='DDPAR2' WITH UR-->
+                            <!--</value>-->
+                            <value>
+                                SELECT LOAN_TYPE FROM HOST_PRODUCT_TYPE
+                                WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='DDPAR2' WITH UR
+                            </value>
+                        </entry>
+                        <entry key="cmsInsertQueryMap">
+                            <value>
+                                INSERT INTO HOST_PRODUCT_TYPE (LOAN_TYPE,CURRENCY,SPTF_LOAN_TYPE,DESC,GROUP_CODE,
+                                SOURCE,STATUS,LAST_UPDATED_DATE)
+                                VALUES (?,?,?,?,?,'DDPAR2','ACTIVE',CURRENT TIMESTAMP)
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryMap">
+                            <value>
+                                UPDATE HOST_PRODUCT_TYPE SET SPTF_LOAN_TYPE=?, DESC=?, GROUP_CODE=?,
+                                STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                                WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='DDPAR2'
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryForDeletionMap">
+                            <value>
+                                UPDATE HOST_PRODUCT_TYPE SET STATUS='DELETED', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                                WHERE SOURCE='DDPAR2'
+                            </value>
+                        </entry>
+                        <entry key="keysValueList">
+                            <list>
+                                <value>DEP_TYPE_CODE=java.lang.String</value>
+                                <value>CURR_TYPE=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforUpdate">
+                            <list>
+                                <value>INT_FREE_BANKING=java.lang.String</value>
+                                <value>TYPE_DESC=java.lang.String</value>
+                                <value>GROUP_CODE=java.lang.String</value>
+                                <value>DEP_TYPE_CODE=java.lang.String</value>
+                                <value>CURR_TYPE=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforCreate">
+                            <list>
+                                <value>DEP_TYPE_CODE=java.lang.String</value>
+                                <value>CURR_TYPE=java.lang.String</value>
+                                <value>INT_FREE_BANKING=java.lang.String</value>
+                                <value>TYPE_DESC=java.lang.String</value>
+                                <value>GROUP_CODE=java.lang.String</value>
+                            </list>
+                        </entry>
+                    </map>
+                </entry>
+                <!-- NOT IN USE BY ABCLIMS -->
+                <!--<entry key="paramHostTradeFinanceProductType">-->
+                    <!--<map>-->
+                        <!--<entry key="externalInquiryQueryMap">-->
+                            <!--<value>-->
+                                <!--SELECT PDPDTP,PDDCUR,PDDESC,PDSPTF FROM ${external.sibs.param.schema}.TFPAR2-->
+                                <!--WHERE (PDPDTP,PDDCUR) IN-->
+                                <!--(SELECT DISTINCT PDPDTP,PDDCUR FROM ${external.sibs.param.schema}.TFPAR2)-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInquiryQueryMap">-->
+                            <!--&lt;!&ndash;<value>&ndash;&gt;-->
+                                <!--&lt;!&ndash;SELECT LOAN_TYPE,CURRENCY,SOURCE,DESC,SPTF_LOAN_TYPE,&ndash;&gt;-->
+                                <!--&lt;!&ndash;STATUS,LAST_UPDATED_DATE FROM HOST_PRODUCT_TYPE&ndash;&gt;-->
+                                <!--&lt;!&ndash;WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='TFPAR2' WITH UR&ndash;&gt;-->
+                            <!--&lt;!&ndash;</value>&ndash;&gt;-->
+                            <!--<value>-->
+                                <!--SELECT LOAN_TYPE FROM HOST_PRODUCT_TYPE-->
+                                <!--WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='TFPAR2' WITH UR-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInsertQueryMap">-->
+                            <!--<value>-->
+                                <!--INSERT INTO HOST_PRODUCT_TYPE (LOAN_TYPE,CURRENCY,DESC,SPTF_LOAN_TYPE,-->
+                                <!--SOURCE,STATUS,LAST_UPDATED_DATE)-->
+                                <!--VALUES (?,?,?,?,'TFPAR2','ACTIVE',CURRENT TIMESTAMP)-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryMap">-->
+                            <!--<value>-->
+                                <!--UPDATE HOST_PRODUCT_TYPE SET DESC=?, SPTF_LOAN_TYPE=?,-->
+                                <!--STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP-->
+                                <!--WHERE LOAN_TYPE=? AND CURRENCY=? AND SOURCE='TFPAR2'-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryForDeletionMap">-->
+                            <!--<value>-->
+                                <!--UPDATE HOST_PRODUCT_TYPE SET STATUS='DELETED', LAST_UPDATED_DATE=CURRENT TIMESTAMP-->
+                                <!--WHERE SOURCE='TFPAR2'-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueList">-->
+                            <!--<list>-->
+                                <!--<value>PDPDTP=java.lang.String</value>-->
+                                <!--<value>PDDCUR=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforUpdate">-->
+                            <!--<list>-->
+                                <!--<value>PDDESC=java.lang.String</value>-->
+                                <!--<value>PDSPTF=java.lang.String</value>-->
+                                <!--<value>PDPDTP=java.lang.String</value>-->
+                                <!--<value>PDDCUR=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforCreate">-->
+                            <!--<list>-->
+                                <!--<value>PDPDTP=java.lang.String</value>-->
+                                <!--<value>PDDCUR=java.lang.String</value>-->
+                                <!--<value>PDDESC=java.lang.String</value>-->
+                                <!--<value>PDSPTF=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                    <!--</map>-->
+                <!--</entry>-->
+                <!-- NOT IN USE BY ABCLIMS -->
+                <!--<entry key="paramForex">-->
+                    <!--<map>-->
+                        <!--<entry key="externalInquiryQueryMap">-->
+                            <!--<value>-->
+                                <!--SELECT JFXBKC,JFXCOD,JFXCUN,JFXSRT,JFXBRT-->
+                                <!--FROM ${external.sibs.param.schema}.SSFXRT-->
+                                <!--WHERE (JFXBKC,JFXCOD) IN-->
+                                <!--(SELECT DISTINCT JFXBKC,JFXCOD FROM ${external.sibs.param.schema}.SSFXRT)-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInquiryQueryMap">-->
+                            <!--&lt;!&ndash;<value>&ndash;&gt;-->
+                                <!--&lt;!&ndash;SELECT FEED_ID,BUY_CURRENCY,SELL_CURRENCY,BUY_UNIT,SELL_UNIT,BUY_RATE,SELL_RATE,&ndash;&gt;-->
+                                <!--&lt;!&ndash;EFFECTIVE_DATE,FEED_REF,CMS_VERSION_TIME FROM CMS_FOREX&ndash;&gt;-->
+                                <!--&lt;!&ndash;WHERE BUY_CURRENCY=?, SELL_CURRENCY=? WITH UR&ndash;&gt;-->
+                            <!--&lt;!&ndash;</value>&ndash;&gt;-->
+                            <!--<value>-->
+                                <!--SELECT BUY_CURRENCY FROM CMS_FOREX WHERE BUY_CURRENCY=? AND SELL_CURRENCY=? WITH UR-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInsertQueryMap">-->
+                            <!--<value>-->
+                                <!--INSERT INTO CMS_FOREX (FEED_ID,BUY_CURRENCY,SELL_CURRENCY,BUY_UNIT,SELL_UNIT,BUY_RATE,SELL_RATE,-->
+                                <!--EFFECTIVE_DATE,FEED_REF,CMS_VERSION_TIME)-->
+                                <!--VALUES (CAST((TS_FMT(CURRENT_TIMESTAMP, 'yyyymmdd') || SUBSTR(DIGITS(NEXT VALUE FOR CMS_FOREX_SEQ), 2)) as BIGINT),-->
+                                <!--?,?,1,?,?,?,CURRENT_TIMESTAMP,0,1)-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryMap">-->
+                            <!--<value>-->
+                                <!--UPDATE CMS_FOREX SET BUY_UNIT=1, SELL_UNIT=?, BUY_RATE=?, SELL_RATE=?,-->
+                                <!--EFFECTIVE_DATE=CURRENT TIMESTAMP, FEED_REF=FEED_ID, CMS_VERSION_TIME=1-->
+                                <!--WHERE BUY_CURRENCY=? AND SELL_CURRENCY=?-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryForDeletionMap">-->
+                            <!--<value>-->
+                                <!--UPDATE CMS_FOREX SET CMS_VERSION_TIME=CMS_VERSION_TIME-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueList">-->
+                            <!--<list>-->
+                                <!--<value>JFXCOD=java.lang.String</value>-->
+                                <!--<value>JFXBKC=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforUpdate">-->
+                            <!--<list>-->
+                                <!--<value>JFXCUN=java.lang.Integer</value>-->
+                                <!--<value>JFXBRT=java.math.BigDecimal</value>-->
+                                <!--<value>JFXSRT=java.math.BigDecimal</value>-->
+                                <!--<value>JFXCOD=java.lang.String</value>-->
+                                <!--<value>JFXBKC=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforCreate">-->
+                            <!--<list>-->
+                                <!--<value>JFXCOD=java.lang.String</value>-->
+                                <!--<value>JFXBKC=java.lang.String</value>-->
+                                <!--<value>JFXCUN=java.lang.Integer</value>-->
+                                <!--<value>JFXBRT=java.math.BigDecimal</value>-->
+                                <!--<value>JFXSRT=java.math.BigDecimal</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                    <!--</map>-->
+                <!--</entry>-->
+
+
+                <!--<entry key="paramWorkingDay">-->
+                    <!--<map>-->
+                        <!--<entry key="externalInquiryQueryMap">-->
+                            <!--<value>-->
+                                <!--SELECT CJDATE,CBRNBR,BUSDAY-->
+                                <!--FROM ${external.sibs.param.schema}.SSCLDR-->
+                                <!--WHERE CJDATE &gt;= BIGINT(TRIM(CHAR(YEAR( current_timestamp - 1 month )))-->
+                                <!--concat TRIM(CHAR(DIGITS(DECIMAL(DAYOFYEAR( current_timestamp - 1 month ), 3, 0)))))-->
+                                <!--AND (CJDATE,CBRNBR) IN-->
+                                <!--(SELECT DISTINCT CJDATE,CBRNBR FROM ${external.sibs.param.schema}.SSCLDR-->
+                                <!--WHERE CJDATE &gt;= BIGINT(TRIM(CHAR(YEAR( current_timestamp - 1 month )))-->
+                                <!--concat TRIM(CHAR(DIGITS(DECIMAL(DAYOFYEAR( current_timestamp - 1 month ), 3, 0))))))-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInquiryQueryMap">-->
+                            <!--<value>-->
+                                <!--SELECT PROCESSING_DATE,BRANCH,BIZ_DAY_FLAG,STATUS,LAST_UPDATED_DATE-->
+                                <!--FROM CMS_TEMP_WORKING_DAYS-->
+                                <!--WHERE PROCESSING_DATE=?, BRANCH=? WITH UR-->
+                            <!--</value>-->
+                            <!--<value>-->
+                                <!--SELECT BRANCH FROM CMS_TEMP_WORKING_DAYS WHERE PROCESSING_DATE=? AND BRANCH=? WITH UR-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInsertQueryMap">-->
+                            <!--<value>-->
+                                <!--INSERT INTO CMS_TEMP_WORKING_DAYS (PROCESSING_DATE,BRANCH,BIZ_DAY_FLAG,-->
+                                <!--STATUS,LAST_UPDATED_DATE)-->
+                                <!--VALUES (?,?,?,'ACTIVE',CURRENT_TIMESTAMP)-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryMap">-->
+                            <!--<value>-->
+                                <!--UPDATE CMS_TEMP_WORKING_DAYS SET BIZ_DAY_FLAG=?,-->
+                                <!--STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT_TIMESTAMP-->
+                                <!--WHERE PROCESSING_DATE=? AND BRANCH=?-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryForDeletionMap">-->
+                            <!--<value>-->
+                                <!--UPDATE CMS_TEMP_WORKING_DAYS SET BRANCH=BRANCH-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueList">-->
+                            <!--<list>-->
+                                <!--<value>CJDATE=java.util.Date</value>-->
+                                <!--<value>CBRNBR=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforUpdate">-->
+                            <!--<list>-->
+                                <!--<value>BUSDAY=java.lang.String</value>-->
+                                <!--<value>CJDATE=java.util.Date</value>-->
+                                <!--<value>CBRNBR=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforCreate">-->
+                            <!--<list>-->
+                                <!--<value>CJDATE=java.util.Date</value>-->
+                                <!--<value>CBRNBR=java.lang.String</value>-->
+                                <!--<value>BUSDAY=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                    <!--</map>-->
+                <!--</entry>-->
+
+                <!-- NOT IN USE BY ABCLIMS -->
+                <!--<entry key="paramHostCentre">-->
+                    <!--<map>-->
+                        <!--<entry key="externalInquiryQueryMap">-->
+                            <!--<value>-->
+                                <!--SELECT (CASE WHEN SSMCENTER = 'RCB' THEN 'RCC' WHEN SSMCENTER = 'DSM' THEN 'MSC' ELSE SSMCENTER END) SSMCENTER,SSMHUB,SSMNAME FROM ${external.sibs.param.schema}.SSMCBR-->
+                                <!--WHERE SSMIND = 'Y' AND SSMCENTER IN ('CAC', 'HPC', 'RCC', 'SAB', 'MSC', 'HO', 'ABC', 'RCB', 'DSM')-->
+                                <!--AND (SSMCENTER,SSMHUB) IN-->
+                                <!--(SELECT DISTINCT SSMCENTER,SSMHUB FROM ${external.sibs.param.schema}.SSMCBR-->
+                                 <!--WHERE SSMIND = 'Y' AND SSMCENTER IN ('CAC', 'HPC', 'RCC', 'SAB', 'MSC', 'HO', 'ABC', 'RCB', 'DSM'))-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInquiryQueryMap">-->
+                            <!--&lt;!&ndash;<value>&ndash;&gt;-->
+                                <!--&lt;!&ndash;SELECT CENTRE_TYPE,CENTRE_CODE,NAME,HAS_BRANCH,&ndash;&gt;-->
+                                <!--&lt;!&ndash;STATUS,LAST_UPDATED_DATE FROM HOST_CENTRE&ndash;&gt;-->
+                                <!--&lt;!&ndash;WHERE CENTRE_TYPE=? AND CENTRE_CODE=? WITH UR&ndash;&gt;-->
+                            <!--&lt;!&ndash;</value>&ndash;&gt;-->
+                            <!--<value>-->
+                                <!--SELECT CENTRE_TYPE FROM HOST_CENTRE WHERE CENTRE_TYPE=? AND CENTRE_CODE=? WITH UR-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsInsertQueryMap">-->
+                            <!--<value>-->
+                                <!--INSERT INTO HOST_CENTRE (CENTRE_TYPE,CENTRE_CODE,NAME,HAS_BRANCH,-->
+                                <!--STATUS,LAST_UPDATED_DATE)-->
+                                <!--VALUES (?,?,?,'N','ACTIVE',CURRENT TIMESTAMP)-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryMap">-->
+                            <!--<value>-->
+                                <!--UPDATE HOST_CENTRE SET NAME=?, HAS_BRANCH='N',-->
+                                <!--STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP-->
+                                <!--WHERE CENTRE_TYPE=? AND CENTRE_CODE=?-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="cmsUpdateQueryForDeletionMap">-->
+                            <!--<value>-->
+                                <!--UPDATE HOST_CENTRE SET STATUS='DELETED', LAST_UPDATED_DATE=CURRENT TIMESTAMP-->
+                            <!--</value>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueList">-->
+                            <!--<list>-->
+                                <!--<value>SSMCENTER=java.lang.String</value>-->
+                                <!--<value>SSMHUB=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforUpdate">-->
+                            <!--<list>-->
+                                <!--<value>SSMNAME=java.lang.String</value>-->
+                                <!--<value>SSMCENTER=java.lang.String</value>-->
+                                <!--<value>SSMHUB=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                        <!--<entry key="keysValueListforCreate">-->
+                            <!--<list>-->
+                                <!--<value>SSMCENTER=java.lang.String</value>-->
+                                <!--<value>SSMHUB=java.lang.String</value>-->
+                                <!--<value>SSMNAME=java.lang.String</value>-->
+                            <!--</list>-->
+                        <!--</entry>-->
+                    <!--</map>-->
+                <!--</entry>-->
+                <entry key="paramHostCustomerLimit">
+                    <map>
+                        <entry key="externalInquiryQueryMap">
+                            <value>
+                                <!--SELECT JCBANK,JCCFUN,JCLMN7,JCSELN,JCUNLN,JCSEIN,JCUNIN-->
+                                <!--FROM ${external.sibs.param.schema}.SSCFUN-->
+                                <!--WHERE JCBRN = 0 AND JCBANK IN-->
+                                <!--(SELECT DISTINCT JCBANK FROM ${external.sibs.param.schema}.SSCFUN-->
+                                 <!--WHERE JCBRN = 0)-->
+                                <!--SELECT BANK_NUM, CAP_FUND, DATE_LAST_MAINT, ISCL_SEC_LOAN, ISCL_UNSEC_LOAN, SEC_INDV, UNSEC_INDV-->
+                                SELECT BANK_NUM, CAP_FUND, DATE_LAST_MAINT
+                                FROM ${external.sibs.param.schema}.HP_TEMP_PF158
+                                WHERE BANK_NUM IN
+                                (SELECT DISTINCT BANK_NUM FROM ${external.sibs.param.schema}.HP_TEMP_PF158)
+                            </value>
+                        </entry>
+                        <entry key="cmsInquiryQueryMap">
+                            <!--<value>-->
+                                <!--SELECT BANK_NUM,CAPITAL_FUNDS,LAST_MAINTENANCE_DATE,ISCL_SECURED_LOAN,ISCL_UNSECURED_LOAN,-->
+                                <!--SECURED_INDIVIDUAL,UNSECURED_INDIVIDUAL,-->
+                                <!--STATUS,LAST_UPDATED_DATE FROM HOST_CUST_LMT-->
+                                <!--WHERE BANK_NUM=? WITH UR-->
+                            <!--</value>-->
+                            <value>
+                                SELECT BANK_NUM FROM HOST_CUST_LMT WHERE BANK_NUM=? WITH UR
+                            </value>
+                        </entry>
+                        <entry key="cmsInsertQueryMap">
+                            <value>
+                                <!--INSERT INTO HOST_CUST_LMT (BANK_NUM,CAPITAL_FUNDS,LAST_MAINTENANCE_DATE,ISCL_SECURED_LOAN,-->
+                                INSERT INTO HOST_CUST_LMT (BANK_NUM,CAPITAL_FUNDS,LAST_MAINTENANCE_DATE,
+                                <!--ISCL_UNSECURED_LOAN,SECURED_INDIVIDUAL,UNSECURED_INDIVIDUAL,-->
+                                STATUS,LAST_UPDATED_DATE)
+                                VALUES (?,?,?,?,?,?,?,'ACTIVE',CURRENT TIMESTAMP)
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryMap">
+                            <value>
+                                <!--UPDATE HOST_CUST_LMT SET CAPITAL_FUNDS=?, LAST_MAINTENANCE_DATE=?, ISCL_SECURED_LOAN=?,-->
+                                UPDATE HOST_CUST_LMT SET CAPITAL_FUNDS=?, LAST_MAINTENANCE_DATE=?,
+                                <!--ISCL_UNSECURED_LOAN=?, SECURED_INDIVIDUAL=?, UNSECURED_INDIVIDUAL=?,-->
+                                STATUS='ACTIVE', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                                WHERE BANK_NUM=?
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryForDeletionMap">
+                            <value>
+                                UPDATE HOST_CUST_LMT SET STATUS='DELETED', LAST_UPDATED_DATE=CURRENT TIMESTAMP
+                            </value>
+                        </entry>
+                        <entry key="keysValueList">
+                            <list>
+                                <value>BANK_NUM=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforUpdate">
+                            <list>
+                                <value>CAP_FUND=java.math.BigDecimal</value>
+                                <value>DATE_LAST_MAINT=java.util.Date</value>
+                                <!--<value>ISCL_SEC_LOAN=java.math.BigDecimal</value>-->
+                                <!--<value>ISCL_UNSEC_LOAN=java.math.BigDecimal</value>-->
+                                <!--<value>SEC_INDV=java.math.BigDecimal</value>-->
+                                <!--<value>UNSEC_INDV=java.math.BigDecimal</value>-->
+                                <value>BANK_NUM=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforCreate">
+                            <list>
+                                <value>BANK_NUM=java.lang.String</value>
+                                <value>CAP_FUND=java.math.BigDecimal</value>
+                                <value>DATE_LAST_MAINT=java.util.Date</value>
+                                <!--<value>ISCL_SEC_LOAN=java.math.BigDecimal</value>-->
+                                <!--<value>ISCL_UNSEC_LOAN=java.math.BigDecimal</value>-->
+                                <!--<value>SEC_INDV=java.math.BigDecimal</value>-->
+                                <!--<value>UNSEC_INDV=java.math.BigDecimal</value>-->
+                            </list>
+                        </entry>
+                    </map>
+                </entry>
+                <entry key="paramHostBranchDependency">
+                    <map>
+                        <entry key="externalInquiryQueryMap">
+                            <value>
+                                <!--SELECT JDBR,JDNAME,JDTAXN,JDTAX2,JDOPN7,JDCOUN,JDSTAT,JDFISB,JDMASB -->
+                                <!--FROM ${external.sibs.param.schema}.SSDATA-->
+                                <!--WHERE JDBR IN-->
+                                <!--(SELECT DISTINCT JDBR FROM ${external.sibs.param.schema}.SSDATA)-->
+                                <!--SELECT BRANCH_NUM, BANK_BRANCH_NAME, BANK_BRANCH_ID_NUM, SPTF_BRANCH_ID_NUM, BRANCH_OPEN_DATE, COUNTRY_CODE, STATE_CODE, FIS_BRANCH_ID, MASB_TAG-->
+                                SELECT BRANCH_NUM, BANK_BRANCH_NAME, BANK_BRANCH_ID_NUM, SPTF_BRANCH_ID_NUM, BRANCH_OPEN_DATE, COUNTRY_CODE, STATE_CODE, FIS_BRANCH_ID
+                                FROM ${external.sibs.param.schema}.HP_TEMP_PF110
+                                WHERE BRANCH_NUM IN
+                                (SELECT DISTINCT BRANCH_NUM FROM ${external.sibs.param.schema}.HP_TEMP_PF110)
+                            </value>
+                        </entry>
+                        <entry key="cmsInquiryQueryMap">
+                            <!--<value>-->
+                                <!--SELECT BRANCH_NUM,BRANCH_NAME,CONVENTIONAL_ISLAMIC_IND,BANK_BRANCH_ID,SPTF_BRANCH_ID,-->
+                                <!--BRANCH_OPENING_DATE,CLOSED_BRANCH_IND,COUNTRY,STATE,FIS_BRANCH_ID-->
+                                <!--FROM HOST_BRANCH WHERE BRANCH_NUM=? AND STATUS='ACTIVE' WITH UR-->
+                            <!--</value>-->
+                            <value>
+                                SELECT BRANCH_NUM FROM HOST_BRANCH WHERE BRANCH_NUM=? AND STATUS='ACTIVE' WITH UR
+                            </value>
+                        </entry>
+                        <!--<entry key="cmsInsertQueryMap">-->
+                            <!--<value></value>-->
+                        <!--</entry>-->
+                        <entry key="cmsUpdateQueryMap">
+                            <value>
+                                UPDATE HOST_BRANCH SET BRANCH_NAME=?,
+                                <!--CONVENTIONAL_ISLAMIC_IND=(CASE WHEN (? = 'I' OR ? = 'F') THEN 'I'-->
+                                                               <!--WHEN ? = 'C' THEN 'C'-->
+                                                               <!--ELSE NULL END),-->
+                                BANK_BRANCH_ID=?, SPTF_BRANCH_ID=?, BRANCH_OPENING_DATE=?,
+                                CLOSED_BRANCH_IND=(CASE WHEN ? = '9999999' THEN 'Y' ELSE 'N' END),
+                                COUNTRY=?, STATE=?, FIS_BRANCH_ID=?
+                                WHERE BRANCH_NUM=? AND STATUS='ACTIVE'
+                            </value>
+                        </entry>
+                        <entry key="cmsUpdateQueryForDeletionMap">
+                            <value></value>
+                        </entry>
+                        <entry key="keysValueList">
+                            <list>
+                                <value>BRANCH_NUM=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforUpdate">
+                            <list>
+                                <value>BANK_BRANCH_NAME=java.lang.String</value>
+                                <!--<value>MASB_TAG=java.lang.String</value>-->
+                                <!--<value>MASB_TAG=java.lang.String</value>-->
+                                <!--<value>MASB_TAG=java.lang.String</value>-->
+                                <value>BANK_BRANCH_ID_NUM=java.lang.String</value>
+                                <value>SPTF_BRANCH_ID_NUM=java.lang.String</value>
+                                <value>BRANCH_OPEN_DATE=java.util.Date</value>
+                                <value>BRANCH_OPEN_DATE=java.lang.String</value>
+                                <value>COUNTRY_CODE=java.lang.String</value>
+                                <value>STATE_CODE=java.lang.String</value>
+                                <value>FIS_BRANCH_ID=java.lang.String</value>
+                                <value>BRANCH_NUM=java.lang.String</value>
+                            </list>
+                        </entry>
+                        <entry key="keysValueListforCreate">
+                            <list></list>
+                        </entry>
+                        <entry key="dependencyParamFlag">
+                            <value>true</value>
+                        </entry>
+                    </map>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

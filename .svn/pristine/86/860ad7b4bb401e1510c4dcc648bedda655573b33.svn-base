@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT  distinct  users.user_id, 
+				  users.login_id,
+				  users.user_name,
+				  auth.last_login_ip                       AS ip_address,				  
+				  TO_CHAR(TO_DATE(SUBSTR(auth.last_login_time,1,9),'DD-MON-YY'),'DD-MON-YYYY') AS LOGIN_DATE,
+				  TO_CHAR(auth.last_login_time,'HH:MI AM')    AS LOGIN_TIME,
+				  auth.login_attempts
+				FROM cms_user users,
+				   cms_authentication auth
+			--,	cms_login_audit lgnadt 
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				users.login_id  =  auth.login_id			
+				AND auth.login_attempts != 0
+			</mandatoryClause>
+			<param>
+				<name>userId</name>
+				<condition> AND users.user_Id = </condition>
+			</param>
+			
+				<param>
+				<name>fromDate</name>
+				<condition> and trunc(auth.LAST_LOGIN_TIME) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>	
+			
+			   <reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Transaction Id</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>User Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>IP Address</header>
+				</reportColumn>
+							
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Login Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Login Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Number of Attempts</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>Unsuccessful login attempts Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

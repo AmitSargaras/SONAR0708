@@ -1,0 +1,302 @@
+-----------------------------
+-- Cleanup
+-----------------------------
+-- DELETE FROM MIG_QC_REPORT;		//Use drop and recreate mig report - much faster
+
+/* ---------------------------  QC 3 ----------------------------   */ 
+-----------------------------
+-- Facility
+-----------------------------    
+-- CA003_1
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV004SIBS', 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'CIF ID / Limit ID / AA Number / Facility Code / Facility Sequence, Error Message', 'SIBS', 'CA003_1');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ' / ' || COALESCE(KEY5_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA003_1' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA003_1');
+ 
+-- CA003_2
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV005SIBS', 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Limit ID / AA Number /Facility Code / Facility Sequence, Error Message', 'SIBS', 'CA003_2');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA003_2' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA003_2');
+ 
+-- CA003_3
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV006SIBS', 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Limit ID / AA Number /Facility Code / Facility Sequence / Officer Seq No, Error Message', 'SIBS', 'CA003_3');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ' / ' || COALESCE(KEY5_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA003_3' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA003_3');
+ 
+-- CA003_4
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV007SIBS', 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Limit ID / AA Number /Facility Code / Facility Sequence / CIF ID, Error Message', 'SIBS', 'CA003_4');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ' / ' || COALESCE(KEY5_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA003_4' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA003_4');
+ 
+-- CA003_5
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV008SIBS', 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Limit ID / AA Number /Facility Code / Facility Sequence, Error Message', 'SIBS', 'CA003_5');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA003_5' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA003_5');
+ 
+-- CA003_6
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV009SIBS', 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Limit ID / AA Number /Facility Code / Facility Sequence / Tier Seq No, Error Message', 'SIBS', 'CA003_6');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ' / ' || COALESCE(KEY5_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA003_6' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA003_6');
+ 
+-- CA003_7
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV010SIBS', 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Limit ID / AA Number /Facility Code / Facility Sequence, Error Message', 'SIBS', 'CA003_7');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA003_7' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA003_7');
+ 
+-- CA003_8
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV011SIBS', 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Limit ID / AA Number /Facility Code / Facility Sequence, Error Message', 'SIBS', 'CA003_8');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA003_8' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA003_8');
+ 
+ 
+-----------------------------
+-- Limit-Account
+-----------------------------    
+-- CA004
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'QC Report 3 for Migration', 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report for migration template: CV016SIBS', 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Records with Error(s):', 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Error', 'Limit ID/ AA Number / External System Account No / Account Sequence, Error Message', 'SIBS', 'CA004');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Error', COALESCE(KEY1_VALUE,'-') || ' / ' || COALESCE(KEY2_VALUE,'-') || ' / ' || COALESCE(KEY3_VALUE,'-') || ' / ' || COALESCE(KEY4_VALUE,'-') || ',' || ERROR_MSG, 'SIBS', 'CA004' 
+     FROM MIG_ERROR_LOG WHERE SYSTEM_ID = 'SIBS' AND INTERFACE_ID = 'CA004');
+ 
+ 
+
+/* ---------------------------  QC 4 ----------------------------   */ 
+-----------------------------
+-- Facility
+-----------------------------    
+-- CA003_1
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV004SIBS', 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA003_1');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	 (SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA003_1' FROM MIG_CA003_1 WHERE IS_VALID = 'Y');
+ 
+-- CA003_2
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV005SIBS', 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA003_2');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	 (SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA003_2' FROM MIG_CA003_2_BNM WHERE IS_VALID = 'Y');
+ 
+-- CA003_3
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV006SIBS', 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA003_3');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	 (SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA003_3' FROM MIG_CA003_3_OFF WHERE IS_VALID = 'Y');
+ 
+-- CA003_4
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV007SIBS', 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA003_4');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	 (SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA003_4' FROM MIG_CA003_4_REL WHERE IS_VALID = 'Y');
+ 
+-- CA003_5
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV008SIBS', 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA003_5');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	 (SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA003_5' FROM MIG_CA003_5_INS WHERE IS_VALID = 'Y');
+ 
+-- CA003_6
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV009SIBS', 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA003_6');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	 (SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA003_6' FROM MIG_CA003_6_MUL WHERE IS_VALID = 'Y');
+ 
+-- CA003_7
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV010SIBS', 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA003_7');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	 (SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA003_7' FROM MIG_CA003_7_ISL WHERE IS_VALID = 'Y');
+ 
+-- CA003_8
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV011SIBS', 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA003_8');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	 (SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA003_8' FROM MIG_CA003_8_BBA WHERE IS_VALID = 'Y');
+ 
+ 
+-----------------------------
+-- Limit-Account
+-----------------------------    
+-- CA004
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'QC Report 4 for Migration', 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report for migration template: CV016SIBS', 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('IsValid', 'Total Number of Records', 'SIBS', 'CA004');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'IsValid', CHAR(COUNT(*)), 'SIBS', 'CA004' FROM MIG_CA004 WHERE IS_VALID = 'Y');
+ 
+ 
+
+/* ---------------------------  QC 5 ----------------------------   */  
+-----------------------------
+-- Facility
+-----------------------------    
+-- CA003_1
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV004SIBS', 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_1');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA003_1');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Limit,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA003_1' FROM SCI_LSP_APPR_LMTS lmt, MIG_CA003_1 mig
+		WHERE SOURCE_ID = 'RLOS' AND lmt.CMS_LSP_APPR_LMTS_ID = mig.CMS_ACT_LMT_ID AND lmt.LOS_BCA_REF_NUM = mig.LOS_AA_NUMBER AND mig.IS_VALID = 'Y');
+
+-- CA003_2
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV005SIBS', 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_2');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA003_2');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Facility BNM,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA003_2' FROM CMS_FAC_BNM_CODES fac, MIG_CA003_2_BNM mig 
+		WHERE fac.CMS_FAC_MASTER_ID = mig.CMS_ACT_FAC_MASTER_ID AND mig.IS_VALID = 'Y');
+
+-- CA003_3
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV006SIBS', 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_3');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA003_3');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Facility Officer,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA003_3' FROM CMS_FAC_OFFICER fac, MIG_CA003_3_OFF mig
+		WHERE fac.CMS_FAC_MASTER_ID = mig.CMS_ACT_FAC_MASTER_ID AND fac.ID = mig.CMS_ACT_FAC_OFFICER_ID AND mig.IS_VALID = 'Y');
+
+-- CA003_4
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV007SIBS', 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_4');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA003_4');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Facility Relationship,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA003_4' FROM CMS_FAC_RELATIONSHIP fac, MIG_CA003_4_REL mig
+		WHERE fac.CMS_FAC_MASTER_ID = mig.CMS_ACT_FAC_MASTER_ID AND fac.ID = mig.CMS_ACT_FAC_RELATIONSHIP_ID AND mig.IS_VALID = 'Y');
+
+-- CA003_5
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV008SIBS', 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_5');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA003_5');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Facility Insurance,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA003_5' FROM CMS_FAC_INSURANCE fac, MIG_CA003_5_INS mig
+		WHERE fac.CMS_FAC_MASTER_ID = mig.CMS_ACT_FAC_MASTER_ID AND mig.IS_VALID = 'Y');
+
+-- CA003_6
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV009SIBS', 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_6');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA003_6');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Facility Multi Tier Financing,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA003_6' FROM CMS_FAC_MULTI_TIER_FINANCING fac, MIG_CA003_6_MUL mig
+		WHERE fac.CMS_FAC_MASTER_ID = mig.CMS_ACT_FAC_MASTER_ID AND fac.CMS_REF_ID = mig.CMS_REF_ID AND mig.IS_VALID = 'Y');
+
+-- CA003_7
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV010SIBS', 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_7');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA003_7');
+ 
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Facility Islamic Master,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA003_7' FROM CMS_FAC_ISLAMIC_MASTER fac, MIG_CA003_7_ISL mig 
+		WHERE fac.CMS_FAC_MASTER_ID = mig.CMS_ACT_FAC_MASTER_ID AND mig.IS_VALID = 'Y');
+
+-- CA003_8
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV011SIBS', 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA003_8');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA003_8');
+ 
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'Facility BBA Vari Package,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA003_8' FROM CMS_FAC_BBA_VARI_PACKAGE fac, MIG_CA003_8_BBA mig
+		WHERE fac.CMS_FAC_MASTER_ID = mig.CMS_ACT_FAC_MASTER_ID AND mig.IS_VALID = 'Y');
+
+-----------------------------
+-- Limit-Account
+-----------------------------    
+-- CA004
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'QC Report 5 for Migration', 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report for migration template: CV016SIBS', 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Report Date: ' || char(current date)  || chr(13) || chr(10) || chr(13) || chr(10), 'SIBS', 'CA004');
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID) VALUES ('Migrated', 'Total Number of Records', 'SIBS', 'CA004');
+
+INSERT INTO MIG_QC_REPORT (RECORD_TYPE, TEXT, SYSTEM_ID, INTERFACE_ID)
+	(SELECT 'Migrated', 'CA - Limit Account Info,' || CHAR(COUNT(*)) || chr(13) || chr(10), 'SIBS', 'CA004' FROM SCI_LSP_SYS_XREF xref, MIG_CA004 mig 
+		WHERE xref.LSX_EXT_SYS_ACCT_NUM = mig.EXTERNAL_SYSTEM_ACCT_NO AND xref.LSX_EXT_SYS_ACCT_SEQ = mig.ACCT_SEQ AND xref.LSX_EXT_SYS_CODE_VALUE = 'SIBS' AND mig.IS_VALID = 'Y');
+ 

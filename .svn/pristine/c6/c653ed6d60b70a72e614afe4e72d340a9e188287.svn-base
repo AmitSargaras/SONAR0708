@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select distinct cpu.EVENT,
+      cpu.CATEGORY,
+			(select region_name from cms_region where id = cpu.PARTY_REGION) as PARTYREGION,
+			(select region_name from cms_region where id = cpu.RM_REGION) as RMREGION,
+			cpu.LINE_NO,
+			cpu.LIMIT_RELEASED_AMOUNT,
+			cpu.SERIAL_NO,
+			(select user_name from cms_user where login_id = cpu.CASE_RM) as CASERM,
+      (select rm_mgr_name from cms_relationship_mgr where id = cpu.PARTY_RM) as PARTYRM,
+			cpu.CASE_NO,
+			cpu.PARTY_NAME,
+			cpu.PARTY_ID,
+      (SELECT entry_name FROM common_code_category_entry WHERE category_code = 'HDFC_SEGMENT' and entry_code = cpu.CUSTOMER_SEGMENT)  as CUSTOMERSEGMENT,
+      cpu.ActualCaseReceivedDateCPU,
+      cpu.ActualCaseReceivedTimeCPU,
+      cpu.ActualCaseProcessedDateCPU,
+      cpu.ActualCaseProcessedTimeCPU,
+        CAL_DIFF_DATE(cpu.CaseReceivedDateCPU,
+      cpu.CaseReceivedTimeCPU,
+      cpu.CaseProcessedDateCPU,
+      cpu.CaseProcessedTimeCPU,
+       (select start_timing
+      from cms_tat_master where event_code =cpu.event),  
+      (select end_timing
+      from cms_tat_master where event_code = cpu.event),
+      
+       (
+       (to_date(cpu.CaseProcessedDateCPU,'DD-MM-YYYY') - to_date(cpu.CaseReceivedDateCPU,'DD-MM-YYYY')) -
+   (coalesce  ((
+      SELECT
+sum((trunc(end_date)-trunc(start_date)+1)- (next_day(trunc(end_date), 'MONDAY')-next_day(trunc(start_date), 'MONDAY'))/7 )
+FROM cms_holiday h
+WHERE trunc(h.start_date)   BETWEEN to_date(to_char(cpu.CaseReceivedDateCPU),'DD-MM-YYYY') AND to_date(to_char(cpu.CaseProcessedDateCPU),'DD-MM-YYYY')
+OR   trunc(h.end_date) BETWEEN to_date(to_char(cpu.CaseReceivedDateCPU),'DD-MM-YYYY') AND to_date(to_char(cpu.CaseProcessedDateCPU),'DD-MM-YYYY')
+      ),0)
+      
+      +
+  
+  coalesce((select  (next_day(to_date(TO_CHAR(abc.CaseProcessedDateCPU),'DD-MM-YYYY'), 'MONDAY')-next_day(to_date(TO_CHAR(abc.CaseReceivedDateCPU),'DD-MM-YYYY'), 'MONDAY'))/7
+from tat_rpt_for_cpu abc where abc.case_No = cpu.Case_no),0)
+  
+  )
+      
+       )
+       *
+       ((to_date(CaseProcessedDateCPU|| ' ' ||(select end_timing
+      from cms_tat_master where event_code = cpu.event), 'dd-mm-yyyy HH24:MI') - to_date(CaseProcessedDateCPU|| ' ' ||(select start_timing
+      from cms_tat_master where event_code = cpu.event), 'dd-mm-yyyy HH24:MI') )*24  )) as TotalTime
+   from TAT_RPT_FOR_CPU cpu,
+      sci_le_sub_profile sp
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				sp.lsp_le_id= cpu.party_id
+                and sp.status = 'ACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>segment</name>
+				<condition> AND CUSTOMER_SEGMENT = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND PARTY_ID = </condition>
+			</param>
+			<param>
+				<name>region</name>
+				<condition> AND RM_REGION = </condition>
+			</param>
+			<param>
+				<name>relationshipManager</name>
+				<condition> AND PARTY_RM = </condition>
+			</param>
+			<param>
+				<name>event</name>
+				<condition> AND EVENT = </condition>
+			</param>
+			<param>
+				<name>tatCriteria</name>
+				<condition> AND TURN_AROUND_TIME = </condition>
+			</param>
+			<param>
+				<name>category</name>
+				<condition> AND CATEGORY = </condition>
+			</param>
+			<param>
+				<name>caseId</name>
+				<condition> AND CASE_NO = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(CASE_INITIATE_TIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Event</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line no. </header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Released amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Serial no.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Initiator RM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party RM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Received Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Received Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Processed Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Processed Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Total Time ( Case TAT )</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>TAT Monitoring report for Users</reportName>
+		</reportParamters>
+	</report>
+</reports>

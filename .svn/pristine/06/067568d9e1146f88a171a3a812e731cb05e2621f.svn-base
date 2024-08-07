@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+                     debug="false">
+
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+  		     <param name="ConversionPattern" 
+                            value="[%t] %-5p - %d{DATE}:%c - %m%n"/>
+		</layout>
+	</appender>
+
+	<appender name="REPORTFILEOUT" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/usr/IBM/WebSphere/cms_sit/logs/cmsreports.log"/>
+		<param name="MaxFileSize" value="10MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+  		     <param name="ConversionPattern" 
+                            value="[%t] %-5p - %d{DATE}:%c - %m%n"/>
+		</layout>
+	</appender>
+  
+	<appender name="TraceFILEOUT" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/usr/IBM/WebSphere/cms_sit/logs/SystemTrace.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+		<layout class="org.apache.log4j.PatternLayout">
+  		     <param name="ConversionPattern" 
+                            value="[%t] %-5p - %d{DATE}:%c - %m%n"/>
+		</layout>
+	</appender>
+  
+	<appender name="BATCHFILEOUT" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/usr/IBM/WebSphere/cms_sit/logs/BatchJob.log"/>
+		<param name="MaxFileSize" value="10MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+  		     <param name="ConversionPattern"
+                            value="[%t] %-5p - %d{DATE}:%c - %m%n"/>
+		</layout>
+	</appender>
+	
+    <appender name="VALUATIONFILEOUT" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/usr/IBM/WebSphere/cms_sit/logs/ValuationBatchJob.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+               <param name="ConversionPattern"
+                            value="[%t] %-5p - %d{DATE}:%c - %m%n"/>
+        </layout>
+    </appender>
+
+	<appender name="MESSAGELOG" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/usr/IBM/WebSphere/cms_sit/logs/Message.log"/>
+		<param name="MaxFileSize" value="10MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+  		     <param name="ConversionPattern"
+                            value="[%t] %-5p - %d{DATE}:%c - %m%n"/>
+		</layout>
+	</appender>
+
+	<appender name="EAILOGGER" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="/usr/IBM/WebSphere/cms_sit/logs/EaiMessage.log"/>
+		<param name="MaxFileSize" value="10MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+  		     <param name="ConversionPattern" 
+                            value="[%t] %-5p - %d{DATE}:%c - %m%n"/>
+		</layout>
+	</appender>
+
+	<appender name="STPLOGGER" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="/usr/IBM/WebSphere/cms_sit/logs/StpMessage.log"/>
+        <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+        <layout class="org.apache.log4j.PatternLayout">
+               <param name="ConversionPattern"
+                            value="[%t] %-5p - %d{DATE}:%c - %m%n"/>
+        </layout>
+	</appender>
+  
+  	<category name="com" additivity="false">
+		<priority value="error" />
+		<appender-ref ref="console" />
+	</category>
+
+  	<category name="org" additivity="false">
+		<priority value="warn" />
+		<appender-ref ref="console" />
+	</category>
+
+  	<category name="httpclient" additivity="false">
+		<priority value="warn" />
+		<appender-ref ref="console" />
+	</category>
+
+  	<category name="org.apache.commons.httpclient" additivity="false">
+		<priority value="error" />
+		<appender-ref ref="console" />
+	</category>
+
+	<category name="com.integrosys.base" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="console" />
+	</category>
+
+	<category name="com.integrosys.cms.app" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="console" />
+	</category>
+	
+	<category name="com.integrosys.cms.app.notification" additivity="false">
+		<priority value="error" />
+		<appender-ref ref="console" />
+	</category>
+
+	<category name="com.integrosys.cms.ui" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="console" />
+	</category>
+
+	<category name="com.integrosys.cms.ui.common" additivity="false">
+		<priority value="error" />
+		<appender-ref ref="console" />
+	</category>
+
+	<category name="com.integrosys.cms.batch" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="BATCHFILEOUT" />
+	</category>
+
+    <category name="com.integrosys.cms.batch.valuation" additivity="false">
+        <priority value="debug" />
+        <appender-ref ref="VALUATIONFILEOUT" />
+    </category>
+
+    <category name="com.integrosys.cms.app.collateral.bus.valuation" additivity="false">
+        <priority value="debug" />
+        <appender-ref ref="VALUATIONFILEOUT" />
+    </category>
+
+    <category name="com.integrosys.cms.ui.eventmonitor" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="BATCHFILEOUT" />
+	</category>
+
+	<category name="com.integrosys.cms.app.eventmonitor" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="BATCHFILEOUT" />
+	</category>
+
+	<category name="com.integrosys.cms.batch.reports" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="REPORTFILEOUT" />
+	</category>
+	
+	<category name="com.integrosys.cms.host.eai" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="EAILOGGER" />
+	</category>
+
+	<category name="TraceFilter" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="TraceFILEOUT" />
+	</category>
+
+	<category name="TrxProcess " additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="TraceFILEOUT" />
+	</category>
+
+	<category name="ReadProcess" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="TraceFILEOUT" />
+	</category>
+	
+	<category name="com.integrosys.cms.host.stp" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="STPLOGGER" />
+	</category>
+
+	<root>
+		<priority value="debug"/>
+		<appender-ref ref="console" />
+	</root>
+
+</log4j:configuration>

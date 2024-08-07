@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE weblogic-ejb-jar PUBLIC '-//BEA Systems, Inc.//DTD WebLogic 8.1.0 EJB//EN' 'http://www.bea.com/servers/wls810/dtd/weblogic-ejb-jar.dtd'>
+<weblogic-ejb-jar>    
+    <weblogic-enterprise-bean>
+        <ejb-name>SBCounterpartyDetailsProxy</ejb-name>
+        <reference-descriptor>
+            <resource-description>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <jndi-name>CMSPool</jndi-name>
+            </resource-description>
+        </reference-descriptor>
+        <jndi-name>SBCounterpartyDetailsProxyHome</jndi-name>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>SBCCICounterpartyDetailsBusManager</ejb-name>
+        <reference-descriptor>
+            <resource-description>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <jndi-name>CMSPool</jndi-name>
+            </resource-description>
+        </reference-descriptor>
+        <jndi-name>SBCCICounterpartyDetailsBusManagerHome</jndi-name>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>SBCCICounterpartyDetailsBusManagerStaging</ejb-name>
+        <reference-descriptor>
+            <resource-description>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <jndi-name>CMSPool</jndi-name>
+            </resource-description>
+        </reference-descriptor>
+        <jndi-name>SBCCICounterpartyDetailsBusManagerStagingHome</jndi-name>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>EBCCICounterpartyDetails</ejb-name>
+        <entity-descriptor>
+            <entity-cache>
+                <idle-timeout-seconds>30</idle-timeout-seconds>
+            </entity-cache>
+            <persistence>
+                <delay-updates-until-end-of-tx>True</delay-updates-until-end-of-tx>
+                <persistence-use>
+                    <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+                    <type-version>6.0</type-version>
+                    <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+                </persistence-use>
+            </persistence>
+        </entity-descriptor>
+        <reference-descriptor>
+            <resource-description>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <jndi-name>CMSPool</jndi-name>
+            </resource-description>
+        </reference-descriptor>
+        <jndi-name>EBCCICounterpartyDetailsHome</jndi-name>
+        <local-jndi-name>EBCCICounterpartyDetailsLocalHome</local-jndi-name>
+    </weblogic-enterprise-bean>
+
+    <weblogic-enterprise-bean>
+        <ejb-name>EBCCICounterpartyDetailsStaging</ejb-name>
+        <entity-descriptor>
+            <entity-cache>
+                <idle-timeout-seconds>30</idle-timeout-seconds>
+            </entity-cache>
+            <persistence>
+                <delay-updates-until-end-of-tx>True</delay-updates-until-end-of-tx>
+                <persistence-use>
+                    <type-identifier>WebLogic_CMP_RDBMS</type-identifier>
+                    <type-version>6.0</type-version>
+                    <type-storage>META-INF/weblogic-cmp-rdbms-jar.xml</type-storage>
+                </persistence-use>
+            </persistence>
+        </entity-descriptor>
+        <reference-descriptor>
+            <resource-description>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <jndi-name>CMSPool</jndi-name>
+            </resource-description>
+        </reference-descriptor>
+        <jndi-name>EBCCICounterpartyDetailsStagingHome</jndi-name>
+        <local-jndi-name>EBCCICounterpartyDetailsLocalStagingHome</local-jndi-name>
+    </weblogic-enterprise-bean>
+</weblogic-ejb-jar>

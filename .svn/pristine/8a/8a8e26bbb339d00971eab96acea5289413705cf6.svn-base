@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+        All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+        Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+        Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+        Inject proxy(s) into command class
+    </description>
+    
+    <bean id="ViewGeographyCommand" class="com.integrosys.cms.ui.geography.ViewGeographyCommand">
+    </bean>
+   
+      
+    <!--<bean id="ListContinentCommand" class="com.integrosys.cms.ui.geography.continent.ListContinentCommand">
+        <property name="geographyProxy" ref="geographyProxy"/>
+    </bean>
+   
+    --><bean id="PrepareListCountryCommand" class="com.integrosys.cms.ui.geography.country.PrepareListCountryCommand">
+    </bean>
+     
+    <bean id="ListCountryCommand" class="com.integrosys.cms.ui.geography.country.ListCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+<!--    Country Beans Start	-->
+    <bean id="ViewCountryByIndexCommand" class="com.integrosys.cms.ui.geography.country.ViewCountryByIndexCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="CheckerReadCountryCommand" class="com.integrosys.cms.ui.geography.country.CheckerReadCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="MakerReadCountryCommand" class="com.integrosys.cms.ui.geography.country.MakerReadCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareEditCountryCommand" class="com.integrosys.cms.ui.geography.country.MakerPrepareEditCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="MakerEditCountryCommand" class="com.integrosys.cms.ui.geography.country.MakerEditCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>  
+    
+    <bean id="CheckerApproveCountryCommmand" class="com.integrosys.cms.ui.geography.country.CheckerApproveCountryCommmand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="CheckerRejectCountryCommmand" class="com.integrosys.cms.ui.geography.country.CheckerRejectCountryCommmand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="MakerCloseCountryCommand" class="com.integrosys.cms.ui.geography.country.MakerCloseCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+     <bean id="MakerPrepareCreateCountryCommand" class="com.integrosys.cms.ui.geography.country.MakerPrepareCreateCountryCommand">
+    </bean>
+    
+     <bean id="MakerCreateCountryCommand" class="com.integrosys.cms.ui.geography.country.MakerCreateCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareDeleteCountryCommand" class="com.integrosys.cms.ui.geography.country.MakerPrepareDeleteCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="MakerDeleteCountryCommand" class="com.integrosys.cms.ui.geography.country.MakerDeleteCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>    
+    
+    <bean id="PaginateCountryListCommand" class="com.integrosys.cms.ui.geography.country.PaginateCountryListCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <!-- File Upload for Country-->
+    
+    <bean id="MakerUploadCountryCmd" class="com.integrosys.cms.ui.geography.country.MakerUploadCountryCmd">
+		<property name="countryProxy" ref="countryProxy"/>
+	</bean>
+	
+	<bean id="CheckerReadFileInsertListCmd" class="com.integrosys.cms.ui.geography.country.CheckerReadFileInsertListCmd">
+        <property name="countryProxy" ref="countryProxy" />
+    </bean>
+    <bean id="CheckerApproveInsertCountryCmd" class="com.integrosys.cms.ui.geography.country.CheckerApproveInsertCountryCmd">
+        <property name="countryProxy" ref="countryProxy" />
+    </bean>	  
+    <bean id="CheckerRejectInsertCountryCmd" class="com.integrosys.cms.ui.geography.country.CheckerRejectInsertCountryCmd">
+        <property name="countryProxy" ref="countryProxy" />
+    </bean>
+    <bean id="MakerInsertCloseCountryCmd" class="com.integrosys.cms.ui.geography.country.MakerInsertCloseCountryCmd">
+        <property name="countryProxy" ref="countryProxy" />
+    </bean>
+    
+    <!--    Country Beans End	-->
+    
+    <bean id="RemoveCountryCommand" class="com.integrosys.cms.ui.geography.country.RemoveCountryCommand">
+        <property name="countryProxy" ref="countryProxy"/>
+    </bean>
+    
+    <bean id="ListRegionCommand" class="com.integrosys.cms.ui.geography.region.ListRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="PrepareListStateCommand" class="com.integrosys.cms.ui.geography.state.PrepareListStateCommand">
+    </bean>
+    
+    <bean id="ListStateCommand" class="com.integrosys.cms.ui.geography.state.ListStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="RemoveStateCommand" class="com.integrosys.cms.ui.geography.state.RemoveStateCommand">
+<!--        <property name="geographyProxy" ref="geographyProxy"/>-->
+    </bean>
+    
+    <bean id="PrepareListCityCommand" class="com.integrosys.cms.ui.geography.city.PrepareListCityCommand">
+    </bean>
+    
+    <bean id="ListCityCommand" class="com.integrosys.cms.ui.geography.city.ListCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>        
+    </bean>
+    
+    <bean id="RemoveCityCommand" class="com.integrosys.cms.ui.geography.city.RemoveCityCommand">
+<!--        <property name="geographyProxy" ref="geographyProxy"/>-->
+    </bean>
+        
+	<!--    Region Beans Start	-->
+	
+ 	<bean id="ViewRegionByIndexCommand" class="com.integrosys.cms.ui.geography.region.ViewRegionByIndexCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="CheckerReadRegionCommand" class="com.integrosys.cms.ui.geography.region.CheckerReadRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="MakerReadRegionCommand" class="com.integrosys.cms.ui.geography.region.MakerReadRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareEditRegionCommand" class="com.integrosys.cms.ui.geography.region.MakerPrepareEditRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="MakerEditRegionCommand" class="com.integrosys.cms.ui.geography.region.MakerEditRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>  
+    
+    <bean id="CheckerApproveRegionCommmand" class="com.integrosys.cms.ui.geography.region.CheckerApproveRegionCommmand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="CheckerRejectRegionCommmand" class="com.integrosys.cms.ui.geography.region.CheckerRejectRegionCommmand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="MakerCloseRegionCommand" class="com.integrosys.cms.ui.geography.region.MakerCloseRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareCreateRegionCommand" class="com.integrosys.cms.ui.geography.region.MakerPrepareCreateRegionCommand">
+    	 <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+     <bean id="MakerCreateRegionCommand" class="com.integrosys.cms.ui.geography.region.MakerCreateRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareDeleteRegionCommand" class="com.integrosys.cms.ui.geography.region.MakerPrepareDeleteRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+        
+    </bean>
+    
+    <bean id="MakerDeleteRegionCommand" class="com.integrosys.cms.ui.geography.region.MakerDeleteRegionCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+     <bean id="PaginateRegionListCommand" class="com.integrosys.cms.ui.geography.region.PaginateRegionListCommand">
+        <property name="regionProxy" ref="regionProxy"/>
+    </bean>
+    
+    <!-- File Upload for Country-->
+    
+    <bean id="MakerUploadRegionCmd" class="com.integrosys.cms.ui.geography.region.MakerUploadRegionCmd">
+		<property name="regionProxy" ref="regionProxy"/>
+	</bean>
+	
+	<bean id="CheckerReadFileInsertListRegionCmd" class="com.integrosys.cms.ui.geography.region.CheckerReadFileInsertListCmd">
+        <property name="regionProxy" ref="regionProxy" />
+    </bean>
+    <bean id="CheckerApproveInsertRegionCmd" class="com.integrosys.cms.ui.geography.region.CheckerApproveInsertRegionCmd">
+        <property name="regionProxy" ref="regionProxy" />
+    </bean>	  
+    <bean id="CheckerRejectInsertRegionCmd" class="com.integrosys.cms.ui.geography.region.CheckerRejectInsertRegionCmd">
+        <property name="regionProxy" ref="regionProxy" />
+    </bean>
+    <bean id="MakerInsertCloseRegionCmd" class="com.integrosys.cms.ui.geography.region.MakerInsertCloseRegionCmd">
+        <property name="regionProxy" ref="regionProxy" />
+    </bean>
+    
+    <!--    Region Beans End	-->  
+    
+    <!--    State Beans Start	-->
+	
+ 	<bean id="ViewStateByIndexCommand" class="com.integrosys.cms.ui.geography.state.ViewStateByIndexCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="CheckerReadStateCommand" class="com.integrosys.cms.ui.geography.state.CheckerReadStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="MakerReadStateCommand" class="com.integrosys.cms.ui.geography.state.MakerReadStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareEditStateCommand" class="com.integrosys.cms.ui.geography.state.MakerPrepareEditStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="MakerEditStateCommand" class="com.integrosys.cms.ui.geography.state.MakerEditStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>  
+    
+    <bean id="CheckerApproveStateCommmand" class="com.integrosys.cms.ui.geography.state.CheckerApproveStateCommmand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="CheckerRejectStateCommmand" class="com.integrosys.cms.ui.geography.state.CheckerRejectStateCommmand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="MakerCloseStateCommand" class="com.integrosys.cms.ui.geography.state.MakerCloseStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareCreateStateCommand" class="com.integrosys.cms.ui.geography.state.MakerPrepareCreateStateCommand">
+    	 <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+     <bean id="MakerCreateStateCommand" class="com.integrosys.cms.ui.geography.state.MakerCreateStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareDeleteStateCommand" class="com.integrosys.cms.ui.geography.state.MakerPrepareDeleteStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="MakerDeleteStateCommand" class="com.integrosys.cms.ui.geography.state.MakerDeleteStateCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="RefreshStateCommmand" class="com.integrosys.cms.ui.geography.state.RefreshStateCommmand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    <bean id="PaginateStateListCommand" class="com.integrosys.cms.ui.geography.state.PaginateStateListCommand">
+        <property name="stateProxy" ref="stateProxy"/>
+    </bean>
+    
+    
+    <!-- File Upload for Country-->
+    
+    <bean id="MakerUploadStateCmd" class="com.integrosys.cms.ui.geography.state.MakerUploadStateCmd">
+		<property name="stateProxy" ref="stateProxy"/>
+	</bean>
+	
+	<bean id="CheckerReadFileInsertListStateCmd" class="com.integrosys.cms.ui.geography.state.CheckerReadFileInsertListCmd">
+        <property name="stateProxy" ref="stateProxy" />
+    </bean>
+    <bean id="CheckerApproveInsertStateCmd" class="com.integrosys.cms.ui.geography.state.CheckerApproveInsertStateCmd">
+        <property name="stateProxy" ref="stateProxy" />
+    </bean>	  
+    <bean id="CheckerRejectInsertStateCmd" class="com.integrosys.cms.ui.geography.state.CheckerRejectInsertStateCmd">
+        <property name="stateProxy" ref="stateProxy" />
+    </bean>
+    <bean id="MakerInsertCloseStateCmd" class="com.integrosys.cms.ui.geography.state.MakerInsertCloseStateCmd">
+        <property name="stateProxy" ref="stateProxy" />
+    </bean>
+    
+    <!--    State Beans End	-->  
+    
+      <!--    City Beans Start	-->
+	
+ 	<bean id="ViewCityByIndexCommand" class="com.integrosys.cms.ui.geography.city.ViewCityByIndexCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="CheckerReadCityCommand" class="com.integrosys.cms.ui.geography.city.CheckerReadCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="MakerReadCityCommand" class="com.integrosys.cms.ui.geography.city.MakerReadCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareEditCityCommand" class="com.integrosys.cms.ui.geography.city.MakerPrepareEditCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="MakerEditCityCommand" class="com.integrosys.cms.ui.geography.city.MakerEditCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>  
+    
+    <bean id="CheckerApproveCityCommmand" class="com.integrosys.cms.ui.geography.city.CheckerApproveCityCommmand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="CheckerRejectCityCommmand" class="com.integrosys.cms.ui.geography.city.CheckerRejectCityCommmand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="MakerCloseCityCommand" class="com.integrosys.cms.ui.geography.city.MakerCloseCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareCreateCityCommand" class="com.integrosys.cms.ui.geography.city.MakerPrepareCreateCityCommand">
+    	 <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+     <bean id="MakerCreateCityCommand" class="com.integrosys.cms.ui.geography.city.MakerCreateCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="MakerPrepareDeleteCityCommand" class="com.integrosys.cms.ui.geography.city.MakerPrepareDeleteCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="MakerDeleteCityCommand" class="com.integrosys.cms.ui.geography.city.MakerDeleteCityCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="RefreshCountryCommmand" class="com.integrosys.cms.ui.geography.city.RefreshCountryCommmand">
+<!--   Used Previously     <property name="stateProxy" ref="stateProxy"/>-->
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="RefreshCityCommmand" class="com.integrosys.cms.ui.geography.city.RefreshCityCommmand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <bean id="PaginateCityListCommand" class="com.integrosys.cms.ui.geography.city.PaginateCityListCommand">
+        <property name="cityProxy" ref="cityProxy"/>
+    </bean>
+    
+    <!-- File Upload for Country-->
+    
+    <bean id="MakerUploadCityCmd" class="com.integrosys.cms.ui.geography.city.MakerUploadCityCmd">
+		<property name="cityProxy" ref="cityProxy"/>
+	</bean>
+	
+	<bean id="CheckerReadFileInsertListCityCmd" class="com.integrosys.cms.ui.geography.city.CheckerReadFileInsertListCmd">
+        <property name="cityProxy" ref="cityProxy" />
+    </bean>
+    <bean id="CheckerApproveInsertCityCmd" class="com.integrosys.cms.ui.geography.city.CheckerApproveInsertCityCmd">
+        <property name="cityProxy" ref="cityProxy" />
+    </bean>	  
+    <bean id="CheckerRejectInsertCityCmd" class="com.integrosys.cms.ui.geography.city.CheckerRejectInsertCityCmd">
+        <property name="cityProxy" ref="cityProxy" />
+    </bean>
+    <bean id="MakerInsertCloseCityCmd" class="com.integrosys.cms.ui.geography.city.MakerInsertCloseCityCmd">
+        <property name="cityProxy" ref="cityProxy" />
+    </bean>
+    <!--    City Beans End	-->  
+</beans>

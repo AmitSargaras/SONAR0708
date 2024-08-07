@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT users.user_id,
+				  users.login_id,
+				  users.user_name,
+				  sysbranch.system_bank_branch_name AS New_Branch_Name,
+				  users.branch_code,
+				  TO_CHAR(TO_DATE(SUBSTR(lgnadt.login_time,1,9),'DD-MON-YY'),'DD-MON-YYYY')  AS LOGIN_DATE,
+				  TO_CHAR(lgnadt.login_time,'HH:MI AM')     AS LOGIN_TIME,
+				  TO_CHAR(TO_DATE(SUBSTR(lgnadt.logout_time,1,9),'DD-MON-YY'),'DD-MON-YYYY') AS LOGOUT_DATE,
+				  TO_CHAR(lgnadt.logout_time,'HH:MI AM')    AS LOGOUT_TIME,
+				  lgnadt.IP_ADDRESS                       AS ip_address
+				FROM cms_user users,
+				  cms_login_audit lgnadt,
+				  cms_system_bank_branch sysBranch
+			</query>
+		<whereClause>
+			<mandatoryClause>
+						users.login_id                 =lgnadt.login_id
+					AND sysbranch.system_bank_branch_code=users.branch_code
+			</mandatoryClause>
+			<param>
+				<name>userId</name>
+				<condition> AND users.user_Id = </condition>
+			</param>
+			<param>
+				<name>branch</name>
+				<condition> AND sysBranch.ID = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TO_DATE(TRUNC(lgnadt.login_time)) BETWEEN  </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+			<orderAndGroupByClause>
+ 				ORDER BY users.login_id
+ 			</orderAndGroupByClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			   <reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Transaction Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>User Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch Name</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Login Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Login Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Logout Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Logout Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>IP Address</header>
+				</reportColumn>
+							
+				
+			</reportColumns>
+			<reportName>Login/Logout Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

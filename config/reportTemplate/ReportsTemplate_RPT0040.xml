@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT USR.LOGIN_ID              AS USERID,
+				  USR.USER_NAME                     AS USERNAME,
+				  USR.EMPLOYEE_ID                       AS EMPLOYEECODE,
+				  CC_DEPT.ENTRY_NAME                AS DEPARTMENETCODE,
+				  LPAD(SYSBRANCH.SYSTEM_BANK_BRANCH_CODE,4,'0') AS BRANCHCODE,
+				  SYSBRANCH.SYSTEM_BANK_BRANCH_NAME AS BRANCHNAME,
+				  TO_CHAR(TRANS.CREATION_DATE,'DD-Mon-yyyy') AS CREATIONDATE,
+				  TEAM.MEMBERSHIP_NAME              AS USERPROFILE,
+				  
+				  CASE
+				  		WHEN UPPER(usr.status) = 'A' AND UPPER(usr.is_unlock) = 'Y'
+							THEN 'Enabled'
+						WHEN UPPER(usr.status) = 'A'
+							THEN 'Enabled'
+						WHEN UPPER(usr.status) = 'D'
+							THEN 'Deleted'
+						WHEN UPPER(usr.status) = 'T'
+							THEN 'Terminated'
+						WHEN UPPER(usr.status) = 'I'
+							THEN 'Disabled'
+						WHEN UPPER(usr.status) = 'N'
+							THEN 'Disabled'
+						WHEN UPPER(usr.status) = 'O'
+							THEN 'Locked'
+						WHEN UPPER(usr.status) = 'S'
+							THEN 'Suspended'
+						WHEN UPPER(usr.status) = 'L'
+							THEN 'Leaved'
+			            WHEN UPPER(usr.status) = 'R'
+			              THEN 'Dormant'	
+			            WHEN UPPER(usr.status) = 'NR'
+			              THEN 'Dormant'  
+					END AS status,
+					CASE 
+							WHEN USR.REF_NUMBER IS NOT NULL
+							THEN (  select ISAC_MAKER_ID from CMS_INTERFACE_LOG where ID=(select Max (ID) from CMS_INTERFACE_LOG where 
+							ISAC_REFERENCE_NO = usr.REF_NUMBER
+							))
+							ELSE		
+          		    (SELECT LOGIN_ID
+					  FROM TRANS_HISTORY
+            WHERE tr_history_id = (select max(tr_history_id) from TRANS_HISTORY
+					  WHERE TRANSACTION_TYPE='USER'
+					  AND FROM_STATE       in ('ND','REJECTED','ACTIVE')
+					  AND TO_STATE          IN ( 'PENDING_CREATE', 'PENDING_UPDATE','PENDING_DELETED')
+					  AND TRANSACTION_ID      = TRANS.TRANSACTION_ID)
+				  ) END AS MAKERID,		
+          
+           TO_CHAR((SELECT TRANSACTION_DATE
+					  FROM TRANS_HISTORY
+					  WHERE tr_history_id = (select max(tr_history_id) from TRANS_HISTORY
+					  WHERE TRANSACTION_TYPE='USER'
+					  AND FROM_STATE       in ('ND','REJECTED','ACTIVE')
+					  AND TO_STATE          IN ( 'PENDING_CREATE', 'PENDING_UPDATE','PENDING_DELETED')
+					  AND TRANSACTION_ID      = TRANS.TRANSACTION_ID)
+				  )
+				  --,'DD-Mon-yyyy'
+				  ) AS MAKERDATETIME,
+          
+          CASE 
+							WHEN USR.REF_NUMBER IS NOT NULL
+							THEN (  select ISAC_CHECKER_ID from CMS_INTERFACE_LOG where ID=(select Max (ID) from CMS_INTERFACE_LOG where 
+							ISAC_REFERENCE_NO = usr.REF_NUMBER
+							))
+							ELSE
+				  (SELECT LOGIN_ID
+					  FROM TRANS_HISTORY
+					  WHERE tr_history_id = (select max(tr_history_id) from TRANS_HISTORY
+					  WHERE TRANSACTION_TYPE='USER'
+					  AND FROM_STATE        in( 'PENDING_CREATE' , 'PENDING_UPDATE')
+					  AND TO_STATE          in ( 'ACTIVE','REJECTED')
+					  AND TRANSACTION_ID      = TRANS.TRANSACTION_ID)
+				  ) END AS CHECKERID,
+          		
+				  TO_CHAR((SELECT TRANSACTION_DATE
+					  FROM TRANS_HISTORY
+					  WHERE tr_history_id = (select max(tr_history_id) from TRANS_HISTORY
+					  WHERE TRANSACTION_TYPE='USER'
+					  AND FROM_STATE        in( 'PENDING_CREATE' , 'PENDING_UPDATE')
+					  AND TO_STATE          in ( 'ACTIVE','REJECTED')
+					  AND TRANSACTION_ID      = TRANS.TRANSACTION_ID)
+				  )
+				  --,'DD-Mon-yyyy'
+				  )                            AS CHECKERDATETIME,	
+				  			  
+				   TO_CHAR(TO_DATE(SUBSTR(AUTHENTICATE.LAST_LOGIN_TIME,1,9),'DD-MON-YY'),'DD-MON-YYYY') AS LASTLOGINDATE,
+				  USR.EMAIL_ID                 AS EMAILID,
+			      CASE
+		            WHEN TRANS.FROM_STATE = 'PENDING_CREATE' THEN
+		              ''
+		            WHEN TRANS.FROM_STATE &lt;&gt; 'PENDING_CREATE' THEN
+		              TO_CHAR((SELECT MAX(TRANS.TRANSACTION_DATE) FROM CMS_USER SQ_USR,STAGE_USER STG_USR
+		                   WHERE SQ_USR.EMPLOYEE_ID = STG_USR.EMPLOYEE_ID
+		                   AND ((USR.STATUS='A' AND STG_USR.STATUS='I') OR (USR.STATUS='I' AND STG_USR.STATUS='A'))
+		                   AND TRANS.REFERENCE_ID          	= 	USR.USER_ID),'DD-Mon-yyyy') 
+		          END AS ENABLE_DISABLE_DATE
+				FROM CMS_USER USR
+					LEFT JOIN COMMON_CODE_CATEGORY_ENTRY CC_DEPT
+					ON CC_DEPT.ENTRY_CODE = USR.DEPARTMENT ,
+				  	CMS_SYSTEM_BANK_BRANCH SYSBRANCH,
+				  	TRANSACTION TRANS,
+				 	CMS_AUTHENTICATION AUTHENTICATE,
+				  	CMS_TEAM_TYPE_MEMBERSHIP TEAM
+			</query>
+			<whereClause>
+			<mandatoryClause>
+					USR.BRANCH_CODE           			=	TO_CHAR(SYSBRANCH.SYSTEM_BANK_BRANCH_CODE)
+					AND TRANS.REFERENCE_ID          	= 	USR.USER_ID
+					AND CC_DEPT.CATEGORY_CODE       	= 	'HDFC_DEPARTMENT'
+					AND AUTHENTICATE.LOGIN_ID       	= 	USR.LOGIN_ID
+					AND TEAM.TEAM_TYPE_MEMBERSHIP_ID	=	USR.TEAM_TYPE_MEMBERSHIP_ID
+					AND TRANS.TRANSACTION_TYPE          = 	'USER'
+			</mandatoryClause>
+			<param>
+				<name>branch</name>
+				<condition> AND SYSBRANCH.ID = </condition>
+			</param>
+			
+			<param>
+				<name>userId</name>
+				<condition> AND USR.USER_ID = </condition>
+			</param>
+			
+			<param>
+				<name>department</name>
+				<condition> AND USR.DEPARTMENT = </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Employee Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Department Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Branch Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Creation Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Profile</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Maker Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Maker Date and Time</header>
+				</reportColumn>			
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Checker Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Checker Date and Time</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Last Login Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>E-Mail Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Enable/disabled date </header>
+				</reportColumn>						
+			</reportColumns>
+			<reportName>Department wise Listing of Users</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+$SI_HOME/monitor/listen.sh PF003ARBS
+$SI_HOME/monitor/listen.sh CU001ARBS 
+$SI_HOME/monitor/listen.sh CU002ARBS
+$SI_HOME/monitor/listen.sh CU003ARBS
+$SI_HOME/monitor/listen.sh CA001ARBS
+$SI_HOME/monitor/listen.sh CA002ARBS
+$SI_HOME/monitor/listen.sh CA003ARBS
+$SI_HOME/monitor/listen.sh CA004ARBS
+$SI_HOME/monitor/listen.sh CA005ARBS
+$SI_HOME/monitor/listen.sh CA019ARBS
+$SI_HOME/monitor/listen.sh CO001ARBS
+$SI_HOME/monitor/listen.sh CO002ARBS
+$SI_HOME/monitor/listen.sh CO003ARBS
+$SI_HOME/monitor/listen.sh CO004ARBS
+$SI_HOME/monitor/listen.sh CO005ARBS
+$SI_HOME/monitor/listen.sh CO006ARBS
+$SI_HOME/monitor/listen.sh CO007ARBS
+$SI_HOME/monitor/listen.sh CO008ARBS
+$SI_HOME/monitor/listen.sh CO009ARBS
+$SI_HOME/monitor/listen.sh CO010ARBS
+$SI_HOME/monitor/listen.sh CO011ARBS
+$SI_HOME/monitor/listen.sh CO012ARBS
+$SI_HOME/monitor/listen.sh CO013ARBS
+$SI_HOME/monitor/listen.sh CO014ARBS
+$SI_HOME/monitor/listen.sh CO015ARBS
+$SI_HOME/monitor/listen.sh CO016ARBS
+$SI_HOME/monitor/listen.sh CO017ARBS
+$SI_HOME/monitor/listen.sh CO018ARBS

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="tatParamBusManager" class="com.integrosys.cms.app.maintaintat.bus.TatParamBusManagerImpl">
+		<property name="tatParamDAO" ref="tatParamDao" />
+		<property name="tatParamJdbc" ref="tatParamJdbc" />
+	</bean>
+	
+	<bean id="stageTatParamBusManager" class="com.integrosys.cms.app.maintaintat.bus.TatParamBusManagerStagingImpl">
+		<property name="tatParamDAO" ref="tatParamDao" />
+		<property name="tatParamJdbc" ref="tatParamJdbc" />
+	</bean>
+
+	<bean id="tatParamProxy" class="com.integrosys.cms.app.maintaintat.proxy.TatParamProxyImpl">
+		<property name="tatParamBusManager" ref="tatParamBusManager" />
+		<property name="stageTatParamBusManager" ref="stageTatParamBusManager" />
+        <property name="tatParamTrxController" ref="tatParamTrxController" />
+	</bean>
+	
+
+</beans>

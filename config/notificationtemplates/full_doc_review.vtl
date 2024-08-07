@@ -1,0 +1,100 @@
+<!-- InstanceBeginEditable name="Content" -->
+<table width="70%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+  <thead>
+    <tr>
+      <td><h3>Notification - $!{ob.subject}</h3></td>
+    </tr>
+    <tr>
+      <td><hr /></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblInfo">
+          <tbody>
+            <tr>
+              <td width="20%" class="fieldname">To</td>
+              <td width="30%" class="odd">$!{ob.receipient}</td>
+              <td width="20%" class="fieldname">Date</td>
+              <td width="30%" class="odd">$!{DateUtil.formatDate("dd/MMM/yyyy", ${ob.notificationDate})}</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Customer Legal Name</td>
+              <td>$!{ob.leName}</td>
+              <td class="fieldname">CIF / ID No.</td>
+              <td>$!{ob.leID}</td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname">Subject</td>
+              <td colspan="3">$!{ob.subject}</td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+          <thead>
+          </thead>
+          <tbody>
+            <tr class="even">
+              <td class="fieldname">Previous CG</td>
+              <td>$!{ob.previousCreditGrade}</td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname">Current CG</td>
+              <td>$!{ob.currentCreditGrade}</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Date A/c downgraded </td>
+              <td>$!{DateUtil.formatDate("dd/MMM/yyyy", ${ob.dateDownGraded})}</td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname">No. of days due </td>
+              <td>$!{ob.daysDue}</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">AA Originating Location</td>
+              <td>$!{ob.originatingCountry}</td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>
+      	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+          <thead>
+              <td class="fieldname">S/N</td>
+              <td class="fieldname">Facility ID</td>
+              <td class="fieldname">Facility Description</td>
+              <td class="fieldname">Account No.</td>          
+          </thead>
+          <tbody>
+          	#set ($facList = $VelocityUtil.convertMap2List(${ob.getFacilityMap()}))
+						#set ($sNo = 1)
+						#foreach ($facOB in $facList)
+            <tr class="odd">
+              <td class="index">$!{sNo}</td>
+              <td>$!{facOB.getFacilityID()}</td>
+              <td>$!{facOB.getFacilityDesc()}</td>
+              <td>
+              		#set ($accIDList = $VelocityUtil.convertMap2List(${facOB.getAccIDMap()}))
+              		#foreach ($accID in $accIDList)
+              			$!{accID} <br>
+              		#end
+              		&nbsp;
+              </td>
+            </tr>
+            #set ($sNo = $sNo + 1)
+            #end
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>

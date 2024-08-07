@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT rownum         AS SR_NO,
+			  FAC.LSP_LE_ID       AS PARTY_ID,
+			  --FAC.LSP_SHORT_NAME  AS PARTY_NAME,
+			  trim((REPLACE (REPLACE (FAC.LSP_SHORT_NAME, chr (13), ''), chr (10), ' '))) AS PARTY_NAME,
+			  FAC.PAN             AS PAN_NUMBER,
+			  FAC.CUSTOMER_RAM_ID AS RAM_ID,
+			  --seg_val.entry_name  AS SEGMENT,
+			  trim(REPLACE (REPLACE (seg_val.entry_name, chr (13), ''), chr (10), ' ')) AS SEGMENT,
+			  --reg.region_name     AS PARTY_REGION,
+			  trim((REPLACE (REPLACE (reg.region_name, chr (13), ''), chr (10), ' '))) AS PARTY_REGION,
+			  --SERIAL_NO,
+			  --cat_val.entry_name AS FACILITY_CATEGORY,
+              trim(REPLACE (REPLACE (cat_val.entry_name, chr (13), ''), chr (10), ' ')) AS FACILITY_CATEGORY,
+			  FAC.LMT_ID         AS FACILITY_ID,
+			  FAC.MAIN_LIMIT,
+			  FAC.LMT_TYPE_VALUE AS SUB_LIMIT,
+			  FAC.FACILITY_TYPE,
+			  FAC.CMS_REQ_SEC_COVERAGE AS FACILITY_SANCTION_AMOUNT_INR,
+			  FAC.UTILIZED_AMOUNT      AS CURRENT_MONTH_TOTAL_UTILIZED_AMOUNT,
+			  FAC.P_UTILIZED_AMOUNT LAST_MONTH_TOTAL_UTILIZED_AMOUNT,
+			  FAC.CMS_COLLATERAL_ID     AS SECURITY_ID,
+			  FAC.CMV                   AS SECURITY_OMV,
+			  FAC.LMT_SECURITY_COVERAGE AS SECURITY_COVERAGE_PERCENTAGE,
+			  FAC.SCA_PERC              AS SECURITY_COVERAGE_AMOUNT
+			FROM CLMS_TRQ_PRON_RPT_CUST_FAC FAC,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code IN ('FACILITY_CATEGORY','HDFC_SEGMENT')
+			  )cat_val,
+			  (SELECT entry_name,
+			    entry_code
+			  FROM common_code_category_entry
+			  WHERE category_code IN ('HDFC_SEGMENT')
+			  )seg_val,
+			  CMS_REGION reg
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				TRN_DATE=
+				  (SELECT
+				     TRUNC(to_Date( CASE
+				      WHEN LAST_DAY(to_Date(param_value, 'DD-MON-YYYY'))=to_Date(param_value, 'DD-MON-YYYY')
+				      THEN TRUNC(to_Date(param_value, 'DD-MON-YYYY'),'MM')
+				      ELSE to_Date(param_value, 'DD-MON-YYYY')
+				    END ) )
+				  FROM cms_general_param
+				  WHERE param_code = 'EROSION_DATE'
+				  )
+				AND cat_val.entry_code =FAC.facility_cat
+				AND seg_val.entry_code =FAC.LSP_SGMNT_CODE_VALUE
+				AND FAC.lra_region     = reg.id(+)
+			</mandatoryClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Serial No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>PAN Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>RAM ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Party Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Facility Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Main Limit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Sub- Limit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility Sanction Amount (In INR)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Current month's - Total Utilized amount (In INR)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Last month's - Total Utilized amount (In INR)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security OMV</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security Coverage (%)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security coverage amount</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>CLIMS TRAQ Provision Report (Customer- Facility)</reportName>
+		</reportParamters>
+	</report>
+</reports>

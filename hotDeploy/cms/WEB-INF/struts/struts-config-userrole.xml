@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="MaintainUserRoleForm" type="com.integrosys.cms.ui.userrole.MaintainUserRoleForm">
+        </form-bean>
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+		
+        <action path="/UserRole" type="com.integrosys.cms.ui.userrole.MaintainUserRoleAction" name="MaintainUserRoleForm" validate="false" scope="request">
+
+            <forward name="after_start" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/userRole/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/userRole/maker_list_user_role.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.role"/>
+            </forward>
+            <forward name="maker_list_user_role_page" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/userRole/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/userRole/maker_list_user_role.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.role"/>
+            </forward>
+        </action>
+            
+    </action-mappings>
+    
+    <message-resources key="message-userteam" parameter="ApplicationResources-userteam"/>
+</struts-config>

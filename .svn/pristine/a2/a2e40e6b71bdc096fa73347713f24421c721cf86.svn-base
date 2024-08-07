@@ -1,0 +1,351 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN"
+ "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar>
+
+    <display-name>Feed</display-name>
+
+    <enterprise-beans>
+        <session>
+            <ejb-name>SBPropertyIndexFeedBusManager</ejb-name>
+            <home>com.integrosys.cms.app.feed.bus.propertyindex.SBPropertyIndexFeedBusManagerHome</home>
+            <remote>com.integrosys.cms.app.feed.bus.propertyindex.SBPropertyIndexFeedBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.feed.bus.propertyindex.SBPropertyIndexFeedBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session>
+            <ejb-name>SBPropertyIndexFeedBusManagerStaging</ejb-name>
+            <home>com.integrosys.cms.app.feed.bus.propertyindex.SBPropertyIndexFeedBusManagerHome</home>
+            <remote>com.integrosys.cms.app.feed.bus.propertyindex.SBPropertyIndexFeedBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.feed.bus.propertyindex.SBPropertyIndexFeedBusManagerStagingBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session>
+            <ejb-name>SBPropertyIndexFeedProxy</ejb-name>
+            <home>com.integrosys.cms.app.feed.proxy.propertyindex.SBPropertyIndexFeedProxyHome</home>
+            <remote>com.integrosys.cms.app.feed.proxy.propertyindex.SBPropertyIndexFeedProxy</remote>
+            <ejb-class>com.integrosys.cms.app.feed.proxy.propertyindex.SBPropertyIndexFeedProxyBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <entity>
+            <ejb-name>EBPropertyIndexFeedEntry</ejb-name>
+            <home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryHome</home>
+            <remote>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntry</remote>
+            <local-home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryLocalHome</local-home>
+            <local>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryLocal</local>
+            <ejb-class>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBPropertyIndexFeedEntry</abstract-schema-name>
+            <cmp-field>
+                <field-name>countryCode</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>lastUpdatedDate</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>type</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>unitPrice</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>region</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cmpPropertyIndexFeedEntryID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>propertyIndexFeedEntryRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cmpDeletedInd</field-name>
+            </cmp-field>
+            <primkey-field>cmpPropertyIndexFeedEntryID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+
+        <entity>
+            <ejb-name>EBPropertyIndexFeedGroup</ejb-name>
+            <home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroupHome</home>
+            <remote>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroup</remote>
+            <local-home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroupLocalHome</local-home>
+            <local>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroupLocal</local>
+            <ejb-class>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroupBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBPropertyIndexFeedGroup</abstract-schema-name>
+            <cmp-field>
+                <field-name>type</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>subType</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cmpPropertyIndexFeedGroupID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <primkey-field>cmpPropertyIndexFeedGroupID</primkey-field>
+
+            <ejb-local-ref>
+                <ejb-ref-name>EBPropertyIndexFeedEntryLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryLocalHome</local-home>
+                <local>com.integrosys.cms.app.collateral.bus.propertyindex.EBPropertyIndexFeedEntryLocal</local>
+                <ejb-link>EBPropertyIndexFeedEntry</ejb-link>
+            </ejb-local-ref>
+
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+
+            <query>
+                <query-method>
+                    <method-name>findByGroupTypeAndSubType</method-name>
+                    <method-params>
+                        <method-param>java.lang.String</method-param>
+                        <method-param>java.lang.String</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql>
+                    <![CDATA[SELECT DISTINCT OBJECT(o) FROM EBPropertyIndexFeedGroup o where o.type=?1 and o.subType=?2]]>
+                </ejb-ql>
+            </query>
+
+        </entity>
+
+        <entity>
+            <ejb-name>EBPropertyIndexFeedEntryStaging</ejb-name>
+            <home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryHome</home>
+            <remote>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntry</remote>
+            <local-home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryLocalHome</local-home>
+            <local>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryLocal</local>
+            <ejb-class>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBPropertyIndexFeedEntryStaging</abstract-schema-name>
+            <cmp-field>
+                <field-name>countryCode</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>lastUpdatedDate</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>type</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>unitPrice</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>region</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cmpPropertyIndexFeedEntryID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>propertyIndexFeedEntryRef</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cmpDeletedInd</field-name>
+            </cmp-field>
+            <primkey-field>cmpPropertyIndexFeedEntryID</primkey-field>
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </entity>
+
+        <entity>
+            <ejb-name>EBPropertyIndexFeedGroupStaging</ejb-name>
+            <home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroupHome</home>
+            <remote>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroup</remote>
+            <local-home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroupLocalHome</local-home>
+            <local>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroupLocal</local>
+            <ejb-class>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedGroupStagingBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBPropertyIndexFeedGroupStaging</abstract-schema-name>
+            <cmp-field>
+                <field-name>type</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>subType</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>cmpPropertyIndexFeedGroupID</field-name>
+            </cmp-field>
+            <cmp-field>
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <primkey-field>cmpPropertyIndexFeedGroupID</primkey-field>
+
+            <ejb-local-ref>
+                <ejb-ref-name>EBPropertyIndexFeedEntryLocalHomeStaging</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.app.feed.bus.propertyindex.EBPropertyIndexFeedEntryLocalHome</local-home>
+                <local>com.integrosys.cms.app.collateral.bus.propertyindex.EBPropertyIndexFeedEntryLocal</local>
+                <ejb-link>EBPropertyIndexFeedEntryStaging</ejb-link>
+            </ejb-local-ref>
+
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+
+            <query>
+                <query-method>
+                    <method-name>findByGroupTypeAndSubType</method-name>
+                    <method-params>
+                        <method-param>java.lang.String</method-param>
+                        <method-param>java.lang.String</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql>
+                    <![CDATA[SELECT DISTINCT OBJECT(o) FROM EBPropertyIndexFeedGroupStaging o where o.type=?1 and o.subType=?2]]>
+                </ejb-ql>
+            </query>
+
+        </entity>
+
+    </enterprise-beans>
+
+    <relationships>
+
+        <ejb-relation>
+            <ejb-relation-name>PropertyIndexFeedGroup-PropertyIndexFeedEntries</ejb-relation-name>
+
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>PropertyIndexFeedGroup-Has-PropertyIndexFeedEntries</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBPropertyIndexFeedGroup</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>cmrPropertyIndexFeedEntry</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>PropertyIndexFeedEntry-BelongsTo-PropertyIndexFeedGroup</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBPropertyIndexFeedEntry</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+
+        </ejb-relation>
+        <ejb-relation>
+            <ejb-relation-name>PropertyIndexFeedGroup-PropertyIndexFeedEntries-Staging</ejb-relation-name>
+
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>PropertyIndexFeedGroup-Has-PropertyIndexFeedEntries-Staging</ejb-relationship-role-name>
+                <multiplicity>One</multiplicity>
+                <relationship-role-source>
+                    <ejb-name>EBPropertyIndexFeedGroupStaging</ejb-name>
+                </relationship-role-source>
+                <cmr-field>
+                    <cmr-field-name>cmrPropertyIndexFeedEntry</cmr-field-name>
+                    <cmr-field-type>java.util.Collection</cmr-field-type>
+                </cmr-field>
+            </ejb-relationship-role>
+
+            <ejb-relationship-role>
+                <ejb-relationship-role-name>PropertyIndexFeedEntry-BelongsTo-PropertyIndexFeedGroup-Staging</ejb-relationship-role-name>
+                <multiplicity>Many</multiplicity>
+                <cascade-delete/>
+                <relationship-role-source>
+                    <ejb-name>EBPropertyIndexFeedEntryStaging</ejb-name>
+                </relationship-role-source>
+            </ejb-relationship-role>
+
+        </ejb-relation>
+
+    </relationships>
+
+    <assembly-descriptor>
+        <container-transaction>
+            <method>
+                <ejb-name>SBPropertyIndexFeedProxy</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBPropertyIndexFeedBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBPropertyIndexFeedEntry</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBPropertyIndexFeedGroup</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBPropertyIndexFeedEntryStaging</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBPropertyIndexFeedGroupStaging</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+
+    </assembly-descriptor>
+
+</ejb-jar>

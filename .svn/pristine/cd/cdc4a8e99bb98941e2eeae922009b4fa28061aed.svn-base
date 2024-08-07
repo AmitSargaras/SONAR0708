@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+
+
+
+
+
+	<bean id="CersaiMappingTrx.ReadCersaiMappingOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.ReadCersaiMappingOperation">
+		<property name="cersaiMappingBusManager" ref="cersaiMappingBusManager" />
+		<property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager" />
+	</bean>
+
+	<bean id="CersaiMappingTrx.ReadCersaiMappingIDOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.ReadCersaiMappingIDOperation">
+		<property name="cersaiMappingBusManager" ref="cersaiMappingBusManager" />
+		<property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager" />
+	</bean>
+
+	<bean id="CersaiMappingTrx.MakerSaveCersaiMappingOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.MakerSaveCersaiMappingOperation">
+		<property name="cersaiMappingBusManager" ref="cersaiMappingBusManager" />
+		<property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager" />
+	</bean>
+	
+	<bean id="CersaiMappingTrx.MakerEditRejectedCreateCersaiMappingOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.MakerEditRejectedCreateCersaiMappingOperation">
+		 <property name="cersaiMappingBusManager" ref="cersaiMappingBusManager"/>
+        <property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager"/>
+	</bean>
+	
+	
+	 <bean id="cersaiMappingReadController" class="com.integrosys.cms.app.cersaiMapping.trx.CersaiMappingReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadCersaiMappingOperation" value-ref="CersaiMappingTrx.ReadCersaiMappingOperation"/>
+                 <entry key="ReadCersaiMappingIDOperation" value-ref="CersaiMappingTrx.ReadCersaiMappingIDOperation"/>  
+            </map>
+        </property>
+    </bean> 
+    <bean id="cersaiMappingTrxController" class="com.integrosys.cms.app.cersaiMapping.trx.CersaiMappingTrxController">
+         <property name="nameTrxOperationMap">
+        <map>
+            
+            <entry key="MakerSaveCersaiMappingOperation" value-ref="CersaiMappingTrx.MakerSaveCersaiMappingOperation"/>
+            <entry key="CheckerApproveCreateCersaiMappingOperation" value-ref="CersaiMappingTrx.CheckerApproveCreateCersaiMappingOperation"/>
+            <entry key="MakerEditRejectedCreateCersaiMappingOperation" value-ref="CersaiMappingTrx.MakerEditRejectedCreateCersaiMappingOperation"/>
+            <entry key="CheckerRejectCersaiMappingOperation" value-ref="CersaiMappingTrx.CheckerRejectCersaiMappingOperation"/>
+            <entry key="MakerCloseRejectedCreateCersaiMappingOperation" value-ref="CersaiMappingTrx.MakerCloseRejectedCreateCersaiMappingOperation"/>
+            <entry key="MakerCloseRejectedUpdateCersaiMappingOperation" value-ref="CersaiMappingTrx.MakerCloseRejectedUpdateCersaiMappingOperation"/>
+           <!--   <entry key="MakerCreateCersaiMappingOperation" value-ref="CersaiMappingTrx.MakerCreateCersaiMappingOperation"/>-->
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+	<bean id="cersaiMappingTrxControllerFactory"
+		class="com.integrosys.cms.app.cersaiMapping.trx.CersaiMappingTrxControllerFactory">
+		<property name="cersaiMappingReadController" ref="cersaiMappingReadController" />
+		<property name="cersaiMappingTrxController" ref="cersaiMappingTrxController" />
+	</bean>
+	
+	<bean id="CersaiMappingTrx.MakerCloseRejectedUpdateCersaiMappingOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.MakerCloseRejectedUpdateCersaiMappingOperation">
+		 <property name="cersaiMappingBusManager" ref="cersaiMappingBusManager"/>
+        <property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager"/>
+	</bean>
+	
+	<bean id="CersaiMappingTrx.MakerCloseRejectedCreateCersaiMappingOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.MakerCloseRejectedCreateCersaiMappingOperation">
+		 <property name="cersaiMappingBusManager" ref="cersaiMappingBusManager"/>
+        <property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager"/>
+	</bean>
+	
+	<bean id="CersaiMappingTrx.CheckerRejectCersaiMappingOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.CheckerRejectCersaiMappingOperation">
+		 <property name="cersaiMappingBusManager" ref="cersaiMappingBusManager"/>
+        <property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager"/>
+	</bean>
+	
+	<bean id="CersaiMappingTrx.CheckerApproveCreateCersaiMappingOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.CheckerApproveCreateCersaiMappingOperation">
+		 <property name="cersaiMappingBusManager" ref="cersaiMappingBusManager"/>
+        <property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager"/>
+	</bean>
+	
+	<!--  <bean id="CersaiMappingTrx.MakerCreateCersaiMappingOperation"
+		class="com.integrosys.cms.app.cersaiMapping.trx.MakerCreateCersaiMappingOperation">
+		 <property name="cersaiMappingBusManager" ref="cersaiMappingBusManager"/>
+        <property name="stagingCersaiMappingBusManager" ref="stagingCersaiMappingBusManager"/>
+	</bean>
+-->
+    
+    
+</beans>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CollateralLoadingForm" type="com.integrosys.cms.ui.collateral.CollateralLoadingForm">
+        </form-bean>             
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	    <action path="/CollateralLoading"
+				type="com.integrosys.cms.ui.collateral.CollateralLoadingAction"
+				name="CollateralLoadingForm" validate="false" scope="request">
+			<forward name="list" path="/template/common_frame_template.jsp">
+				<set-property property="title" value="title.security" />
+				<set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+				<set-property property="rightFrame" value="/collateral/collateral_loading_list.jsp" />
+			</forward>
+		</action>
+    </action-mappings>
+
+</struts-config>

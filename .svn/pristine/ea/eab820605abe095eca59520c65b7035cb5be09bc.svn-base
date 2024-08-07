@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.valuationAgency.bus">
+	<class  entity-name="actualOBValuationAgency" name="OBValuationAgency" table="CMS_VALUATION_AGENCY" lazy="false">
+		<id name="id" column="ID" type="long">
+			 <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_VALUATION_AGENCY_SEQ</param>
+			 </generator>
+		</id>
+			<version name="versionTime" column="VERSION_TIME" type="long"></version>
+				<property name="createBy" column="CREATE_BY" />
+				<property name="creationDate" column="CREATION_DATE" />
+				<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+				<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+				<property name="deprecated" column="DEPRECATED" />
+				<property name="status" column="STATUS" />
+				<property name="masterId" column="MASTER_ID" />
+				<property name="valuationAgencyCode" column="VALUATION_AGENCY_CODE" />
+				<property name="valuationAgencyName" column="VALUATION_AGENCY_NAME" />
+				<property name="address" column="ADDRESS" /><!--
+				<property name="cityTown" column="CITY_TOWN" />
+				<property name="state" column="STATE" />
+				<property name="region" column="REGION" />
+				<property name="country" column="COUNTRY" />
+		              
+		 
+		   --><many-to-one name="country" column="COUNTRY" entity-name="actualCountry" lazy="false" />
+			  <many-to-one name="region" column="REGION" entity-name="actualRegion" lazy="false" />
+			  <many-to-one name="state" column="STATE" entity-name="actualState" lazy="false" />
+			  <many-to-one name="cityTown" column="CITY_TOWN" entity-name="actualCity" lazy="false" />
+		
+		
+	</class>
+	<class  entity-name="stageOBValuationAgency" name="OBValuationAgency" table="CMS_STAGE_VALUATION_AGENCY" lazy="false">
+			<id name="id" column="ID" type="long">
+			 <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_VALUATION_AGENCY_SEQ</param>
+			 </generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+					<property name="createBy" column="CREATE_BY" />
+					<property name="creationDate" column="CREATION_DATE" />
+					<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+					<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+					<property name="deprecated" column="DEPRECATED" />
+					<property name="status" column="STATUS" />
+					<property name="masterId" column="MASTER_ID" />
+					<property name="valuationAgencyCode" column="VALUATION_AGENCY_CODE" />
+					<property name="valuationAgencyName" column="VALUATION_AGENCY_NAME" />
+					<property name="address" column="ADDRESS" /><!--
+					<property name="cityTown" column="CITY_TOWN" />
+					<property name="state" column="STATE" />
+					<property name="region" column="REGION" />
+					<property name="country" column="COUNTRY" />             
+     --><many-to-one name="country" column="COUNTRY" entity-name="actualCountry" lazy="false" />
+		<many-to-one name="region" column="REGION" entity-name="actualRegion" lazy="false" />
+		<many-to-one name="state" column="STATE" entity-name="actualState" lazy="false" />
+		<many-to-one name="cityTown" column="CITY_TOWN" entity-name="actualCity" lazy="false" />
+	 </class>
+	
+	<class name="com.integrosys.cms.app.valuationAgency.bus.OBCity" entity-name="actualCityTown" table="CMS_CITY" lazy="false" >  
+    <id name="idCity" column="ID">
+    	<generator class="increment"></generator>
+    </id>    
+    <property name="cityCode"		column="CITY_CODE" />
+    <property name="cityName"    	column="CITY_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+    <many-to-one name="stateId" column="STATE_ID" entity-name="actualState" lazy="false" />
+
+    </class>
+  
+   <class name="com.integrosys.cms.app.valuationAgency.bus.OBCity" entity-name="stagingCityTown" table="CMS_STAGE_CITY" lazy="false" >  
+    <id name="idCity" column="ID">
+    	<generator class="increment"></generator>
+    </id>    
+    <property name="cityCode"		column="CITY_CODE" />
+    <property name="cityName"    	column="CITY_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+    
+    <many-to-one name="stateId" column="STATE_ID" entity-name="actualState" lazy="false" />
+         
+   </class>
+</hibernate-mapping>

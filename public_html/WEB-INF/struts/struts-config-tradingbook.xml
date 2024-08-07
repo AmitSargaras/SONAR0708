@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="MaintainInterestRateForm" type="com.integrosys.cms.ui.interestrate.MaintainInterestRateForm">
+        </form-bean>
+    
+        <form-bean name="TradingAgreementForm" type="com.integrosys.cms.ui.manualinput.aa.TradingAgreementForm">
+        </form-bean>
+
+        <form-bean name="ThresholdRatingForm" type="com.integrosys.cms.ui.manualinput.aa.ThresholdRatingForm">
+        </form-bean>
+        
+        <!-- ISDA Deal Detail -->
+        <form-bean name="ISDACSADealForm" type="com.integrosys.cms.ui.tradingbook.deal.isdacsa.ISDACSADealForm">
+        </form-bean>
+
+        <!-- GMRA Deal Detail -->
+        <form-bean name="GMRADealForm" type="com.integrosys.cms.ui.tradingbook.deal.gmra.GMRADealForm">
+        </form-bean>
+
+        <!-- GMRA Deal Valuation Detail -->
+        <form-bean name="GMRADealValForm" type="com.integrosys.cms.ui.tradingbook.deal.gmra.GMRADealValForm">
+        </form-bean>
+
+        <!-- Cash Margin Detail -->
+        <form-bean name="CashMarginForm" type="com.integrosys.cms.ui.tradingbook.cashmargin.CashMarginForm">
+        </form-bean>
+
+        <!-- Trading Book Report -->
+        <form-bean name="TradingBookReportForm" type="com.integrosys.cms.ui.tradingbook.reports.TradingBookReportForm">
+        </form-bean>
+                
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/MaintainInterestRate" type="com.integrosys.cms.ui.interestrate.MaintainInterestRateAction" name="MaintainInterestRateForm" validate="false" scope="request">
+            <forward name="after_list" path="/template/common_template.jsp">
+                <set-property property="title" value="title.maininterestrates.edit"/>
+                <set-property property="rightFrame" value="/interestrate/interest_rate_maker_list.jsp"/>
+            </forward>
+            <forward name="after_return" path="/template/common_template.jsp">
+                <set-property property="title" value="title.maininterestrates.edit"/>
+                <set-property property="rightFrame" value="/interestrate/interest_rate_maker_list.jsp"/>
+            </forward>
+            <forward name="after_prepare" path="/template/common_template.jsp">
+                <set-property property="title" value="title.maininterestrates.edit"/>
+                <set-property property="rightFrame" value="/interestrate/interest_rate_maker_search.jsp"/>
+            </forward>
+            <forward name="maker_edit_interestrate_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/interestrate/interest_rate_maker_list.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="maker_edit_interestrate_confirm" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="checker_edit_interestrate_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/interestrate/interest_rate_checker_edit.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="maker_close_interestrate_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/interestrate/interest_rate_view.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/interestrate/interest_rate_view.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/interestrate/interest_rate_view.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.maininterestrates.edit"/>
+            </forward>
+        </action>
+            
+        <action path="/TradingAgreement" type="com.integrosys.cms.ui.manualinput.aa.TradingAgreementAction" name="TradingAgreementForm" validate="false" scope="request">
+            <forward name="maker_add_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.manualinput.aa"/>
+                <set-property property="rightFrame" value="/manualinput/aa/agreement_maker_add.jsp"/>
+            </forward>
+            <forward name="maker_update_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.manualinput.aa"/>
+                <set-property property="rightFrame" value="/manualinput/aa/agreement_maker_edit.jsp"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="title" value="title.manualinput.aa"/>
+                <set-property property="rightFrame" value="/manualinput/aa/agreement_maker_view.jsp"/>
+            </forward>
+            <forward name="checker_view_agreement" path="/template/common_template.jsp">
+                <set-property property="title" value="title.manualinput.aa"/>
+                <set-property property="rightFrame" value="/manualinput/aa/agreement_checker_view.jsp"/>
+            </forward>
+	    	<forward name="prepare_add_threshold" path="/ThresholdRating.do?event=prepare_add_threshold" />
+		    <forward name="prepare_update_threshold" path="/ThresholdRating.do?event=prepare_update_threshold" />
+		    <forward name="view_threshold" path="/ThresholdRating.do?event=view_threshold" />
+		    <forward name="return_maker_edit_aadetail" path="/MIAADetail.do?event=maker_edit_aadetail" />
+		    <forward name="return_maker_add_aadetail" path="/MIAADetail.do?event=maker_add_aadetail" />
+		    <forward name="return_maker_edit_aadetail_reject" path="/MIAADetail.do?event=maker_edit_aadetail_reject" />
+        </action> 
+        
+        <action path="/ThresholdRating" type="com.integrosys.cms.ui.manualinput.aa.ThresholdRatingAction" name="ThresholdRatingForm" validate="false" scope="request">
+            <forward name="prepare_threshold_list" path="/template/common_template.jsp">
+                <set-property property="title" value="title.manualinput.aa"/>
+                <set-property property="rightFrame" value="/manualinput/aa/threshold_credit_rating_view.jsp"/>
+            </forward>
+            <forward name="maker_add_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.manualinput.aa"/>
+                <set-property property="rightFrame" value="/manualinput/aa/threshold_credit_rating_add.jsp"/>
+            </forward>
+            <forward name="maker_update_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.manualinput.aa"/>
+                <set-property property="rightFrame" value="/manualinput/aa/threshold_credit_rating_update.jsp"/>
+            </forward>
+            <forward name="checker_view_threshold" path="/template/common_template.jsp">
+                <set-property property="title" value="title.manualinput.aa"/>
+                <set-property property="rightFrame" value="/manualinput/aa/threshold_credit_rating_checker_view.jsp"/>
+            </forward>
+		    <forward name="return_prepare_add_threshold" path="/TradingAgreement.do?event=maker_add_agreement" />
+		    <forward name="return_prepare_update_threshold" path="/TradingAgreement.do?event=maker_update_agreement" />
+		    <forward name="return_view_threshold" path="/TradingAgreement.do?event=view" />
+        </action>
+        
+        <action path="/ISDACSADealVal" type="com.integrosys.cms.ui.tradingbook.deal.isdacsa.ISDACSADealAction" name="ISDACSADealForm" validate="false" scope="request">
+            <forward name="view_isda_deal_detail_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/isdacsa/deal_csa_maker_list.jsp"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+            </forward>
+            <forward name="maker_view_subisda_deal_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/isdacsa/deal_csa_detail_maker_view.jsp"/>
+            </forward>
+            <forward name="maker_input_valuation" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/isdacsa/deal_csa_maker_update_valuation.jsp"/>
+            </forward>
+            <forward name="maker_close_input_valuation_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/isdacsa/deal_csa_maker_view_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="maker_edit_valuation_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/isdacsa/deal_csa_maker_update_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="checker_edit_input_valuation_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/isdacsa/deal_csa_checker_update_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/isdacsa/deal_csa_maker_view_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/isdacsa/deal_csa_maker_view_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+        </action>        
+        
+<!-- New Action for GMRA Deal details -->
+        <action path="/GMRADeal" type="com.integrosys.cms.ui.tradingbook.deal.gmra.GMRADealAction" name="GMRADealForm" validate="false" scope="request">
+            <forward name="view_gmra_deal_detail_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_maker_list.jsp"/>
+            </forward>
+            <forward name="maker_view_dealdetails_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_detail_maker_view.jsp"/>
+            </forward>
+            <forward name="maker_edit_dealdetails_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_detail_maker_edit.jsp"/>
+            </forward>
+            <forward name="maker_add_deal_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_detail_maker_add.jsp"/>
+            </forward>
+            <forward name="checker_edit_dealdetails_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_detail_checker_edit.jsp"/>
+            </forward>
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="maker_close_dealdetails_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_detail_maker_close.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="maker_edit_dealdetails_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_detail_maker_edit.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+            </forward>
+            <forward name="error_message_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/error_message.html"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_detail_maker_close.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_detail_maker_close.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+        </action>  
+        
+      <!-- New Action for GMRA Deal Valuation details -->
+        <action path="/GMRADealVal" type="com.integrosys.cms.ui.tradingbook.deal.gmra.GMRADealValAction" name="GMRADealValForm" validate="false" scope="request">
+            <forward name="maker_update_valuation_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_maker_update_valuation.jsp"/>
+            </forward>
+            <forward name="maker_close_input_valuation_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_maker_view_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="maker_edit_valuation_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_maker_update_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="checker_edit_input_valuation_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_checker_update_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="maker_close_input_valuation_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_maker_view_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="maker_edit_valuation_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_maker_update_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_maker_view_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/deal/gmra/deal_gmra_maker_view_valuation.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+        </action>   
+        
+
+
+      <!-- New Action for Cash Margin details -->
+        <action path="/CashMargin" type="com.integrosys.cms.ui.tradingbook.cashmargin.CashMarginAction" name="CashMarginForm" validate="false" scope="request">
+            <forward name="maker_view_cashmargin_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/tradingbook/cashmargin/cash_margin_maker_list.jsp"/>
+            </forward>
+            <forward name="checker_edit_allcashmargin_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/cashmargin/cash_margin_checker_edit.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="maker_close_allcashmargin_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/cashmargin/cash_margin_maker_view.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="maker_edit_allcashmargin_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/cashmargin/cash_margin_maker_list.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            </forward>
+            <forward name="maker_create_cashmargin_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/cashmargin/cash_margin_maker_add.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="maker_update_cashmargin_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/cashmargin/cash_margin_maker_edit.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/cashmargin/cash_margin_maker_view.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/tradingbook/cashmargin/cash_margin_maker_view.jsp"/>
+                <set-property property="title" value="title.tradingbook.deal.edit"/>
+            </forward>
+        </action>   
+        
+	    <!-- Trading Book Report Action. -->
+	    <action path="/TradingBookReport" type="com.integrosys.cms.ui.tradingbook.reports.TradingBookReportAction"
+	        name="TradingBookReportForm" validate="false" scope="request">
+	       <forward name="gmra_report" path="/template/common_template.jsp">
+	         <set-property property="rightFrame" value="/reports/search_tradingbook_report.jsp"/>
+	         <set-property property="title" value="title.misreport"/>
+	       </forward>
+	       <forward name="isdacsa_report" path="/template/common_template.jsp">
+	         <set-property property="rightFrame" value="/reports/search_tradingbook_report.jsp"/>
+	         <set-property property="title" value="title.misreport"/>
+	       </forward>
+	    </action>	
+                        
+    </action-mappings>
+    
+    <message-resources key="message-tradingbook" parameter="ApplicationResources-tradingbook"/>
+</struts-config>

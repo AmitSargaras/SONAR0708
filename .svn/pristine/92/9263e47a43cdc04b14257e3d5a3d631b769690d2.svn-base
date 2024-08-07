@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<import resource="AppContext_DaoJdbc.xml" />
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="fccColFdStpUploadJobTrigger" />
+				<ref bean="fccColFdFileDownloadTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="fccColFdStpUploadJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="fccColFdStpUploadJobDetail" />
+		<property name="cronExpression" value="0 30 03 * * ?" />
+		<!-- <property name="cronExpression" value="${ftp.fcc.col.liquidation.upload.schedular.time}" /> -->
+		<!--<property name="cronExpression" value="0 0/30 * * * ?" />
+	--></bean>
+	
+	<bean id="fccColFdStpUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="fccColFdStpUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="fccColFdStpUploadJob" class="com.integrosys.cms.batch.fcc.col.liquidation.fd.upload.FccColFdFileUploadJob"/>
+	
+	 <bean id="fccColFdFileDownloadTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="fccColFdFileDownloadJobDetail" />
+		<property name="cronExpression" value="0 0 06 * * ?" />
+		<!-- <property name="cronExpression" value="${ftp.fcc.col.liquidation.download.schedular.time}" /> -->
+		<!--<property name="cronExpression" value="0 0/60 * * * ?" />
+	--></bean>
+	<bean id="fccColFdFileDownloadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="fccColFdFileDownloadJob" />
+		<property name="targetMethod" value="execute" />
+		
+	</bean>
+	<bean name="fccColFdFileDownloadJob" class="com.integrosys.cms.batch.fcc.col.liquidation.fd.upload.FccColFdFileDownloadJob">
+	<property name="runProcedureNameFcc" value="SP_FCC_TEMP_TO_ACTUAL" />
+		
+	</bean>
+	
+
+</beans>

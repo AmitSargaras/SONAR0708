@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+					SELECT SUB_PROFILE. LSP_LE_ID  AS PARTYID,
+				  sub_profile.borrower_duns_no AS dunsnumber,
+				  (SELECT REGION_NAME FROM CMS_REGION WHERE id = SUB_PROFILE.rm_region
+				  ) AS RMREGION,
+				  (SELECT RM_MGR_NAME
+				  FROM CMS_RELATIONSHIP_MGR
+				  WHERE id = SUB_PROFILE.RELATION_MGR
+				  ) AS RMNAME,
+				  (SELECT entry_name
+				  FROM common_code_category_entry
+				  WHERE category_code = 'RELATED_TYPE'
+				  AND entry_code      = DIRECTOR.RELATED_TYPE
+				  )                          AS RELATEDTYPE,
+				  DIRECTOR.DIR_PAN           AS PAN_NUMBER,
+				  SUB_PROFILE.LSP_SHORT_NAME AS PARTY_NAME,
+				  (SELECT entry_name
+				  FROM common_code_category_entry
+				  WHERE category_code = 'RELATIONSHIP_TYPE'
+				  AND entry_code      = director.RELATIONSHIP_TYPE
+				  ) AS RELATIONSHIP_TYPE,
+				  director.bussness_name as entity,
+				 -- director.relationship_type,
+				--  (SELECT REGION_NAME FROM CMS_REGION WHERE id = address.LRA_REGION
+				--  ) AS REGION,
+				--  (SELECT RM_MGR_NAME
+				--  FROM CMS_RELATIONSHIP_MGR
+				--  WHERE id = SUB_PROFILE.RELATION_MGR
+				--  ) AS RMNAME,
+				--  (SELECT entry_name
+				--  FROM common_code_category_entry
+				--  WHERE entry_code  = SUB_PROFILE.LSP_SGMNT_CODE_VALUE
+				--  AND category_code = 'HDFC_SEGMENT'
+				--  ) AS SEGMENTNAME,
+				--  (SELECT entry_name
+				--  FROM common_code_category_entry
+				--  WHERE category_code = 'RELATED_TYPE'
+				--  AND entry_code      = DIRECTOR.RELATED_TYPE
+				--  )                        AS RELATEDTYPE,
+				 -- director.name_prefix   AS NAME_PREFIX,
+				  director.NAME_PREFIX     AS NAME_PREFIX,
+				  director.FULL_NAME       AS FULL_NAME,
+				  director.PERCENT_OF_CTRL AS PERCENT_OF_CTRL,
+				  director.DIR_ADD1 AS DIR_ADD1,
+				   director.DIR_ADD2 AS DIR_ADD2,
+				  director.DIR_ADD3 AS DIR_ADD3,
+				  (SELECT city_name FROM CMS_CITY WHERE id = director.DIR_CITY
+				  ) AS DIR_CITY,
+				  (SELECT STATE_NAME FROM CMS_STATE WHERE id = director.DIR_STATE
+				  )                      AS DIR_STATE,
+				  director.DIR_POST_CODE AS DIR_POST_CODE,
+				  (SELECT COUNTRY_NAME FROM CMS_COUNTRY WHERE id = director.DIR_COUNTRY
+				  )                         AS DIR_COUNTRY,
+				  director.DIR_TEL_NO       AS DIR_TEL_NO,
+				  director.DIR_STD_CODE_TEL AS DIR_STD_CODE_TEL,
+				  --director.dir_std_code_telex as dir_std_code_fax,
+				  director.dir_fax   AS DIR_fax,
+				  director.DIR_EMAIL AS DIR_EMAIL,
+				  director.DIN_NO    AS DIN_NO,
+				  (SELECT REGION_NAME FROM CMS_REGION WHERE id = address.LRA_REGION
+				  )                     AS REGION,
+				  cc_segment.entry_name AS segment
+				FROM sci_le_sub_profile SUB_PROFILE,
+				  sci_le_main_profile MAIN_PROFILE,
+				  SCI_LE_DIRECTOR DIRECTOR,
+				  sci_le_reg_addr address,
+				  (SELECT entry_name,
+				    entry_code
+				  FROM common_code_category_entry
+				  WHERE category_code = 'HDFC_SEGMENT'
+				  ) cc_segment
+			</query>
+			<whereClause>
+			<mandatoryClause>
+					SUB_PROFILE.CMS_LE_MAIN_PROFILE_ID = MAIN_PROFILE.CMS_LE_MAIN_PROFILE_ID
+					AND DIRECTOR.CMS_LE_MAIN_PROFILE_ID      = MAIN_PROFILE.CMS_LE_MAIN_PROFILE_ID
+					AND cc_segment.entry_code(+)             = SUB_PROFILE.lsp_sgmnt_code_value
+					AND MAIN_PROFILE.CMS_LE_MAIN_PROFILE_ID  = address.CMS_LE_MAIN_PROFILE_ID
+					AND address.lra_type_value               = 'CORPORATE'
+					AND sub_profile.status                  != 'INACTIVE'
+			</mandatoryClause>		
+			<param>
+				<name>relationManager</name>
+				<condition> and SUB_PROFILE.RELATION_MGR = </condition>
+			</param>
+
+			<param>
+				<name>segment</name>
+				<condition> and cc_segment.entry_code = </condition>
+			</param>	
+	    	<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>	
+						
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>DUNS Number</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Related Type(in number)</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PAN</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Customer Name</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Relationship(number)</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Business Entity</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Individual Name Prefix</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Full Name</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Percentage Of Control</header><!-- 12 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Address 1</header><!-- 13 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Address 2</header><!-- 14 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Address 3</header><!-- 15 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City</header><!-- 16 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>State</header><!-- 17 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Pincode</header><!-- 18 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Country</header><!-- 19 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Telephone Number</header><!-- 20 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Tel Area Code</header><!-- 21 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Fax Number</header><!-- 22 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Email</header><!-- 23 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>DIN No</header><!-- 24 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header><!-- 25 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 26 -->
+				</reportColumn>										
+			</reportColumns>
+			<reportName>CIBIL Report - RelationShip Segment</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+
+	<bean id="ProductMasterTrx.ReadProductMasterOperation" class="com.integrosys.cms.app.productMaster.trx.ReadProductMasterOperation">
+        <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+    </bean>
+    
+    <bean id="ProductMasterTrx.ReadProductMasterIDOperation" class="com.integrosys.cms.app.productMaster.trx.ReadProductMasterIDOperation">
+        <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+    </bean>
+    
+     <bean id="ProductMasterTrx.MakerCreateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerCreateProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.CheckerApproveCreateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.CheckerApproveCreateProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<!--added by santosh -UBS CR  -->
+	 <bean id="ProductMasterTrx.MakerUpdateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerUpdateProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.CheckerApproveUpdateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.CheckerApproveUpdateProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.CheckerRejectProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.CheckerRejectProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.MakerEditRejectedUpdateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerEditRejectedUpdateProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.MakerEditRejectedCreateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerEditRejectedCreateProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.MakerCloseRejectedCreateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerCloseRejectedCreateProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.MakerCloseRejectedUpdateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerCloseRejectedUpdateProductMasterOperation">
+		 <property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.MakerSaveUpdateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerSaveUpdateProductMasterOperation">
+		<property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.MakerSaveProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerSaveProductMasterOperation">
+		<property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.MakerUpdateDraftCreateProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerUpdateDraftCreateProductMasterOperation">
+		<property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<bean id="ProductMasterTrx.MakerCloseDraftProductMasterOperation"
+		class="com.integrosys.cms.app.productMaster.trx.MakerCloseDraftProductMasterOperation">
+		<property name="productMasterBusManager" ref="productMasterBusManager"/>
+        <property name="stagingProductMasterBusManager" ref="stagingProductMasterBusManager"/>
+	</bean>
+	
+	<!--<bean id="ExcludedFacilityTrx.CheckerRejectExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.CheckerRejectExcludedFacilityOperation">
+		<property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+
+	<bean id="ExcludedFacilityTrx.MakerSaveExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerSaveExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerEditRejectedCreateExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerEditRejectedCreateExcludedFacilityOperation">
+		<property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerUpdateDraftCreateExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerUpdateDraftCreateExcludedFacilityOperation">
+		<property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerUpdateExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerUpdateExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerSaveUpdateExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerSaveUpdateExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerDeleteExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerDeleteExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.CheckerApproveUpdateExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.CheckerApproveUpdateExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerEditRejectedUpdateExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerEditRejectedUpdateExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerEditRejectedDeleteExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerEditRejectedDeleteExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerCloseRejectedCreateExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerCloseRejectedCreateExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerCloseRejectedUpdateExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerCloseRejectedUpdateExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerCloseRejectedDeleteExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerCloseRejectedDeleteExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>
+	
+	<bean id="ExcludedFacilityTrx.MakerCloseDraftExcludedFacilityOperation"
+		class="com.integrosys.cms.app.excludedfacility.trx.MakerCloseDraftExcludedFacilityOperation">
+		 <property name="excludedFacilityBusManager" ref="excludedFacilityBusManager"/>
+        <property name="stagingExcludedFacilityBusManager" ref="stagingExcludedFacilityBusManager"/>
+	</bean>-->
+	
+    <bean id="productMasterReadController" class="com.integrosys.cms.app.productMaster.trx.ProductMasterReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadProductMasterOperation" value-ref="ProductMasterTrx.ReadProductMasterOperation"/>
+                 <entry key="ReadProductMasterIDOperation" value-ref="ProductMasterTrx.ReadProductMasterIDOperation"/>  
+            </map>
+        </property>
+    </bean> 
+    <bean id="productMasterTrxController" class="com.integrosys.cms.app.productMaster.trx.ProductMasterTrxController">
+         <property name="nameTrxOperationMap">
+        <map>
+            <entry key="MakerCreateProductMasterOperation" value-ref="ProductMasterTrx.MakerCreateProductMasterOperation"/>
+            <entry key="CheckerApproveCreateProductMasterOperation" value-ref="ProductMasterTrx.CheckerApproveCreateProductMasterOperation"/>
+           
+            <!--added by santosh-UBS CR  -->
+            <entry key="MakerUpdateProductMasterOperation" value-ref="ProductMasterTrx.MakerUpdateProductMasterOperation"/>
+            <entry key="CheckerApproveUpdateProductMasterOperation" value-ref="ProductMasterTrx.CheckerApproveUpdateProductMasterOperation"/>
+            <entry key="CheckerRejectProductMasterOperation" value-ref="ProductMasterTrx.CheckerRejectProductMasterOperation"/>
+            <entry key="MakerEditRejectedCreateProductMasterOperation" value-ref="ProductMasterTrx.MakerEditRejectedCreateProductMasterOperation"/>
+            <entry key="MakerEditRejectedUpdateProductMasterOperation" value-ref="ProductMasterTrx.MakerEditRejectedUpdateProductMasterOperation"/>
+            <entry key="MakerCloseRejectedCreateProductMasterOperation" value-ref="ProductMasterTrx.MakerCloseRejectedCreateProductMasterOperation"/>
+            <entry key="MakerCloseRejectedUpdateProductMasterOperation" value-ref="ProductMasterTrx.MakerCloseRejectedUpdateProductMasterOperation"/>
+            <entry key="MakerSaveUpdateProductMasterOperation" value-ref="ProductMasterTrx.MakerSaveUpdateProductMasterOperation"/>
+            <entry key="MakerSaveProductMasterOperation" value-ref="ProductMasterTrx.MakerSaveProductMasterOperation"/>
+            <entry key="MakerUpdateDraftCreateProductMasterOperation" value-ref="ProductMasterTrx.MakerUpdateDraftCreateProductMasterOperation"/>
+   			<entry key="MakerCloseDraftProductMasterOperation" value-ref="ProductMasterTrx.MakerCloseDraftProductMasterOperation"/>
+   			
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+
+    <bean id="productMasterTrxControllerFactory" class="com.integrosys.cms.app.productMaster.trx.ProductMasterTrxControllerFactory">
+        <property name="productMasterReadController" ref="productMasterReadController"/>
+        <property name="productMasterTrxController" ref="productMasterTrxController"/>
+    </bean> 
+</beans>

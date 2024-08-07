@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="insuranceCoverageProxyManager" class="com.integrosys.cms.app.insurancecoverage.proxy.InsuranceCoverageProxyManagerImpl">
+		<property name="insuranceCoverageBusManager" ref="insuranceCoverageBusManager" />
+		<property name="stagingInsuranceCoverageBusManager" ref="stagingInsuranceCoverageBusManager" />
+		<property name="trxControllerFactory" ref="insuranceCoverageTrxControllerFactory" />
+	</bean>
+	
+	<bean id="insuranceCoverageBusManager" class="com.integrosys.cms.app.insurancecoverage.bus.InsuranceCoverageBusManagerImpl">
+		<property name="insuranceCoverageDAO" ref="insuranceCoverageDAO" />
+	</bean>
+	
+	<bean id="stagingInsuranceCoverageBusManager" class="com.integrosys.cms.app.insurancecoverage.bus.InsuranceCoverageBusManagerStagingImpl">
+		<property name="insuranceCoverageDAO" ref="insuranceCoverageDAO" />
+	</bean>
+	
+	
+	<bean id="stagingInsuranceCoverageFileMapperIdBusManager" class="com.integrosys.cms.app.insurancecoverage.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="insuranceCoverageDAO" ref="insuranceCoverageDAO" />
+	</bean>
+	<bean id="insuranceCoverageFileMapperIdBusManager" class="com.integrosys.cms.app.insurancecoverage.bus.FileMapperIdBusManagerImpl">
+		<property name="insuranceCoverageDAO" ref="insuranceCoverageDAO" />
+	</bean>
+	
+</beans>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.app.tatduration.bus">
+	
+	<class entity-name="actualTatParam" name="OBTatParam" table="CMS_TAT_PARAM" lazy="false">
+         <id name="tatParamId" type="long" column="TAT_PARAM_ID" >
+          <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_TAT_PARAM_SEQ</param>
+            </generator>
+        </id> 
+        <version name="versionTime" column="VERSION_TIME" type="long" />
+        <property name="applicationType" column="APPLICATION_TYPE" />    
+        
+        <set name="tatParamItemList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="TAT_PARAM_ID" not-null="true" />
+		    <one-to-many entity-name="actualTatParamItem" />
+	    </set>  
+    </class>
+	 
+	<class entity-name="stageTatParam" name="OBTatParam" table="CMS_STAGE_TAT_PARAM" lazy="false">
+        <id name="tatParamId" type="long" column="TAT_PARAM_ID" >
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_TAT_PARAM_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="VERSION_TIME" type="long" />
+        <property name="applicationType" column="APPLICATION_TYPE" />
+        <set name="tatParamItemList" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		    <key column="TAT_PARAM_ID" not-null="true" />
+		    <one-to-many entity-name="stageTatParamItem" />
+	    </set>  
+    </class>
+
+
+  <class entity-name="actualTatParamItem" name="OBTatParamItem" table="CMS_TAT_PARAM_ITEM" lazy="false">
+      <id name="tatParamItemId" type="long" column="TAT_PARAM_ITEM_ID" >
+          <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+              <param name="sequence">CMS_TAT_PARAM_ITEM_SEQ</param>
+          </generator>
+      </id>
+      <version name="versionTime" column="VERSION_TIME" type="long" />
+      <property name="stageType" column="STAGE_TYPE" />
+      <property name="stageCode" column="STAGE_CODE"  />
+      <property name="preStage" column="PRE_STAGE"  />
+      <property name="postStage" column="POST_STAGE" />
+      <property name="duration" column="DURATION" type="double" />
+      <property name="durationType" column="DURATION_TYPE" type="string" />
+      <property name="sequenceOrder" column="SEQUENCE_ORDER" type="long" />
+      <property name="cmsRefID" column="CMS_REF_ID" type="long" />
+      <property name="status" column="STATUS" />
+  </class>
+
+
+  <class entity-name="stageTatParamItem" name="OBTatParamItem" table="CMS_STAGE_TAT_PARAM_ITEM" lazy="false">
+      <id name="tatParamItemId" type="long" column="TAT_PARAM_ITEM_ID" >
+          <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+              <param name="sequence">CMS_STAGE_TAT_PARAM_ITEM_SEQ</param>
+          </generator>
+      </id>
+      <version name="versionTime" column="VERSION_TIME" type="long" />
+      <property name="stageType" column="STAGE_TYPE" />
+      <property name="stageCode" column="STAGE_CODE"  />
+      <property name="preStage" column="PRE_STAGE"  />
+      <property name="postStage" column="POST_STAGE" />
+      <property name="duration" column="DURATION" type="double" />	
+      <property name="durationType" column="DURATION_TYPE" type="string" />
+      <property name="sequenceOrder" column="SEQUENCE_ORDER" type="long" />
+      <property name="cmsRefID" column="CMS_REF_ID" type="long" />
+      <property name="status" column="STATUS" />
+  </class>
+  
+  
+  
+</hibernate-mapping>

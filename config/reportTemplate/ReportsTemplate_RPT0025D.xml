@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				select id,
+   party_name,
+  segmentName,
+ facilityName,
+  facilityType,
+  facilityCat,
+ Currency,
+  systemName,
+  systemId,
+ lineNo,
+ serialNo,
+ interestRate,
+  relesaedAmount,
+ releaseDate,
+  utilizedAmount,
+ undrawnLimit,
+ uploadStatus,
+ reasonForFail
+		from
+				(SELECT DISTINCT uploaddata.id,
+  sub_profile.lsp_short_name
+  ||''                  AS party_name,
+  cc_segment.entry_name AS segmentName,
+  NULL                  AS facilityName,
+  NULL                  AS facilityType,
+  NULL                  AS facilityCat,
+  NULL                  AS Currency,
+  'HONGKONG'          AS systemName,
+  uploaddata.customer_id
+  ||'' AS systemId,
+  uploadData.line_no
+  ||'' AS lineNo,
+  uploaddata.serial_no
+  ||'' AS serialNo,
+  NULL AS interestRate,
+  NULL AS relesaedAmount,
+  NULL AS releaseDate,
+  NULL AS utilizedAmount,
+  NULL AS undrawnLimit,
+  uploadData.status
+  ||'' AS uploadStatus,
+  uploaddata.reason
+  ||'' AS reasonForFail
+FROM cms_file_upload upload,
+  CMS_HONGKONG_FILE_UPLOAD uploadData,
+  sci_le_sub_profile sub_profile,
+  SCI_LSP_APPR_LMTS lmts,
+  SCI_LSP_LMT_PROFILE pf,
+  SCI_LSP_SYS_XREF facDetail ,
+  SCI_LSP_LMTS_XREF_MAP xrefmap,
+  (SELECT entry_name,
+    entry_code
+  FROM common_code_category_entry
+  WHERE (category_code = 'HDFC_SEGMENT'
+  OR category_code    IS NULL)
+  ) cc_segment ,
+  sci_le_other_system SYS
+WHERE sub_profile.cms_le_main_profile_id   = sys.cms_le_main_profile_id
+AND upload.id                              = uploaddata.file_id
+AND sys.cms_le_other_sys_cust_id           = uploaddata.customer_id(+)
+AND cc_segment.entry_code(+)               = sub_profile.lsp_sgmnt_code_value
+AND TO_CHAR(upload.uploadtime, 'dd-MON-yyyy')= ( select TO_CHAR(to_Date(param_value), 'dd-MON-yyyy') from cms_general_param where param_code = 'APPLICATION_DATE')
+AND sub_profile.cms_le_sub_profile_id      = pf.cms_customer_id
+AND pf.cms_lsp_lmt_profile_id              = lmts.CMS_LIMIT_PROFILE_ID
+AND lmts.CMS_LSP_APPR_LMTS_ID              =xrefmap.CMS_LSP_APPR_LMTS_ID
+AND facDetail.CMS_LSP_SYS_XREF_ID          =xrefmap.CMS_LSP_SYS_XREF_ID
+AND lmts.cms_limit_status                  = 'ACTIVE'
+UNION ALL
+SELECT DISTINCT uploaddata.id,
+  NULL         AS party_name,
+  NULL         AS segmentName,
+  NULL         AS facilityName,
+  NULL         AS facilityType,
+  NULL         AS facilityCat,
+  NULL         AS Currency,
+  'HONGKONG' AS systemName,
+  uploaddata.customer_id
+  ||'' AS systemId,
+  uploadData.line_no
+  ||'' AS lineNo,
+  uploaddata.serial_no
+  ||'' AS serialNo,
+  NULL AS interestRate,
+  NULL AS relesaedAmount,
+  NULL AS releaseDate,
+  NULL AS utilizedAmount,
+  NULL AS undrawnLimit,
+  uploadData.status
+  ||'' AS uploadStatus,
+  uploaddata.reason
+  ||'' AS reasonForFail
+FROM cms_file_upload upload,
+  CMS_HONGKONG_FILE_UPLOAD uploadData
+WHERE upload.id                 = uploaddata.file_id
+AND uploaddata.customer_id NOT IN
+  (SELECT DISTINCT cms_le_other_sys_cust_id FROM sci_le_other_system
+  )
+AND TO_CHAR(upload.uploadtime, 'dd-MON-yyyy')= ( select TO_CHAR(to_Date(param_value), 'dd-MON-yyyy') from cms_general_param where param_code = 'APPLICATION_DATE')) 
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				1=1
+			</mandatoryClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+			<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Type</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Currency</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Line No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Serial No</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Interest Rate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Released Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Released Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Utilised Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Undrawn Limit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Upload Status</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>Reason For Failure</header>
+				</reportColumn>				
+			</reportColumns>			
+			<reportName>HONGKONG Upload Recon Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

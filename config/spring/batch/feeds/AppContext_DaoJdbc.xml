@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ORM/JDBC based Dao having property of 'sessionFactory' or 'dataSource'.
+		All these DAOs have to be intercept by Transaction, set in 'AppContext_TrxPlugin.xml'.
+	</description>
+	
+	<!-- Property File -->
+	
+	<bean id="propertyFileDao" class="com.integrosys.cms.batch.feeds.property.PropertyFileDAO">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>	
+	
+	<!-- stock File -->
+	
+	<bean id="stockPriceFileDAO" class="com.integrosys.cms.batch.feeds.stock.StockPriceFileDAO">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>	
+	
+	<bean id="insurancePolicyFeedsJdbcDao" class="com.integrosys.cms.batch.common.DefaultListRecordsJdbcDaoImpl">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="tableName" value="si_temp_insr_policy" />
+		<property name="columnNames" value="
+			APPLICATION_NUM, FACILITY_CODE, FACILITY_SEQ, COLLATERAL_NAME, COLLATERAL_SEQ,
+			ACCOUT_NUM, INSR_POLICY_NO, INSURED_AMOUNT, GROSS_PREMIUM_AMOUNT, COMMISSION_AMOUNT,
+			REBATE_AMOUNT, SERVICE_TAX_AMOUNT, STAMP_DUTY_AMOUNT, SERVICE_TAX_PERC, 
+			NET_PREM_TO_BORROWER, NET_PREM_TO_COMPANY, INSR_EXPIRY_DATE" />
+		<property name="sqlParameterTypes" value="
+			VARCHAR, VARCHAR, BIGINT, VARCHAR, VARCHAR, VARCHAR, VARCHAR,
+			DECIMAL, DECIMAL, DECIMAL, DECIMAL, DECIMAL, DECIMAL, DECIMAL,
+			DECIMAL, DECIMAL, TIMESTAMP" />
+	</bean>	
+	
+</beans>

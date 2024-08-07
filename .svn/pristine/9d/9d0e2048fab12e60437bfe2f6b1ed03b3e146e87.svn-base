@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.feed.bus.mutualfunds">
+  <class entity-name="actualMutualFundsFeedEntry" name="OBMutualFundsFeedEntry" table="CMS_MUTUAL_FUNDS_FEED" lazy="false">
+	<id name="mutualFundsFeedEntryID" type="long" column="FEED_ID" >
+		<generator class="increment">
+                </generator>
+	</id>
+	<version name="versionTime" column="VERSION_TIME" type="long" />
+    <property name="schemeCode" column="SCHEME_CODE" />
+    <property name="schemeName" column="SCHEME_NAME" />
+    <property name="schemeType" column="SCHEME_TYPE" />
+    <property name="startDate" column="START_DATE" />
+    <property name="expiryDate" column="EXPIRY_DATE" type="timestamp"/>
+    <property name="lastUpdatedDate" column="LAST_UPDATE_DATE" />
+    <property name="currentNAV" column="CURRENT_NAV" />
+    <property name="mutualFundsFeedEntryRef" column="FEED_REF" type="long"/>
+  </class>
+
+  <class entity-name="actualMutualFundsFeedGroup" name="OBMutualFundsFeedGroup" table="CMS_FEED_GROUP">
+	<id name="mutualFundsFeedGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="actualMutualFundsFeedEntry" />
+	</set>
+  </class>
+
+  <class entity-name="stageMutualFundsFeedEntry" name="OBMutualFundsFeedEntry" table="CMS_STAGE_MUTUAL_FUNDS_FEED" lazy="false">
+	<id name="mutualFundsFeedEntryID" type="long" column="FEED_ID" >
+		<generator class="increment">
+                </generator>
+	</id>
+	<version name="versionTime" column="VERSION_TIME" type="long" />
+    <property name="schemeCode" column="SCHEME_CODE" />
+    <property name="schemeName" column="SCHEME_NAME" />
+    <property name="schemeType" column="SCHEME_TYPE" />
+    <property name="startDate" column="START_DATE" type="timestamp"/>
+    <property name="expiryDate" column="EXPIRY_DATE" type="timestamp"/>
+    <property name="lastUpdatedDate" column="LAST_UPDATE_DATE" />
+    <property name="currentNAV" column="CURRENT_NAV" />
+    <property name="mutualFundsFeedEntryRef" column="FEED_REF" type="long"/>
+  </class>
+
+  <class entity-name="stageMutualFundsFeedGroup" name="OBMutualFundsFeedGroup" table="CMS_STAGE_FEED_GROUP">
+	<id name="mutualFundsFeedGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="stageMutualFundsFeedEntry" />
+	</set>
+  </class>
+
+</hibernate-mapping>

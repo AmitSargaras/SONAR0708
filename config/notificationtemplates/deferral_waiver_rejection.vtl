@@ -1,0 +1,66 @@
+<table width="70%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+  <thead><tr><td><h3>Notification - $!{ob.subject}</h3></td></tr>
+    <tr><td><hr /></td></tr></thead>
+  <tbody><tr><td><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblInfo">
+      <tbody>
+        <tr><td width="20%" class="fieldname">To</td><td width="30%" class="odd">$!{ob.receipient}</td>
+          <td width="20%" class="fieldname">Date</td><td width="30%" class="odd">$!{DateUtil.formatDate("dd/MMM/yyyy", ${ob.notificationDate})}</td></tr>
+        <tr class="even"><td class="fieldname">Customer Legal Name</td><td>$!{ob.leName}</td>
+          <td class="fieldname">CIF / ID No.</td><td>$!{ob.leID}</td></tr>
+        <tr class="odd"><td class="fieldname">Subject</td><td colspan="3">$!{ob.subject}</td></tr>
+      </tbody></table></td></tr>
+    <tr><td>The documents in the following checklist have been rejected for deferral/waiver request</td></tr>
+    <tr><td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+      <tbody>
+        <tr class="odd"><td class="fieldname">Checklist Type</td><td>$!{ob.getLabelOfCheckListType()}</td></tr>
+        #if ($!{ob.securityID})
+        <tr class="even"><td class="fieldname">Security ID</td><td>$!{ob.securityID}</td></tr>
+        <tr class="odd"><td class="fieldname">Security Type/SubType </td><td>$!{ob.securityType} / $!{ob.securitySubType}</td></tr>
+        <tr class="even"><td class="fieldname">Security Maturity Date</td>
+        <td>
+#set ($dateList = $VelocityUtil.getCollection(${ob.getSecurityMaturityDate()}) )
+#set ($dateSize = $VelocityUtil.sizeOf($dateList))
+#if ($dateSize > 0) #foreach ($date in $dateList)
+$!{DateUtil.formatDate("dd/MMM/yyyy", $date)} <br>
+#end #else NA #end #end                        
+        <tr class="odd"><td class="fieldname">Date of Rejection</td>
+          <td>$!{DateUtil.formatDate("dd/MMM/yyyy", ${ob.approvalDate})}</td></tr>
+        <tr class="even"><td class="fieldname">No. of Documents Pending Deferral</td>
+          <td>$!{ob.getNoOfDocumentPendingDeferral()}</td></tr>
+        <tr class="odd"><td class="fieldname">No. of Documents Pending Waiver</td>
+          <td>$!{ob.getNoOfDocumentPendingWaiver()}</td></tr> 
+        <tr class="even"><td class="fieldname">Comments by Last User</td>
+          <td>$!{ob.lastComment}</td></tr>  
+      </tbody></table></td></tr>      
+    <tr><td colspan=2>&nbsp;</td></tr>
+    <tr><td colspan=2>&nbsp;</td></tr>        
+    <tr><td colspan=2><table  width="100%" border="0" cellpadding="0" cellspacing="0" class="tblinfo" style="margin-top:0">
+      <thead><tr>
+        <td width="5%">S/N</td><td width="15%">Document Code</td>
+        <td width="20%">Document No.</td><td width="15%">Doc Ref</td>
+        <td width="15">Doc Deferral Expiry Date</td><td width="20%">Description</td>
+        <td width="10%">Status</td></tr></thead>
+      <tbody>
+## loop through each item
+#set ($itemList = $VelocityUtil.getCollection(${ob.getItemList()}))
+#set ($itemSize = $VelocityUtil.sizeOf($itemList))
+#set ($sNo = 1)
+#foreach ($item in $itemList)
+    <tr valign="top" class="odd">
+      <td align="left" class="index" >$sNo</td>
+      <td align="left">&nbsp;$!{item.getItemCode()}</td>
+      <td align="left">&nbsp;$!{item.getCheckListItemRef()}</td>
+      <td>&nbsp;$!{item.getDocRef()}</td>
+      <td>#if (${item.getDeferExtendedDate()}) 
+      		$!{DateUtil.formatDate("dd/MMM/yyyy", ${item.getDeferExtendedDate()})}
+      	  #else 
+      	  	$!{DateUtil.formatDate("dd/MMM/yyyy", ${item.getDeferExpiryDate()})}
+      	  #end &nbsp;              	  
+      <td align="left">&nbsp;$!{item.getItemDesc()}</td>
+      <td align="left">&nbsp;$!{item.getItemStatus()}</td>
+    </tr>
+##
+#set ($sNo = $sNo + 1)
+#end   ## end outer loop on deals
+  </tbody></table></td>
+</tr></tbody></table>

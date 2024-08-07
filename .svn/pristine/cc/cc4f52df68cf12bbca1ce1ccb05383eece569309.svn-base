@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts config to context mapping files for login module
+	</description>
+	
+   	<bean id="loginPropertyPlaceHolderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+   		<property name="locations">
+   			<list>
+   				<bean class="org.springframework.core.io.ClassPathResource">
+   					<constructor-arg value="ofa_env.properties" />
+   				</bean>
+   			</list>
+   		</property>
+   	</bean>
+
+	<bean name="/Login" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.login.LoginAction">
+		<property name="authenticator" ref="authenticator" />
+		<property name="loginManager" ref="loginManager" />
+	</bean>
+
+	<bean name="/SSLLogin" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.login.SSLLoginAction">
+		<property name="authenticator" ref="authenticator" />
+		<property name="loginManager" ref="loginManager" />
+	</bean>
+
+	<bean name="/ForceChangePassword" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.login.ForceChangePasswordAction">
+		<property name="authenticationManager" ref="${authentication.manager.bean.name}" />
+		<property name="passwordManager" ref="passwordManager" />
+		<property name="persistentBroker" ref="persistentBroker" />
+	</bean>
+	
+	<bean name="/Welcome" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.welcome.WelcomeAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="WelcomeCommand" value-ref="WelcomeAction.WelcomeCommand" />
+				<entry key="WelcomeLoadCommand" value-ref="WelcomeAction.WelcomeLoadCommand" />
+			</map>
+		</property>
+	</bean>
+
+</beans>

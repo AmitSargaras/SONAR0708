@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+		struts config to context mapping files for security envelope
+	</description>
+
+    <bean name="/MaintainSecurityEnvelope" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.securityenvelope.SecEnvelopeAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="CheckerApproveCreateSecEnvelopeCmd"
+                       value-ref="SecEnvelopeAction.CheckerApproveCreateSecEnvelopeCmd"/>
+                <!--       
+                <entry key="CheckerApproveDeletePropertyIdxCmd"
+                       value-ref="PropertyIdxAction.CheckerApproveDeletePropertyIdxCmd"/>-->
+                <entry key="CheckerApproveEditSecEnvelopeCmd" value-ref="SecEnvelopeAction.CheckerApproveEditSecEnvelopeCmd"/>
+                <entry key="CheckerProcessSecEnvelopeCmd" value-ref="SecEnvelopeAction.CheckerProcessSecEnvelopeCmd"/>
+               
+                <entry key="CheckerRejectCreateSecEnvelopeCmd"
+                       value-ref="SecEnvelopeAction.CheckerRejectCreateSecEnvelopeCmd"/>
+                <!--       
+                <entry key="CheckerRejectDeletePropertyIdxCmd"
+                       value-ref="PropertyIdxAction.CheckerRejectDeletePropertyIdxCmd"/>-->
+                <entry key="CheckerRejectEditSecEnvelopeCmd"
+                       value-ref="SecEnvelopeAction.CheckerRejectEditSecEnvelopeCmd"/>
+                <entry key="ListSecEnvelopeByLocCmd" value-ref="SecEnvelopeAction.ListSecEnvelopeByLocCmd"/>
+                
+                <entry key="MakerCloseSecEnvelopeCmd" value-ref="SecEnvelopeAction.MakerCloseSecEnvelopeCmd"/>
+                <entry key="MakerCreateSecEnvelopeCmd" value-ref="SecEnvelopeAction.MakerCreateSecEnvelopeCmd"/>
+                <!--
+                <entry key="MakerDeletePropertyIdxCmd" value-ref="PropertyIdxAction.MakerDeletePropertyIdxCmd"/>-->
+                <entry key="MakerEditSecEnvelopeCmd" value-ref="SecEnvelopeAction.MakerEditSecEnvelopeCmd"/>
+                <entry key="PrepareCreateSecEnvelopeCmd" value-ref="SecEnvelopeAction.PrepareCreateSecEnvelopeCmd"/>
+                <!--
+                <entry key="PrepareDeletePropertyIdxCmd" value-ref="PropertyIdxAction.PrepareDeletePropertyIdxCmd"/>-->
+                <entry key="PrepareSecEnvelopeByLocCmd" value-ref="SecEnvelopeAction.PrepareSecEnvelopeByLocCmd"/>
+                
+                <entry key="ReadSecEnvelopeCmd" value-ref="SecEnvelopeAction.ReadSecEnvelopeCmd"/>
+                <entry key="ReturnSecEnvelopeCmd" value-ref="SecEnvelopeAction.ReturnSecEnvelopeCmd"/>
+                <entry key="SaveCurWorkingSecEnvelopeCmd" value-ref="SecEnvelopeAction.SaveCurWorkingSecEnvelopeCmd"/>
+                <entry key="DeleteSecEnvelopeItemCmd" value-ref="SecEnvelopeAction.DeleteSecEnvelopeItemCmd"/>
+                <!--<entry key="ReadPropertyIdxItemCmd" value-ref="PropertyIdxAction.ReadPropertyIdxItemCmd"/>
+                <entry key="ReloadPropertyIndexCmd" value-ref="CollateralAction.ReloadPropertyIndexValuationProfileSingletonCommand"/>
+                -->
+            </map>
+        </property>
+    </bean>
+		
+    <bean name="/MaintainSecurityEnvelopeItem" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.securityenvelope.SecEnvelopeItemAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="PrepareSecEnvelopeItemCmd" value-ref="SecEnvelopeItemAction.PrepareSecEnvelopeItemCmd"/>
+                <entry key="SaveSecEnvelopeItemCmd" value-ref="SecEnvelopeItemAction.SaveSecEnvelopeItemCmd"/>
+                <!--<entry key="MakerChangeListPropertyIdxParameterCmd"
+                       value-ref="PropertyIdxItemAction.MakerChangeListPropertyIdxParameterCmd"/>-->
+            </map>
+        </property>
+    </bean>
+</beans>

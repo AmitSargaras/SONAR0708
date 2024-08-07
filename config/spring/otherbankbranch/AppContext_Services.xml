@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="otherBankProxyManager" class="com.integrosys.cms.app.otherbank.proxy.OtherBankProxyManagerImpl">
+		<property name="otherBankBusManager" ref="otherBankBusManager" />
+		<property name="stagingOtherBankBusManager" ref="stagingOtherBankBusManager" />
+		<property name="trxControllerFactory" ref="otherBankTrxControllerFactory" />
+	</bean>
+	
+	<bean id="otherBankBusManager" class="com.integrosys.cms.app.otherbank.bus.OtherBankBusManagerImpl">
+		<property name="otherBankDao" ref="otherBankDao" />
+	</bean>
+	
+	<bean id="stagingOtherBankBusManager" class="com.integrosys.cms.app.otherbank.bus.OtherBankBusManagerStagingImpl">
+		<property name="otherBankDao" ref="otherBankDao" />
+	</bean>
+	
+	<bean id="otherBranchProxyManager" class="com.integrosys.cms.app.otherbranch.proxy.OtherBranchProxyManagerImpl">
+		<property name="otherBranchBusManager" ref="otherBranchBusManager" />
+		<property name="stagingOtherBranchBusManager" ref="stagingOtherBranchBusManager" />
+		<property name="trxControllerFactory" ref="otherBranchTrxControllerFactory" />
+	</bean>
+	
+	<bean id="otherBranchBusManager" class="com.integrosys.cms.app.otherbranch.bus.OtherBranchBusManagerImpl">
+		<property name="otherBranchDAO" ref="otherBranchDAO" />
+	</bean>
+	
+	<bean id="stagingOtherBranchBusManager" class="com.integrosys.cms.app.otherbranch.bus.OtherBankBranchBusManagerStagingImpl">
+		<property name="otherBranchDAO" ref="otherBranchDAO" />
+	</bean>
+	
+	
+	
+	
+	
+	
+		<bean id="stagingOtherBankFileMapperIdBusManager" class="com.integrosys.cms.app.otherbank.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="otherBankDao" ref="otherBankDao" />
+		
+	</bean>
+	<bean id="otherBankFileMapperIdBusManager" class="com.integrosys.cms.app.otherbank.bus.FileMapperIdBusManagerImpl">
+		<property name="otherBankDao" ref="otherBankDao" />
+		
+	</bean>
+	
+	
+		
+	<bean id="stagingOtherBankBranchFileMapperIdBusManager" class="com.integrosys.cms.app.otherbranch.bus.FileMapperBranchIdBusManagerStagingImpl">
+		    <property name="otherBranchDAO" ref="otherBranchDAO" />
+	</bean>
+	<bean id="otherBankBranchFileMapperIdBusManager" class="com.integrosys.cms.app.otherbranch.bus.FileMapperBranchIdBusManagerImpl">
+		<property name="otherBranchDAO" ref="otherBranchDAO" />
+		
+	</bean>
+	
+	
+</beans>

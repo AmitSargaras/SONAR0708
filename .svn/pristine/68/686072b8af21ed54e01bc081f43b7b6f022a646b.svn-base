@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts config to context mapping files for user team maintenance
+	</description>
+
+  <bean name="/bizSearch" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.bizstructure.AddUserAction">
+    <property name="nameCommandMap">
+      <map>
+        <entry key="ForwardMapCmd" value-ref="AddUserAction.ForwardMapCmd"/>
+        <entry key="ListUsersCmd" value-ref="AddUserAction.ListUsersCmd"/>
+      </map>
+    </property>
+  </bean>
+
+  <bean name="/bizstructure" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.bizstructure.MaintainTeamAction">
+    <property name="nameCommandMap">
+      <map>
+        <entry key="AddUserCmd" value-ref="MaintainTeamAction.AddUserCmd"/>
+        <entry key="CheckerApproveAddTeamCmd" value-ref="MaintainTeamAction.CheckerApproveAddTeamCmd"/>
+        <entry key="CheckerApproveDeleteTeamCmd" value-ref="MaintainTeamAction.CheckerApproveDeleteTeamCmd"/>
+        <entry key="CheckerApproveEditTeamCmd" value-ref="MaintainTeamAction.CheckerApproveEditTeamCmd"/>
+        <entry key="CheckerReadTeamCmd" value-ref="MaintainTeamAction.CheckerReadTeamCmd"/>
+        <entry key="CheckerRejectAddTeamCmd" value-ref="MaintainTeamAction.CheckerRejectAddTeamCmd"/>
+        <entry key="CheckerRejectDeleteTeamCmd" value-ref="MaintainTeamAction.CheckerRejectDeleteTeamCmd"/>
+        <entry key="CheckerRejectEditTeamCmd" value-ref="MaintainTeamAction.CheckerRejectEditTeamCmd"/>
+        <entry key="DefaultTeamCmd" value-ref="MaintainTeamAction.DefaultTeamCmd"/>
+        <entry key="GetOrgByCtryCmd" value-ref="MaintainTeamAction.GetOrgByCtryCmd"/>
+        <entry key="GetOrgGroupByCtryCmd" value-ref="MaintainTeamAction.GetOrgGroupByCtryCmd"/>
+        <entry key="GetSegmentByCtryCmd" value-ref="MaintainTeamAction.GetSegmentByCtryCmd"/>
+        <entry key="ListTeamTypesCmd" value-ref="MaintainTeamAction.ListTeamTypesCmd"/>
+        <entry key="MakerAddTeamCmd" value-ref="MaintainTeamAction.MakerAddTeamCmd"/>
+        <entry key="MakerCnclAddTeamCmd" value-ref="MaintainTeamAction.MakerCnclAddTeamCmd"/>
+        <entry key="MakerCnclDeleteTeamCmd" value-ref="MaintainTeamAction.MakerCnclDeleteTeamCmd"/>
+        <entry key="MakerCnclEditTeamCmd" value-ref="MaintainTeamAction.MakerCnclEditTeamCmd"/>
+        <entry key="MakerDeleteTeamCmd" value-ref="MaintainTeamAction.MakerDeleteTeamCmd"/>
+        <entry key="MakerEditTeamCmd" value-ref="MaintainTeamAction.MakerEditTeamCmd"/>
+        <entry key="MakerListTeamCmd" value-ref="MaintainTeamAction.MakerListTeamCmd"/>
+        <entry key="MakerReadTeamCmd" value-ref="MaintainTeamAction.MakerReadTeamCmd"/>
+        <entry key="PrepareMakerAddTeamCmd" value-ref="MaintainTeamAction.PrepareMakerAddTeamCmd"/>
+        <entry key="RemoveTeamUserCmd" value-ref="MaintainTeamAction.RemoveTeamUserCmd"/>
+        <entry key="UserSearchCmd" value-ref="MaintainTeamAction.UserSearchCmd"/>
+      </map>
+    </property>
+  </bean>
+
+</beans>

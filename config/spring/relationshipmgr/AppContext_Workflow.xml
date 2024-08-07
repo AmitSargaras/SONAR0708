@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+    
+    <!-- ############################ Relationship Manager ############################### -->
+
+    <bean id="RelationshipManagerTrx.ReadRelationshipManagerOperation" 
+    	class="com.integrosys.cms.app.relationshipmgr.trx.ReadRelationshipMgrOperation">
+        <property name="relationshipMgrBusManager" ref="relationshipMgrBusManager"/>
+        <property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager"/>
+    </bean>
+    
+    <bean id="RelationshipManagerTrx.ReadRelationshipManagerIDOperation" 
+    	class="com.integrosys.cms.app.relationshipmgr.trx.ReadRelationshipMgrIDOperation">
+        <property name="relationshipMgrBusManager" ref="relationshipMgrBusManager"/>
+        <property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager"/>
+    </bean>
+	<bean id="RelationshipManagerTrx.MakerUpdateRelationshipManagerOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerUpdateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.MakerCreateRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerCreateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.MakerDeleteRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerDeleteRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	<bean id="RelationShipMgrTrx.MakerEditRejectedUpdateRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerEditRejectedUpdateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	<bean id="RelationShipMgrTrx.MakerEditRejectedDeleteRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerEditRejectedDeleteRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	<bean id="RelationShipMgrTrx.MakerCloseRejectedCreateRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerCloseRejectedCreateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.MakerCloseRejectedUpdateRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerCloseRejectedUpdateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	<bean id="RelationShipMgrTrx.CheckerApproveUpdateRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.CheckerApproveUpdateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.CheckerApproveDeleteRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.CheckerApproveDeleteRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.CheckerApproveCreateRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.CheckerApproveCreateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	<bean id="RelationShipMgrTrx.CheckerRejectRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.CheckerRejectRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.MakerCloseRejectedDeleteRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerCloseRejectedDeleteRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.MakerEditRejectedCreateRelationShipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerEditRejectedCreateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.MakerSaveCreateRelationshipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerSaveCreateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.MakerSubmitSaveCreateRelationshipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerSubmitSaveCreateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationShipMgrTrx.MakerCloseDraftCreateRelationshipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerCloseDraftCreateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationshipManagerTrx.MakerSubmitSaveUpdateRelationshipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerSubmitSaveUpdateRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+	<bean id="RelationshipManagerTrx.MakerUpdateSaveRelationshipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerUpdateSaveRelationshipMgrOperation">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+	</bean>
+	
+    <bean id="relationshipMgrReadController" class="com.integrosys.cms.app.relationshipmgr.trx.RelationshipMgrReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadRelationShipMgrOperation" value-ref="RelationshipManagerTrx.ReadRelationshipManagerOperation"/>
+                 <entry key="ReadRelationShipMgrIDOperation" value-ref="RelationshipManagerTrx.ReadRelationshipManagerIDOperation"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="relationshipMgrTrxController" class="com.integrosys.cms.app.relationshipmgr.trx.RelationshipMgrTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerCreateRelationShipMgrOperation"/>
+            	  
+            	  <entry key="MakerSaveCreateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerSaveCreateRelationshipMgrOperation"/>
+            	  <entry key="MakerSubmitSaveCreateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerSubmitSaveCreateRelationshipMgrOperation"/>
+            	  <entry key="MakerCloseDraftCreateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerCloseDraftCreateRelationshipMgrOperation"/>
+            	  <entry key="MakerSubmitSaveUpdateRelationshipMgrOperation" value-ref="RelationshipManagerTrx.MakerSubmitSaveUpdateRelationshipMgrOperation"/>
+            	  <entry key="MakerUpdateSaveRelationshipMgrOperation" value-ref="RelationshipManagerTrx.MakerUpdateSaveRelationshipMgrOperation"/>
+            	  	
+				  <entry key="MakerUpdateRelationshipMgrOperation" value-ref="RelationshipManagerTrx.MakerUpdateRelationshipManagerOperation"/>
+				  <entry key="MakerDeleteRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerDeleteRelationShipMgrOperation"/>
+            	  <entry key="MakerEditRejectedCreateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerEditRejectedCreateRelationShipMgrOperation"/>
+            	  <entry key="MakerEditRejectedUpdateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerEditRejectedUpdateRelationShipMgrOperation"/>
+            	  <entry key="MakerEditRejectedDeleteRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerEditRejectedDeleteRelationShipMgrOperation"/>
+            	  <entry key="MakerCloseRejectedCreateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerCloseRejectedCreateRelationShipMgrOperation"/>
+                  <entry key="MakerCloseRejectedUpdateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerCloseRejectedUpdateRelationShipMgrOperation"/>
+                  <entry key="MakerCloseRejectedDeleteRelationshipMgrOperation" value-ref="RelationShipMgrTrx.MakerCloseRejectedDeleteRelationShipMgrOperation"/>
+
+                  <entry key="CheckerRejectRelationshipMgrOperation" value-ref="RelationShipMgrTrx.CheckerRejectRelationShipMgrOperation"/>
+                  <entry key="CheckerApproveUpdateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.CheckerApproveUpdateRelationShipMgrOperation"/>
+                  <entry key="CheckerApproveCreateRelationshipMgrOperation" value-ref="RelationShipMgrTrx.CheckerApproveCreateRelationShipMgrOperation"/>
+                  <entry key="CheckerApproveDeleteRelationshipMgrOperation" value-ref="RelationShipMgrTrx.CheckerApproveDeleteRelationShipMgrOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    
+    <bean id="RelationshipMgrTrx.MakerRelationshipMgrInsertFileOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerRelationshipMgrInsertFileOperation">
+		 <property name="relationshipMgrFileMapperIdBusManager" ref="relationshipMgrFileMapperIdBusManager"/>
+        <property name="stagingRelationshipMgrFileMapperIdBusManager" ref="stagingRelationshipMgrFileMapperIdBusManager"/>
+	</bean>
+	<bean id="RelationshipMgrTrx.CheckerApproveInsertMasterOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.CheckerApproveInsertMasterOperation">
+		 <property name="relationshipMgrFileMapperIdBusManager" ref="relationshipMgrFileMapperIdBusManager"/>
+        <property name="stagingRelationshipMgrFileMapperIdBusManager" ref="stagingRelationshipMgrFileMapperIdBusManager"/>
+	</bean>
+	<bean id="RelationshipMgrTrx.CheckerRejectInsertMasterOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.CheckerRejectInsertMasterOperation">
+		 <property name="relationshipMgrFileMapperIdBusManager" ref="relationshipMgrFileMapperIdBusManager"/>
+        <property name="stagingRelationshipMgrFileMapperIdBusManager" ref="stagingRelationshipMgrFileMapperIdBusManager"/>
+	</bean>
+	<bean id="RelationshipMgrTrx.FileInsertReadOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.FileInsertReadOperation">
+		<property name="relationshipMgrFileMapperIdBusManager" ref="relationshipMgrFileMapperIdBusManager"/>
+        <property name="stagingRelationshipMgrFileMapperIdBusManager" ref="stagingRelationshipMgrFileMapperIdBusManager"/>
+	</bean>
+	<bean id="RelationshipMgrTrx.MakerCloseRejectedInsertMasterOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.MakerCloseRejectedInsertMasterOperation">
+		 <property name="relationshipMgrFileMapperIdBusManager" ref="relationshipMgrFileMapperIdBusManager"/>
+        <property name="stagingRelationshipMgrFileMapperIdBusManager" ref="stagingRelationshipMgrFileMapperIdBusManager"/>
+	</bean>
+	<bean id="RelationshipMgrTrx.CheckerCreateRelationshipMgrOperation"
+		class="com.integrosys.cms.app.relationshipmgr.trx.CheckerCreateRelationshipMgrOperation">
+		<property name="relationshipMgrFileMapperIdBusManager" ref="relationshipMgrFileMapperIdBusManager"/>
+        <property name="stagingRelationshipMgrFileMapperIdBusManager" ref="stagingRelationshipMgrFileMapperIdBusManager"/>
+	</bean>
+    
+    <bean id="relationshipMgrInsertFileTrxController" class="com.integrosys.cms.app.relationshipmgr.trx.InsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>        	 
+                  <entry key="MakerRelationshipMgrInsertFileOperation" value-ref="RelationshipMgrTrx.MakerRelationshipMgrInsertFileOperation" />
+                  <entry key="CheckerApproveInsertMasterOperation" value-ref="RelationshipMgrTrx.CheckerApproveInsertMasterOperation" />
+                  <entry key="CheckerRejectInsertMasterOperation" value-ref="RelationshipMgrTrx.CheckerRejectInsertMasterOperation" />
+                  <entry key="MakerCloseRejectedInsertMasterOperation" value-ref="RelationshipMgrTrx.MakerCloseRejectedInsertMasterOperation"/>
+                   <entry key="CheckerCreateRelationshipMgrOperation" value-ref="RelationshipMgrTrx.CheckerCreateRelationshipMgrOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    <bean id="readRelationshipMgrInsertFileTrxController" class="com.integrosys.cms.app.relationshipmgr.trx.ReadInsertFileTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="FileInsertReadOperation" value-ref="RelationshipMgrTrx.FileInsertReadOperation"/>                   
+            </map>
+        </property>
+    </bean>
+
+    <bean id="relationshipMgrTrxControllerFactory" class="com.integrosys.cms.app.relationshipmgr.trx.RelationshipMgrTrxControllerFactory">
+        <property name="relationshipMgrReadController" ref="relationshipMgrReadController"/>
+        <property name="relationshipMgrTrxController" ref="relationshipMgrTrxController"/>
+        <property name="relationshipMgrInsertFileTrxController" ref="relationshipMgrInsertFileTrxController"/>
+        <property name="readRelationshipMgrInsertFileTrxController" ref="readRelationshipMgrInsertFileTrxController"/>
+    </bean>
+</beans>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="UBSUploadForm" type="com.integrosys.cms.ui.ubsupload.UBSUploadForm">
+        </form-bean>
+
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/Ubsupload" type="com.integrosys.cms.ui.ubsupload.UBSUploadAction" name="UBSUploadForm" validate="false" scope="request">
+            <forward name="csvupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ubsupload/upload_ubs.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.ubsupload"/>
+            </forward>
+            <forward name="ubsupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ubsupload/list_ubs_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.ubsupload"/>
+            </forward>
+        </action>
+		
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+</struts-config>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+    <!-- Added By Dayananda Laishram for Basel Report Generation on 12-May-2015 BASEL_REPORT_ON_EOD || Starts -->
+	<bean id="SystemHandOffAction.BASELCmd" class="com.integrosys.cms.ui.systemHandOff.EndOfDayBaselUpdateReportCommand">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl" />
+    </bean>
+    <!-- Added By Dayananda Laishram for Basel Report Generation on 12-May-2015 BASEL_REPORT_ON_EOD || Ends -->
+    
+    <bean id="SystemHandOffAction.EODCmd" class="com.integrosys.cms.ui.systemHandOff.EndOfDayCommand">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl" />
+                <property name="endOfDaySyncMastersService" ref="EndOfDaySyncMastersServiceImpl"/>
+        
+    </bean>
+   	<bean id="SystemHandOffAction.AdfRbiCmd" class="com.integrosys.cms.ui.systemHandOff.AdfRbiCommand">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl" />
+    </bean>
+	<bean id="SystemHandOffAction.EOYCmd" class="com.integrosys.cms.ui.systemHandOff.EndOfYearCommand">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl" />
+    </bean>
+	<bean id="SystemHandOffAction.DownloadFcUbsFileCmd" class="com.integrosys.cms.ui.systemHandOff.DownloadFcUbsFileCmd">
+        <property name="endOfDayBatchService" ref="EndOfDayBatchServiceImpl" />
+    </bean>
+ 
+</beans>
+

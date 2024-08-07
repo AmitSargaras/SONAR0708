@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+        "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+
+        <form-bean name="CountryLimitForm" type="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryLimitForm">
+        </form-bean>
+        <form-bean name="CountryLimitItemForm"
+                   type="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryLimitItemForm">
+        </form-bean>
+        <form-bean name="CountryRatingForm" type="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryRatingForm">
+        </form-bean>
+        <form-bean name="BankEntityBranchParamForm"
+                   type="com.integrosys.cms.ui.creditriskparam.bankentitybranch.BankEntityBranchParamForm">
+        </form-bean>
+        <form-bean name="BankEntityBranchParamItemForm"
+                   type="com.integrosys.cms.ui.creditriskparam.bankentitybranch.BankEntityBranchParamItemForm">
+        </form-bean>
+        <form-bean name="InternalLmtParameterForm"
+                   type="com.integrosys.cms.ui.creditriskparam.internallimit.list.InternalLmtParameterForm">
+        </form-bean>
+        <form-bean name="EICustSearchForm"
+                   type="com.integrosys.cms.ui.creditriskparam.exemptedinst.customer.EICustSearchForm"/>
+        <form-bean name="ExemptedInstListForm"
+                   type="com.integrosys.cms.ui.creditriskparam.exemptedinst.list.ExemptedInstListForm"/>
+        <form-bean name="ELCustSearchForm"
+                   type="com.integrosys.cms.ui.creditriskparam.entitylimit.customer.ELCustSearchForm"/>
+        <form-bean name="EntityLimitListForm"
+                   type="com.integrosys.cms.ui.creditriskparam.entitylimit.list.EntityLimitListForm"/>
+        <form-bean name="InternalCreditRatingForm"
+                   type="com.integrosys.cms.ui.creditriskparam.internalcreditrating.InternalCreditRatingForm">
+        </form-bean>
+        <form-bean name="InternalCreditRatingItemForm"
+                   type="com.integrosys.cms.ui.creditriskparam.internalcreditrating.InternalCreditRatingItemForm">
+        </form-bean>
+        <form-bean name="ExemptFacilityForm"
+                   type="com.integrosys.cms.ui.creditriskparam.exemptFacility.ExemptFacilityForm"/>
+        <form-bean name="SectorLimitForm" type="com.integrosys.cms.ui.creditriskparam.sectorlimit.SectorLimitForm"/>
+        <form-bean name="SubSectorLimitForm"
+                   type="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.SubSectorLimitForm"/>
+        <form-bean name="EconSectorLimitForm"
+                   type="com.integrosys.cms.ui.creditriskparam.sectorlimit.econsectorlimit.EconSectorLimitForm"/>
+        <form-bean name="ProductProgramLimitForm"
+                   type="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ProductProgramLimitForm"/>
+        <form-bean name="ProductTypeLimitForm"
+                   type="com.integrosys.cms.ui.creditriskparam.producttypelimit.ProductTypeLimitForm"/>
+    </form-beans>
+
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <!-- Maintain Country limit Action. -->
+        <action path="/CountryLimitParam"
+                type="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryLimitAction"
+                name="CountryLimitForm"
+                validate="false" scope="request">
+            <forward name="read_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/countrylimit/countrylimit_read.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="update_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/countrylimit/countrylimit_update.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/countrylimit/countrylimit_process.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/countrylimit/countrylimit_close.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="create_item_detail" path="/CountryLimitItemParam.do?event=prepare_create"/>
+            <forward name="update_item_detail" path="/CountryLimitItemParam.do?event=prepare_update"/>
+            <forward name="update_country_rating" path="/CountryRatingParam.do?event=prepare_update"/>
+            <forward name="ack_submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="ack_save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="ack_approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="ack_reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="ack_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+        </action>
+
+        <action path="/CountryLimitItemParam"
+                type="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryLimitItemAction"
+                name="CountryLimitItemForm" validate="false" scope="request">
+            <forward name="update_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/countrylimit/countrylimititem_update.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="read_return" path="/CountryLimitParam.do?event=read_return"/>
+            <forward name="update_return" path="/CountryLimitParam.do?event=update_return"/>
+            <forward name="process_return" path="/CountryLimitParam.do?event=process_return"/>
+            <forward name="close_return" path="/CountryLimitParam.do?event=close_return"/>
+            <forward name="track_return" path="/CountryLimitParam.do?event=track_return"/>
+        </action>
+
+        <action path="/CountryRatingParam" type="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryRatingAction"
+                name="CountryRatingForm" validate="false" scope="request">
+            <forward name="update_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/countrylimit/countryrating_update.jsp"/>
+                <set-property property="title" value="title.crp.countryLimit"/>
+            </forward>
+            <forward name="read_return" path="/CountryLimitParam.do?event=read_return"/>
+            <forward name="update_return" path="/CountryLimitParam.do?event=update_return"/>
+            <forward name="process_return" path="/CountryLimitParam.do?event=process_return"/>
+            <forward name="close_return" path="/CountryLimitParam.do?event=close_return"/>
+            <forward name="track_return" path="/CountryLimitParam.do?event=track_return"/>
+        </action>
+        <action path="/bankEntityBranchParam"
+                type="com.integrosys.cms.ui.creditriskparam.bankentitybranch.BankEntityBranchParamAction"
+                name="BankEntityBranchParamForm" validate="false" scope="request">
+            <forward name="maker_prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/bankentitybranch/list_update.jsp"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/bankentitybranch/list_close.jsp"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+            <forward name="maker_submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+            <forward name="maker_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+            <forward name="maker_prepare_item" path="/bankEntityBranchParamItem.do?event=maker_prepare_item"/>
+            <forward name="checker_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/bankentitybranch/list_checker_view.jsp"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+            <forward name="checker_approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+            <forward name="checker_reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+        </action>
+
+        <action path="/bankEntityBranchParamItem"
+                type="com.integrosys.cms.ui.creditriskparam.bankentitybranch.BankEntityBranchParamItemAction"
+                name="BankEntityBranchParamItemForm" validate="false" scope="request">
+            <forward name="maker_return_item" path="/bankEntityBranchParam.do?event=maker_return_item"/>
+            <forward name="maker_prepare_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/bankentitybranch/prepare.jsp"/>
+                <set-property property="title" value="title.bank.entity.branch.param.name"/>
+            </forward>
+        </action>
+
+        <action path="/InternalLimitList"
+                type="com.integrosys.cms.ui.creditriskparam.internallimit.list.InternalLmtParamAction"
+                name="InternalLmtParameterForm" validate="false" scope="request">
+            <forward name="internal_limit_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/internallimit/list/internal_lmt_view.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="maker_edit_internallimit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/internallimit/list/internal_lmt_edit.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="maker_edit_internalLmt_confirm" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="checker_process_internalLmt" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/internallimit/list/internal_lmt_process.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/internallimit/list/internal_lmt_view.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="checker_approve_internalLmt" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="checker_reject_internalLmt" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="maker_edit_internalLmt_reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/internallimit/list/internal_lmt_edit.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/internallimit/list/internal_lmt_view.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="maker_close_internalLmt_confirm" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="roleDesc" value="role.sys.maker"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+            <forward name="maker_resubmit_edit_internalLmt_confirm" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.internallimit.list"/>
+            </forward>
+        </action>
+
+        <action path="/EICustomerSearch"
+                type="com.integrosys.cms.ui.creditriskparam.exemptedinst.customer.EICustomerSearchAction"
+                name="EICustSearchForm"
+                validate="false" scope="request">
+            <forward name="customer_search" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptinst/customer/search.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+
+            <forward name="customer_add" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptinst/customer/search.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="add_customer_search_result" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptinst/customer/search_select.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="add_customer_search_select" path="/ExemptInst.do?event=add_new"/>
+
+        </action>
+
+        <action path="/ExemptInst" type="com.integrosys.cms.ui.creditriskparam.exemptedinst.list.ExemptedInstListAction"
+                name="ExemptedInstListForm" validate="false" scope="request">
+            <forward name="list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptinst/list/list.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="add" path="/EICustomerSearch.do?event=customer_add"/>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="list2ForChecker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptinst/list/list2.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="workInProgress" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptinst/list/view.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptinst/list/track.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+            <forward name="view_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptinst/list/view.jsp"/>
+                <set-property property="title" value="title.crp.exemptinst"/>
+            </forward>
+        </action>
+
+        <action path="/ELCustomerSearch"
+                type="com.integrosys.cms.ui.creditriskparam.entitylimit.customer.ELCustomerSearchAction"
+                name="ELCustSearchForm"
+                validate="false" scope="request">
+            <forward name="customer_search" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/customer/search.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+
+            <forward name="customer_add" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/customer/search.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="add_customer_search_result" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/customer/search_select.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="add_customer_search_select" path="/EntityLimit.do?event=add_new"/>
+        </action>
+
+        <action path="/EntityLimit" type="com.integrosys.cms.ui.creditriskparam.entitylimit.list.EntityLimitListAction"
+                name="EntityLimitListForm" validate="false" scope="request">
+            <forward name="list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/list/list.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="add" path="/ELCustomerSearch.do?event=customer_add"/>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="list2ForChecker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/list/list2.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="workInProgress" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/list/view.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/list/track.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="view_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/list/view.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+            <forward name="edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/entitylimit/list/edit.jsp"/>
+                <set-property property="title" value="title.crp.entitylimit"/>
+            </forward>
+        </action>
+
+        <action path="/InternalCreditRatingParam"
+                type="com.integrosys.cms.ui.creditriskparam.internalcreditrating.InternalCreditRatingAction"
+                name="InternalCreditRatingForm" validate="false" scope="request">
+            <forward name="credit_rating_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/internalcreditrating/internal_credit_rating_update.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="maker_create_item" path="/InternalCreditRatingItem.do?event=maker_create_item"/>
+            <forward name="maker_edit_item" path="/InternalCreditRatingItem.do?event=maker_edit_item"/>
+            <forward name="maker_return_add_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/internalcreditrating/internal_credit_rating_update.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="checker_prepare_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/internalcreditrating/internal_credit_rating_process.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/internalcreditrating/internal_credit_rating_close.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="maker_prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/internalcreditrating/internal_credit_rating_update.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="maker_submit_internalCreditrating" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/internalcreditrating/internal_credit_rating_close.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+
+        </action>
+
+        <action path="/InternalCreditRatingItem"
+                type="com.integrosys.cms.ui.creditriskparam.internalcreditrating.InternalCreditRatingItemAction"
+                name="InternalCreditRatingItemForm" validate="false" scope="request">
+            <forward name="update_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/internalcreditrating/internal_credit_rating_add_item.jsp"/>
+                <set-property property="title" value="title.crp.internal.credit.rating"/>
+            </forward>
+            <forward name="update_return" path="/InternalCreditRatingParam.do?event=maker_return_add_item"/>
+
+        </action>
+
+
+        <action path="/ExemptFacility" type="com.integrosys.cms.ui.creditriskparam.exemptFacility.ExemptFacilityAction"
+                name="ExemptFacilityForm" scope="request">
+            <forward name="list" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/exemptFacility/maker_list_exempt_facility.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptFacility/view_exempt_facility.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="prepare_add" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptFacility/maker_add_edit.jsp"/>
+                <set-property property="roleDesc" value="role.sac.maker"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="prepare_edit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptFacility/maker_add_edit.jsp"/>
+                <set-property property="roleDesc" value="role.sac.maker"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="refresh" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/exemptFacility/maker_add_edit.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="maker_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="checker_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/exemptFacility/checker_exempt_facility.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="checker_approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="checker_reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="maker_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/exemptFacility/maker_list_exempt_facility.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="maker_close_confirm" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/exemptFacility/maker_list_exempt_facility.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="to_track" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/exemptFacility/to_track_exempt_facility.jsp"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.exemptFacility"/>
+            </forward>
+        </action>
+
+        <action path="/SectorLimitParam" type="com.integrosys.cms.ui.creditriskparam.sectorlimit.SectorLimitAction"
+                name="SectorLimitForm" validate="false" scope="request">
+            <forward name="list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/sectorlimit_list.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/sectorlimit_view.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/sectorlimit_update.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="checker_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/sectorlimit_checker_view.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/sectorlimit_track.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="add_item" path="/SubSectorLimitParam.do?event=prepare"/>
+            <forward name="edit_item" path="/SubSectorLimitParam.do?event=prepare_update"/>
+            <forward name="view_subitem" path="/SubSectorLimitParam.do?event=read_subitem"/>
+            <forward name="checker_process_subitem" path="/SubSectorLimitParam.do?event=checker_view_subitem"/>
+        </action>
+
+        <action path="/SubSectorLimitParam"
+                type="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.SubSectorLimitAction"
+                name="SubSectorLimitForm" validate="false" scope="request">
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/subsectorlimit_update.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="read_subitem" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/subsectorlimit_view.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="checker_view_subitem" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/subsectorlimit_checker_view.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="return" path="/SectorLimitParam.do?event=return"/>
+            <forward name="add_item" path="/EconSectorLimitParam.do?event=prepare"/>
+            <forward name="edit_item" path="/EconSectorLimitParam.do?event=prepare_update"/>
+        </action>
+
+        <action path="/EconSectorLimitParam"
+                type="com.integrosys.cms.ui.creditriskparam.sectorlimit.econsectorlimit.EconSectorLimitAction"
+                name="EconSectorLimitForm" validate="false" scope="request">
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/sectorlimit/econsectorlimit_update.jsp"/>
+                <set-property property="title" value="title.sectorlimit"/>
+            </forward>
+            <forward name="return" path="/SubSectorLimitParam.do?event=return_frm_ecoSector"/>
+        </action>
+
+        <action path="/ProductProgramLimitParam"
+                type="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ProductProgramLimitAction"
+                name="ProductProgramLimitForm" validate="false" scope="request">
+            <forward name="list" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/productlimit/product_program_limit_list.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/productlimit/product_program_limit_view.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/productlimit/product_program_limit_update.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="checker_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/productlimit/product_program_limit_checker_view.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/productlimit/product_program_limit_track.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="add_item" path="/ProductTypeLimitParam.do?event=prepare"/>
+            <forward name="edit_item" path="/ProductTypeLimitParam.do?event=prepare_update"/>
+            <forward name="view_subitem" path="/ProductTypeLimitParam.do?event=read_subitem"/>
+        </action>
+
+        <action path="/ProductTypeLimitParam"
+                type="com.integrosys.cms.ui.creditriskparam.producttypelimit.ProductTypeLimitAction"
+                name="ProductTypeLimitForm" validate="false" scope="request">
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame"
+                              value="/creditriskparam/productlimit/product_type_limit_update.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="read_subitem" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/creditriskparam/productlimit/product_type_limit_view.jsp"/>
+                <set-property property="title" value="title.productlimit"/>
+            </forward>
+            <forward name="return" path="/ProductProgramLimitParam.do?event=return"/>
+        </action>
+
+    </action-mappings>
+
+    <message-resources key="message-creditriskparam" parameter="ApplicationResources-creditriskparam"/>
+</struts-config>

@@ -1,0 +1,432 @@
+----Check if it is present or not--if it is there then please ignor---------------------------
+CREATE TABLE CMS_EROSION_STATUS
+  (
+    ID       NUMBER NOT NULL ENABLE,
+    REPORTING_DATE  DATE,
+    ACTIVITY VARCHAR2(100 BYTE),
+    STATUS   VARCHAR2(20 BYTE)
+  );
+  
+----Check if it is present or not--if it is there then please ignor-----------------------------------
+CREATE SEQUENCE  CMS_EROSION_STATUS_SEQ  MINVALUE 1 MAXVALUE 999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP GLOBAL ;
+  
+----Check if it is present or not--if it is there then please ignor-----------------------------------------------  
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES(1,SYSDATE,'Create Data - Facility Report','PENDING');
+  
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES((select max(ID)+1 FROM CMS_EROSION_STATUS),SYSDATE,'Create Data - Security Report','PENDING');
+  
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES((select max(ID)+1 FROM CMS_EROSION_STATUS),SYSDATE,'Create Data - Facility wise Erosion % Report','PENDING');
+  
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES((select max(ID)+1 FROM CMS_EROSION_STATUS),SYSDATE,'Create Data - Party wise Erosion % Report','PENDING');
+
+----Check if it is present or not--if it is there then please ignor---------------------------------------------------------------------
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES((select max(ID)+1 FROM CMS_EROSION_STATUS),SYSDATE,'Generate File - Facility Report','PENDING');
+  
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES((select max(ID)+1 FROM CMS_EROSION_STATUS),SYSDATE,'Generate File - Security Report','PENDING');
+  
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES((select max(ID)+1 FROM CMS_EROSION_STATUS),SYSDATE,'Generate File - Facility wise Erosion % Report','PENDING');
+  
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES((select max(ID)+1 FROM CMS_EROSION_STATUS),SYSDATE,'Generate File - Party wise Erosion % Report','PENDING');
+
+---Check if it is present or not--if it is there then please ignor----------------------------------------------------------------
+  INSERT INTO CMS_EROSION_STATUS (ID,REPORTING_DATE,ACTIVITY,STATUS) 
+  VALUES((select max(ID)+1 FROM CMS_EROSION_STATUS),SYSDATE,'Update Erosion % for NPA TRAQ file','PENDING');
+
+---Check if it is present or not--if it is there then please ignor-----------------------------------------------------
+
+INSERT
+INTO COMMON_CODE_CATEGORY_ENTRY
+  (
+    ENTRY_ID,
+    ENTRY_CODE,
+    ENTRY_NAME,
+    ACTIVE_STATUS,
+    CATEGORY_CODE,
+    CATEGORY_CODE_ID,
+    ENTRY_SOURCE,
+    COUNTRY,
+    GROUP_ID,
+    Ref_Entry_Code,
+    Version_Time,
+    Status,
+    Creation_Date,
+    Last_Update_Date,
+    Cps_Id,
+    Eod_Sync_Status,
+    Ecbf_Id
+  )
+  VALUES
+  (
+    (SELECT MAX(ENTRY_ID) + 1 FROM COMMON_CODE_CATEGORY_ENTRY
+    )
+    ,
+    'EROSION01',
+    'CLIMS TRAQ Provision Report (Customer- Facility)',
+    '1',
+    'REPORTS' ,
+    (SELECT Category_Id
+    FROM Common_Code_Category
+    WHERE Category_Code = 'REPORTS'
+    AND Active_Status   ='A'
+    ) ,
+    NULL,
+    'IN',
+    NULL,
+    NULL,
+    0,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    'SUCCESSFUL',
+    NULL
+  );
+---Check if it is present or not--if it is there then please ignor---------------------------------------------------
+INSERT
+INTO COMMON_CODE_CATEGORY_ENTRY
+  (
+    ENTRY_ID,
+    ENTRY_CODE,
+    ENTRY_NAME,
+    ACTIVE_STATUS,
+    CATEGORY_CODE,
+    CATEGORY_CODE_ID,
+    ENTRY_SOURCE,
+    COUNTRY,
+    GROUP_ID,
+    Ref_Entry_Code,
+    Version_Time,
+    Status,
+    Creation_Date,
+    Last_Update_Date,
+    Cps_Id,
+    Eod_Sync_Status,
+    Ecbf_Id
+  )
+  VALUES
+  (
+    (SELECT MAX(ENTRY_ID) + 1 FROM COMMON_CODE_CATEGORY_ENTRY
+    )
+    ,
+    'EROSION02',
+    'CLIMS TRAQ Provision Report (Customer- Security)',
+    '1',
+    'REPORTS' ,
+    (SELECT Category_Id
+    FROM Common_Code_Category
+    WHERE Category_Code = 'REPORTS'
+    AND Active_Status   ='A'
+    ) ,
+    NULL,
+    'IN',
+    NULL,
+    NULL,
+    0,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    'SUCCESSFUL',
+    NULL
+  );
+  ----Check if it is present or not--if it is there then please ignor--------------------------------------------------
+INSERT
+INTO COMMON_CODE_CATEGORY_ENTRY
+  (
+    ENTRY_ID,
+    ENTRY_CODE,
+    ENTRY_NAME,
+    ACTIVE_STATUS,
+    CATEGORY_CODE,
+    CATEGORY_CODE_ID,
+    ENTRY_SOURCE,
+    COUNTRY,
+    GROUP_ID,
+    Ref_Entry_Code,
+    Version_Time,
+    Status,
+    Creation_Date,
+    Last_Update_Date,
+    Cps_Id,
+    Eod_Sync_Status,
+    Ecbf_Id
+  )
+  VALUES
+  (
+    (SELECT MAX(ENTRY_ID) + 1 FROM COMMON_CODE_CATEGORY_ENTRY
+    )
+    ,
+    'EROSION03',
+    'CLIMS TRAQ Provision Report (Facility wise erosion report)',
+    '1',
+    'REPORTS' ,
+    (SELECT Category_Id
+    FROM Common_Code_Category
+    WHERE Category_Code = 'REPORTS'
+    AND Active_Status   ='A'
+    ) ,
+    NULL,
+    'IN',
+    NULL,
+    NULL,
+    0,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    'SUCCESSFUL',
+    NULL
+  );
+  ---Check if it is present or not--if it is there then please ignor---------------------------------------------------
+INSERT
+INTO COMMON_CODE_CATEGORY_ENTRY
+  (
+    ENTRY_ID,
+    ENTRY_CODE,
+    ENTRY_NAME,
+    ACTIVE_STATUS,
+    CATEGORY_CODE,
+    CATEGORY_CODE_ID,
+    ENTRY_SOURCE,
+    COUNTRY,
+    GROUP_ID,
+    Ref_Entry_Code,
+    Version_Time,
+    Status,
+    Creation_Date,
+    Last_Update_Date,
+    Cps_Id,
+    Eod_Sync_Status,
+    Ecbf_Id
+  )
+  VALUES
+  (
+    (SELECT MAX(ENTRY_ID) + 1 FROM COMMON_CODE_CATEGORY_ENTRY
+    )
+    ,
+    'EROSION04',
+    'CLIMS TRAQ Provision Report (Party wise erosion report)',
+    '1',
+    'REPORTS' ,
+    (SELECT Category_Id
+    FROM Common_Code_Category
+    WHERE Category_Code = 'REPORTS'
+    AND Active_Status   ='A'
+    ) ,
+    NULL,
+    'IN',
+    NULL,
+    NULL,
+    0,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    'SUCCESSFUL',
+    NULL
+  );
+
+----Check if it is present or not--if it is there then please ignor---------------------------------------------------------------
+CREATE TABLE CLMS_TRQ_PRON_RPT_CUST_FAC
+  (
+    SR_NO                   NUMBER,
+    TRN_DATE                DATE,
+    LSP_LE_ID               VARCHAR2(20 BYTE),
+    LSP_SHORT_NAME          VARCHAR2(100 BYTE),
+    PAN                     VARCHAR2(40 BYTE),
+    CUSTOMER_RAM_ID         NUMBER(20,0),
+    LSP_SGMNT_CODE_VALUE    VARCHAR2(50 BYTE),
+    LRA_REGION              VARCHAR2(50 BYTE),
+    SERIAL_NO               VARCHAR2(20 BYTE),
+    FACILITY_CAT            VARCHAR2(100 BYTE),
+    FACILITY_NAME           VARCHAR2(100 BYTE),
+    MAIN_LIMIT              VARCHAR2(3 BYTE),
+    LMT_TYPE_VALUE          VARCHAR2(10 CHAR),
+    FACILITY_TYPE           VARCHAR2(30),
+    CMS_REQ_SEC_COVERAGE    NUMBER(38,0),
+    UTILIZED_AMOUNT         NUMBER(22,2) NOT NULL ENABLE,
+    P_UTILIZED_AMOUNT       NUMBER(22,2),
+    CMS_COLLATERAL_ID       NUMBER(19,0) NOT NULL ENABLE,
+    CMV                     NUMBER(24,4),
+    LMT_SECURITY_COVERAGE   NUMBER(5,2),
+    SCA_PERC                NUMBER(24,4),
+    FACILITY_SYSTEM_ID      VARCHAR2(50 BYTE),
+    LINE_NO                 VARCHAR2(300 BYTE),
+    DEPOSIT_RECEIPT_NUMBER  VARCHAR2(25 CHAR),
+    DEPOSIT_AMOUNT          NUMBER(38,2),
+    TYPE_NAME               VARCHAR2(40 CHAR),
+    SUBTYPE_NAME            VARCHAR2(100 CHAR),
+    NPA_TRAQ_CODE           VARCHAR2(60 CHAR),
+    SEC_PRIORITY            VARCHAR2(30),
+    SECURITY_LOCATION       VARCHAR2(20 CHAR),
+    REVAL_FREQ              VARCHAR2(50 BYTE),
+    CHANGE_TYPE             VARCHAR2(50 BYTE),
+    NEXT_VALUATION_DATE     DATE,
+    SECURITY_SUB_TYPE_ID    VARCHAR2(30 CHAR),
+    PROPERTY_ID             VARCHAR2(50 CHAR),
+    DESCRIPTION_ASSET       VARCHAR2(250 CHAR),
+    PROPERTY_TYPE           VARCHAR2(40 CHAR),
+    SALE_PURCHASE_VALUE     NUMBER(38,0),
+    SALE_PURCHASE_DATE      TIMESTAMP (6),
+    DEVELOPER_GROUP_COMPANY VARCHAR2(100 CHAR),
+    PROPERTY_ADDRESS        VARCHAR2(150 CHAR),
+    PROPERTY_ADDRESS_2      VARCHAR2(100 CHAR),
+    PROPERTY_ADDRESS_3      VARCHAR2(100 CHAR),
+    PROPERTY_ADDRESS_4      VARCHAR2(100 BYTE),
+    PROPERTY_ADDRESS_5      VARCHAR2(100 BYTE),
+    PROPERTY_ADDRESS_6      VARCHAR2(100 BYTE),
+    P_DEPOSIT_AMOUNT        NUMBER(38,2),
+    P_CMV                   NUMBER(24,4),
+    CALCULATEDDP            NUMBER(25,2),
+    P_CALCULATEDDP          NUMBER(25,2),
+    C_TOTAL_SEC             NUMBER(38,4),
+    P_TOTAL_SEC             NUMBER(38,4),
+    EROSSION_SEC            NUMBER(38,4),
+    EROSSION_PERCENT        NUMBER(38,4),
+    EROSSION_THRESOLD       VARCHAR2(10 BYTE),
+    SECURITY_VALUATION_DATE DATE,
+    VALUATION_COMPANY       VARCHAR2(50 BYTE),
+    VALUATION_PERIOD        NUMBER(38,0),
+    LMT_ID                  VARCHAR2(50 BYTE),
+    ERROSION_NPA_TRACK               NUMBER(38,4)
+  );
+----Check if it is present or not--if it is there then please ignor---------------------------------------------------------------  
+CREATE TABLE CLMS_TRQ_PRON_RPT_FAC
+  (
+    SR_NO                     NUMBER,
+    TRN_DATE                  DATE,
+    LSP_LE_ID                 VARCHAR2(20 BYTE),
+    LSP_SHORT_NAME            VARCHAR2(100 BYTE),
+    FACILITY_NAME             VARCHAR2(100 BYTE),
+    UTILIZED_AMOUNT           NUMBER(22,2),
+    c_sec                     NUMBER(38,4),
+    C_sec_Per                 NUMBER(38,4),
+    P_UTILIZED_AMOUNT         NUMBER(22,2),
+    P_sec                     NUMBER(38,4),
+    P_sec_Per                 NUMBER(38,4),
+    Security_coverage_erosion NUMBER(38,4),
+    Erosion_threshold         VARCHAR2(50),
+    LMT_ID                    VARCHAR2(50 BYTE)
+  );
+  
+----Check if it is present or not--if it is there then please ignor---------------------------------------------------------------
+CREATE INDEX IND_TRQ_PRON_RPT_CUST_FAC ON CLMS_TRQ_PRON_RPT_CUST_FAC
+  (
+    TRN_DATE,
+    LMT_ID
+  ) ;
+CREATE INDEX IND_TRQ_PRON_RPT_CUST_FAC_COLI ON CLMS_TRQ_PRON_RPT_CUST_FAC
+  (
+    TRN_DATE,
+    CMS_COLLATERAL_ID
+  ) ;
+CREATE INDEX IND_TRQ_PRON_RPT_CUST_FAC_PARTY ON CLMS_TRQ_PRON_RPT_CUST_FAC
+  (
+    TRN_DATE,
+    LSP_LE_ID
+  ) ;
+CREATE INDEX IND_CLMS_TRQ_PRON_RPT_FAC ON CLMS_TRQ_PRON_RPT_FAC
+  (TRN_DATE
+  );  
+
+----Check if it is present or not--if it is there then please ignor---------------------------------------------------------------
+CREATE TABLE CLMS_TRQ_PRON_RPT_CUST_FAC_BKP
+  (
+    SR_NO                   NUMBER,
+    TRN_DATE                DATE,
+    LSP_LE_ID               VARCHAR2(20 BYTE),
+    LSP_SHORT_NAME          VARCHAR2(100 BYTE),
+    PAN                     VARCHAR2(40 BYTE),
+    CUSTOMER_RAM_ID         NUMBER(20,0),
+    LSP_SGMNT_CODE_VALUE    VARCHAR2(50 BYTE),
+    LRA_REGION              VARCHAR2(50 BYTE),
+    SERIAL_NO               VARCHAR2(20 BYTE),
+    FACILITY_CAT            VARCHAR2(100 BYTE),
+    FACILITY_NAME           VARCHAR2(100 BYTE),
+    MAIN_LIMIT              VARCHAR2(3 BYTE),
+    LMT_TYPE_VALUE          VARCHAR2(10 CHAR),
+    FACILITY_TYPE           VARCHAR2(30),
+    CMS_REQ_SEC_COVERAGE    NUMBER(38,0),
+    UTILIZED_AMOUNT         NUMBER(22,2) NOT NULL ENABLE,
+    P_UTILIZED_AMOUNT       NUMBER(22,2),
+    CMS_COLLATERAL_ID       NUMBER(19,0) NOT NULL ENABLE,
+    CMV                     NUMBER(24,4),
+    LMT_SECURITY_COVERAGE   NUMBER(5,2),
+    SCA_PERC                NUMBER(24,4),
+    FACILITY_SYSTEM_ID      VARCHAR2(50 BYTE),
+    LINE_NO                 VARCHAR2(300 BYTE),
+    DEPOSIT_RECEIPT_NUMBER  VARCHAR2(25 CHAR),
+    DEPOSIT_AMOUNT          NUMBER(38,2),
+    TYPE_NAME               VARCHAR2(40 CHAR),
+    SUBTYPE_NAME            VARCHAR2(100 CHAR),
+    NPA_TRAQ_CODE           VARCHAR2(60 CHAR),
+    SEC_PRIORITY            VARCHAR2(30),
+    SECURITY_LOCATION       VARCHAR2(20 CHAR),
+    REVAL_FREQ              VARCHAR2(50 BYTE),
+    CHANGE_TYPE             VARCHAR2(50 BYTE),
+    NEXT_VALUATION_DATE     DATE,
+    SECURITY_SUB_TYPE_ID    VARCHAR2(30 CHAR),
+    PROPERTY_ID             VARCHAR2(50 CHAR),
+    DESCRIPTION_ASSET       VARCHAR2(250 CHAR),
+    PROPERTY_TYPE           VARCHAR2(40 CHAR),
+    SALE_PURCHASE_VALUE     NUMBER(38,0),
+    SALE_PURCHASE_DATE      TIMESTAMP (6),
+    DEVELOPER_GROUP_COMPANY VARCHAR2(100 CHAR),
+    PROPERTY_ADDRESS        VARCHAR2(150 CHAR),
+    PROPERTY_ADDRESS_2      VARCHAR2(100 CHAR),
+    PROPERTY_ADDRESS_3      VARCHAR2(100 CHAR),
+    PROPERTY_ADDRESS_4      VARCHAR2(100 BYTE),
+    PROPERTY_ADDRESS_5      VARCHAR2(100 BYTE),
+    PROPERTY_ADDRESS_6      VARCHAR2(100 BYTE),
+    P_DEPOSIT_AMOUNT        NUMBER(38,2),
+    P_CMV                   NUMBER(24,4),
+    CALCULATEDDP            NUMBER(25,2),
+    P_CALCULATEDDP          NUMBER(25,2),
+    C_TOTAL_SEC             NUMBER(38,4),
+    P_TOTAL_SEC             NUMBER(38,4),
+    EROSSION_SEC            NUMBER(38,4),
+    EROSSION_PERCENT        NUMBER(38,4),
+    EROSSION_THRESOLD       VARCHAR2(10 BYTE),
+    SECURITY_VALUATION_DATE DATE,
+    VALUATION_COMPANY       VARCHAR2(50 BYTE),
+    VALUATION_PERIOD        NUMBER(38,0),
+    LMT_ID                  VARCHAR2(50 BYTE),
+    ERROSION_NPA_TRACK      NUMBER(38,4)
+  );
+
+----Check if it is present or not--if it is there then please ignor---------------------------------------------------------------  
+CREATE TABLE CLMS_TRQ_PRON_RPT_FAC_BKP
+  (
+    SR_NO                     NUMBER,
+    TRN_DATE                  DATE,
+    LSP_LE_ID                 VARCHAR2(20 BYTE),
+    LSP_SHORT_NAME            VARCHAR2(100 BYTE),
+    FACILITY_NAME             VARCHAR2(100 BYTE),
+    UTILIZED_AMOUNT           NUMBER(22,2),
+    c_sec                     NUMBER(38,4),
+    C_sec_Per                 NUMBER(38,4),
+    P_UTILIZED_AMOUNT         NUMBER(22,2),
+    P_sec                     NUMBER(38,4),
+    P_sec_Per                 NUMBER(38,4),
+    Security_coverage_erosion NUMBER(38,4),
+    Erosion_threshold         VARCHAR2(50),
+    LMT_ID                    VARCHAR2(50 BYTE)
+  );
+
+----Check if it is present or not--if it is there then please ignor---------------------------------------------------------------
+commit;
+ALTER TABLE cms_basel_NPA_TRACK ADD ERROSION_NPA_TRACK NUMBER(38,4);
+ALTER TABLE CLMS_TRQ_PRON_RPT_CUST_FAC ADD P_CMV_WITH_COV NUMBER(24,4);
+ALTER TABLE CLMS_TRQ_PRON_RPT_CUST_FAC_BKP ADD P_CMV_WITH_COV NUMBER(24,4);
+UPDATE cms_basel_NPA_TRACK SET ERROSION_NPA_TRACK=0;  
+
+commit;
+

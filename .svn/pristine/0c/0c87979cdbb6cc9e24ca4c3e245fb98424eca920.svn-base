@@ -1,0 +1,103 @@
+<table width="90%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+  <thead>
+    <tr>
+      <td><h3>Notification - $!{ob.subject}</h3></td>
+    </tr>
+    <tr>
+      <td><hr /></td>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblInfo">
+          <tbody>
+            <tr class="odd">
+              <td width="15" class="fieldname">Customer Legal Name</td>
+              <td width="31%" class="odd">&nbsp;$!{ob.getLeName()}</td>
+              <td width="15%" class="fieldname">CIF / ID No.</td>
+              <td width="39%" class="odd">&nbsp;$!{ob.getLeID()}</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Instruction Ref No</td>
+              <td>&nbsp;$!{ob.getInstrRefNo()}</td>
+              <td class="fieldname">ARM</td>
+              <td>&nbsp;$!{ob.getArm()}</td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><table  width="100%" border="0" cellpadding="0" cellspacing="0" class="tblinfo" style="margin-top:0">
+          <thead>
+            <tr>
+              <td width="3%" height="42">S/N</td>
+              <td width="8%">Limit ID</td>
+              <td width="8%">Limit Facility Type</td>
+              <td width="8%">Approved Limit</td>
+              <td width="8%">Activated Limit</td>
+              <td width="8%">Operational Limit</td>             
+              <td width="8%">Required Coverage (%)</td>
+              <td width="10%">Actual Coverage (%)</td>
+              <td width="9%">Shortfall Value</td>
+              <td width="11%">Security ID</td>
+              <td width="16%">Security Type / SubType</td>
+            </tr>
+          </thead>
+          <tbody>
+## loop through each limit and each collateral
+#set ($limitList = $VelocityUtil.getCollection(${ob.getLimitInfoList()}) )
+#set ($limitSize = $VelocityUtil.sizeOf($limitList) )
+#set ($sNo = 1)
+#foreach ($limit in $limitList)
+#set ($securityList = $VelocityUtil.getCollection($limit.getSecInfoList()) )
+#set ($numberOfSecInfo = $VelocityUtil.sizeOf($securityList) )
+#set ($rowSpan = $numberOfSecInfo+1)
+            <tr valign="top" class="odd">
+              <td rowspan="$!{rowSpan}" align="left" class="index" >$sNo</td>
+              <td rowspan="$!{rowSpan}" align="left" >&nbsp;$!{limit.getLimitId()}</td>
+              <td rowspan="$!{rowSpan}" align="left" >&nbsp;$!{limit.getLimitFacilityType()}</td>
+              <td rowspan="$!{rowSpan}"  align="left" class="amount">&nbsp;
+                   $!{VelocityUtil.formatAmount($limit.getApprovedLimit())}
+              </td>
+              <td rowspan="$!{rowSpan}"  align="left" class="amount">&nbsp;
+                   $!{VelocityUtil.formatAmount($limit.getActivatedLimit())}
+              </td>
+              <td rowspan="$!{rowSpan}"  align="left" class="amount">&nbsp;
+                   $!{VelocityUtil.formatAmount($limit.getOperationalLimit())}
+              </td>
+              <td rowspan="$!{rowSpan}" class="amount">&nbsp;$!{limit.getReqCoverage()}</td>
+              <td rowspan="$!{rowSpan}" class="amount">&nbsp;$!{limit.getActCoverage()}</td>
+              <td rowspan="$!{rowSpan}"  align="left" class="amount">&nbsp;
+                   $!{VelocityUtil.formatAmount($limit.getShortFallValue())}
+              </td>
+	    </tr>
+##
+## now loop through the collaterals
+##
+#foreach ($security in $securityList)
+            <tr class="even">
+              <td align="left">&nbsp;$!{security.getSecId()}</td>
+              <td align="left">&nbsp;$!{security.getSecType()} - &nbsp;$!{security.getSecsubType()}</td>
+            </tr>
+#end   ## end foreach inner loop on collaterals
+##
+#set ($sNo = $sNo + 1)
+#end   ## end outer loop on limits
+          </tbody>
+        </table></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+

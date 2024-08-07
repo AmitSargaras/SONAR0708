@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.feed.bus.forex">
+
+  <class entity-name="actualForexFeedEntry" name="OBForexFeedEntry" table="CMS_FOREX" lazy="false"  >
+	<id name="forexFeedEntryID" type="long" column="FEED_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FOREX_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="buyRate" column="BUY_RATE" type="big_decimal" />
+    <property name="sellRate" column="SELL_RATE" type="big_decimal" />
+    <property name="buyCurrency" column="BUY_CURRENCY" />
+    <property name="sellCurrency" column="SELL_CURRENCY" />
+    <property name="systemCode" column="SYSTEM_CODE" />
+    <property name="currencyDescription" column="CURRENCY_DESCRIPTION" />
+    <property name="currencyIsoCode" column="CURRENCY_ISO_CODE" />
+    <property name="restrictionType" column="RESTRICTION_TYPE" />
+    <property name="status" column="STATUS" />
+    <property name="buyUnit" column="BUY_UNIT" type="int" />
+    <property name="sellUnit" column="SELL_UNIT" type="int" />
+    <property name="effectiveDate" column="EFFECTIVE_DATE" type="timestamp" />
+    <property name="forexFeedEntryRef" column="FEED_REF" type="long"/>
+    <property name="cpsId"     		column="CPS_ID" />
+  </class>
+
+  <class entity-name="actualForexFeedGroup" name="OBForexFeedGroup" table="CMS_FEED_GROUP" >
+	<id name="forexFeedGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true"  />
+		<one-to-many entity-name="actualForexFeedEntry"   />
+	</set>
+  </class>
+
+  <class entity-name="stageForexFeedEntry" name="OBForexFeedEntry" table="CMS_STAGE_FOREX" lazy="false" >
+	<id name="forexFeedEntryID" type="long" column="FEED_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FOREX_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="buyRate" column="BUY_RATE" type="big_decimal" />
+    <property name="sellRate" column="SELL_RATE" type="big_decimal" />
+    <property name="buyCurrency" column="BUY_CURRENCY" />
+    <property name="sellCurrency" column="SELL_CURRENCY" />
+    <property name="systemCode" column="SYSTEM_CODE" />
+    <property name="buyUnit" column="BUY_UNIT" type="int" />
+    <property name="sellUnit" column="SELL_UNIT" type="int" />
+    <property name="effectiveDate" column="EFFECTIVE_DATE" type="timestamp" />
+    <property name="forexFeedEntryRef" column="FEED_REF" type="long"/>
+    <property name="currencyIsoCode" column="CURRENCY_ISO_CODE" />
+    <property name="restrictionType" column="RESTRICTION_TYPE" />
+    <property name="currencyDescription" column="CURRENCY_DESCRIPTION" />
+    <property name="status" column="STATUS" />
+    <property name="cpsId"     		column="CPS_ID" />
+  </class>
+
+  <class entity-name="stageForexFeedGroup" name="OBForexFeedGroup" table="CMS_STAGE_FEED_GROUP">
+	<id name="forexFeedGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="stageForexFeedEntry" />
+	</set>
+  </class>
+
+</hibernate-mapping>

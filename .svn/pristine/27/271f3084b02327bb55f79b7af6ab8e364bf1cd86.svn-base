@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+<mapping>
+	<description>Customer Mapping - CV001</description>
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.covenant.CovenantMessageBody">
+		<map-to xml="MsgBody" />
+		<field name="RecurrentDoc" type="com.integrosys.cms.host.eai.covenant.bus.RecurrentDoc" >
+			<bind-xml name="Covenant" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.covenant.bus.RecurrentDoc">
+		<map-to xml="Covenant" />
+		<field name="LOSAANumber" type="string" />
+		<field name="ConvenantItems" type="com.integrosys.cms.host.eai.covenant.bus.CovenantItem" collection="vector">
+			<bind-xml name="CovenantItem" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.covenant.bus.CovenantItem">
+		<map-to xml="CovenantItem" />
+		<field name="CMSCovenantItemID" type="java.lang.Long" />
+		<field name="losConditionPrecedentId" type="java.lang.Long">
+			<bind-xml name="LOSCPID" />
+		</field>
+		<field name="CovenantCondition" type="string" />
+		<field name="DocEndDate" type="string" />
+		<field name="Remarks" type="string" />
+		<field name="OneOff" type="string">
+			<bind-xml name="OneOffInd" />
+		</field>
+		<field name="FrequencyUnit" type="long" />
+		<field name="FrequencyUom" type="string">
+			<bind-xml name="FrequencyUOM" />
+		</field>
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+</mapping>

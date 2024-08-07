@@ -1,0 +1,60 @@
+/* Update the spread, spread sign, basd on user response */
+
+select * from SCI_LSP_APPR_LMTS where LMT_BCA_REF_NUM = '201809297609' and LMT_FAC_TYPE_VALUE = '220';
+select * from CMS_FACILITY_MASTER where CMS_LSP_APPR_LMTS_ID = 20090801000425262;
+select * from CMS_STG_FACILITY_MASTER where CMS_LSP_APPR_LMTS_ID = 20090801000425262;
+
+select * from CMS_FAC_INTEREST where CMS_FAC_MASTER_ID = 20090801000434976;
+select * from CMS_STG_FAC_INTEREST where CMS_FAC_MASTER_ID = 20090801000922612;
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+update CMS_FAC_INTEREST
+set SPREAD = null
+where CMS_FAC_MASTER_ID = 20090801000434976;
+
+update CMS_FAC_INTEREST
+set SPREAD = null
+where CMS_FAC_MASTER_ID = 20090801000922612;
+
+
+update CMS_FAC_INTEREST
+set SPREAD = null
+where CMS_FAC_MASTER_ID = 20090801000434994;
+
+update CMS_STG_FAC_INTEREST
+set SPREAD = null
+where CMS_FAC_MASTER_ID = 20090801000922607;
+
+
+update CMS_FAC_INTEREST
+set SPREAD = null
+where CMS_FAC_MASTER_ID = 20090808001042305;
+
+update CMS_STG_FAC_INTEREST
+set SPREAD = null
+where CMS_FAC_MASTER_ID = 20090808001054787;
+
+
+update CMS_FAC_INTEREST
+set SPREAD = null
+where CMS_FAC_MASTER_ID = 20090801000392042;
+
+update CMS_STG_FAC_INTEREST
+set SPREAD = null
+where CMS_FAC_MASTER_ID = 20090801000879677;
+
+
+update CMS_FAC_INTEREST
+set SPREAD_SIGN = '-'
+where CMS_FAC_MASTER_ID = 20090808001039278;
+
+update CMS_STG_FAC_INTEREST
+set SPREAD_SIGN = '-'
+where CMS_FAC_MASTER_ID in (20090824001076843,    
+ 20090820001074583,    
+ 20090808001051743,    
+ 20090813001067646,    
+ 20090824001075921,    
+ 20090818001071732,    
+ 20090818001071702);

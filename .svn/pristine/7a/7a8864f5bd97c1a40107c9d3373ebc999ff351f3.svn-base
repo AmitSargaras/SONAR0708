@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ 	<class entity-name="customerSave" name="com.integrosys.cms.batch.sibs.customer.OBCustomerUpdate" table="SI_TEMP_SIBS_CU001" lazy="false">
+        <id name="customerID" column="CIF_ID" />
+        <property name="recordType"                    column="RECORD_TYPE" type="string" />
+        <property name="customerName"                  column="CUST_NAME_L" type="string" />
+        <property name="customerShortName"             column="CUST_NAME_S" type="string" />
+        <property name="legalConstitution"             column="CUST_CLASS_CODE" type="string" />
+        <property name="legalRegCountry"               column="ID_ISSUE_COUNTRY" type="string" />
+        <property name="incorporatedDate"              column="ID_ISSUE_DATE" type="timestamp" />
+        <property name="customerType"                  column="CUST_TYPE" type="string" />
+        <property name="customerRelationshipStartDate" column="CUST_START_DATE" type="timestamp" />
+        <property name="isicCode"                      column="ISIC_CODE" type="string" />
+        <property name="idNo"                          column="ID_NUMBER" type="string" />
+        <property name="idType"                        column="ID_TYPE_CODE" type="string" />
+        <property name="secIdNo"                       column="SECONDARY_ID_NUMBER" type="string" />
+        <property name="secIdType"                     column="SECONDARY_ID_TYPE_CODE" type="string" />
+        <property name="addrType"                      column="PRIMARY_ADD_TYPE_CODE" type="string" />
+        <property name="addr1"                         column="PRIMARY_ADD_1" type="string" />
+        <property name="addr2"                         column="PRIMARY_ADD_2" type="string" />
+        <property name="addr3"                         column="PRIMARY_ADD_3" type="string" />
+        <property name="addr4"                         column="PRIMARY_ADD_4" type="string" />
+        <property name="resCountry"                    column="PRIMARY_COUNTRY" type="string" />
+        <property name="postCode"                      column="PRIMARY_POSTCODE" type="string" />
+        <property name="secAddrType"                   column="SECONDARY_ADD_TYPE_CODE" type="string"/>
+        <property name="secAddr1"                      column="SECONDARY_ADD_1" type="string"/>
+        <property name="secAddr2"                      column="SECONDARY_ADD_2" type="string"/>
+        <property name="secAddr3"                      column="SECONDARY_ADD_3" type="string"/>
+        <property name="secAddr4"                      column="SECONDARY_ADD_4" type="string"/>
+        <property name="secPostcode"                   column="SECONDARY_POSTCODE" type="string"/>
+    </class>
+
+	<class entity-name="customerFusion" name="com.integrosys.cms.batch.sibs.customer.OBCustomerFusion" table="SI_TEMP_SIBS_CU003" lazy="false">
+        <id name="customerID"          column="OLD_CIF_ID"    type="string" />
+        <property name="recordType"    column="RECORD_TYPE"   type="string" />
+        <property name="customerNewID" column="NEW_CIF_ID"    type="string" />
+    </class>
+
+
+	<class entity-name="creditAppODTL" name="com.integrosys.cms.batch.sibs.creditapplication.CreditApplicationODTL" table="SI_TEMP_SIBS_CA001" lazy="false">
+		<id name="creditAppFeedEntryID" type="long" column="FEED_ID" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_CREDIT_APP_OD_TL_SEQ</param>
+			</generator>
+		</id>
+        <property name ="recordType"         column="RECORD_TYPE"               />
+        <property name ="aaNumber"           column="AA_NUMBER"                 />
+        <property name ="sourceLimitID"      column="SRC_LIMIT_ID"              />
+        <property name ="outerSourceLimitID" column="OUT_LIMIT_ID"              />
+        <property name ="facilityTypeCode"   column="FACILITY_TYPE_CODE"        />
+        <property name ="accountNo"          column="EXTERNAL_SYSTEM_ACCT_NO"   />
+        <property name ="drawingLimit"       column="DRAWING_LIMIT_AMT"         />
+        <property name ="outstdgBalSign"     column="OUTSTANDING_SIGN"          />
+        <property name ="outstandingBalance" column="OUTSTANDING_AMT"           />
+        <property name ="facilitySequence"   column="FACILITY_SEQ"              />
+        <property name ="accountType"        column="ACCT_TYPE"                 />
+        <property name ="accountSequence"    column="ACCT_SEQ"               type="long"/>
+        <property name ="locationCountry"    column="LOC_COUNTRY" />
+        <property name ="locationOrgCode"    column="LOC_ORG_CODE" />
+        <property name ="firstDisbursementDate"    column="FIRST_DISBURSEMENT_DATE"    type="timestamp"/>
+        <property name ="finalDisbursementDate"    column="FINAL_DISBURSEMENT_DATE"    type="timestamp"/>
+        <property name ="currentBalance"            column="CURRENT_BALANCE_AMT"       />
+        <property name ="currentBalanceSign"        column="CURRENT_BALANCE_SIGN"      />
+        <property name ="finalPaymentAmountSign"        column="FINAL_PAYMENT_AMT_SIGN"         />
+        <property name ="finalPaymentAmount"            column="FINAL_PAYMENT_AMT"              />
+        <property name ="paymentAmountSign"             column="PAYMENT_AMT_SIGN"               />
+        <property name ="paymentAmount"                 column="PAYMENT_AMT"                    />
+        <property name ="releasedAmountSign"            column="RELEASED_AMT_SIGN"              />
+        <property name ="releasedAmount"                column="RELEASED_AMT"                   />
+        <property name ="lateChargesAmountSign"         column="LATE_CHARGES_AMT_SIGN"          />
+        <property name ="lateChargesAmount"             column="LATE_CHARGES_AMT"               />
+        <property name ="otherChargesAmountSign"        column="OTHER_CHARGES_AMT_SIGN"         />
+        <property name ="otherChargesAmount"            column="OTHER_CHARGES_AMT"              />
+        <property name ="miscChargesAmountSign"         column="MISC_CHARGES_AMT_SIGN"          />
+        <property name ="miscChargesAmount"             column="MISC_CHARGES_AMT"               />
+        <property name ="billedIntOSAmountSign"         column="BILLED_INT_OS_AMT_SIGN"         />
+        <property name ="billedIntOSAmount"             column="BILLED_INT_OS_AMT"              />
+        <property name ="accruedInterestAmountSign"     column="ACCRUED_INTEREST_AMT_SIGN"      />
+        <property name ="accruedInterestAmount"         column="ACCRUED_INTEREST_AMT"           />
+        <property name ="accruedLateChargeAmountSign"   column="ACCRUED_LATE_CHARGE_AMT_SIGN"   />
+        <property name ="accruedLateChargeAmount"       column="ACCRUED_LATE_CHARGE_AMT"        />
+        <property name ="accruedCommFeeAmountSign"      column="ACCRUED_COMM_FEE_AMT_SIGN"      />
+        <property name ="accruedCommFeeAmount"          column="ACCRUED_COMM_FEE_AMT"           />
+        <property name ="primeRateNumber"               column="PRIME_RATE_NUMBER"              />
+        <property name ="primeVarianceSign"             column="PRIME_VARIANCE_SIGN"            />
+        <property name ="primeVarianceAmount"           column="PRIME_VARIANCE_AMT"             />
+    </class>
+
+    <class entity-name="creditAppNplClosedAcc" name="com.integrosys.cms.batch.sibs.creditapplication.CreditApplicationNplClosedAcc" table="SI_TEMP_SIBS_CA004" lazy="false">
+		<id name="creditAppFeedEntryID" type="long" column="FEED_ID" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_CREDIT_APP_NPL_CLSACC_SEQ</param>
+			</generator>
+		</id>
+        <property name="recordType"             column="RECORD_TYPE" />
+        <property name="aaNumber"               column="AA_NUMBER"      />
+        <property name="sourceLimitID"          column="SRC_LIMIT_ID"                      type="string" />
+        <property name="outerSourceLimitID"     column="OUT_LIMIT_ID"                      type="string" />
+        <property name="facilityTypeCode"       column="FACILITY_TYPE_CODE"                type="string" />
+        <property name="accountNo"              column="EXTERNAL_SYSTEM_ACCT_NO"           type="string" />
+        <property name="accountStatus"          column="ACCT_STAT"                         type="string" />
+        <property name="nplStatus"              column="NPL_STAT"                          type="string" />
+        <property name="dateSettled"            column="SETTLED_DATE"                      type="timestamp" />
+        <property name="amtPartiallyWrittenOff" column="AMT_PARTIALLY_WRITTEN_OFF"         type="double" />
+        <property name="dateNpl"                column="NPL_STAT_DATE"                     type="timestamp" />
+        <property name="interestInSuspense"     column="INTEREST_IN_SUSPENSE"              type="double" />
+        <property name="specProvisionChrgToAccount" column="SPECIFIC_PROV_CHARGED_TO_ACCT" type="double" />
+        <property name="partPaymentReceived"    column="PART_PAYMENT"                      type="double" />
+        <property name="dateLatestDoubtful"     column="LATEST_DATE_DOUBTFUL"              type="timestamp" />
+        <property name="dateJudgement"          column="JUDGMENT_DATE"                     type="timestamp" />
+        <property name="judgementSum"           column="JUDGMENT_SUM"                      type="double" />
+        <property name="dateWriteOff"           column="DATE_WRITE_OFF"                    type="timestamp" />
+        <property name="amountWrittenOff"       column="AMT_WRITTEN_OFF"                   type="double" />
+        <property name="monthsInstallmentsArrears" column="MONTHS_INSTALLMENT_ARREARS"     type="double" />
+        <property name="monthsInterestArrears"  column="MONTHS_INTEREST_ARREARS"           type="double" />
+        <property name="facilitySequence"       column="FACILITY_SEQ"                      type="long" />
+        <property name="accountType"            column="ACCT_TYPE"                         type="string" />
+        <property name="accountSequence"        column="ACCT_SEQ"                          type="long" />
+        <property name="locationCountry"        column="LOC_COUNTRY"                       type="string" />
+        <property name="locationOrgCode"        column="LOC_ORG_CODE"                      type="string" />
+        <property name="facilityStatus" column="FACILITY_STATUS" type="string"/>
+        <property name="cancelRejectCode" column="CANCEL_REJECT_CODE" type="string"/>
+        <property name="cancelRejectDate" column="CANCEL_REJECT_DATE" type="timestamp"/>
+    </class>
+
+    <class entity-name="collateralFD" name="com.integrosys.cms.batch.sibs.collateral.OBCollateralFD" table="SI_TEMP_SIBS_CO001" lazy="false">
+    		<id name="collateralFeedEntryID" type="long" column="FEED_ID" >
+    			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+    				<param name="sequence">CMS_SIBS_COLLATERAL_FD_SEQ</param>
+    			</generator>
+		</id>
+        <property name="securityID"              column="SECURITY_ID"  />
+        <property name="recordType"        column="RECORD_TYPE"  />
+        <property name="referenceNo"       column="REF_NO"      />
+        <property name="receiptNumber"     column="RECEIPT_NUMBER"  />
+        <property name="newAmountCurrency" column="AMT_CURRENCY"    />
+        <property name="newAmount"         column="AMT"             />
+        <property name="newThirdPartyBank" column="THIRD_PARTY_BANK"  />
+        <property name="newFDRRate"        column="FDR_RATE"           />
+        <property name="newIssueDate"      column="ISSUE_DATE" type="timestamp" />
+        <property name="newMaturityDate"   column="MATURITY_DATE"  type="timestamp" />
+    </class>
+
+    <class entity-name="collateralSMF" name="com.integrosys.cms.batch.sibs.collateral.OBCollateralSMF" table="SI_TEMP_SIBS_CO002" lazy="false">
+    		<id name="collateralFeedEntryID" type="long" column="FEED_ID" >
+    			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+    				<param name="sequence">CMS_SIBS_COLLATERAL_SMF_SEQ</param>
+    			</generator>
+		</id>
+        <property name="sourceSecurityID"                  column="SRC_SECURITY_ID"         type="string" />
+        <property name="recordType"                  column="RECORD_TYPE" />
+        <property name="originatingSecurityCurrency" column="ORIG_SECURITY_CURRENCY" />
+        <property name="cmsSecurityCurrency"         column="SECURITY_CURRENCY" />
+        <property name="securityLocation"            column="SECURITY_LOCATION" />
+        <property name="branchName"                  column="SECURITY_ORGANISATION" />
+        <property name="securityCustodianType"       column="CUSTODIAN_TYPE" />
+        <property name="securityCustodianValue"      column="SECURITY_CUSTODIAN" />
+        <property name="legalEnforceability"         column="IS_LEGAL_ENFORCE" />
+        <property name="legalEnforceabilityDate"     column="IS_LEGAL_ENFORCE_DATE" />
+        <property name="equityType"                  column="TYPE_NAME" />
+        <property name="cdsNumber"                   column="CDS_NUMBER" />
+        <property name="registeredOwner"             column="REGISTERED_NAME" />
+        <property name="numberOfUnits"               column="NO_OF_UNITS" />
+        <property name="unitPrice"                   column="UNIT_PRICE" />
+        <property name="securityMaturityDate"        column="SECURITY_MATURITY_DATE" />
+        <property name="stockExchange"               column="STOCK_EXCHANGE" />
+        <property name="countryOfStockExchange"      column="STOCK_EXCHANGE_COUNTRY" />
+        <property name="stockCode"                   column="STOCK_CODE" />
+        <property name="applicationNumber"           column="LSX_BCA_REF_NUM" />
+        <property name="facilityName"                column="SCI_LAS_FAC_CODE" />
+        <property name="sequenceNumber"              column="SCI_LAS_FAC_SEQ" />
+    </class>
+</hibernate-mapping>

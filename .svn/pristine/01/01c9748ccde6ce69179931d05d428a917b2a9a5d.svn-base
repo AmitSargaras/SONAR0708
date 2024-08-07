@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="relationshipMgrProxyManager" class="com.integrosys.cms.app.relationshipmgr.proxy.RelationshipMgrProxyManagerImpl">
+		<property name="relationshipMgrBusManager" ref="relationshipMgrBusManager" />
+		<property name="stagingRelationshipMgrBusManager" ref="stagingRelationshipMgrBusManager" />
+		<property name="trxControllerFactory" ref="relationshipMgrTrxControllerFactory" />
+	</bean>
+	
+	<bean id="relationshipMgrBusManager" class="com.integrosys.cms.app.relationshipmgr.bus.RelationshipMgrBusManagerImpl">
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO" />
+	</bean>
+	
+	<bean id="stagingRelationshipMgrBusManager" class="com.integrosys.cms.app.relationshipmgr.bus.RelationshipMgrBusManagerStagingImpl">
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO" />
+	</bean>
+	
+	<bean id="stagingRelationshipMgrFileMapperIdBusManager" class="com.integrosys.cms.app.relationshipmgr.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO" />
+	</bean>
+	<bean id="relationshipMgrFileMapperIdBusManager" class="com.integrosys.cms.app.relationshipmgr.bus.FileMapperIdBusManagerImpl">
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO" />
+	</bean>
+	
+</beans>

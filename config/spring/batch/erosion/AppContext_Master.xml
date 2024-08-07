@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different
+		environment should have different files of this.
+	</description>
+
+	<bean
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="erosionDataCreateTriggerBase" />
+				<ref bean="erosionDataCreateTriggerActual" />
+				<ref bean="erosionFileWriteTriggerBase" />
+				<ref bean="erosionFileWriteTriggerActual" />
+				<ref bean="erosionDataBackupTriggerActual" /> 
+			</list>
+		</property>
+	</bean>
+
+	<bean id="erosionDataCreateTriggerBase"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="erosionDataCreateJobDetail" />
+		<property name="cronExpression"
+			value="${ftp.erosion.data.create.scheduler.time.base}" />
+	</bean>
+	
+	<bean id="erosionDataCreateTriggerActual"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="erosionDataCreateJobDetail" />
+		<property name="cronExpression"
+			value="${ftp.erosion.data.create.scheduler.time.actual}" />
+	</bean>
+
+	<bean id="erosionDataCreateJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="erosionDataCreateJob" />
+		<property name="targetMethod" value="execute" />
+
+	</bean>
+
+	<bean name="erosionDataCreateJob"
+		class="com.integrosys.cms.batch.erosion.schedular.ErosionDataCreateJob">
+	</bean>
+
+	<bean id="erosionFileWriteTriggerBase"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="erosionFileWriteJobDetail" />
+		<property name="cronExpression"
+			value="${ftp.erosion.file.write.scheduler.time.base}" />
+	</bean>
+	
+	<bean id="erosionFileWriteTriggerActual"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="erosionFileWriteJobDetail" />
+		<property name="cronExpression"
+			value="${ftp.erosion.file.write.scheduler.time.actual}" />
+	</bean>
+
+	<bean id="erosionFileWriteJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="erosionFileWriteJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+
+	<bean name="erosionFileWriteJob"
+		class="com.integrosys.cms.batch.erosion.schedular.ErosionFileWriteJob">
+	</bean>
+	
+	<!-- Schedular to backup the Erosion data -->
+	<bean id="erosionDataBackupTriggerActual"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="erosionDataBackupJobDetail" />
+		<property name="cronExpression"
+			value="${ftp.erosion.data.backup.scheduler.time}" />
+	</bean>
+
+	<bean id="erosionDataBackupJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="erosionDataBackupJob" />
+		<property name="targetMethod" value="execute" />
+	</bean>
+
+	<bean name="erosionDataBackupJob"
+		class="com.integrosys.cms.batch.erosion.schedular.ErosionDataBackupJob">
+	</bean>
+
+</beans>

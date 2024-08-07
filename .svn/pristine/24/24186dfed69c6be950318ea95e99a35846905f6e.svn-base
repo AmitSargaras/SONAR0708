@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="sbbgsblcUploadJobTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="sbbgsblcUploadJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="sbbgsblcUploadJobDetail" />
+		<property name="cronExpression" value="${ftp.sbbg.sblc.upload.schedular.time}" />
+	</bean>
+	
+	<bean id="sbbgsblcUploadJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="sbbgsblcUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="sbbgsblcUploadJob" class="com.integrosys.cms.batch.mtmvalprocess.sbbgsblc.upload.SBBGSBLCFileUploadJob"/>
+
+</beans>

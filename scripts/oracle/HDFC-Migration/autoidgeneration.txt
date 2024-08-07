@@ -1,0 +1,43 @@
+CREATE OR REPLACE FUNCTION autoidgeneration (
+   tablename    VARCHAR2,
+   columnname   VARCHAR2
+)
+   RETURN VARCHAR2
+IS
+   rec_array   sys_refcursor;
+   autoid      VARCHAR (19);
+   sql_stmt    VARCHAR2 (4000);
+BEGIN
+   sql_stmt :=
+         'SELECT (SubStr(TO_CHAR (CURRENT_TIMESTAMP,''YYYYMMDD''),0,4)||
+                   SubStr(TO_CHAR (CURRENT_TIMESTAMP,''YYYYMMDD''),5,2)||
+                   SubStr(TO_CHAR (CURRENT_TIMESTAMP,''YYYYMMDD''),7,2)||
+                   TO_CHAR(DECODE(MAX(SUBSTR('
+      || columnname
+      || ',9,LENGTH('
+      || columnname
+      || '))+0), NULL,0,MAX(SUBSTR('
+      || columnname
+      || ',9,LENGTH('
+      || columnname
+      || '))+0))+1,''FM000000000'')) 
+                    AUTONUMBER FROM '
+      || tablename;
+
+---DBMS_OUTPUT.put_line (sql_stmt);
+
+   OPEN rec_array FOR sql_stmt;
+
+   LOOP
+      FETCH rec_array
+       INTO autoid;
+
+      EXIT WHEN rec_array%NOTFOUND;
+   END LOOP;
+
+   
+   CLOSE rec_array;
+
+   RETURN autoid;
+END;
+/

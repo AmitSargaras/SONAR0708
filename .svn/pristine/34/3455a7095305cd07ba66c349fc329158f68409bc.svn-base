@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.app.limit.bus">
+	<class entity-name="actualLimitProfile" name="OBLimitProfile" table="SCI_LSP_LMT_PROFILE" lazy="false">
+		<id name="limitProfileID" column="CMS_LSP_LMT_PROFILE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">LIMIT_PROFILE_SEQ</param>
+			</generator>
+		</id>
+		<!-- <version name="versionTime" column="CMS_VERSION_TIME" type="long" /> -->
+
+		<property name="customerID" type="long">
+			<column name="CMS_CUSTOMER_ID" default="0" />
+		</property>
+		<property name="BCAStatus" column="CMS_BCA_STATUS" />
+		<property name="BCAReference" column="LLP_BCA_REF_NUM" />
+		<property name="productProgCompliantInd" type="yes_no">
+			<column name="LLP_PROD_PRG_COMPLNCE_IND" default="false" />
+		</property>
+		<property name="creditPolicyCompliantInd" type="yes_no">
+			<column name="LLP_CRDT_PLCY_COMPLNCE_IND" default="false" />
+		</property>
+		<property name="underwriteStandardCompliantInd" type="yes_no">
+			<column name="LLP_UNWRT_STD_CMPLNCE_IND" default="false" />
+		</property>
+		<property name="CRApprovalRequiredInd" type="yes_no">
+			<column name="LLP_CNTRY_RISK_APPR_REQ_IND" default="false" />
+		</property>
+		<property name="limitProfileRef" column="LLP_ID" />
+
+		<component name="originatingLocation" class="com.integrosys.cms.app.common.bus.OBBookingLocation">
+			<property name="countryCode" column="CMS_ORIG_COUNTRY" />
+			<property name="organisationCode" column="CMS_ORIG_ORGANISATION" />
+		</component>
+
+		<property name="approvalDate" column="LLP_BCA_REF_APPR_DATE" type="timestamp" />
+		<property name="nextInterimReviewDate" column="LLP_NEXT_INTRM_RVW_DATE" type="timestamp" />
+		<property name="nextAnnualReviewDate" column="LLP_NEXT_ANNL_RVW_DATE" type="timestamp" />
+		<property name="extendedNextReviewDate" column="LLP_EXTD_NEXT_RVW_DATE" type="timestamp" />
+		<property name="projectedProfit" type="double" >
+			<column name="LLP_PRJTD_ECON_PROFIT" default="0" />
+		</property>
+		<property name="expectedLoss" type="double">
+			<column name="LLP_EXPECT_LOSS_AMT" default="0" />
+		</property>
+		<property name="approverEmployeeID1" column="LLP_1ST_APPR_EMP_ID" />
+		<property name="approverEmployeeID2" column="LLP_2ND_APPR_EMP_ID" />
+		<property name="requiredSecurityCoverage" type="double" >
+			<column name="CMS_REQ_SEC_COVERAGE" default="0" />
+		</property>
+		<property name="actualSecurityCoverage" type="double" >
+			<column name="CMS_ACT_SEC_COVERAGE" default="0" />
+		</property>
+		<property name="approvingOfficerGrade" column="CMS_APPR_OFFICER_GRADE" />
+		<property name="BCACreateDate" column="CMS_BCA_CREATE_DATE" type="timestamp" />
+		<property name="TATCreateDate" column="CMS_TAT_CREATE_DATE" type="timestamp" />
+		<property name="BFLRequiredInd" type="yes_no">
+			<column name="CMS_BFL_REQUIRED_IND" default="false" />
+		</property>
+		<property name="renewalInd" type="yes_no">
+			<column name="CMS_BCA_RENEWAL_IND" default="false" />
+		</property>
+		<property name="fullDocReviewInd" type="yes_no">
+			<column name="CMS_FULL_DOC_REVIEW_IND" default="false" />
+		</property>
+		<property name="hostStatus" column="UPDATE_STATUS_IND" />
+		<property name="BCACompleteInd" type="yes_no">
+			<column name="CMS_BCA_COMPLETE_IND" default="false" />
+		</property>
+		<property name="CCCCompleteInd" type="yes_no">
+			<column name="CMS_CCC_COMPLETE_IND" default="false" />
+		</property>
+		<property name="SCCCompleteInd" type="yes_no">
+			<column name="CMS_SCC_COMPLETE_IND" default="false" />
+		</property>
+		<property name="BCALocalInd" type="yes_no">
+			<column name="CMS_BCA_LOCAL_IND" default="false" />
+		</property>
+		<property name="approverEmployeeName1" column="LLP_1ST_APPR_EMP_NAME" />
+		<property name="approverEmployeeName2" column="LLP_2nd_APPR_EMP_NAME" />
+		<property name="bflIndUpdateDate" column="CMS_BFL_IND_UPDATE_DATE" type="timestamp" />
+		<property name="extendedBFLIssuanceDate" column="CMS_EXTENDED_BFL_DATE" type="timestamp" />
+		<property name="LEReference" column="LLP_LE_ID" />
+		<property name="AAType" column="LMT_PROFILE_TYPE" />
+        <property name="applicationType" column="APPLICATION_TYPE"/>
+		<property name="sourceID" column="SOURCE_ID" />
+		<property name="custRef" column="LLP_LSP_ID" />
+		<property name="CMSCreateInd" type="yes_no">
+			<column name="CMS_CREATE_IND" default="false" />
+		</property>
+		<property name="segment" column="LLP_SEGMENT_CODE_VALUE" />
+
+		<set name="limitsSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+			<key column="CMS_LIMIT_PROFILE_ID" not-null="true" />
+			<one-to-many entity-name="actualLimit" />
+		</set>
+
+		<set name="TATEntriesSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+			<key column="LIMIT_PROFILE_ID" not-null="true" />
+			<one-to-many class="OBTATEntry" />
+		</set>
+	</class>
+
+	<class name="OBTATEntry" table="CMS_TAT_ENTRY" lazy="false">
+		<id name="TATEntryID" column="TAT_ENTRY_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">TAT_ENTRY_SEQ</param>
+			</generator>
+		</id>
+
+		<!-- <property name="limitProfileID" column="LIMIT_PROFILE_ID" /> not appear in OB, to be created ? --> 
+		<property name="TATStamp" column="TAT_TIME_STAMP" type="timestamp" />
+		<property name="TATServiceCode" column="TAT_SERVICE_CODE" />
+		<property name="referenceDate" column="TAT_REFERENCE_DATE" type="timestamp" />
+		<property name="remarks" column="TAT_REMARKS" />
+	</class>
+
+	<class entity-name="actualLimit" name="OBLimit" table="SCI_LSP_APPR_LMTS" lazy="false">
+		<id name="limitID" column="CMS_LSP_APPR_LMTS_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">LIMIT_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="CMS_VERSION_TIME" type="long"/>
+
+		<property name="limitProfileID" column="CMS_LIMIT_PROFILE_ID" insert="false" update="false" />
+		
+		<component name="approvedLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="LMT_AMT" type="big_decimal" />
+			<property name="currencyCode" column="LMT_CRRNCY_ISO_CODE" />
+		</component>
+
+		<component name="activatedLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="CMS_ACTIVATED_LIMIT" type="big_decimal" />
+			<property name="currencyCode" column="LMT_CRRNCY_ISO_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="limitAdviseInd" column="LMT_ADVISE_IND" type="yes_no" />
+		<property name="limitCommittedInd" column="LMT_CMMTD_IND" type="yes_no" />
+		<property name="sharedLimitInd" column="LMT_SHARE_IND" type="yes_no" />
+		<property name="limitRef" column="LMT_ID" />
+		<property name="outerLimitID" column="LMT_OUTER_LMT_ID" type="long"/>
+		<property name="outerLimitRef" column="CMS_OUTER_LMT_REF" />
+		<property name="outerLimitProfileID" column="CMS_OUTER_LMT_PROF_ID" type="long" />
+		
+		<component name="bookingLocation" class="com.integrosys.cms.app.common.bus.OBBookingLocation">
+			<property name="countryCode" column="CMS_BKG_COUNTRY" />
+			<property name="organisationCode" column="CMS_BKG_ORGANISATION" />
+		</component>
+
+		<property name="productDesc" column="LMT_PRD_TYPE_VALUE" />
+		<property name="facilityDesc" column="LMT_FAC_TYPE_VALUE" />
+		<property name="limitType" column="LMT_TYPE_VALUE" />
+		<property name="limitSecuredType" column="LMT_SEC_TYPE_VALUE" />
+		<property name="limitExpiryDate" column="LMT_EXPRY_DATE" type="timestamp" />
+		<property name="limitTenor" column="LMT_TENOR" type="long" />
+		<property name="limitTenorUnit" column="LMT_TENOR_BASIS_VALUE" />
+		<property name="limitInterest" column="LMT_INTRST_BASE_VALUE" type="float" />
+		<property name="limitCMMSN" column="LMT_CMMSN" />
+		<property name="limitFee" column="LMT_FEE" />
+		<property name="limitConditionText" column="LMT_CONDTN_TEXT" />
+		<property name="requiredSecurityCoverage" column="CMS_REQ_SEC_COVERAGE" type="float" />
+		<property name="actualSecurityCoverage" column="CMS_ACT_SEC_COVERAGE" type="float" />
+		<property name="limitStatus" column="CMS_LIMIT_STATUS" />
+		<property name="existingInd" column="CMS_IS_LIMIT_EXISTING_IND" type="yes_no" />
+		<property name="hostStatus" column="UPDATE_STATUS_IND" />
+		<property name="limitActivatedInd" column="CMS_ACTIVATED_LIMIT_IND" type="yes_no" />
+		
+		<component name="operationalLimit" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="CMDT_OP_LMT" type="big_decimal" />
+			<property name="currencyCode" column="LMT_CRRNCY_ISO_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="isLimitZerorised" column="ZERO_IND" type="yes_no" />
+		<property name="zerorisedReason" column="ZERO_REASON" />
+		<property name="zerorisedDate" column="ZERO_DATE" type="timestamp" />
+		<property name="limitDescNum" column="LMT_TYPE_NUM" />
+		<property name="productGroupNum" column="LMT_PRD_GRP_NUM" />
+		<property name="productGroup" column="LMT_PRD_GRP_VALUE" />
+		<property name="productDescNum" column="LMT_PRD_TYPE_NUM" />
+		<property name="facilityDescNum" column="LMT_FAC_TYPE_NUM" />
+		<property name="limitTenorUnitNum" column="LMT_TENOR_BASIS_NUM" />
+		
+		<component name="drawingLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="CMS_DRAWING_LIMIT" type="big_decimal" />
+			<property name="currencyCode" column="LMT_CRRNCY_ISO_CODE" insert="false" update="false" />
+		</component>
+		
+		<component name="outstandingAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="CMS_OUTSTANDING_AMT" type="big_decimal" />
+			<property name="currencyCode" column="LMT_CRRNCY_ISO_CODE" insert="false" update="false" />
+		</component>
+
+		<property name="limitDesc" column="LMT_DESC" />
+		<property name="sourceId" column="SOURCE_ID" />
+		<property name="loanType" column="LOAN_TYPE" />
+		<property name="lastUpdatedDate" column="LAST_UPDATE_DATE" type="timestamp" />
+		
+		<set name="coBorrowerLimitsSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+			<key column="CMS_LIMIT_ID" not-null="true" />
+			<one-to-many entity-name="actualCoBorrowerLimit" />
+		</set>
+
+		<set name="collateralAllocationsSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+			<key column="CMS_LSP_APPR_LMTS_ID" not-null="true" />
+			<one-to-many entity-name="actualCollateralAllocation"/>
+		</set>
+
+		<set name="limitSysXRefsSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+			<key column="CMS_LSP_APPR_LMTS_ID" not-null="true" />
+			<one-to-many entity-name="actualLimitSysXRef" />
+		</set>
+	</class>
+	
+	<class entity-name="actualCoBorrowerLimit" name="OBCoBorrowerLimit" table="SCI_LSP_CO_BORROW_LMT" lazy="false">
+		<id name="limitID" column="CMS_LSP_CO_BORROW_LMT_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">COBORROWER_LIMIT_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="CMS_VERSION_TIME" type="long"/>
+
+		<property name="limitRef" column="LCL_ID" />
+		<property name="outerLimitID" column="CMS_LIMIT_ID" type="long" insert="false" update="false" />
+		<property name="outerLimitRef" column="CMS_OUTER_LIMIT_REF" />
+		
+		<component name="approvedLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="LCL_LMT_AMT" type="big_decimal" />
+			<property name="currencyCode" column="LCL_CRRNCY_ISO_CODE" />
+		</component>
+		
+		<component name="activatedLimitAmount" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="LCL_ACTIVATED_LIMIT" type="big_decimal" />
+			<property name="currencyCode" column="LCL_CRRNCY_ISO_CODE" insert="false" update="false" />
+		</component>
+		
+		<component name="bookingLocation" class="com.integrosys.cms.app.common.bus.OBBookingLocation">
+			<property name="countryCode" column="CMS_BKG_COUNTRY" />
+			<property name="organisationCode" column="CMS_BKG_ORGANISATION" />
+		</component>
+
+		<property name="status" column="CMS_LIMIT_STATUS" />
+		<property name="customerID" column="CMS_CUSTOMER_ID" type="long" />
+		<property name="hostStatus" column="UPDATE_STATUS_IND" />
+		<property name="limitActivatedInd" column="CMS_LIMIT_ACTIVATED_IND" type="yes_no" />
+		<property name="existingInd" column="CMS_IS_LIMIT_EXISTING_IND" type="yes_no" />
+		<property name="LEReference" column="LCL_COBO_LE_ID" />
+		<property name="requiredSecurityCoverages" column="REQUIRED_SECURITY_COVERAGES" type="float" />
+		<property name="coActualSecurityCoverage" column="CMS_ACT_SEC_COVERAGE" type="float" />
+		<property name="coLimitSecuredType" column="LMT_SEC_TYPE_VALUE" />
+		<property name="limitZerorised" column="LIMIT_ZERORISED" type="yes_no"/>
+		<property name="zerorisedDate" column="ZERORISED_DATE" type="timestamp" />
+		<property name="zerorisedReasons" column="ZERORISED_REASONS" />
+		<property name="sourceId" column="SOURCE_ID" />
+<!--
+remove first due to constraint error in cms_limit_security_map
+		<set name="collateralAllocationsSet" fetch="select" cascade="save-update, delete-orphan" lazy="false">
+			<key column="CMS_LSP_CO_BORROW_LMT_ID" not-null="true"/>
+			<one-to-many entity-name="actualCollateralAllocation" not-found="ignore"/>
+		</set>
+-->
+	</class>
+
+	<class entity-name="actualCollateralAllocation" name="OBCollateralAllocation" table="CMS_LIMIT_SECURITY_MAP" lazy="false">
+		<id name="chargeID" column="CHARGE_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">COL_LIMIT_MAP_SEQ</param>
+			</generator>
+		</id>
+
+		<component name="collateral" class="com.integrosys.cms.app.collateral.bus.OBCollateral">
+			<property name="collateralID" column="CMS_COLLATERAL_ID" type="long" />
+		</component>
+
+		<property name="limitID" column="CMS_LSP_APPR_LMTS_ID" type="long" insert="false" update="false" />
+		<property name="hostStatus" column="UPDATE_STATUS_IND" />
+		<property name="SCILimitSecMapID" column="SCI_LAS_SYS_GEN_ID" type="long" />
+		<property name="coborrowerLimitID" column="CMS_LSP_CO_BORROW_LMT_ID" type="long" />
+		<property name="sourceLmtId" column="SCI_LAS_LMT_ID" />
+		<property name="customerCategory" column="CUSTOMER_CATEGORY" />
+		<!--  <property name="createDate" column="CREATE_DATE" type="timestamp" /> not appear in OB, to create ? -->
+		<!--  <property name="deletionDate" column="DELETION_DATE" type="timestamp" /> not appear in OB, to create ? -->
+		<property name="limitProfileID" column="CMS_LSP_LMT_PROFILE_ID" type="long" />
+		<property name="sourceID" column="SOURCE_ID" />
+	</class>
+
+	<class entity-name="actualLimitSysXRef" name="OBLimitSysXRef" table="SCI_LSP_LMTS_XREF_MAP" lazy="false">
+		<id name="XRefID" column="CMS_LSP_LMTS_XREF_MAP_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">LIMIT_X_REF_SEQ</param>
+			</generator>
+		</id>
+		<property name="limitFk" column="CMS_LSP_APPR_LMTS_ID" insert="false" update="false" />
+		<property name="status" column="CMS_STATUS" />
+
+<!-- waiting for implementation 
+		<many-to-one name="customerSysXRef" entity-name="actualCustomerSysXRef">
+			<column name="CMS_LSP_SYS_XREF_ID" />
+		</many-to-one>
+-->
+		<property name="SID" column="CMS_SID" />
+		<property name="XRefRef" column="LXM_ID" />
+		<property name="XRefLegalRef" column="LXM_LE_ID" />
+		<property name="XRefCustomerRef" column="LXM_LSP_ID" />
+		<property name="XRefBCARef" column="LXM_LLP_ID" />
+		<property name="XRefLimitRef" column="LXM_LMT_ID" />
+		<property name="XRefCustomerXRef" column="LXM_LSX_ID" />
+	</class>
+
+</hibernate-mapping>

@@ -1,0 +1,1 @@
+<p class="required"><font color="#ff0000">*</font> <bean:message key="label.security.mandatory.for.submission"/>&nbsp;&nbsp;</p>

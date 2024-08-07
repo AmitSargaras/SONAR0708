@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>Document Mapping - DC003</description>
+
+	<include href="common.cm.xml" /> 
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.document.DocumentInputMessageBody" >
+		<map-to xml="MsgBody"/>
+		<field name="CheckList" type="com.integrosys.cms.host.eai.document.bus.CheckList">
+			<bind-xml name="Checklist"/>
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.CheckList">
+		<map-to xml="CheckList"/>
+		<field name="AANumber" type="string">
+			<bind-xml name="LOSAANumber"/>
+		</field>
+		<field name="ChecklistType" type="string"/>
+		<field name="CheckListID" type="long">
+			<bind-xml name="CMSChecklistID"/>
+		</field>
+		<field name="TemplateID" type="long"/>
+		<field name="CcChecklist" type="com.integrosys.cms.host.eai.document.bus.CCChecklist"/>
+		<field name="ScChecklist" type="com.integrosys.cms.host.eai.document.bus.SCChecklist">
+			<bind-xml name="SCChecklist"/>
+		</field>
+		<field name="CheckListItem" type="com.integrosys.cms.host.eai.document.bus.CheckListItem" collection="vector">
+			<bind-xml name="ChecklistItem"/>
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.CCChecklist">
+		<map-to xml="CCChecklist"/>
+		<field name="CustomerType" type="string"/>
+        <field name="CIFNo" type="string"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.SCChecklist">
+		<map-to xml="SCChecklist"/>
+		<field name="CmsCollateralID" type="long">
+			<bind-xml name="CMSCollateralID"/>
+		</field>
+		<field name="LOSSecurityId" type="string"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.CheckListItem">
+		<map-to xml="CheckListItem"/>
+		<field name="CmsDocItemID" type="long">
+			<bind-xml name="CMSDocItemID"/>
+		</field>
+        <field name="DocCode" type="string"/>
+		<field name="DocNo" type="long"/>
+        <field name="MandatoryInd" type="char"/>
+		<field name="Description" type="string"/>
+        <field name="Status" type="string"/>
+		<field name="ExpiryDate" type="string"/>
+        <field name="ReceivedDate" type="string"/>
+        <field name="WaivedDate" type="string"/>
+        <field name="UpdateStatusIndicator" type="string"/>
+        <field name="ChangeIndicator" type="string"/>
+	</class>
+
+</mapping>

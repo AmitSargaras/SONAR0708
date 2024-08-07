@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.0.xsd">
+    <description>
+        To load all relevant bean.xml in one shot. Different environment should have different files of this.
+    </description>
+
+    <bean id="queueConnectionFactory" class="com.ibm.mq.jms.MQQueueConnectionFactory">
+        <property name="transportType">
+            <bean id="com.ibm.mq.jms.JMSC.MQJMS_TP_CLIENT_MQ_TCPIP"
+                  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </property>
+        <property name="queueManager" value="${mq.queue.manager}"/>
+        <property name="hostName" value="${mq.host.ip}"/>
+        <property name="port" value="${mq.port}"/>
+        <!--<property name="channel" value="${mq.in.channel.name}"/> --> 
+    </bean>
+
+    <!--EAI Default JMS Message Listener Container -->
+<!--    <bean id="defaultListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="concurrentConsumers" value="${mq.listener.concurrent.consumers}"/>
+        <property name="connectionFactory" ref="queueConnectionFactory"/>
+        <property name="destinationName" value="${mq.in.queue}"/>
+        <property name="messageListener" ref="defaultMessageListener"/>
+        <property name="sessionAcknowledgeMode">
+            <bean id="javax.jms.Session.CLIENT_ACKNOWLEDGE"
+                  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </property>
+    </bean>-->
+
+    <!--EAI JMS Response Queue Templates -->
+    <bean id="defaultJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="queueConnectionFactory"/>
+        </property>
+        <property name="defaultDestinationName" value="${mq.out.queue}"/>
+        <property name="receiveTimeout">
+            <value>30000</value>
+        </property>
+    </bean>
+
+
+    <!-- Trade JMS Request Queue Templates -->
+    <bean id="tradeRequestJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="queueConnectionFactory"/>
+        </property>
+        <property name="defaultDestinationName" value="${mq.trade.out.queue}"/>
+        <property name="receiveTimeout">
+            <value>30000</value>
+        </property>
+    </bean>
+
+    <!-- Trade JMS Response Queue Templates -->
+    <bean id="tradeResponseJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="queueConnectionFactory"/>
+        </property>
+        <property name="defaultDestinationName" value="${mq.trade.in.queue}"/>
+        <property name="receiveTimeout">
+            <value>30000</value>
+        </property>
+    </bean>
+    
+    <!-- ARBS JMS Request Queue Templates -->
+    <bean id="arbsRequestJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="queueConnectionFactory"/>
+        </property>
+        <property name="defaultDestinationName" value="${mq.arbs.out.queue}"/>
+        <property name="receiveTimeout">
+            <value>30000</value>
+        </property>
+    </bean>
+
+    <!-- ARBS JMS Response Queue Templates -->
+    <bean id="arbsResponseJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="queueConnectionFactory"/>
+        </property>
+        <property name="defaultDestinationName" value="${mq.arbs.in.queue}"/>
+        <property name="receiveTimeout">
+            <value>30000</value>
+        </property>
+    </bean>
+
+    <!-- TSPR JMS Request Queue Templates -->
+    <bean id="tsprRequestJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="queueConnectionFactory"/>
+        </property>
+        <property name="defaultDestinationName" value="${mq.tspr.out.queue}"/>
+        <property name="receiveTimeout">
+            <value>30000</value>
+        </property>
+    </bean>
+
+    <!-- TSPR JMS Response Queue Templates -->
+    <bean id="tsprResponseJmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <property name="connectionFactory">
+            <ref bean="queueConnectionFactory"/>
+        </property>
+        <property name="defaultDestinationName" value="${mq.tspr.in.queue}"/>
+        <property name="receiveTimeout">
+            <value>30000</value>
+        </property>
+    </bean>
+
+    <bean id="defaultJmsSender" class="com.integrosys.cms.host.mq.MQJmsSender">
+        <property name="jmsTemplate">
+            <ref bean="defaultJmsTemplate"/>
+        </property>
+    </bean>
+        
+    <bean id="tradeJmsSender" class="com.integrosys.cms.host.mq.MQJmsSender">
+        <property name="jmsTemplate">
+            <ref bean="tradeRequestJmsTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="tradeJmsReceiver" class="com.integrosys.cms.host.mq.MQJmsReceiver">
+        <property name="jmsTemplate">
+            <ref bean="tradeResponseJmsTemplate"/>
+        </property>
+    </bean>
+
+
+    <bean id="arbsJmsSender" class="com.integrosys.cms.host.mq.MQJmsSender">
+        <property name="jmsTemplate">
+            <ref bean="arbsRequestJmsTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="arbsJmsReceiver" class="com.integrosys.cms.host.mq.MQJmsReceiver">
+        <property name="jmsTemplate">
+            <ref bean="arbsResponseJmsTemplate"/>
+        </property>
+    </bean>
+
+<!--    <bean id="defaultMessageListener" class="com.integrosys.cms.host.mq.MQMessageListener">
+		<property name="messageFolder" ref="eaiMessageFolder" />
+		<property name="messageHandlerSubject" ref="messageHandler" />
+		<property name="messageAttributeName" value="msg" />
+		<property name="messageMarshallerFactory" ref="messageMarshallerFactory" />
+		<property name="processWaitingSleepingPeriod" value="${eai.sleeping.period.while.waiting.for.notify}" />
+        <property name="messageSender" ref="defaultJmsSender"/>
+    </bean>-->
+
+    <bean id="arbsMessageSenderProxy" class="com.integrosys.cms.host.mq.MQMessageSenderProxy">
+        <property name="messageSender" ref="arbsJmsSender"/>
+        <property name="messageReceiver" ref="arbsJmsReceiver"/>
+    </bean>
+
+    <bean id="tradeMessageSenderProxy" class="com.integrosys.cms.host.mq.MQMessageSenderProxy">
+        <property name="messageSender" ref="tradeJmsSender"/>
+        <property name="messageReceiver" ref="tradeJmsReceiver"/>
+    </bean>
+
+</beans>

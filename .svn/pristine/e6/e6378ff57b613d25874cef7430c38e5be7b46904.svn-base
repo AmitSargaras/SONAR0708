@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="AcknowledgmentUploadForm" type="com.integrosys.cms.ui.acknowledgmentupload.AcknowledgmentUploadForm">
+        </form-bean>
+       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/Acknowledgmentupload" type="com.integrosys.cms.ui.acknowledgmentupload.AcknowledgmentUploadAction" name="AcknowledgmentUploadForm" validate="false" scope="request">
+            <forward name="excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/upload_acknowledgment.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward>
+            <forward name="acknowledgmentupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/list_acknowledgment_upload.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward>
+             <forward name="downloadReport" path="/file/popup.jsp" />
+             <forward name="checker_approve_create_acknowledgment" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/chk_approve_acknowledgment.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward> 
+            <forward name="checker_reject_create_acknowledgment" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/checker_reject_create_acknowledgment.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward> 
+            <forward name="maker_prepare_acknowledgment_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/maker_prepare_acknowledgment_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward> 
+            <forward name="checker_process_create_acknowledgment" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/checker_process_create_acknowledgment.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward> 
+            <forward name="error_reject_acknowledgment" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/checker_process_create_acknowledgment.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward> 
+            <forward name="maker_close_acknowledgment_file" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/maker_close_acknowledgment_file.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward> 
+            <forward name="error_excelupload" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/upload_acknowledgment.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.acknowledgmentupload"/>
+            </forward> 
+             <forward name="rejected_delete_read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/acknowledgmentupload/process_acknowledgment_file.jsp"/>
+                <set-property property="title" value="menu.maual_feeds.file_upload"/>
+            </forward> 
+        </action>
+		
+    </action-mappings>
+    
+    <message-resources key="message-uploadteam" parameter="ApplicationResources-upload"/>
+</struts-config>

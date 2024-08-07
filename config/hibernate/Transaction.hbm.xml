@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.transaction">
+	<class name="OBCMSTrxValue" table="TRANSACTION" lazy="false">
+		<id name="transactionID" column="TRANSACTION_ID" type="string">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">TRX_SEQ</param>
+				<param name="type">java.lang.String</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION" type="long" />
+
+		<property name="fromState" column="FROM_STATE" />
+		<property name="UID" column="USER_ID" type="long" />
+		<property name="transactionType" column="TRANSACTION_TYPE" />
+		<property name="createDate" column="CREATION_DATE" type="timestamp" />
+		<property name="transactionDate" column="TRANSACTION_DATE" type="timestamp" />
+		<property name="opDesc" column="OPSDESC" />
+		<property name="referenceID" column="REFERENCE_ID" />
+		<property name="status" column="STATUS" />
+		<property name="stagingReferenceID" column="STAGING_REFERENCE_ID" />
+		<property name="trxReferenceID" column="TRX_REFERENCE_ID" />
+		<property name="teamID" column="TEAM_ID" type="long" />
+		<property name="remarks" column="REMARKS" />
+		<property name="legalName" column="LEGAL_NAME" />
+		<property name="legalID" column="LEGAL_ID" />
+		<property name="customerName" column="CUSTOMER_NAME" />
+		<property name="customerID" column="CUSTOMER_ID" type="long" />
+		<property name="originatingCountry" column="TRX_ORIGIN_COUNTRY" />
+		<property name="originatingOrganisation" column="TRX_ORIGIN_ORGANISATION" />
+		<property name="limitProfileID" column="LIMIT_PROFILE_ID" type="long" />
+		<property name="userInfo" column="USER_INFO" />
+		<property name="currentTrxHistoryID" column="CUR_TRX_HISTORY_ID" />
+		<property name="teamTypeID" column="TEAM_TYPE_ID" type="long" />
+		<property name="transactionSubType" column="TRANSACTION_SUBTYPE" />
+		<property name="teamMembershipID" column="TEAM_MEMBERSHIP_ID" type="long" />
+		<property name="toUserId" column="TO_USER_ID" type="long" />
+		<property name="toAuthGId" column="TO_GROUP_ID" type="long" />
+		<property name="toAuthGroupTypeId" column="TO_GROUP_TYPE_ID" type="long" />
+		<property name="dealNo" column="DEAL_NO" />
+		
+		<component name="trxContext" class="OBTrxContext">
+			<property name="trxCountryOrigin" column="TRX_ORIGIN_COUNTRY" insert="false" update="false"/>
+			<property name="trxOrganisationOrigin" column="TRX_ORIGIN_ORGANISATION" insert="false" update="false"/>		
+			<property name="trxSegment" column="TRX_SEGMENT"/>
+		</component>
+
+	</class>
+</hibernate-mapping>

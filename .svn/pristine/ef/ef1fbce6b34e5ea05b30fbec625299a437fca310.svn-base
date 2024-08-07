@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="stockStatementDPYesJobTrigger" />
+				<ref bean="stockStatementDPNoJobTrigger" />
+				<ref bean="discrepencyDeferralFacilityJobTrigger" /> 
+				<ref bean="discrepencyDeferralGeneralJobTrigger" />
+				<ref bean="dfsoJobTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="stockStatementDPYesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="stockStatementDPYesJobDetail" />
+          <property name="cronExpression" value="${ftp.dfso.stockStatementDPYes.scheduler.time}" />  
+ 	</bean>
+	
+	<bean id="stockStatementDPYesJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="stockStatementDPYesJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="stockStatementDPYesJob" class="com.integrosys.cms.batch.dfso.borrower.StockStatementDPYesJob"/>
+	
+<bean id="stockStatementDPNoJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="stockStatementDPNoJobDetail" />
+          <property name="cronExpression" value="${ftp.dfso.stockStatementDPNo.scheduler.time}" />   
+ 	</bean>
+	
+	<bean id="stockStatementDPNoJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="stockStatementDPNoJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="stockStatementDPNoJob" class="com.integrosys.cms.batch.dfso.borrower.StockStatementDPNoJob"/>
+
+<!-- Discrepency facility -->
+<bean id="discrepencyDeferralFacilityJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="discrepencyDeferralFacilityJobDetail" />
+          <property name="cronExpression" value="${ftp.dfso.discrepencyDeferralFacility.scheduler.time}" />   
+ 	</bean>
+	
+	<bean id="discrepencyDeferralFacilityJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="discrepencyDeferralFacilityJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="discrepencyDeferralFacilityJob" class="com.integrosys.cms.batch.dfso.borrower.DiscrepencyDeferralFacilityJob"/>
+
+<!-- Discrepency general -->
+<bean id="discrepencyDeferralGeneralJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="discrepencyDeferralGeneralJobDetail" />
+          <property name="cronExpression" value="${ftp.dfso.discrepencyDeferralGeneral.scheduler.time}" />   
+ 	</bean>
+	
+	<bean id="discrepencyDeferralGeneralJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="discrepencyDeferralGeneralJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="discrepencyDeferralGeneralJob" class="com.integrosys.cms.batch.dfso.borrower.DiscrepencyDeferralGeneralJob"/>
+
+<!-- DFSO JOB -->
+<bean id="dfsoJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="dfsoJobDetail" />
+          <property name="cronExpression" value="${ftp.dfso.scheduler.time}" />   
+ 	</bean>
+	
+	<bean id="dfsoJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="dfsoJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="dfsoJob" class="com.integrosys.cms.batch.dfso.borrower.DFSOJob"/>
+
+
+</beans>

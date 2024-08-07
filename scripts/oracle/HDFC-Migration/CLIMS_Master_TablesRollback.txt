@@ -1,0 +1,94 @@
+TRUNCATE TABLE cms_stage_forex;
+
+TRUNCATE TABLE cms_forex;
+
+TRUNCATE TABLE cms_stage_city;
+
+TRUNCATE TABLE cms_city;
+
+DELETE FROM cms_state;
+
+TRUNCATE TABLE cms_stage_state;
+
+TRUNCATE TABLE cms_stage_region;
+
+DELETE FROM  cms_region;
+
+TRUNCATE TABLE cms_stage_country;
+
+DELETE FROM  cms_country;
+
+DELETE FROM cms_stage_system_bank where ID > 1;
+
+DELETE FROM cms_system_bank where ID > 1;
+
+DELETE FROM  cms_stage_system_bank_branch;
+
+DELETE FROM  cms_system_bank_branch;
+
+TRUNCATE TABLE cms_stage_other_bank;
+
+TRUNCATE TABLE cms_other_bank;
+
+TRUNCATE TABLE cms_stage_other_bank_branch;
+
+TRUNCATE TABLE cms_other_bank_branch;
+
+TRUNCATE TABLE cms_stage_valuation_agency;
+
+TRUNCATE TABLE cms_valuation_agency;
+
+TRUNCATE TABLE cms_stage_credit_approval;
+
+TRUNCATE TABLE cms_credit_approval;
+
+TRUNCATE TABLE cms_stage_relationship_mgr;
+
+TRUNCATE TABLE cms_relationship_mgr;
+
+TRUNCATE TABLE cms_stage_rbi_category;
+
+TRUNCATE TABLE cms_rbi_category;
+
+TRUNCATE TABLE cms_stage_facility_new_master;
+
+TRUNCATE TABLE cms_facility_new_master;
+
+TRUNCATE TABLE cms_stage_party_group;
+
+TRUNCATE TABLE cms_party_group;
+
+TRUNCATE TABLE cms_stage_insurance_coverage;
+
+TRUNCATE TABLE cms_insurance_coverage;
+
+TRUNCATE TABLE cms_stg_collateral_new_master;
+
+TRUNCATE TABLE cms_collateral_new_master;
+
+DELETE FROM stage_document_masterlist where UPPER (CATEGORY) <> 'CAM';
+
+DELETE FROM cms_document_masterlist where UPPER (CATEGORY) <> 'CAM';
+
+TRUNCATE TABLE stage_document_globallist;
+
+TRUNCATE TABLE cms_document_globallist;
+
+TRUNCATE TABLE stage_document_item;
+
+TRUNCATE TABLE cms_document_item;
+
+DELETE FROM TRANSACTION WHERE TRANSACTION_TYPE IN (
+'VALUATION_AGENCY','COUNTRY','REGION','STATE','CITY',
+'SYSTEM_BANK_BRANCH','OTHER_BANK','OTHER_BANK_BRANCH','CREDIT_APPROVAL',
+'RELATIONSHIP_MGR','RBI_CATEGORY','FACILITY_NEW_MASTER','PARTY_GROUP',
+'INSURANCE_COVERAGE','COLLATERAL_MASTER','DOCITEM','TEMPLATE')
+AND REFERENCE_ID NOT IN (SELECT MASTERLIST_ID FROM cms_document_masterlist
+WHERE UPPER (CATEGORY) = 'CAM');
+
+TRUNCATE TABLE LOGMST;
+
+TRUNCATE TABLE LOGDET;
+
+COMMIT;
+

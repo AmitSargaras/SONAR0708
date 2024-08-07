@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+  <bean id="AddUserAction.ForwardMapCmd" class="com.integrosys.cms.ui.bizstructure.ForwardMapCmd">
+    <property name="userProxy" ref="userProxy"/>
+  </bean>
+  
+  <bean id="AddUserAction.ListUsersCmd" class="com.integrosys.cms.ui.bizstructure.ListUsersCmd">
+    <property name="userProxy" ref="stdUserProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.MakerAddTeamCmd" class="com.integrosys.cms.ui.bizstructure.MakerAddTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.RemoveTeamUserCmd" class="com.integrosys.cms.ui.bizstructure.RemoveTeamUserCmd" />
+
+  <bean id="MaintainTeamAction.DefaultTeamCmd" class="com.integrosys.cms.ui.bizstructure.DefaultTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.UserSearchCmd" class="com.integrosys.cms.ui.bizstructure.UserSearchCmd" />
+
+  <bean id="MaintainTeamAction.GetOrgByCtryCmd" class="com.integrosys.cms.ui.bizstructure.GetOrgByCtryCmd" />
+
+  <bean id="MaintainTeamAction.GetOrgGroupByCtryCmd" class="com.integrosys.cms.ui.bizstructure.GetOrgGroupByCtryCmd" />
+
+  <bean id="MaintainTeamAction.CheckerRejectDeleteTeamCmd" class="com.integrosys.cms.ui.bizstructure.CheckerRejectDeleteTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.MakerEditTeamCmd" class="com.integrosys.cms.ui.bizstructure.MakerEditTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.MakerReadTeamCmd" class="com.integrosys.cms.ui.bizstructure.MakerReadTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.AddUserCmd" class="com.integrosys.cms.ui.bizstructure.AddUserCmd" />
+
+  <bean id="MaintainTeamAction.MakerDeleteTeamCmd" class="com.integrosys.cms.ui.bizstructure.MakerDeleteTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.MakerCnclAddTeamCmd" class="com.integrosys.cms.ui.bizstructure.MakerCnclAddTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.MakerListTeamCmd" class="com.integrosys.cms.ui.bizstructure.MakerListTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.MakerCnclDeleteTeamCmd" class="com.integrosys.cms.ui.bizstructure.MakerCnclDeleteTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.CheckerApproveAddTeamCmd" class="com.integrosys.cms.ui.bizstructure.CheckerApproveAddTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.MakerCnclEditTeamCmd" class="com.integrosys.cms.ui.bizstructure.MakerCnclEditTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.PrepareMakerAddTeamCmd" class="com.integrosys.cms.ui.bizstructure.PrepareMakerAddTeamCmd" />
+
+  <bean id="MaintainTeamAction.CheckerRejectEditTeamCmd" class="com.integrosys.cms.ui.bizstructure.CheckerRejectEditTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.CheckerRejectAddTeamCmd" class="com.integrosys.cms.ui.bizstructure.CheckerRejectAddTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.CheckerReadTeamCmd" class="com.integrosys.cms.ui.bizstructure.CheckerReadTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.CheckerApproveDeleteTeamCmd" class="com.integrosys.cms.ui.bizstructure.CheckerApproveDeleteTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.GetSegmentByCtryCmd" class="com.integrosys.cms.ui.bizstructure.GetSegmentByCtryCmd" />
+
+  <bean id="MaintainTeamAction.CheckerApproveEditTeamCmd" class="com.integrosys.cms.ui.bizstructure.CheckerApproveEditTeamCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+
+  <bean id="MaintainTeamAction.ListTeamTypesCmd" class="com.integrosys.cms.ui.bizstructure.ListTeamTypesCmd">
+    <property name="cmsTeamProxy" ref="cmsTeamProxy"/>
+  </bean>
+  
+</beans>

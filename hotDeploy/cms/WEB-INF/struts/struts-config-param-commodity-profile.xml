@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CommProfileSearchForm" type="com.integrosys.cms.ui.commodityglobal.commodityprofile.search.CommProfileSearchForm">
+        </form-bean>
+
+        <form-bean name="CommProfileListForm" type="com.integrosys.cms.ui.commodityglobal.commodityprofile.list.CommProfileListForm">
+        </form-bean>
+
+        <form-bean name="CommProfileItemForm" type="com.integrosys.cms.ui.commodityglobal.commodityprofile.item.CommProfileItemForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	    <action path="/CommProfileSearch"
+	        type="com.integrosys.cms.ui.commodityglobal.commodityprofile.search.CommProfileSearchAction"
+	        name="CommProfileSearchForm" validate="false" scope="request">
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/search/search_commprofile_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+			<forward name="no_record" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/search/search_no_record.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="search" path="/CommProfileList.do?event=prepare"/>
+	        <forward name="read" path="/CommProfileList.do?event=read"/>
+		</action>
+
+	    <action path="/CommProfileList"
+	        type="com.integrosys.cms.ui.commodityglobal.commodityprofile.list.CommProfileListAction"
+	        name="CommProfileListForm" validate="false" scope="request">
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/list/update_commprofile_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="process" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/list/chk_view_commprofile_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="prepare_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/list/view_commprofile_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="read" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/list/view_commprofile_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="to_track" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/list/view_commprofile_list.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="submit" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="update" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="approve" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="reject" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="wip" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/wip.html"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+			<forward name="no_record" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/search/search_no_record.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="prepare_add" path="/CommProfileItem.do?event=prepare_add"></forward>
+	        <forward name="edit_item" path="/CommProfileItem.do?event=prepare"></forward>
+	        <forward name="view" path="/CommProfileItem.do?event=read"></forward>
+	    </action>
+	
+	    <action path="/CommProfileItem"
+	        type="com.integrosys.cms.ui.commodityglobal.commodityprofile.item.CommProfileItemAction"
+	        name="CommProfileItemForm" validate="false" scope="request">
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/item/update_commprofile_item.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="view_commProfile_item" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/item/view_commprofile_item.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="process_commProfile_item" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/commodityglobal/commodityprofile/item/chk_view_commprofile_item.jsp"/>
+	            <set-property property="title" value="title.commodityglobal.commodityprofile"/>
+	        </forward>
+	        <forward name="close_return" path="/CommProfileList.do?event=close_return"></forward>
+	        <forward name="track_return" path="/CommProfileList.do?event=track_return"></forward>
+	        <forward name="process_return" path="/CommProfileList.do?event=process_return"></forward>
+	        <forward name="update_return" path="/CommProfileList.do?event=update_return"></forward>
+	        <forward name="read_return" path="/CommProfileList.do?event=read_return"></forward>
+	    </action>
+		    
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-param-commodityprofile"/>-->
+</struts-config>

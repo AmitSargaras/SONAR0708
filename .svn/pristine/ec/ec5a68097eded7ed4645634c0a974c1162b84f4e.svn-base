@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+        bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+        proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+    </description>
+    
+      <!--    Discrepency Beans Start	-->
+      
+	<bean id="discrepencyProxy" class="com.integrosys.cms.app.discrepency.proxy.DiscrepencyProxyManagerImpl">
+        <property name="discrepencyBusManager" ref="discrepencyBusManager"/>
+        <property name="stagingDiscrepencyBusManager" ref="stagingDiscrepencyBusManager"/>
+        <property name="trxControllerFactory" ref="discrepencyTrxControllerFactory"/>
+   	</bean>
+    
+   	<bean id="discrepencyBusManager" class="com.integrosys.cms.app.discrepency.bus.DiscrepencyBusManagerImpl">
+        <property name="discrepencyDAO" ref="discrepencyDAO"/>
+   	</bean>
+    
+   	<bean id="stagingDiscrepencyBusManager" class="com.integrosys.cms.app.discrepency.bus.DiscrepencyStagingImpl">
+		<property name="discrepencyDAO" ref="discrepencyDAO" />
+	</bean>
+	
+	  <!--    Discrepency Beans End	--> 
+</beans>

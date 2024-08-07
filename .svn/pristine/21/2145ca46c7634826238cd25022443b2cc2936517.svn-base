@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <description>
+        To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+        bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+        proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+    </description>
+
+    <!--Internal Credit Rating-->
+    <bean id="internalCreditRatingBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.internalcreditrating.InternalCreditRatingBusManagerImpl">
+        <property name="internalCreditRatingDao" ref="internalCreditRatingDao"/>
+    </bean>
+
+    <bean id="stagingInternalCreditRatingBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.internalcreditrating.InternalCreditRatingBusManagerStagingImpl">
+        <property name="internalCreditRatingDao" ref="internalCreditRatingDao"/>
+    </bean>
+
+    <bean id="internalCreditRatingProxy"
+          class="com.integrosys.cms.app.creditriskparam.proxy.internalcreditrating.InternalCreditRatingProxyImpl">
+        <property name="internalCreditRatingBusManager" ref="internalCreditRatingBusManager"/>
+        <property name="stagingInternalCreditRatingBusManager" ref="stagingInternalCreditRatingBusManager"/>
+        <property name="intCrRtTrxControllerFactory" ref="intCrRtTrxControllerFactory"/>
+    </bean>
+
+    <!--Entity Limit-->
+    <bean id="entityLimitBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.entitylimit.EntityLimitBusManagerImpl">
+        <property name="entityLimitDao" ref="entityLimitDao"/>
+    </bean>
+
+    <bean id="stagingEntityLimitBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.entitylimit.EntityLimitBusManagerStagingImpl">
+        <property name="entityLimitDao" ref="entityLimitDao"/>
+    </bean>
+
+    <bean id="entityLimitProxy"
+          class="com.integrosys.cms.app.creditriskparam.proxy.entitylimit.EntityLimitProxyImpl">
+        <property name="entityLimitBusManager" ref="entityLimitBusManager"/>
+        <property name="stagingEntityLimitBusManager" ref="stagingEntityLimitBusManager"/>
+        <property name="entityLimitTrxControllerFactory" ref="entityLimitTrxControllerFactory"/>
+    </bean>
+
+    <!-- Sector Limit Parameter-->
+    <bean id="sectorLimitParameterBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.SectorLimitBusManagerImpl">
+        <property name="sectorLimitDao" ref="SectorLimitParameterDao"/>
+    </bean>
+
+    <bean id="stagingSectorLimitParameterBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.sectorlimit.StagingSectorLimitBusManagerImpl">
+        <property name="sectorLimitDao" ref="SectorLimitParameterDao"/>
+    </bean>
+
+    <bean id="sectorLimitProxy"
+          class="com.integrosys.cms.app.creditriskparam.proxy.sectorlimit.SectorLimitParameterProxyImpl">
+        <property name="sectorLimitParameterBusManager" ref="sectorLimitParameterBusManager"/>
+        <property name="stagingSectorLimitParameterBusManager" ref="stagingSectorLimitParameterBusManager"/>
+        <property name="trxControllerFactory" ref="SectorLimitParameterTrxControllerFactory"/>
+    </bean>
+
+    <!-- Product Limit Parameter-->
+    <bean id="productLimitParameterBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.productlimit.ProductLimitBusManagerImpl">
+        <property name="productLimitDao" ref="ProductLimitParameterDao"/>
+    </bean>
+
+    <bean id="stagingProductLimitParameterBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.productlimit.StagingProductLimitBusManagerImpl">
+        <property name="productLimitDao" ref="ProductLimitParameterDao"/>
+    </bean>
+
+    <bean id="productLimitProxy"
+          class="com.integrosys.cms.app.creditriskparam.proxy.productlimit.ProductLimitParameterProxyImpl">
+        <property name="productLimitBusManager" ref="productLimitParameterBusManager"/>
+        <property name="stagingProductLimitBusManager" ref="stagingProductLimitParameterBusManager"/>
+        <property name="trxControllerFactory" ref="productLimitParameterTrxControllerFactory"/>
+    </bean>
+
+    <!--Internal Limit -->
+    <bean id="internalLimitParameterBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.internallimit.InternalLimitParameterBusManagerImpl">
+        <property name="internalLimitParameterDao" ref="internalLimitParameterDao"/>
+    </bean>
+
+    <bean id="stagingInternalLimitParameterBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.internallimit.InternalLimitParameterBusManagerStagingImpl">
+        <property name="internalLimitParameterDao" ref="internalLimitParameterDao"/>
+    </bean>
+
+    <bean id="internalLimitProxy"
+          class="com.integrosys.cms.app.creditriskparam.proxy.internallimit.InternalLimitProxyImpl">
+        <property name="internalLimitParameterBusManager" ref="internalLimitParameterBusManager"/>
+        <property name="stagingInternalLimitParameterBusManager" ref="stagingInternalLimitParameterBusManager"/>
+        <property name="internalLimitParameterTrxControllerFactory" ref="internalLimitParameterTrxControllerFactory"/>
+    </bean>
+
+    <!--Bank Entity Branch Param-->
+    <bean id="bankEntityBranchParamBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.bankentitybranch.BankEntityBranchParamBusManagerImpl">
+        <property name="bankEntityBranchParamDao" ref="bankEntityBranchParamDao"/>
+    </bean>
+
+    <bean id="stagingBankEntityBranchParamBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.bankentitybranch.BankEntityBranchParamBusManagerStagingImpl">
+        <property name="bankEntityBranchParamDao" ref="bankEntityBranchParamDao"/>
+    </bean>
+
+    <bean id="bankEntityBranchParamProxy"
+          class="com.integrosys.cms.app.creditriskparam.proxy.bankentitybranch.BankEntityBranchParamProxyImpl">
+        <property name="bankEntityBranchParamBusManager" ref="bankEntityBranchParamBusManager"/>
+        <property name="stagingBankEntityBranchParamBusManager" ref="stagingBankEntityBranchParamBusManager"/>
+        <property name="bkEntityBrchPrmTrxControllerFactory" ref="bkEntityBrchPrmTrxControllerFactory"/>
+    </bean>
+
+    <!--Country Limit-->
+    <bean id="countryLimitBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.countrylimit.CountryLimitBusManagerImpl">
+        <property name="countryLimitDao" ref="countryLimitDao"/>
+        <property name="countryRatingDao" ref="countryRatingDao"/>
+    </bean>
+
+    <bean id="stagingCountryLimitBusManager"
+          class="com.integrosys.cms.app.creditriskparam.bus.countrylimit.CountryLimitBusManagerStagingImpl">
+        <property name="countryLimitDao" ref="countryLimitDao"/>
+        <property name="countryRatingDao" ref="countryRatingDao"/>
+    </bean>
+
+    <bean id="countryLimitProxy"
+          class="com.integrosys.cms.app.creditriskparam.proxy.countrylimit.CountryLimitProxyImpl">
+        <property name="countryLimitBusManager" ref="countryLimitBusManager"/>
+        <property name="stagingCountryLimitBusManager" ref="stagingCountryLimitBusManager"/>
+        <property name="ctryLimitTrxControllerFactory" ref="ctryLimitTrxControllerFactory"/>
+    </bean>
+    
+</beans>

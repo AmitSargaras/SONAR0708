@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+		<form-bean name="PropertyIdxForm" type="com.integrosys.cms.ui.systemparameters.propertyindex.PropertyIdxForm">
+	 	</form-bean>
+		<form-bean name="PropertyIdxItemForm" type="com.integrosys.cms.ui.systemparameters.propertyindex.PropertyIdxItemForm">
+	 	</form-bean>
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	<action path="/MaintainPropertyIndex" type="com.integrosys.cms.ui.systemparameters.propertyindex.PropertyIdxAction"
+        name="PropertyIdxForm" validate="false" scope="request">
+		<forward name="property_index_list" path="/template/common_template.jsp">
+   	  	 <set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_list.jsp"/>
+   	  	 <set-property property="title" value="title.property.valuation.by.index.name"/> 
+  	    </forward>
+  	    <forward name="maker_prepare_create" path="/template/common_template.jsp">
+         <set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_add.jsp"/>
+         <set-property property="title" value="title.property.valuation.by.index.name"/>
+		</forward>
+		<forward name="maker_prepare_edit" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_edit.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+		<forward name="maker_prepare_delete" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_delete.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+		<forward name="create_items" path="/MaintainPropertyIdxItem.do?event=create_items" />
+		<forward name="update_page"  path="/template/common_template.jsp" >
+   	  	 <set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_add.jsp"/>
+   	  	 <set-property property="title" value="title.property.valuation.by.index.name"/>
+  	    </forward>
+  	    <forward name="maker_confirm_create" path="/template/common_template.jsp">
+			<set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+			<set-property property="title" value="title.property.valuation.by.index.name"/>
+		</forward>
+		<forward name="checker_process_create_edit_delete" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_checker_view.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+        <forward name="checker_confirm_approve" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+        <forward name="checker_confirm_reject" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+        <forward name="maker_prepare_resubmit" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_maker_resubmit.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+        <forward name="view_property_index" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_view.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>	
+        <forward name="maker_confirm_close" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+        <forward name="maker_confirm_edit" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+        <forward name="maker_confirm_delete" path="/template/common_template.jsp">
+            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+            <set-property property="title" value="title.property.valuation.by.index.name"/>
+        </forward>
+        <forward name="wip" path="/template/common_template.jsp">
+	      <set-property property="rightFrame" value="/common/wip.html"/>
+	      <set-property property="title" value="title.property.valuation.by.index.name"/>
+	    </forward>
+    </action>
+	
+	<action path="/MaintainPropertyIdxItem" type="com.integrosys.cms.ui.systemparameters.propertyindex.PropertyIdxItemAction" 
+			name="PropertyIdxItemForm" validate="false" scope="request">
+		<forward name="create_items" path="/template/common_template.jsp">
+	   	  	<set-property property="rightFrame" value="/systemparameters/propertyIndex/property_val_by_index_create_item.jsp"/>
+	   	  	<set-property property="title" value="title.property.index.add"/>    
+  	    </forward>
+  	    <forward name="update_return_create" path="/MaintainPropertyIndex.do?event=update_return_create" />
+  	    <forward name="update_return_edit" path="/MaintainPropertyIndex.do?event=update_return_edit" />
+  	    <forward name="update_return_resubmit_edit" path="/MaintainPropertyIndex.do?event=update_return_resubmit_edit" />
+	</action>    
+    </action-mappings>
+    
+    <message-resources key="message-param-propertyindex" parameter="ApplicationResources-param-propertyindex"/>
+</struts-config>

@@ -1,0 +1,27 @@
+<binding name="sibs_cif_cond_exp_inq_res">
+	<format label="decimalFmt" type="java.math.BigDecimal" deserializer="com.integrosys.simulator.host.transformer.utils.BigDecimalConverter.derializeBigDecimalWithComma"/>
+    <include path="sibs_header_res.xml" />
+    <mapping name="ColumnFields" class="com.integrosys.simulator.host.SIBS.CIFConductExposureInq.OBSIBSCustomerConductExposureInquiryRes" extends="com.integrosys.simulator.host.SIBS.OBMessageHeader"> 
+        <structure map-as="com.integrosys.simulator.host.SIBS.OBMessageHeader"/>
+			<collection field="responseFixList">
+	        	<structure name="ColumnField" type="com.integrosys.simulator.host.SIBS.CIFConductExposureInq.OBSIBSCustomerConductExposureInquiryRes">
+					<value name="customerNumber" field="customerNumber"/>
+			        <value name="accountType" field="accountType"/>
+					<value name="accountNumber" field="accountNumber"/>	
+					<value name="accountTypeDescription" field="accountTypeDescription"/>
+					<value name="accountRelationship" field="accountRelationship"/>
+					<value name="relationshipDescription" field="relationshipDescription"/>
+					<value name="branchName" field="branchName"/>
+					<value name="depositTypeCode" field="depositTypeCode"/>
+					<value name="typeDescription" field="typeDescription"/>
+					<value name="currencyType" field="currencyType"/>
+					<value name="depositType" field="depositType"/>
+					<value name="rate" field="rate" format="decimalFmt"/>
+					<value name="ODLimit" field="ODLimit"/>
+					<value name="ledgerBalance" field="ledgerBalance"/>
+					<value name="NPLStatus" field="NPLStatus"/>
+					<value name="carCode" field="carCode"/>
+				</structure>
+			</collection>
+    </mapping> 	
+</binding>

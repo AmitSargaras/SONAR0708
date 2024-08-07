@@ -1,0 +1,15 @@
+
+--------FUNCTION FOR BANKING METHOD ISSUES AT EXISTING REPORTS---------------------------------------------------
+CREATE OR REPLACE FUNCTION get_banking_method (p_deptno  in  CMS_BANKING_METHOD_CUST.customer_id%TYPE)
+  RETURN VARCHAR2
+IS
+  l_text  VARCHAR2(32767) := NULL;
+   customer_id  VARCHAR2(32767) := NULL;
+BEGIN
+  FOR cur_rec IN (SELECT ENTRY_NAME FROM COMMON_CODE_CATEGORY_ENTRY WHERE ENTRY_CODE IN (SELECT CMS_BANKING_METHOD_NAME FROM CMS_BANKING_METHOD_CUST WHERE customer_id = p_deptno AND status = 'ACTIVE') 
+  AND ACTIVE_STATUS = 1 AND CATEGORY_CODE = 'BANKING_METHOD') LOOP
+    l_text := l_text || ',' || cur_rec.ENTRY_NAME;
+  END LOOP;
+  RETURN LTRIM(l_text, ',');
+END;
+/

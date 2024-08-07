@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+	
+
+    <!-- tat transaction read and trx controller -->
+
+
+    <bean id="tatParamTrxController" class="com.integrosys.cms.app.tatduration.trx.TatParamTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="MakerSubmitTatParamDurationOperation" value-ref="TatParamTrx.MakerSubmitTatParamDurationOperation" />
+                <entry key="CheckerApproveTatParamOperation" value-ref="TatParamTrx.CheckerApproveTatParamOperation"/>
+                <entry key="CheckerRejectTatParamOperation" value-ref="TatParamTrx.CheckerRejectTatParamOperation"/>
+                <entry key="MakerCloseRejectedTatParamOperation" value-ref="TatParamTrx.MakerCloseRejectedTatParamOperation"/>
+            </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager" />
+    </bean>
+    
+    <bean id="tatParamTrxControllerFactory" class="com.integrosys.cms.app.tatduration.trx.TatParamTrxControllerFactory">
+        <property name="tatParamReadController" ref="tatParamReadController"/>
+        <property name="tatParamTrxController" ref="tatParamTrxController"/>
+    </bean>
+    
+    <bean id="tatParamReadController" class="com.integrosys.cms.app.tatduration.trx.TatParamReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                <entry key="ReadTatParamOperation" value-ref="TatParamTrx.ReadTatParamOperation"/>
+                <entry key="ReadTatParamIdOperation" value-ref="TatParamTrx.ReadTatParamIdOperation"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <!-- tat transaction operations -->
+    <bean id="TatParamTrx.MakerSubmitTatParamDurationOperation" class="com.integrosys.cms.app.tatduration.trx.MakerSubmitTatParamDurationOperation">
+        <property name="tatParamBusManager" ref="tatParamBusManager" />
+        <property name="stageTatParamBusManager" ref="stageTatParamBusManager" />
+    </bean>
+
+	<bean id="TatParamTrx.ReadTatParamIdOperation" class="com.integrosys.cms.app.tatduration.trx.ReadTatParamIdOperation">
+        <property name="tatParamBusManager" ref="tatParamBusManager" />
+        <property name="stageTatParamBusManager" ref="stageTatParamBusManager" />
+    </bean>
+    
+    <bean id="TatParamTrx.ReadTatParamOperation" class="com.integrosys.cms.app.tatduration.trx.ReadTatParamOperation">
+        <property name="tatParamBusManager" ref="tatParamBusManager" />
+        <property name="stageTatParamBusManager" ref="stageTatParamBusManager" />
+    </bean>
+    
+    <bean id="TatParamTrx.CheckerApproveTatParamOperation" class="com.integrosys.cms.app.tatduration.trx.CheckerApproveTatParamOperation">
+        <property name="tatParamBusManager" ref="tatParamBusManager" />
+        <property name="stageTatParamBusManager" ref="stageTatParamBusManager" />
+    </bean>
+    
+    <bean id="TatParamTrx.CheckerRejectTatParamOperation" class="com.integrosys.cms.app.tatduration.trx.CheckerRejectTatParamOperation">
+        <property name="tatParamBusManager" ref="tatParamBusManager" />
+        <property name="stageTatParamBusManager" ref="stageTatParamBusManager" />
+    </bean>
+    
+    <bean id="TatParamTrx.MakerCloseRejectedTatParamOperation" class="com.integrosys.cms.app.tatduration.trx.MakerCloseRejectedTatParamOperation">
+        <property name="tatParamBusManager" ref="tatParamBusManager" />
+        <property name="stageTatParamBusManager" ref="stageTatParamBusManager" />
+    </bean>
+
+</beans>

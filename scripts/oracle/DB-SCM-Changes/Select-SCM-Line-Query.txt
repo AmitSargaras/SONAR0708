@@ -1,0 +1,85 @@
+SELECT   systemId||LINE_NO||SERIAL_NO||branchcode  uniqueRefno,
+scm_flag AS "SCM Flag",lsp_le_id as "Party Id",lsp_short_name as "Party Name",
+ACTION Action,FACILITY_NAME,FACILITY_SYSTEM,CURRENCY,IS_RELEASED,IS_ADHOC,ADHOC_LMT_AMOUNT,
+TOTAL_SACTIONED_AMOUNT,LMT_TYPE_VALUE as  "Sub limit",TOTAL_SANCTIONED_LIMIT_INR ,guarantee,   
+guaranteePartyName,    liability_id,RELEASABLE_AMOUNT,RELEASED_AMOUNT,MAIN_LINE_CODE,
+ mainline_partyId,mainline_party,
+ mainlineSystemId, systemId,LINE_NO,SERIAL_NO, branchcode,LIMIT_START_DATE,
+AVAILABLE,REVOLVING_LINE,DATE_OF_RESET limit_expiry_date,FREEZE,SEGMENT_1,is_priority_sector as "Psl Flag",
+PRIORITY_SECTOR as "Psl Code",UNCONDI_CANCL,INT_RATE_FIX as "Rate Value",LIMIT_TENOR_DAYS,INTERNAL_REMARKS as Remarks,
+RBI_ASSET_CLASSIFICATION,product_allowed
+FROM (
+SELECT   null uniqueRefno,
+XREF.scm_flag ,SPRO.lsp_le_id ,SPRO.lsp_short_name,
+XREF.ACTION ,SCI.FACILITY_NAME,XREF.FACILITY_SYSTEM,XREF.CURRENCY,SCI.IS_RELEASED,SCI.IS_ADHOC,SCI.ADHOC_LMT_AMOUNT,
+SCI.CMS_REQ_SEC_COVERAGE TOTAL_SACTIONED_AMOUNT,SCI.LMT_TYPE_VALUE ,SCI.CMS_REQ_SEC_COVERAGE as TOTAL_SANCTIONED_LIMIT_INR ,SCI.guarantee,   
+(select lsp_short_name from sci_le_sub_profile where to_char (cms_le_sub_profile_id) = SCI.sub_party_name) guaranteePartyName,   
+REGEXP_SUBSTR(SCI.liability_id,'[^-]+',3,3)  AS liability_id,SCI.RELEASABLE_AMOUNT,XREF.RELEASED_AMOUNT,XREF.MAIN_LINE_CODE,
+(select(CASE when(SCI.guarantee = 'No' and  XREF.MAIN_LINE_CODE is not null) then SPRO.lsp_le_id END) from dual) mainline_partyId,
+(select(CASE when(SCI.guarantee = 'No' and  XREF.MAIN_LINE_CODE is not null) then SPRO.lsp_short_name  END) from dual) mainline_party,
+(select(CASE when( XREF.MAIN_LINE_CODE is not null) then  XREF.FACILITY_SYSTEM_ID END) from dual) mainlineSystemId,
+XREF.FACILITY_SYSTEM_ID systemId ,XREF.LINE_NO,XREF.SERIAL_NO,
+(select branchcode from CMS_FCCBRANCH_MASTER where id = XREF.LIAB_BRANCH and status ='ACTIVE')as branchcode,XREF.LIMIT_START_DATE,
+XREF.AVAILABLE,XREF.REVOLVING_LINE,XREF.DATE_OF_RESET ,XREF.FREEZE,XREF.SEGMENT_1,XREF.is_priority_sector ,
+XREF.PRIORITY_SECTOR,(select entry_name from common_code_category_entry where XREF.UNCONDI_CANCL = entry_code and ACTIVE_STATUS = '1'
+and category_code='UNCONDI_CANCL_COMMITMENT' ) UNCONDI_CANCL ,XREF.INT_RATE_FIX,XREF.LIMIT_TENOR_DAYS,XREF.INTERNAL_REMARKS ,
+PF.RBI_ASSET_CLASSIFICATION,XREF.product_allowed
+FROM 
+SCI_LSP_APPR_LMTS SCI,SCI_LSP_SYS_XREF XREF,SCI_LSP_LMTS_XREF_MAP MAPSS,SCI_LSP_LMT_PROFILE PF,SCI_LE_SUB_PROFILE SPRO,facility_master_temp FAC
+  WHERE SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+  AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID
+  AND XREF.FACILITY_SYSTEM like '%UBS%' and XREF.status = 'SUCCESS'
+  AND SCI.guarantee = 'No' and  XREF.MAIN_LINE_CODE is not null
+  AND FAC.NEW_FACILITY_CODE = SCI.LMT_FAC_CODE AND FAC.SCM_FLAG = 'Yes'
+  union
+SELECT  null uniqueRefno,  
+XREF.scm_flag ,SPRO.lsp_le_id ,SPRO.lsp_short_name,
+XREF.ACTION Action,SCI.FACILITY_NAME,XREF.FACILITY_SYSTEM,XREF.CURRENCY,SCI.IS_RELEASED,SCI.IS_ADHOC,SCI.ADHOC_LMT_AMOUNT,
+SCI.CMS_REQ_SEC_COVERAGE TOTAL_SACTIONED_AMOUNT,SCI.LMT_TYPE_VALUE ,SCI.CMS_REQ_SEC_COVERAGE as TOTAL_SANCTIONED_LIMIT_INR,SCI.guarantee,   
+(select lsp_short_name from sci_le_sub_profile where to_char (cms_le_sub_profile_id) = SCI.sub_party_name) guaranteePartyName,   
+REGEXP_SUBSTR(SCI.liability_id,'[^-]+',3,3)  AS liability_id,SCI.RELEASABLE_AMOUNT,XREF.RELEASED_AMOUNT,XREF.MAIN_LINE_CODE,
+(select(CASE when(SCI.guarantee = 'Yes' and  XREF.MAIN_LINE_CODE is not null) then (select lsp_le_id from sci_le_sub_profile where to_char (cms_le_sub_profile_id) = SCI.sub_party_name) END) from dual) mainline_partyId,
+(select(CASE when(SCI.guarantee = 'Yes' and  XREF.MAIN_LINE_CODE is not null) then (select lsp_short_name from sci_le_sub_profile where to_char (cms_le_sub_profile_id) = SCI.sub_party_name)  END) from dual) mainline_party,
+(select(CASE when( XREF.MAIN_LINE_CODE is not null) then  XREF.FACILITY_SYSTEM_ID END) from dual) mainlineSystemId ,
+XREF.FACILITY_SYSTEM_ID systemId,XREF.LINE_NO,XREF.SERIAL_NO,
+(select branchcode from CMS_FCCBRANCH_MASTER where id = XREF.LIAB_BRANCH and status ='ACTIVE')as branchcode,XREF.LIMIT_START_DATE,
+XREF.AVAILABLE,XREF.REVOLVING_LINE,XREF.DATE_OF_RESET ,XREF.FREEZE,XREF.SEGMENT_1,XREF.is_priority_sector ,
+XREF.PRIORITY_SECTOR ,(select entry_name from common_code_category_entry where XREF.UNCONDI_CANCL = entry_code and ACTIVE_STATUS = '1'
+and category_code='UNCONDI_CANCL_COMMITMENT' ) UNCONDI_CANCL,XREF.INT_RATE_FIX ,XREF.LIMIT_TENOR_DAYS,XREF.INTERNAL_REMARKS as Remarks,
+PF.RBI_ASSET_CLASSIFICATION,XREF.product_allowed
+FROM 
+SCI_LSP_APPR_LMTS SCI,SCI_LSP_SYS_XREF XREF,SCI_LSP_LMTS_XREF_MAP MAPSS,SCI_LSP_LMT_PROFILE PF,SCI_LE_SUB_PROFILE SPRO,facility_master_temp FAC
+  WHERE SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+  AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID
+  AND XREF.FACILITY_SYSTEM like '%UBS%' and XREF.status = 'SUCCESS'
+  AND SCI.guarantee = 'Yes' and  XREF.MAIN_LINE_CODE is not null
+  AND FAC.NEW_FACILITY_CODE = SCI.LMT_FAC_CODE AND FAC.SCM_FLAG = 'Yes'
+  union
+SELECT  null uniqueRefno,
+XREF.scm_flag ,SPRO.lsp_le_id ,SPRO.lsp_short_name ,
+XREF.ACTION Action,SCI.FACILITY_NAME,XREF.FACILITY_SYSTEM,XREF.CURRENCY,SCI.IS_RELEASED,SCI.IS_ADHOC,SCI.ADHOC_LMT_AMOUNT,
+SCI.CMS_REQ_SEC_COVERAGE TOTAL_SACTIONED_AMOUNT,SCI.LMT_TYPE_VALUE,SCI.CMS_REQ_SEC_COVERAGE as TOTAL_SANCTIONED_LIMIT_INR ,SCI.guarantee,   
+(select lsp_short_name from sci_le_sub_profile where to_char (cms_le_sub_profile_id) = SCI.sub_party_name) guaranteePartyName,   
+REGEXP_SUBSTR(SCI.liability_id,'[^-]+',3,3)  AS liability_id,SCI.RELEASABLE_AMOUNT,XREF.RELEASED_AMOUNT,XREF.MAIN_LINE_CODE,
+null mainline_partyId,
+null  mainline_party,
+null mainlineSystemId 
+,XREF.FACILITY_SYSTEM_ID systemId,XREF.LINE_NO,XREF.SERIAL_NO,
+(select branchcode from CMS_FCCBRANCH_MASTER where id = XREF.LIAB_BRANCH and status ='ACTIVE') as branchcode,XREF.LIMIT_START_DATE,
+XREF.AVAILABLE,XREF.REVOLVING_LINE,XREF.DATE_OF_RESET ,XREF.FREEZE,XREF.SEGMENT_1,XREF.is_priority_sector ,
+XREF.PRIORITY_SECTOR,(select entry_name from common_code_category_entry where XREF.UNCONDI_CANCL = entry_code and ACTIVE_STATUS = '1'
+and category_code='UNCONDI_CANCL_COMMITMENT' ) UNCONDI_CANCL,XREF.INT_RATE_FIX ,XREF.LIMIT_TENOR_DAYS,XREF.INTERNAL_REMARKS ,
+PF.RBI_ASSET_CLASSIFICATION,XREF.product_allowed
+FROM 
+SCI_LSP_APPR_LMTS SCI,SCI_LSP_SYS_XREF XREF,SCI_LSP_LMTS_XREF_MAP MAPSS,SCI_LSP_LMT_PROFILE PF,SCI_LE_SUB_PROFILE SPRO,facility_master_temp FAC
+  WHERE SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+  AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID
+  AND XREF.FACILITY_SYSTEM like '%UBS%' and XREF.status = 'SUCCESS'
+  AND XREF.MAIN_LINE_CODE is  null
+  AND FAC.NEW_FACILITY_CODE = SCI.LMT_FAC_CODE AND FAC.SCM_FLAG = 'Yes');

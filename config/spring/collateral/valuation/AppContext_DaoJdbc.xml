@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ORM/JDBC based Dao having property of 'sessionFactory' or 'dataSource'.
+		All these DAOs have to be intercept by Transaction, set in 'AppContext_TrxPlugin.xml'.
+	</description>
+	
+	<bean id="dateSequencerFormatter" class="com.integrosys.base.techinfra.dbsupport.DateSequencerFormatter" />
+	
+	<bean id="cashValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.CashValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+	<bean id="goldValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.GoldValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+	<bean id="guaranteeValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.GuaranteeValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+    <bean id="cgcValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.CGCValuationDAO">
+        <property name="dataSource" ref="ofaPool" />
+        <property name="sequenceFormatter" ref="dateSequencerFormatter" />
+    </bean>
+
+	<bean id="insuranceValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.InsuranceValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+	<bean id="marketableValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.MarketableRunningTotalValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+	<bean id="pdcValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.PDCValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+	<bean id="propertyValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.PropertyValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+	<bean id="straightLineValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.StrtLineValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+	<bean id="vehicleValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.VehicleValuationDAO">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="sequenceFormatter" ref="dateSequencerFormatter" />
+	</bean>
+	
+	<bean id="valuationMainJdbc" class="com.integrosys.cms.batch.valuation.ValuationMainDAO">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+
+    <bean id="genericValuationJdbc" class="com.integrosys.cms.app.collateral.bus.valuation.dao.GenericValuationDAO">
+        <property name="dataSource" ref="ofaPool" />
+        <property name="sequenceFormatter">
+            <bean class="com.integrosys.base.techinfra.dbsupport.DateSequencerFormatter" />
+        </property>
+    </bean>
+    
+    <!-- Start of Lines added by Dattatray Thorat -->
+    <bean id="bhavCopyDao" class="com.integrosys.cms.ui.collateral.BhavCopyDaoImpl">
+    	<property name="sessionFactory" ref="ofaSessionFactory" />
+    </bean>
+    
+    <bean id="stockDao" class="com.integrosys.cms.app.feed.bus.stock.StockDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	<bean id="stockExchangeJdbc" class="com.integrosys.cms.app.feed.bus.stock.StockExchangeJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+    <!-- End of Lines added by Dattatray Thorat -->
+</beans>

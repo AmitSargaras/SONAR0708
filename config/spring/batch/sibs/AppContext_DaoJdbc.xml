@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		To be used for ORM/JDBC based Dao having property of 'sessionFactory' or 'dataSource'.
+		All these DAOs have to be intercept by Transaction, set in 'AppContext_TrxPlugin.xml'.
+	</description>
+
+	<bean id="sibsCustomerFusionDao" class="com.integrosys.cms.batch.sibs.customer.CustomerDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+
+	<bean id="sibsCustomerDao" class="com.integrosys.cms.batch.common.DefaultListRecordsJdbcDaoImpl">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="tableName" value="si_temp_sibs_cu001" />
+		<property name="columnNames" value="
+			RECORD_TYPE, CIF_ID, CUST_NAME_L, CUST_NAME_S, CUST_CLASS_CODE, ID_ISSUE_COUNTRY, 
+			ID_ISSUE_DATE, CUST_TYPE, CUST_START_DATE, ISIC_CODE, ID_NUMBER, ID_TYPE_CODE, 
+			SECONDARY_ID_NUMBER, SECONDARY_ID_TYPE_CODE, PRIMARY_ADD_TYPE_CODE, PRIMARY_ADD_1, 
+			PRIMARY_ADD_2, PRIMARY_ADD_3, PRIMARY_ADD_4, PRIMARY_POSTCODE, PRIMARY_COUNTRY, 
+			LANGUAGE_CODE, SECONDARY_ADD_TYPE_CODE, SECONDARY_ADD_1, SECONDARY_ADD_2, 
+			SECONDARY_ADD_3, SECONDARY_ADD_4, SECONDARY_POSTCODE" />
+		<property name="sqlParameterTypes" value="
+			VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR, 
+			TIMESTAMP, VARCHAR, TIMESTAMP, VARCHAR, VARCHAR, VARCHAR, 
+			VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR, 
+			VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR, 
+			VARCHAR, VARCHAR, VARCHAR, VARCHAR" />
+	</bean>
+
+	<bean id="sibsCollateralDao" class="com.integrosys.cms.batch.sibs.collateral.CollateralDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+
+	<bean id="sibsCreditAppDao" class="com.integrosys.cms.batch.sibs.creditapplication.CreditAppDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+<!--
+	<bean id="sibsCreditAppJdbcDao" class="com.integrosys.cms.batch.sibs.creditapplication.CreditAppJdbcDaoImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+-->
+
+	<bean id="sibsCreditAppJdbcDao" class="com.integrosys.cms.batch.common.DefaultListRecordsJdbcDaoImpl">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="tableName" value="si_temp_sibs_ca001" />
+		<property name="sequenceName" value="CMS_CREDIT_APP_OD_TL_SEQ" />
+		<property name="columnNames" value="
+			FEED_ID, RECORD_TYPE, AA_NUMBER, SRC_LIMIT_ID, OUT_LIMIT_ID, FACILITY_TYPE_CODE, 
+			EXTERNAL_SYSTEM_ACCT_NO, DRAWING_LIMIT_AMT, OUTSTANDING_SIGN, OUTSTANDING_AMT, 
+			FACILITY_SEQ, ACCT_TYPE, ACCT_SEQ, LOC_COUNTRY, LOC_ORG_CODE, FIRST_DISBURSEMENT_DATE, 
+			FINAL_DISBURSEMENT_DATE, CURRENT_BALANCE_AMT, CURRENT_BALANCE_SIGN, FINAL_PAYMENT_AMT_SIGN, 
+			FINAL_PAYMENT_AMT, PAYMENT_AMT_SIGN, PAYMENT_AMT, RELEASED_AMT_SIGN, RELEASED_AMT, 
+			LATE_CHARGES_AMT_SIGN, LATE_CHARGES_AMT, OTHER_CHARGES_AMT_SIGN, OTHER_CHARGES_AMT, 
+			MISC_CHARGES_AMT_SIGN, MISC_CHARGES_AMT, BILLED_INT_OS_AMT_SIGN, BILLED_INT_OS_AMT, 
+			ACCRUED_INTEREST_AMT_SIGN, ACCRUED_INTEREST_AMT, ACCRUED_LATE_CHARGE_AMT_SIGN, 
+			ACCRUED_LATE_CHARGE_AMT, ACCRUED_COMM_FEE_AMT_SIGN, ACCRUED_COMM_FEE_AMT, 
+			PRIME_RATE_NUMBER, PRIME_VARIANCE_SIGN, PRIME_VARIANCE_AMT" />
+		<property name="sqlParameterTypes" value="
+			VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR,
+			VARCHAR, DECIMAL, VARCHAR, DECIMAL, NUMERIC, VARCHAR,
+			NUMERIC, VARCHAR, VARCHAR, TIMESTAMP, TIMESTAMP, DECIMAL,
+			VARCHAR, VARCHAR, DECIMAL, VARCHAR, DECIMAL, VARCHAR,
+			DECIMAL, VARCHAR, DECIMAL, VARCHAR, DECIMAL, VARCHAR,
+			DECIMAL, VARCHAR, DECIMAL, VARCHAR, DECIMAL, VARCHAR,
+			DECIMAL, VARCHAR, DECIMAL, VARCHAR, VARCHAR, DECIMAL" />
+	</bean>
+
+    <bean id="commonCodeDao" class="com.integrosys.cms.app.commoncode.bus.CommonCodeDaoImpl">
+        <property name="sessionFactory" ref="ofaSessionFactory" />
+    </bean>
+
+    <bean id="parameterDao" class="com.integrosys.cms.batch.sibs.parameter.ParameterDaoImpl">
+        <property name="sessionFactory" ref="${session.factory.external.bean.name}" />
+    </bean>
+
+</beans>

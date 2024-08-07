@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+	</description>
+	
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="sendEmailNotificationTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	
+	<bean id="sendEmailNotificationTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="sendEmailNotificationJobDetail" />
+		<property name="cronExpression" value="0 0/05 * * * ?" />
+	</bean>
+	<bean id="sendEmailNotificationJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="sendEmailNotificationJob" />
+		<property name="targetMethod" value="execute" />
+		
+	</bean>
+	<bean name="sendEmailNotificationJob" class="com.integrosys.cms.batch.email.notification.SendEmailNotificationJob">
+		<property name="emailNotificationDao" ref="emailNotificationDao" />
+		<property name="mailUtil" ref="mailUtil" />
+	</bean>
+	
+	<bean id="emailNotificationDao" class="com.integrosys.cms.app.email.notification.bus.EmailNotificationDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+	
+	
+		<bean id="mailUtil" class="com.integrosys.cms.batch.email.notification.MailUtil">
+	</bean>
+	
+	
+	
+	
+	
+</beans>

@@ -1,0 +1,1276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_SCCertificate">
+   <display-name>SCCertificate</display-name>
+   <enterprise-beans>
+      <session id="session_SBSCCertificateProxyManager">
+         <ejb-name>SBSCCertificateProxyManager</ejb-name>
+         <home>com.integrosys.cms.app.sccertificate.proxy.SBSCCertificateProxyManagerHome</home>
+         <remote>com.integrosys.cms.app.sccertificate.proxy.SBSCCertificateProxyManager</remote>
+         <ejb-class>com.integrosys.cms.app.sccertificate.proxy.SBSCCertificateProxyManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBSCCertificateProxyManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBSCCertificateBusManager">
+         <ejb-name>SBSCCertificateBusManager</ejb-name>
+         <home>com.integrosys.cms.app.sccertificate.bus.SBSCCertificateBusManagerHome</home>
+         <remote>com.integrosys.cms.app.sccertificate.bus.SBSCCertificateBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.SBSCCertificateBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBSCCertificateBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBStagingSCCertificateBusManager">
+         <ejb-name>SBStagingSCCertificateBusManager</ejb-name>
+         <home>com.integrosys.cms.app.sccertificate.bus.SBSCCertificateBusManagerHome</home>
+         <remote>com.integrosys.cms.app.sccertificate.bus.SBSCCertificateBusManager</remote>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.SBStagingSCCertificateBusManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBStagingSCCertificateBusManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBSCCertificate">
+         <ejb-name>EBSCCertificate</ejb-name>
+         <home>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateHome</home>
+         <remote>com.integrosys.cms.app.sccertificate.bus.EBSCCertificate</remote>
+         <local-home>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateLocalHome</local-home>
+         <local>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateLocal</local>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBSCCertificate</abstract-schema-name>
+         <cmp-field id="cmpfield_EBSCCertificate_cMPSCCertID">
+            <field-name>cMPSCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_sCCertRef">
+            <field-name>sCCertRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_dateGenerated">
+            <field-name>dateGenerated</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_creditOfficerName">
+            <field-name>creditOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_creditOfficerSignNo">
+            <field-name>creditOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_creditOfficerCountry">
+            <field-name>creditOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_creditOfficerOrgCode">
+            <field-name>creditOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_seniorOfficerName">
+            <field-name>seniorOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_seniorOfficerSignNo">
+            <field-name>seniorOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_seniorOfficerCountry">
+            <field-name>seniorOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_seniorOfficerOrgCode">
+            <field-name>seniorOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_creditOfficerDt">
+            <field-name>creditOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_seniorOfficerDt">
+            <field-name>seniorOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_famCode">
+            <field-name>famCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_famName">
+            <field-name>famName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_bcaApprovalDate">
+            <field-name>bcaApprovalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_bcaNextReviewDate">
+            <field-name>bcaNextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_bcaExtendedReviewDate">
+            <field-name>bcaExtendedReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_bcaOrigCtry">
+            <field-name>bcaOrigCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_bcaOrigOrg">
+            <field-name>bcaOrigOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_bcaApprovalAuthority">
+            <field-name>bcaApprovalAuthority</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_bFLIssuedDate">
+            <field-name>bFLIssuedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_custSegmentCode">
+            <field-name>custSegmentCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_creditGradeCode">
+            <field-name>creditGradeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_hasCheck1">
+            <field-name>hasCheck1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_hasCheck2">
+            <field-name>hasCheck2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_hasCheck3">
+            <field-name>hasCheck3</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_hasCheck4">
+            <field-name>hasCheck4</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_insuredWith">
+            <field-name>insuredWith</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_insuredWithAmt">
+            <field-name>insuredWithAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_ambm">
+            <field-name>ambm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_expiry">
+            <field-name>expiry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_sinkFundAmt">
+            <field-name>sinkFundAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_pmForPeriodOf">
+            <field-name>pmForPeriodOf</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_commencingFrom">
+            <field-name>commencingFrom</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_fundReach">
+            <field-name>fundReach</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_feesAmt">
+            <field-name>feesAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificate_others">
+            <field-name>others</field-name>
+         </cmp-field>
+         <primkey-field>cMPSCCertID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBSCCertificate_EBSCCertificateItem">
+            <ejb-ref-name>EBSCCertificateItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemLocal</local>
+            <ejb-link>EBSCCertificateItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBSCCertificate">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBSCCertificate o WHERE o.cMPLimitProfileID = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBSCCertificateItem">
+         <ejb-name>EBSCCertificateItem</ejb-name>
+         <local-home>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBSCCertificateItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBSCCertificateItem_cMPSCCertItemID">
+            <field-name>cMPSCCertItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_cMPSCCertID">
+            <field-name>cMPSCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_sCCertItemRef">
+            <field-name>sCCertItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_cMPLimitID">
+            <field-name>cMPLimitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_limitType">
+            <field-name>limitType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_activatedAmtCurrency">
+            <field-name>activatedAmtCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_activatedAmt">
+            <field-name>activatedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_approvedLimitAmtCcy">
+            <field-name>approvedLimitAmtCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_approvedLimitAmt">
+            <field-name>approvedLimitAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_approvalDate">
+            <field-name>approvalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_productDesc">
+            <field-name>productDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_bkgLoctnCtry">
+            <field-name>bkgLoctnCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_bkgLoctnOrg">
+            <field-name>bkgLoctnOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_coBorrowerLegalID">
+            <field-name>coBorrowerLegalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_coBorrowerName">
+            <field-name>coBorrowerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_securityIDs">
+            <field-name>securityIDs</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_securityTypes">
+            <field-name>securityTypes</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_maturityDate">
+            <field-name>maturityDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_expAvalDT">
+            <field-name>expAvalDT</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_distAmtCCY">
+            <field-name>distAmtCCY</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_distAmt">
+            <field-name>distAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_enforceAmtCCY">
+            <field-name>enforceAmtCCY</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_enforceAmt">
+            <field-name>enforceAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBSCCertificateItem_paymntInstruc">
+            <field-name>paymntInstruc</field-name>
+         </cmp-field>
+         <primkey-field>cMPSCCertItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBSCCertificateItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findBySCCertificateItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBSCCertificateItem o WHERE o.sCCertItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingSCCertificate">
+         <ejb-name>EBStagingSCCertificate</ejb-name>
+         <home>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateHome</home>
+         <remote>com.integrosys.cms.app.sccertificate.bus.EBSCCertificate</remote>
+         <local-home>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateLocalHome</local-home>
+         <local>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateLocal</local>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.EBStgSCCertificateBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingSCCertificate</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_cMPSCCertID">
+            <field-name>cMPSCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_sCCertRef">
+            <field-name>sCCertRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_dateGenerated">
+            <field-name>dateGenerated</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_creditOfficerName">
+            <field-name>creditOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_creditOfficerSignNo">
+            <field-name>creditOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_creditOfficerCountry">
+            <field-name>creditOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_creditOfficerOrgCode">
+            <field-name>creditOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_seniorOfficerName">
+            <field-name>seniorOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_seniorOfficerSignNo">
+            <field-name>seniorOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_seniorOfficerCountry">
+            <field-name>seniorOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_seniorOfficerOrgCode">
+            <field-name>seniorOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_creditOfficerDt">
+            <field-name>creditOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_seniorOfficerDt">
+            <field-name>seniorOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_famCode">
+            <field-name>famCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_famName">
+            <field-name>famName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_bcaApprovalDate">
+            <field-name>bcaApprovalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_bcaNextReviewDate">
+            <field-name>bcaNextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_bcaExtendedReviewDate">
+            <field-name>bcaExtendedReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_bcaOrigCtry">
+            <field-name>bcaOrigCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_bcaOrigOrg">
+            <field-name>bcaOrigOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_bcaApprovalAuthority">
+            <field-name>bcaApprovalAuthority</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_bFLIssuedDate">
+            <field-name>bFLIssuedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_custSegmentCode">
+            <field-name>custSegmentCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_creditGradeCode">
+            <field-name>creditGradeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_hasCheck1">
+            <field-name>hasCheck1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_hasCheck2">
+            <field-name>hasCheck2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_hasCheck3">
+            <field-name>hasCheck3</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_hasCheck4">
+            <field-name>hasCheck4</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_insuredWith">
+            <field-name>insuredWith</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_insuredWithAmt">
+            <field-name>insuredWithAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_ambm">
+            <field-name>ambm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_expiry">
+            <field-name>expiry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_sinkFundAmt">
+            <field-name>sinkFundAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_pmForPeriodOf">
+            <field-name>pmForPeriodOf</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_commencingFrom">
+            <field-name>commencingFrom</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_fundReach">
+            <field-name>fundReach</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_feesAmt">
+            <field-name>feesAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificate_others">
+            <field-name>others</field-name>
+         </cmp-field>
+         <primkey-field>cMPSCCertID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingSCCertificate_EBStagingSCCertificateItem">
+            <ejb-ref-name>EBStagingSCCertificateItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemLocal</local>
+            <ejb-link>EBStagingSCCertificateItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingSCCertificate">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingSCCertificate o WHERE o.cMPLimitProfileID = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingSCCertificateItem">
+         <ejb-name>EBStagingSCCertificateItem</ejb-name>
+         <local-home>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.EBSCCertificateItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingSCCertificateItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_cMPSCCertItemID">
+            <field-name>cMPSCCertItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_cMPSCCertID">
+            <field-name>cMPSCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_sCCertItemRef">
+            <field-name>sCCertItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_cMPLimitID">
+            <field-name>cMPLimitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_limitType">
+            <field-name>limitType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_activatedAmtCurrency">
+            <field-name>activatedAmtCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_activatedAmt">
+            <field-name>activatedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_approvedLimitAmtCcy">
+            <field-name>approvedLimitAmtCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_approvedLimitAmt">
+            <field-name>approvedLimitAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_approvalDate">
+            <field-name>approvalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_productDesc">
+            <field-name>productDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_bkgLoctnCtry">
+            <field-name>bkgLoctnCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_bkgLoctnOrg">
+            <field-name>bkgLoctnOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_coBorrowerLegalID">
+            <field-name>coBorrowerLegalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_coBorrowerName">
+            <field-name>coBorrowerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_securityIDs">
+            <field-name>securityIDs</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_securityTypes">
+            <field-name>securityTypes</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_maturityDate">
+            <field-name>maturityDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_expAvalDT">
+            <field-name>expAvalDT</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_distAmtCCY">
+            <field-name>distAmtCCY</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_distAmt">
+            <field-name>distAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_enforceAmtCCY">
+            <field-name>enforceAmtCCY</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_enforceAmt">
+            <field-name>enforceAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingSCCertificateItem_paymntInstruc">
+            <field-name>paymntInstruc</field-name>
+         </cmp-field>
+         <primkey-field>cMPSCCertItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBStagingSCCertificateItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findBySCCertificateItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingSCCertificateItem o WHERE o.sCCertItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBPartialSCCertificate">
+         <ejb-name>EBPartialSCCertificate</ejb-name>
+         <home>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateHome</home>
+         <remote>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificate</remote>
+         <local-home>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateLocalHome</local-home>
+         <local>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateLocal</local>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBPartialSCCertificate</abstract-schema-name>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_cMPSCCertID">
+            <field-name>cMPSCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_sCCertRef">
+            <field-name>sCCertRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_dateGenerated">
+            <field-name>dateGenerated</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_creditOfficerName">
+            <field-name>creditOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_creditOfficerSignNo">
+            <field-name>creditOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_creditOfficerCountry">
+            <field-name>creditOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_creditOfficerOrgCode">
+            <field-name>creditOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_seniorOfficerName">
+            <field-name>seniorOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_seniorOfficerSignNo">
+            <field-name>seniorOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_seniorOfficerCountry">
+            <field-name>seniorOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_seniorOfficerOrgCode">
+            <field-name>seniorOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_creditOfficerDt">
+            <field-name>creditOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_seniorOfficerDt">
+            <field-name>seniorOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_famCode">
+            <field-name>famCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_famName">
+            <field-name>famName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_bcaApprovalDate">
+            <field-name>bcaApprovalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_bcaNextReviewDate">
+            <field-name>bcaNextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_bcaExtendedReviewDate">
+            <field-name>bcaExtendedReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_bcaOrigCtry">
+            <field-name>bcaOrigCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_bcaOrigOrg">
+            <field-name>bcaOrigOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_bcaApprovalAuthority">
+            <field-name>bcaApprovalAuthority</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_bFLIssuedDate">
+            <field-name>bFLIssuedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_custSegmentCode">
+            <field-name>custSegmentCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_creditGradeCode">
+            <field-name>creditGradeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_hasCheck1">
+            <field-name>hasCheck1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_hasCheck2">
+            <field-name>hasCheck2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_hasCheck3">
+            <field-name>hasCheck3</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_hasCheck4">
+            <field-name>hasCheck4</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_insuredWith">
+            <field-name>insuredWith</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_insuredWithAmt">
+            <field-name>insuredWithAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_ambm">
+            <field-name>ambm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_expiry">
+            <field-name>expiry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_sinkFundAmt">
+            <field-name>sinkFundAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_pmForPeriodOf">
+            <field-name>pmForPeriodOf</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_commencingFrom">
+            <field-name>commencingFrom</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_fundReach">
+            <field-name>fundReach</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_feesAmt">
+            <field-name>feesAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificate_others">
+            <field-name>others</field-name>
+         </cmp-field>
+         <primkey-field>cMPSCCertID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBPartialSCCertificate_EBPartialSCCertificateItem">
+            <ejb-ref-name>EBPartialSCCertificateItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemLocal</local>
+            <ejb-link>EBPartialSCCertificateItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBPartialSCCertificate">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBPartialSCCertificate o WHERE o.cMPLimitProfileID = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBPartialSCCertificateItem">
+         <ejb-name>EBPartialSCCertificateItem</ejb-name>
+         <local-home>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBPartialSCCertificateItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_cMPSCCertItemID">
+            <field-name>cMPSCCertItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_isPartialSCCIndStr">
+            <field-name>isPartialSCCIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_cMPSCCertID">
+            <field-name>cMPSCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_sCCertItemRef">
+            <field-name>sCCertItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_cMPLimitID">
+            <field-name>cMPLimitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_limitType">
+            <field-name>limitType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_activatedAmtCurrency">
+            <field-name>activatedAmtCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_activatedAmt">
+            <field-name>activatedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_issuedDate">
+            <field-name>issuedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_approvedLimitAmtCcy">
+            <field-name>approvedLimitAmtCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_approvedLimitAmt">
+            <field-name>approvedLimitAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_approvalDate">
+            <field-name>approvalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_productDesc">
+            <field-name>productDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_bkgLoctnCtry">
+            <field-name>bkgLoctnCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_bkgLoctnOrg">
+            <field-name>bkgLoctnOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_coBorrowerLegalID">
+            <field-name>coBorrowerLegalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_coBorrowerName">
+            <field-name>coBorrowerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_securityIDs">
+            <field-name>securityIDs</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_securityTypes">
+            <field-name>securityTypes</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_maturityDate">
+            <field-name>maturityDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_expAvalDT">
+            <field-name>expAvalDT</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_distAmtCCY">
+            <field-name>distAmtCCY</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_distAmt">
+            <field-name>distAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_enforceAmtCCY">
+            <field-name>enforceAmtCCY</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_enforceAmt">
+            <field-name>enforceAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBPartialSCCertificateItem_paymntInstruc">
+            <field-name>paymntInstruc</field-name>
+         </cmp-field>
+         <primkey-field>cMPSCCertItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBPartialSCCertificateItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findBySCCertificateItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBPartialSCCertificateItem o WHERE o.sCCertItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingPartialSCCertificate">
+         <ejb-name>EBStagingPartialSCCertificate</ejb-name>
+         <home>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateHome</home>
+         <remote>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificate</remote>
+         <local-home>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateLocalHome</local-home>
+         <local>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateLocal</local>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.EBStgPartialSCCertificateBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingPartialSCCertificate</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_cMPSCCertID">
+            <field-name>cMPSCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_sCCertRef">
+            <field-name>sCCertRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_cMPLimitProfileID">
+            <field-name>cMPLimitProfileID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_dateGenerated">
+            <field-name>dateGenerated</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_creditOfficerName">
+            <field-name>creditOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_creditOfficerSignNo">
+            <field-name>creditOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_creditOfficerCountry">
+            <field-name>creditOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_creditOfficerOrgCode">
+            <field-name>creditOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_seniorOfficerName">
+            <field-name>seniorOfficerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_seniorOfficerSignNo">
+            <field-name>seniorOfficerSignNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_seniorOfficerCountry">
+            <field-name>seniorOfficerCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_seniorOfficerOrgCode">
+            <field-name>seniorOfficerOrgCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_creditOfficerDt">
+            <field-name>creditOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_seniorOfficerDt">
+            <field-name>seniorOfficerDt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_remarks">
+            <field-name>remarks</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_famCode">
+            <field-name>famCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_famName">
+            <field-name>famName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_bcaApprovalDate">
+            <field-name>bcaApprovalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_bcaNextReviewDate">
+            <field-name>bcaNextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_bcaExtendedReviewDate">
+            <field-name>bcaExtendedReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_bcaOrigCtry">
+            <field-name>bcaOrigCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_bcaOrigOrg">
+            <field-name>bcaOrigOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_bcaApprovalAuthority">
+            <field-name>bcaApprovalAuthority</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_bFLIssuedDate">
+            <field-name>bFLIssuedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_custSegmentCode">
+            <field-name>custSegmentCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_creditGradeCode">
+            <field-name>creditGradeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_hasCheck1">
+            <field-name>hasCheck1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_hasCheck2">
+            <field-name>hasCheck2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_hasCheck3">
+            <field-name>hasCheck3</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_hasCheck4">
+            <field-name>hasCheck4</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_insuredWith">
+            <field-name>insuredWith</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_insuredWithAmt">
+            <field-name>insuredWithAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_ambm">
+            <field-name>ambm</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_expiry">
+            <field-name>expiry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_sinkFundAmt">
+            <field-name>sinkFundAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_pmForPeriodOf">
+            <field-name>pmForPeriodOf</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_commencingFrom">
+            <field-name>commencingFrom</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_fundReach">
+            <field-name>fundReach</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_feesAmt">
+            <field-name>feesAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificate_others">
+            <field-name>others</field-name>
+         </cmp-field>
+         <primkey-field>cMPSCCertID</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBStagingPartialSCCertificate_EBStagingPartialSCCertificateItem">
+            <ejb-ref-name>EBStagingPartialSCCertificateItemLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemLocalHome</local-home>
+            <local>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemLocal</local>
+            <ejb-link>EBStagingPartialSCCertificateItem</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBStagingPartialSCCertificate">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findByLimitProfileID</method-name>
+               <method-params>
+                  <method-param>java.lang.Long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingPartialSCCertificate o WHERE o.cMPLimitProfileID = ?1]]></ejb-ql>
+         </query>
+      </entity>
+      <entity id="entity_EBStagingPartialSCCertificateItem">
+         <ejb-name>EBStagingPartialSCCertificateItem</ejb-name>
+         <local-home>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemLocalHome</local-home>
+         <local>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemLocal</local>
+         <ejb-class>com.integrosys.cms.app.sccertificate.bus.EBPartialSCCertificateItemBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBStagingPartialSCCertificateItem</abstract-schema-name>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_cMPSCCertItemID">
+            <field-name>cMPSCCertItemID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_isDeletedIndStr">
+            <field-name>isDeletedIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_isPartialSCCIndStr">
+            <field-name>isPartialSCCIndStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_cMPSCCertID">
+            <field-name>cMPSCCertID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_sCCertItemRef">
+            <field-name>sCCertItemRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_cMPLimitID">
+            <field-name>cMPLimitID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_limitType">
+            <field-name>limitType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_activatedAmtCurrency">
+            <field-name>activatedAmtCurrency</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_activatedAmt">
+            <field-name>activatedAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_issuedDate">
+            <field-name>issuedDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_approvedLimitAmtCcy">
+            <field-name>approvedLimitAmtCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_approvedLimitAmt">
+            <field-name>approvedLimitAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_approvalDate">
+            <field-name>approvalDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_productDesc">
+            <field-name>productDesc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_bkgLoctnCtry">
+            <field-name>bkgLoctnCtry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_bkgLoctnOrg">
+            <field-name>bkgLoctnOrg</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_outerLimitRef">
+            <field-name>outerLimitRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_coBorrowerLegalID">
+            <field-name>coBorrowerLegalID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_coBorrowerName">
+            <field-name>coBorrowerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_securityIDs">
+            <field-name>securityIDs</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_securityTypes">
+            <field-name>securityTypes</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_maturityDate">
+            <field-name>maturityDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_expAvalDT">
+            <field-name>expAvalDT</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_distAmtCCY">
+            <field-name>distAmtCCY</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_distAmt">
+            <field-name>distAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_enforceAmtCCY">
+            <field-name>enforceAmtCCY</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_enforceAmt">
+            <field-name>enforceAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBStagingPartialSCCertificateItem_paymntInstruc">
+            <field-name>paymntInstruc</field-name>
+         </cmp-field>
+         <primkey-field>cMPSCCertItemID</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBStagingPartialSCCertificateItem">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+         <query>
+            <query-method>
+               <method-name>findBySCCertificateItemRef</method-name>
+               <method-params>
+                  <method-param>long</method-param>
+               </method-params>
+            </query-method>
+            <ejb-ql><![CDATA[SELECT DISTINCT OBJECT(o) FROM EBStagingPartialSCCertificateItem o WHERE o.sCCertItemRef = ?1 ]]></ejb-ql>
+         </query>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_SCCertificate-SCCertificateItem">
+         <ejb-relation-name>SCCertificate-SCCertificateItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_SCCertificate-Has-SCCertificateItem">
+            <ejb-relationship-role-name>SCCertificate-Has-SCCertificateItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBSCCertificate</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRSCCItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_SCCertificateItem-BelongsTo-SCCertificate">
+            <ejb-relationship-role-name>SCCertificateItem-BelongsTo-SCCertificate</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBSCCertificateItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingSCCertificate-StagingSCCertificateItem">
+         <ejb-relation-name>StagingSCCertificate-StagingSCCertificateItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingSCCertificate-Has-StagingSCCertificateItem">
+            <ejb-relationship-role-name>StagingSCCertificate-Has-StagingSCCertificateItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingSCCertificate</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRSCCItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingSCCertificateItem-BelongsTo-StagingSCCertificate">
+            <ejb-relationship-role-name>StagingSCCertificateItem-BelongsTo-StagingSCCertificate</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingSCCertificateItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_PartialSCCertificate-PartialSCCertificateItem">
+         <ejb-relation-name>PartialSCCertificate-PartialSCCertificateItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_PartialSCCertificate-Has-PartialSCCertificateItem">
+            <ejb-relationship-role-name>PartialSCCertificate-Has-PartialSCCertificateItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBPartialSCCertificate</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRPartialSCCItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_PartialSCCertificateItem-BelongsTo-PartialSCCertificate">
+            <ejb-relationship-role-name>PartialSCCertificateItem-BelongsTo-PartialSCCertificate</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBPartialSCCertificateItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_StagingPartialSCCertificate-StagingPartialSCCertificateItem">
+         <ejb-relation-name>StagingPartialSCCertificate-StagingPartialSCCertificateItem</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_StagingPartialSCCertificate-Has-StagingPartialSCCertificateItem">
+            <ejb-relationship-role-name>StagingPartialSCCertificate-Has-StagingPartialSCCertificateItem</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingPartialSCCertificate</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRPartialSCCItems</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_StagingPartialSCCertificateItem-BelongsTo-StagingPartialSCCertificate">
+            <ejb-relationship-role-name>StagingPartialSCCertificateItem-BelongsTo-StagingPartialSCCertificate</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBStagingPartialSCCertificateItem</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBSCCertificateProxyManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBSCCertificateBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBStagingSCCertificateBusManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBSCCertificate</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBSCCertificateItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingSCCertificate</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingSCCertificateItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBPartialSCCertificate</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBPartialSCCertificateItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingPartialSCCertificate</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBStagingPartialSCCertificateItem</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

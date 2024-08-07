@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="ReassignmentForm" type="com.integrosys.cms.ui.reassignment.ReassignmentForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	    <action path="/Reassignment"
+	        type="com.integrosys.cms.ui.reassignment.ReassignmentAction"
+	        name="ReassignmentForm" validate="false" scope="request">
+	        <forward name="prepare" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/reassignment/reassignment_search.jsp"/>
+	            <set-property property="title" value="title.reassignment.page"/>
+	        </forward>
+	        <forward name="TASK_DEAL" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/reassignment/reassignment_deal.jsp"/>
+	            <set-property property="title" value="title.reassignment.page"/>
+	        </forward>
+	        <forward name="TASK_CCC" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/reassignment/reassignment_ccc.jsp"/>
+	            <set-property property="title" value="title.reassignment.page"/>
+	        </forward>
+	        <forward name="TASK_SCC" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/reassignment/reassignment_scc.jsp"/>
+	            <set-property property="title" value="title.reassignment.page"/>
+	        </forward>
+	        <forward name="forward" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/reassignment/ack_reassignment.jsp"/>
+	            <set-property property="title" value="title.reassignment.page"/>
+	        </forward>
+	    </action>
+    </action-mappings>
+    
+    <!--<message-resources parameter="ApplicationResources-reassignment"/>-->
+</struts-config>

@@ -1,0 +1,80 @@
+<!-- InstanceBeginEditable name="Content" -->
+<table width="70%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+  <thead>
+    <tr>
+      <td><h3>Notification - $!{ob.subject}</h3></td>
+    </tr>
+    <tr>
+      <td><hr /></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblInfo">
+          <tbody>
+            <tr>
+              <td width="20%" class="fieldname">To</td>
+              <td width="30%" class="odd">$!{ob.receipient}</td>
+              <td width="20%" class="fieldname">Date</td>
+              <td width="30%" class="odd">$!{DateUtil.formatDate("dd/MMM/yyyy", ${ob.notificationDate})}</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Customer Legal Name</td>
+              <td>$!{ob.leName}</td>
+              <td class="fieldname">CIF / ID No.</td>
+              <td>$!{ob.leID}</td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname">Subject</td>
+              <td colspan="3">$!{ob.subject}</td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+          <thead>
+          </thead>
+          <tbody>
+            <tr class="odd">
+              <td class="fieldname">Customer Category</td>
+              <td>$!{ob.customerCategory}</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Co Borrower/Pledgor ID</td>
+              <td>$!{ob.coborrowerPledgorID}&nbsp;</td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname">Co Borrower/Pledgor Name</td>
+              <td>$!{ob.coborrowerPledgorLeName}&nbsp;</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Document Originating Location</td>
+              <td>$!{VelocityUtil.getCountryName(${ob.domicileCountry})}</td>
+            </tr>
+            <tr class="odd">
+              <td class="fieldname">Organisation Code</td>
+              <td>$!{VelocityUtil.getOrgCodeDesc($!{ob.orgCode})}</td>
+            </tr>
+            <tr class="even">
+              <td class="fieldname">Governing Law</td>
+              <td>$!{ob.governLaw}&nbsp;</td>
+            </tr>
+        #if (${ob.bcaBkgCountry})
+            <tr class="odd">
+              <td class="fieldname">BCA Booking Location </td>
+              <td>$!{VelocityUtil.getCountryName(${ob.bcaBkgCountry})}</td>
+            </tr>
+        #end     
+            <tr class="even">
+              <td class="fieldname">Remarks</td>
+              <td>$!{VelocityUtil.convertHTMLWrap(${ob.getCCRemarks()})}&nbsp;</td>
+            </tr>         
+          </tbody>
+        </table></td>
+    </tr>
+  </tbody>
+</table>

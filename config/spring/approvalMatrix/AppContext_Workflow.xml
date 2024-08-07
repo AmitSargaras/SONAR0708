@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+	
+	<!-- bond feed -->
+	
+	<bean id="ApprovalMatrixTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.approvalmatrix.trx.CheckerApproveUpdateOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+
+	<bean id="ApprovalMatrixTrx.CheckerRejectOperation" class="com.integrosys.cms.app.approvalmatrix.trx.CheckerRejectOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+	
+	<bean id="ApprovalMatrixTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.approvalmatrix.trx.MakerCloseDraftOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+	
+	<bean id="ApprovalMatrixTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.approvalmatrix.trx.MakerCloseRejectedOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+	
+	<bean id="ApprovalMatrixTrx.MakerSubmitOperation" class="com.integrosys.cms.app.approvalmatrix.trx.MakerSubmitOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+	
+	<bean id="ApprovalMatrixTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.approvalmatrix.trx.MakerSubmitRejectedOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+	
+	<bean id="ApprovalMatrixTrx.MakerUpdateOperation" class="com.integrosys.cms.app.approvalmatrix.trx.MakerUpdateOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+	
+	<bean id="ApprovalMatrixTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.approvalmatrix.trx.MakerUpdateRejectedOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+	
+	<bean id="ApprovalMatrixTrx.ReadApprovalMatrixOperation" class="com.integrosys.cms.app.approvalmatrix.trx.ReadApprovalMatrixOperation">
+		<property name="approvalMatrixBusManager" ref="approvalMatrixBusManager" />
+		<property name="approvalMatrixBusManagerStaging" ref="stagingApprovalMatrixBusManager" />
+	</bean>
+
+	<bean id="ApprovalMatrixGroupReadController" class="com.integrosys.cms.app.approvalmatrix.trx.ApprovalMatrixReadController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="ReadApprovalMatrixOperation" value-ref="ApprovalMatrixTrx.ReadApprovalMatrixOperation" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="ApprovalMatrixGroupTrxController" class="com.integrosys.cms.app.approvalmatrix.trx.ApprovalMatrixTrxController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="CheckerApproveUpdateOperation" value-ref="ApprovalMatrixTrx.CheckerApproveUpdateOperation" />
+				<entry key="CheckerRejectOperation" value-ref="ApprovalMatrixTrx.CheckerRejectOperation" />
+				<entry key="MakerCloseDraftOperation" value-ref="ApprovalMatrixTrx.MakerCloseDraftOperation" />
+				<entry key="MakerCloseRejectedOperation" value-ref="ApprovalMatrixTrx.MakerCloseRejectedOperation" />
+				<entry key="MakerSubmitOperation" value-ref="ApprovalMatrixTrx.MakerSubmitOperation" />
+				<entry key="MakerSubmitRejectedOperation" value-ref="ApprovalMatrixTrx.MakerSubmitRejectedOperation" />
+				<entry key="MakerUpdateOperation" value-ref="ApprovalMatrixTrx.MakerUpdateOperation" />
+				<entry key="MakerUpdateRejectedOperation" value-ref="ApprovalMatrixTrx.MakerUpdateRejectedOperation" />
+			</map>
+		</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+	</bean>
+
+	<bean id="approvalMatrixTrxControllerFactory" class="com.integrosys.cms.app.approvalmatrix.trx.ApprovalMatrixTrxControllerFactory">
+		<property name="approvalMatrixGroupReadController" ref="ApprovalMatrixGroupReadController" />
+		<property name="approvalMatrixGroupTrxContoller" ref="ApprovalMatrixGroupTrxController" />
+	</bean>
+	
+</beans>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping package="com.integrosys.cms.app.collateral.bus">
+
+	<class entity-name="actualValuation" name="OBValuation" table="CMS_VALUATION" lazy="false">
+		<id name="valuationID" column="VALUATION_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">VALUATION_SEQ</param>
+			</generator>
+		</id>
+
+		<property name="collateralID" column="CMS_COLLATERAL_ID" type="long" />
+		<property name="valuerName" column="VALUER"/>
+		<property name="valuationDate" column="VALUATION_DATE" type="timestamp" />
+		<property name="updateDate" column="UPDATE_DATE" type="timestamp" />
+		<property name="currencyCode" column="VALUATION_CURRENCY"/>
+		
+		<component name="CMV" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="CMV" type="big_decimal" />
+			<property name="currencyCode" column="VALUATION_CURRENCY" insert="false" update="false" />
+		</component>
+		
+		<component name="FSV" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="FSV" type="big_decimal" />
+			<property name="currencyCode" column="VALUATION_CURRENCY" insert="false" update="false" />
+		</component>
+		
+		<component name="beforeMarginValue" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="VALUE_BEFORE_MARGIN" type="big_decimal" />
+			<property name="currencyCode" column="VALUATION_CURRENCY" insert="false" update="false" />
+		</component>
+
+		<property name="revaluationFreq" column="REVAL_FREQ" type="int" />
+		<property name="revaluationFreqUnit" column="REVAL_FREQ_UNIT" />
+		<property name="nonRevaluationFreq" column="NON_REVAL_FREQ" type="int" />
+		<property name="nonRevaluationFreqUnit" column="NON_REVAL_FREQ_UNIT"/>
+		<property name="comments" column="COMMENTS"/>
+		<property name="evaluationDateFSV" column="EVALUATION_DATE_FSV" type="timestamp" />
+		<property name="valuationType" column="VALUATION_TYPE"/>
+		
+		<component name="reservePrice" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="RESERVE_PRICE" type="big_decimal" />
+			<property name="currencyCode" column="VALUATION_CURRENCY" insert="false" update="false" />
+		</component>
+
+		<property name="reservePriceDate" column="RESERVE_PRICE_DATE" type="timestamp"/>
+		<property name="sourceType" column="SOURCE_TYPE"/>
+		<property name="sourceId" column="SOURCE_ID"/>
+		
+		<component name="olv" class="com.integrosys.base.businfra.currency.Amount">
+			<property name="amountAsBigDecimal" column="OLV" type="big_decimal" />
+			<property name="currencyCode" column="VALUATION_CURRENCY" insert="false" update="false" />
+		</component>
+
+		<property name="remainusefullife" column="REMAINING_USEFUL_LIFE"/>
+		<property name="valuationbasis" column="VALUATION_BASIS"/>
+	</class>
+	</hibernate-mapping>

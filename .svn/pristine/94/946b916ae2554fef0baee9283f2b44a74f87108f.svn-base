@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="internalCreditRatingDaoJdbcProxyCreator"
+          class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <idref bean="matchAllTxInterceptor"/>
+            </list>
+        </property>
+        <property name="beanNames">
+            <list>
+                <idref bean="internalCreditRatingDao"/>
+                <!--<idref bean="propertyIdxJdbc"/>-->
+            </list>
+        </property>
+    </bean>
+
+    <bean id="entityLimitDaoJdbcProxyCreator"
+          class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <idref bean="matchAllTxInterceptor"/>
+            </list>
+        </property>
+        <property name="beanNames">
+            <list>
+                <idref bean="entityLimitDao"/>
+                <!--<idref bean="propertyIdxJdbc"/>-->
+            </list>
+        </property>
+    </bean>
+
+  	<bean id="sectorLimitParameterJdbcProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+  		<property name="interceptorNames">
+  			<list>
+  				<idref bean="matchAllTxInterceptor" />
+  			</list>
+  		</property>
+  		<property name="beanNames">
+  			<list>
+  				<idref bean="SectorLimitParameterJDBC" />
+  			</list>
+  		</property>
+  	</bean> 
+    
+  	<bean id="productLimitParameterJdbcProxyCreator" class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+  		<property name="interceptorNames">
+  			<list>
+  				<idref bean="matchAllTxInterceptor" />
+  			</list>
+  		</property>
+  		<property name="beanNames">
+  			<list>
+  				<idref bean="ProductLimitParameterJDBC" />
+  			</list>
+  		</property>
+  	</bean>                                          
+
+    <bean id="internalLimitParameterDaoJdbcProxyCreator"
+          class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <idref bean="matchAllTxInterceptor"/>
+            </list>
+        </property>
+        <property name="beanNames">
+            <list>
+                <idref bean="internalLimitParameterDao"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>

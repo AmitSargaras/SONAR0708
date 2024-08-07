@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+			
+		<bean id="segmentWiseEmailBusManager" class="com.integrosys.cms.app.segmentWiseEmail.bus.SegmentWiseEmailBusManagerImpl">
+		<property name="segmentWiseEmailDao" ref="segmentWiseEmailDao" />
+		<property name="segmentWiseEmailJdbc" ref="segmentWiseEmailJdbc" />
+		</bean>
+
+		<bean id="segmentWiseEmailProxy" class="com.integrosys.cms.app.segmentWiseEmail.proxy.SegmentWiseEmailProxyManagerImpl">
+		<property name="segmentWiseEmailBusManager" ref="segmentWiseEmailBusManager" />
+		<property name="stagingSegmentWiseEmailBusManager" ref="stagingSegmentWiseEmailBusManager" />
+		<property name="trxControllerFactory" ref="segmentWiseEmailTrxControllerFactory" />
+		</bean>
+		
+		<bean id="stagingSegmentWiseEmailBusManager" class="com.integrosys.cms.app.segmentWiseEmail.bus.SegmentWiseEmailBusManagerStagingImpl">
+		<property name="segmentWiseEmailDao" ref="segmentWiseEmailDao" />
+		<property name="segmentWiseEmailJdbc" ref="segmentWiseEmailJdbc" />
+		</bean>	
+</beans>

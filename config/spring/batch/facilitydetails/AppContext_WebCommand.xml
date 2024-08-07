@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	
+	
+
+    <bean id="FacilitydetailsUploadAction.FacilitydetailsUploadCmd" class="com.integrosys.cms.ui.facilitydetailsupload.FacilitydetailsUploadCmd">
+        
+    </bean>
+	<bean id="FacilitydetailsUploadAction.FacilitydetailsFileUploadCmd" class="com.integrosys.cms.ui.facilitydetailsupload.FacilitydetailsFileUploadCmd">
+        <property name="facilitydetailsuploadProxy" ref="facilitydetailsuploadProxy" />
+    </bean>
+  <bean id="FacilitydetailsUploadAction.DownloadReportCommand" class="com.integrosys.cms.ui.facilitydetailsupload.DownloadReportCommand"></bean>
+              <bean id="FacilitydetailsUploadAction.ReadProcessFacilitydetailsFile" class="com.integrosys.cms.ui.facilitydetailsupload.ReadProcessFacilitydetailsFile">
+       <property name="facilitydetailsuploadProxy" ref="facilitydetailsuploadProxy" /> </bean>
+      <bean id="FacilitydetailsUploadAction.CheckerReadFacilitydetailsFileUploadCmd" class="com.integrosys.cms.ui.facilitydetailsupload.CheckerReadFacilitydetailsFileUploadCmd">
+       <property name="facilitydetailsuploadProxy" ref="facilitydetailsuploadProxy" />
+     </bean>
+    <bean id="FacilitydetailsUploadAction.CheckerApproveFacilitydetailsFileUploadCmd" class="com.integrosys.cms.ui.facilitydetailsupload.CheckerApproveFacilitydetailsFileUploadCmd">
+       <property name="facilitydetailsuploadProxy" ref="facilitydetailsuploadProxy" />
+     </bean>
+    <bean id="FacilitydetailsUploadAction.CheckerRejectFacilitydetailsFileCmd" class="com.integrosys.cms.ui.facilitydetailsupload.CheckerRejectFacilitydetailsFileCmd">
+       <property name="facilitydetailsuploadProxy" ref="facilitydetailsuploadProxy" />
+     </bean>
+	<bean id="FacilitydetailsUploadAction.MakerReadFacilitydetailsRejectCmd" class="com.integrosys.cms.ui.facilitydetailsupload.MakerReadFacilitydetailsRejectCmd">
+       <property name="facilitydetailsuploadProxy" ref="facilitydetailsuploadProxy" />
+     </bean>
+     <bean id="FacilitydetailsUploadAction.MakerCloseFacilitydetailsFileCmd" class="com.integrosys.cms.ui.facilitydetailsupload.MakerCloseFacilitydetailsFileCmd">
+       <property name="facilitydetailsuploadProxy" ref="facilitydetailsuploadProxy" />
+     </bean>
+</beans>
+

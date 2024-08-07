@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+	<description>
+		Class service and do routing of the message, basically all the service beans.
+	</description>
+<!--
+	<bean id="eaiMessageFolder" class="com.integrosys.cms.host.eai.support.FileSystemMessageFolderImpl">
+		<property name="messageFolder" value="${eai.message.destination.temp.dir}" />
+		<property name="messageFileDateFormat" value="yyyyMMddHHmmss" />
+	</bean>
+-->
+<bean id="customEditorsMap" class="org.springframework.beans.factory.config.MapFactoryBean">
+		<property name="sourceMap">
+			<map>
+				<entry key="org.exolab.castor.mapping.Mapping" value="com.integrosys.cms.host.eai.castor.CastorMappingPropertyEditor"/>
+	            <entry key="com.integrosys.cms.host.eai.support.ValidationMandatoryFieldKey" value="com.integrosys.cms.host.eai.support.ValidationMandatoryFieldKeyPropertyEditor"/>
+			</map>
+		</property>
+	</bean> 
+	<bean id="eaiCustomEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+	    <property name="customEditors" ref="customEditorsMap"/>
+	</bean>
+
+	<bean id="eaiMessageFolder" class="com.integrosys.cms.host.eai.support.MemoryMessageFolderImpl" />
+
+	<bean id="messageHandler" class="com.integrosys.cms.host.eai.service.MessageHandler">
+		<property name="eaiMessageManager" ref="eaiMessageManager" />
+		<property name="requiredLoggedExceptionClasses">
+			<set value-type="java.lang.Class">
+				<value>java.sql.SQLException</value>
+			</set>
+		</property>
+		<property name="messageFolder" ref="eaiMessageFolder" />
+		<property name="responseRequiredMessageIdList">
+			<list>
+				<value>CO010I</value>
+				<value>DC001I</value>
+				<value>DC002I</value>
+				<value>CV002I</value>
+				<value>SS001I</value>
+				<value>CA002I</value>
+				<value>CA003I</value>
+			</list>
+		</property>
+		<property name="msgIdPostProcessMsgHandlerMap">
+			<map>
+				<entry key="CA001" value-ref="facStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO001" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO002" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO003" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO004" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO005" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO006" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO007" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO008" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+				<entry key="CO009" value-ref="colStpReadyStatusPopulatePostProcessMsgHandler" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="loggingFileSystemMessageFolderGenerator" class="com.integrosys.cms.host.eai.support.FileSystemMessageFolderImpl">
+		<property name="messageFolder" value="${eai.message.destination.temp.dir}" />
+		<property name="messageFileDateFormat" value="yyyyMMddHHmmss" />
+	</bean>
+
+	<bean id="eaiMessageManager" class="com.integrosys.cms.host.eai.service.EaiMessageManagerImpl">
+		<property name="logMessageJdbc" ref="logMessageJdbc" />
+		<property name="messageMarshallerFactory" ref="messageMarshallerFactory" />
+		<property name="messageHandlerMap">
+			<map>
+				<entry key="CUSTOMER" value-ref="customerMessageHandler" />
+				<entry key="CUSTOMER.UPDATE" value-ref="customerUpdateMessageHandler" />
+				<entry key="CUSTOMER.FUSION" value-ref="customerFusionMessageHandler" />
+				<entry key="CUSTOMER.SEARCH" value-ref="customerSearchMessageHandler" />
+				<entry key="CUSTOMER.RELATIONSHIP" value-ref="customerRelationshipMessageHandler" />
+				<entry key="LIMIT" value-ref="limitMessageHandler" />
+				<entry key="CA.LISTING.INQUIRY" value-ref="creditApplicationListingInquiryMessageHandler" />
+				<entry key="CA.INQUIRY" value-ref="creditApplicationInquiryMessageHandler" />
+				<entry key="SHARED.SECURITY" value-ref="sharedSecurityMessageHandler" />
+				<entry key="SECURITY" value-ref="securityMessageHandler" />
+				<entry key="SECURITY.INQUIRY" value-ref="securityInquiryMessageHandler" />
+				<entry key="TEMPLATE.INQUIRY" value-ref="checkListTemplateInquiryMessageHandler" />
+				<entry key="DOCUMENT.INQUIRY" value-ref="docChecklistInquiryMessageHandler" />
+				<entry key="DOCUMENT" value-ref="documentInputMessageHandler" />
+				<entry key="COVENANT" value-ref="covenantMessageHandler" />
+				<entry key="COVENANT.INQUIRY" value-ref="covenantInquiryMessageHandler" />
+			</map>
+		</property>
+		<property name="messageFolder" ref="loggingFileSystemMessageFolderGenerator" />
+		<property name="messageTypesRequiredLogToFileSystem">
+			<value>CUSTOMER,LIMIT,SECURITY,DOCUMENT,COVENANT</value>
+		</property>
+	</bean>
+
+	<bean id="rlosMessageSender" class="com.integrosys.cms.host.eai.web.HttpClientMessageSender">
+		<property name="url" value="${rlos.message.web.url}" />
+		<property name="messageAttributeName" value="msg" />
+		<property name="messageMarshallerFactory" ref="messageMarshallerFactory" />
+	</bean>
+	
+	<bean id="closMessageSender" class="com.integrosys.cms.host.eai.web.HttpClientMessageSender">
+		<property name="url" value="${clos.message.web.url}" />
+		<property name="messageAttributeName" value="msg" />
+		<property name="messageMarshallerFactory" ref="messageMarshallerFactory" />
+	</bean>
+
+	<bean id="limitProfileCompleteTrxOperationInterceptor" class="com.integrosys.cms.host.eai.limit.interceptor.TrxOperationMethodInterceptor">
+		<property name="commonUserProxy" ref="userProxy" />
+		<property name="facilityInfoResponseMessageHandler" ref="facilityResponseMessageHandler" />
+		<property name="originationMessageSender" ref="rlosMessageSender" />
+		<property name="limitJdbcDao" ref="limitJdbcDao" />
+	</bean>
+
+	<bean id="limitProfileResponseFiringTask" class="com.integrosys.cms.host.eai.limit.response.LimitProfileResponseFiringTask">
+		<property name="commonUserProxy" ref="userProxy" />
+		<property name="facilityInfoResponseMessageHandler" ref="facilityResponseMessageHandler" />
+		<property name="sourceIdOriginationMessageSenderMap">
+			<map key-type="java.lang.String" value-type="com.integrosys.cms.host.eai.web.MessageSender">
+				<entry key="RLOS" value-ref="rlosMessageSender" />
+				<entry key="CLOS" value-ref="closMessageSender" />
+			</map>
+		</property> 
+		<property name="singleLimitProfileFirePeriod" value="${limit.profile.response.firing.task.single.delay}" />
+		<property name="limitJdbcDao" ref="limitJdbcDao" />
+	</bean>
+
+    <bean id="localMessageSender" class="com.integrosys.cms.host.eai.web.HttpClientMessageSender">
+		<property name="url" value="${cms.message.web.url}" />
+		<property name="messageAttributeName" value="msg" />
+		<property name="messageMarshallerFactory" ref="messageMarshallerFactory" />
+	</bean>
+</beans>

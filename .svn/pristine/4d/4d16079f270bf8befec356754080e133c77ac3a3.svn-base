@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+	
+	<bean id="fccBranchBusManager" class="com.integrosys.cms.app.fccBranch.bus.FCCBranchBusManagerImpl">
+		<property name="fccBranchDao" ref="fccBranchDao" />
+		<property name="fccBranchJdbc" ref="fccBranchJdbc" />
+	</bean>
+
+	<bean id="fccBranchProxy" class="com.integrosys.cms.app.fccBranch.proxy.FCCBranchProxyManagerImpl">
+		<property name="fccBranchBusManager" ref="fccBranchBusManager" />
+		<property name="stagingFCCBranchBusManager" ref="stagingFCCBranchBusManager" />
+		<property name="trxControllerFactory" ref="fccBranchTrxControllerFactory" />
+		<property name="stagingFCCBranchFileMapperIdBusManager" ref="stagingFCCBranchFileMapperIdBusManager" />
+		<property name="fccBranchFileMapperIdBusManager" ref="fccBranchFileMapperIdBusManager" />
+	</bean>
+	<bean id="stagingFCCBranchBusManager" class="com.integrosys.cms.app.fccBranch.bus.FCCBranchBusManagerStagingImpl">
+		<property name="fccBranchDao" ref="fccBranchDao" />
+		<property name="fccBranchJdbc" ref="fccBranchJdbc" />
+	</bean>
+	<bean id="stagingFCCBranchFileMapperIdBusManager" class="com.integrosys.cms.app.fccBranch.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="fccBranchDao" ref="fccBranchDao" />
+		<property name="fccBranchJdbc" ref="fccBranchJdbc" />
+	</bean>
+	<bean id="fccBranchFileMapperIdBusManager" class="com.integrosys.cms.app.fccBranch.bus.FileMapperIdBusManagerImpl">
+		<property name="fccBranchDao" ref="fccBranchDao" />
+		<property name="fccBranchJdbc" ref="fccBranchJdbc" />
+	</bean>
+
+</beans>

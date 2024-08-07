@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT distinct pdc.packet_number                                     AS PacketNumber,
+                  sp.lsp_short_name                          AS party,
+                  reg.region_name                            AS Region,
+                   cc_segment.entry_name                      AS segment,  
+                   CASE
+                    WHEN  UPPER(pdc.drawee_bank  ) = 'S' 
+    			          THEN (SELECT SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK WHERE SYSTEM_BANK_CODE=pdc.bank_code )
+                   WHEN  UPPER(pdc.drawee_bank  ) = 'O' 
+                   THEN (SELECT BANK_NAME FROM CMS_OTHER_BANK WHERE BANK_CODE=pdc.bank_code )
+                   END AS BankName,  
+                    CASE
+                    WHEN  UPPER(pdc.drawee_bank  ) = 'S'
+    			         THEN (SELECT address FROM CMS_SYSTEM_BANK WHERE SYSTEM_BANK_CODE=pdc.bank_code )
+                   WHEN  UPPER(pdc.drawee_bank  ) = 'O' 
+                   THEN (SELECT address FROM CMS_OTHER_BANK WHERE BANK_CODE=pdc.bank_code )
+                   END AS Address,
+                   	 CASE
+                    WHEN  pdc.BULK_SINGLE_STATUS is null
+    			          THEN  LPAD(pdc.cheque_number,6,'0') 
+                    WHEN  pdc.BULK_SINGLE_STATUS = 'B'
+                    THEN  LPAD(pdc.cheque_no_from,6,'0') ||'-'||  LPAD(pdc.cheque_no_to,6,'0')
+                    END
+                    AS ChequeNumber,
+                  
+                  to_char(pdc.issue_date,'DD/Mon/YYYY')      AS ReceiveDate,
+                  pdc.cheque_amount   AS Amount,
+                   rm.RM_MGR_NAME ,
+                   to_char(pdc.return_date,'DD/Mon/YYYY')      AS ReturnDate,
+                   COALESCE((SELECT SYSTEM_BANK_BRANCH_NAME FROM CMS_SYSTEM_BANK_BRANCH WHERE SYSTEM_BANK_BRANCH_CODE=pdc.branch_code ),
+                   (SELECT BRANCH_NAME  FROM CMS_OTHER_BANK_BRANCH WHERE BRANCH_CODE=pdc.branch_code ))
+                   as BranchName,
+                --  (SELECT CUSTODIAN1 FROM CMS_SYSTEM_BANK_BRANCH WHERE SYSTEM_BANK_BRANCH_CODE=pdc.branch_code)
+                   sbb.custodian1
+                   as Security_Custodian_1,
+               --    (SELECT CUSTODIAN2 FROM CMS_SYSTEM_BANK_BRANCH WHERE SYSTEM_BANK_BRANCH_CODE=pdc.branch_code)
+                   sbb.custodian2
+                   as Security_Custodian_2,
+  					pdc.remarks
+                   
+				  FROM CMS_ASSET_PDC pdc,
+          CMS_SECURITY sec,
+                  CMS_LIMIT_SECURITY_MAP lsm,
+                  SCI_LSP_APPR_LMTS lmts,
+                  SCI_LSP_LMT_PROFILE pf,
+                  SCI_LE_SUB_PROFILE sp,
+                  SCI_LE_REG_ADDR address ,
+                  CMS_REGION reg,
+                  CMS_SYSTEM_BANK_BRANCH sbb,
+                  (SELECT entry_name,entry_code FROM common_code_category_entry WHERE category_code = 'HDFC_SEGMENT') cc_segment,
+                  transaction trans,
+                  	CMS_RELATIONSHIP_MGR rm
+			</query>
+		<whereClause>
+			<mandatoryClause>
+			     pdc.CMS_COLLATERAL_ID   = LSM.CMS_COLLATERAL_ID
+                     AND sec.cms_collateral_id =  pdc.cms_collateral_id
+                     AND sec.SECURITY_ORGANISATION= sbb.SYSTEM_BANK_BRANCH_CODE(+)
+				AND cc_segment.entry_code(+)     = sp.lsp_sgmnt_code_value
+				AND sp.cms_le_sub_profile_id  = pf.cms_customer_id
+				AND pf.cms_lsp_lmt_profile_id = lmts.CMS_LIMIT_PROFILE_ID
+				AND lmts.cms_lsp_appr_lmts_id = lsm.cms_lsp_appr_lmts_id
+				AND (lsm.update_status_ind   != 'D'
+				OR lsm.update_status_ind     IS NULL)
+                AND address.CMS_LE_MAIN_PROFILE_ID=sp.CMS_LE_MAIN_PROFILE_ID
+                AND address.lra_region = reg.id
+                and ADDRESS.LRA_TYPE_VALUE = 'CORPORATE'              
+				AND trans.reference_id = sp.cms_le_sub_profile_id	
+          		AND rm.ID(+) = sp.RELATION_MGR
+          		AND sp.status                 !=   'INACTIVE'
+			    AND pdc.status='ACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> and sp.cms_le_sub_profile_id =  </condition>
+			</param>
+			<param>
+				<name>transactionDate</name>
+				<condition> and TRUNC(trans.transaction_date) = </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Packet Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Bank Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Bank Address</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Cheque Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Cheque Receive Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Cheque return date </header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Branch Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Custodian 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Custodian 2</header>
+				</reportColumn>					
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header>
+				</reportColumn>					
+
+			</reportColumns>
+			<reportName>PDC</reportName>
+		</reportParamters>
+	</report>
+</reports>

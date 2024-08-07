@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.lad.bus">
+	<class  entity-name="actualOBLAD" name="OBLAD" table="cms_lad" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">cms_lad_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="lad_name" column="lad_name" />
+		<property name="lad_id" column="lad_id" />
+		<property name="lad_due_date" column="lad_due_date" />
+		<property name="generation_date" column="generation_date" />
+		<property name="receive_date" column="receive_date" />
+		<property name="document_date" column="document_date" />
+		<property name="lad_counter" column="lad_counter" />
+		<property name="status" column="STATUS" />
+		<property name="isOperationAllowed" column="IS_OPERATION_ALLOWED" />
+		<property name="expiry_date" column="expiry_date" />
+		<property name="limit_profile_id" column="limit_profile_id" />
+		<property name="checklistId" column="checklist_id" />
+	</class>
+	<class  entity-name="actualOBLADItem" name="OBLADItem" table="cms_lad_item" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">cms_lad_item_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="doc_item_id" column="doc_item_id" />
+		<property name="lad_id" column="lad_id" />
+		<property name="doc_description" column="doc_description" />
+		<property name="doc_date" column="doc_date" />
+		<property name="status" column="STATUS" />
+		<property name="category" column="category" />
+		<property name="expiry_date" column="expiry_date" />
+	</class>
+	
+	<class  entity-name="actualOBLADSubItem" name="OBLADSubItem" table="cms_lad_sub_item" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">cms_lad_sub_item_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="doc_sub_item_id" column="doc_sub_item_id" />
+		<property name="doc_item_id" column="doc_item_id" />
+		<property name="doc_description" column="doc_description" />
+		<property name="doc_date" column="doc_date" />
+		<property name="status" column="STATUS" />
+		<property name="category" column="category" />
+		<property name="expiry_date" column="expiry_date" />
+		<property name="docChklistVersion" column="DOC_VERSION" />
+		<property name="docChklistAmt" column="DOC_AMOUNT" />
+		<property name="chklistDocItemId" column="CHK_DOC_ITEM_ID_LAD" />
+		<!--<property name="isDisplay" column="IS_DISPLAY" />
+		--><property name="chklistDocId" column="CHK_DOC_ID" />
+		<property name="type" column="TYPE" />
+		<property name="docStatus" column="DOCUMENT_STATUS" />
+	</class>
+	
+	
+	
+</hibernate-mapping>

@@ -1,0 +1,59 @@
+<table width="70%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+  <thead><tr><td><h3>Notification - $!{ob.subject}</h3></td></tr>
+  <tr><td><hr /></td></tr></thead>
+  <tbody><tr>
+      <td><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblInfo">
+      <tbody>
+        <tr><td width="20%" class="fieldname">To</td><td width="30%" class="odd">$!{ob.receipient}</td>
+        <td width="20%" class="fieldname">Date</td><td width="30%" class="odd">$!{DateUtil.formatDate("dd/MMM/yyyy", ${ob.notificationDate})}</td></tr>
+        <tr class="even"><td height="22" class="fieldname">Subject</td><td colspan="3">$!{ob.subject}</td></tr>
+      </tbody></table></td></tr><tr><td>&nbsp;</td></tr>
+    <tr>
+    	<td>
+    		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+		      <tbody>
+		        <tr class="odd"><td class="fieldname">Security ID</td>
+		        <td>$!{ob.securityID}</td></tr>
+		        <tr class="even"><td class="fieldname">Security Type</td>
+		        <td>$!{ob.securityType}</td></tr>
+		        <tr class="odd"><td class="fieldname">Security Sub-Type</td>
+		        <td>$!{ob.securitySubType}</td></tr>
+		        <tr class="even"><td class="fieldname">Security Location</td>
+		        <td>$!{VelocityUtil.getCountryName($!{ob.securityLocation})}</td>
+		      	</tr>
+		     	</tbody>
+     		</table>
+     	</td></tr>
+    <tr><td>&nbsp;</td></tr>
+    <tr>
+    	<td>
+	    	<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+		      <thead>
+			      <tr>
+			      	<td width="5%">SN</td><td width="25%">CIF / ID No.</td>
+			      	<td width="70%">Customer Legal Name</td>
+			      </tr>
+		      </thead>
+		      <tbody>
+						#set ($customerList = $VelocityUtil.getCollection(${ob.getCustomerList()}))
+						#set ($sNo = 1)
+						#foreach ($customer in $customerList)
+	    			<tr valign="top" class="odd"><td align="left" class="index" >$sNo</td>
+	      			<td>&nbsp;$!{customer.getLegalReference()}</td>
+	      			<td>&nbsp;$!{customer.getLegalName()}</td></tr>
+							#set ($sNo = $sNo + 1) 
+						#end
+		  		</tbody>
+	  		</table>
+	  	</td>
+	  </tr>         
+    <tr><td>&nbsp;</td></tr>
+    <tr><td><table width="100%" border="0" cellspacing="0" cellpadding="0" class="tblInput">
+      <tbody>         
+        <tr class="odd">
+          <td class="fieldname">Country Specific Value</td><td>$!{ob.countryMargin}</td></tr>
+        <tr class="even"><td class="fieldname">Value Assigned</td><td>
+#set ($marginList = $VelocityUtil.getCollection(${ob.getSecurityMargin()}))
+#foreach ($margin in $marginList) $!{margin.doubleValue()} <br> #end
+          </td></tr>
+  </tbody></table></td></tr></tbody></table>

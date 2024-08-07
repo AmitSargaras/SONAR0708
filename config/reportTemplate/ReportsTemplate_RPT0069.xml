@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT PSR.PARTYID ,
+			PSR.PARTYNAME ,
+			PSR.FILENAME ,
+			PSR.LIAB_ID ,
+			PSR.SYSTEM_ID,
+			PSR.LINENO ,
+			PSR.SERIALNO ,
+			PSR.CURRENCY ,
+			PSR.LIMITAMOUNT ,
+			PSR.TENOR ,
+			PSR.SELL_DOWN_PERIOD,
+			TO_CHAR(PSR.STARTDATE,'DD/MON/YYYY') AS STARTDATE,
+			TO_CHAR(PSR.EXPIRYDATE,'DD/MON/YYYY') AS EXPIRYDATE,
+			PSR.ACTION,
+			TO_CHAR(PSR.REQUESTDATE,'DD/MON/YYYY HH:MM:SS AM') AS REQUESTDATE,
+			TO_CHAR(PSR.RESPONSEDATE,'DD/MON/YYYY HH:MM:SS AM') AS
+			RESPONSEDATE,
+			PSR.STATUS,
+			PSR.ERRORCODE,
+			PSR.ERRORDESC,
+			CASE
+			WHEN
+			SUB.LSP_SGMNT_CODE_VALUE = COMMON.ENTRY_CODE
+			THEN COMMON.ENTRY_NAME
+			END AS SEGMENT,
+			PSR.MAKER_ID,
+			PSR.CHECKER_ID,
+			TO_CHAR(PSR.MAKER_DATETIME,'DD/MON/YYYY HH:MM:SS AM') AS
+			MAKER_DATETIME,
+			TO_CHAR(PSR.CHECKER_DATETIME,'DD/MON/YYYY HH:MM:SS
+			AM') AS
+			CHECKER_DATETIME
+			FROM CMS_PSRDATA_LOG PSR,
+			SCI_LE_SUB_PROFILE
+			SUB INNER JOIN
+			COMMON_CODE_CATEGORY_ENTRY COMMON ON
+			SUB.LSP_SGMNT_CODE_VALUE = COMMON.ENTRY_CODE
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				SUB.LSP_LE_ID = PSR.PARTYID
+				AND COMMON.CATEGORY_CODE
+				= 'HDFC_SEGMENT'
+			</mandatoryClause>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(PSR.REQUESTDATE) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PARTY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>PARTY NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>FILE NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>LIABILITY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>System ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>LINE CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>SERIAL NUMBER</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LIMIT LINE CURRENCY</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>LIMIT AMOUNT</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>TENOR</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Sell Down Period</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>START DATE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>EXPIRY DATE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>ACTION</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>REQUEST DATE/TIME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>9</width>
+					<format>textFormat</format>
+					<header>RESPONSE DATE/TIME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>STATUS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>ERROR CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>ERROR DESCRIPTION</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>SEGMENT</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>MAKER ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>CHECKER ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>MAKER DATETIME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>CHECKER DATETIME</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Success/Reject/Summary Report of Limt STP Status from PSR
+			</reportName>
+		</reportParamters>
+	</report>
+</reports>

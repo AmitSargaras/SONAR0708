@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+  <bean id="WhatIfCondReportAction.WhatIfCondReportSampleCmd" class="com.integrosys.cms.ui.whatifana.WhatIfCondReportSampleCmd" />
+  
+  <bean id="WhatIfCondReportAction.WhatIfCondReportGenerateNewCmd" class="com.integrosys.cms.ui.whatifana.WhatIfCondReportGenerateNewCmd">
+    <property name="reportRequestManager" ref="reportRequestManager"/>
+    <property name="reportFormatMisReportIdMap">
+      <map>
+        <entry key="ANA001_per_borrower" value="ANA006"/>
+        <entry key="ANA002_per_borrower" value="ANA007"/>
+        <entry key="ANA003_per_borrower" value="ANA008"/>
+        <entry key="ANA004_per_borrower" value="ANA009"/>
+		<entry key="ANA005_per_borrower" value="ANA010"/>
+      </map>
+    </property>
+  </bean>
+  
+  <bean id="WhatIfCondReportAction.WhatIfCondReportPrepareCmd" class="com.integrosys.cms.ui.whatifana.WhatIfCondReportPrepareCmd" />
+
+  <bean id="WhatIfCondReportSearchAction.SearchWhatIfCondReportCommand" class="com.integrosys.cms.ui.whatifana.SearchWhatIfCondReportCommand">
+  	<property name="reportRequestManager" ref="reportRequestManager"/>
+  </bean>
+  
+  <bean id="WhatIfCondReportSearchAction.GetWhatIfCondReportCommand" class="com.integrosys.cms.ui.whatifana.GetWhatIfCondReportCommand">
+    <property name="reportRequestManager" ref="reportRequestManager"/>
+  </bean>
+
+</beans>

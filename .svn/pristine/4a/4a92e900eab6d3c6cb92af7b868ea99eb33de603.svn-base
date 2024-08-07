@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+	
+	<bean id="RelationshipManagerAction.ListRelationShipManagerCmd" class="com.integrosys.cms.ui.relationshipmgr.ListRelationShipManagerCmd">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.PrepareCreateRelationshipMgrCmd" class="com.integrosys.cms.ui.relationshipmgr.PrepareCreateRelationshipMgrCmd">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"></property>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.SubmitCreateRelationshipMgrCommand" class="com.integrosys.cms.ui.relationshipmgr.SubmitCreateRelationShipManagerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.ViewRelationShipManagerByIndexCommand" class="com.integrosys.cms.ui.relationshipmgr.ViewRelationShipManagerByIndexCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.PrepareDeleteRelationShipManagerCommand" class="com.integrosys.cms.ui.relationshipmgr.PrepareDeleteRelationShipManagerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.DeleteRelationShipManagerCommand" class="com.integrosys.cms.ui.relationshipmgr.MakerSubmitDeleteRelationShipManagerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.PrepareEditRelationShipManagerCommand" class="com.integrosys.cms.ui.relationshipmgr.PrepareEditRelationShipManagerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"></property>
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.EditRelationShipManagerCommand" class="com.integrosys.cms.ui.relationshipmgr.MakerSubmitEditRelationShipManagerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>		
+	</bean>
+	
+	<bean id="RelationshipManagerAction.CheckerReadRelationShipManagerCmd" class="com.integrosys.cms.ui.relationshipmgr.CheckerReadRelationShipManagerCmd">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+        <property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+    </bean>
+    
+    <bean id="RelationshipManagerAction.CheckerApproveEditRelationShipManagerCmd" class="com.integrosys.cms.ui.relationshipmgr.CheckerApproveEditRelationShipManagerCmd">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+        <property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+        <property name="fileUploadJdbc" ref="fileUploadJdbc"/>
+    </bean>
+    <bean id="RelationshipManagerAction.CheckerRejectEditRelationShipManagerCmd" class="com.integrosys.cms.ui.relationshipmgr.CheckerRejectEditRelationShipManagerCmd">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+   		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+    </bean>
+    
+    <bean id="RelationshipManagerAction.MakerReadRelationShipManagerCmd" class="com.integrosys.cms.ui.relationshipmgr.MakerReadRelationShipManagerCmd">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.MakerCloseRelationShipManagerCmd" class="com.integrosys.cms.ui.relationshipmgr.MakerCloseRelationShipManagerCmd">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.MakerDraftCloseRelationShipManagerCmd" class="com.integrosys.cms.ui.relationshipmgr.MakerDraftCloseRelationShipManagerCmd">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.MakerSubmitDraftRelationShipManagerCommand" class="com.integrosys.cms.ui.relationshipmgr.MakerSubmitDraftRelationShipManagerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.SaveCreateRelationshipMgrCommand" class="com.integrosys.cms.ui.relationshipmgr.SaveCreateRelationShipManagerCommand">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+  		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.MakerUploadRelationshipManagerCmd" class="com.integrosys.cms.ui.relationshipmgr.MakerUploadRelationshipManagerCmd">
+		<property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+	</bean>
+	
+	<bean id="RelationshipManagerAction.CheckerReadFileInsertListCmd" class="com.integrosys.cms.ui.relationshipmgr.CheckerReadFileInsertListCmd">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+    </bean>
+    <bean id="RelationshipManagerAction.CheckerApproveInsertRelationshipMgrCmd" class="com.integrosys.cms.ui.relationshipmgr.CheckerApproveInsertRelationshipMgrCmd">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+    </bean>	  
+    <bean id="RelationshipManagerAction.PopulateFieldsCommand" class="com.integrosys.cms.ui.relationshipmgr.PopulateFieldsCommand">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+    </bean>
+  
+   <bean id="RelationshipManagerAction.AddCadCommand" class="com.integrosys.cms.ui.relationshipmgr.AddCadCommand">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+    </bean>
+    
+    <bean id="RelationshipManagerAction.RemoveCadCommand" class="com.integrosys.cms.ui.relationshipmgr.RemoveCadCommand">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+    </bean>
+    
+    <bean id="PaginateRelationshipMgrListCommand" class="com.integrosys.cms.ui.relationshipmgr.PaginateRelationshipMgrListCommand">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager" />
+    </bean>
+    
+	<bean id="RelationshipMgrMapper" class="com.integrosys.cms.ui.relationshipmgr.RelationshipMgrMapper">
+		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+	</bean>
+	
+		<bean id="RelationshipManagerAction.CheckerRejectInsertRelationshipMgrCmd" class="com.integrosys.cms.ui.relationshipmgr.CheckerRejectInsertRelationshipMgrCmd">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+   		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+    </bean>
+    
+    <bean id="RelationshipManagerAction.MakerInsertCloseRelationshipMgrCmd" class="com.integrosys.cms.ui.relationshipmgr.MakerInsertCloseRelationshipMgrCmd">
+        <property name="relationshipMgrProxyManager" ref="relationshipMgrProxyManager"/>
+   		<property name="relationshipMgrDAO" ref="relationshipMgrDAO"/>
+    </bean>
+
+</beans>

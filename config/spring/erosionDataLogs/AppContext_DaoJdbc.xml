@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ORM/JDBC based Dao having property of 'sessionFactory' or 'dataSource'.
+		All these DAOs have to be intercept by Transaction, set in 'AppContext_TrxPlugin.xml'.
+	</description>
+
+	<bean id="erosionStatusDao" class="com.integrosys.cms.app.erosion.bus.ErosionStatusDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>	
+	
+	<bean id="erosionStatusJdbc" class="com.integrosys.cms.app.erosion.bus.ErosionStatusJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="spCreateDataForFacilityReport" value="SP_CLMS_TRQ_PRON_RPT_CUST_FAC" />
+		<property name="spCreateDataForSecurityReport" value="SP_CLMS_TRQ_PRON_RPT_CUST_FAC" />
+		<property name="spCreateDataForFacilityWiseReport" value="SP_CLMS_TRQ_PRON_RPT_FAC" />
+		<property name="spCreateDataForPartyWiseReport" value="SP_CLMS_TRQ_PRON_RPT_FAC" />
+		<property name="spUpdateErosionForNpaFile" value="SP_CMS_UPDATE_EROSION_FOR_NPA_FILE" />
+		<property name="spDataBackupForErosion" value="SP_BACKUP_EROSION_DATA" />
+	</bean>
+	
+	<bean id="erosionStatusJdbcTemplate" class="com.integrosys.cms.app.erosion.bus.ErosionStatusJdbcTemplateImpl">
+		<property name="dataSource" ref="ofaPool" />
+	</bean>
+	
+</beans>

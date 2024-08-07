@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	<bean id="ImageUploadAction.ImageUserTypeCommand" class="com.integrosys.cms.ui.image.ImageUserTypeCommand">
+	</bean>
+	<bean id="ImageUploadAction.ImageListCustomerCommand" class="com.integrosys.cms.ui.image.ImageListCustomerCommand">
+	</bean>
+	<bean id="ImageUploadAction.ImageUploadResultCommand" class="com.integrosys.cms.ui.image.ImageUploadResultCommand">
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<bean id="ImageUploadAction.CreateImageUploadAddCommand" class="com.integrosys.cms.ui.image.CreateImageUploadAddCommand">
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<bean id="ImageUploadAction.PaginateImageListCommand" class="com.integrosys.cms.ui.image.PaginateImageListCommand">
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<bean id="ImageUploadAction.MakerUpdateImageUploadCommand" class="com.integrosys.cms.ui.image.MakerUpdateImageUploadCommand">
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<bean id="ImageUploadAction.MakerReadImageUploadAddCmd" class="com.integrosys.cms.ui.image.MakerReadImageUploadAddCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>
+    <bean id="ImageUploadAction.CheckerReadImageUploadCmd" class="com.integrosys.cms.ui.image.CheckerReadImageUploadCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>
+    <bean id="ImageUploadAction.RetriveImageCommand" class="com.integrosys.cms.ui.image.RetriveImageCommand">
+		<property name="contentManagerFactory" ref="contentManagerFactory" />
+	</bean>
+	<bean id="contentManagerFactory" class="com.integrosys.cms.app.contentManager.factory.ContentManagerFactory" >
+	</bean>
+    <bean id="ImageUploadAction.CheckerApproveEditImageUploadCmd" class="com.integrosys.cms.ui.image.CheckerApproveEditImageUploadCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>
+    <bean id="ImageUploadAction.CheckerRejectEditImageUploadCmd" class="com.integrosys.cms.ui.image.CheckerRejectEditImageUploadCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>
+    <bean id="ImageUploadAction.MakerCloseImageUploadCmd" class="com.integrosys.cms.ui.image.MakerCloseImageUploadCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>
+    <bean id="ImageUploadAction.MakerReadImageUploadCmd" class="com.integrosys.cms.ui.image.MakerReadImageUploadCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>	
+    <bean id="ImageUploadAction.CheckerApproveCreateImageUploadCmd" class="com.integrosys.cms.ui.image.CheckerApproveCreateImageUploadCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>	
+    <bean id="ImageUploadAction.CheckerApproveReadImageUploadCmd" class="com.integrosys.cms.ui.image.CheckerApproveReadImageUploadCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>
+    <bean id="ImageUploadAction.MakerCreateImageUploadDetailsCmd" class="com.integrosys.cms.ui.image.MakerCreateImageUploadDetailsCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>		
+		<!-- Added by Anil ====== Start===== -->
+    <bean id="ImageUploadAction.ManageImageUploadDetailsCmd" class="com.integrosys.cms.ui.image.ManageImageUploadDetailsCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>		
+    <bean id="ImageUploadAction.RemoveUploadedImagesCmd" class="com.integrosys.cms.ui.image.RemoveUploadedImagesCmd">
+        <property name="imageUploadProxyManager" ref="imageUploadProxy" />
+    </bean>		
+    <bean id="ImageUploadAction.CreatePreapareImageUploadDetailsCommand" class="com.integrosys.cms.ui.image.CreatePreapareImageUploadDetailsCommand">
+    </bean>		
+   		<!-- Added by Anil ====== End ===== -->
+   		<bean id="ImageUploadAction.GetImageFiltersSubFolderCommand" class="com.integrosys.cms.ui.image.GetImageFiltersSubFolderCommand">
+	</bean>
+	<bean id="ImageUploadAction.GetImageFiltersDocNameCommand" class="com.integrosys.cms.ui.image.GetImageFiltersDocNameCommand">
+	</bean>	
+	<bean id="ImageUploadAction.DownloadImageCommand" class="com.integrosys.cms.ui.image.DownloadImageCommand">
+		<property name="contentManagerFactory" ref="contentManagerFactory" />
+	</bean>
+	<bean id="ImageUploadAction.ListCustomerCommand" class="com.integrosys.cms.ui.image.ListCustomerCommand">
+	</bean>
+	<bean id="ImageUploadAction.GetDocLinkageDetailsCmd" class="com.integrosys.cms.ui.image.GetDocLinkageDetailsCmd">
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<bean id="ImageUploadAction.DocLinkageDetailsDDLCmd" class="com.integrosys.cms.ui.image.DocLinkageDetailsDDLCmd">
+	</bean>
+	<bean id="ImageUploadAction.AddDocLinkageDetailsToSessionCmd" class="com.integrosys.cms.ui.image.AddDocLinkageDetailsToSessionCmd">
+	</bean>
+	<bean id="ImageUploadAction.RemoveDocLinkageDetailsToSessionCmd" class="com.integrosys.cms.ui.image.RemoveDocLinkageDetailsToSessionCmd">
+	</bean>
+	<bean id="ImageUploadAction.SubmitDocLinkageDetailsCmd" class="com.integrosys.cms.ui.image.SubmitDocLinkageDetailsCmd">
+	</bean>
+	<bean id="ImageUploadAction.RefreshOtherDocumentCmd" class="com.integrosys.cms.ui.image.RefreshOtherDocumentCmd">
+	</bean>
+</beans>
+

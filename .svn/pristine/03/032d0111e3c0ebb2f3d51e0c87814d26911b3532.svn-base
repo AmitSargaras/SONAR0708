@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+    
+<hibernate-mapping package="com.integrosys.cms.batch.ubs">
+  <class entity-name="UbsErrorLog" name="OBUbsErrorLog" table="CMS_LIMIT_UPLOAD_ERROR_LOG" lazy="false" >
+  	<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_LIMIT_UPLOAD_ERR_LOG_SEQ</param>
+			</generator>
+	</id>
+            <property name="uploadId" column="UPLOADID"/>
+            <property name="fileName"           column="FILENAME" />
+            <property name="noOfRecords"    column="NOOFRECORDS"/>
+            <property name="successRecords"   column="SUCCESSRECORDS"/>
+            <property name="failedRecords"    column="FAILEDRECORDS"/>
+            <property name="uploadTime"     column="UPLOADTIME" type="timestamp"/>
+            <!--  Commented by Anil -->
+   <!--  <set name="errEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false" batch-size="5000">
+		<key column="PTID" not-null="true"  />
+		<one-to-many entity-name="UbsErrDetLog"   />
+	</set> -->
+  </class>
+  <class entity-name="UbsErrDetLog" name="OBUbsErrDetLog" table="CMS_LMT_UPD_DET_ERR_LOG" lazy="false" >
+  	<id name="id" column="ID">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_LMT_UPD_DET_ERR_LOG_SEQ</param>
+			</generator>
+	</id>
+			<property name="ptId" column="PTID" lazy="false" ></property>
+			<property name="recordNo" column="RECORD_NO"></property>
+			<property name="errorMsg" column="ERROR_MSG"></property>
+			<property name="time" column="TIME" type="timestamp"></property>
+			<property name="facSystemId" column="FACILITY_SYS_ID"></property>
+			<property name="lineNo" column="LINE_NO"></property>
+			<property name="serialNo" column="SERIAL_NO"></property>
+			<property name="uploadStatus" column="UPLOAD_SATUS"></property>		
+  </class>
+</hibernate-mapping>

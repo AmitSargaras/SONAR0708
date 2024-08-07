@@ -1,0 +1,121 @@
+SELECT system AS "System",
+  SystemID AS "System ID",
+  PartyID AS "Party ID",
+  PartyName AS "Party Name",
+  CustomerRAMId AS "Customer RAM Id",
+  row_number() over (partition BY SourceSecurityID order by SourceSecurityID) AS "Security S/N",
+  SourceSecurityID AS "Source Security ID",
+  CollateralCode AS "Collateral Code",
+  CollateralName AS "Collateral Name",
+  GuarantorName AS "Guarantor Name",
+  GuarantorFullName AS "Guarantor Full Name",
+  GuarantorRAMID AS "Guarantor RAM ID",
+  FacilityID AS "Facility ID",
+  LineNo AS "Line No",
+  SerialNo AS "Serial No",
+  SecurityCurrency AS "Security Currency",
+  SecurityOMV AS "Security OMV",
+  StartDateofGua AS "Start Date of Guarantee",
+  SecurityMaturityDate AS "Security Maturity Date",
+  FacilityName AS "Facility Name",
+  SecurityPriority AS "Security Priority",
+  NetWorth AS "Net Worth",
+  ReleasedAmount AS "Released  Amount",
+  UtilizedAmount AS "Utilized Amount",
+  DescOfAssets AS "Description of assets",
+  RefNumberofGuarantee AS "Reference Number of Guarantee"
+FROM
+  (SELECT DISTINCT lmts.facility_system AS system,
+    lmts.facility_system_id             AS SystemID,
+    sub_profile.lsp_le_id               AS PartyID,
+    sub_profile.lsp_short_name          AS PartyName,
+    ( SELECT DISTINCT(cri.customer_ram_id)
+    FROM SCI_LE_SUB_PROFILE sp,
+      sci_le_subline subline,
+      sci_le_cri cri
+    WHERE sp.cms_le_sub_profile_id         = subline.cms_le_subline_party_id
+    AND subline.cms_le_main_profile_id     = sub_profile.cms_le_main_profile_id
+    AND sub_profile.cms_le_main_profile_id = cri.cms_le_main_profile_id
+    ) AS CustomerRAMId,
+    -- ''                                                      AS SecurityNo,
+    secdetail.cms_collateral_id AS SourceSecurityID,
+    secDetail.collateral_code   AS CollateralCode,
+    (SELECT NEW_COLLATERAL_DESCRIPTION
+    FROM cms_collateral_new_master
+    WHERE NEW_COLLATERAL_CODE = secDetail.collateral_code
+    )                                                       AS CollateralName ,
+    guarantee.guaranters_name                               AS GuarantorName,
+    guarantee.guaranters_name                               AS GuarantorFullName,
+    guarantee.ramid                                         AS GuarantorRAMID,
+    lmts.lmt_id                                             AS FacilityID,
+    xref.line_no                                            AS LineNo,
+    xref.SERIAL_NO                                          AS SerialNo,
+    secdetail.SCI_SECURITY_CURRENCY                         AS SecurityCurrency,
+    secdetail.CMV                                           AS SecurityOMV,
+    TO_CHAR(guarantee.guarantee_date,'DD/Mon/YYYY')         AS StartDateofGua,
+    TO_CHAR(secdetail.security_maturity_date,'DD/Mon/YYYY') AS SecurityMaturityDate,
+    lmts.facility_name                                      AS FacilityName,
+    find_secPriority_priOrSec(secdetail.sec_priority)       AS SecurityPriority,
+    guarantee.guarantee_amt                                 AS NetWorth,
+    lmts.total_released_amount                              AS ReleasedAmount,
+    xref.utilized_amount                                    AS UtilizedAmount,
+    guarantee.discription_of_assets                         AS DescOfAssets,
+    guarantee.reference_no                                  AS RefNumberofGuarantee,
+    lmts.cms_lsp_appr_lmts_id
+    --  reg.region_name                                         AS Region,
+    --  rm.rm_mgr_name                                          AS RMName,
+    --  secDetail.MARGIN                                        AS Margin,
+    --  cc_segment.entry_name                                   AS segment,
+    --  secdetail.type_name                                     AS SecurityType,
+    --  secdetail.subtype_name                                  AS SecuritySubType,
+    --  guarantee.address_line1
+    --  ||' '
+    --  || guarantee.address_line2
+    --  ||' '
+    --  || guarantee.address_line3 AS Address,
+    --
+    --  guarantee.guaranters_name AS GuarantorsName,
+    --  (SELECT system_bank_branch_code
+    --    ||'-'
+    --    ||system_bank_branch_name
+    --  FROM CMS_SYSTEM_BANK_BRANCH
+    --  WHERE SYSTEM_BANK_BRANCH_CODE = secDetail.SECURITY_ORGANISATION
+    --  ) AS branchName
+  FROM CMS_LIMIT_SECURITY_MAP lsm,
+    SCI_LSP_APPR_LMTS lmts,
+    SCI_LSP_LMT_PROFILE pf,
+    SCI_LE_SUB_PROFILE sub_profile,
+    (SELECT entry_name,
+      entry_code
+    FROM common_code_category_entry
+    WHERE category_code = 'HDFC_SEGMENT'
+    ) cc_segment,
+    CMS_SECURITY secDetail,
+    cms_relationship_mgr rm ,
+    SCI_LE_REG_ADDR addr,
+    CMS_REGION reg,
+    CMS_GUARANTEE guarantee,
+    transaction trans,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS
+  WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+  AND lmts.CMS_LSP_APPR_LMTS_ID           = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID           = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND cc_segment.entry_code(+)            = sub_profile.lsp_sgmnt_code_value
+  AND sub_profile.cms_le_main_profile_id  = addr.cms_le_main_profile_id
+  AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+  AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+  AND (lsm.update_status_ind             <> 'D'
+  OR lsm.update_status_ind               IS NULL)
+  AND secdetail.cms_collateral_id         = LSM.CMS_COLLATERAL_ID
+  AND rm.id                               = sub_profile.relation_mgr
+  AND reg.id                              = addr.lra_region
+  AND guarantee.cms_collateral_id         = LSM.CMS_COLLATERAL_ID
+  AND addr.lra_type_value                 = 'CORPORATE'
+  AND secDetail.SECURITY_SUB_TYPE_ID     IN ('GT400','GT402')
+  AND trans.reference_id                  = sub_profile.cms_le_sub_profile_id
+  AND sub_profile.status                 != 'INACTIVE'
+  AND lmts.cms_limit_status              <> 'DELETED'
+  ORDER BY lmts.cms_lsp_appr_lmts_id,
+    secdetail.cms_collateral_id
+  );

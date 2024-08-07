@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        struts config to context mapping files for Credit Risk Param
+    </description>
+
+    <!--Internal Credit Rating-->
+    <bean name="/InternalCreditRatingParam" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.InternalCreditRatingAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="CheckerApproveInternalCreditRatingCommand"
+                       value-ref="InternalCreditRatingAction.CheckerApproveInternalCreditRatingCommand"/>
+                <entry key="CheckerRejectInternalCreditRatingCommand"
+                       value-ref="InternalCreditRatingAction.CheckerRejectInternalCreditRatingCommand"/>
+                <entry key="DeleteInternalCreditRatingItemCommand"
+                       value-ref="InternalCreditRatingAction.DeleteInternalCreditRatingItemCommand"/>
+                <entry key="ListInternalCreditRatingCommand"
+                       value-ref="InternalCreditRatingAction.ListInternalCreditRatingCommand"/>
+                <entry key="MakerCloseInternalCreditRatingCommand"
+                       value-ref="InternalCreditRatingAction.MakerCloseInternalCreditRatingCommand"/>
+                <entry key="MakerUpdateInternalCreditRatingCommand"
+                       value-ref="InternalCreditRatingAction.MakerUpdateInternalCreditRatingCommand"/>
+                <entry key="PrepareInternalCreditRatingCommand"
+                       value-ref="InternalCreditRatingAction.PrepareInternalCreditRatingCommand"/>
+                <entry key="ReturnInternalCreditRatingCommand"
+                       value-ref="InternalCreditRatingAction.ReturnInternalCreditRatingCommand"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="/InternalCreditRatingItem" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.InternalCreditRatingItemAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="ErrorReturnItemCommand"
+                       value-ref="InternalCreditRatingItemAction.ErrorReturnItemCommand"/>
+                <entry key="PrepareInternalCreditRatingItemCommand"
+                       value-ref="InternalCreditRatingItemAction.PrepareInternalCreditRatingItemCommand"/>
+                <entry key="ReadInternalCreditRatingItemCommand"
+                       value-ref="InternalCreditRatingItemAction.ReadInternalCreditRatingItemCommand"/>
+                <entry key="SaveInternalCreditRatingItemCommand"
+                       value-ref="InternalCreditRatingItemAction.SaveInternalCreditRatingItemCommand"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--Entity Limit-->
+    <bean name="/ELCustomerSearch" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.customer.ELCustomerSearchAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="AddNewEntityLimitCommand"
+                       value-ref="ELCustomerSearchAction.AddNewEntityLimitCommand"/>
+                <entry key="ELCustSearchCommand"
+                       value-ref="ELCustomerSearchAction.ELCustSearchCommand"/>
+                <entry key="PrepareELCustSearchCommand"
+                       value-ref="ELCustomerSearchAction.PrepareELCustSearchCommand"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="/EntityLimit" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.EntityLimitListAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="ApproveEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.ApproveEntityLimitListCommand"/>
+                <entry key="CancelEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.CancelEntityLimitListCommand"/>
+                <entry key="CloseEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.CloseEntityLimitListCommand"/>
+                <entry key="CompareEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.CompareEntityLimitListCommand"/>
+                <entry key="DeleteEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.DeleteEntityLimitListCommand"/>
+                <entry key="EditEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.EditEntityLimitListCommand"/>
+                <entry key="ListCompareEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.ListCompareEntityLimitListCommand"/>
+                <entry key="ListEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.ListEntityLimitListCommand"/>
+                <entry key="PaginateEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.PaginateEntityLimitListCommand"/>
+                <entry key="PrepareAddNewEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.PrepareAddNewEntityLimitListCommand"/>
+                <entry key="ReadEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.ReadEntityLimitListCommand"/>
+                <entry key="RejectEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.RejectEntityLimitListCommand"/>
+                <entry key="SubmitEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.SubmitEntityLimitListCommand"/>
+                <entry key="UpdateEntityLimitListCommand"
+                       value-ref="EntityLimitListAction.UpdateEntityLimitListCommand"/>
+            </map>
+        </property>
+    </bean>
+
+     <!--Sector Limit-->
+  	<bean name="/SectorLimitParam" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.creditriskparam.sectorlimit.SectorLimitAction">
+  		<property name="nameCommandMap">
+  			<map>
+  				<entry key="ListSectorLimitCmd" value-ref="SectorLimitAction.ListSectorLimitCmd"/>
+  				<entry key="ReadSectorLimitCmd" value-ref="SectorLimitAction.ReadSectorLimitCmd"/>
+  				<entry key="PrepareSectorLimitCmd" value-ref="SectorLimitAction.PrepareSectorLimitCmd"/>
+  				<entry key="SubmitSectorLimitCmd" value-ref="SectorLimitAction.SubmitSectorLimitCmd"/>
+  				<entry key="ApproveSectorLimitCmd" value-ref="SectorLimitAction.ApproveSectorLimitCmd"/>
+  				<entry key="RejectSectorLimitCmd" value-ref="SectorLimitAction.RejectSectorLimitCmd"/>
+  				<entry key="CloseSectorLimitCmd" value-ref="SectorLimitAction.CloseSectorLimitCmd"/>
+  				<entry key="DeleteSectorLimitCmd" value-ref="SectorLimitAction.DeleteSectorLimitCmd"/>
+  				<entry key="ProcessingSectorLimitCmd" value-ref="SectorLimitAction.ProcessingSectorLimitCmd"/>
+  				<entry key="ReturnSectorLimitCmd" value-ref="SectorLimitAction.ReturnSectorLimitCmd"/>
+  				<entry key="ReadSectorLimitTrxCmd" value-ref="SectorLimitAction.ReadSectorLimitTrxCmd"/>
+                  <entry key="DeleteSubSectorLmtsCmd" value-ref="SectorLimitAction.DeleteSubSectorLmtsCmd"/>
+
+  			</map>
+  		</property>
+  	</bean>
+
+    <bean name="/SubSectorLimitParam" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.SubSectorLimitAction">
+  		<property name="nameCommandMap">
+  			<map>
+  				<entry key="AddSubSectorLmtCmd" value-ref="SubSectorLimitAction.AddSubSectorLmtCmd"/>
+  				<entry key="DeleteEcoSectorlimitCmd" value-ref="SubSectorLimitAction.DeleteEcoSectorlimitCmd"/>
+  				<entry key="PrepareReturnSubSectorLimitCmd" value-ref="SubSectorLimitAction.PrepareReturnSubSectorLimitCmd"/>
+  				<entry key="PrepareSubSectorLmtCmd" value-ref="SubSectorLimitAction.PrepareSubSectorLmtCmd"/>
+  				<entry key="ReadSubSectorLimitTrxCmd" value-ref="SubSectorLimitAction.ReadSubSectorLimitTrxCmd"/>
+  				<entry key="ReadSubItemCmd" value-ref="SubSectorLimitAction.ReadSubItemCmd"/>
+  				<entry key="ReadSubSectorLmtCmd" value-ref="SubSectorLimitAction.ReadSubSectorLmtCmd"/>
+  				<entry key="ReturnSubSectorLimitCmd" value-ref="SubSectorLimitAction.ReturnSubSectorLimitCmd"/>
+  				<entry key="UpdateSubSectorLmtCmd" value-ref="SubSectorLimitAction.UpdateSubSectorLmtCmd"/>
+          <entry key="ProcessingSubSectorLimitCmd" value-ref="SubSectorLimitAction.ProcessingSubSectorLimitCmd"/>
+  			</map>
+  		</property>
+  	</bean>
+
+  	<bean name="/EconSectorLimitParam" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.creditriskparam.sectorlimit.econsectorlimit.EconSectorLimitAction">
+  	 	<property name="nameCommandMap">
+  			<map>
+  				<entry key="AddEconSectorLmtCmd" value-ref="EconSectorLimitAction.AddEconSectorLmtCmd"/>
+  				<entry key="PrepareEconSectorLmtCmd" value-ref="EconSectorLimitAction.PrepareEconSectorLmtCmd"/>
+  				<entry key="ReadEconSectorLmtCmd" value-ref="EconSectorLimitAction.ReadEconSectorLmtCmd"/>
+  				<entry key="UpdateEconSectorLmtCmd" value-ref="EconSectorLimitAction.UpdateEconSectorLmtCmd"/>
+  			</map>
+  		</property>
+  	</bean>
+
+    <!-- Internal Limit Parameter -->
+    <!--<bean name="/InternalLimitDimension" scope="prototype" autowire="byName"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.dimension.DimensionAction">-->
+        <!--<property name="nameCommandMap">-->
+            <!--<map>-->
+                <!--<entry key="ConfirmAddCommand"-->
+                       <!--value-ref="DimensionAction.ConfirmAddCommand"/>-->
+                <!--<entry key="FailValidateCommand"-->
+                       <!--value-ref="DimensionAction.FailValidateCommand"/>-->
+                <!--<entry key="PrepareAddCommand"-->
+                       <!--value-ref="DimensionAction.PrepareAddCommand"/>-->
+                <!--<entry key="PrepareEditCommand"-->
+                       <!--value-ref="DimensionAction.PrepareEditCommand"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean name="/InternalLimitItem" scope="prototype" autowire="byName"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.item.InternalLimitItemAction">-->
+        <!--<property name="nameCommandMap">-->
+            <!--<map>-->
+                <!--<entry key="ConfirmAddCommand"-->
+                       <!--value-ref="InternalLimitItemAction.ConfirmAddCommand"/>-->
+                <!--<entry key="FailValidateCommand"-->
+                       <!--value-ref="InternalLimitItemAction.FailValidateCommand"/>-->
+                <!--<entry key="PrepareAddCommand"-->
+                       <!--value-ref="InternalLimitItemAction.PrepareAddCommand"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean name="/InternalLimit" scope="prototype" autowire="byName"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.InternalLimitListAction">-->
+        <!--<property name="nameCommandMap">-->
+            <!--<map>-->
+                <!--<entry key="ReadInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.ReadInternalLimitListCommand"/>-->
+                <!--<entry key="PrepareEditInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.PrepareEditInternalLimitListCommand"/>-->
+                <!--<entry key="SavePage2SessionCommand"-->
+                       <!--value-ref="InternalLimitListAction.SavePage2SessionCommand"/>-->
+                <!--<entry key="DeleteInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.DeleteInternalLimitListCommand"/>-->
+                <!--<entry key="SaveInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.SaveInternalLimitListCommand"/>-->
+                <!--<entry key="SubmitInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.SubmitInternalLimitListCommand"/>-->
+                <!--<entry key="ApproveInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.ApproveInternalLimitListCommand"/>-->
+                <!--<entry key="RejectInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.RejectInternalLimitListCommand"/>-->
+                <!--<entry key="CloseInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.CloseInternalLimitListCommand"/>-->
+                <!--<entry key="PaginateInternalLimitListCommand"-->
+                       <!--value-ref="InternalLimitListAction.PaginateInternalLimitListCommand"/>-->
+            <!--</map>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <bean name="/InternalLimitList" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.internallimit.list.InternalLmtParamAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="InternalLmtMakerReadCommand"
+                       value-ref="InternalLmtParamAction.InternalLmtMakerReadCommand"/>
+                <entry key="InternalLmtMakerEditCommand"
+                       value-ref="InternalLmtParamAction.InternalLmtMakerEditCommand"/>
+                <entry key="InternalLmtCheckerReadCommand"
+                       value-ref="InternalLmtParamAction.InternalLmtCheckerReadCommand"/>
+                <entry key="ApproveInternalLimitListCommand"
+                       value-ref="InternalLmtParamAction.ApproveInternalLimitListCommand"/>
+                <entry key="RejectInternalLimitListCommand"
+                       value-ref="InternalLmtParamAction.RejectInternalLimitListCommand"/>
+                <entry key="InternalLmtMakerReadRejectedCommand"
+                       value-ref="InternalLmtParamAction.InternalLmtMakerReadRejectedCommand"/>
+                <entry key="CloseInternalLimitListCommand"
+                       value-ref="InternalLmtParamAction.CloseInternalLimitListCommand"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--Product Limit-->
+    <bean name="/ProductProgramLimitParam" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ProductProgramLimitAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="ListProductLimitCmd" value-ref="ProductProgramLimitAction.ListProductLimitCmd"/>
+                <entry key="ReadProductLimitCmd" value-ref="ProductProgramLimitAction.ReadProductLimitCmd"/>
+                <entry key="PrepareProductLimitCmd" value-ref="ProductProgramLimitAction.PrepareProductLimitCmd"/>
+                <entry key="ReadProductLimitTrxCmd" value-ref="ProductProgramLimitAction.ReadProductLimitTrxCmd"/>
+                <entry key="SubmitProductLimitCmd" value-ref="ProductProgramLimitAction.SubmitProductLimitCmd"/>
+                <entry key="ApproveProductLimitCmd" value-ref="ProductProgramLimitAction.ApproveProductLimitCmd"/>
+                <entry key="RejectProductLimitCmd" value-ref="ProductProgramLimitAction.RejectProductLimitCmd"/>
+                <entry key="CloseProductLimitCmd" value-ref="ProductProgramLimitAction.CloseProductLimitCmd"/>
+                <entry key="DeleteProductLimitCmd" value-ref="ProductProgramLimitAction.DeleteProductLimitCmd"/>
+                <entry key="ProcessingProductLimitCmd" value-ref="ProductProgramLimitAction.ProcessingProductLimitCmd"/>
+                <entry key="DeleteSubProductLmtsCmd" value-ref="ProductProgramLimitAction.DeleteSubProductLmtsCmd"/>
+                <entry key="ReturnProductLimitCmd" value-ref="ProductProgramLimitAction.ReturnProductLimitCmd"/>
+
+            </map>
+        </property>
+    </bean>
+
+    <bean name="/ProductTypeLimitParam" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.producttypelimit.ProductTypeLimitAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="ReadProductLmtCmd" value-ref="ProductTypeLimitAction.ReadProductLmtCmd"/>
+                <entry key="PrepareProductLmtCmd" value-ref="ProductTypeLimitAction.PrepareProductLmtCmd"/>
+                <entry key="AddProductLmtCmd" value-ref="ProductTypeLimitAction.AddProductLmtCmd"/>
+                <entry key="UpdateProductLmtCmd" value-ref="ProductTypeLimitAction.UpdateProductLmtCmd"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--Bank Entity Branch Param-->
+    <bean name="/bankEntityBranchParam" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.BankEntityBranchParamAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="ListBankEntityBranchParamCmd"
+                       value-ref="BankEntityBranchParamAction.ListBankEntityBranchParamCmd"/>
+                <entry key="ReturnBankEntityBranchParamCmd"
+                       value-ref="BankEntityBranchParamAction.ReturnBankEntityBranchParamCmd"/>
+                <entry key="CheckerApproveBankEntityBranchParamCmd"
+                       value-ref="BankEntityBranchParamAction.CheckerApproveBankEntityBranchParamCmd"/>
+                <entry key="CheckerRejectBankEntityBranchParamCmd"
+                       value-ref="BankEntityBranchParamAction.CheckerRejectBankEntityBranchParamCmd"/>
+                <entry key="DeleteBankEntityBranchItemCmd"
+                       value-ref="BankEntityBranchParamAction.DeleteBankEntityBranchItemCmd"/>
+                <entry key="MakerCloseBankEntityBranchParamCmd"
+                       value-ref="BankEntityBranchParamAction.MakerCloseBankEntityBranchParamCmd"/>
+                <entry key="MakerUpdateBankEntityBranchParamCmd"
+                       value-ref="BankEntityBranchParamAction.MakerUpdateBankEntityBranchParamCmd"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="/bankEntityBranchParamItem" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.BankEntityBranchParamItemAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="SaveBankEntityBranchParamItemCmd"
+                       value-ref="BankEntityBranchParamItemAction.SaveBankEntityBranchParamItemCmd"/>
+                <entry key="PrepareBankEntityParamItemCmd"
+                       value-ref="BankEntityBranchParamItemAction.PrepareBankEntityParamItemCmd"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--Country Limit-->
+    <bean name="/CountryLimitParam" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryLimitAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="ReadCountryLimitCmd"
+                       value-ref="CountryLimitAction.ReadCountryLimitCmd"/>
+                <entry key="PrepareCountryLimitCmd"
+                       value-ref="CountryLimitAction.PrepareCountryLimitCmd"/>
+                <entry key="ReturnCountryLimitCmd"
+                       value-ref="CountryLimitAction.ReturnCountryLimitCmd"/>
+                <entry key="MakerUpdateCountryLimitCmd"
+                       value-ref="CountryLimitAction.MakerUpdateCountryLimitCmd"/>
+                <entry key="CheckerApproveCountryLimitCmd"
+                       value-ref="CountryLimitAction.CheckerApproveCountryLimitCmd"/>
+                <entry key="CheckerRejectCountryLimitCmd"
+                       value-ref="CountryLimitAction.CheckerRejectCountryLimitCmd"/>
+                <entry key="MakerCloseCountryLimitCmd"
+                       value-ref="CountryLimitAction.MakerCloseCountryLimitCmd"/>
+                <entry key="SaveCurWorkingCountryLimitCmd"
+                       value-ref="CountryLimitAction.SaveCurWorkingCountryLimitCmd"/>
+                <entry key="DeleteCountryLimitItemCmd"
+                       value-ref="CountryLimitAction.DeleteCountryLimitItemCmd"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="/CountryLimitItemParam" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryLimitItemAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="PrepareCountryLimitItemCmd"
+                       value-ref="CountryLimitItemAction.PrepareCountryLimitItemCmd"/>
+                <entry key="SaveCountryLimitItemCmd"
+                       value-ref="CountryLimitItemAction.SaveCountryLimitItemCmd"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="/CountryRatingParam" scope="prototype" autowire="byName"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.CountryRatingAction">
+        <property name="nameCommandMap">
+            <map>
+                <entry key="ReadCountryRatingCmd"
+                       value-ref="CountryRatingAction.ReadCountryRatingCmd"/>
+                <entry key="PrepareCountryRatingCmd"
+                       value-ref="CountryRatingAction.PrepareCountryRatingCmd"/>
+                <entry key="SaveCountryRatingCmd"
+                       value-ref="CountryRatingAction.SaveCountryRatingCmd"/>
+            </map>
+        </property>
+    </bean>
+
+</beans>

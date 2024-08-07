@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.holiday.bus">
+	<class  entity-name="actualHoliday" name="OBHoliday" table="CMS_HOLIDAY" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_HOLIDAY_SEQ</param>
+			</generator>
+		</id>
+			<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		
+		<property name="description" column="DESCRIPTION" />
+		<property name="startDate" column="START_DATE" />
+		<property name="endDate" column="END_DATE" />
+		<property name="isRecurrent" column="IS_RECURRENT" />
+		
+		<property name="status" column="STATUS" />
+		<property name="deprecated" column="DEPRECATED" />
+		
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATE_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+		
+	</class>
+	<class  entity-name="stageHoliday" name="OBHoliday" table="CMS_STAGE_HOLIDAY" lazy="false">
+			<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_HOLIDAY_SEQ</param>
+			</generator>
+		</id>
+			<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		
+		<property name="description" column="DESCRIPTION" />
+		<property name="startDate" column="START_DATE" />
+		<property name="endDate" column="END_DATE" />
+		<property name="isRecurrent" column="IS_RECURRENT" />
+		<property name="status" column="STATUS" />
+		<property name="deprecated" column="DEPRECATED" />
+		
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATE_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+	</class>
+</hibernate-mapping>

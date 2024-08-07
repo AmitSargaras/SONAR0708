@@ -1,0 +1,542 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>AA Mapping - CA001</description>
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.limit.AAMessageBody">
+		<map-to xml="MsgBody" />
+		<field name="LimitProfile" type="com.integrosys.cms.host.eai.limit.bus.LimitProfile" />
+		<field name="CreditGrade"
+			type="com.integrosys.cms.host.eai.limit.bus.LimitCreditGrade"
+			collection="vector">
+			<bind-xml name="CreditGrade" />
+		</field>
+		<field name="JointBorrower"
+			type="com.integrosys.cms.host.eai.limit.bus.JointBorrower"
+			collection="vector">
+			<bind-xml name="JointBorrower" />
+		</field>
+		<field name="Limits" type="com.integrosys.cms.host.eai.limit.bus.Limits"
+			collection="vector">
+			<bind-xml name="Limits" />
+		</field>
+		<field name="LimitsApprovedSecurityMap"
+			type="com.integrosys.cms.host.eai.limit.bus.LimitsApprovedSecurityMap"
+			collection="vector">
+			<bind-xml name="LimitsApprovedSecurityMap" />
+		</field>
+		<field name="ChargeDetail" type="com.integrosys.cms.host.eai.limit.bus.ChargeDetail"
+			collection="vector">
+			<bind-xml name="SecurityLimitChargeDetail" />
+		</field>
+		<field name="LimitsSystemXReferenceMap" type="com.integrosys.cms.host.eai.limit.bus.SystemXReference"
+			collection="vector">
+			<bind-xml name="AccountDetail" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.bus.LimitProfile">
+		<map-to xml="LimitProfile" />
+		<field name="CIFId" type="string" />
+		<field name="CIFSource" type="string" />
+		<field name="SubProfileId" type="long" />
+		<field name="LOSAANumber" type="string" />
+		<field name="OldLOSAANumber" type="string" />
+		<field name="CMSLimitProfileId" type="long">
+			<bind-xml name="CMSLimitProfileId" />
+		</field>	
+		<field name="HostAANumber" type="string" />
+		<field name="AAApproveDate" type="string" />
+		<field name="OriginatingLocation"
+			type="com.integrosys.cms.host.eai.OriginatingBookingLocation">
+			<bind-xml name="OriginatingBookingLocation" />
+		</field>
+		<field name="AnnualReviewDate" type="string" />
+		<field name="ExtensionDate" type="string" />
+		<field name="AAStatus" type="string" />
+		<field name="AACreateDate" type="string" />
+		<field name="LORequired" type="string" />
+		<field name="AAType" type="string" />
+		<field name="AALawType" type="string" />
+		<field name="ExtensionDateLOAcceptance" type="string" />
+		<field name="SolicitorInstructionDate" type="string" />
+		<field name="LoginId" type="string" />
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.limit.bus.LimitCreditGrade">
+		<map-to xml="CreditGrade" />
+		<field name="LOSAANumber" type="string" />	
+		<field name="CreditGradeId" type="long" />
+		<field name="CreditGradeType" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="CreditGradeCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="CreditGradeEffectiveDate" type="string" />
+		<field name="CreditGradeReasonForChange" type="string" />
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.limit.bus.JointBorrower">
+		<map-to xml="JointBorrower" />
+		<field name="CIFId" type="string" />
+		<field name="SubProfileId" type="long" />
+		<field name="AANumber">
+			<bind-xml name="LOSAANumber" type="string" />
+		</field>
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.limit.bus.Limits">
+		<map-to xml="Limits" />
+		<field name="LimitGeneral" type="com.integrosys.cms.host.eai.limit.bus.LimitGeneral">
+			<bind-xml name="General" />
+		</field>
+		<field name="FacilityMaster"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityMaster">
+			<bind-xml name="FacilityMaster" />
+		</field>
+		<field name="FacilityBNM" type="com.integrosys.cms.host.eai.limit.bus.FacilityBNM">
+			<bind-xml name="FacilityBNM" />
+		</field>
+		<field name="FacilityOfficer"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityOfficer"
+			collection="vector">
+			<bind-xml name="FacilityOfficer" />
+		</field>
+		<field name="FacilityRelationship"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityRelationship"
+			collection="vector">
+			<bind-xml name="FacilityRelationship" />
+		</field>
+		<field name="IslamicFacilityMaster"
+			type="com.integrosys.cms.host.eai.limit.bus.IslamicFacilityMaster">
+			<bind-xml name=" FacilityIslamicMaster" />
+		</field>
+		<field name="FacilityMultiTierFinancings"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityMultiTierFinancing"
+			collection="vector">
+			<bind-xml name="FacilityMultiTierFinancing" />
+		</field>
+			<field name="FacilityBBAVariPackage"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityBBAVariPackage">
+			<bind-xml name="FacilityBBAVariPackage" />
+		</field>
+		<field name="FacilityMessages"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityMessage"
+			collection="arraylist">
+			<bind-xml name="FacilityMessage" />
+		</field>
+		<field name="FacilityIslamicRentalRenewal"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityIslamicRentalRenewal">
+			<bind-xml name="FacilityIslamicRentalRenewal" />
+		</field>
+		<field name="FacilityIslamicSecurityDeposit"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityIslamicSecurityDeposit">
+			<bind-xml name="FacilityIslamicSecurityDeposit" />
+		</field>
+		<field name="FacilityIncrementals"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityIncremental"
+			collection="arraylist">
+			<bind-xml name="FacilityIncremental" />
+		</field>
+		<field name="FacilityReductions"
+			type="com.integrosys.cms.host.eai.limit.bus.FacilityReduction"
+			collection="arraylist">
+			<bind-xml name="FacilityReduction" />
+		</field>
+	</class>
+
+    <!-- This map with the general node under limits node -->
+	<class name="com.integrosys.cms.host.eai.limit.bus.LimitGeneral">
+		<map-to xml="General" />
+		<field name="CIFId" type="string" />
+		<field name="SubProfileId" type="long" />
+		<field name="LOSAANumber" type="string" />
+		<field name="LOSLimitId" type="string" />
+		<field name="CMSLimitId" type="long" />
+		<field name="InnerLimitOrdering" type="integer" />
+		<field name="OmnibusEnvelopeId" type="long" />
+		<field name="OmnibusEnvelopeName" type="string" />
+		<field name="LOSOuterLimitId" type="string" />
+		<field name="CMSOuterLimitId" type="long" />
+		<field name="OriginatingBookingLocation"
+			type="com.integrosys.cms.host.eai.OriginatingBookingLocation" />
+		<field name="ProductType" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="FacilityType" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="LimitCurrency" type="string" />
+		<field name="ApprovedLimit" type="double" />
+		<field name="DrawingLimit" type="double" />
+		<field name="LimitTenor" type="long" />
+		<field name="LimitTenorBasis" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+    
+      <!-- This map with the facility master node under limits node -->
+	<class name="com.integrosys.cms.host.eai.limit.bus.FacilityMaster">
+		<map-to xml="FacilityMaster" />
+		<field name="FinancedAmt" type="double" />
+		<field name="InstallmentAmt" type="double" />
+		<field name="ACFNo" type="string" />
+		<field name="LoanPurposeCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="ProductPackageCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="OfferAcceptedDate" type="string" />
+		<field name="OfferDate" type="string" />
+		<field name="ApprovedBy" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="ApproveDate" type="string">
+			<bind-xml name="ApprovedDate" />
+		</field>
+		<field name="CancelRejectCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="CancelRejectDate" type="string" />
+		<field name="Officer" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="LimitStatus" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="FacilityStatusEntryCode">
+			<bind-xml name="FacilityStatus" />
+		</field>
+		<field name="Spread" type="double">
+			<bind-xml name="Spread" />
+		</field>
+		<!-- Map with the interest -->
+		<field name="RateType" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="RateType" />
+		</field>
+		
+		<field name="SpreadSign" type="string">
+			<bind-xml name="SpreadSign" />
+		</field>
+		<field name="ApplicationSource" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="DealerLPPCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="InstructedDate" type="string" />
+		<field name="DepartmentCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="SolicitorName" type="string" />
+		<field name="LawyerCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="OdExcessRateVar" type="double">
+			<bind-xml name="ODExcessRateVar" />
+		</field>
+		<field name="OdExcessRateVarCode" type="string">
+			<bind-xml name="ODExcessRateVarCode" />
+		</field>
+		<field name="MainFacilityInd" type="string" />
+		<field name="MainFacilityAANo" type="string" />
+		<field name="MainFacilityCode" type="string" />
+		<field name="MainFacilitySequenceNumber" type="long">
+			<bind-xml name="MainFacilitySeqNo" />
+		</field>
+		<field name="StandbyLine" type="string">
+			<bind-xml name="StandbyLineInd" />
+		</field>
+		<field name="FloorPledgeLimit" type="double" />
+		
+		<field name="ApplicationDate" type="string" />
+		<field name="InterestRate" type="double" />
+		<field name="HandlingFee" type="double" />
+		
+		<field name="FinalPaymentAmt" type="double" />
+		<field name="PrimeRateFloor" type="double" />
+		<field name="PrimeRateCeiling" type="double" />	
+		<field name="PrimeReviewDate" type="string" />
+		<field name="PrimeReviewTerm" type="int" />
+		<field name="PrimeReviewTermCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		
+		<field name="CommissionFees" type="double" />
+		<field name="CommissionRate" type="double" />
+		<field name="CommissionBasis" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="SubsidyAmt" type="double" />
+		<field name="OthersFee" type="double" />
+		<field name="MaximumCommission" type="double" />
+		<field name="MinimumCommission" type="double" />
+		<field name="StandbyLineFacCode" type="string" />
+		<field name="StandbyLineFacCodeSeq" type="int" />
+		<field name="FacCommitmentRate"  type="double" />
+		
+		<field name="FacCommitmentRateNo" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="RevolvingInd" type="string" />
+		<field name="RevOSBalOrgAmt" type="string"/>
+		<field name="RetentionSum" type="double" />
+		<field name="RetentionPeriod" type="int" />
+		<field name="DateApproveCGCBNM" type="string" />
+		<field name="EffectiveCostOfFund" type="string" />
+		<field name="ECOFAdminCost" type="double" />
+		<field name="ECOFRate" type="double" />
+		<field name="ECOFVariance" type="double" />
+		<field name="ECOFVarianceCode" type="string" />
+		<field name="FacAvalDate" type="string" />
+		<field name="FacAvalPeriod" type="string" />
+		<field name="RefinanceFromBank" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.limit.bus.FacilityBNM">
+		<map-to xml="FacilityBNM" />
+		<field name="BNMIndustryCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMSectorCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMStateCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMBumiNRCCCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMSmallScaleCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMPrescribedRateCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMRelationshipCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMExempt" type="string" />
+		<field name="BNMExemptCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMPurposeCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMGoodFinancedCd1" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BNMGoodFinancedCd2" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BaselSAFinalised" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BaselIRB" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="BaselSAConcept" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.limit.bus.FacilityOfficer">
+		<map-to xml="FacilityOfficer" />
+		<field name="CMSOfficerId" type="long" />
+		<field name="RelationshipCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="Officer" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="OfficerType" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+	<class name="com.integrosys.cms.host.eai.limit.bus.FacilityRelationship">
+		<map-to xml="FacilityRelationship" />
+		<field name="CMSFacilityRelationshipID" type="long">
+			<bind-xml name="CMSFacilityRelationshipID" />
+		</field>
+		<field name="CIFId" type="string">
+			<bind-xml name="CIFId" />
+		</field>
+		<field name="AccountRelationship" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="AccountRelationship" />
+		</field>
+		<field name="GuaranteeAmt" type="double" />
+		<field name="GuaranteePercentage" type="double" />
+		<field name="AddressSeqNum" type="long">
+			<bind-xml name="AddressSeqNum" />
+		</field>
+		
+		<field name="ShareHolderPercentage" type="double" />
+		<field name="ReceiveMailCode" type="string" />
+		<field name="HoldMailCode" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="NameAssociatedWFacOrder" type="int" />
+		<field name="NameConjunctionPosition" type="string" />
+		<field name="NameConjunction" type="string" />
+		<field name="ProfitRatio" type="double" />
+		<field name="DividendRatio" type="double" />
+		
+		<field name="UpdateStatusIndicator" type="string">
+			<bind-xml name="UpdateStatusIndicator" />
+		</field>
+		<field name="ChangeIndicator" type="string">
+			<bind-xml name="ChangeIndicator" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.bus.FacilityMessage">
+		<map-to xml="FacilityMessage" />
+		<field name="CmsFacilityMessageId" type="long">
+			<bind-xml name="CMSFacilityMessageID" />
+		</field>
+		<field name="Message" type="string" />
+		<field name="MessageTypeCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="MessageTypeCode" />
+		</field>
+		<field name="MessageSeverityCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="MessageSeverityCode" />
+		</field>
+		<field name="ExpirationDate" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="UpdateStatusIndicator" type="string">
+			<bind-xml name="UpdateStatusIndicator" />
+		</field>
+		<field name="ChangeIndicator" type="string">
+			<bind-xml name="ChangeIndicator" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.bus.FacilityIncremental">
+		<map-to xml="FacilityIncremental" />
+		<field name="IncrementalNumber" type="integer" />
+		<field name="AmountApplied" type="double" />
+		<field name="IncrementalLimit" type="double" />
+		<field name="OriginalLimit" type="double" />
+		<field name="ApplicationDate" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="LoanPurposeCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="LoanPurposeCode" />
+		</field>
+		<field name="DateOfOffer" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="DateOfferAccepted" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="DateApproved" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="ApprovedBy" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="ApprovedBy" />
+		</field>
+		<field name="CancelRejectCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="CancelRejectCode" />
+		</field>
+		<field name="CancelRejectDate" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="FacilityStatus" type="string" />
+		<field name="DealerLLPCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="DealerLLPCode" />
+		</field>
+		<field name="SolicitorName" type="string" />
+		<field name="RequestReason" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="RequestReason" />
+		</field>
+		<field name="DocumentationStatus" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="DocumentationStatus" />
+		</field>
+		<field name="LawyerCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="LawyerCode" />
+		</field>
+		<field name="UpdateStatusIndicator" type="string">
+			<bind-xml name="UpdateStatusIndicator" />
+		</field>
+		<field name="ChangeIndicator" type="string">
+			<bind-xml name="ChangeIndicator" />
+		</field>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.bus.FacilityReduction">
+		<map-to xml="FacilityReduction" />
+		<field name="IncrementalNumber" type="integer" />
+		<field name="AmountApplied" type="double" />
+		<field name="IncrementalLimit" type="double" />
+		<field name="OriginalLimit" type="double" />
+		<field name="ApplicationDate" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="DateOfferAccepted" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="DateApproved" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="ApprovedBy" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="ApprovedBy" />
+		</field>
+		<field name="CancelRejectCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="CancelRejectCode" />
+		</field>
+		<field name="CancelRejectDate" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="FacilityStatus" type="string" />
+		<field name="SolicitorName" type="string" />
+		<field name="RequestReason" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="RequestReason" />
+		</field>
+		<field name="DocumentationStatus" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="DocumentationStatus" />
+		</field>
+		<field name="LawyerCode" type="com.integrosys.cms.host.eai.StandardCode">
+			<bind-xml name="LawyerCode" />
+		</field>
+		<field name="UpdateStatusIndicator" type="string">
+			<bind-xml name="UpdateStatusIndicator" />
+		</field>
+		<field name="ChangeIndicator" type="string">
+			<bind-xml name="ChangeIndicator" />
+		</field>
+	</class>
+
+	<class
+		name="com.integrosys.cms.host.eai.limit.bus.LimitsApprovedSecurityMap">
+		<map-to xml="LimitsApprovedSecurityMap" />
+		<field name="CIFId" type="string" />
+		<field name="SubProfileId" type="long" />
+		<field name="AANumber" type="string">
+			<bind-xml name="LOSAANumber" />
+		</field>
+		<field name="LimitsApprovedSecurityMapId">
+			<bind-xml name="CMSLimitSecMapId" type="long" />
+		</field>
+		<field name="LimitId" type="string">
+			<bind-xml name="LOSLimitId" />
+		</field>
+		<field name="SecurityId" type="string">
+			<bind-xml name="LOSSecurityId" />
+		</field>
+		<field name="CmsSecurityId">
+			<bind-xml name="CMSSecurityId" type="long" />
+		</field>
+		<field name="CmsLimitId">
+			<bind-xml name="CMSLimitId" type="long" />
+		</field>
+		
+		<field name="AmtPledgeCcy" type="string" />
+		<field name="AmtPledge" type="double" />
+		<field name="PercentPledge" type="double" />
+		<field name="AmtDrawCcy" type="string" />
+		<field name="AmtDraw" type="double" />
+		<field name="PercentDraw" type="double" />
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.bus.ChargeDetail">
+		<map-to xml="SecurityLimitChargeDetail" />
+		<field name="SecurityId" type="string">
+			<bind-xml name="LOSSecurityId" />
+		</field>
+		<field name="CmsSecurityId" type="long">
+			<bind-xml name="CMSSecurityId" />
+		</field>
+		<field name="ChargeDetailId" type="long">
+			<bind-xml name="CMSChargeDetailId" />
+		</field>
+		<field name="LimitId" collection="array" type="java.lang.String">
+			<bind-xml name="LOSLimitId" location="LimitIDs" />
+		</field>
+		
+		<field name="CMSLimitId" collection="array" type="java.lang.Long">
+			<bind-xml name="CMSLimitId" location="CMSLimitIDs" />
+		</field>
+		<field name="ChargeType" type="string">
+			<bind-xml name="ChargeType" />
+		</field>
+		<field name="ChargeAmount" type="double">
+			<bind-xml name="ChargeAmt" />
+		</field>
+		<field name="SecurityRanking">
+			<bind-xml name="SecurityRank" type="int" />
+		</field>
+		<field name="LegallyChargedDate" type="string">
+			<bind-xml name="DateLegallyCharge" />
+		</field>
+		<field name="ConfirmChargedDate" type="string">
+			<bind-xml name="ConfirmChargeDate" />
+		</field>
+		<field name="PriorChargeChargee" type="string">
+			<bind-xml name="PriorChargee" />
+		</field>
+		<field name="PriorChargeType" type="string" />
+		<field name="PriorChargeAmount" type="double" />
+		<field name="PartyCharge" type="string" >
+			<bind-xml name="PartyCharge" />
+		</field>
+		<field name="ChargePendingRedemption" type="string" >
+			<bind-xml name="ChargePendingRedemption" />
+		</field>
+		<field name="UpdateStatusIndicator" type="string" />
+		<field name="ChangeIndicator" type="string" />
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.limit.bus.SystemXReference">
+		<map-to xml="AccountDetail" />
+		<field name="CmsId" type="java.lang.Long">
+			<bind-xml name="CMSAccountId" />
+		</field>
+		<field name="CIFId" type="java.lang.String" />
+		<field name="SubProfileId" type="java.lang.Long" />
+		<field name="CmsLimitIds" collection="array" type="java.lang.Long" >
+			<bind-xml name="CMSLimitID" location="CMSLimitIDs" />
+		</field>
+		<field name="AccountNumber" type="java.lang.String" />
+		<field name="AccountType" type="java.lang.String" />
+		<field name="AccountSequence" type="java.lang.Long">
+			<bind-xml name="AccountSeqNo" />
+		</field>
+		<field name="FacilityType" type="com.integrosys.cms.host.eai.StandardCode" />
+		<field name="FacilitySequenceNumber" type="java.lang.Long">
+			<bind-xml name="FacilitySeqNo" />
+		</field>
+		<field name="AccountDelinquentIndicator" type="java.lang.String" />
+		<field name="AccountStatus" type="java.lang.String" />
+		<field name="HostAANumber" type="java.lang.String">
+			<bind-xml name="HostAANo" />
+		</field>
+		<field name="FirstDisbursementDate" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="FinalDisbursementDate" type="string" handler="com.integrosys.cms.host.eai.castor.CustomDateFieldHandler" />
+		<field name="UpdateStatusIndicator" type="java.lang.String" />
+		<field name="ChangeIndicator" type="java.lang.String" />
+	</class>
+
+</mapping>

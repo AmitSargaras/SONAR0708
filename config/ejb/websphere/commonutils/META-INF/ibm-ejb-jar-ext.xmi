@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejbext:EJBJarExtension xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:xmi="http://www.omg.org/XMI"
+                        xmlns:ejbext="ejbext.xmi"
+                        xmlns:ejb="ejb.xmi"
+                        xmlns:commonext.localtran="commonext.localtran.xmi"
+                        xmi:version="2.0"
+                        xmi:id="ejbjarext_ejb_CommonUtils">
+   <ejbJar href="META-INF/ejb-jar.xml#ejb_CommonUtils"/>
+   <ejbExtensions xmi:id="ejbext_SBCommonManager" xmi:type="ejbext:SessionExtension">
+      <enterpriseBean xmi:type="ejb:Session" href="META-INF/ejb-jar.xml#session_SBCommonManager"/>
+      <structure xmi:id="structure_SBCommonManager" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_SBCommonManager" activateAt="ONCE"/>
+      <localTransaction xmi:id="localtrx_SBCommonManager" resolver="Application"/>
+      <resourceRefExtensions xmi:id="resrefext_SBCommonManager" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_SBCommonManager"/>
+      </resourceRefExtensions>
+   </ejbExtensions>
+   <ejbExtensions xmi:id="ejbext_EBCurrency" xmi:type="ejbext:ContainerManagedEntityExtension">
+      <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                      href="META-INF/ejb-jar.xml#entity_EBCurrency"/>
+      <structure xmi:id="structure_EBCurrency" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_EBCurrency" activateAt="TRANSACTION" loadAt="TRANSACTION"/>
+      <localTransaction xmi:id="localtrx_EBCurrency" resolver="ContainerAtBoundary"/>
+      <resourceRefExtensions xmi:id="resrefext_EBCurrency" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCurrency"/>
+      </resourceRefExtensions>
+      <dataCache xmi:id="datacache_EBCurrency" lifetimeInCache="0" lifetimeInCacheUsage="OFF"/>
+   </ejbExtensions>
+   <ejbExtensions xmi:id="ejbext_EBCountry" xmi:type="ejbext:ContainerManagedEntityExtension">
+      <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                      href="META-INF/ejb-jar.xml#entity_EBCountry"/>
+      <structure xmi:id="structure_EBCountry" inheritenceRoot="false"/>
+      <beanCache xmi:id="beancache_EBCountry" activateAt="TRANSACTION" loadAt="TRANSACTION"/>
+      <localTransaction xmi:id="localtrx_EBCountry" resolver="ContainerAtBoundary"/>
+      <resourceRefExtensions xmi:id="resrefext_EBCountry" isolationLevel="TRANSACTION_NONE">
+         <resourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCountry"/>
+      </resourceRefExtensions>
+      <dataCache xmi:id="datacache_EBCountry" lifetimeInCache="0" lifetimeInCacheUsage="OFF"/>
+   </ejbExtensions>
+   <appliedAccessIntents xmi:id="accessintents_ejb_CommonUtils"
+                         accessIntentName="wsPessimisticUpdate-NoCollision">
+      <name xsi:nil="true"/>
+      <description xsi:nil="true"/>
+      <methodElements xmi:id="methodelements_EBCurrency" name="*" type="Unspecified">
+         <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                         href="META-INF/ejb-jar.xml#entity_EBCurrency"/>
+      </methodElements>
+      <methodElements xmi:id="methodelements_EBCountry" name="*" type="Unspecified">
+         <enterpriseBean xmi:type="ejb:ContainerManagedEntity"
+                         href="META-INF/ejb-jar.xml#entity_EBCountry"/>
+      </methodElements>
+   </appliedAccessIntents>
+</ejbext:EJBJarExtension>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<bean name="/BondDetailsUpload" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.bonddetailsupload.BondDetailsUploadAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="prepareFileUploadCommand" value-ref="bondDetailsUploadAction.PrepareFileUploadCommand" />		
+				<entry key="fileUploadCommand" value-ref="bondDetailsUploadAction.FileUploadCommand" />
+				<entry key="downloadReportCommand" value-ref="bondDetailsUploadAction.DownloadReportCommand" />
+				<entry key="readFileUploadCommand" value-ref="bondDetailsUploadAction.ReadFileUploadCommand" />
+				<entry key="checkerRejectFileUploadCommand" value-ref="bondDetailsUploadAction.CheckerRejectFileUploadCommand" />
+				<entry key="makerCloseFileUploadCommand" value-ref="bondDetailsUploadAction.MakerCloseFileUploadCommand" />
+				<entry key="checkerApproveFileUploadCommand" value-ref="bondDetailsUploadAction.CheckerApproveFileUploadCommand" />
+			</map>
+		</property>
+	</bean>
+</beans>

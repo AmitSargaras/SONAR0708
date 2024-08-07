@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	<bean id="CreateDiaryItemCommand" class="com.integrosys.cms.ui.diaryitem.CreateDiaryItemCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>	
+	
+	<bean id="ListDueItemsCommand" class="com.integrosys.cms.ui.diaryitem.ListDueItemsCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+		<property name="totalPageForPagination" value="${pagination.total.page}" />
+		<property name="recordsPerPageForPagination" value="${pagination.records.per.page}" />
+	</bean>
+
+	<bean id="ListNonExpiredItemsCommand" class="com.integrosys.cms.ui.diaryitem.ListNonExpiredItemsCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+		<property name="totalPageForPagination" value="${pagination.total.page}" />
+		<property name="recordsPerPageForPagination" value="${pagination.records.per.page}" />
+	</bean>
+	
+	<bean id="PrepareDiaryItemCommand" class="com.integrosys.cms.ui.diaryitem.PrepareDiaryItemCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>
+	
+	<bean id="PrintDiaryItemCommand" class="com.integrosys.cms.ui.diaryitem.PrintDiaryItemCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>
+	
+	<bean id="ReadDiaryItemCommand" class="com.integrosys.cms.ui.diaryitem.ReadDiaryItemCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>
+	
+	<bean id="RefreshNonExpiredItemsCommand" class="com.integrosys.cms.ui.diaryitem.RefreshNonExpiredItemsCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>
+	
+	<bean id="SearchNonExpiredItemsCommand" class="com.integrosys.cms.ui.diaryitem.SearchNonExpiredItemsCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>
+	
+	<bean id="UpdateDiaryItemCommand" class="com.integrosys.cms.ui.diaryitem.UpdateDiaryItemCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>	
+	
+	<bean id="ListDiarySegmentWiseCommand" class="com.integrosys.cms.ui.diaryitem.ListDiarySegmentWiseCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>
+	
+	<bean id="DeleteDiaryItemCommand" class="com.integrosys.cms.ui.diaryitem.DeleteDiaryItemCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>	
+	
+	<bean id="TodaysDiaryItemCommand" class="com.integrosys.cms.ui.diaryitem.TodaysDiaryItemCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>
+	
+	<bean id="AckODErrorCommand" class="com.integrosys.cms.ui.diaryitem.AckODErrorCommand">
+		<property name="diaryItemProxyManager" ref="diaryItemProxy" />
+	</bean>
+	
+</beans>
+

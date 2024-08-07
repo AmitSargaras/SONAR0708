@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+		SELECT distinct subprofile.LSP_LE_ID 						 AS PARTY_ID,
+			subprofile.lsp_short_name  								 AS PARTY_NAME,
+			(SELECT entry_name
+			FROM common_code_category_entry
+			WHERE category_code='HDFC_SEGMENT'
+			AND entry_code=subprofile.LSP_SGMNT_CODE_value
+			) 														 AS SEGMENT_NAME,
+			(SELECT rm_mgr_name
+			FROM cms_relationship_mgr
+			WHERE id= subprofile.relation_mgr
+			)              											 AS RM_NAME,
+			rm.RM_MGR_CODE 											 AS RM_EMP_CODE,
+			(SELECT RM_CITY FROM cms_relationship_mgr WHERE id=subprofile.relation_mgr
+			) 														 AS RM_CITY,
+			(SELECT RM_STATE FROM cms_relationship_mgr WHERE id=subprofile.relation_mgr
+			) 														 AS RM_STATE,
+			(SELECT region_name FROM cms_region WHERE id=subprofile.rm_region
+			)                                                 		 AS RM_REGION,
+			subprofile.LEI_CODE                              		 AS LEI_ID,
+			TO_CHAR(subprofile.LEI_EXPIRY_DATE,'DD-Mon-YYYY') 		 AS LEI_RENEWAL_DATE,
+			(SELECT PARAM_VALUE
+			FROM cms_general_param
+			WHERE param_code = 'EXPOSURE_AMOUNT_FOR_LEI_VALIDN'
+			)                                                        AS EXPOSURE_AMOUNT,
+			leilog.status                                            AS STATUS,
+			leilog.ERRORMESSAGE                                      AS ERROR_MESSSAGE,
+			TO_CHAR(leilog.LASTVALIDATEDDATE,'DD-MM-YYYY')           AS VALIDATION_DATE,
+			subprofile.pan                                           AS PAN,
+			subprofile.CIN_LLPIN                                     AS CIN_NO,
+			TO_CHAR(lmtprofile.Llp_Bca_Ref_Appr_Date,'DD/MM/YYYY')   AS CAM_DATE,
+			TO_CHAR(lmtProfile.LLP_NEXT_ANNL_RVW_DATE,'DD-Mon-YYYY') AS CAM_EXP_DATE,
+			TO_CHAR(lmtprofile.LLP_EXTD_NEXT_RVW_DATE,'DD/MM/YYYY')  AS CAM_SRM_EXPIRY_DATE,
+			(SELECT entry_name
+			FROM common_code_category_entry
+			WHERE entry_code  = subprofile.entity
+			AND category_code = 'Entity'
+			)   													 AS CONSTITUTION
+		FROM 
+				sci_le_sub_profile subprofile,
+				SCI_LSP_LMT_PROFILE lmtprofile,
+				cms_relationship_mgr rm,
+				LEI_VALIDATION_LOG leilog,
+				TRANSACTION trx
+  		</query>
+		<whereClause>
+			<mandatoryClause>
+				subprofile.cms_le_sub_profile_id = lmtprofile.cms_customer_id
+				AND rm.id                              = subprofile.relation_mgr
+				AND leilog.PARTYID                     = subprofile.LSP_LE_ID
+				AND trx.REFERENCE_ID                   = subprofile.cms_le_sub_profile_id
+				AND trx.TRANSACTION_TYPE               = 'CUSTOMER'
+				AND TRUNC(LEI_EXPIRY_DATE)         &lt;= TRUNC(SYSDATE)
+--				AND subprofile.IS_LEI_VALIDATED        = 'Y'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> AND subprofile.cms_le_sub_profile_id = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(trx.TRANSACTION_DATE) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Employee Code</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM City</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM State</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LEI ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LEI Renewal Date</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Exposure Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Success/Failure</header>
+				</reportColumn>								
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>Reason for Failure</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Validation Date</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>15</width>
+					<format>textFormat</format>
+					<header>PAN Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CIN Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Latest CAM Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Latest CAM Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Latest SRM Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Constitution</header>
+				</reportColumn>
+			</reportColumns>	
+			<reportName>LEI Verification Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

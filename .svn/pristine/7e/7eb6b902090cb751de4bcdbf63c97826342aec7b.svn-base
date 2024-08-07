@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.diary.bus">
+	<class  entity-name="actualOBDiaryItem" name="OBDiaryItem" table="CMS_DIARY_ITEM" lazy="false">
+		<id name="ItemID" column="ITEM_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">DIARY_ITEM_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long" />
+		<property name="teamTypeID" column="TEAM_TYPE_MEMBERSHIP_ID" type="long"/>
+		<property name="teamId" column="TEAM_ID" type="long"/>
+		<property name="allowedCountry" column="ALLOWED_COUNTRY"/>
+		<property name="obsoleteInd" column="IS_OBSOLETE" type="yes_no"/>
+		<property name="customerReference" column="LE_ID"/>
+		<property name="customerName" column="CUSTOMER_NAME"/>
+		<property name="description" column="DESCRIPTION"/>
+		<property name="narration" column="NARRATION"/>
+		<property name="dueDate" column="ITEM_DUE_DATE" type="timestamp"/>
+		<property name="expiryDate" column="ITEM_EXPIRY_DATE" type="timestamp"/>
+		<property name="lastUpdatedBy" column="LAST_UPDATED_BY"/>
+		<property name="lastUpdatedTime" column="LAST_UPDATED_TIME" type="timestamp"/>
+
+		<property name="customerSegment" column="CUSTOMER_SEGMENT"/>
+		<property name="FAM" column="FAM"/>
+		<property name="diaryNumber" column="DIARY_NUMBER" type="long"/>
+		<property name="region" column="REGION"/>
+		<property name="facilityBoardCategory" column="FACILITY_BOARD_CATEGORY"/>
+		<property name="facilityLineNo" column="FACILITY_LINE_NO"/>
+		<property name="facilitySerialNo" column="FACILITY_SERIAL_NO"/>
+		<property name="dropLineOD" column="DROP_LINE_OD"/>
+	<!-- 	<property name="odScheduleUploadFile" column="OD_SCHEDULE_UPLOAD_FILE"/> -->
+		<property name="activity" column="ACTIVITY"/>
+		<property name="makerId" column="MAKER_ID"/>
+		<property name="makerDateTime" column="MAKER_DATE_TIME"/>
+		<property name="status" column="STATUS"/>
+		<property name="action" column="ACTION"/>
+		<property name="closeBy" column="CLOSED_BY"/>
+		<property name="closeDate" column="CLOSED_DATE_TIME"/>
+		<property name="nextTargetDate" column="NEXT_TARGET_DATE"/>
+		<property name="uploadFileError" column="OD_UPLOAD_FILE_ERROR"/>
+		<property name="isDelete" column="IS_DELETE"/>
+	</class>
+</hibernate-mapping>

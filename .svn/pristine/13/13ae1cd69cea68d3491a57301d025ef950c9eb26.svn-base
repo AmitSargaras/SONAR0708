@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		Transaction Manager, DataSource, Hibernate goes here. Take notes of 'ofaPool' and 'txManager',
+		which might be different implementation used for development and production
+	</description>
+
+	<bean id="ofaPool" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+		<property name="driverClass" value="org.hsqldb.jdbcDriver" />
+		<property name="username" value="sa" />
+		<property name="url" value="jdbc:hsqldb:mem:los" />
+	</bean>
+
+	<bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+	</bean>
+
+	<bean id="ofaSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="mappingLocations" value="classpath*:/*.hbm.xml" />
+		<property name="hibernateProperties">
+			<value>
+				<![CDATA[
+					hibernate.dialect=org.hibernate.dialect.HSQLDialect
+					hibernate.query.factory_class=org.hibernate.hql.internal.classic.ClassicQueryTranslatorFactory
+					hibernate.hbm2ddl.auto=create-drop
+				]]>
+			</value>
+		</property>
+	</bean>
+
+</beans>

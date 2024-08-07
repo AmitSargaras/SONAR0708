@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<description>
+		To load all relevant bean.xml in one shot. Different environment should have different files of this.
+	</description>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="scmInterfaceFileTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="scmInterfaceFileTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="scmInterfaceFileJobDetail" />
+		<property name="cronExpression" value="0 30/30 * * * ?" />
+	</bean>
+	
+	<bean id="scmInterfaceFileJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="scmInterfaceJob" />
+		<property name="targetMethod" value="execute" />
+		
+	</bean>
+	
+	<bean name="scmInterfaceJob" class="com.integrosys.cms.batch.scmInterface.schedular.ScmInterfaceJob">
+	</bean>
+	
+</beans>

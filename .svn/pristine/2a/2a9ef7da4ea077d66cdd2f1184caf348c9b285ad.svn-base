@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+		
+		SELECT DISTINCT  
+					  cc_segment.entry_name       AS segmentName,
+					  rm.rm_mgr_name              AS rmname,
+					  (SELECT region_name FROM cms_region WHERE id=main_profile.rm_region
+					  )                           AS region,
+					  checlistitem.document_code,
+					   (select entry_name from common_code_category_entry where entry_code=limit_profile.rbi_asset_classification and CATEGORY_CODE='RBI_ASSET_ClASSIFICATION') as RBI_Asset,
+					   main_profile.LSP_LE_ID AS partyid,
+					   main_profile.LSP_SHORT_NAME AS partyname,
+					  (SELECT ENTRY_NAME
+					  FROM COMMON_CODE_CATEGORY_ENTRY
+					  WHERE entry_code  = CHECLISTITEM.STATEMENT_TYPE
+					  AND category_code = 'STATEMENT_TYPE'
+					  )                            AS statementType,
+					  checListItem.DOC_DESCRIPTION AS description,
+            
+					   TO_CHAR(TO_DATE(SUBSTR(TO_CHAR(checListItem.DOC_ITEM_ID), 1, 8), 'YYYYMMDD'), 'DD/Mon/YYYY') as CREATION_DATE,
+					  
+            to_char(checListItem.EXPIRY_DATE,'DD/Mon/YYYY') AS ORIGINAL_DUE_DATE,
+            
+            CASE
+					    WHEN checListItem.STATUS = 'AWAITING'
+					    THEN TO_CHAR(checListItem.expiry_date,'DD/Mon/YYYY')
+					    WHEN checListItem.status = 'DEFERRED'
+					    THEN TO_CHAR(checListItem.expected_return_date,'DD/Mon/YYYY')
+					  END                                                  AS dueDate,
+            
+              CASE
+					    WHEN checListItem.STATUS = 'DEFERRED'
+					    THEN TO_CHAR(checListItem.DEFER_EXPIRY_DATE,'DD/Mon/YYYY')
+					   
+					  END   												AS DEFERRED_DATE,
+            
+              CASE
+					    WHEN checListItem.STATUS = 'RECEIVED'
+					    THEN TO_CHAR(checListItem.RECEIVED_DATE,'DD/Mon/YYYY')
+					   
+					  END   												AS RECEIVED_DATE,
+            
+             CASE
+					    WHEN checListItem.STATUS = 'WAIVED'
+					    THEN TO_CHAR(checListItem.WAIVED_DATE,'DD/Mon/YYYY')
+					   
+					  END   												AS WAIVED_DATE,
+         
+					  checListItem.STATUS                                   AS status,
+					  TO_CHAR(checListItem.LAST_UPDATE_DATE,'DD/Mon/YYYY')  AS activityDate,
+					  checListItem.remarks
+					
+					FROM SCI_LE_SUB_PROFILE main_profile,
+					  COMMON_CODE_CATEGORY_ENTRY cc_segment,
+					  CMS_RELATIONSHIP_MGR rm,
+					  CMS_CHECKLIST checList,
+					  CMS_CHECKLIST_ITEM checListItem,
+					  SCI_LSP_LMT_PROFILE limit_profile
+				
+		</query>
+		<whereClause>
+			<mandatoryClause>
+					 	main_profile.lsp_sgmnt_code_value  =cc_segment.entry_code(+)
+						AND rm.id(+)                             = main_profile.relation_mgr
+           				AND LIMIT_PROFILE.CMS_CUSTOMER_ID        = main_profile.cms_le_sub_profile_id
+						AND limit_profile.CMS_LSP_LMT_PROFILE_ID = checList.cms_lsp_lmt_profile_id(+)
+						AND checListItem.checklist_id(+)         = checList.checklist_id
+						AND Upper(checListItem.status)           IN ('DEFERRED','AWAITING','WAIVED','RECEIVED')
+						AND CHECLIST.CATEGORY                    = 'REC'
+						AND main_profile.status                  = 'ACTIVE'
+						AND cc_segment.category_code             = 'HDFC_SEGMENT'
+						AND checlistitem.is_deleted             != 'Y'
+						AND SUBSTR(checListItem.DOC_ITEM_ID, 1, 4) IN (TO_CHAR(EXTRACT(YEAR FROM SYSDATE)), TO_CHAR(EXTRACT(YEAR FROM SYSDATE) - 1))
+			</mandatoryClause>
+			<param>
+				<name>relationManager</name>
+				<condition> and rm.id = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> and main_profile.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> and cc_segment.entry_code = </condition>
+			</param>
+			<param>
+				<name>rbiAsset</name>
+				<condition> and limit_profile.rbi_asset_classification = </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Doc Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RBI Asset Classification</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Statement Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Description</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Creation Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Original Due Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Due Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Deferred Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Received Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Waived Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Activity Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Remarks</header>
+				</reportColumn>	
+			</reportColumns>
+			<reportName>Deferral Report -Statement</reportName>
+		</reportParamters>
+	</report>
+</reports>

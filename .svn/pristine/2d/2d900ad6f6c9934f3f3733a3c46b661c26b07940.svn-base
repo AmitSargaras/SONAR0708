@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<syncMasterTemplateOut>
+		<query>
+		select * from (
+			SELECT cdi.DOC_ITEM_ID,
+			  cdi.MASTERLIST_ID,
+			  cdi.DOCUMENT_ID,
+			  cdi.DOCUMENT_CODE,
+			  'I' AS Action
+			FROM cms_document_item cdi,
+			  Trans_History trxh
+			WHERE cdi.MASTERLIST_ID         = trxh.reference_id
+			AND Trxh.Transaction_Type       ='TEMPLATE'
+			AND TRUNC(Trxh.Transaction_Date)=TRUNC(Cdi.Creation_Date)
+			AND Trxh.Tr_History_Id          =
+			  (SELECT MAX(Tr_History_Id)
+			  FROM Trans_History Th
+			  WHERE TO_CHAR(th.transaction_date,'DD-MON-YY') =
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE Param_Code = 'APPLICATION_DATE'
+			    )
+			  AND th.Transaction_Type LIKE 'TEMPLATE'
+			  AND th.Reference_Id =cdi.MASTERLIST_ID
+			  AND th.Status       ='ACTIVE'
+			  )
+			UNION
+			SELECT cdia.DOC_ITEM_ID,
+			  cdia.MASTERLIST_ID,
+			  cdia.DOCUMENT_ID,
+			  cdia.DOCUMENT_CODE ,
+			  'D' AS Action
+			FROM cms_document_item_archive cdia,
+			  Trans_History trxh
+			WHERE cdia.MASTERLIST_ID         = trxh.reference_id
+			AND Trxh.Transaction_Type        ='TEMPLATE'
+			AND TRUNC(Trxh.Transaction_Date) =TRUNC(Cdia.Transaction_Date)
+			AND TRUNC(Cdia.Transaction_Date)!=TRUNC(Cdia.Creation_Date)
+			AND Trxh.Tr_History_Id           =
+			  (SELECT MAX(Tr_History_Id)
+			  FROM Trans_History Th
+			  WHERE TO_CHAR(th.transaction_date,'DD-MON-YY') =
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE Param_Code = 'APPLICATION_DATE'
+			    )
+			  AND th.Transaction_Type LIKE 'TEMPLATE'
+			  AND th.Reference_Id =cdia.MASTERLIST_ID
+			  AND th.Status       ='ACTIVE'
+			  ) 
+			  )
+		</query>
+	<whereClause>
+		<mandatoryClause>
+				1=1
+		</mandatoryClause>
+	</whereClause>
+	<reportType>TXT</reportType>
+	<delimiter>|||</delimiter>
+	<secondaryDelimiter>~~~</secondaryDelimiter>
+	
+	<reportParamters>
+		<reportColumns>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>DOC_ITEM_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>MASTERLIST_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>DOCUMENT_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>DOCUMENT_CODE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ACTION</header>
+			</reportColumn>
+		</reportColumns>
+		<reportName>CLIMS_DocumentItemMaster_Mst</reportName>
+	</reportParamters>
+	</syncMasterTemplateOut>

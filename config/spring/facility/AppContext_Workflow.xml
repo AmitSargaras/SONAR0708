@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+
+    <bean id="facilityReadController" class="com.integrosys.cms.app.limit.trx.FacilityReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+				<entry key="ReadFacilityOperation" value-ref="FacilityTrx.ReadfacilityOperation" />
+				<entry key="ReadFacilityByFacilityIdOperation" value-ref="FacilityTrx.ReadFacilityByFacilityIdOperation" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="facilityTrxController" class="com.integrosys.cms.app.limit.trx.FacilityTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+				<entry key="MakerSaveFacilityOperation" value-ref="MakerSaveFacilityOperationAspect" />
+				<entry key="MakerCreateFacilityOperation" value-ref="MakerCreateFacilityOperationAspect" />
+				<entry key="MakerCloseFacilityOperation" value-ref="FacilityTrx.MakerCloseFacilityOperation" />
+				<entry key="MakerCloseNewFacilityOperation" value-ref="FacilityTrx.MakerCloseNewFacilityOperation" />
+				<entry key="MakerUpdateFacilityOperation" value-ref="MakerUpdateFacilityOperationAspect" />
+				<entry key="CheckerRejectFacilityOperation" value-ref="FacilityTrx.CheckerRejectFacilityOperation" />
+				<entry key="CheckerApproveFacilityOperation" value-ref="FacilityTrx.CheckerApproveFacilityOperation" />
+                <entry key="SystemApproveFacilityOperation" value-ref="SystemApproveFacilityOperationAspect" />
+                <entry key="SystemUpdateFacilityOperation" value-ref="FacilityTrx.SystemUpdateFacilityOperation" />
+                <entry key="SystemRejectFacilityOperation" value-ref="FacilityTrx.SystemRejectFacilityOperation" />
+				<entry key="CheckerApproveFacilityStpFailedOperation" value-ref="FacilityTrx.CheckerApproveFacilityStpFailedOperation" />
+				<entry key="CheckerApproveFacilityStpPassedOperation" value-ref="CheckerApproveStpPassedFacilityOperationAspect" />
+            </map>
+        </property>
+		<property name="applicationTypesStpAllowedList">
+			<list>
+                <value>3P</value>
+                <value>AR</value>
+                <value>GR</value>
+                <value>HP</value>
+                <value>IHP</value>
+                <value>IMO</value>
+                <value>MO</value>
+                <value>SF</value>
+                <value>CO</value>
+                <value>CHP</value>
+            </list>
+		</property>
+        <property name="processTrxManager" ref="processTrxManager" />
+        <property name="accessStpSystem" value="${has.access.stp.system}" />
+    </bean>
+
+    <bean id="FacilityTrx.ReadfacilityOperation" class="com.integrosys.cms.app.limit.trx.ReadFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+
+    <bean id="FacilityTrx.ReadFacilityByFacilityIdOperation" class="com.integrosys.cms.app.limit.trx.ReadFacilityByFacilityIdOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+
+    <bean id="FacilityTrx.MakerSaveFacilityOperation" class="com.integrosys.cms.app.limit.trx.MakerSaveFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+
+    <bean id="FacilityTrx.MakerCreateFacilityOperation" class="com.integrosys.cms.app.limit.trx.MakerCreateFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+
+    <bean id="FacilityTrx.MakerCloseFacilityOperation" class="com.integrosys.cms.app.limit.trx.MakerCloseFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+    
+    <bean id="FacilityTrx.MakerCloseNewFacilityOperation" class="com.integrosys.cms.app.limit.trx.MakerCloseFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+        <property name="operationName" value="MAKER_CLOSE_ND" />
+    </bean>
+
+    <bean id="FacilityTrx.MakerUpdateFacilityOperation" class="com.integrosys.cms.app.limit.trx.MakerUpdateFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+
+    <bean id="FacilityTrx.CheckerRejectFacilityOperation" class="com.integrosys.cms.app.limit.trx.CheckerRejectFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+
+    <bean id="FacilityTrx.SystemApproveFacilityOperation" class="com.integrosys.cms.app.limit.trx.SystemApproveFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+
+    <bean id="FacilityTrx.SystemUpdateFacilityOperation" class="com.integrosys.cms.app.limit.trx.SystemUpdateFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+
+    <bean id="FacilityTrx.SystemRejectFacilityOperation" class="com.integrosys.cms.app.limit.trx.SystemUpdateFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+        <property name="operationName" value="SYSTEM_REJECT" />
+    </bean>
+    
+    <bean id="FacilityTrx.CheckerApproveFacilityOperation" class="com.integrosys.cms.app.limit.trx.CheckerApproveFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+    </bean>
+	
+    <bean id="FacilityTrx.CheckerApproveFacilityStpFailedOperation" class="com.integrosys.cms.app.limit.trx.CheckerApproveFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+        <property name="operationName" value="CHECKER_APPROVE_FAIL" />
+    </bean>
+	
+    <bean id="FacilityTrx.CheckerApproveFacilityStpPassedOperation" class="com.integrosys.cms.app.limit.trx.CheckerApproveFacilityOperation">
+        <property name="actualFacilityBusManager" ref="facilityBusManager" />
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager" />
+        <property name="operationName" value="CHECKER_APPROVE_PASS" />
+    </bean>
+
+    <bean id="CheckerApproveStpPassedFacilityOperationAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames" value="stpTrxOpMethodInterceptor"/>
+		<property name="target" ref="FacilityTrx.CheckerApproveFacilityStpPassedOperation"/>
+	</bean>
+	<!-- plug out limitProfileCompleteTrxOperationInterceptor from FacilityTrx.SystemApproveFacilityOperation -->
+    <bean id="SystemApproveFacilityOperationAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames" value="tatTrxOperationMethodInterceptor"/>
+		<property name="target" ref="FacilityTrx.SystemApproveFacilityOperation"/>
+	</bean>
+	
+	<bean id="MakerSaveFacilityOperationAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames" value="facilityStpReadyStatusPopulateInterceptor"/>
+		<property name="target" ref="FacilityTrx.MakerSaveFacilityOperation"/>
+	</bean>
+	
+	<bean id="MakerUpdateFacilityOperationAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames" value="facilityStpReadyStatusPopulateInterceptor"/>
+		<property name="target" ref="FacilityTrx.MakerUpdateFacilityOperation"/>
+	</bean>
+	
+	<bean id="MakerCreateFacilityOperationAspect" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames" value="facilityStpReadyStatusPopulateInterceptor"/>
+		<property name="target" ref="FacilityTrx.MakerCreateFacilityOperation"/>
+	</bean>
+	
+	<bean id="facilityStpReadyStatusPopulateInterceptor" class="com.integrosys.cms.app.limit.bus.support.StpReadyStatusPopulateInterceptor">
+		<property name="facilityJdbcDao" ref="facilityJdbc" />
+	</bean>
+	
+</beans>

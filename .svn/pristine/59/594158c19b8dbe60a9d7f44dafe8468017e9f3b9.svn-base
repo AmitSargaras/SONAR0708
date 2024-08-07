@@ -1,0 +1,1493 @@
+create or replace PROCEDURE SP_CLMS_TRQ_PRON_RPT_CUST_FAC(
+    P_FIRSTTIME IN VARCHAR2 DEFAULT 'N' ,
+    P_DATE      IN DATE )
+AS
+  v_property_valuation_date DATE;
+  v_Stock_valuation_date    DATE;
+  v_date date;
+  CURSOR CR_PARTY
+  IS
+    SELECT PF.CMS_LSP_LMT_PROFILE_ID,
+      SPRO.LSP_LE_ID,
+      SPRO.LSP_SHORT_NAME,
+      SPRO.PAN,
+      CRI.CUSTOMER_RAM_ID,
+      SPRO.LSP_SGMNT_CODE_VALUE,
+      SPRO.FUNDED_SHARE_PERCENT,
+      ADDR.LRA_REGION
+    FROM SCI_LE_SUB_PROFILE SPRO
+    INNER JOIN SCI_LE_CRI CRI
+    ON CRI.CMS_LE_MAIN_PROFILE_ID=SPRO.CMS_LE_MAIN_PROFILE_ID --20/03 wrongly mapped
+    INNER JOIN SCI_LSP_LMT_PROFILE PF
+    ON PF.CMS_CUSTOMER_ID=SPRO.CMS_LE_SUB_PROFILE_ID
+    INNER JOIN SCI_LE_REG_ADDR ADDR
+    ON ADDR.CMS_LE_MAIN_PROFILE_ID=SPRo.CMS_LE_MAIN_PROFILE_ID AND ADDR.LRA_TYPE_VALUE='CORPORATE'     --17/03 changed mapping and added filter
+    WHERE spro.status             = 'ACTIVE';
+type ty_col_CR_PARTY
+IS
+  TABLE OF CR_PARTY%rowtype;
+  RC_PARTY ty_col_CR_PARTY;
+  rpt1 CLMS_TRQ_PRON_RPT_CUST_FAC%rowtype;
+type ty_col_rpt1
+IS
+  TABLE OF CLMS_TRQ_PRON_RPT_CUST_FAC%rowtype;
+  RC_rpt1 ty_col_rpt1;
+  V_pre_month_first  DATE;
+  V_valuationamount  NUMBER;
+  V_valuationadate   DATE;
+  V_VALUATOR_COMPANY VARCHAR2(100);
+  v_counter          NUMBER;
+BEGIN
+  SELECT add_months( TRUNC(to_date (param_value,'dd-MON-yyyy')), -12*3 )
+  INTO v_property_valuation_date
+  FROM cms_general_param
+  WHERE param_code  = 'APPLICATION_DATE';
+  V_pre_month_first:=add_months(TRUNC(P_DATE,'MM'),                     -1);
+  SELECT add_months( TRUNC(to_date (param_value,'dd-MON-yyyy')), -3 )
+  INTO v_Stock_valuation_date
+  FROM cms_general_param
+  WHERE param_code = 'APPLICATION_DATE';
+  v_counter       :=1;
+  RC_rpt1         :=ty_col_rpt1();
+  OPEN CR_PARTY;
+  LOOP
+    FETCH CR_PARTY bulk collect
+    INTO RC_PARTY limit 10000;
+    EXIT
+  WHEN RC_PARTY.count=0;
+    FOR p IN 1..RC_PARTY.count
+    LOOP
+      -------------FD-------------------------------------------------------------------------------
+      FOR r1 IN
+      (SELECT --dep.DEPOSIT_RECEIPT_NUMBER,
+        --dep.DEPOSIT_AMOUNT,
+        sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+        --Xref.FACILITY_SYSTEM_ID,
+        --Xref.LINE_NO,
+        --Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+        nvl(sum(nvl(Xref.UTILIZED_AMOUNT,0)),0) UTILIZED_AMOUNT,
+        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        NVL(SUM(NVL(ln.LIEN_AMOUNT,0)),0) AS CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        NVL(SUM(NVL(ln.LIEN_AMOUNT,0)),0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC,
+        DEP.ISSUE_DATE AS SECURITY_VALUATION_DATE
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN SCI_LSP_SYS_XREF Xref
+      ON xREf.CMS_LSP_SYS_XREF_ID = xMAP.CMS_LSP_SYS_XREF_ID
+      INNER JOIN CMS_CASH_DEPOSIT dep
+      ON dep.cms_collateral_id       =sec.CMS_COLLATERAL_ID
+      and  Xref.FACILITY_SYSTEM_ID   = dep.SYSTEM_ID
+      inner join CMS_LIEN LN
+      on dep.CASH_DEPOSIT_ID     = LN.CASH_DEPOSIT_ID
+      AND Xref.LINE_NO              = LN.LIEN_NUMBER
+     AND Xref.SERIAL_NO            = LN.SERIAL_NO
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+      AND dep.status                 = 'ACTIVE'
+      AND ACTIVE                     = 'active'
+      AND SUB.SECURITY_SUB_TYPE_ID  IN( 'CS202')--,'AB110','MS605','MS600','MS610','OT900','AB103')
+      AND MAPS.CHARGE_ID            IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS= 'ACTIVE'
+      group by --dep.DEPOSIT_RECEIPT_NUMBER,
+        --dep.DEPOSIT_AMOUNT,
+        sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        sec.SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,
+        SCI.LMT_ID,
+        SCI.LMT_TYPE_VALUE,
+        SCI.FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+        SEc.CMS_COLLATERAL_ID,
+        MAPS.LMT_SECURITY_COVERAGE,
+        DEP.ISSUE_DATE 
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');--ADD_MONTHS(TRUNC(P_DATE, 'MM') ,-1);
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+        --rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+--        rpt1.DEPOSIT_RECEIPT_NUMBER :=r1.DEPOSIT_RECEIPT_NUMBER;
+--        rpt1.DEPOSIT_AMOUNT         :=r1.DEPOSIT_AMOUNT;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.SECURITY_VALUATION_DATE:=r1.SECURITY_VALUATION_DATE;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      ---------gold-- Asset Null control -----------------------------
+      -------Markatable Security -------------------------------------
+      -------All other Security --------------------------------------
+      -------Intangible ----------------------------------------------
+      FOR r1 IN
+      (SELECT sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+        --Xref.FACILITY_SYSTEM_ID,
+        --Xref.LINE_NO,
+        --Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+        --nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        nvl(sec.CMV,0) CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        nvl(sec.CMV,0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC,
+        CASE
+          WHEN SEC.SECURITY_SUB_TYPE_ID IN('AB103','OT900','AB110')
+          THEN SEC.VALUATIOIN_DATE
+          ELSE NULL
+        END AS SECURITY_VALUATION_DATE
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+      --INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+      --ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      --INNER JOIN SCI_LSP_SYS_XREF Xref
+      --ON xREf.CMS_LSP_SYS_XREF_ID    = xMAP.CMS_LSP_SYS_XREF_ID
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+      AND SUB.SECURITY_SUB_TYPE_ID  IN( 'AB110','MS605','MS600','MS610','OT900','AB103')
+      AND MAPS.CHARGE_ID            IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS= 'ACTIVE'
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+        --rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+        --rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+        --rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.SECURITY_VALUATION_DATE:=r1.SECURITY_VALUATION_DATE;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      ---------- guarantee Null control  -'GT406','GT408','GT405'---------------
+      FOR r1 IN
+      (SELECT sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+--        Xref.FACILITY_SYSTEM_ID,
+--        Xref.LINE_NO,
+--        Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+--        nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+--        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        nvl(sec.CMV,0) CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        nvl(sec.CMV,0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+--      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+--      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+--      INNER JOIN SCI_LSP_SYS_XREF Xref
+--      ON xREf.CMS_LSP_SYS_XREF_ID    = xMAP.CMS_LSP_SYS_XREF_ID
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+      AND SUB.SECURITY_SUB_TYPE_ID  IN ('GT406','GT408','GT405')
+      AND MAPS.CHARGE_ID            IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS = 'ACTIVE'
+      AND EXISTS
+        (SELECT 1
+        FROM CMS_GUARANTEE grnte
+        WHERE grnte.CMS_COLLATERAL_ID =sec.cms_collateral_id
+        AND( grnte.GUARANTEE_AMT     <> 0
+        OR sec.cmv                   <> 0
+        OR grnte.SECURED_PORTION     <> 0
+        OR grnte.UNSECURED_PORTION   <> 0
+        OR grnte.TELEPHONE_NUMBER    <>0
+        OR grnte.TELEPHONE_AREA_CODE <> 0
+        OR GRNTE.RAMID               <> 0
+        OR GRNTE.COUNTRY             IS NOT NULL)
+        )
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+        --rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+--        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+--        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      --------GUARANTEE SBSL SBBG GT400 GT402-----------------------------------
+      FOR r1 IN
+      (SELECT sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+--        Xref.FACILITY_SYSTEM_ID,
+--        Xref.LINE_NO,
+--        Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+--        nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+--        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        nvl(sec.CMV,0) CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        nvl(sec.CMV,0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+--      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+--      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+--      INNER JOIN SCI_LSP_SYS_XREF Xref
+--      ON xREf.CMS_LSP_SYS_XREF_ID    = xMAP.CMS_LSP_SYS_XREF_ID
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+      AND SUB.SECURITY_SUB_TYPE_ID  IN ('GT400','GT402')--,'SBSL','SBBG')
+      AND MAPS.CHARGE_ID            IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS = 'ACTIVE'
+      AND EXISTS
+        (SELECT 1
+        FROM CMS_GUARANTEE grnte
+        WHERE grnte.CMS_COLLATERAL_ID =sec.cms_collateral_id
+        AND (grnte.GUARANTEE_AMT     <> 0
+        OR sec.cmv                   <> 0
+        OR grnte.SECURED_PORTION     <> 0
+        OR grnte.UNSECURED_PORTION   <> 0
+        OR grnte.TELEPHONE_NUMBER    <>0
+        OR grnte.TELEPHONE_AREA_CODE <> 0
+        OR GRNTE.RAMID               <> 0 )
+        )
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+--        rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+--        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+--        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      ----------property Null control----------------------------------------------
+      FOR r1 IN
+      (SELECT prty.TOTAL_PROPERTY_AMOUNT,
+        prty.TOTAL_PROPERTY_AMOUNT_v1,
+        prty.TOTAL_PROPERTY_AMOUNT_v2,
+        prty.TOTAL_PROPERTY_AMOUNT_v3,
+        prty.VALUATOR_COMPANY,
+        prty.VALUATOR_COMPANY_v1,
+        prty.VALUATOR_COMPANY_v2,
+        prty.VALUATOR_COMPANY_v3,
+        prty.VALUATION_DATE,
+        prty.VALUATION_DATE_V1,
+        prty.VALUATION_DATE_V2,
+        prty.VALUATION_DATE_V3,
+        prty.PROPERTY_ID,
+        prty.DESCRIPTION_ASSET,
+        prty.PROPERTY_TYPE,
+        prty.SALE_PURCHASE_VALUE,
+        prty.SALE_PURCHASE_DATE,
+        prty.DEVELOPER_GROUP_COMPANY,
+        prty.PROPERTY_ADDRESS,
+        prty.PROPERTY_ADDRESS_2,
+        prty.PROPERTY_ADDRESS_3,
+        prty.PROPERTY_ADDRESS_4,
+        prty.PROPERTY_ADDRESS_5,
+        prty.PROPERTY_ADDRESS_6,
+        sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+--        Xref.FACILITY_SYSTEM_ID,
+--        Xref.LINE_NO,
+--        Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+--        nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+--        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        nvl(sec.CMV,0) CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        nvl(sec.CMV,0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+--      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+--      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+--      INNER JOIN SCI_LSP_SYS_XREF Xref
+--      ON xREf.CMS_LSP_SYS_XREF_ID = xMAP.CMS_LSP_SYS_XREF_ID
+      INNER JOIN cms_property prty
+      ON prty.cms_collateral_id        = sec.cms_collateral_id
+      WHERE SCI.CMS_LIMIT_PROFILE_ID   =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND       = 'I'
+      AND MSTR.PROPERTY_TYPE_CODE_DESC = prty.PROPERTY_TYPE
+      AND SUB.SECURITY_SUB_TYPE_ID    IN ('PT701')
+      AND MAPS.CHARGE_ID              IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS              = 'ACTIVE'
+     AND prty.VALUATION_DATE     >= v_property_valuation_date
+    -- AND to_date(prty.VALUATION_DATE,'dd/mm/yyyy hh24:mi')              >= to_date(v_property_valuation_date,'dd/mm/yyyy hh24:mi')
+      AND ( prty.IS_PHY_INSPECT   <>'N'
+      OR prty.PHY_INSPECT_FREQ    <> 0
+      OR prty.LAND_AREA           <> 0
+      OR prty.TENURE              <> 0
+      OR prty.REMAINING_TENURE    <> 0
+      OR prty.QUIT_RENT_PAID      <> '-1'
+      OR prty.BUILTUP_AREA        <> 0
+      OR prty.SALE_PURCHASE_VALUE <> '-1'
+      OR prty.STD_QUIT_RENT       <> 'N'
+      OR prty.NON_STD_QUIT_RENT   <> 'N'
+      OR prty.QUIT_RENT_RECEIPT   <> 'N'
+      OR prty.ASSESSMENT          <> 'N'
+      OR prty.COMBINED_VALUE_AMT  <> 0
+      OR prty.VALUE_NUMBER        <> 0
+      OR PRTY.ASSESSMENT_PERIOD   <>0
+      OR PRTY.ASSUMPTION          <> 'N'
+      OR PRTY.PROPERTY_TYPE       IS NOT NULL
+      OR PRTY.MARGAGE_TYPE        IS NOT NULL )
+      )
+      LOOP
+        rpt1      :=NULL;
+        v_counter :=v_counter+1;
+        rpt1.SR_NO:=v_counter;
+        --if
+        V_valuationamount :=COALESCE(r1.TOTAL_PROPERTY_AMOUNT,r1.TOTAL_PROPERTY_AMOUNT_v1,r1.TOTAL_PROPERTY_AMOUNT_v2,r1.TOTAL_PROPERTY_AMOUNT_v3);
+        --if V_valuationamount
+        --                                V_valuationadate :=r1.VALUATION_DATE;
+        --                                V_VALUATOR_COMPANY :=r1.VALUATOR_COMPANY;
+        IF V_valuationamount  >=r1.TOTAL_PROPERTY_AMOUNT AND r1.TOTAL_PROPERTY_AMOUNT IS NOT NULL THEN
+          V_valuationamount  :=NVL(r1.TOTAL_PROPERTY_AMOUNT,0);
+          V_valuationadate   :=r1.VALUATION_DATE;
+          V_VALUATOR_COMPANY :=r1.VALUATOR_COMPANY;
+        END IF;
+        IF V_valuationamount  >=r1.TOTAL_PROPERTY_AMOUNT_V1 AND r1.TOTAL_PROPERTY_AMOUNT_V1 IS NOT NULL THEN
+          V_valuationamount  :=NVL(r1.TOTAL_PROPERTY_AMOUNT_v1,0);
+          V_valuationadate   :=r1.VALUATION_DATE_v1;
+          V_VALUATOR_COMPANY :=r1.VALUATOR_COMPANY_v1;
+        END IF;
+        IF V_valuationamount  >=r1.TOTAL_PROPERTY_AMOUNT_V2 AND r1.TOTAL_PROPERTY_AMOUNT_V2 IS NOT NULL THEN
+          V_valuationamount  :=NVL(r1.TOTAL_PROPERTY_AMOUNT_v2,0);
+          V_valuationadate   :=r1.VALUATION_DATE_v2;
+          V_VALUATOR_COMPANY :=r1.VALUATOR_COMPANY_v2;
+        END IF;
+        IF V_valuationamount  >=r1.TOTAL_PROPERTY_AMOUNT_V3 AND r1.TOTAL_PROPERTY_AMOUNT_V3 IS NOT NULL THEN
+          V_valuationamount  :=NVL(r1.TOTAL_PROPERTY_AMOUNT_v3,0);
+          V_valuationadate   :=r1.VALUATION_DATE_v3;
+          V_VALUATOR_COMPANY :=r1.VALUATOR_COMPANY_v3;
+        END IF;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+--        rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.SECURITY_VALUATION_DATE:=V_valuationadate;
+        rpt1.VALUATION_COMPANY      :=V_VALUATOR_COMPANY;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+--        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+--        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.PROPERTY_ID            :=r1.PROPERTY_ID;
+        rpt1.DESCRIPTION_ASSET      :=r1.DESCRIPTION_ASSET;
+        rpt1.PROPERTY_TYPE          :=r1.PROPERTY_TYPE;
+        rpt1.SALE_PURCHASE_VALUE    :=r1.SALE_PURCHASE_VALUE;
+        rpt1.SALE_PURCHASE_DATE     :=r1.SALE_PURCHASE_DATE;
+        rpt1.DEVELOPER_GROUP_COMPANY:=r1.DEVELOPER_GROUP_COMPANY;
+        rpt1.PROPERTY_ADDRESS       :=r1.PROPERTY_ADDRESS;
+        rpt1.PROPERTY_ADDRESS_2     :=r1.PROPERTY_ADDRESS_2;
+        rpt1.PROPERTY_ADDRESS_3     :=r1.PROPERTY_ADDRESS_3;
+        rpt1.PROPERTY_ADDRESS_4     :=r1.PROPERTY_ADDRESS_4;
+        rpt1.PROPERTY_ADDRESS_5     :=r1.PROPERTY_ADDRESS_5;
+        rpt1.PROPERTY_ADDRESS_6     :=r1.PROPERTY_ADDRESS_6;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      -------------Plant and machi---------------------------------------------
+      FOR r1 IN
+      (SELECT sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+--        Xref.FACILITY_SYSTEM_ID,
+--        Xref.LINE_NO,
+--        Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+--        nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+--        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        nvl(sec.CMV,0) CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        nvl(sec.CMV,0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC,
+        SEC.VALUATIOIN_DATE AS SECURITY_VALUATION_DATE
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+--      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+--      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+--      INNER JOIN SCI_LSP_SYS_XREF Xref
+--      ON xREf.CMS_LSP_SYS_XREF_ID = xMAP.CMS_LSP_SYS_XREF_ID
+        --  inner join cms_property prty on  prty.cms_collateral_id    = sec.cms_collateral_id
+      INNER JOIN CMS_ASSET AST
+      ON AST.cms_collateral_id       = SEC.CMS_COLLATERAL_ID
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+        --AND MSTR.PROPERTY_TYPE_CODE_DESC = prty.PROPERTY_TYPE
+      AND SUB.SECURITY_SUB_TYPE_ID IN ('AB101')
+      AND MAPS.CHARGE_ID           IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS                = 'ACTIVE'
+      AND ( AST.PHY_INSPECTION_FREQ <> '-1'
+      OR AST.MANUFACTURE_YEAR       <> 0
+      OR AST.LAST_USED_ID_IDX_STOCK <> 0
+      OR AST.LAST_USED_ID_IDX_FAO   <> 0
+      OR AST.LAST_USED_ID_IDX_INSR  <> 0
+      OR AST.RESIDUAL_ASSET_LIFE    <> 0
+      OR AST.DOC_PERFECT_AGE        <> 0
+      OR AST.REPOSSESSION_AGE       <> 0
+      OR sec.cmv                    IS NOT NULL )
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+--        rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.SECURITY_VALUATION_DATE:=r1.SECURITY_VALUATION_DATE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+--        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+--        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      -------------------vehical and specific asset ----------------------------
+      FOR r1 IN
+      (SELECT sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+--        Xref.FACILITY_SYSTEM_ID,
+--        Xref.LINE_NO,
+--        Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+--        nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+--        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        nvl(sec.CMV,0) CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        nvl(sec.CMV,0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC,
+        SEC.VALUATIOIN_DATE AS SECURITY_VALUATION_DATE
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+--      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+--      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+--      INNER JOIN SCI_LSP_SYS_XREF Xref
+--      ON xREf.CMS_LSP_SYS_XREF_ID = xMAP.CMS_LSP_SYS_XREF_ID
+        -- inner join cms_property prty on  prty.cms_collateral_id    = sec.cms_collateral_id
+      INNER JOIN CMS_ASSET AST
+      ON AST.cms_collateral_id       = SEC.CMS_COLLATERAL_ID
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+        --AND MSTR.PROPERTY_TYPE_CODE_DESC = prty.PROPERTY_TYPE
+      AND SUB.SECURITY_SUB_TYPE_ID IN('AB102','AB109')
+      AND MAPS.CHARGE_ID           IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS                = 'ACTIVE'
+      AND ( AST.PHY_INSPECTION_FREQ <> '-1'
+      OR AST.MANUFACTURE_YEAR       <> 0
+      OR AST.LAST_USED_ID_IDX_STOCK <> 0
+      OR AST.LAST_USED_ID_IDX_FAO   <> 0
+      OR AST.LAST_USED_ID_IDX_INSR  <> 0
+      OR AST.RESIDUAL_ASSET_LIFE    <> 0
+      OR AST.DOC_PERFECT_AGE        <> 0
+      OR AST.REPOSSESSION_AGE       <> 0
+      OR sec.cmv                    IS NOT NULL
+      OR AST.PHY_INSPECTION_DONE    <> 'N' )
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+--        rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+--        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+--        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SECURITY_VALUATION_DATE:=r1.SECURITY_VALUATION_DATE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      -----------Insurance Null control--------------------------------------
+      FOR r1 IN
+      (SELECT sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+--        Xref.FACILITY_SYSTEM_ID,
+--        Xref.LINE_NO,
+--        Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+--        nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+--        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        nvl(sec.CMV,0) CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        nvl(sec.CMV,0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC,
+        SEC.VALUATIOIN_DATE AS SECURITY_VALUATION_DATE
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+--      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+--      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+--      INNER JOIN SCI_LSP_SYS_XREF Xref
+--      ON xREf.CMS_LSP_SYS_XREF_ID = xMAP.CMS_LSP_SYS_XREF_ID
+        --inner join cms_property prty on  prty.cms_collateral_id    = sec.cms_collateral_id
+      INNER JOIN CMS_INSURANCE INS
+      ON INS.cms_collateral_id       = SEC.CMS_COLLATERAL_ID
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+        --AND MSTR.PROPERTY_TYPE_CODE_DESC = prty.PROPERTY_TYPE
+      AND SUB.SECURITY_SUB_TYPE_ID IN('IN501')--,'AB109')
+      AND MAPS.CHARGE_ID           IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS                   = 'ACTIVE'
+      AND ( INS.BANK_RISK_CONFIRMATION <> 'N'
+      OR INS.INSURED_AMOUNT            <> 0
+      OR INS.INSURANCE_PREMIUM         <> 0
+      OR INS.POLICY_NO                 IS NOT NULL
+      OR sec.cmv                       IS NOT NULL
+      OR INS.BANK_INT_NOTED            <> 'N' )
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+--        rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.SECURITY_VALUATION_DATE:=r1.SECURITY_VALUATION_DATE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+--        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+--        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      -----------PDC security migreted pri control------------------------------
+      FOR r1 IN
+      (SELECT distinct --PDC.CHEQUE_AMOUNT,
+        --pdc.CHEQUE_NUMBER,
+        sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+--        Xref.FACILITY_SYSTEM_ID,
+--        Xref.LINE_NO,
+--        Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+--        nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+--        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+        sec.CMV CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        nvl(sec.CMV,0)*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC,
+        PDC.ISSUE_DATE AS SECURITY_VALUATION_DATE
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+--      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+--      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+--      INNER JOIN SCI_LSP_SYS_XREF Xref
+--      ON xREf.CMS_LSP_SYS_XREF_ID = xMAP.CMS_LSP_SYS_XREF_ID
+        --inner join cms_property prty on  prty.cms_collateral_id    = sec.cms_collateral_id
+      INNER JOIN CMS_ASSET AST
+      ON AST.cms_collateral_id = SEC.CMS_COLLATERAL_ID
+      INNER JOIN CMS_ASSET_PDC PDC
+      ON PDC.cms_collateral_id       = SEC.CMS_COLLATERAL_ID
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+        --AND MSTR.PROPERTY_TYPE_CODE_DESC = prty.PROPERTY_TYPE
+      AND SUB.SECURITY_SUB_TYPE_ID IN('AB108')--,'AB109')
+      AND MAPS.CHARGE_ID           IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+      AND MSTR.STATUS                   = 'ACTIVE'
+      AND ( AST.LAST_USED_ID_IDX_STOCK <> 0
+      OR AST.LAST_USED_ID_IDX_FAO      <> 0
+      OR AST.LAST_USED_ID_IDX_INSR     <> 0
+      OR AST.INTEREST_RATE             <> 0
+      OR sec.cmv                       IS NOT NULL )
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+        rpt1.SECURITY_VALUATION_DATE:=r1.SECURITY_VALUATION_DATE;
+--        rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+--        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+--        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      ------------GC Null control-----------------------------------------
+      FOR r1 IN
+      (SELECT --DET.CALCULATEDDP,
+        sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        DECODE(sec.SEC_PRIORITY,'N','Secondary','Y','Primary','null') SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+--        Xref.FACILITY_SYSTEM_ID,
+--        Xref.LINE_NO,
+--        Xref.SERIAL_NO,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        DECODE(SCI.LMT_TYPE_VALUE,'No','Yes','No') MAIn_Limit,
+        SCI.LMT_TYPE_VALUE,
+        DECODE(SCI.FACILITY_TYPE,'Funded','FB','FUNDED','FB','NFB')FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+--        nvl(Xref.UTILIZED_AMOUNT,0) UTILIZED_AMOUNT,
+--        0 P_UTILIZED_AMOUNT,
+        SEc.CMS_COLLATERAL_ID,
+       sum( NVL(NVL((GC.COMPONENT_AMOUNT * NVL(RC_PARTY(p).FUNDED_SHARE_PERCENT,0)/100),0),0))CMV, --nvl(sec.CMV,0) CMV,
+        nvl(MAPS.LMT_SECURITY_COVERAGE,0) LMT_SECURITY_COVERAGE,
+        sum( NVL(NVL((GC.COMPONENT_AMOUNT * NVL(RC_PARTY(p).FUNDED_SHARE_PERCENT,0)/100),0),0))*nvl(MAPS.LMT_SECURITY_COVERAGE,0)/100 SCA_perC,
+        DET.DUE_DATE AS SECURITY_VALUATION_DATE
+      FROM SCI_LSP_APPR_LMTS SCI
+      INNER JOIN CMS_LIMIT_SECURITY_MAP MAPS
+      ON MAPS.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+      INNER JOIN CMS_SECURITY sec
+      ON sec.CMS_COLLATERAL_ID=MAPS.CMS_COLLATERAL_ID
+      INNER JOIN CMS_SECURITY_SUB_TYPE SUB
+      ON SEC.SECURITY_SUB_TYPE_ID = SUB.SECURITY_SUB_TYPE_ID
+      INNER JOIN CMS_NPA_TRAQ_CODE_MASTER MSTR
+      ON MSTR.SECURITY_SUB_TYPE =SUB.SECURITY_SUB_TYPE_ID
+--      INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+--      ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+--      INNER JOIN SCI_LSP_SYS_XREF Xref
+--      ON xREf.CMS_LSP_SYS_XREF_ID = xMAP.CMS_LSP_SYS_XREF_ID
+        --inner join cms_property prty on  prty.cms_collateral_id    = sec.cms_collateral_id
+      INNER JOIN CMS_ASSET AST
+      ON AST.cms_collateral_id = SEC.CMS_COLLATERAL_ID
+      INNER JOIN CMS_ASSET_GC_DET DET
+      ON SEC.CMS_COLLATERAL_ID = det.cms_collateral_id
+      INNER JOIN
+        (SELECT *
+        FROM CMS_ASSET_GC_STOCK_DET gc1 ,
+          CMS_COMPONENT cm
+         WHERE gc1.STOCK_TYPE  IN ('CurrentAsset','ValueDebtors')
+        AND cm.component_type = 'Current_Asset'
+        AND cm.component_code = gc1.component
+        AND cm.status         = 'ACTIVE'
+        AND (( cm.debtors     = 'Y'
+        AND cm.age            < 365)
+        OR (cm.debtors        = 'N'))
+        ) GC
+      ON GC.GC_DET_ID                = DET.GC_DET_ID
+      WHERE SCI.CMS_LIMIT_PROFILE_ID =RC_PARTY(p).CMS_LSP_LMT_PROFILE_ID
+      AND MAPS.UPDATE_STATUS_IND     = 'I'
+        --AND MSTR.PROPERTY_TYPE_CODE_DESC = prty.PROPERTY_TYPE
+      AND SUB.SECURITY_SUB_TYPE_ID IN('AB100')--,'AB109')
+      AND MAPS.CHARGE_ID           IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+        )
+        AND component NOT LIKE 'DUMMY%'
+      AND MSTR.STATUS                = 'ACTIVE'
+      AND ( AST.PHY_INSPECTION_FREQ <> '0'
+      OR AST.LAST_USED_ID_IDX_INSR  <> '0'
+      OR AST.PHY_INSPECTION_DONE    <> 'N'
+      OR AST.LAST_USED_ID_IDX_STOCK <> 0
+      OR AST.LAST_USED_ID_IDX_FAO   <> 0
+      OR sec.cmv                    IS NOT NULL
+      OR GC.COMPONENT               IS NOT NULL )
+      AND det.due_date               =
+        (SELECT MAX(sh.due_date)
+        FROM cms_asset_gc_det sh
+        WHERE sh.cms_collateral_id=DET.cms_collateral_id
+        )
+      AND det.due_date >= v_Stock_valuation_date
+   --  AND to_date(det.due_date,'dd/mm/yyyy')              >= to_date(v_Stock_valuation_date,'dd/mm/yyyy')
+--     and to_date(det.due_date,'dd/mm/yyyy') >= to_date((select   add_months( trunc(to_date (param_value,'dd/mm/yyyy')), -3 )
+--              from cms_general_param where param_code = 'APPLICATION_DATE'),'dd/mm/yyyy')
+      GROUP BY --DET.CALCULATEDDP,
+        sec.TYPE_NAME,
+        sec.SUBTYPE_NAME,
+        MSTR.NPA_TRAQ_CODE,
+        sec.SEC_PRIORITY,
+        sec.SECURITY_LOCATION,
+        sec.REVAL_FREQ,
+        sec.CHANGE_TYPE,
+        sec.NEXT_VALUATION_DATE,
+        sec.SECURITY_SUB_TYPE_ID,
+        SCI.FACILITY_CAT,
+        SCI.FACILITY_NAME,SCI.LMT_ID,
+        SCI.LMT_TYPE_VALUE,
+        SCI.FACILITY_TYPE,
+        SCI.CMS_REQ_SEC_COVERAGE,
+        SEc.CMS_COLLATERAL_ID,
+        MAPS.LMT_SECURITY_COVERAGE,
+        DET.DUE_DATE 
+
+      )
+      LOOP
+        rpt1                        :=NULL;
+        v_counter                   :=v_counter+1;
+        rpt1.SR_NO                  :=v_counter;
+        rpt1.TRN_DATE               :=TRUNC(P_DATE, 'MM');
+        rpt1.LSP_LE_ID              :=RC_PARTY(p).LSP_LE_ID;
+        rpt1.LSP_SHORT_NAME         :=RC_PARTY(p).LSP_SHORT_NAME;
+        rpt1.PAN                    :=RC_PARTY(p).PAN;
+        rpt1.CUSTOMER_RAM_ID        :=RC_PARTY(p).CUSTOMER_RAM_ID;
+        rpt1.LSP_SGMNT_CODE_VALUE   :=RC_PARTY(p).LSP_SGMNT_CODE_VALUE;
+        rpt1.LRA_REGION             :=RC_PARTY(p).LRA_REGION;
+--        rpt1.SERIAL_NO              :=r1.SERIAL_NO;
+        rpt1.FACILITY_CAT           :=r1.FACILITY_CAT;
+        rpt1.FACILITY_NAME          :=r1.FACILITY_NAME;
+        rpt1.LMT_ID          :=r1.LMT_ID;
+        rpt1.MAIN_LIMIT             :=r1.MAIN_LIMIT;
+        rpt1.LMT_TYPE_VALUE         :=r1.LMT_TYPE_VALUE;
+        rpt1.FACILITY_TYPE          :=r1.FACILITY_TYPE;
+        rpt1.SECURITY_VALUATION_DATE:=r1.SECURITY_VALUATION_DATE;
+        rpt1.CMS_REQ_SEC_COVERAGE   :=r1.CMS_REQ_SEC_COVERAGE;
+--        rpt1.UTILIZED_AMOUNT        :=r1.UTILIZED_AMOUNT;
+--        rpt1.P_UTILIZED_AMOUNT      :=r1.P_UTILIZED_AMOUNT;
+        rpt1.CMS_COLLATERAL_ID      :=r1.CMS_COLLATERAL_ID;
+        rpt1.CMV                    :=r1.CMV;
+        --rpt1.CALCULATEDDP           :=r1.CALCULATEDDP;
+        rpt1.LMT_SECURITY_COVERAGE  :=r1.LMT_SECURITY_COVERAGE;
+        rpt1.SCA_PERC               :=r1.SCA_PERC;
+--        rpt1.FACILITY_SYSTEM_ID     :=r1.FACILITY_SYSTEM_ID;
+--        rpt1.LINE_NO                :=r1.LINE_NO;
+        rpt1.DEPOSIT_RECEIPT_NUMBER :=NULL;
+        rpt1.DEPOSIT_AMOUNT         :=NULL;
+        rpt1.TYPE_NAME              :=r1.TYPE_NAME;
+        rpt1.SUBTYPE_NAME           :=r1.SUBTYPE_NAME;
+        rpt1.NPA_TRAQ_CODE          :=r1.NPA_TRAQ_CODE;
+        rpt1.SEC_PRIORITY           :=r1.SEC_PRIORITY;
+        rpt1.SECURITY_LOCATION      :=r1.SECURITY_LOCATION;
+        rpt1.REVAL_FREQ             :=r1.REVAL_FREQ;
+        rpt1.CHANGE_TYPE            :=r1.CHANGE_TYPE;
+        rpt1.NEXT_VALUATION_DATE    :=r1.NEXT_VALUATION_DATE;
+        rpt1.SECURITY_SUB_TYPE_ID   :=r1.SECURITY_SUB_TYPE_ID;
+        rpt1.PROPERTY_ID            :=NULL;
+        rpt1.DESCRIPTION_ASSET      :=NULL;
+        rpt1.PROPERTY_TYPE          :=NULL;
+        rpt1.SALE_PURCHASE_VALUE    :=NULL;
+        rpt1.SALE_PURCHASE_DATE     :=NULL;
+        rpt1.DEVELOPER_GROUP_COMPANY:=NULL;
+        rpt1.PROPERTY_ADDRESS       :=NULL;
+        rpt1.PROPERTY_ADDRESS_2     :=NULL;
+        rpt1.PROPERTY_ADDRESS_3     :=NULL;
+        rpt1.PROPERTY_ADDRESS_4     :=NULL;
+        rpt1.PROPERTY_ADDRESS_5     :=NULL;
+        rpt1.PROPERTY_ADDRESS_6     :=NULL;
+        RC_rpt1.extend();
+        RC_rpt1(RC_rpt1.last):=rpt1;
+      END LOOP;
+      ---------------------------------------------------------------------------------------------------------------------------
+    END LOOP;
+  END LOOP;
+  CLOSE CR_PARTY;
+  FOR i IN 1..RC_rpt1.count
+  LOOP
+    RC_rpt1(i).P_UTILIZED_AMOUNT:=0;
+    RC_rpt1(i).p_DEPOSIT_AMOUNT :=0;
+    RC_rpt1(i).P_CMV            :=0;
+    RC_rpt1(i).P_CMV_WITH_COV   :=0;
+    RC_rpt1(i).P_CALCULATEDDP   :=0;
+    IF LAST_DAY(P_DATE)         <>P_DATE THEN
+      RC_rpt1(i).TRN_DATE       :=P_DATE;
+    END IF;
+    
+    if RC_rpt1(i).SECURITY_SUB_TYPE_ID<>'CS202' then
+        begin
+        select nvl(sum(nvl(UTILIZED_AMOUNT,0)),0)  into RC_rpt1(i).UTILIZED_AMOUNT
+        FROM SCI_LSP_APPR_LMTS SCI
+          INNER JOIN SCI_LSP_LMTS_XREF_MAP XMAP
+          ON xMAP.CMS_LSP_APPR_LMTS_ID=SCI.CMS_LSP_APPR_LMTS_ID
+          INNER JOIN SCI_LSP_SYS_XREF Xref
+          ON xREf.CMS_LSP_SYS_XREF_ID = xMAP.CMS_LSP_SYS_XREF_ID
+          where SCI.LMt_ID= RC_rpt1(i).LMt_ID;
+        exception when others then
+            RC_rpt1(i).UTILIZED_AMOUNT:=0;
+        end;
+    end if;
+    IF P_FIRSTTIME='N' THEN
+      BEGIN
+        SELECT UTILIZED_AMOUNT INTO RC_rpt1(i).P_UTILIZED_AMOUNT
+        FROM CLMS_TRQ_PRON_RPT_CUST_FAC
+        WHERE TRN_DATE        =V_pre_month_first
+        and LMt_ID= RC_rpt1(i).LMt_ID
+        group by UTILIZED_AMOUNT; 
+       EXCEPTION
+      WHEN OTHERS THEN
+        NULL;
+      END;
+      
+      ---    DEPOSIT_AMOUNT, pending to fetch
+          --DECODE(SECURITY_SUB_TYPE_ID,'CS202',0,'AB108',0,CMV),
+    BEGIN
+        SELECT CALCULATEDDP INTO RC_rpt1(i).P_CALCULATEDDP
+        FROM CLMS_TRQ_PRON_RPT_CUST_FAC
+        WHERE TRN_DATE        =V_pre_month_first
+        and CMS_COLLATERAL_ID= RC_rpt1(i).CMS_COLLATERAL_ID
+        and SECURITY_VALUATION_DATE=RC_rpt1(i).SECURITY_VALUATION_DATE
+        group by CALCULATEDDP;
+       EXCEPTION
+      WHEN OTHERS THEN
+        NULL;
+      END;
+       BEGIN
+        SELECT CMV INTO RC_rpt1(i).P_CMV
+        FROM CLMS_TRQ_PRON_RPT_CUST_FAC
+        WHERE TRN_DATE        =V_pre_month_first
+        and CMS_COLLATERAL_ID= RC_rpt1(i).CMS_COLLATERAL_ID
+        and LMT_ID= RC_rpt1(i).LMT_ID
+        group by CMV;
+       EXCEPTION when others then
+        null;
+       end;
+        BEGIN
+        SELECT SCA_perC INTO RC_rpt1(i).P_CMV_WITH_COV
+        FROM CLMS_TRQ_PRON_RPT_CUST_FAC
+        WHERE TRN_DATE        =V_pre_month_first
+        and CMS_COLLATERAL_ID= RC_rpt1(i).CMS_COLLATERAL_ID
+        and LMT_ID= RC_rpt1(i).LMT_ID
+        group by SCA_perC;
+       EXCEPTION when others then
+        null;
+       end;
+       
+    END IF;
+    RC_rpt1(i).C_TOTAL_SEC:=nvl(RC_rpt1(i).CMV,0);--nvl(RC_rpt1(i).DEPOSIT_AMOUNT,0)+nvl(RC_rpt1(i).CALCULATEDDP,0)+
+--    CASE
+--    WHEN RC_rpt1(i).SECURITY_SUB_TYPE_ID IN('CS202','AB108') THEN
+--      0
+--    ELSE
+      --nvl(RC_rpt1(i).CMV,0)
+--    END
+    --;
+    if RC_rpt1(i).SECURITY_SUB_TYPE_ID in('CS202','AB108') then
+        RC_rpt1(i).DEPOSIT_AMOUNT:=nvl(RC_rpt1(i).CMV,0);
+    end if;
+    if RC_rpt1(i).SECURITY_SUB_TYPE_ID='AB100'  then
+        RC_rpt1(i).CALCULATEDDP:=nvl(RC_rpt1(i).CMV,0);
+    end if;
+--    if RC_rpt1(i).SECURITY_SUB_TYPE_ID<>'AB108' then
+--        RC_rpt1(i).CHEQUE_NUMBER:=nvl(RC_rpt1(i).CMV,0);
+--    end if;
+    --CHEQUE_NUMBER
+    RC_rpt1(i).P_TOTAL_SEC      :=nvl(RC_rpt1(i).P_CMV,0);--nvl(RC_rpt1(i).p_DEPOSIT_AMOUNT,0)+nvl(RC_rpt1(i).P_CALCULATEDDP,0)+nvl(RC_rpt1(i).P_CMV,0);
+    RC_rpt1(i).EROSSION_SEC     :=nvl(RC_rpt1(i).P_TOTAL_SEC,0)-nvl(RC_rpt1(i).C_TOTAL_SEC,0)    ;
+    if nvl(RC_rpt1(i).P_TOTAL_SEC,0)>0 then
+    
+        --RC_rpt1(i).EROSSION_PERCENT :=(nvl(RC_rpt1(i).EROSSION_SEC,0)   /nvl(RC_rpt1(i).P_TOTAL_SEC,0))/100;
+        RC_rpt1(i).EROSSION_PERCENT :=(nvl(RC_rpt1(i).EROSSION_SEC,0)   /nvl(RC_rpt1(i).P_TOTAL_SEC,0))*100;
+    else
+            RC_rpt1(i).EROSSION_PERCENT :=0;
+    end if;
+    RC_rpt1(i).EROSSION_THRESOLD:=
+    CASE
+    WHEN nvl(RC_rpt1(i).EROSSION_PERCENT,0)>50 THEN
+      'Y'
+    ELSE
+      'N'
+    END;
+    RC_rpt1(i).Valuation_period:=floor(P_DATE-RC_rpt1(i).SECURITY_VALUATION_DATE);
+  END LOOP;
+  -- RC_rpt1(i).SCA_PERC
+  forall i IN 1..RC_rpt1.count
+  INSERT INTO CLMS_TRQ_PRON_RPT_CUST_FAC VALUES RC_rpt1
+    (i
+    );
+    IF LAST_DAY(P_DATE)         <>P_DATE THEN
+      v_date       :=P_DATE;
+    else
+          v_date       :=TRUNC(P_DATE, 'MM');
+    END IF;
+    
+    for obj in(with det as( select LSP_LE_ID,LMT_ID,CMS_COLLATERAL_ID,P_CMV_WITH_COV,SCA_perC ,TRN_DATE from CLMS_TRQ_PRON_RPT_CUST_FAC where trn_date=v_date
+group by  TRN_DATE,LSP_LE_ID,LMT_ID,CMS_COLLATERAL_ID,P_CMV_WITH_COV,SCA_perC
+order by LSP_LE_ID,LMT_ID,CMS_COLLATERAL_ID),
+--det1 as (select LSP_LE_ID,LMT_ID ,sum(CMV) over ( partition by LSP_LE_ID,LMT_ID) CVM,sum(P_CMV) over ( partition by LSP_LE_ID,LMT_ID) P_CMV ,sum(CMV) over ( partition by LSP_LE_ID) total_CVM,sum(P_CMV) over ( partition by LSP_LE_ID) P_tot_CMV from det),
+det1 as (select LSP_LE_ID,LMT_ID ,sum(SCA_perC) over ( partition by LSP_LE_ID,LMT_ID) CVM,sum(P_CMV_WITH_COV) over ( partition by LSP_LE_ID,LMT_ID) P_CMV_WITH_COV from det),
+--det2 as (select LSP_LE_ID, LMT_ID, CVM,P_CMV, TOTAL_CVM,P_TOT_CMV from det1
+det2 as (select LSP_LE_ID, LMT_ID, CVM,P_CMV_WITH_COV from det1
+--group by LSP_LE_ID, LMT_ID, CVM, P_CMV, TOTAL_CVM, P_TOT_CMV)
+group by LSP_LE_ID, LMT_ID, CVM, P_CMV_WITH_COV)
+--select LSP_LE_ID,min(case when P_CMV=0 then 0 else (CVM-P_CMV)/P_CMV end *100) fac_wise,min(case when P_TOT_CMV=0 then 0 else (TOTAL_CVM-P_TOT_CMV)/P_TOT_CMV end  *100) total from det2
+select LSP_LE_ID,MAX(case when P_CMV_WITH_COV=0 then 0 else (P_CMV_WITH_COV-CVM)/P_CMV_WITH_COV end *100) fac_wise from det2
+group by LSP_LE_ID
+ )
+      loop
+                 update     CLMS_TRQ_PRON_RPT_CUST_FAC set ERROSION_NPA_TRACK=case when obj.fac_wise >= 50 then obj.fac_wise else 0 end  where TRN_DATE=v_date and  LSP_LE_ID=obj.LSP_LE_ID  ;
+                     --update     CLMS_TRQ_PRON_RPT_CUST_FAC set ERROSION_NPA_TRACK=case when least(obj.fac_wise, obj.total)<-50 then least(obj.fac_wise, obj.total) else null end  where TRN_DATE=v_date and  LSP_LE_ID=obj.LSP_LE_ID  ;
+--            if nvl(obj.P_TOTAL_SEC,0)>0 then
+--                update     CLMS_TRQ_PRON_RPT_CUST_FAC set ERROSION_NPA_TRACK=(nvl(obj.EROSSION_SEC,0)   /nvl(obj.P_TOTAL_SEC,0))*100 where TRN_DATE=v_date and  LSP_LE_ID=obj.LSP_LE_ID  ;
+--            else
+--                update     CLMS_TRQ_PRON_RPT_CUST_FAC set ERROSION_NPA_TRACK=0 where TRN_DATE=v_date and  LSP_LE_ID=obj.LSP_LE_ID;
+--            end if;
+      end loop;
+  COMMIT;
+END SP_CLMS_TRQ_PRON_RPT_CUST_FAC;

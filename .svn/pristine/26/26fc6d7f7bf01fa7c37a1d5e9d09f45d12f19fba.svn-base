@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<!--	Single Table Mapping for Master Geography	-->
+<!--	
+  <class name="com.integrosys.cms.app.geography.bus.OBGeography" entity-name="GeographyClass" table="CMS_GEOGRAPHY" lazy="false" >
+  
+    <id name="id" column="ID">
+    	<generator class="increment"></generator>
+    </id>    
+    
+    <property name="codeName"              column="CODE_NAME" />
+    <property name="codeDesc"              column="CODE_DESC" />
+    <property name="codeType"              column="CODE_TYPE" />
+    <property name="parentId"              column="PARENT_ID" />
+    <property name="geographyId"              column="GEOGRAPHY_ID" />
+    <property name="regionId"              column="REGION_ID" />
+    <property name="status"              column="STATUS" />
+    <property name="versionTime"              column="VERSION_TIME" />
+    <property name="creationDate"              column="CREATION_DATE" />
+    <property name="createBy"              column="CREATE_BY" />
+    <property name="updateDate"              column="LAST_UPDATE_DATE" />
+    <property name="updateBy"              column="LAST_UPDATE_BY" />
+    <property name="deprecated"              column="DEPRECATED" />
+    <property name="masterId"              column="MASTER_ID" />
+    
+  </class>
+
+-->
+
+	<!--	Mapping for Master Country by Sandeep Shinde on 11-04-2011	Start	-->
+
+ <class name="com.integrosys.cms.app.geography.country.bus.OBCountry" entity-name="actualCountry" table="CMS_COUNTRY" lazy="false" >  
+    <id name="idCountry" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_COUNTRY_SEQ</param>
+			</generator>
+    </id>    
+    <property name="countryCode"	column="COUNTRY_CODE" />
+    <property name="countryName"    column="COUNTRY_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />   
+    <property name="cpsId"     		column="CPS_ID" />   
+    
+    <set name="regionList" inverse="true" table="CMS_REGION">
+   		<key column="ID" ></key>
+   		<one-to-many entity-name="actualRegion" />
+   	</set>
+   	  
+  </class>
+  
+   <class name="com.integrosys.cms.app.geography.country.bus.OBCountry" entity-name="stagingCountry" table="CMS_STAGE_COUNTRY" lazy="false" >  
+    <id name="idCountry" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_COUNTRY_SEQ</param>
+			</generator>
+    </id>    
+    <property name="countryCode"	column="COUNTRY_CODE" />
+    <property name="countryName"    column="COUNTRY_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+    <property name="cpsId"     		column="CPS_ID" />
+    
+    <set name="regionList" inverse="true" table="CMS_REGION">
+   		<key column="ID" ></key>
+   		<one-to-many entity-name="actualRegion" />
+   	</set>
+   	        
+  </class>
+  
+	<!--	Mapping for Master Country	End	-->
+
+	<!--	Mapping for Master Region by Sandeep Shinde on 14-04-2011	Start	-->
+
+ <class name="com.integrosys.cms.app.geography.region.bus.OBRegion" entity-name="actualRegion" table="CMS_REGION" lazy="false" >  
+    <id name="idRegion" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_REGION_SEQ</param>
+			</generator>
+    </id>    
+    <property name="regionCode"		column="REGION_CODE" />
+    <property name="regionName"    	column="REGION_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+    <property name="cpsId"     		column="CPS_ID" />
+    
+    <many-to-one name="countryId" column="COUNTRY_ID" entity-name="actualCountry" lazy="false" />
+    
+    <set name="stateList" inverse="true" table="CMS_STATE">
+   		<key column="ID" ></key>
+   		<one-to-many entity-name="actualState" />
+   	</set>
+   	
+  </class>
+  
+   <class name="com.integrosys.cms.app.geography.region.bus.OBRegion" entity-name="stagingRegion" table="CMS_STAGE_REGION" lazy="false" >  
+    <id name="idRegion" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_REGION_SEQ</param>
+			</generator>
+    </id>    
+    <property name="regionCode"		column="REGION_CODE" />
+    <property name="regionName"    	column="REGION_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+    <property name="cpsId"     		column="CPS_ID" />
+    
+    <many-to-one name="countryId" column="COUNTRY_ID" entity-name="actualCountry" cascade="none" lazy="false" />    
+
+   	<set name="stateList" inverse="true" table="CMS_STATE">
+   		<key column="ID" ></key>
+   		<one-to-many entity-name="actualState" />
+   	</set>
+
+  </class>
+  
+	<!--	Mapping for Master Region	End	-->
+	
+	<!--	Mapping for Master State by Sandeep Shinde on 16-04-2011	Start	-->
+
+ <class name="com.integrosys.cms.app.geography.state.bus.OBState" entity-name="actualState" table="CMS_STATE" lazy="false" >  
+    <id name="idState" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_SEQ</param>
+			</generator>
+    </id>    
+    <property name="stateCode"		column="STATE_CODE" />
+    <property name="stateName"    	column="STATE_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+    <property name="cpsId"     		column="CPS_ID" />
+    <many-to-one name="regionId" column="REGION_ID" entity-name="actualRegion" lazy="false" />
+    
+    <set name="cityList" inverse="true" table="CMS_CITY">
+   		<key column="ID" ></key>
+   		<one-to-many entity-name="actualCity" />
+   	</set>
+    
+  </class>
+  
+   <class name="com.integrosys.cms.app.geography.state.bus.OBState" entity-name="stagingState" table="CMS_STAGE_STATE" lazy="false" >  
+    <id name="idState" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_STATE_SEQ</param>
+			</generator>
+    </id>    
+    <property name="stateCode"		column="STATE_CODE" />
+    <property name="stateName"    	column="STATE_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+ <property name="cpsId"     		column="CPS_ID" />
+    <many-to-one name="regionId" column="REGION_ID" entity-name="actualRegion" lazy="false"/>
+    
+    <set name="cityList" table="CMS_CITY">
+   		<key column="ID" ></key>
+   		<one-to-many entity-name="actualCity" />
+   	</set>
+   	     
+  </class>
+  
+	<!--	Mapping for Master State	End	-->
+	
+	<!--	Mapping for Master City by Sandeep Shinde on 16-04-2011	Start	-->
+
+ <class name="com.integrosys.cms.app.geography.city.bus.OBCity" entity-name="actualCity" table="CMS_CITY" lazy="false" >  
+    <id name="idCity" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_CITY_SEQ</param>
+			</generator>
+    </id>    
+    <property name="cityCode"		column="CITY_CODE" />
+    <property name="cityName"    	column="CITY_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+	<property name="ecbfCityId"     column="ECBF_CITY_ID" />
+	 <property name="cpsId"     		column="CPS_ID" />
+    <many-to-one name="stateId" column="STATE_ID" entity-name="actualState" lazy="false" />
+
+  </class>
+  
+   <class name="com.integrosys.cms.app.geography.city.bus.OBCity" entity-name="stagingCity" table="CMS_STAGE_CITY" lazy="false" >  
+    <id name="idCity" column="ID">
+    	<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_CITY_SEQ</param>
+			</generator>
+    </id>    
+    <property name="cityCode"		column="CITY_CODE" />
+    <property name="cityName"    	column="CITY_NAME" />
+    <property name="status"         column="STATUS" />
+    <property name="deprecated"     column="DEPRECATED" />
+    <property name="ecbfCityId"     column="ECBF_CITY_ID" />
+     <property name="cpsId"     		column="CPS_ID" />
+    <many-to-one name="stateId" column="STATE_ID" entity-name="actualState" lazy="false" />
+         
+  </class>
+  
+	<!--	Mapping for Master City	End	-->
+</hibernate-mapping>
+
+
+

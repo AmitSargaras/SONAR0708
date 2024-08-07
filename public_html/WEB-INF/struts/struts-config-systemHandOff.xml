@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+	 <form-beans type="org.apache.struts.action.ActionFormBean">
+		<form-bean name="SystemHandOffForm" type="com.integrosys.cms.ui.systemHandOff.SystemHandOffForm" />
+	</form-beans> 
+	<action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+		<action path="/systemHandOff" type="com.integrosys.cms.ui.systemHandOff.SystemHandOffAction" name="SystemHandOffForm" validate="false" scope="request">
+		 <forward name="performEod" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/eod/ack_eod.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.systemHandOff"/>
+			</forward>
+			<forward name="performEodMasterSync" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/eod/ack_eod.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.systemHandOff"/>
+			</forward>
+			<forward name="performAdfRbi" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/eod/ack_adf_rbi.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.systemHandOff"/>
+			</forward>
+			<forward name="performAdfRbiList" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/eod/list_adf_rbi.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.systemHandOff"/>
+			</forward>
+			 <forward name="performEoy" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/eod/ack_eoy.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.systemHandOff"/>
+			</forward>
+			
+			<forward name="performBaselUpdateReport" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/eod/ack_baselUpdateReport.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.systemHandOff"/>
+			</forward>
+			
+			<forward name="downloadFcubsFile" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/eod/downloadFcubsFile.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.systemHandOff"/>
+			</forward>
+         </action>
+	</action-mappings>
+</struts-config>

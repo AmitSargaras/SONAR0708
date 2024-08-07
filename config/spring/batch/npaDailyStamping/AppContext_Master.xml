@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="npaDailyStampingJobTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="npaDailyStampingJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="npaDailyStampingJobDetail" />
+
+	 	 <property name="cronExpression" value="0 0 6 * * ?" />  
+    <!--<property name="cronExpression" value="0 0/05 * * * ?" /> -->
+
+	</bean>
+	
+	<bean id="npaDailyStampingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="npaDailyStampingUploadJob" />
+		<property name="targetMethod" value="execute" />
+	</bean> 
+
+	<bean name="npaDailyStampingUploadJob" class="com.integrosys.cms.batch.npaDailyStamping.schedular.NpaDailyStagingFileUploadJob"/>
+	
+
+
+</beans>

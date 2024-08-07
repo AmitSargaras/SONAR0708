@@ -1,0 +1,864 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for chain command in spring context
+    </description>
+
+    <bean id="stpCatalogLoader" class="com.integrosys.cms.host.stp.chain.StpCatalogLoader">
+        <property name="facilityProxy" ref="facilityProxy"/>
+        <property name="collateralProxy" ref="collateralProxy"/>
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpCommandExceptionHandler" ref="stpCommandExceptionHandler"/>
+        <property name="chainMap">
+            <map>
+                <entry key="colChainCreate">
+                    <list>
+                        <ref bean="StpColMasterCreationCmd"/>
+                        <ref bean="StpColInsCreationCmd"/>
+                        <ref bean="StpColTradeInCreationCmd"/>
+                        <ref bean="StpColChargorCreationCmd"/>
+                        <ref bean="StpColFacCreationCmd"/>
+                        <ref bean="StpColFacChargeCreationCmd"/>
+                    </list>
+                </entry>
+                <entry key="colChainUpdate">
+                    <list>
+                        <ref bean="StpColFacChargeDeletionCmd"/>
+                        <ref bean="StpColFacDeletionCmd"/>
+                        <ref bean="StpColInsDeletionCmd"/>
+                        <ref bean="StpColMasterCreationCmd"/>
+                        <ref bean="StpColInsCreationCmd"/>
+                        <ref bean="StpColTradeInCreationCmd"/>
+                        <ref bean="StpColChargorCreationCmd"/>
+                        <ref bean="StpColFacCreationCmd"/>
+                        <ref bean="StpColFacChargeCreationCmd"/>
+                    </list>
+                </entry>
+                <entry key="colChainDelete">
+                    <list>
+                        <ref bean="StpColFacChargeDeletionCmd"/>
+                        <ref bean="StpColFacDeletionCmd"/>
+                        <ref bean="StpColInsDeletionCmd"/>
+                        <ref bean="StpColTradeInDeletionCmd"/>
+                        <ref bean="StpColChargorDeletionCmd"/>
+                        <ref bean="StpColMasterDeletionCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainCreate1">
+                    <list>
+                        <ref bean="StpFacMasterCreationCmd"/>
+                        <ref bean="StpFacBNMCreationCmd"/>
+                        <ref bean="StpFacOffCreationCmd"/>
+                        <ref bean="StpFacRelCreationCmd"/>
+                        <ref bean="StpFacInsCreationCmd"/>
+                        <ref bean="StpFacIncrementReductionCreationCmd"/>
+                        <ref bean="StpFacBasel2CreationCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainUpdate1">
+                    <list>
+                        <ref bean="StpFacRelDeletionCmd"/>
+                        <ref bean="StpFacOffDeletionCmd"/>
+                        <ref bean="StpFacMasterCreationCmd"/>
+                        <ref bean="StpFacBNMCreationCmd"/>
+                        <ref bean="StpFacOffCreationCmd"/>
+                        <ref bean="StpFacRelCreationCmd"/>
+                        <ref bean="StpFacInsCreationCmd"/>
+                        <ref bean="StpFacIncrementReductionCreationCmd"/>
+                        <ref bean="StpFacBasel2CreationCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainDelete1">
+                    <list>
+                        <ref bean="StpFacRelDeletionCmd"/>
+                        <ref bean="StpFacInsDeletionCmd"/>
+                        <ref bean="StpFacOffDeletionCmd"/>
+                        <ref bean="StpFacBNMDeletionCmd"/>
+                        <ref bean="StpFacMasterDeletionCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainCreate2">
+                    <list>
+                        <ref bean="StpFacMasterCreationCmd"/>
+                        <ref bean="StpFacIslamicMasterCreationCmd"/>
+                        <ref bean="StpFacBNMCreationCmd"/>
+                        <ref bean="StpFacOffCreationCmd"/>
+                        <ref bean="StpFacRelCreationCmd"/>
+                        <ref bean="StpFacMultiTierFinanceCreationCmd"/>
+                        <ref bean="StpFacIncrementReductionCreationCmd"/>                        
+                        <ref bean="StpFacBasel2CreationCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainUpdate2">
+                    <list>
+                        <ref bean="StpFacRelDeletionCmd"/>
+                        <ref bean="StpFacMultiTierFinanceDeletionCmd"/>
+                        <ref bean="StpFacOffDeletionCmd"/>
+                        <ref bean="StpFacMasterCreationCmd"/>
+                        <ref bean="StpFacIslamicMasterCreationCmd"/>
+                        <ref bean="StpFacBNMCreationCmd"/>
+                        <ref bean="StpFacOffCreationCmd"/>
+                        <ref bean="StpFacRelCreationCmd"/>
+                        <ref bean="StpFacMultiTierFinanceCreationCmd"/>
+                        <ref bean="StpFacIncrementReductionCreationCmd"/>
+                        <ref bean="StpFacBasel2CreationCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainDelete2">
+                    <list>
+                        <ref bean="StpFacRelDeletionCmd"/>
+                        <ref bean="StpFacMultiTierFinanceDeletionCmd"/>
+                        <ref bean="StpFacOffDeletionCmd"/>
+                        <ref bean="StpFacBNMDeletionCmd"/>
+                        <ref bean="StpFacIslamicMasterDeletionCmd"/>
+                        <ref bean="StpFacMasterDeletionCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainCreate3">
+                    <list>
+                        <ref bean="StpFacMasterCreationCmd"/>
+                        <ref bean="StpFacBAAVariPackageCreationCmd"/>
+                        <ref bean="StpFacBNMCreationCmd"/>
+                        <ref bean="StpFacOffCreationCmd"/>
+                        <ref bean="StpFacRelCreationCmd"/>
+                        <ref bean="StpFacMultiTierFinanceCreationCmd"/>
+                        <ref bean="StpFacIslamicRentalRenewCreationCmd"/>
+                        <ref bean="StpFacIslamicSecDepositCreationCmd"/>
+                        <ref bean="StpFacIncrementReductionCreationCmd"/>
+                        <ref bean="StpFacBasel2CreationCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainUpdate3">
+                    <list>
+                        <ref bean="StpFacRelDeletionCmd"/>
+                        <ref bean="StpFacMultiTierFinanceDeletionCmd"/>
+                        <ref bean="StpFacOffDeletionCmd"/>
+                        <ref bean="StpFacMasterCreationCmd"/>
+                        <ref bean="StpFacBAAVariPackageCreationCmd"/>
+                        <ref bean="StpFacBNMCreationCmd"/>
+                        <ref bean="StpFacOffCreationCmd"/>
+                        <ref bean="StpFacRelCreationCmd"/>
+                        <ref bean="StpFacMultiTierFinanceCreationCmd"/>
+                        <ref bean="StpFacIslamicRentalRenewCreationCmd"/>
+                        <ref bean="StpFacIslamicSecDepositCreationCmd"/>
+                        <ref bean="StpFacIncrementReductionCreationCmd"/>                                                
+                        <ref bean="StpFacBasel2CreationCmd"/>
+                    </list>
+                </entry>
+                <entry key="facChainDelete3">
+                    <list>
+                        <ref bean="StpFacRelDeletionCmd"/>
+                        <ref bean="StpFacMultiTierFinanceDeletionCmd"/>
+                        <ref bean="StpFacOffDeletionCmd"/>
+                        <ref bean="StpFacBNMDeletionCmd"/>
+                        <ref bean="StpFacBAAVariPackageDeletionCmd"/>
+                        <ref bean="StpFacIslamicSecDepositDeletionCmd"/>
+                        <ref bean="StpFacIslamicRentalRenewDeletionCmd"/> 
+                        <ref bean="StpFacMasterDeletionCmd"/>
+                    </list>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="stpCommandExceptionHandler" class="com.integrosys.cms.host.stp.chain.StpCommandExceptionHandler">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+    </bean>
+
+
+    <bean id="StpColMasterCreationCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColMasterCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="forexDao" ref="forexDao"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="122"/>
+                <entry key="UPDATE" value="132"/>
+                <entry key="DELETE" value="142"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColMasterDeletionCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColMasterDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="122"/>
+                <entry key="UPDATE" value="132"/>
+                <entry key="DELETE" value="142"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColChargorCreationCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColChargorCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="126"/>
+                <entry key="UPDATE" value="136"/>
+                <entry key="DELETE" value="146"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColChargorDeletionCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColChargorDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="126"/>
+                <entry key="UPDATE" value="136"/>
+                <entry key="DELETE" value="146"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColFacChargeCreationCmd"
+          class="com.integrosys.cms.host.stp.chain.collateral.StpColFacChargeCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="722"/>
+                <entry key="UPDATE" value="732"/>
+                <entry key="DELETE" value="742"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColFacChargeDeletionCmd"
+          class="com.integrosys.cms.host.stp.chain.collateral.StpColFacChargeDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="722"/>
+                <entry key="UPDATE" value="732"/>
+                <entry key="DELETE" value="742"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColFacCreationCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColFacCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="721"/>
+                <entry key="UPDATE" value="731"/>
+                <entry key="DELETE" value="741"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColFacDeletionCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColFacDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="721"/>
+                <entry key="UPDATE" value="731"/>
+                <entry key="DELETE" value="741"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColInsCreationCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColInsCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="124"/>
+                <entry key="UPDATE" value="134"/>
+                <entry key="DELETE" value="144"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColInsDeletionCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColInsDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="124"/>
+                <entry key="UPDATE" value="134"/>
+                <entry key="DELETE" value="144"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColTradeInCreationCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColTradeInCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="125"/>
+                <entry key="UPDATE" value="135"/>
+                <entry key="DELETE" value="145"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpColTradeInDeletionCmd" class="com.integrosys.cms.host.stp.chain.collateral.StpColTradeInDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="125"/>
+                <entry key="UPDATE" value="135"/>
+                <entry key="DELETE" value="145"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacBAAVariPackageCreationCmd"
+          class="com.integrosys.cms.host.stp.chain.facility.StpFacBAAVariPackageCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="371"/>
+                <entry key="UPDATE" value="381"/>
+                <entry key="DELETE" value="391"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacBAAVariPackageDeletionCmd"
+          class="com.integrosys.cms.host.stp.chain.facility.StpFacBAAVariPackageDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="371"/>
+                <entry key="UPDATE" value="381"/>
+                <entry key="DELETE" value="391"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacBNMCreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacBNMCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="327"/>
+                <entry key="UPDATE" value="337"/>
+                <entry key="DELETE" value="347"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacBNMDeletionCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacBNMDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="327"/>
+                <entry key="UPDATE" value="337"/>
+                <entry key="DELETE" value="347"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacInsCreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacInsCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="329"/>
+                <entry key="UPDATE" value="339"/>
+                <entry key="DELETE" value="349"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacInsDeletionCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacInsDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="329"/>
+                <entry key="UPDATE" value="339"/>
+                <entry key="DELETE" value="349"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacIslamicMasterCreationCmd"
+          class="com.integrosys.cms.host.stp.chain.facility.StpFacIslamicMasterCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="376"/>
+                <entry key="UPDATE" value="386"/>
+                <entry key="DELETE" value="396"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacIslamicMasterDeletionCmd"
+          class="com.integrosys.cms.host.stp.chain.facility.StpFacIslamicMasterDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="376"/>
+                <entry key="UPDATE" value="386"/>
+                <entry key="DELETE" value="396"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacMasterCreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacMasterCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="321"/>
+                <entry key="UPDATE" value="331"/>
+                <entry key="DELETE" value="341"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacMasterDeletionCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacMasterDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="321"/>
+                <entry key="UPDATE" value="331"/>
+                <entry key="DELETE" value="341"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacMultiTierFinanceCreationCmd"
+          class="com.integrosys.cms.host.stp.chain.facility.StpFacMultiTierFinanceCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="324"/>
+                <entry key="UPDATE" value="334"/>
+                <entry key="DELETE" value="344"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacMultiTierFinanceDeletionCmd"
+          class="com.integrosys.cms.host.stp.chain.facility.StpFacMultiTierFinanceDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="324"/>
+                <entry key="UPDATE" value="334"/>
+                <entry key="DELETE" value="344"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacOffCreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacOffCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="328"/>
+                <entry key="UPDATE" value="338"/>
+                <entry key="DELETE" value="348"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacOffDeletionCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacOffDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="328"/>
+                <entry key="UPDATE" value="338"/>
+                <entry key="DELETE" value="348"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacRelCreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacRelCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="322"/>
+                <entry key="UPDATE" value="332"/>
+                <entry key="DELETE" value="342"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacRelDeletionCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacRelDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="stpErrorCodeList" ref="stpErrCodeList"/>
+        <property name="actualCollateralBusManager" ref="collateralBusManager"/>
+        <property name="stagingCollateralBusManager" ref="stagingCollateralBusManager"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="322"/>
+                <entry key="UPDATE" value="332"/>
+                <entry key="DELETE" value="342"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacBasel2CreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacBasel2CreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="369"/>
+                <entry key="UPDATE" value="389"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacIslamicRentalRenewCreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacIslamicRentalRenewCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="373"/>
+                <entry key="UPDATE" value="383"/>
+                <entry key="DELETE" value="393"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacIslamicRentalRenewDeletionCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacIslamicRentalRenewDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="373"/>
+                <entry key="UPDATE" value="383"/>
+                <entry key="DELETE" value="393"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacIslamicSecDepositCreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacIslamicSecDepositCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="374"/>
+                <entry key="UPDATE" value="384"/>
+                <entry key="DELETE" value="394"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacIslamicSecDepositDeletionCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacIslamicSecDepositDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="374"/>
+                <entry key="UPDATE" value="384"/>
+                <entry key="DELETE" value="394"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacIncrementReductionCreationCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacIncrementReductionCreationCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="377"/>
+                <entry key="UPDATE" value="387"/>
+                <entry key="DELETE" value="397"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="StpFacIncrementReductionDeletionCmd" class="com.integrosys.cms.host.stp.chain.facility.StpFacIncrementReductionDeletionCmd">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+        <property name="actualFacilityBusManager" ref="facilityBusManager"/>
+        <property name="stagingFacilityBusManager" ref="stagingFacilityBusManager"/>
+        <property name="actualLimitBusManager" ref="limitBusManager"/>
+        <property name="stagingLimitBusManager" ref="stagingLimitBusManager"/>
+        <property name="trxStateMap">
+            <map>
+                <entry key="CREATE" value="377"/>
+                <entry key="UPDATE" value="387"/>
+                <entry key="DELETE" value="397"/>
+            </map>
+        </property>
+    </bean>
+</beans>

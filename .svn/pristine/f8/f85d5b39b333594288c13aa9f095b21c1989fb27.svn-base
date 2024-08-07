@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+			
+		
+	
+	<bean id="fileUploadDao" class="com.integrosys.cms.app.fileUpload.bus.FileUploadDaoImpl">
+		<property name="sessionFactory" ref="ofaSessionFactory" />
+		 
+	</bean>
+	
+	<bean id="fileUploadJdbc" class="com.integrosys.cms.app.fileUpload.bus.FileUploadJdbcImpl">
+		<property name="dataSource" ref="ofaPool" />
+		<property name="totalPageForPagination" value="${pagination.total.page}" />
+		<property name="recordsPerPageForPagination" value="${pagination.records.per.page}" />
+		<property name="paginationUtil" ref="paginationUtil" />		
+		<property name="uploadFileCleanup" value="PROC_UPLOAD_FILE_CLENUP" />
+		<!-- Added By Dayananda Laishram on 26/02/2015 || UBS_UPLOAD_OPTIMIZATION --> 
+		<property name="spUploadTransaction" value="SP_UPLOAD_TRANSACTION" />
+		<!-- Added By Dayananda Laishram on 31/03/2015 || SP_FACILITY_RELEASE -->
+		<property name="spUpdateReleasedAmount" value="SP_FACILITY_RELEASE" />
+		
+		<property name="spUpdatePartyCamUploadActual" value="SP_UPDATE_PARTY_CAM_UPLOAD" />
+		<property name="spUpdatePartyCamUploadStage" value="SP_UPDATE_PARTY_CAM_UPLOAD_STA" />
+		
+		<property name="spBeforeUpdateRAMRating" value="SP_BEFORE_UPDATE_RAM_RATING" />
+		<property name="spUpdateRAMRatingUploadActual" value="SP_UPDATE_RAM_RATING_UPLOAD" />
+		<property name="spBaselMonthlyNpaTrackNew" value="SP_CMS_BASEL_MONTHLY_NPA_TRACK" />
+	</bean>
+			
+</beans>

@@ -1,0 +1,84 @@
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
+
+	<html:hidden name="LmtDetailForm" property="revsdAssClassDateL1" />
+	<html:hidden name="LmtDetailForm" property="projectLoan" />
+	<html:hidden name="LmtDetailForm" property="infaProjectFlag" />
+	<html:hidden name="LmtDetailForm" property="whlmreupSCOD" />
+	<html:hidden name="LmtDetailForm" property="scodDate" />
+	<html:hidden name="LmtDetailForm" property="remarksSCOD" />
+	<html:hidden name="LmtDetailForm" property="exstAssetClass" />
+	<html:hidden name="LmtDetailForm" property="exstAssClassDate" />
+	<html:hidden name="LmtDetailForm" property="revisedAssetClass" />
+	<html:hidden name="LmtDetailForm" property="revsdAssClassDate" />
+	<html:hidden name="LmtDetailForm" property="actualCommOpsDate" />
+	<html:hidden name="LmtDetailForm" property="lelvelDelaySCOD" />
+	<html:hidden name="LmtDetailForm" property="principalInterestSchFlag" />
+	<html:hidden name="LmtDetailForm" property="projectDelayedFlag" />
+	<html:hidden name="LmtDetailForm" property="reasonLevelOneDelay" />
+	<html:hidden name="LmtDetailForm" property="chngInRepaySchedule" />
+	<html:hidden name="LmtDetailForm" property="escodLevelOneDelayDate" />
+	<html:hidden name="LmtDetailForm" property="escodLevelSecondDelayDate" />
+	<html:hidden name="LmtDetailForm" property="reasonLevelThreeDelay" />
+	<html:hidden name="LmtDetailForm" property="escodLevelThreeDelayDate" />
+	<html:hidden name="LmtDetailForm" property="legalOrArbitrationLevel2Flag" />
+	<html:hidden name="LmtDetailForm" property="chngOfOwnPrjFlagNonInfraLevel2" />
+	<html:hidden name="LmtDetailForm" property="reasonBeyondPromoterLevel2Flag" />
+	<html:hidden name="LmtDetailForm" property="chngOfProjScopeNonInfraLevel2" />
+	<html:hidden name="LmtDetailForm" property="chngOfOwnPrjFlagInfraLevel2" />
+	<html:hidden name="LmtDetailForm" property="chngOfProjScopeInfraLevel2" />
+	<html:hidden name="LmtDetailForm" property="legalOrArbitrationLevel3Flag" />
+	<html:hidden name="LmtDetailForm" property="chngOfOwnPrjFlagNonInfraLevel3" />
+	<html:hidden name="LmtDetailForm" property="reasonBeyondPromoterLevel3Flag" />
+	<html:hidden name="LmtDetailForm" property="chngOfProjScopeNonInfraLevel3" />
+	<html:hidden name="LmtDetailForm" property="chngOfOwnPrjFlagInfraLevel3" />
+	<html:hidden name="LmtDetailForm" property="chngOfProjScopeInfraLevel3" />
+	<html:hidden name="LmtDetailForm" property="leaglOrArbiProceed" />
+	<html:hidden name="LmtDetailForm" property="detailsRsnByndPro" />
+	<html:hidden name="LmtDetailForm" property="recvPriorOfSCOD" />
+	<html:hidden name="LmtDetailForm" property="reasonLevelTwoDelay" />
+	<html:hidden name="LmtDetailForm" property="promotersCapRunFlag" />
+	<html:hidden name="LmtDetailForm" property="changeInScopeBeforeSCODFlag" />
+	<html:hidden name="LmtDetailForm" property="promotersHoldEquityFlag" />
+	<html:hidden name="LmtDetailForm" property="costOverrunOrg25CostViabilityFlag" />
+	<html:hidden name="LmtDetailForm" property="hasProjectViabReAssFlag" />
+	<html:hidden name="LmtDetailForm" property="projectViabReassesedFlag" />
+	<html:hidden name="LmtDetailForm" property="revsedESCODStpDate" />
+	<html:hidden name="LmtDetailForm" property="exstAssetClassL1" />
+	<html:hidden name="LmtDetailForm" property="exstAssClassDateL1" />
+	<html:hidden name="LmtDetailForm" property="exstAssetClassL2" />
+	<html:hidden name="LmtDetailForm" property="exstAssClassDateL2" />
+	<html:hidden name="LmtDetailForm" property="exstAssetClassL3" />
+	<html:hidden name="LmtDetailForm" property="exstAssClassDateL3" />
+	<html:hidden name="LmtDetailForm" property="revisedAssetClassL1" />
+	<html:hidden name="LmtDetailForm" property="revisedAssetClass_L2" />
+	<html:hidden name="LmtDetailForm" property="revsdAssClassDate_L2" />
+	<html:hidden name="LmtDetailForm" property="revisedAssetClass_L3" />
+	<html:hidden name="LmtDetailForm" property="revsdAssClassDate_L3" />
+	<html:hidden name="LmtDetailForm" property="projectDelayedFlagL2" />
+	<html:hidden name="LmtDetailForm" property="projectDelayedFlagL3" />
+	<html:hidden name="LmtDetailForm" property="leaglOrArbiProceedLevel3" />
+	<html:hidden name="LmtDetailForm" property="detailsRsnByndProLevel3" />
+	<html:hidden name="LmtDetailForm" property="chngInRepayScheduleL2" />
+	<html:hidden name="LmtDetailForm" property="chngInRepayScheduleL3" />
+	<html:hidden name="LmtDetailForm" property="promotersCapRunFlagL2" />
+	<html:hidden name="LmtDetailForm" property="promotersCapRunFlagL3" />
+	<html:hidden name="LmtDetailForm" property="changeInScopeBeforeSCODFlagL2" />
+	<html:hidden name="LmtDetailForm" property="changeInScopeBeforeSCODFlagL3" />
+	<html:hidden name="LmtDetailForm" property="promotersHoldEquityFlagL2" />
+	<html:hidden name="LmtDetailForm" property="promotersHoldEquityFlagL3" />
+	<html:hidden name="LmtDetailForm" property="costOverrunOrg25CostViabilityFlagL2" />
+	<html:hidden name="LmtDetailForm" property="costOverrunOrg25CostViabilityFlagL3" />
+	<html:hidden name="LmtDetailForm" property="hasProjectViabReAssFlagL2" />
+	<html:hidden name="LmtDetailForm" property="hasProjectViabReAssFlagL3" />
+	<html:hidden name="LmtDetailForm" property="projectViabReassesedFlagL2" />
+	<html:hidden name="LmtDetailForm" property="projectViabReassesedFlagL3" />
+	<html:hidden name="LmtDetailForm" property="revsedESCODStpDateL2" />
+	<html:hidden name="LmtDetailForm" property="revsedESCODStpDateL3" />
+	<html:hidden name="LmtDetailForm" property="projectFinance" />
+	<html:hidden name="LmtDetailForm" property="status" />
+	
+		
+<script language="javascript">
+
+
+</script>

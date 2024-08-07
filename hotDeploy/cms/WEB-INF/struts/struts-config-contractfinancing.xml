@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="ContractDetailForm" type="com.integrosys.cms.ui.contractfinancing.ContractDetailForm">
+        </form-bean>
+
+		<form-bean name="CF_FacilityTypeForm" type="com.integrosys.cms.ui.contractfinancing.FacilityTypeForm">
+        </form-bean>
+
+        <form-bean name="CF_AdvsPaymentForm" type="com.integrosys.cms.ui.contractfinancing.advspayment.AdvsPaymentForm">
+        </form-bean>
+
+        <form-bean name="CF_SG_AdvsPaymentForm" type="com.integrosys.cms.ui.contractfinancing.advspayment.SG_AdvsPaymentForm">
+        </form-bean>
+
+        <form-bean name="CF_PaymentForm" type="com.integrosys.cms.ui.contractfinancing.advspayment.PaymentForm">
+        </form-bean>
+
+        <form-bean name="CF_SG_PaymentForm" type="com.integrosys.cms.ui.contractfinancing.advspayment.SG_PaymentForm">
+        </form-bean>
+
+        <form-bean name="CF_TNCForm" type="com.integrosys.cms.ui.contractfinancing.tnc.TNCForm">
+        </form-bean>
+
+        <form-bean name="CF_FDRForm" type="com.integrosys.cms.ui.contractfinancing.fdr.FDRForm">
+        </form-bean>        
+
+    </form-beans>
+
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	<action path="/ContractFinancing" type="com.integrosys.cms.ui.contractfinancing.ContractFinancingAction" name="ContractDetailForm" validate="false" scope="request">
+            <forward name="after_list_summary" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractfinancing_list.jsp"/>
+                <set-property property="title" value="title.contractfinancing.main"/>
+            </forward>
+            <forward name="after_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractinfo_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractinfo_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.contractfinancing.status"/>
+            </forward>
+            <forward name="after_submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.contractfinancing.status"/>
+            </forward>
+            <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractinfo_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractinfo_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractinfo_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_close" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractinfo_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.contractfinancing.status"/>
+            </forward>
+            <forward name="after_process" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractinfo_checker.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.contractfinancing.status"/>
+            </forward>
+            <forward name="after_reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.contractfinancing.status"/>
+            </forward>
+            <forward name="after_maker_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.contractfinancing.status"/>
+            </forward>
+            <forward name="after_to_track" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/contractinfo_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.contractfinancing.status"/>
+            </forward>
+            
+            <forward name="after_facilitytype_add" path="/CF_FacilityType.do?event=maker_prepare_create"/>
+            <forward name="after_facilitytype_update" path="/CF_FacilityType.do?event=maker_prepare_update"/>
+            <forward name="after_facilitytype_view" path="/CF_FacilityType.do?event=view"/>
+            <forward name="after_facilitytype_delete" path="/CF_FacilityType.do?event=delete"/>
+            
+<!--            standard for contract financing -->
+            <forward name="after_contractdetail_process" path="/ContractFinancing.do?event=process"/>
+            <forward name="after_contractdetail_view" path="/ContractFinancing.do?event=view"/>
+            <forward name="after_contractdetail_to_track" path="/ContractFinancing.do?event=to_track"/>
+            <forward name="after_contractdetail_maker_prepare_create" path="/ContractFinancing.do?event=maker_prepare_create"/>
+            <forward name="after_contractdetail_maker_prepare_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_contractdetail_maker_prepare_close" path="/ContractFinancing.do?event=maker_prepare_close"/>
+            <forward name="after_contractdetail_maker_process" path="/ContractFinancing.do?event=maker_process"/>
+            <forward name="after_contractdetail_maker_prepare_delete" path="/ContractFinancing.do?event=maker_prepare_delete"/>
+            <forward name="after_tnc_checker" path="/CF_TNC.do?event=checker_list_summary"/>
+            <forward name="after_tnc" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_fdr_checker" path="/CF_FDR.do?event=checker_list_summary"/>
+            <forward name="after_fdr" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_advspayment_checker" path="/CF_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment_sg_checker" path="/CF_SG_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_advspayment_sg" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+<!--            standard for contract financing -->
+        </action>
+    
+        <action path="/CF_FacilityType" type="com.integrosys.cms.ui.contractfinancing.FacilityTypeAction" name="CF_FacilityTypeForm" validate="false" scope="request">
+            <forward name="after_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/facilitytype_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/facilitytype_checker_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/facilitytype_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/facilitytype_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/facilitytype_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/facilitytype_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+
+            <forward name="after_create" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_delete" path="/ContractFinancing.do?event=maker_prepare_update"/>
+<!--            standard for contract financing -->
+            <forward name="after_contractdetail_process" path="/ContractFinancing.do?event=process"/>
+            <forward name="after_contractdetail_view" path="/ContractFinancing.do?event=view"/>
+            <forward name="after_contractdetail_to_track" path="/ContractFinancing.do?event=to_track"/>
+            <forward name="after_contractdetail_maker_prepare_create" path="/ContractFinancing.do?event=maker_prepare_create"/>
+            <forward name="after_contractdetail_maker_prepare_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_contractdetail_maker_prepare_close" path="/ContractFinancing.do?event=maker_prepare_close"/>
+            <forward name="after_contractdetail_maker_process" path="/ContractFinancing.do?event=maker_process"/>
+            <forward name="after_contractdetail_maker_prepare_delete" path="/ContractFinancing.do?event=maker_prepare_delete"/>
+            <forward name="after_tnc_checker" path="/CF_TNC.do?event=checker_list_summary"/>
+            <forward name="after_tnc" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_fdr_checker" path="/CF_FDR.do?event=checker_list_summary"/>
+            <forward name="after_fdr" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_advspayment_checker" path="/CF_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment_sg_checker" path="/CF_SG_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_advspayment_sg" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+<!--            standard for contract financing -->
+        </action>
+        
+        <action path="/CF_AdvsPayment" type="com.integrosys.cms.ui.contractfinancing.advspayment.AdvsPaymentAction" name="CF_AdvsPaymentForm" validate="false" scope="request">
+            <forward name="after_list_summary" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_list.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_list_summary" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_checker_list.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_checker_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_refresh" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_process_return" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+
+            <forward name="after_create" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_update" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_delete" path="/CF_AdvsPayment.do?event=list_summary"/>
+
+            <forward name="after_maker_prepare_add_item" path="/CF_Payment.do?event=maker_prepare_create"/>
+            <forward name="after_maker_prepare_edit_item" path="/CF_Payment.do?event=maker_prepare_update"/>
+            <forward name="after_delete_item" path="/CF_Payment.do?event=delete"/>
+            <forward name="after_view_item" path="/CF_Payment.do?event=view"/>
+
+<!--            standard for contract financing -->
+            <forward name="after_contractdetail_process" path="/ContractFinancing.do?event=process"/>
+            <forward name="after_contractdetail_view" path="/ContractFinancing.do?event=view"/>
+            <forward name="after_contractdetail_to_track" path="/ContractFinancing.do?event=to_track"/>
+            <forward name="after_contractdetail_maker_prepare_create" path="/ContractFinancing.do?event=maker_prepare_create"/>
+            <forward name="after_contractdetail_maker_prepare_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_contractdetail_maker_prepare_close" path="/ContractFinancing.do?event=maker_prepare_close"/>
+            <forward name="after_contractdetail_maker_process" path="/ContractFinancing.do?event=maker_process"/>
+            <forward name="after_contractdetail_maker_prepare_delete" path="/ContractFinancing.do?event=maker_prepare_delete"/>
+            <forward name="after_tnc_checker" path="/CF_TNC.do?event=checker_list_summary"/>
+            <forward name="after_tnc" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_fdr_checker" path="/CF_FDR.do?event=checker_list_summary"/>
+            <forward name="after_fdr" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_advspayment_checker" path="/CF_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment_sg_checker" path="/CF_SG_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_advspayment_sg" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+<!--            standard for contract financing -->
+        </action>
+        
+	<action path="/CF_SG_AdvsPayment" type="com.integrosys.cms.ui.contractfinancing.advspayment.SG_AdvsPaymentAction" name="CF_SG_AdvsPaymentForm" validate="false" scope="request">
+            <forward name="after_list_summary" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_list.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_list_summary" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_checker_list.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_checker_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_refresh" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_edit.jsp"/>
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_process_return" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_advspaymentdetail_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+
+            <forward name="after_create" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_update" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_delete" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+
+            <forward name="after_maker_prepare_add_item" path="/CF_SG_Payment.do?event=maker_prepare_create"/>
+            <forward name="after_maker_prepare_edit_item" path="/CF_SG_Payment.do?event=maker_prepare_update"/>
+            <forward name="after_delete_item" path="/CF_SG_Payment.do?event=delete"/>
+            <forward name="after_view_item" path="/CF_SG_Payment.do?event=view"/>
+
+<!--            standard for contract financing -->
+            <forward name="after_contractdetail_process" path="/ContractFinancing.do?event=process"/>
+            <forward name="after_contractdetail_view" path="/ContractFinancing.do?event=view"/>
+            <forward name="after_contractdetail_to_track" path="/ContractFinancing.do?event=to_track"/>
+            <forward name="after_contractdetail_maker_prepare_create" path="/ContractFinancing.do?event=maker_prepare_create"/>
+            <forward name="after_contractdetail_maker_prepare_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_contractdetail_maker_prepare_close" path="/ContractFinancing.do?event=maker_prepare_close"/>
+            <forward name="after_contractdetail_maker_process" path="/ContractFinancing.do?event=maker_process"/>
+            <forward name="after_contractdetail_maker_prepare_delete" path="/ContractFinancing.do?event=maker_prepare_delete"/>
+            <forward name="after_tnc_checker" path="/CF_TNC.do?event=checker_list_summary"/>
+            <forward name="after_tnc" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_fdr_checker" path="/CF_FDR.do?event=checker_list_summary"/>
+            <forward name="after_fdr" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_advspayment_checker" path="/CF_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment_sg_checker" path="/CF_SG_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_advspayment_sg" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+<!--            standard for contract financing -->
+        </action>
+        
+        <action path="/CF_Payment" type="com.integrosys.cms.ui.contractfinancing.advspayment.PaymentAction" name="CF_PaymentForm" validate="false" scope="request">
+            <forward name="after_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/payment_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/payment_checker_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/payment_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/payment_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/payment_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_create" path="/CF_AdvsPayment.do?event=maker_prepare_update"/>
+            <forward name="after_update" path="/CF_AdvsPayment.do?event=maker_prepare_update"/>
+            <forward name="after_delete" path="/CF_AdvsPayment.do?event=maker_prepare_update"/>
+
+<!--            standard for contract financing -->
+            <forward name="after_contractdetail_process" path="/ContractFinancing.do?event=process"/>
+            <forward name="after_contractdetail_view" path="/ContractFinancing.do?event=view"/>
+            <forward name="after_contractdetail_to_track" path="/ContractFinancing.do?event=to_track"/>
+            <forward name="after_contractdetail_maker_prepare_create" path="/ContractFinancing.do?event=maker_prepare_create"/>
+            <forward name="after_contractdetail_maker_prepare_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_contractdetail_maker_prepare_close" path="/ContractFinancing.do?event=maker_prepare_close"/>
+            <forward name="after_contractdetail_maker_process" path="/ContractFinancing.do?event=maker_process"/>
+            <forward name="after_contractdetail_maker_prepare_delete" path="/ContractFinancing.do?event=maker_prepare_delete"/>
+            <forward name="after_tnc_checker" path="/CF_TNC.do?event=checker_list_summary"/>
+            <forward name="after_tnc" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_fdr_checker" path="/CF_FDR.do?event=checker_list_summary"/>
+            <forward name="after_fdr" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_advspayment_checker" path="/CF_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment_sg_checker" path="/CF_SG_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_advspayment_sg" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+<!--            standard for contract financing -->
+        </action>
+        
+		<action path="/CF_SG_Payment" type="com.integrosys.cms.ui.contractfinancing.advspayment.SG_PaymentAction" name="CF_SG_PaymentForm" validate="false" scope="request">
+            <forward name="after_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_payment_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_payment_checker_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_payment_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_payment_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/advspayment/SG_payment_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_create" path="/CF_SG_AdvsPayment.do?event=maker_prepare_update"/>
+            <forward name="after_update" path="/CF_SG_AdvsPayment.do?event=maker_prepare_update"/>
+            <forward name="after_delete" path="/CF_SG_AdvsPayment.do?event=maker_prepare_update"/>
+
+<!--            standard for contract financing -->
+            <forward name="after_contractdetail_process" path="/ContractFinancing.do?event=process"/>
+            <forward name="after_contractdetail_view" path="/ContractFinancing.do?event=view"/>
+            <forward name="after_contractdetail_to_track" path="/ContractFinancing.do?event=to_track"/>
+            <forward name="after_contractdetail_maker_prepare_create" path="/ContractFinancing.do?event=maker_prepare_create"/>
+            <forward name="after_contractdetail_maker_prepare_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_contractdetail_maker_prepare_close" path="/ContractFinancing.do?event=maker_prepare_close"/>
+            <forward name="after_contractdetail_maker_process" path="/ContractFinancing.do?event=maker_process"/>
+            <forward name="after_contractdetail_maker_prepare_delete" path="/ContractFinancing.do?event=maker_prepare_delete"/>
+            <forward name="after_tnc_checker" path="/CF_TNC.do?event=checker_list_summary"/>
+            <forward name="after_tnc" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_fdr_checker" path="/CF_FDR.do?event=checker_list_summary"/>
+            <forward name="after_fdr" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_advspayment_checker" path="/CF_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment_sg_checker" path="/CF_SG_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_advspayment_sg" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+<!--            standard for contract financing -->
+        </action>
+        
+        <action path="/CF_TNC" type="com.integrosys.cms.ui.contractfinancing.tnc.TNCAction" name="CF_TNCForm" validate="false" scope="request">
+            <forward name="after_list_summary" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/tnc/termandcondition_list.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_list_summary" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/tnc/termandcondition_checker_list.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/tnc/termandcondition_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/tnc/termandcondition_checker_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/tnc/termandcondition_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/tnc/termandcondition_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/tnc/termandcondition_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_create" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_update" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_delete" path="/CF_TNC.do?event=list_summary"/>
+<!--            standard for contract financing -->
+            <forward name="after_contractdetail_process" path="/ContractFinancing.do?event=process"/>
+            <forward name="after_contractdetail_view" path="/ContractFinancing.do?event=view"/>
+            <forward name="after_contractdetail_to_track" path="/ContractFinancing.do?event=to_track"/>
+            <forward name="after_contractdetail_maker_prepare_create" path="/ContractFinancing.do?event=maker_prepare_create"/>
+            <forward name="after_contractdetail_maker_prepare_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_contractdetail_maker_prepare_close" path="/ContractFinancing.do?event=maker_prepare_close"/>
+            <forward name="after_contractdetail_maker_process" path="/ContractFinancing.do?event=maker_process"/>
+            <forward name="after_contractdetail_maker_prepare_delete" path="/ContractFinancing.do?event=maker_prepare_delete"/>
+            <forward name="after_tnc_checker" path="/CF_TNC.do?event=checker_list_summary"/>
+            <forward name="after_tnc" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_fdr_checker" path="/CF_FDR.do?event=checker_list_summary"/>
+            <forward name="after_fdr" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_advspayment_checker" path="/CF_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment_sg_checker" path="/CF_SG_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_advspayment_sg" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+<!--            standard for contract financing -->
+        </action>
+        
+        <action path="/CF_FDR" type="com.integrosys.cms.ui.contractfinancing.fdr.FDRAction" name="CF_FDRForm" validate="false" scope="request">
+            <forward name="after_list_summary" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/fdr/fdrregister_list.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_list_summary" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/fdr/fdrregister_checker_list.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/fdr/fdrregister_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/fdr/fdrregister_checker_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/fdr/fdrregister_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/fdr/fdrregister_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/fdr/fdrregister_view.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+                <set-property property="rightFrame" value="/contractfinancing/fdr/fdrregister_edit.jsp"/>
+                <set-property property="rightFrameTab" value="/contractfinancing/contractfinancing_frame.jsp />
+                <set-property property="title" value="title.contractfinancing.view"/>
+            </forward>
+            <forward name="after_create" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_update" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_delete" path="/CF_FDR.do?event=list_summary"/>
+<!--            standard for contract financing -->
+            <forward name="after_contractdetail_process" path="/ContractFinancing.do?event=process"/>
+            <forward name="after_contractdetail_view" path="/ContractFinancing.do?event=view"/>
+            <forward name="after_contractdetail_to_track" path="/ContractFinancing.do?event=to_track"/>
+            <forward name="after_contractdetail_maker_prepare_create" path="/ContractFinancing.do?event=maker_prepare_create"/>
+            <forward name="after_contractdetail_maker_prepare_update" path="/ContractFinancing.do?event=maker_prepare_update"/>
+            <forward name="after_contractdetail_maker_prepare_close" path="/ContractFinancing.do?event=maker_prepare_close"/>
+            <forward name="after_contractdetail_maker_process" path="/ContractFinancing.do?event=maker_process"/>
+            <forward name="after_contractdetail_maker_prepare_delete" path="/ContractFinancing.do?event=maker_prepare_delete"/>
+            <forward name="after_tnc_checker" path="/CF_TNC.do?event=checker_list_summary"/>
+            <forward name="after_tnc" path="/CF_TNC.do?event=list_summary"/>
+            <forward name="after_fdr_checker" path="/CF_FDR.do?event=checker_list_summary"/>
+            <forward name="after_fdr" path="/CF_FDR.do?event=list_summary"/>
+            <forward name="after_advspayment_checker" path="/CF_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment_sg_checker" path="/CF_SG_AdvsPayment.do?event=checker_list_summary"/>
+            <forward name="after_advspayment" path="/CF_AdvsPayment.do?event=list_summary"/>
+            <forward name="after_advspayment_sg" path="/CF_SG_AdvsPayment.do?event=list_summary"/>
+<!--            standard for contract financing -->
+        </action>	         
+        
+    </action-mappings>
+    
+    <message-resources key="message-contractfinancing" parameter="ApplicationResources-contractfinancing"/>
+</struts-config>    

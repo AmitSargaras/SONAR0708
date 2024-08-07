@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping   package="com.integrosys.cms.app.relationshipmgr">
+	<class entity-name="actualRelationshipMgr" 
+		name="com.integrosys.cms.app.relationshipmgr.bus.OBRelationshipMgr" table="CMS_RELATIONSHIP_MGR" lazy="false">
+            <id name="id">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_RELATIONSHIP_MGR_SEQ</param>
+			   </generator>
+            </id>
+            <property name="versionTime" column="VERSION_TIME" type="long"/>
+    		<property name="relationshipMgrCode" column="RM_MGR_CODE"/>
+			<property name="relationshipMgrName" column="RM_MGR_NAME"/>
+			<property name="relationshipMgrMailId" column="RM_MGR_MAIL"/>
+			<!-- <property name="reportingHeadName" column="REPORTING_HEAD"/> -->
+			<property name="reportingHeadName"  formula="(SELECT R.NAME FROM CMS_HRMS_DATA R WHERE R.EMPLOYEE_CODE = REPORTING_HEAD_EMPLOYEE_CODE)" />
+			<!-- <property name="reportingHeadMailId" column="REPORTING_HEAD_MAIL"/> -->
+			<property name="reportingHeadMailId"   formula="(SELECT R.EMAIL_ID FROM CMS_HRMS_DATA R WHERE R.EMPLOYEE_CODE = REPORTING_HEAD_EMPLOYEE_CODE)" />
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>            
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+			<many-to-one name="region" column="REGION" entity-name="actualRegion" lazy="false" />
+			<property name="cpsId"     		column="CPS_ID" />
+			<property name="employeeId" column="EMPLOYEE_ID" />
+			<property name="reportingHeadEmployeeCode" column="REPORTING_HEAD_EMPLOYEE_CODE"/>
+			<property name="relationshipMgrMobileNo" column="RM_MOBILE_NO"/>
+			<property name="relationshipMgrCity" column="RM_CITY"/>
+			<property name="relationshipMgrState" column="RM_STATE"/>
+			<property name="wboRegion" column="WBO_REGION"/>
+			<!--  <property name="reportingHeadMobileNo" column="REPORTING_HEAD_MOBILE_NO"/> -->
+			 <property name="reportingHeadMobileNo" formula="(SELECT R.MOBILE_NO FROM CMS_HRMS_DATA R WHERE R.EMPLOYEE_CODE = REPORTING_HEAD_EMPLOYEE_CODE)" />
+			<property name="reportingHeadRegion" column="REPORTING_HEAD_REGION"/>
+			<property name="localCAD" column="LOCAL_CAD" />
+    </class>    
+    
+    
+    <class entity-name="stagingRelationshipMgr" 
+		name="com.integrosys.cms.app.relationshipmgr.bus.OBRelationshipMgr" table="CMS_STAGE_RELATIONSHIP_MGR" lazy="false">
+            <id name="id">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_RELATIONSHIP_MGR_SEQ</param>
+			    </generator>
+            </id>
+            <property name="versionTime" column="VERSION_TIME" type="long"/>
+			<property name="relationshipMgrCode" column="RM_MGR_CODE"/>
+			<property name="relationshipMgrName" column="RM_MGR_NAME"/>
+			<property name="relationshipMgrMailId" column="RM_MGR_MAIL"/>
+			<property name="reportingHeadName" column="REPORTING_HEAD"/>
+			<property name="reportingHeadMailId" column="REPORTING_HEAD_MAIL"/>			
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+			<many-to-one name="region" column="REGION" entity-name="actualRegion" lazy="false" />
+			<property name="cpsId"     		column="CPS_ID" />
+			<property name="employeeId" column="EMPLOYEE_ID" />
+			<property name="relationshipMgrMobileNo" column="RM_MOBILE_NO"/>
+			<property name="reportingHeadEmployeeCode" column="REPORTING_HEAD_EMPLOYEE_CODE"/>
+			<property name="relationshipMgrCity" column="RM_CITY"/>
+			<property name="relationshipMgrState" column="RM_STATE"/>
+			<property name="wboRegion" column="WBO_REGION"/>
+			<property name="reportingHeadMobileNo" column="REPORTING_HEAD_MOBILE_NO"/>
+			<property name="reportingHeadRegion" column="REPORTING_HEAD_REGION"/>	
+			<property name="localCAD" column="LOCAL_CAD" />	
+    </class>
+ 
+    
+    <class entity-name="actualLocalCAD" 
+		name="com.integrosys.cms.app.relationshipmgr.bus.OBLocalCAD" table="CMS_LOCAL_CAD" lazy="false">
+            <id name="id">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_LOCAL_CAD_SEQ</param>
+			   </generator>
+            </id>
+            <property name="versionTime" column="VERSION_TIME" type="long"/>
+    		<property name="localCADEmployeeCode" column="CAD_EMPLOYEE_CODE"/>					
+			<property name="localCADName" column="CAD_NAME"/>
+			<property name="localCADEmailID" column="CAD_EMAIL_ID"/>
+			<property name="localCADmobileNo" column="CAD_MOBILE_NO"/>
+			<property name="localCADSupervisorName" column="CAD_SUPERVISOR_NAME"/>
+			<property name="localCADSupervisorEmail" column="CAD_SUPERVISOR_EMAIL"/>
+			<property name="localCADSupervisorMobileNo" column="CAD_SUPERVISOR_MOBILE_NO"/>
+			<property name="relationshipMgrID" column="RM_MGR_ID"/>
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>            
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+    </class>       	
+    
+        <class entity-name="stagingLocalCAD" 
+		name="com.integrosys.cms.app.relationshipmgr.bus.OBLocalCAD" table="CMS_STG_LOCAL_CAD" lazy="false">
+            <id name="id">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_LOCAL_CAD_SEQ</param>
+			   </generator>
+            </id>
+            <property name="versionTime" column="VERSION_TIME" type="long"/>
+    		<property name="localCADEmployeeCode" column="CAD_EMPLOYEE_CODE"/>					
+			<property name="localCADName" column="CAD_NAME"/>
+			<property name="localCADEmailID" column="CAD_EMAIL_ID"/>
+			<property name="localCADmobileNo" column="CAD_MOBILE_NO"/>
+			<property name="localCADSupervisorName" column="CAD_SUPERVISOR_NAME"/>
+			<property name="localCADSupervisorEmail" column="CAD_SUPERVISOR_EMAIL"/>
+			<property name="localCADSupervisorMobileNo" column="CAD_SUPERVISOR_MOBILE_NO"/>
+			<property name="relationshipMgrID" column="RM_MGR_ID"/>
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>            
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+    </class>    
+    
+    	 <class entity-name="hrmsData" 
+		name="com.integrosys.cms.app.relationshipmgr.bus.OBHRMSData" table="CMS_HRMS_DATA" lazy="false">
+            <id name="id">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_HRMS_DATA_SEQ</param>
+			   </generator>
+            </id>
+            <property name="versionTime" column="VERSION_TIME" type="long"/>
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+			
+			<property name="employeeCode" column="EMPLOYEE_CODE"/>
+			<property name="name" column="NAME"/>
+			<property name="emailId" column="EMAIL_ID"/>
+			<property name="mobileNo" column="MOBILE_NO"/>
+			<property name="region" column="REGION"/>
+			<property name="city" column="CITY"/>
+			<property name="state" column="STATE"/>
+			<property name="wboRegion" column="WBO_REGION"/>		
+			<property name="supervisorEmployeeCode" column="SUPERVISOR_EMPLOYEE_CODE"/>		
+			<property name="branchCode" column="BRANCH_CODE"/>					
+			<property name="band" column="BAND"/>
+    </class>   	
+    <class entity-name="actualRelationshipMgrUpdate" 
+		name="com.integrosys.cms.app.relationshipmgr.bus.OBRelationshipMgr" table="CMS_RELATIONSHIP_MGR" lazy="false">
+            <id name="id">
+                <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_RELATIONSHIP_MGR_SEQ</param>
+			   </generator>
+            </id>
+            <property name="versionTime" column="VERSION_TIME" type="long"/>
+    		<property name="relationshipMgrCode" column="RM_MGR_CODE"/>
+			<property name="relationshipMgrName" column="RM_MGR_NAME"/>
+			<property name="relationshipMgrMailId" column="RM_MGR_MAIL"/>
+			<property name="reportingHeadName" column="REPORTING_HEAD"/>
+			<property name="reportingHeadMailId" column="REPORTING_HEAD_MAIL"/>
+            <property name="createdBy" column="CREATE_BY"/>
+            <property name="creationDate" column="CREATION_DATE" />
+            <property name="lastUpdateBy" column="LAST_UPDATE_BY"/>
+            <property name="lastUpdateDate" column="LAST_UPDATE_DATE"/>            
+			<property name="status" column="STATUS"/>
+			<property name="deprecated"	column="DEPRECATED"/>
+			<many-to-one name="region" column="REGION" entity-name="actualRegion" lazy="false" />
+			<property name="cpsId"     		column="CPS_ID" />
+			<property name="employeeId" column="EMPLOYEE_ID" />
+			<property name="reportingHeadEmployeeCode" column="REPORTING_HEAD_EMPLOYEE_CODE"/>
+			<property name="relationshipMgrMobileNo" column="RM_MOBILE_NO"/>
+			<property name="relationshipMgrCity" column="RM_CITY"/>
+			<property name="relationshipMgrState" column="RM_STATE"/>
+			<property name="wboRegion" column="WBO_REGION"/>
+			 <property name="reportingHeadMobileNo" column="REPORTING_HEAD_MOBILE_NO"/>
+			<property name="reportingHeadRegion" column="REPORTING_HEAD_REGION"/>
+			<property name="localCAD" column="LOCAL_CAD" />	
+    </class>    
+</hibernate-mapping>

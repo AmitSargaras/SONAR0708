@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.integrosys.cms.host.eai.security.bus.asset.AssetSecurity"  table="CMS_ASSET" polymorphism="explicit">
+		<id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+		<property name="assetDescription" column="ASSET_DESCRIPTION" />
+
+		<component name="commonChargeDetail" class="com.integrosys.cms.host.eai.security.bus.asset.CommonChargeDetail">
+			<property name="physicalInspection" column="PHY_INSPECTION_DONE" />
+			<property name="physicalInspectionFrequencyUnit" column="PHY_INSPECTION_FREQ" type="long" />
+			<property name="physicalInspectionFrequencyUOM" column="PHY_INSPECTION_FREQ_UNIT" />
+			<property name="JDOLastPhysicalInspectionDate" column="LAST_PHY_INSPECT_DATE" type="timestamp" />
+			<property name="environmentallyRiskyStatus" column="ENV_RISKY_STATUS" />
+			<property name="JDOEnvironmentallyRiskyDate" column="ENV_RISKY_DATE" type="timestamp" />
+			<property name="environmentallyRiskyRemark" column="ENV_RISKY_REMARK" />
+			<component name="JDOPhysicalInspectionStatus" class="com.integrosys.cms.host.eai.StandardCode">
+	    		<property name="standardCodeNumber" column="INSPECTION_STATUS_NUM" /> 
+				<property name="standardCodeValue" column="INSPECTION_STATUS_VALUE" />
+			</component>
+		</component>
+
+		<component name="specificChargeDetail" class="com.integrosys.cms.host.eai.security.bus.asset.SpecificChargeDetail">
+			<component name="assetType" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="TYPE_OF_ASSET" />
+			</component>
+			<property name="purchasePrice" column="PURCHASE_PRICE" type="double" />
+			<property name="JDOPurchaseDate" column="PURCHASE_DATE" type="timestamp" />
+			<property name="JDORegistrationDate" column="REG_DATE" type="timestamp" />
+			<property name="manufactureYear" column="MANUFACTURE_YEAR" type="long" />
+			<component name="make" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="BRAND" />
+			</component>
+			<component name="model" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="MODEL_NO" />
+			</component>
+			<property name="salesProceed" column="SALES_PROCEED" type="double" />
+			<property name="registrationNo" column="REG_NO" />
+			<property name="registrationFee" column="REG_FEE" type="double" />
+			<component name="goodStatus" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="GOOD_STATUS" />
+			</component>
+			<property name="JDORepossessionDate" column="REPOSSESSION_DATE" />
+			<property name="publicTransport" column="PUBLIC_TRANSPORT" />
+			<property name="JDODateChattelSold" column="CHATTEL_SOLD_DATE"
+				type="timestamp" />
+			<property name="RLSerialNo" column="RL_SERIAL_NO" />
+			<property name="residualScrapValue" column="SCRAP_VALUE" type="double" />
+			<property name="yard" column="YARD" />
+			<component name="insurers" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="INSURERS" />
+			</component>
+		</component>
+
+		<component name="receivableDetail" class="com.integrosys.cms.host.eai.security.bus.asset.ReceivableDetail">
+			<property name="receivablesByBank" column="RECEIVABLES_BY_BANK" />
+			<component name="accountNoLocation" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="BANK_ACC_NO_LOCATION" />
+			</component>
+			<property name="accountNo" column="BANK_ACC_NO" />
+			<component name="invoiceType" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="INVOICE_TYPE" />
+			</component>
+		</component>
+
+		<component name="postDatedCheque" class="com.integrosys.cms.host.eai.security.bus.asset.PostDatedCheque">
+			<property name="JDOChequeDate" column="CHEQUE_DATE" type="timestamp" />
+			<property name="JDOPrivateCaveatGteeExpDate" column="PRI_CAVEAT_GUARANTEE_DATE" type="timestamp" />
+			<property name="ChequeRefNum" column="CHEQUE_REFERENCE_NO" />
+			<property name="InterestRate" column="INTEREST_RATE" type="double" />
+		</component>
+
+		<join table="CMS_ASSET_PLANT_EQUIP" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="plantEquipDetail"
+				class="com.integrosys.cms.host.eai.security.bus.asset.PlantEquipDetail">
+				<property name="serialNo" column="SERIAL_NO" />
+				<property name="invoiceNo" column="INVOICE_NO" />
+				<property name="downPaymentTradeIn" column="DOWNPAYMENT_TRADEIN" />
+				<property name="downPaymentCash" column="DOWNPAYMENT_CASH" />
+			</component>
+		</join>
+
+		<join table="CMS_ASSET_AIRCRAFT" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="aircraftDetail" class="com.integrosys.cms.host.eai.security.bus.asset.AirCraftDetail">
+				<property name="insuranceBrokerUnderTake" column="INS_BROKER_UNDERTAKE" />
+				<property name="processAgent" column="PROCESS_AGENT" />
+				<property name="processAgentCountry" column="PROCESS_AGENT_COUNTRY" />
+				<property name="specialistLegalOpinion" column="SPECIALIST_LEGAL_OPINION" />
+				<component name="exportCreditAgency" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="EXPORT_CRD_AGENCY" />
+				</component>
+				<property name="guarantors" column="GUARANTORS" />
+				<!--
+					<component name="insurers"
+					class="com.integrosys.cms.host.eai.StandardCode"> <property
+					name="standardCodeNumber" column="?" /> <property
+					name="standardCodeValue" column="INSURERS" /> </component>
+				-->
+				<property name="aircraftSerialNo" column="AIRCRAFT_SERIAL_NO" />
+				<property name="manufacturerName" column="MANUFACTURER_NAME" />
+				<property name="manufactureWarranties" column="MANUFACTURE_WARRANTIES" />
+				<property name="assignors" column="ASSIGNORS" />
+				<property name="insureAssignment" column="INSURE_ASMNT" />
+				<property name="amountAssignmentIsure" column="AMT_ASSMNT_ISURE"
+					type="double" />
+				<property name="JDOEffectiveDateAssignment" column="EFFECTIVE_DATE_ASMNT"
+					type="timestamp" />
+				<property name="JDOExpiryDateAssignment" column="EXP_DATE_ASMNT"
+					type="timestamp" />
+				<property name="reinsureAssignment" column="REINSURE_ASMNT" />
+				<property name="JDOEffectiveDateReinsure" column="EFFECTIVE_DATE_REINSURE"
+					type="timestamp" />
+				<property name="JDOExpiryDateReinsure" column="EXP_DATE_REINSURE"
+					type="timestamp" />
+			</component>
+		</join>
+
+		<join table="CMS_ASSET_GOLD" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="goldDetail"
+				class="com.integrosys.cms.host.eai.security.bus.asset.GoldDetail">
+				<component name="goldGrade" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="GOLD_GRADE" />
+				</component>
+				<property name="purchaseReceiptNo" column="PURCHASE_RECEIPT_NO" />
+				<property name="goldUnitPrice" column="GOLD_UNIT_PRICE"
+					type="double" />
+				<component name="goldUnitPriceUOM" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="GOLD_UNIT_PRICE_UOM" />
+				</component>
+				<property name="JDOCertificateExpiryDate" column="CERT_EXPIRY_DATE"
+					type="timestamp" />
+				<property name="goldWeight" column="GOLD_WEIGHT" type="double" />
+				<component name="goldWeightUnit" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="GOLD_UOM" />
+				</component>
+
+		    <!-- <property name="remarks" column="OTHER_REMARKS" />  -->
+				<property name="JDOAuctionDate" column="AUCTION_DATE" type="timestamp" />
+				<property name="auctionPrice" column="AUCTION_PRICE" type="double" />
+				<property name="auctioneer" column="AUCTIONEER" />
+			</component>
+		</join>
+
+		<join table="CMS_ASSET_VEHICLE" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="vehicleDetail"
+				class="com.integrosys.cms.host.eai.security.bus.asset.VehicleDetail">
+				<!--
+					<component name="coverageType"
+					class="com.integrosys.cms.host.eai.StandardCode"> <property
+					name="standardCodeNumber" column="?" /> <property
+					name="standardCodeValue" column="COVERAGE_TYPE" /> </component>
+					<property name="COEAmount" type="double"> <column name="COE_AMOUNT"
+					default="0" /> </property>
+				-->
+				<property name="engineNumber" column="ENGINE_NUMBER" />
+				<property name="transmissionType" column="TRANSMISSION_TYPE" />
+				<component name="energySource" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="ENERGY_SOURCE" />
+				</component>
+				<!--
+					<property name="horsePower" type="long"> <column name="HORSE_POWER"
+					default="0"/> </property>
+				-->
+				<property name="vehicleColour" column="VEHICLE_COLOR" />
+				<property name="chassisNumber" column="CHASSIS_NUMBER" />
+				<property name="PBTPBRInd" column="PBT_PBR_INDICATOR" />
+				<property name="PBTPBRPeriod" column="PBT_PBR_PERIOD" type="long" />
+				<property name="logBookNo" column="LOG_BOOK_NUMBER" />
+				<property name="energyCapacity" column="ENGINE_CAPACITY" />
+				<property name="EHakMilikNum" column="E_HAK_MILIK_NUMBER" />
+				<property name="priceList" column="PRICE_LIST" type="double" />
+				<property name="downPaymentTradeIn" column="DOWNPAYMENT_TRADEIN"
+					type="double" />
+				<property name="downPaymentCash" column="DOWNPAYMENT_CASH"
+					type="double" />
+				<property name="yardWarehouseStore" column="YARD_OPTIONS" />
+				<property name="roadTaxAmtType" column="ROAD_TAX_AMT_TYPE" />
+				<property name="roadTaxAmt" column="ROAD_TAX_AMT" type="double" />
+				<property name="JDORoadTaxExpiryDate" column="ROAD_TAX_EXPIRY_DATE"
+					type="timestamp" />
+				<property name="freightCharges" column="FREIGHT_CHARGES"
+					type="double" />
+				<property name="invoiceNumber" column="INVOICE_NO" />
+				<component name="dealerName" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="DEALER_NAME" />
+				</component>
+			</component>
+		</join>
+
+		<join table="CMS_ASSET_VESSEL" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="vesselDetail"
+				class="com.integrosys.cms.host.eai.security.bus.asset.VesselDetail">
+				<property name="vesselName" column="VESSEL_NAME" />
+				<property name="portRegistration" column="REG_COUNTRY" />
+				<component name="vesselState" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="VESSEL_STATE" />
+				</component>
+				<property name="JDOExpectedOccupancyDate" column="EXPT_OCCUP_DATE"
+					type="timestamp" />
+				<property name="expectedOccupancy" column="EXPT_OCCUP" />
+				<component name="occupancyType" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="OCCUP_TYPE" />
+				</component>
+				<property name="purchaseCurrency" column="PURCHASE_CURRENCY" />
+				<property name="builtYear" column="BUILD_YEAR" type="long" />
+				<property name="builder" column="BUILDER" />
+				<property name="mainRegistration" column="MAIN_REG" />
+				<property name="length" column="LENGTH" />
+				<property name="width" column="WIDTH" />
+				<property name="depth" column="DEPTH" />
+				<property name="deckLoading" column="DECK_LOADING" />
+				<property name="deckWeight" column="DECK_WEIGHT" />
+				<property name="sideBoard" column="SIDE_BOARD" />
+				<property name="bow" column="BOW" />
+				<property name="deck" column="DECK" />
+				<property name="deckThickness" column="DECK_THICKNESS" />
+				<property name="bottom" column="BOTTOM" />
+				<property name="winchDrive" column="WINCH_DRIVE" />
+				<property name="BHP" column="BHP" />
+				<property name="speed" column="SPEED" />
+				<property name="anchor" column="ANCHOR" />
+				<property name="anchorDrive" column="ANCHOR_DRIVE" />
+				<property name="classSociety" column="CLASS_SOCIETY" />
+				<property name="constructionCountry" column="CONSTRUCT_COUNTRY" />
+				<property name="constructionPlace" column="CONSTRUCT_PLACE" />
+				<property name="vesselUse" column="VESSEL_USE" />
+				<property name="charterContractFlag" column="CHARTER_CONTRACT" />
+				<property name="chartererName" column="CHARTERER_NAME" />
+				<property name="charterPeriod" column="CHARTER_PERIOD"
+					type="long" />
+				<component name="charterPeriodUnit" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="CHARTER_PERIOD_UNIT" />
+				</component>
+				<property name="charterAmount" column="CHARTER_AMT" type="double" />
+				<property name="charterCurrency" column="CHARTER_CURRENCY" />
+				<component name="charterRate" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="CHARTER_RATE_UNIT" />
+				</component>
+				<property name="charterRateOthers" column="CHARTER_RATE_UNIT_OTH" />
+				<property name="charterRemarks" column="CHARTER_REMARKS" />
+		    <!--  <property name="PortRegistration" column="?" />-->
+			</component>
+		</join>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.security.bus.asset.StageAssetSecurity" table="CMS_STAGE_ASSET">
+		<id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+		<property name="assetDescription" column="ASSET_DESCRIPTION" />
+
+		<component name="commonChargeDetail" class="com.integrosys.cms.host.eai.security.bus.asset.CommonChargeDetail">
+			<property name="physicalInspection" column="PHY_INSPECTION_DONE" />
+			<property name="physicalInspectionFrequencyUnit" column="PHY_INSPECTION_FREQ" type="long" />
+			<property name="physicalInspectionFrequencyUOM" column="PHY_INSPECTION_FREQ_UNIT" />
+			<property name="JDOLastPhysicalInspectionDate" column="LAST_PHY_INSPECT_DATE" type="timestamp" />
+			<property name="environmentallyRiskyStatus" column="ENV_RISKY_STATUS" />
+			<property name="JDOEnvironmentallyRiskyDate" column="ENV_RISKY_DATE" type="timestamp" />
+			<property name="environmentallyRiskyRemark" column="ENV_RISKY_REMARK" />
+			<component name="JDOPhysicalInspectionStatus" class="com.integrosys.cms.host.eai.StandardCode">
+	    		<property name="standardCodeNumber" column="INSPECTION_STATUS_NUM" /> 
+				<property name="standardCodeValue" column="INSPECTION_STATUS_VALUE" />
+			</component>
+		</component>
+
+		<component name="specificChargeDetail" class="com.integrosys.cms.host.eai.security.bus.asset.SpecificChargeDetail">
+			<component name="assetType" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="TYPE_OF_ASSET" />
+			</component>
+			<property name="purchasePrice" column="PURCHASE_PRICE" type="double" />
+			<property name="JDOPurchaseDate" column="PURCHASE_DATE" type="timestamp" />
+			<property name="JDORegistrationDate" column="REG_DATE" type="timestamp" />
+			<property name="manufactureYear" column="MANUFACTURE_YEAR" type="long" />
+			<component name="make" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="BRAND" />
+			</component>
+			<component name="model" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="MODEL_NO" />
+			</component>
+			<property name="salesProceed" column="SALES_PROCEED" type="double" />
+			<property name="registrationNo" column="REG_NO" />
+			<property name="registrationFee" column="REG_FEE" type="double" />
+			<component name="goodStatus" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="GOOD_STATUS" />
+			</component>
+			<property name="JDORepossessionDate" column="REPOSSESSION_DATE" />
+			<property name="publicTransport" column="PUBLIC_TRANSPORT" />
+			<property name="JDODateChattelSold" column="CHATTEL_SOLD_DATE"
+				type="timestamp" />
+			<property name="RLSerialNo" column="RL_SERIAL_NO" />
+			<property name="residualScrapValue" column="SCRAP_VALUE"
+				type="double" />
+			<property name="yard" column="YARD" />
+			<component name="insurers" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="INSURERS" />
+			</component>
+		</component>
+
+		<component name="receivableDetail" class="com.integrosys.cms.host.eai.security.bus.asset.ReceivableDetail">
+			<property name="receivablesByBank" column="RECEIVABLES_BY_BANK" />
+			<component name="accountNoLocation" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="BANK_ACC_NO_LOCATION" />
+			</component>
+			<property name="accountNo" column="BANK_ACC_NO" />
+			<component name="invoiceType" class="com.integrosys.cms.host.eai.StandardCode">
+	    	<!-- <property name="standardCodeNumber" column="?" /> -->
+				<property name="standardCodeValue" column="INVOICE_TYPE" />
+			</component>
+		</component>
+
+		<component name="postDatedCheque"
+			class="com.integrosys.cms.host.eai.security.bus.asset.PostDatedCheque">
+			<property name="JDOChequeDate" column="CHEQUE_DATE" type="timestamp" />
+			<property name="JDOPrivateCaveatGteeExpDate" column="PRI_CAVEAT_GUARANTEE_DATE"
+				type="timestamp" />
+			<property name="chequeRefNum" column="CHEQUE_REFERENCE_NO" />
+			<property name="interestRate" column="INTEREST_RATE" type="double" />
+		</component>
+
+		<join table="CMS_STAGE_ASSET_PLANT_EQUIP" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="plantEquipDetail" class="com.integrosys.cms.host.eai.security.bus.asset.PlantEquipDetail">
+				<property name="serialNo" column="SERIAL_NO" />
+				<property name="invoiceNo" column="INVOICE_NO" />
+				<property name="downPaymentTradeIn" column="DOWNPAYMENT_TRADEIN" />
+				<property name="downPaymentCash" column="DOWNPAYMENT_CASH" />
+			</component>
+		</join>
+
+		<join table="CMS_STAGE_ASSET_AIRCRAFT" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="aircraftDetail"
+				class="com.integrosys.cms.host.eai.security.bus.asset.AirCraftDetail">
+				<property name="insuranceBrokerUnderTake" column="INS_BROKER_UNDERTAKE" />
+				<property name="processAgent" column="PROCESS_AGENT" />
+				<property name="processAgentCountry" column="PROCESS_AGENT_COUNTRY" />
+				<property name="specialistLegalOpinion" column="SPECIALIST_LEGAL_OPINION" />
+				<component name="exportCreditAgency" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="EXPORT_CRD_AGENCY" />
+				</component>
+				<property name="guarantors" column="GUARANTORS" />
+				<!--
+					<component name="insurers"
+					class="com.integrosys.cms.host.eai.StandardCode"> <property
+					name="standardCodeNumber" column="?" /> <property
+					name="standardCodeValue" column="INSURERS" /> </component>
+				-->
+				<property name="aircraftSerialNo" column="AIRCRAFT_SERIAL_NO" />
+				<property name="manufacturerName" column="MANUFACTURER_NAME" />
+				<property name="manufactureWarranties" column="MANUFACTURE_WARRANTIES" />
+				<property name="assignors" column="ASSIGNORS" />
+				<property name="insureAssignment" column="INSURE_ASMNT" />
+				<property name="amountAssignmentIsure" column="AMT_ASSMNT_ISURE" type="double" />
+				<property name="JDOEffectiveDateAssignment" column="EFFECTIVE_DATE_ASMNT" type="timestamp" />
+				<property name="JDOExpiryDateAssignment" column="EXP_DATE_ASMNT" type="timestamp" />
+				<property name="reinsureAssignment" column="REINSURE_ASMNT" />
+				<property name="JDOEffectiveDateReinsure" column="EFFECTIVE_DATE_REINSURE" type="timestamp" />
+				<property name="JDOExpiryDateReinsure" column="EXP_DATE_REINSURE" type="timestamp" />
+			</component>
+		</join>
+
+		<join table="CMS_STAGE_ASSET_GOLD" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="goldDetail"
+				class="com.integrosys.cms.host.eai.security.bus.asset.GoldDetail">
+				<component name="goldGrade" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="GOLD_GRADE" />
+				</component>
+				<property name="purchaseReceiptNo" column="PURCHASE_RECEIPT_NO" />
+				<property name="goldUnitPrice" column="GOLD_UNIT_PRICE" type="double" />
+				<component name="goldUnitPriceUOM" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="GOLD_UNIT_PRICE_UOM" />
+				</component>
+				<property name="JDOCertificateExpiryDate" column="CERT_EXPIRY_DATE" type="timestamp" />
+				<property name="goldWeight" column="GOLD_WEIGHT" type="double" />
+				<component name="goldWeightUnit" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="GOLD_UOM" />
+				</component>
+
+		    <!-- <property name="remarks" column="OTHER_REMARKS" /> -->
+				<property name="JDOAuctionDate" column="AUCTION_DATE" type="timestamp" />
+				<property name="auctionPrice" column="AUCTION_PRICE" type="double" />
+				<property name="auctioneer" column="AUCTIONEER" />
+			</component>
+		</join>
+
+		<join table="CMS_STAGE_ASSET_VEHICLE" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="vehicleDetail"
+				class="com.integrosys.cms.host.eai.security.bus.asset.VehicleDetail">
+				<!--
+					<component name="coverageType"
+					class="com.integrosys.cms.host.eai.StandardCode"> <property
+					name="standardCodeNumber" column="?" /> <property
+					name="standardCodeValue" column="COVERAGE_TYPE" /> </component>
+					<property name="COEAmount" type="double"> <column name="COE_AMOUNT"
+					default="0" /> </property>
+				-->
+				<property name="engineNumber" column="ENGINE_NUMBER" />
+				<property name="transmissionType" column="TRANSMISSION_TYPE" />
+				<component name="energySource" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="ENERGY_SOURCE" />
+				</component>
+				<!--
+					<property name="horsePower" type="long"> <column name="HORSE_POWER"
+					default="0"/> </property>
+				-->
+				<property name="vehicleColour" column="VEHICLE_COLOR" />
+				<property name="chassisNumber" column="CHASSIS_NUMBER" />
+				<property name="PBTPBRInd" column="PBT_PBR_INDICATOR" />
+				<property name="logBookNo" column="LOG_BOOK_NUMBER" />
+				<property name="energyCapacity" column="ENGINE_CAPACITY" />
+				<property name="EHakMilikNum" column="E_HAK_MILIK_NUMBER" />
+				<property name="priceList" column="PRICE_LIST" type="double" />
+				<property name="downPaymentTradeIn" column="DOWNPAYMENT_TRADEIN" type="double" />
+				<property name="downPaymentCash" column="DOWNPAYMENT_CASH" type="double" />
+				<property name="yardWarehouseStore" column="YARD_OPTIONS" />
+				<property name="roadTaxAmtType" column="ROAD_TAX_AMT_TYPE" />
+				<property name="roadTaxAmt" column="ROAD_TAX_AMT" type="double" />
+				<property name="JDORoadTaxExpiryDate" column="ROAD_TAX_EXPIRY_DATE" type="timestamp" />
+				<property name="freightCharges" column="FREIGHT_CHARGES" type="double" />
+				<property name="invoiceNumber" column="INVOICE_NO" />
+				<component name="dealerName" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="DEALER_NAME" />
+				</component>
+			</component>
+		</join>
+
+		<join table="CMS_STAGE_ASSET_VESSEL" optional="true">
+			<key column="CMS_COLLATERAL_ID" />
+			<component name="vesselDetail"
+				class="com.integrosys.cms.host.eai.security.bus.asset.VesselDetail">
+				<property name="vesselName" column="VESSEL_NAME" />
+				<property name="portRegistration" column="REG_COUNTRY" />
+				<component name="vesselState" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="VESSEL_STATE" />
+				</component>
+				<property name="JDOExpectedOccupancyDate" column="EXPT_OCCUP_DATE"
+					type="timestamp" />
+				<property name="expectedOccupancy" column="EXPT_OCCUP" />
+				<component name="occupancyType" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="OCCUP_TYPE" />
+				</component>
+				<property name="purchaseCurrency" column="PURCHASE_CURRENCY" />
+				<property name="builtYear" column="BUILD_YEAR" type="long" />
+				<property name="builder" column="BUILDER" />
+				<property name="mainRegistration" column="MAIN_REG" />
+				<property name="length" column="LENGTH" />
+				<property name="width" column="WIDTH" />
+				<property name="depth" column="DEPTH" />
+				<property name="deckLoading" column="DECK_LOADING" />
+				<property name="deckWeight" column="DECK_WEIGHT" />
+				<property name="sideBoard" column="SIDE_BOARD" />
+				<property name="bow" column="BOW" />
+				<property name="deck" column="DECK" />
+				<property name="deckThickness" column="DECK_THICKNESS" />
+				<property name="bottom" column="BOTTOM" />
+				<property name="winchDrive" column="WINCH_DRIVE" />
+				<property name="BHP" column="BHP" />
+				<property name="speed" column="SPEED" />
+				<property name="anchor" column="ANCHOR" />
+				<property name="anchorDrive" column="ANCHOR_DRIVE" />
+				<property name="classSociety" column="CLASS_SOCIETY" />
+				<property name="constructionCountry" column="CONSTRUCT_COUNTRY" />
+				<property name="constructionPlace" column="CONSTRUCT_PLACE" />
+				<property name="vesselUse" column="VESSEL_USE" />
+				<property name="charterContractFlag" column="CHARTER_CONTRACT" />
+				<property name="chartererName" column="CHARTERER_NAME" />
+				<property name="charterPeriod" column="CHARTER_PERIOD" type="long" />
+				<component name="charterPeriodUnit" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="CHARTER_PERIOD_UNIT" />
+				</component>
+				<property name="charterAmount" column="CHARTER_AMT" type="double" />
+				<property name="charterCurrency" column="CHARTER_CURRENCY" />
+				<component name="charterRate" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+					<property name="standardCodeValue" column="CHARTER_RATE_UNIT" />
+				</component>
+				<property name="charterRateOthers" column="CHARTER_RATE_UNIT_OTH" />
+				<property name="charterRemarks" column="CHARTER_REMARKS" />	
+			</component>
+		</join>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.security.bus.asset.ChequeDetail" table="CMS_ASSET_PDC" polymorphism="explicit">
+		<id name="assetPDCId" column="ASSET_PDC_ID">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">ASSET_PDC_SEQ</param>
+			</generator>
+		</id>
+		<property name="collateralId" column="CMS_COLLATERAL_ID"
+			type="long" />
+		<property name="chequeType" column="TYPE_OF_CHQ" />
+		<property name="chequeAmountCurrency" column="CHEQUE_AMOUNT_CURRENCY" />
+		<property name="chequeAmount" column="CHEQUE_AMOUNT" type="double" />
+		<property name="receivableByBank" column="RECEIVABLES_BY_BANK" />
+		<property name="toCredit" column="TO_CREDIT" />
+		<component name="issuer" class="com.integrosys.cms.host.eai.StandardCode">
+			<property name="standardCodeNumber" column="ISSUER" />
+		</component>
+		<property name="draweeBank" column="DRAWEE_BANK" />
+		<property name="issueCountry" column="ISSUE_COUNTRY" />
+		<property name="JDOIssueDate" column="ISSUE_DATE" type="timestamp" />
+		<property name="JDOExpiryDate" column="EXPIRY_DATE" type="timestamp" />
+		<property name="custodianType" column="CUSTODIAN_TYPE" />
+		<property name="securityCustodian" column="SECURITY_CUSTODIAN" />
+		<property name="margin" column="MARGIN" type="double" />
+		<property name="valueBeforeMargin" column="VALUE_BEFORE_MARGIN" type="double" />
+		<!--
+			<property name="exchangeControlObtained"
+			column="EXCHANGE_CONTROL_OBTAINED" />
+		-->
+		<component name="bankAcctLocation" class="com.integrosys.cms.host.eai.StandardCode">
+		    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="LOCATION_OF_BANK" />
+		</component>
+		<property name="securityId" column="SOURCE_SECURITY_ID" />
+		<property name="sourceId" column="SOURCE_ID" />
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.security.bus.asset.StageChequeDetail" table="CMS_STAGE_ASSET_PDC">
+		<id name="assetPDCId" column="ASSET_PDC_ID">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">ASSET_PDC_SEQ</param>
+			</generator>
+		</id>
+		<property name="collateralId" column="CMS_COLLATERAL_ID"
+			type="long" />
+		<property name="chequeType" column="TYPE_OF_CHQ" />
+		<property name="chequeAmountCurrency" column="CHEQUE_AMOUNT_CURRENCY" />
+		<property name="chequeAmount" column="CHEQUE_AMOUNT" type="double" />
+		<property name="receivableByBank" column="RECEIVABLES_BY_BANK" />
+		<property name="toCredit" column="TO_CREDIT" />
+		<property name="locationBank" column="LOCATION_OF_BANK" />
+		<component name="issuer" class="com.integrosys.cms.host.eai.StandardCode">
+			<property name="standardCodeNumber" column="ISSUER" />
+		</component>
+		<property name="draweeBank" column="DRAWEE_BANK" />
+		<property name="issueCountry" column="ISSUE_COUNTRY" />
+		<property name="JDOIssueDate" column="ISSUE_DATE" type="timestamp" />
+		<property name="JDOExpiryDate" column="EXPIRY_DATE" type="timestamp" />
+		<property name="custodianType" column="CUSTODIAN_TYPE" />
+		<property name="securityCustodian" column="SECURITY_CUSTODIAN" />
+		<property name="margin" column="MARGIN" type="double" />
+		<property name="valueBeforeMargin" column="VALUE_BEFORE_MARGIN" type="double" />
+		<!--
+			<property name="exchangeControlObtained"
+			column="EXCHANGE_CONTROL_OBTAINED" />
+		-->
+		<property name="securityId" column="SOURCE_SECURITY_ID" />
+		<property name="sourceId" column="SOURCE_ID" />
+	</class>
+	
+	<class entity-name="actualTradeIn" name="com.integrosys.cms.host.eai.security.bus.asset.TradeInInfo" table="CMS_ASSET_TRADE_IN" lazy="false">
+		<id name="id" type="long" column="ID" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_ASSET_TRADE_IN_A_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long" />
+		
+		<property name="cmsCollateralId" column="COLLATERAL_ID" />
+		<property name="refId" column="REF_ID" />
+		<component name="make" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="MAKE" />
+		</component>
+		<component name="model" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="MODEL" />
+		</component>
+		<property name="yearOfManufacture" column="YEAR_OF_MANUFACTURE"/>
+		<property name="registrationNo" column="REGISTRATION_NO"/>
+		<property name="tradeInValue" column="TRADE_IN_VALUE" type="big_decimal" />
+		<property name="tradeInDeposit" column="TRADE_IN_DEPOSIT" type="big_decimal" />
+		<property name="currencyCode" column="CURRENCY_CODE"/>
+	</class>
+
+	<class entity-name="stageTradeIn" name="com.integrosys.cms.host.eai.security.bus.asset.TradeInInfo" table="STAGE_ASSET_TRADE_IN" lazy="false">
+		<id name="id" type="long" column="ID" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_ASSET_TRADE_IN_S_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long" />
+		
+		<property name="cmsCollateralId" column="COLLATERAL_ID" />
+		<property name="refId" column="REF_ID" />
+		<component name="make" class="com.integrosys.cms.host.eai.StandardCode">
+    		<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="MAKE" />
+		</component>
+		<component name="model" class="com.integrosys.cms.host.eai.StandardCode">
+    		<!-- <property name="standardCodeNumber" column="?" /> -->
+			<property name="standardCodeValue" column="MODEL" />
+		</component>
+		<property name="yearOfManufacture" column="YEAR_OF_MANUFACTURE"/>
+		<property name="registrationNo" column="REGISTRATION_NO"/>
+		<property name="tradeInValue" column="TRADE_IN_VALUE" type="big_decimal" />
+		<property name="tradeInDeposit" column="TRADE_IN_DEPOSIT" type="big_decimal" />
+		<property name="currencyCode" column="CURRENCY_CODE"/>
+	</class>
+</hibernate-mapping>

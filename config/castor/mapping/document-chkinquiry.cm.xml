@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN" "http://castor.org/mapping.dtd">
+
+<mapping>
+	<description>Checklist Document Mapping - DC002 (Inquiry)</description>
+
+	<include href="common.cm.xml" />
+
+	<class extends="com.integrosys.cms.host.eai.EAIBody" name="com.integrosys.cms.host.eai.document.inquiry.checklist.DocChecklistInquiryMsgBody" >
+		<map-to xml="MsgBody"/>
+		<field name="ChecklistCriteria" type="com.integrosys.cms.host.eai.document.inquiry.checklist.ChecklistCriteria"/>		
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.inquiry.checklist.ChecklistCriteria">
+		<map-to xml="ChecklistCriteria"/>
+		<field name="LOSAANumber" type="string"/>
+		<field name="ChecklistType" type="string"/>
+		<field name="CMSChecklistID" type="java.lang.Long"/>
+		<field name="CCChecklist" type="com.integrosys.cms.host.eai.document.bus.CCChecklist"/>
+		<field name="SCChecklist" type="com.integrosys.cms.host.eai.document.bus.SCChecklist"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.CCChecklist">
+		<map-to xml="CCChecklist"/>
+		<field name="CustomerType" type="string"/>
+        <field name="CIFNo" type="string"/>
+	</class>
+
+	<class name="com.integrosys.cms.host.eai.document.bus.SCChecklist">
+		<map-to xml="SCChecklist"/>
+		<field name="CmsCollateralID" type="long" >
+			<bind-xml name="CMSCollateralID"/>
+		</field>
+	</class>
+
+</mapping>

@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<description>
+        To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+        All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+        Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+        Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+        Inject proxy(s) into command class
+    </description>
+
+    <!--Internal Credit Rating-->
+    <bean id="InternalCreditRatingAction.CheckerApproveInternalCreditRatingCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.CheckerApproveInternalCreditRatingCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingAction.CheckerRejectInternalCreditRatingCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.CheckerRejectInternalCreditRatingCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingAction.DeleteInternalCreditRatingItemCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.DeleteInternalCreditRatingItemCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingAction.ListInternalCreditRatingCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.ListInternalCreditRatingCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingAction.MakerCloseInternalCreditRatingCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.MakerCloseInternalCreditRatingCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingAction.MakerUpdateInternalCreditRatingCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.MakerUpdateInternalCreditRatingCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingAction.PrepareInternalCreditRatingCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.PrepareInternalCreditRatingCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingAction.ReturnInternalCreditRatingCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.ReturnInternalCreditRatingCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingItemAction.ErrorReturnItemCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.ErrorReturnItemCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingItemAction.PrepareInternalCreditRatingItemCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.PrepareInternalCreditRatingItemCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingItemAction.ReadInternalCreditRatingItemCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.ReadInternalCreditRatingItemCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+    <bean id="InternalCreditRatingItemAction.SaveInternalCreditRatingItemCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internalcreditrating.SaveInternalCreditRatingItemCommand">
+        <property name="internalCreditRatingProxy" ref="internalCreditRatingProxy"/>
+    </bean>
+
+    <!--Entity Limit-->
+    <bean id="ELCustomerSearchAction.AddNewEntityLimitCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.customer.AddNewEntityLimitCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="ELCustomerSearchAction.ELCustSearchCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.customer.ELCustSearchCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="ELCustomerSearchAction.PrepareELCustSearchCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.customer.PrepareELCustSearchCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+
+    <bean id="EntityLimitListAction.ApproveEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.ApproveEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.CancelEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.CancelEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.CloseEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.CloseEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.CompareEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.CompareEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.DeleteEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.DeleteEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.EditEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.EditEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.ListCompareEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.ListCompareEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.ListEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.ListEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.PaginateEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.PaginateEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.PrepareAddNewEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.PrepareAddNewEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.ReadEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.ReadEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.RejectEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.RejectEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.SubmitEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.SubmitEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+    <bean id="EntityLimitListAction.UpdateEntityLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.entitylimit.list.UpdateEntityLimitListCommand">
+        <property name="entityLimitProxy" ref="entityLimitProxy"/>
+    </bean>
+
+    <!-- Sector Limit List -->
+    <bean id="SectorLimitAction.ListSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.ListSectorLimitCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SectorLimitAction.ReadSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.ReadSectorLimitCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SectorLimitAction.PrepareSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.PrepareSectorLimitCmd">
+    </bean>
+
+    <bean id="SectorLimitAction.SubmitSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.SubmitSectorLimitCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SectorLimitAction.ApproveSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.ApproveSectorLimitCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SectorLimitAction.RejectSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.RejectSectorLimitCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SectorLimitAction.CloseSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.CloseSectorLimitCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SectorLimitAction.DeleteSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.DeleteSectorLimitCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SectorLimitAction.ProcessingSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.ProcessingSectorLimitCmd">
+    </bean>
+
+    <bean id="SectorLimitAction.ReturnSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.ReturnSectorLimitCmd">
+    </bean>
+
+    <bean id="SectorLimitAction.ReadSectorLimitTrxCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.ReadSectorLimitTrxCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SectorLimitAction.DeleteSubSectorLmtsCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.DeleteSubSectorLmtsCmd">
+    </bean>
+
+    <!-- Sub Sector Limit List -->
+    <bean id="SubSectorLimitAction.AddSubSectorLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.AddSubSectorLmtCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SubSectorLimitAction.DeleteEcoSectorlimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.DeleteEcoSectorlimitCmd">
+    </bean>
+
+    <bean id="SubSectorLimitAction.PrepareReturnSubSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.PrepareReturnSubSectorLimitCmd">
+    </bean>
+
+    <bean id="SubSectorLimitAction.PrepareSubSectorLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.PrepareSubSectorLmtCmd">
+    </bean>
+
+    <bean id="SubSectorLimitAction.ReadSubSectorLimitTrxCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.ReadSubSectorLimitTrxCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SubSectorLimitAction.ReadSubItemCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.ReadSubItemCmd">
+    </bean>
+
+    <bean id="SubSectorLimitAction.ReadSubSectorLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.ReadSubSectorLmtCmd">
+    </bean>
+
+    <bean id="SubSectorLimitAction.ReturnSubSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.ReturnSubSectorLimitCmd">
+    </bean>
+
+    <bean id="SubSectorLimitAction.UpdateSubSectorLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.UpdateSubSectorLmtCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="SubSectorLimitAction.ProcessingSubSectorLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.subsectorlimit.ProcessingSubSectorLimitCmd">
+    </bean>
+
+    <!-- Econ Sector Limit List -->
+    <bean id="EconSectorLimitAction.AddEconSectorLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.econsectorlimit.AddEconSectorLmtCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <bean id="EconSectorLimitAction.PrepareEconSectorLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.econsectorlimit.PrepareEconSectorLmtCmd">
+    </bean>
+
+    <bean id="EconSectorLimitAction.ReadEconSectorLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.econsectorlimit.ReadEconSectorLmtCmd">
+    </bean>
+
+    <bean id="EconSectorLimitAction.UpdateEconSectorLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.sectorlimit.econsectorlimit.UpdateEconSectorLmtCmd">
+        <property name="sectorLimitProxy" ref="sectorLimitProxy"/>
+    </bean>
+
+    <!-- Internal Limit Parameter -->
+
+    <!--<bean id="DimensionAction.ConfirmAddCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.dimension.ConfirmAddCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="DimensionAction.FailValidateCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.dimension.FailValidateCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="DimensionAction.PrepareAddCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.dimension.PrepareAddCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="DimensionAction.PrepareEditCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.dimension.PrepareEditCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitItemAction.ConfirmAddCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.item.ConfirmAddCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitItemAction.FailValidateCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.item.FailValidateCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitItemAction.PrepareAddCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.item.PrepareAddCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.ReadInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.ReadInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.PrepareEditInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.PrepareEditInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.SavePage2SessionCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.SavePage2SessionCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.DeleteInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.DeleteInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.SaveInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.SaveInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.SubmitInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.SubmitInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.ApproveInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.ApproveInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.RejectInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.RejectInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.CloseInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.CloseInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <!--<bean id="InternalLimitListAction.PaginateInternalLimitListCommand"-->
+          <!--class="com.integrosys.cms.ui.creditriskparam.internallimit.list.PaginateInternalLimitListCommand">-->
+        <!--<property name="internalLimitProxy" ref="internalLimitProxy"/>-->
+    <!--</bean>-->
+    <bean id="InternalLmtParamAction.InternalLmtMakerReadCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internallimit.list.InternalLmtMakerReadCommand">
+        <property name="internalLimitProxy" ref="internalLimitProxy"/>
+    </bean>
+    <bean id="InternalLmtParamAction.InternalLmtMakerEditCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internallimit.list.InternalLmtMakerEditCommand">
+        <property name="internalLimitProxy" ref="internalLimitProxy"/>
+    </bean>
+    <bean id="InternalLmtParamAction.InternalLmtCheckerReadCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internallimit.list.InternalLmtCheckerReadCommand">
+        <property name="internalLimitProxy" ref="internalLimitProxy"/>
+    </bean>
+    <bean id="InternalLmtParamAction.ApproveInternalLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internallimit.list.ApproveInternalLimitListCommand">
+        <property name="internalLimitProxy" ref="internalLimitProxy"/>
+    </bean>
+    <bean id="InternalLmtParamAction.RejectInternalLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internallimit.list.RejectInternalLimitListCommand">
+        <property name="internalLimitProxy" ref="internalLimitProxy"/>
+    </bean>
+    <bean id="InternalLmtParamAction.InternalLmtMakerReadRejectedCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internallimit.list.InternalLmtMakerReadRejectedCommand">
+        <property name="internalLimitProxy" ref="internalLimitProxy"/>
+    </bean>
+    <bean id="InternalLmtParamAction.CloseInternalLimitListCommand"
+          class="com.integrosys.cms.ui.creditriskparam.internallimit.list.CloseInternalLimitListCommand">
+        <property name="internalLimitProxy" ref="internalLimitProxy"/>
+    </bean>
+    <!-- Product Limit List -->
+    <bean id="ProductProgramLimitAction.ListProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ListProductLimitCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductProgramLimitAction.ReadProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ReadProductLimitCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductProgramLimitAction.PrepareProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.PrepareProductLimitCmd">
+    </bean>
+
+    <bean id="ProductProgramLimitAction.ReadProductLimitTrxCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ReadProductLimitTrxCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductProgramLimitAction.SubmitProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.SubmitProductLimitCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductProgramLimitAction.ApproveProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ApproveProductLimitCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductProgramLimitAction.RejectProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.RejectProductLimitCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductProgramLimitAction.CloseProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.CloseProductLimitCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductProgramLimitAction.DeleteProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.DeleteProductLimitCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductProgramLimitAction.ProcessingProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ProcessingProductLimitCmd">
+    </bean>
+
+    <bean id="ProductProgramLimitAction.DeleteSubProductLmtsCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.DeleteSubProductLmtsCmd">
+    </bean>
+
+    <bean id="ProductProgramLimitAction.ReturnProductLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.productprogramlimit.ReturnProductLimitCmd">
+    </bean>
+
+    <!-- Product Type List -->
+    <bean id="ProductTypeLimitAction.ReadProductLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.producttypelimit.ReadProductLmtCmd">
+    </bean>
+
+    <bean id="ProductTypeLimitAction.PrepareProductLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.producttypelimit.PrepareProductLmtCmd">
+    </bean>
+
+    <bean id="ProductTypeLimitAction.AddProductLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.producttypelimit.AddProductLmtCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <bean id="ProductTypeLimitAction.UpdateProductLmtCmd"
+          class="com.integrosys.cms.ui.creditriskparam.producttypelimit.UpdateProductLmtCmd">
+        <property name="productLimitProxy" ref="productLimitProxy"/>
+    </bean>
+
+    <!--Bank Entity Branch Param-->
+    <bean id="BankEntityBranchParamAction.ListBankEntityBranchParamCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.ListBankEntityBranchParamCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+    <bean id="BankEntityBranchParamAction.ReturnBankEntityBranchParamCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.ReturnBankEntityBranchParamCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+    <bean id="BankEntityBranchParamAction.CheckerApproveBankEntityBranchParamCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.CheckerApproveBankEntityBranchParamCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+    <bean id="BankEntityBranchParamAction.CheckerRejectBankEntityBranchParamCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.CheckerRejectBankEntityBranchParamCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+    <bean id="BankEntityBranchParamAction.DeleteBankEntityBranchItemCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.DeleteBankEntityBranchItemCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+    <bean id="BankEntityBranchParamAction.MakerCloseBankEntityBranchParamCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.MakerCloseBankEntityBranchParamCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+    <bean id="BankEntityBranchParamAction.MakerUpdateBankEntityBranchParamCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.MakerUpdateBankEntityBranchParamCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+
+    <bean id="BankEntityBranchParamItemAction.SaveBankEntityBranchParamItemCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.SaveBankEntityBranchParamItemCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+    <bean id="BankEntityBranchParamItemAction.PrepareBankEntityParamItemCmd"
+          class="com.integrosys.cms.ui.creditriskparam.bankentitybranch.PrepareBankEntityParamItemCmd">
+        <property name="bankEntityBranchParamProxy" ref="bankEntityBranchParamProxy"/>
+    </bean>
+
+    <!--Country Limit-->
+    <bean id="CountryLimitAction.ReadCountryLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.ReadCountryLimitCmd">
+        <property name="countryLimitProxy" ref="countryLimitProxy"/>
+    </bean>
+    <bean id="CountryLimitAction.PrepareCountryLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.PrepareCountryLimitCmd">
+        <!--<property name="countryLimitProxy" ref="countryLimitProxy"/>-->
+    </bean>
+    <bean id="CountryLimitAction.ReturnCountryLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.ReturnCountryLimitCmd">
+        <property name="countryLimitProxy" ref="countryLimitProxy"/>
+    </bean>
+    <bean id="CountryLimitAction.MakerUpdateCountryLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.MakerUpdateCountryLimitCmd">
+        <property name="countryLimitProxy" ref="countryLimitProxy"/>
+    </bean>
+    <bean id="CountryLimitAction.CheckerApproveCountryLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.CheckerApproveCountryLimitCmd">
+        <property name="countryLimitProxy" ref="countryLimitProxy"/>
+    </bean>
+    <bean id="CountryLimitAction.CheckerRejectCountryLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.CheckerRejectCountryLimitCmd">
+        <property name="countryLimitProxy" ref="countryLimitProxy"/>
+    </bean>
+    <bean id="CountryLimitAction.MakerCloseCountryLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.MakerCloseCountryLimitCmd">
+        <property name="countryLimitProxy" ref="countryLimitProxy"/>
+    </bean>
+    <bean id="CountryLimitAction.SaveCurWorkingCountryLimitCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.SaveCurWorkingCountryLimitCmd">
+        <property name="countryLimitProxy" ref="countryLimitProxy"/>
+    </bean>
+    <bean id="CountryLimitAction.DeleteCountryLimitItemCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.DeleteCountryLimitItemCmd">
+        <!--<property name="countryLimitProxy" ref="countryLimitProxy"/>-->
+    </bean>
+
+    <bean id="CountryLimitItemAction.PrepareCountryLimitItemCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.PrepareCountryLimitItemCmd">
+        <property name="countryLimitProxy" ref="countryLimitProxy"/>
+    </bean>
+    <bean id="CountryLimitItemAction.SaveCountryLimitItemCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.SaveCountryLimitItemCmd">
+        <!--<property name="countryLimitProxy" ref="countryLimitProxy"/>-->
+    </bean>
+
+    <bean id="CountryRatingAction.ReadCountryRatingCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.ReadCountryRatingCmd">
+        <!--<property name="countryLimitProxy" ref="countryLimitProxy"/>-->
+    </bean>
+    <bean id="CountryRatingAction.PrepareCountryRatingCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.PrepareCountryRatingCmd">
+        <!--<property name="countryLimitProxy" ref="countryLimitProxy"/>-->
+    </bean>
+    <bean id="CountryRatingAction.SaveCountryRatingCmd"
+          class="com.integrosys.cms.ui.creditriskparam.countrylimit.SaveCountryRatingCmd">
+        <!--<property name="countryLimitProxy" ref="countryLimitProxy"/>-->
+    </bean>
+    
+</beans>

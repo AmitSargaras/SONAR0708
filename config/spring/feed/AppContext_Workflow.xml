@@ -1,0 +1,722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+	
+	<!-- stock index feed -->
+
+	<bean id="StockIndexTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.feed.trx.stockindex.CheckerApproveUpdateOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="StockIndexTrx.CheckerRejectOperation" class="com.integrosys.cms.app.feed.trx.stockindex.CheckerRejectOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="StockIndexTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.feed.trx.stockindex.MakerCloseDraftOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="StockIndexTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.feed.trx.stockindex.MakerCloseRejectedOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="StockIndexTrx.MakerSubmitOperation" class="com.integrosys.cms.app.feed.trx.stockindex.MakerSubmitOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="StockIndexTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.feed.trx.stockindex.MakerSubmitRejectedOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="StockIndexTrx.MakerUpdateOperation" class="com.integrosys.cms.app.feed.trx.stockindex.MakerUpdateOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="StockIndexTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.feed.trx.stockindex.MakerUpdateRejectedOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="StockIndexTrx.ReadStockIndexGroupOperation" class="com.integrosys.cms.app.feed.trx.stockindex.ReadStockIndexGroupOperation">
+		<property name="stockIndexFeedBusManager" ref="stockIndexFeedBusManager" />
+		<property name="stagingStockIndexFeedBusManager" ref="stagingStockIndexFeedBusManager" />
+	</bean>
+
+	<bean id="stockIndexFeedGroupReadController" class="com.integrosys.cms.app.feed.trx.stockindex.StockIndexFeedGroupReadController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="ReadStockIndexGroupOperation" value-ref="StockIndexTrx.ReadStockIndexGroupOperation" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="stockIndexFeedGroupTrxContoller" class="com.integrosys.cms.app.feed.trx.stockindex.StockIndexFeedGroupTrxController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="CheckerApproveUpdateOperation" value-ref="StockIndexTrx.CheckerApproveUpdateOperation" />
+				<entry key="CheckerRejectOperation" value-ref="StockIndexTrx.CheckerRejectOperation" />
+				<entry key="MakerCloseDraftOperation" value-ref="StockIndexTrx.MakerCloseDraftOperation" />
+				<entry key="MakerCloseRejectedOperation" value-ref="StockIndexTrx.MakerCloseRejectedOperation" />
+				<entry key="MakerSubmitOperation" value-ref="StockIndexTrx.MakerSubmitOperation" />
+				<entry key="MakerSubmitRejectedOperation" value-ref="StockIndexTrx.MakerSubmitRejectedOperation" />
+				<entry key="MakerUpdateOperation" value-ref="StockIndexTrx.MakerUpdateOperation" />
+				<entry key="MakerUpdateRejectedOperation" value-ref="StockIndexTrx.MakerUpdateRejectedOperation" />
+			</map>
+		</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+	</bean>
+
+	<bean id="stockIndexTrxControllerFactory" class="com.integrosys.cms.app.feed.trx.stockindex.StockIndexFeedGroupTrxControllerFactory">
+		<property name="stockIndexFeedGroupReadController" ref="stockIndexFeedGroupReadController" />
+		<property name="stockIndexFeedGroupTrxContoller" ref="stockIndexFeedGroupTrxContoller" />
+	</bean>
+	
+	<!-- bond feed -->
+	
+	<bean id="BondFeedTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.feed.trx.bond.CheckerApproveUpdateOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+
+	<bean id="BondFeedTrx.CheckerRejectOperation" class="com.integrosys.cms.app.feed.trx.bond.CheckerRejectOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+	
+	<bean id="BondFeedTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.feed.trx.bond.MakerCloseDraftOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+	
+	<bean id="BondFeedTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.feed.trx.bond.MakerCloseRejectedOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+	
+	<bean id="BondFeedTrx.MakerSubmitOperation" class="com.integrosys.cms.app.feed.trx.bond.MakerSubmitOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+	
+	<bean id="BondFeedTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.feed.trx.bond.MakerSubmitRejectedOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+	
+	<bean id="BondFeedTrx.MakerUpdateOperation" class="com.integrosys.cms.app.feed.trx.bond.MakerUpdateOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+	
+	<bean id="BondFeedTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.feed.trx.bond.MakerUpdateRejectedOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+	
+	<bean id="BondFeedTrx.ReadBondGroupOperation" class="com.integrosys.cms.app.feed.trx.bond.ReadBondGroupOperation">
+		<property name="bondFeedBusManager" ref="bondFeedBusManager" />
+		<property name="bondFeedBusManagerStaging" ref="stagingBondFeedBusManager" />
+	</bean>
+
+	<bean id="BondFeedGroupReadController" class="com.integrosys.cms.app.feed.trx.bond.BondFeedGroupReadController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="ReadBondGroupOperation" value-ref="BondFeedTrx.ReadBondGroupOperation" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="BondFeedGroupTrxController" class="com.integrosys.cms.app.feed.trx.bond.BondFeedGroupTrxController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="CheckerApproveUpdateOperation" value-ref="BondFeedTrx.CheckerApproveUpdateOperation" />
+				<entry key="CheckerRejectOperation" value-ref="BondFeedTrx.CheckerRejectOperation" />
+				<entry key="MakerCloseDraftOperation" value-ref="BondFeedTrx.MakerCloseDraftOperation" />
+				<entry key="MakerCloseRejectedOperation" value-ref="BondFeedTrx.MakerCloseRejectedOperation" />
+				<entry key="MakerSubmitOperation" value-ref="BondFeedTrx.MakerSubmitOperation" />
+				<entry key="MakerSubmitRejectedOperation" value-ref="BondFeedTrx.MakerSubmitRejectedOperation" />
+				<entry key="MakerUpdateOperation" value-ref="BondFeedTrx.MakerUpdateOperation" />
+				<entry key="MakerUpdateRejectedOperation" value-ref="BondFeedTrx.MakerUpdateRejectedOperation" />
+			</map>
+		</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+	</bean>
+	
+	
+			<!-- For File Upload(bond feed),Add on 20/06/2011 -->
+  				<bean id="BondFeedTrx.MakerBondFeedGroupInsertFileOperation"
+						class="com.integrosys.cms.app.feed.trx.bond.MakerBondFeedGroupInsertFileOperation">
+		 				 <property name="bondFeedFileMapperIdBusManager" ref="bondFeedFileMapperIdBusManager"/>
+       					 <property name="stagingBondFeedFileMapperIdBusManager" ref="stagingBondFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="BondFeedTrx.CheckerApproveInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.bond.CheckerApproveInsertMasterOperation">
+		 			 <property name="bondFeedFileMapperIdBusManager" ref="bondFeedFileMapperIdBusManager"/>
+        			 <property name="stagingBondFeedFileMapperIdBusManager" ref="stagingBondFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="BondFeedTrx.CheckerRejectInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.bond.CheckerRejectInsertMasterOperation">
+					  <property name="bondFeedFileMapperIdBusManager" ref="bondFeedFileMapperIdBusManager"/>
+        			  <property name="stagingBondFeedFileMapperIdBusManager" ref="stagingBondFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="BondFeedTrx.FileInsertReadOperation"
+						class="com.integrosys.cms.app.feed.trx.bond.FileInsertReadOperation">
+						 <property name="bondFeedFileMapperIdBusManager" ref="bondFeedFileMapperIdBusManager"/>
+                         <property name="stagingBondFeedFileMapperIdBusManager" ref="stagingBondFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="BondFeedTrx.MakerCloseRejectedInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.bond.MakerCloseRejectedInsertMasterOperation">
+		 				 <property name="bondFeedFileMapperIdBusManager" ref="bondFeedFileMapperIdBusManager"/>
+                         <property name="stagingBondFeedFileMapperIdBusManager" ref="stagingBondFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="BondFeedTrx.CheckerCreateBondFeedGroupOperation"
+						class="com.integrosys.cms.app.feed.trx.bond.CheckerCreateBondFeedGroupOperation">
+						 <property name="bondFeedFileMapperIdBusManager" ref="bondFeedFileMapperIdBusManager"/>
+                         <property name="stagingBondFeedFileMapperIdBusManager" ref="stagingBondFeedFileMapperIdBusManager"/>
+				</bean>
+	
+	
+	 			<bean id="bondFeedGroupInsertFileTrxController" class="com.integrosys.cms.app.feed.trx.bond.InsertFileTrxController">
+        			<property name="nameTrxOperationMap">
+           				 <map>        	 
+                 			 <entry key="MakerBondFeedGroupInsertFileOperation" value-ref="BondFeedTrx.MakerBondFeedGroupInsertFileOperation" />
+                 			 <entry key="CheckerApproveInsertMasterOperation" value-ref="BondFeedTrx.CheckerApproveInsertMasterOperation" />
+                 			 <entry key="CheckerRejectInsertMasterOperation" value-ref="BondFeedTrx.CheckerRejectInsertMasterOperation" />
+                 			 <entry key="MakerCloseRejectedInsertMasterOperation" value-ref="BondFeedTrx.MakerCloseRejectedInsertMasterOperation"/>
+                 			 <entry key="CheckerCreateBondFeedGroupOperation" value-ref="BondFeedTrx.CheckerCreateBondFeedGroupOperation"/>
+           				 </map>
+       				 </property>
+       			 <property name="processTrxManager" ref="processTrxManager"/>
+  			     </bean>
+    
+   				 <bean id="readBondFeedGroupInsertFileTrxController" class="com.integrosys.cms.app.feed.trx.bond.ReadInsertFileTrxController">
+       			    <property name="nameTrxOperationMap">
+            			 <map>
+               				 <entry key="FileInsertReadOperation" value-ref="BondFeedTrx.FileInsertReadOperation"/>                   
+           				 </map>
+        			</property>
+   				 </bean>
+  			<!--End File Upload(bond feed) -->
+
+	<bean id="bondTrxControllerFactory" class="com.integrosys.cms.app.feed.trx.bond.BondFeedGroupTrxControllerFactory">
+		<property name="bondFeedGroupReadController" ref="BondFeedGroupReadController" />
+		<property name="bondFeedGroupTrxContoller" ref="BondFeedGroupTrxController" />
+		<property name="bondFeedGroupInsertFileTrxController" ref="bondFeedGroupInsertFileTrxController"/>
+        <property name="readBondFeedGroupInsertFileTrxController" ref="readBondFeedGroupInsertFileTrxController"/>
+	</bean>
+	
+	<!-- forex feed -->
+	
+	<bean id="ForexFeedTrx.MakerUpdateOperation" class="com.integrosys.cms.app.feed.trx.forex.MakerUpdateOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="ForexFeedTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.feed.trx.forex.MakerCloseRejectedOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="ForexFeedTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.feed.trx.forex.CheckerApproveUpdateOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="ForexFeedTrx.CheckerRejectOperation" class="com.integrosys.cms.app.feed.trx.forex.CheckerRejectOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="ForexFeedTrx.MakerSubmitOperation" class="com.integrosys.cms.app.feed.trx.forex.MakerSubmitOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="ForexFeedTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.feed.trx.forex.MakerUpdateRejectedOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="ForexFeedTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.feed.trx.forex.MakerSubmitRejectedOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="ForexFeedTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.feed.trx.forex.MakerCloseDraftOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="ForexFeedTrx.ReadForexGroupOperation" class="com.integrosys.cms.app.feed.trx.forex.ReadForexGroupOperation">
+		<property name="forexFeedBusManager" ref="forexFeedBusManager"/>
+		<property name="stagingForexFeedBusManager" ref="stagingForexFeedBusManager"/>
+	</bean>
+	
+	<bean id="forexFeedGroupReadController" class="com.integrosys.cms.app.feed.trx.forex.ForexFeedGroupReadController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="ReadForexGroupOperation" value-ref="ForexFeedTrx.ReadForexGroupOperation"/>
+      		</map>
+	    </property>
+	</bean>
+
+  	<bean id="forexFeedGroupTrxController" class="com.integrosys.cms.app.feed.trx.forex.ForexFeedGroupTrxController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="MakerUpdateOperation" value-ref="ForexFeedTrx.MakerUpdateOperation"/>
+		        <entry key="MakerCloseRejectedOperation" value-ref="ForexFeedTrx.MakerCloseRejectedOperation"/>
+		        <entry key="CheckerApproveUpdateOperation" value-ref="ForexFeedTrx.CheckerApproveUpdateOperation"/>
+		        <entry key="CheckerRejectOperation" value-ref="ForexFeedTrx.CheckerRejectOperation"/>
+		        <entry key="MakerSubmitOperation" value-ref="ForexFeedTrx.MakerSubmitOperation"/>
+		        <entry key="MakerUpdateRejectedOperation" value-ref="ForexFeedTrx.MakerUpdateRejectedOperation"/>
+		        <entry key="MakerSubmitRejectedOperation" value-ref="ForexFeedTrx.MakerSubmitRejectedOperation"/>
+		        <entry key="MakerCloseDraftOperation" value-ref="ForexFeedTrx.MakerCloseDraftOperation"/>
+      		</map>
+    	</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+  	</bean>
+  	
+  				<!-- For File Upload(forex feed),Add on 20/06/2011 -->
+  				<bean id="ForexFeedTrx.MakerForexFeedGroupInsertFileOperation"
+						class="com.integrosys.cms.app.feed.trx.forex.MakerForexFeedGroupInsertFileOperation">
+		 				 <property name="forexFeedFileMapperIdBusManager" ref="forexFeedFileMapperIdBusManager"/>
+       					 <property name="stagingForexFeedFileMapperIdBusManager" ref="stagingForexFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="ForexFeedTrx.CheckerApproveInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.forex.CheckerApproveInsertMasterOperation">
+		 			 <property name="forexFeedFileMapperIdBusManager" ref="forexFeedFileMapperIdBusManager"/>
+        			 <property name="stagingForexFeedFileMapperIdBusManager" ref="stagingForexFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="ForexFeedTrx.CheckerRejectInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.forex.CheckerRejectInsertMasterOperation">
+					  <property name="forexFeedFileMapperIdBusManager" ref="forexFeedFileMapperIdBusManager"/>
+        			  <property name="stagingForexFeedFileMapperIdBusManager" ref="stagingForexFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="ForexFeedTrx.FileInsertReadOperation"
+						class="com.integrosys.cms.app.feed.trx.forex.FileInsertReadOperation">
+						 <property name="forexFeedFileMapperIdBusManager" ref="forexFeedFileMapperIdBusManager"/>
+                         <property name="stagingForexFeedFileMapperIdBusManager" ref="stagingForexFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="ForexFeedTrx.MakerCloseRejectedInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.forex.MakerCloseRejectedInsertMasterOperation">
+		 				 <property name="forexFeedFileMapperIdBusManager" ref="forexFeedFileMapperIdBusManager"/>
+                         <property name="stagingForexFeedFileMapperIdBusManager" ref="stagingForexFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="ForexFeedTrx.CheckerCreateForexFeedGroupOperation"
+						class="com.integrosys.cms.app.feed.trx.forex.CheckerCreateForexFeedGroupOperation">
+						 <property name="forexFeedFileMapperIdBusManager" ref="forexFeedFileMapperIdBusManager"/>
+                         <property name="stagingForexFeedFileMapperIdBusManager" ref="stagingForexFeedFileMapperIdBusManager"/>
+				</bean>
+	
+	
+	 			<bean id="forexFeedGroupInsertFileTrxController" class="com.integrosys.cms.app.feed.trx.forex.InsertFileTrxController">
+        			<property name="nameTrxOperationMap">
+           				 <map>        	 
+                 			 <entry key="MakerForexFeedGroupInsertFileOperation" value-ref="ForexFeedTrx.MakerForexFeedGroupInsertFileOperation" />
+                 			 <entry key="CheckerApproveInsertMasterOperation" value-ref="ForexFeedTrx.CheckerApproveInsertMasterOperation" />
+                 			 <entry key="CheckerRejectInsertMasterOperation" value-ref="ForexFeedTrx.CheckerRejectInsertMasterOperation" />
+                 			 <entry key="MakerCloseRejectedInsertMasterOperation" value-ref="ForexFeedTrx.MakerCloseRejectedInsertMasterOperation"/>
+                 			 <entry key="CheckerCreateForexFeedGroupOperation" value-ref="ForexFeedTrx.CheckerCreateForexFeedGroupOperation"/>
+           				 </map>
+       				 </property>
+       			 <property name="processTrxManager" ref="processTrxManager"/>
+  			     </bean>
+    
+   				 <bean id="readForexFeedGroupInsertFileTrxController" class="com.integrosys.cms.app.feed.trx.forex.ReadInsertFileTrxController">
+       			    <property name="nameTrxOperationMap">
+            			 <map>
+               				 <entry key="FileInsertReadOperation" value-ref="ForexFeedTrx.FileInsertReadOperation"/>                   
+           				 </map>
+        			</property>
+   				 </bean>
+  				<!--End File Upload(forex feed) -->
+  	
+	<bean id="forexTrxControllerFactory" class="com.integrosys.cms.app.feed.trx.forex.ForexFeedGroupTrxControllerFactory">
+		<property name="forexFeedGroupReadController" ref="forexFeedGroupReadController" />
+		<property name="forexFeedGroupTrxController" ref="forexFeedGroupTrxController" />
+		<property name="forexFeedGroupInsertFileTrxController" ref="forexFeedGroupInsertFileTrxController"/>
+        <property name="readForexFeedGroupInsertFileTrxController" ref="readForexFeedGroupInsertFileTrxController"/>
+	</bean>
+	
+	<!-- gold -->
+	
+	<bean id="GoldFeedTrx.MakerUpdateOperation" class="com.integrosys.cms.app.feed.trx.gold.MakerUpdateOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="GoldFeedTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.feed.trx.gold.MakerCloseRejectedOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="GoldFeedTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.feed.trx.gold.CheckerApproveUpdateOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="GoldFeedTrx.CheckerRejectOperation" class="com.integrosys.cms.app.feed.trx.gold.CheckerRejectOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="GoldFeedTrx.MakerSubmitOperation" class="com.integrosys.cms.app.feed.trx.gold.MakerSubmitOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="GoldFeedTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.feed.trx.gold.MakerUpdateRejectedOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="GoldFeedTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.feed.trx.gold.MakerSubmitRejectedOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="GoldFeedTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.feed.trx.gold.MakerCloseDraftOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="GoldFeedTrx.ReadGoldGroupOperation" class="com.integrosys.cms.app.feed.trx.gold.ReadGoldGroupOperation">
+		<property name="goldFeedBusManager" ref="goldFeedBusManager"/>
+		<property name="stagingGoldFeedBusManager" ref="stagingGoldFeedBusManager"/>
+	</bean>
+	
+	<bean id="goldFeedGroupReadController" class="com.integrosys.cms.app.feed.trx.gold.GoldFeedGroupReadController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="ReadGoldGroupOperation" value-ref="GoldFeedTrx.ReadGoldGroupOperation"/>
+      		</map>
+	    </property>
+	</bean>
+
+  	<bean id="goldFeedGroupTrxController" class="com.integrosys.cms.app.feed.trx.gold.GoldFeedGroupTrxController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="MakerUpdateOperation" value-ref="GoldFeedTrx.MakerUpdateOperation"/>
+		        <entry key="MakerCloseRejectedOperation" value-ref="GoldFeedTrx.MakerCloseRejectedOperation"/>
+		        <entry key="CheckerApproveUpdateOperation" value-ref="GoldFeedTrx.CheckerApproveUpdateOperation"/>
+		        <entry key="CheckerRejectOperation" value-ref="GoldFeedTrx.CheckerRejectOperation"/>
+		        <entry key="MakerSubmitOperation" value-ref="GoldFeedTrx.MakerSubmitOperation"/>
+		        <entry key="MakerUpdateRejectedOperation" value-ref="GoldFeedTrx.MakerUpdateRejectedOperation"/>
+		        <entry key="MakerSubmitRejectedOperation" value-ref="GoldFeedTrx.MakerSubmitRejectedOperation"/>
+		        <entry key="MakerCloseDraftOperation" value-ref="GoldFeedTrx.MakerCloseDraftOperation"/>
+      		</map>
+    	</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+  	</bean>
+	
+	<bean id="goldTrxControllerFactory" class="com.integrosys.cms.app.feed.trx.gold.GoldFeedGroupTrxControllerFactory">
+		<property name="goldFeedGroupReadController" ref="goldFeedGroupReadController" />
+		<property name="goldFeedGroupTrxController" ref="goldFeedGroupTrxController" />
+	</bean>
+	
+	<!-- stock feed -->
+	
+	<bean id="StockFeedTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.feed.trx.stock.MakerUpdateRejectedOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+	</bean>
+
+	<bean id="StockFeedTrx.ReadStockGroupOperation" class="com.integrosys.cms.app.feed.trx.stock.ReadStockGroupOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+	</bean>
+
+	<bean id="StockFeedTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.feed.trx.stock.MakerCloseRejectedOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />	
+	</bean>
+
+	<bean id="StockFeedTrx.MakerSubmitOperation" class="com.integrosys.cms.app.feed.trx.stock.MakerSubmitOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+	</bean>
+
+	<bean id="StockFeedTrx.CheckerRejectOperation" class="com.integrosys.cms.app.feed.trx.stock.CheckerRejectOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />	
+	</bean>
+
+	<bean id="StockFeedTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.feed.trx.stock.MakerSubmitRejectedOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+	</bean>
+
+	<bean id="StockFeedTrx.MakerUpdateOperation" class="com.integrosys.cms.app.feed.trx.stock.MakerUpdateOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+	</bean>
+
+	<bean id="StockFeedTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.feed.trx.stock.CheckerApproveUpdateOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+	</bean>
+
+	<bean id="StockFeedTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.feed.trx.stock.MakerCloseDraftOperation">
+		<property name="stockFeedBusManager" ref="stockFeedBusManager" />
+		<property name="stagingStockFeedBusManager" ref="stagingStockFeedBusManager" />
+	</bean>
+
+  	<bean id="stockFeedGroupReadController" class="com.integrosys.cms.app.feed.trx.stock.StockFeedGroupReadController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="ReadStockGroupOperation" value-ref="StockFeedTrx.ReadStockGroupOperation"/>
+      		</map>
+	    </property>
+	</bean>
+
+  	<bean id="stockFeedGroupTrxController" class="com.integrosys.cms.app.feed.trx.stock.StockFeedGroupTrxController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="MakerUpdateRejectedOperation" value-ref="StockFeedTrx.MakerUpdateRejectedOperation"/>
+		        <entry key="MakerCloseRejectedOperation" value-ref="StockFeedTrx.MakerCloseRejectedOperation"/>
+		        <entry key="MakerSubmitOperation" value-ref="StockFeedTrx.MakerSubmitOperation"/>
+		        <entry key="CheckerRejectOperation" value-ref="StockFeedTrx.CheckerRejectOperation"/>
+		        <entry key="MakerSubmitRejectedOperation" value-ref="StockFeedTrx.MakerSubmitRejectedOperation"/>
+		        <entry key="MakerUpdateOperation" value-ref="StockFeedTrx.MakerUpdateOperation"/>
+		        <entry key="CheckerApproveUpdateOperation" value-ref="StockFeedTrx.CheckerApproveUpdateOperation"/>
+		        <entry key="MakerCloseDraftOperation" value-ref="StockFeedTrx.MakerCloseDraftOperation"/>
+      		</map>
+    	</property>
+    	<property name="processTrxManager" ref="processTrxManager" />
+  	</bean>
+
+	<bean id="stockTrxControllerFactory" class="com.integrosys.cms.app.feed.trx.stock.StockFeedGroupTrxControllerFactory">
+		<property name="stockFeedGroupReadController" ref="stockFeedGroupReadController" />
+		<property name="stockFeedGroupTrxContoller" ref="stockFeedGroupTrxController" />
+	</bean>
+	
+	<!-- unit trust feed -->
+	
+	<bean id="UnitTrustFeedTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.feed.trx.unittrust.CheckerApproveUpdateOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+	<bean id="UnitTrustFeedTrx.CheckerRejectOperation" class="com.integrosys.cms.app.feed.trx.unittrust.CheckerRejectOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+	<bean id="UnitTrustFeedTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.feed.trx.unittrust.MakerCloseDraftOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+	<bean id="UnitTrustFeedTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.feed.trx.unittrust.MakerCloseRejectedOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+	<bean id="UnitTrustFeedTrx.MakerSubmitOperation" class="com.integrosys.cms.app.feed.trx.unittrust.MakerSubmitOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+	<bean id="UnitTrustFeedTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.feed.trx.unittrust.MakerSubmitRejectedOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+	<bean id="UnitTrustFeedTrx.MakerUpdateOperation" class="com.integrosys.cms.app.feed.trx.unittrust.MakerUpdateOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+	<bean id="UnitTrustFeedTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.feed.trx.unittrust.MakerUpdateRejectedOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+	<bean id="UnitTrustFeedTrx.ReadUnitTrustGroupOperation" class="com.integrosys.cms.app.feed.trx.unittrust.ReadUnitTrustGroupOperation">
+		<property name="unitTrustFeedBusManager" ref="unitTrustFeedBusManager" />
+		<property name="unitTrustFeedBusManagerStaging" ref="stagingunitTrustFeedBusManager" />
+	</bean>
+	
+  	<bean id="unitTrustFeedGroupReadController" class="com.integrosys.cms.app.feed.trx.unittrust.UnitTrustFeedGroupReadController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="ReadUnitTrustGroupOperation" value-ref="UnitTrustFeedTrx.ReadUnitTrustGroupOperation"/>
+      		</map>
+	    </property>
+	</bean>
+
+  	<bean id="unitTrustFeedGroupTrxController" class="com.integrosys.cms.app.feed.trx.unittrust.UnitTrustFeedGroupTrxController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="CheckerApproveUpdateOperation" value-ref="UnitTrustFeedTrx.CheckerApproveUpdateOperation"/>
+		        <entry key="CheckerRejectOperation" value-ref="UnitTrustFeedTrx.CheckerRejectOperation"/>
+		        <entry key="MakerCloseDraftOperation" value-ref="UnitTrustFeedTrx.MakerCloseDraftOperation"/>
+		        <entry key="MakerCloseRejectedOperation" value-ref="UnitTrustFeedTrx.MakerCloseRejectedOperation"/>
+		        <entry key="MakerSubmitOperation" value-ref="UnitTrustFeedTrx.MakerSubmitOperation"/>
+		        <entry key="MakerSubmitRejectedOperation" value-ref="UnitTrustFeedTrx.MakerSubmitRejectedOperation"/>
+		        <entry key="MakerUpdateOperation" value-ref="UnitTrustFeedTrx.MakerUpdateOperation"/>
+		        <entry key="MakerUpdateRejectedOperation" value-ref="UnitTrustFeedTrx.MakerUpdateRejectedOperation"/>
+      		</map>
+    	</property>
+    	<property name="processTrxManager" ref="processTrxManager" />
+  	</bean>
+
+	<bean id="unitTrustTrxControllerFactory" class="com.integrosys.cms.app.feed.trx.unittrust.UnitTrustFeedGroupTrxControllerFactory">
+		<property name="unitTrustFeedGroupReadController" ref="unitTrustFeedGroupReadController" />
+		<property name="unitTrustFeedGroupTrxContoller" ref="unitTrustFeedGroupTrxController" />
+	</bean>
+	
+	
+	
+	<!-- Mutual Funds feed -->
+	
+	<bean id="MutualFundsFeedTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.CheckerApproveUpdateOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+
+	<bean id="MutualFundsFeedTrx.CheckerRejectOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.CheckerRejectOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+	
+	<bean id="MutualFundsFeedTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.MakerCloseDraftOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+	
+	<bean id="MutualFundsFeedTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.MakerCloseRejectedOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+	
+	<bean id="MutualFundsFeedTrx.MakerSubmitOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.MakerSubmitOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+	
+	<bean id="MutualFundsFeedTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.MakerSubmitRejectedOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+	
+	<bean id="MutualFundsFeedTrx.MakerUpdateOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.MakerUpdateOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+	
+	<bean id="MutualFundsFeedTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.MakerUpdateRejectedOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+	
+	<bean id="MutualFundsFeedTrx.ReadMutualFundsGroupOperation" class="com.integrosys.cms.app.feed.trx.mutualfunds.ReadMutualFundsGroupOperation">
+		<property name="mutualFundsFeedBusManager" ref="mutualFundsFeedBusManager" />
+		<property name="mutualFundsFeedBusManagerStaging" ref="stagingMutualFundsFeedBusManager" />
+	</bean>
+	
+	<!-- For File Upload(mutualfunds feed),Add on 30/08/2011 -->
+  				<bean id="MutualFundsFeedTrx.MakerMutualFundsFeedGroupInsertFileOperation"
+						class="com.integrosys.cms.app.feed.trx.mutualfunds.MakerMutualFundsFeedGroupInsertFileOperation">
+		 				 <property name="mutualfundsFeedFileMapperIdBusManager" ref="mutualfundsFeedFileMapperIdBusManager"/>
+       					 <property name="stagingMutualFundsFeedFileMapperIdBusManager" ref="stagingMutualFundsFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="MutualFundsFeedTrx.CheckerApproveInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.mutualfunds.CheckerApproveInsertMasterOperation">
+		 			 <property name="mutualfundsFeedFileMapperIdBusManager" ref="mutualfundsFeedFileMapperIdBusManager"/>
+        			 <property name="stagingMutualFundsFeedFileMapperIdBusManager" ref="stagingMutualFundsFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="MutualFundsFeedTrx.CheckerRejectInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.mutualfunds.CheckerRejectInsertMasterOperation">
+					  <property name="mutualfundsFeedFileMapperIdBusManager" ref="mutualfundsFeedFileMapperIdBusManager"/>
+        			  <property name="stagingMutualFundsFeedFileMapperIdBusManager" ref="stagingMutualFundsFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="MutualFundsFeedTrx.FileInsertReadOperation"
+						class="com.integrosys.cms.app.feed.trx.mutualfunds.FileInsertReadOperation">
+						 <property name="mutualfundsFeedFileMapperIdBusManager" ref="mutualfundsFeedFileMapperIdBusManager"/>
+                         <property name="stagingMutualFundsFeedFileMapperIdBusManager" ref="stagingMutualFundsFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="MutualFundsFeedTrx.MakerCloseRejectedInsertMasterOperation"
+						class="com.integrosys.cms.app.feed.trx.mutualfunds.MakerCloseRejectedInsertMasterOperation">
+		 				 <property name="mutualfundsFeedFileMapperIdBusManager" ref="mutualfundsFeedFileMapperIdBusManager"/>
+                         <property name="stagingMutualFundsFeedFileMapperIdBusManager" ref="stagingMutualFundsFeedFileMapperIdBusManager"/>
+				</bean>
+				<bean id="MutualFundsFeedTrx.CheckerCreateMutualFundsFeedGroupOperation"
+						class="com.integrosys.cms.app.feed.trx.mutualfunds.CheckerCreateMutualFundsFeedGroupOperation">
+						 <property name="mutualfundsFeedFileMapperIdBusManager" ref="mutualfundsFeedFileMapperIdBusManager"/>
+                         <property name="stagingMutualFundsFeedFileMapperIdBusManager" ref="stagingMutualFundsFeedFileMapperIdBusManager"/>
+				</bean>
+	
+	
+	 			<bean id="mutualfundsFeedGroupInsertFileTrxController" class="com.integrosys.cms.app.feed.trx.mutualfunds.InsertFileTrxController">
+        			<property name="nameTrxOperationMap">
+           				 <map>        	 
+                 			 <entry key="MakerMutualFundsFeedGroupInsertFileOperation" value-ref="MutualFundsFeedTrx.MakerMutualFundsFeedGroupInsertFileOperation" />
+                 			 <entry key="CheckerApproveInsertMasterOperation" value-ref="MutualFundsFeedTrx.CheckerApproveInsertMasterOperation" />
+                 			 <entry key="CheckerRejectInsertMasterOperation" value-ref="MutualFundsFeedTrx.CheckerRejectInsertMasterOperation" />
+                 			 <entry key="MakerCloseRejectedInsertMasterOperation" value-ref="MutualFundsFeedTrx.MakerCloseRejectedInsertMasterOperation"/>
+                 			 <entry key="CheckerCreateMutualFundsFeedGroupOperation" value-ref="MutualFundsFeedTrx.CheckerCreateMutualFundsFeedGroupOperation"/>
+           				 </map>
+       				 </property>
+       			 <property name="processTrxManager" ref="processTrxManager"/>
+  			     </bean>
+    
+   				 <bean id="readMutualFundsFeedGroupInsertFileTrxController" class="com.integrosys.cms.app.feed.trx.mutualfunds.ReadInsertFileTrxController">
+       			    <property name="nameTrxOperationMap">
+            			 <map>
+               				 <entry key="FileInsertReadOperation" value-ref="MutualFundsFeedTrx.FileInsertReadOperation"/>                   
+           				 </map>
+        			</property>
+   				 </bean>
+  			<!--End File Upload(mutualfunds feed) -->
+
+	<bean id="MutualFundsFeedGroupReadController" class="com.integrosys.cms.app.feed.trx.mutualfunds.MutualFundsFeedGroupReadController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="ReadMutualFundsGroupOperation" value-ref="MutualFundsFeedTrx.ReadMutualFundsGroupOperation" />
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="MutualFundsFeedGroupTrxController" class="com.integrosys.cms.app.feed.trx.mutualfunds.MutualFundsFeedGroupTrxController">
+		<property name="nameTrxOperationMap">
+			<map>
+				<entry key="CheckerApproveUpdateOperation" value-ref="MutualFundsFeedTrx.CheckerApproveUpdateOperation" />
+				<entry key="CheckerRejectOperation" value-ref="MutualFundsFeedTrx.CheckerRejectOperation" />
+				<entry key="MakerCloseDraftOperation" value-ref="MutualFundsFeedTrx.MakerCloseDraftOperation" />
+				<entry key="MakerCloseRejectedOperation" value-ref="MutualFundsFeedTrx.MakerCloseRejectedOperation" />
+				<entry key="MakerSubmitOperation" value-ref="MutualFundsFeedTrx.MakerSubmitOperation" />
+				<entry key="MakerSubmitRejectedOperation" value-ref="MutualFundsFeedTrx.MakerSubmitRejectedOperation" />
+				<entry key="MakerUpdateOperation" value-ref="MutualFundsFeedTrx.MakerUpdateOperation" />
+				<entry key="MakerUpdateRejectedOperation" value-ref="MutualFundsFeedTrx.MakerUpdateRejectedOperation" />
+			</map>
+		</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+	</bean>
+
+	<bean id="mutualFundsTrxControllerFactory" class="com.integrosys.cms.app.feed.trx.mutualfunds.MutualFundsFeedGroupTrxControllerFactory">
+		<property name="mutualFundsFeedGroupReadController" ref="MutualFundsFeedGroupReadController" />
+		<property name="mutualFundsFeedGroupTrxContoller" ref="MutualFundsFeedGroupTrxController" />
+		<!-- Govind S:File Upload -->
+		<property name="mutualfundsFeedGroupInsertFileTrxController" ref="mutualfundsFeedGroupInsertFileTrxController"/>
+        <property name="readMutualFundsFeedGroupInsertFileTrxController" ref="readMutualFundsFeedGroupInsertFileTrxController"/>
+        <!-- Govind S:End File Upload -->
+	</bean>
+
+</beans>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT PARTY_NAME,
+				  CATEGORY,
+				  SUB_FOLDERNAME,
+				  DOCUMENT_NAME,
+				  FILE_NAME,
+				  BRANCH_CODE,
+				  SCAN_DATE,
+				  SCAN_BY,
+				  Region,
+				  segmentName
+				FROM
+				  (SELECT SUB_PROFILE.LSP_SHORT_NAME            AS PARTY_NAME,
+				    cc.entry_name                               AS CATEGORY,
+				    IMAGE.SUBFOLDER_NAME                        AS SUB_FOLDERNAME,
+				    IMAGE.DOCUMENT_NAME                         AS DOCUMENT_NAME,
+				    IMAGE.IMG_FILENAME                          AS FILE_NAME,
+				    USR.BRANCH_CODE                             AS BRANCH_CODE,
+				    TO_CHAR(IMAGE.CREATION_DATE ,'DD/Mon/YYYY') AS SCAN_DATE,
+				    USR.LOGIN_ID                                AS SCAN_BY,
+				    reg.region_name                             AS Region,
+				    cc_segment.entry_name                       AS segmentName,
+				    SBB.ID                                      AS systemBankBranchId ,
+				    image.category                              AS imageCategory,
+				    sub_profile.cms_le_sub_profile_id           AS subProfileID,
+				    IMAGE.CREATION_DATE                         AS imgCreationDate
+				  FROM CMS_USER USR,
+				    CMS_UPLOADED_images IMAGE,
+				    SCI_LE_SUB_PROFILE SUB_PROFILE,
+				    CMS_SYSTEM_BANK_BRANCH SBB,
+				    COMMON_CODE_CATEGORY_ENTRY cc,
+				    common_code_category_entry cc_segment,
+				    SCI_LE_REG_ADDR ra ,
+				    CMS_REGION reg
+				  WHERE USR.USER_ID               = IMAGE.CREATE_BY
+				  AND SUB_PROFILE.LSP_LE_ID       = IMAGE.CUST_ID
+				  AND CC.ENTRY_CODE(+)            = IMAGE.CATEGORY
+				  AND SBB.SYSTEM_BANK_BRANCH_CODE = USR.BRANCH_CODE
+				  AND IMAGE.IMG_DEPRICATED       != 'Y'
+				  AND IMAGE.IMG_ID NOT           IN
+				    (SELECT TAGMAP.IMAGE_ID
+				    FROM CMS_IMAGE_TAG_MAP TAGMAP
+				    WHERE TAGMAP.IMAGE_ID      = IMAGE.IMG_ID
+				    AND TAGMAP.UNTAGGED_STATUS = 'N'
+				    )
+				  AND (SUB_PROFILE.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+				  AND ra.LRA_TYPE_VALUE                   = 'CORPORATE')
+				  AND ra.lra_region                       = reg.id
+				  AND (cc_segment.category_code           = 'HDFC_SEGMENT'
+				  OR cc_segment.category_code            IS NULL)
+				  AND SUB_PROFILE.lsp_sgmnt_code_value    =cc_segment.entry_code(+)
+				  AND sub_profile.status                 != 'INACTIVE'
+				  UNION ALL
+				  SELECT SUB_PROFILE.LSP_SHORT_NAME             AS PARTY_NAME,
+				    cc.entry_name                               AS CATEGORY,
+				    IMAGE.SUBFOLDER_NAME                        AS SUB_FOLDERNAME,
+				    IMAGE.DOCUMENT_NAME                         AS DOCUMENT_NAME,
+				    IMAGE.IMG_FILENAME                          AS FILE_NAME,
+				    USR.BRANCH_CODE                             AS BRANCH_CODE,
+				    TO_CHAR(IMAGE.CREATION_DATE ,'DD/Mon/YYYY') AS SCAN_DATE,
+				    USR.LOGIN_ID                                AS SCAN_BY,
+				    reg.region_name                             AS Region,
+				    cc_segment.entry_name                       AS segmentName,
+				    SBB.ID                                      AS systemBankBranchId ,
+				    image.category                              AS imageCategory,
+				    sub_profile.cms_le_sub_profile_id           AS subProfileID,
+				    IMAGE.CREATION_DATE                         AS imgCreationDate
+				  FROM CMS_USER USR,
+				    CMS_TEMP_IMAGE_UPLOAD IMAGE,
+				    SCI_LE_SUB_PROFILE SUB_PROFILE,
+				    CMS_SYSTEM_BANK_BRANCH SBB,
+				    COMMON_CODE_CATEGORY_ENTRY cc,
+				    common_code_category_entry cc_segment,
+				    SCI_LE_REG_ADDR ra ,
+				    CMS_REGION reg
+				  WHERE USR.USER_ID               = IMAGE.CREATE_BY
+				  AND SUB_PROFILE.LSP_LE_ID       = IMAGE.CUST_ID
+				  AND CC.ENTRY_CODE(+)            = IMAGE.CATEGORY
+				  AND SBB.SYSTEM_BANK_BRANCH_CODE = USR.BRANCH_CODE
+				  AND IMAGE.IMG_DEPRICATED       != 'Y'
+				  AND IMAGE.IMG_ID NOT           IN
+				    (SELECT TAGMAP.IMAGE_ID
+				    FROM CMS_IMAGE_TAG_MAP TAGMAP
+				    WHERE TAGMAP.IMAGE_ID      = IMAGE.IMG_ID
+				    AND TAGMAP.UNTAGGED_STATUS = 'N'
+				    )
+				  AND (SUB_PROFILE.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+				  AND ra.LRA_TYPE_VALUE                   = 'CORPORATE')
+				  AND ra.lra_region                       = reg.id
+				  AND (cc_segment.category_code           = 'HDFC_SEGMENT'
+				  OR cc_segment.category_code            IS NULL)
+				  AND SUB_PROFILE.lsp_sgmnt_code_value    =cc_segment.entry_code(+)
+				  AND sub_profile.status                 != 'INACTIVE'
+				  )
+			</query>
+			<whereClause>
+			<mandatoryClause>
+					1=1
+			</mandatoryClause>			
+			<param>
+				<name>branch</name>
+				<condition> AND systemBankBranchId = </condition>
+			</param>			
+			<param>
+				<name>docType</name>
+				<condition> and imageCategory = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition>  AND subProfileID = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(imgCreationDate) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Sub Folder Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Document Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>File Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Branch Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Scan Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Scan By</header>
+				</reportColumn>		
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>		
+			</reportColumns>
+			<reportName>LSS document scan user wise</reportName>
+		</reportParamters>
+	</report>
+</reports>

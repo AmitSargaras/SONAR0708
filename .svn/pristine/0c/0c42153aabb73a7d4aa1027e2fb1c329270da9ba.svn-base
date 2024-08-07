@@ -1,0 +1,74 @@
+<%@ page import="com.integrosys.cms.app.collateral.trx.ICollateralTrxValue,
+                 com.integrosys.cms.app.collateral.bus.type.document.subtype.deedsub.IDeedSub"%>
+
+<%
+/**
+* Copyright Integro Technologies Pte Ltd
+* $Header: /home/cms2/cvsroot/cms2/public_html/collateral/document/docdervnet/DocDervNet_close.jsp,v 1.12 2006/10/27 08:31:48 hmbao Exp $
+*
+* Purpose: Process to approve Collateral
+* Description: Type - Document, Subtype - FX-Derivative-Netting Agreement
+*
+* @author $Author: hmbao $<br>
+* @version $Revision: 1.12 $
+* Date: $Date: 2006/10/27 08:31:48 $
+* Tag: $Name:  $
+*/
+%>
+
+<%	ICollateralTrxValue itrxValue = (ICollateralTrxValue)session.getAttribute("com.integrosys.cms.ui.collateral.document.DocumentAction.serviceColObj");
+
+    IDeedSub iCol = (IDeedSub) itrxValue.getStagingCollateral();
+
+    pageContext.setAttribute("obj", iCol);
+    String from_event = "close";
+    boolean isProcess = false;
+    boolean isTrack = false;
+    String forward_event = (String)request.getParameter("event");
+
+    if (forward_event.equals("track") || forward_event.equals("track_return")) {
+                from_event = "track";
+		isTrack = true;
+	}
+
+%>
+<%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
+<%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
+<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
+<%@ include file="/collateral/check_user.jsp"%>
+
+<html:form action="DocDeedSubCollateral.do">
+<input type="hidden" name="event" value="close">
+
+<%@ include file="/collateral/common/mandatory_flag.jsp" %>
+
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+<jsp:include page="/collateral/common/common_maker_header.jsp">
+	<jsp:param name="trackInd" value="<%=String.valueOf(isTrack) %>"/>
+	<jsp:param name="deletingInd" value="<%=String.valueOf(isDeleting) %>" />
+	<jsp:param name="secType" value="DC"/>
+</jsp:include>
+<%@ include file="doc_deed_sub_read_helper.jsp" %>
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblFormSection">
+  <tbody>
+     <tr>
+       <td><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="tblInfo">
+           <tbody>
+             <tr>
+               <td class="fieldname"><bean:message key="label.last.action.by"/></td>
+               <td class="even"><%=itrxValue.getUserInfo()%>&nbsp;</td>
+             </tr>
+             <tr class="odd">
+               <td class="fieldname"><bean:message key="label.last.remarks.made"/></td>
+               <td><integro:wrapper value="<%=itrxValue.getRemarks()%>"/>&nbsp;</td>
+             </tr>
+           </tbody>
+         </table></td>
+     </tr>
+  </tbody>
+</table>
+<jsp:include page="/collateral/common/common_maker_button.jsp">
+	<jsp:param name="trackInd" value="<%=String.valueOf(isTrack) %>"/>
+</jsp:include>
+</html:form>

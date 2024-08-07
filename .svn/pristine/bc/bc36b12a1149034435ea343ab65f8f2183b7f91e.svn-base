@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+			 <query>
+		 SELECT  distinct
+
+			  sub_profile.lsp_le_id                AS Party_Id,
+			  sub_profile.lsp_short_name           AS party_name ,
+			  sub_profile.mpbf                     AS mpbf ,
+			  sub_profile.total_funded_limit       AS totalfundamount ,
+			  sub_profile.funded_share_percent     AS hdfcfundshare ,
+			  sub_profile.funded_share_limit       AS hdfcfundamount ,
+			  sub_profile.total_non_funded_limit   AS totalnonfunded ,
+			  sub_profile.non_funded_share_percent AS hdfcnonfundedshare ,
+			  sub_profile.non_funded_share_limit   AS hdfcnonfundedamount ,
+                          banking_cust.CMS_BANKING_METHOD_NAME as BANKMETHOD,
+			  CASE
+       			 WHEN  banking_cust.CMS_BANKING_METHOD_NAME = 'SOLE'
+			  THEN ''
+			  END AS ifsc,
+		      CASE
+       			 WHEN  banking_cust.CMS_BANKING_METHOD_NAME = 'SOLE'
+			  THEN ''
+			  END AS BANKNAME,
+			  
+              ''  AS LEAD,
+      		  '' AS NODAL, 
+	     		sub_profile.MULTBNK_FUNDBSE_LEADBNK_PER AS MULTBNK_FUNDBSE_LEADBNK_PER,
+				sub_profile.MULTBNK_NONFUNDBSE_LEADBNK_PER AS MULTBNK_NONFUNDBSE_LEADBNK_PER,
+				sub_profile.MULTBNK_FUNDBSE_HDFCBNK_PER AS MULTBNK_FUNDBSE_HDFCBNK_PER,
+				sub_profile.MULTBNK_NONFUNDBSE_HDFCBNK_PER AS MULTBNK_NONFUNDBSE_HDFCBNK_PER,
+				sub_profile.CONSBNK_FUNDBSE_LEADBNK_PER AS CONSBNK_FUNDBSE_LEADBNK_PER,
+				sub_profile.CONSBNK_NONFUNDBSE_LEADBNK_PER AS CONSBNK_NONFUNDBSE_LEADBNK_PER,
+				sub_profile.CONSBNK_FUNDBSE_HDFCBNK_PER AS CONSBNK_FUNDBSE_HDFCBNK_PER,
+				sub_profile.CONSBNK_NONFUNDBSE_HDFCBNK_PER AS CONSBNK_NONFUNDBSE_HDFCBNK_PER,
+				 (select rm.RM_MGR_NAME from CMS_RELATIONSHIP_MGR rm where  rm.ID= sub_profile.RELATION_MGR) RM_MGR_NAME,
+				 reg.region_name                                                       AS Region,
+	        
+       			 (SELECT entry_name FROM  common_code_category_entry WHERE category_code = 'HDFC_SEGMENT'
+        		 and entry_code= sub_profile.lsp_sgmnt_code_value) AS segment,
+    			 (sub_profile.total_funded_limit + sub_profile.total_non_funded_limit) AS totalAmount,
+    			  banking_cust.status 
+      
+				FROM 
+			    SCI_LE_SUB_PROFILE sub_profile,
+		 	    CMS_REGION reg,
+                CMS_BANKING_METHOD_CUST banking_cust
+			</query>
+			<whereClause>	
+			<mandatoryClause>
+				exists (select 1 from SCI_LE_REG_ADDR ra WHERE sub_profile.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID
+				AND ra.LRA_TYPE_VALUE                   = 'CORPORATE'
+				AND ra.lra_region                       = reg.id)
+				AND SUB_PROFILE.status                 != 'INACTIVE'
+				AND banking_cust.STATUS='ACTIVE' 
+        		AND banking_cust.CMS_BANKING_METHOD_NAME ='SOLE'
+        		AND banking_cust.CMS_LE_SUB_PROFILE_ID = sub_profile.CMS_LE_SUB_PROFILE_ID
+ 			</mandatoryClause>		
+			<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Total MBPF</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Total HDFC Funded Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>HDFC Funded Share</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>HDFC Funded Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Total Non-Funded</header>
+				</reportColumn>
+				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>HDFC Non Funded Share</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>HDFC Non Funded Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Bank Method</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>IFSC CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Bank - Branch Name</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Lead</header>
+				</reportColumn>		
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Nodal</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Multiple Banking-Fund based % (Lead Bank)</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Multiple Banking-Non Fund based % (Lead Bank)</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Multiple Banking-Fund based % (HDFC Bank)</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Multiple Banking-Non Fund based % (HDFC Bank)</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Consortium Banking -Fund based % (Lead Bank)</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Consortium Banking -Non Fund based % (Lead Bank)</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Consortium Banking -Fund based % (HDFC Bank)</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Consortium Banking -Non Fund based % (HDFC Bank)</header>
+				</reportColumn>			
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Total Funded/Non Funded amount</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>					
+			</reportColumns>
+			<reportName>Banking method with lead and nodal, along with Bank Share</reportName>
+		</reportParamters>
+	</report>
+</reports>

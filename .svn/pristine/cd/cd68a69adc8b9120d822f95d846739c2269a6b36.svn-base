@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class entity-name="tradeMasterTrx" name="com.integrosys.cms.host.stp.trade.bus.OBTradeMasterTrans" table="TRADE_MASTER_TRANS"
+           lazy="false">
+        <id name="masterTrxId">
+            <column name="MASTER_TRX_ID" sql-type="bigint" length="19" precision="0" not-null="true"/>
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">TRADE_MASTER_TRANS_SEQ</param>
+            </generator>
+        </id>
+        <property name="transactionId">
+            <column name="TRANSACTION_ID" sql-type="varchar" length="20" precision="0" not-null="false"/>
+        </property>
+        <property name="status">
+            <column name="STATUS" sql-type="varchar" length="20" precision="0" not-null="false"/>
+        </property>
+        <property name="referenceId" column="REFERENCE_ID"/>
+        <property name="transactionType">
+            <column name="TRANSACTION_TYPE" sql-type="varchar" length="20" precision="0" not-null="false"/>
+        </property>
+        <property name="lastSubmissionDate">
+            <column name="LAST_SUBMISSION_DATE" sql-type="timestamp" not-null="false"/>
+        </property>
+    </class>
+
+    <class entity-name="tradeTrxHistory" name="com.integrosys.cms.host.stp.trade.bus.OBTradeTrans"
+           table="TRADE_TRANS_HISTORY" lazy="false">
+        <id name="trxHistoryId">
+            <column name="TRX_HISTORY_ID" sql-type="bigint" length="19" precision="0" not-null="true"/>
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">TRADE_TRANS_HISTORY_SEQ</param>
+            </generator>
+        </id>
+        <property name="trxId" column="TRX_ID"/>
+        <property name="masterTrxId" column="MASTER_TRX_ID"/>
+        <property name="userId" column="USER_ID"/>
+        <property name="trxType">
+            <column name="TRX_TYPE" sql-type="varchar" length="10" precision="0" not-null="false"/>
+        </property>
+        <property name="creationDate">
+            <column name="CREATION_DATE" sql-type="timestamp" length="26" precision="6" not-null="false"/>
+        </property>
+        <property name="lastUpdateDate">
+            <column name="LAST_UPDATE_DATE" sql-type="timestamp" length="26" precision="6" not-null="false"/>
+        </property>
+        <property name="status">
+            <column name="STATUS" sql-type="varchar" length="30" precision="0" not-null="false"/>
+        </property>
+        <property name="curTrxHistoryId">
+            <column name="CUR_TRX_HISTORY_ID" sql-type="varchar" length="20" precision="0" not-null="false"/>
+        </property>
+        <property name="msgCount" column="MSG_COUNT"/>
+        <property name="responseCode">
+            <column name="RESPONSE_CODE" sql-type="varchar" length="2" precision="0" not-null="false"/>
+        </property>
+        <property name="requestMsg" type="blob" column="REQUEST_MSG"/>
+        <property name="trxUID" column="TRX_UID"/>
+        <property name="referenceId" column="REFERENCE_ID"/>
+        <property name="opsDesc" column="OPS_DESC"/>
+    </class>
+</hibernate-mapping>

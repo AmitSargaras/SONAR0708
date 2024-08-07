@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Domain Name="abclims" ConfigurationVersion="8.1.5.0">
+    <!--<JDBCConnectionPool DriverName="oracle.jdbc.driver.OracleDriver"
+        InitialCapacity="1" MaxCapacity="10" Name="CMSPool"
+        Properties="user=ABCLIMS;password=ABCLIMS;currentSchema=ABCLIMS;currentFunctionPath=ABCLIMS"
+        Targets="myserver" TestTableName="sysibm.sysdummy1" URL="jdbc:db2://PC505:50000/ABCLIMS"/>
+
+	--><JDBCConnectionPool DriverName="oracle.jdbc.driver.OracleDriver"
+        InitialCapacity="1" MaxCapacity="1" Name="CMSPool"
+        Properties="user=ABCLIMS;password=ABCLIMS;dll=ocijdbc8;protocol=thin"
+        Targets="myserver" TestTableName="dual" 
+        URL="jdbc:oracle:thin:@192.168.1.1:1521:orcl"/>
+    <JDBCTxDataSource Name="CMSPool" JNDIName="CMSPool" PoolName="CMSPool" Targets="myserver"/>
+
+    <Application Deployed="true" Name="cms-app" Path="@EJB_DD_HOME@">
+		<EJBComponent Name="dataprotection" Targets="myserver" URI="dataprotection"/>
+		<EJBComponent Name="commonutils" Targets="myserver" URI="commonutils"/>
+		<EJBComponent Name="authentication" Targets="myserver" URI="authentication"/>
+		<EJBComponent Name="bizstructure" Targets="myserver" URI="bizstructure"/>
+		<EJBComponent Name="user" Targets="myserver" URI="user"/>
+		<EJBComponent Name="workspace" Targets="myserver" URI="workspace"/>
+		<!--<EJBComponent Name="feed" Targets="myserver" URI="feed"/>-->
+		<EJBComponent Name="accessprofile" Targets="myserver" URI="accessprofile"/>
+		<!--<EJBComponent Name="eventmonitor" Targets="myserver" URI="eventmonitor"/>-->
+		<EJBComponent Name="collateral" Targets="myserver" URI="collateral"/>
+		<EJBComponent Name="collateralAsset" Targets="myserver" URI="collateralAsset"/>
+		<!--<EJBComponent Name="collateralCommodity" Targets="myserver" URI="collateralCommodity"/>-->
+		<EJBComponent Name="custodian" Targets="myserver" URI="custodian"/>
+		<EJBComponent Name="transaction" Targets="myserver" URI="transaction"/>
+		<EJBComponent Name="checklist" Targets="myserver" URI="checklist"/>
+		<EJBComponent Name="chktemplate" Targets="myserver" URI="chktemplate"/>
+		<EJBComponent Name="recurrent" Targets="myserver" URI="recurrent"/>
+		<EJBComponent Name="customer" Targets="myserver" URI="customer"/>
+		<EJBComponent Name="limit" Targets="myserver" URI="limit"/>
+		<EJBComponent Name="notification" Targets="myserver" URI="notification"/>
+		<EJBComponent Name="commondata" Targets="myserver" URI="commondata"/>
+		<EJBComponent Name="cccertificate" Targets="myserver" URI="cccertificate"/>
+		<EJBComponent Name="sccertificate" Targets="myserver" URI="sccertificate"/>
+		<EJBComponent Name="forex" Targets="myserver" URI="forex"/>
+		<EJBComponent Name="ddn" Targets="myserver" URI="ddn"/>
+		<!--<EJBComponent Name="collaborationtask" Targets="myserver" URI="collaborationtask"/>-->
+		<!--<EJBComponent Name="report" Targets="myserver" URI="report"/>-->
+		<!--<EJBComponent Name="generatereq" Targets="myserver" URI="generatereq"/>-->
+		<!--<EJBComponent Name="message" Targets="myserver" URI="message"/>-->
+		<!--<EJBComponent Name="commodity" Targets="myserver" URI="commodity"/>-->
+		<!--<EJBComponent Name="documentlocation" Targets="myserver" URI="documentlocation"/>-->
+		<!--<EJBComponent Name="diaryitem" Targets="myserver" URI="diaryitem"/>-->
+		<!--<EJBComponent Name="interestrate" Targets="myserver" URI="interestrate"/>-->
+		<EJBComponent Name="commoncode" Targets="myserver" URI="commoncode"/>
+		<EJBComponent Name="commoncodeentry" Targets="myserver" URI="commoncodeentry"/>
+		<EJBComponent Name="predeal" Targets="myserver" URI="predeal"/>
+		<EJBComponent Name="propertyparameters" Targets="myserver" URI="propertyparameters"/>
+		<EJBComponent Name="creditriskparam" Targets="myserver" URI="creditriskparam"/>
+		<EJBComponent Name="manualinput" Targets="myserver" URI="manualinput"/>
+		<!--<EJBComponent Name="tradingbook" Targets="myserver" URI="tradingbook"/>-->
+		<!--<EJBComponent Name="contractfinancing" Targets="myserver" URI="contractfinancing"/>-->
+		<!--<EJBComponent Name="bridgingloan" Targets="myserver" URI="bridgingloan"/>-->
+		<!--<EJBComponent Name="report" Targets="myserver" URI="report"/>-->
+		<EJBComponent Name="liquidation" Targets="myserver" URI="liquidation"/>
+		<!--<EJBComponent Name="propertyindex" Targets="myserver" URI="propertyindex"/>-->
+		<EJBComponent Name="limitbooking" Targets="myserver" URI="limitbooking"/>
+		<EJBComponent Name="cci" Targets="myserver" URI="cci"/>
+		<EJBComponent Name="custgrpi" Targets="myserver" URI="custgrpi"/>
+		<EJBComponent Name="custrelationship" Targets="myserver" URI="custrelationship"/>
+		<EJBComponent Name="custexposure" Targets="myserver" URI="custexposure"/>
+    </Application>
+
+	<!-- COMMENT FOR WebAPP. @PUBLIC_HTML_TOKEN@ will be replace by the ant process. Any change here, correct ant accordingly -->
+    <Application Deployed="true" Name="cms-web" Path="@PUBLIC_HTML_TOKEN@">
+        <WebAppComponent Name="cms" Targets="myserver" URI="."/>
+    </Application>
+
+    <Server Name="myserver" ListenAddress="" ListenPort="7003"
+        ReliableDeliveryPolicy="RMDefaultPolicy" NativeIOEnabled="true"
+		StdoutSeverityLevel="16" EnabledForDomainLog="false">
+        <SSL Name="myserver" Enabled="false" HostnameVerificationIgnored="false"/>
+    </Server>
+
+    <JMSFileStore Name="FileStore" Directory="rmfilestore"/>
+
+    <WSReliableDeliveryPolicy Name="RMDefaultPolicy" Store="FileStore" 
+    	DefaultRetryCount="10" DefaultTimeToLive="60000"/>
+
+	<JTA TimeoutSeconds="600"/>
+</Domain>

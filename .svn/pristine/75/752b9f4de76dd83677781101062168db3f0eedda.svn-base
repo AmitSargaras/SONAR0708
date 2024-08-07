@@ -1,0 +1,2024 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="PropAgriForm" type="com.integrosys.cms.ui.collateral.property.propagri.PropAgriForm">
+        </form-bean>
+
+        <form-bean name="PropRuralForm" type="com.integrosys.cms.ui.collateral.property.proprural.PropRuralForm">
+        </form-bean>
+
+        <form-bean name="PropCommGeneralForm" type="com.integrosys.cms.ui.collateral.property.propcommgeneral.PropCommGeneralForm">
+        </form-bean>
+
+        <form-bean name="PropCommShopForm" type="com.integrosys.cms.ui.collateral.property.propcommshop.PropCommShopForm">
+        </form-bean>
+
+        <form-bean name="PropIndusForm" type="com.integrosys.cms.ui.collateral.property.propindus.PropIndusForm">
+        </form-bean>
+
+        <form-bean name="PropResStdForm" type="com.integrosys.cms.ui.collateral.property.propresstd.PropResStdForm">
+        </form-bean>
+
+        <form-bean name="PropResLuxForm" type="com.integrosys.cms.ui.collateral.property.propreslux.PropResLuxForm">
+        </form-bean>
+
+        <form-bean name="PropSpHotelForm" type="com.integrosys.cms.ui.collateral.property.propsphotel.PropSpHotelForm">
+        </form-bean>
+
+        <form-bean name="PropSpOtherForm" type="com.integrosys.cms.ui.collateral.property.propspother.PropSpOtherForm">
+        </form-bean>
+
+        <form-bean name="PropLandUrbanForm" type="com.integrosys.cms.ui.collateral.property.proplandurban.PropLandUrbanForm">
+        </form-bean>
+
+        <form-bean name="PropIndusSpecForm" type="com.integrosys.cms.ui.collateral.property.propindusspec.PropIndusSpecForm">
+        </form-bean>
+
+		<form-bean name="PropCommServiceAptForm" type="com.integrosys.cms.ui.collateral.property.propcommserviceapt.PropCommServiceAptForm">
+		</form-bean>
+
+        <form-bean name="ChargeForm" type="com.integrosys.cms.ui.collateral.property.ChargeForm">
+        </form-bean>
+
+        <form-bean name="PropertyInsurancePolicyForm" type="com.integrosys.cms.ui.collateral.insurancepolicy.InsurancePolicyForm">
+        </form-bean> 
+        
+        <form-bean name="PropValuationFromLOSForm" type="com.integrosys.cms.ui.collateral.valuationfromlos.PropValuationFromLOSForm">
+        </form-bean>
+        
+        <form-bean name="PropertyAddtionalDocumentFacilityDetailsForm" type="com.integrosys.cms.ui.collateral.addtionalDocumentFacilityDetails.AddtionalDocumentFacilityDetailsForm">
+        </form-bean> 
+           
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/PropAgriCollateral" type="com.integrosys.cms.ui.collateral.property.propagri.PropAgriAction" name="PropAgriForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propagri/PropAgri_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+        </action>
+    
+        <action path="/PropRuralCollateral" type="com.integrosys.cms.ui.collateral.property.proprural.PropRuralAction" name="PropRuralForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proprural/PropRural_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>            
+        </action>        
+
+
+        <action path="/PropCommGeneralCollateral" type="com.integrosys.cms.ui.collateral.property.propcommgeneral.PropCommGeneralAction" name="PropCommGeneralForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_addfacdocdet_ADDITIONAL_DOC_FAC_DET_INFO" path="/PropertyAddtionalDocumentFacilityDetails.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+            
+            <forward name="refresh_region_id" path="/collateral/property/refresh_maker_create_region.jsp"/>
+            
+            <forward name="refresh_state_id" path="/collateral/property/refresh_maker_create_state.jsp"/>
+            
+            <forward name="refresh_city_id" path="/collateral/property/refresh_maker_create_city.jsp"/>
+            
+            <forward name="refresh_branch_detail" path="/collateral/common/custodiandetaillist.jsp"/>
+            
+             <forward name="refreshPreMortgage" path="/collateral/property/refreshPreMortgage.jsp" />
+             <forward name="viewPreviousValuation1" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/viewPreviousVal1.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+             <forward name="returnPreviousValuation1" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+             <forward name="viewPreviousValuation2" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/viewPreviousVal2.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="returnPreviousValuation2" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            <forward name="viewPreviousValuation3" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/viewPreviousVal3.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+             <forward name="returnPreviousValuation3" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommgeneral/PropCommGeneral_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            <forward name="refresh_region_id_v2" path="/collateral/property/refresh_maker_create_region_v2.jsp"/>
+            <forward name="refresh_state_id_v2" path="/collateral/property/refresh_maker_create_state_v2.jsp"/>
+            <forward name="refresh_city_id_v2" path="/collateral/property/refresh_maker_create_city_v2.jsp"/>
+            
+            <forward name="refresh_region_id_v3" path="/collateral/property/refresh_maker_create_region_v3.jsp"/>
+            <forward name="refresh_state_id_v3" path="/collateral/property/refresh_maker_create_state_v3.jsp"/>
+            <forward name="refresh_city_id_v3" path="/collateral/property/refresh_maker_create_city_v3.jsp"/>
+            
+        </action>
+
+
+
+        <action path="/PropCommShopCollateral" type="com.integrosys.cms.ui.collateral.property.propcommshop.PropCommShopAction" name="PropCommShopForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommshop/PropCommShop_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+        </action>     
+        
+        <action path="/PropIndusCollateral" type="com.integrosys.cms.ui.collateral.property.propindus.PropIndusAction" name="PropIndusForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindus/PropIndus_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+        </action>
+            
+        <action path="/PropResStdCollateral" type="com.integrosys.cms.ui.collateral.property.propresstd.PropResStdAction" name="PropResStdForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propresstd/PropResStd_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+        </action>        
+        
+        <action path="/PropResLuxCollateral" type="com.integrosys.cms.ui.collateral.property.propreslux.PropResLuxAction" name="PropResLuxForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proreslux/PropResLux_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propreslux/PropResLux_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+        </action>
+            
+        <action path="/PropSpHotelCollateral" type="com.integrosys.cms.ui.collateral.property.propsphotel.PropSpHotelAction" name="PropSpHotelForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propsphotel/PropSpHotel_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+        </action>
+           
+
+
+
+
+        <action path="/PropSpOtherCollateral" type="com.integrosys.cms.ui.collateral.property.propspother.PropSpOtherAction" name="PropSpOtherForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propspother/PropSpOther_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+        </action>       
+        
+        <action path="/PropLandUrbanCollateral" type="com.integrosys.cms.ui.collateral.property.proplandurban.PropLandUrbanAction" name="PropLandUrbanForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/proplandurban/PropLandUrban_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+        </action>
+
+ 	<action path="/PropIndusSpecCollateral" type="com.integrosys.cms.ui.collateral.property.propindusspec.PropIndusSpecAction"
+ 		name="PropIndusSpecForm" validate="false" scope="request">
+
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+
+			<forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+			
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+
+	    	<forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="update_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propindusspec/PropIndusSpec_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+        </action>     
+        
+
+
+	<action path="/PropCommServiceAptCollateral" type="com.integrosys.cms.ui.collateral.property.propcommserviceapt.PropCommServiceAptAction"
+		name="PropCommServiceAptForm" validate="false" scope="request">
+
+            <forward name="print_reminder" path="/collateral/property/print_quit_rent.jsp"/>
+
+            <forward name="prepare_update_sub_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+
+            <forward name="prepare_LIMIT_CHARGE" path="/PropertyCharge.do"/>
+
+            <forward name="prepare_update_sub_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+
+            <forward name="prepare_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_add_insurance_INSURANCE_INFO" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_edit_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_update_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+
+			<forward name="maker_view_insurance_received" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_deferred" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_waived" path="/PropertyInsurancePolicy.do"/>
+            <forward name="maker_view_insurance_pending" path="/PropertyInsurancePolicy.do"/>
+
+            <forward name="prepare_update_sub_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+
+            <forward name="prepare_APPORTIONMENT" path="/PropertySecurityApportionment.do"/>
+
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="read_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+			<forward name="prepare_create" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_update.jsp"/>
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+			    <set-property property="title" value="title.security"/>
+			</forward>
+            <forward name="prepare_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="process_update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="update_return" path="/template/common_template.jsp">
+	            <set-property property="leftFrame" value="/template/common_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_update.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="update" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="save" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="process_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_process.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="close_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="track_return" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="track" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/propcommserviceapt/PropCommServiceApt_close.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="reminder" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/quit_rent_reminder.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="update_read_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="view_valuation_from_los" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+			<forward name="dropdown_list" path="/collateral/property/dropdown_list.jsp"/>
+			<forward name="search_pledgor_prepare" path="/PropertyPledgor.do?event=search_pledgor_prepare"/>
+            <forward name="edit_pledgor_prepare" path="/PropertyPledgor.do?event=edit_pledgor_prepare"/>
+            <forward name="add_pledge_prepare" path="/PropertyPledge.do?event=add_pledge_prepare"/>
+            <forward name="edit_pledge_prepare" path="/PropertyPledge.do?event=edit_pledge_prepare"/>
+            <forward name="view_pledge" path="/PropertyPledge.do?event=view"/>
+        </action>  
+        
+        <action path="/PropertyCharge" type="com.integrosys.cms.ui.collateral.property.ChargeAction" name="ChargeForm" validate="false" scope="request">
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/charge_read.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/charge_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/charge_create.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="PropAgri_update" path="/PropAgriCollateral.do?event=update_return"/>
+            <forward name="PropRural_update" path="/PropRuralCollateral.do?event=update_return"/>
+            <forward name="PropCommGeneral_update" path="/PropCommGeneralCollateral.do?event=update_return"/>
+            <forward name="PropCommServiceApt_update" path="/PropCommServiceAptCollateral.do?event=update_return"/>
+            <forward name="PropIndusSpec_update" path="/PropIndusSpecCollateral.do?event=update_return"/>
+            <forward name="PropCommShop_update" path="/PropCommShopCollateral.do?event=update_return"/>
+            <forward name="PropIndus_update" path="/PropIndusCollateral.do?event=update_return"/>
+            <forward name="PropLandUrban_update" path="/PropLandUrbanCollateral.do?event=update_return"/>
+            <forward name="PropResLux_update" path="/PropResLuxCollateral.do?event=update_return"/>
+            <forward name="PropResStd_update" path="/PropResStdCollateral.do?event=update_return"/>
+            <forward name="PropSpHotel_update" path="/PropSpHotelCollateral.do?event=update_return"/>
+            <forward name="PropSpOther_update" path="/PropSpOtherCollateral.do?event=update_return"/>
+
+            <forward name="PropAgri_read" path="/PropAgriCollateral.do?event=read_return"/>
+            <forward name="PropRural_read" path="/PropRuralCollateral.do?event=read_return"/>
+            <forward name="PropCommGeneral_read" path="/PropCommGeneralCollateral.do?event=read_return"/>
+            <forward name="PropCommServiceApt_read" path="/PropCommServiceAptCollateral.do?event=read_return"/>
+            <forward name="PropIndusSpec_read" path="/PropIndusSpecCollateral.do?event=read_return"/>
+            <forward name="PropCommShop_read" path="/PropCommShopCollateral.do?event=read_return"/>
+            <forward name="PropIndus_read" path="/PropIndusCollateral.do?event=read_return"/>
+            <forward name="PropLandUrban_read" path="/PropLandUrbanCollateral.do?event=read_return"/>
+            <forward name="PropResLux_read" path="/PropResLuxCollateral.do?event=read_return"/>
+            <forward name="PropResStd_read" path="/PropResStdCollateral.do?event=read_return"/>
+            <forward name="PropSpHotel_read" path="/PropSpHotelCollateral.do?event=read_return"/>
+            <forward name="PropSpOther_read" path="/PropSpOtherCollateral.do?event=read_return"/>
+
+            <forward name="PropAgri_process" path="/PropAgriCollateral.do?event=process_return"/>
+            <forward name="PropRural_process" path="/PropRuralCollateral.do?event=process_return"/>
+            <forward name="PropCommGeneral_process" path="/PropCommGeneralCollateral.do?event=process_return"/>
+            <forward name="PropCommServiceApt_process" path="/PropCommServiceAptCollateral.do?event=process_return"/>
+            <forward name="PropIndusSpec_process" path="/PropIndusSpecCollateral.do?event=process_return"/>
+            <forward name="PropCommShop_process" path="/PropCommShopCollateral.do?event=process_return"/>
+            <forward name="PropIndus_process" path="/PropIndusCollateral.do?event=process_return"/>
+            <forward name="PropLandUrban_process" path="/PropLandUrbanCollateral.do?event=process_return"/>
+            <forward name="PropResLux_process" path="/PropResLuxCollateral.do?event=process_return"/>
+            <forward name="PropResStd_process" path="/PropResStdCollateral.do?event=process_return"/>
+            <forward name="PropSpHotel_process" path="/PropSpHotelCollateral.do?event=process_return"/>
+            <forward name="PropSpOther_process" path="/PropSpOtherCollateral.do?event=process_return"/>
+
+            <forward name="PropAgri_close" path="/PropAgriCollateral.do?event=close_return"/>
+            <forward name="PropRural_close" path="/PropRuralCollateral.do?event=close_return"/>
+            <forward name="PropCommGeneral_close" path="/PropCommGeneralCollateral.do?event=close_return"/>
+            <forward name="PropCommServiceApt_close" path="/PropCommServiceAptCollateral.do?event=close_return"/>
+            <forward name="PropIndusSpec_close" path="/PropIndusSpecCollateral.do?event=close_return"/>
+            <forward name="PropCommShop_close" path="/PropCommShopCollateral.do?event=close_return"/>
+            <forward name="PropIndus_close" path="/PropIndusCollateral.do?event=close_return"/>
+            <forward name="PropLandUrban_close" path="/PropLandUrbanCollateral.do?event=close_return"/>
+            <forward name="PropResLux_close" path="/PropResLuxCollateral.do?event=close_return"/>
+            <forward name="PropResStd_close" path="/PropResStdCollateral.do?event=close_return"/>
+            <forward name="PropSpHotel_close" path="/PropSpHotelCollateral.do?event=close_return"/>
+            <forward name="PropSpOther_close" path="/PropSpOtherCollateral.do?event=close_return"/>
+
+            <forward name="PropAgri_track" path="/PropAgriCollateral.do?event=track_return"/>
+            <forward name="PropRural_track" path="/PropRuralCollateral.do?event=track_return"/>
+            <forward name="PropCommGeneral_track" path="/PropCommGeneralCollateral.do?event=track_return"/>
+            <forward name="PropCommServiceApt_track" path="/PropCommServiceAptCollateral.do?event=track_return"/>
+            <forward name="PropIndusSpec_track" path="/PropIndusSpecCollateral.do?event=track_return"/>
+            <forward name="PropCommShop_track" path="/PropCommShopCollateral.do?event=track_return"/>
+            <forward name="PropIndus_track" path="/PropIndusCollateral.do?event=track_return"/>
+            <forward name="PropLandUrban_track" path="/PropLandUrbanCollateral.do?event=track_return"/>
+            <forward name="PropResLux_track" path="/PropResLuxCollateral.do?event=track_return"/>
+            <forward name="PropResStd_track" path="/PropResStdCollateral.do?event=track_return"/>
+            <forward name="PropSpHotel_track" path="/PropSpHotelCollateral.do?event=track_return"/>
+            <forward name="PropSpOther_track" path="/PropSpOtherCollateral.do?event=track_return"/>
+        </action>  
+        
+        <action path="/PropertyInsurancePolicy" type="com.integrosys.cms.ui.collateral.property.insurancepolicy.PropertyInsurancePolicyAction"
+        	name="PropertyInsurancePolicyForm" validate="false" scope="request">
+
+            <forward name="read" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/insurancepolicy/view_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="prepare_update_sub" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/insurancepolicy/update_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/insurancepolicy/update_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/insurancepolicy/view_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+
+            <forward name="search_account" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/insurancepolicy/update_insurance_policy.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            <forward name="maker_add_insurance" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/insurancepolicy/add_insurance.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            <forward name="maker_create_insurance_pending" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_create_ins_pending.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	        
+	        <forward name="maker_create_insurance_deferred" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_create_ins_deferred.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	        <forward name="maker_create_insurance_received" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_create_ins_received.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	        <forward name="maker_create_insurance_waived" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_create_ins_waived.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	        
+	        <forward name="maker_cancle_submit_insurance" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/insurancepolicy/add_insurance.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            
+            
+             <forward name="maker_edit_insurance_received" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_edit_ins_received.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	        
+	        <forward name="maker_update_insurance_received" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_update_ins_received.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	         <forward name="maker_update_insurance_pending" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_update_ins_pending.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	         <forward name="maker_update_insurance_waived" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_update_ins_waived.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	         <forward name="maker_update_insurance_deferred" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_update_ins_deferred.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+            
+            
+            
+            
+            <forward name="maker_view_insurance_received" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_view_ins_received.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	           <forward name="maker_view_insurance_pending" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_view_ins_pending.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	           <forward name="maker_view_insurance_deferred" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_view_ins_deferred.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	           <forward name="maker_view_insurance_waived" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_view_ins_waived.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	        
+	         <forward name="checker_view_insurance_received" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_view_ins_received.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	           <forward name="checker_view_insurance_pending" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_view_ins_pending.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	           <forward name="checker_view_insurance_deferred" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_view_ins_deferred.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+	           <forward name="checker_view_insurance_waived" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/collateral/property/insurancepolicy/maker_view_ins_waived.jsp"/>
+	           <set-property property="title" value="title.security"/>
+	        </forward>
+            
+            
+            
+            
+            
+
+            <forward name="PropAgri_update" path="/PropAgriCollateral.do?event=update_return"/>
+            <forward name="PropRural_update" path="/PropRuralCollateral.do?event=update_return"/>
+            <forward name="PropCommGeneral_update" path="/PropCommGeneralCollateral.do?event=update_return"/>
+            <forward name="PropCommServiceApt_update" path="/PropCommServiceAptCollateral.do?event=update_return"/>
+            <forward name="PropIndusSpec_update" path="/PropIndusSpecCollateral.do?event=update_return"/>
+            <forward name="PropCommShop_update" path="/PropCommShopCollateral.do?event=update_return"/>
+            <forward name="PropIndus_update" path="/PropIndusCollateral.do?event=update_return"/>
+            <forward name="PropLandUrban_update" path="/PropLandUrbanCollateral.do?event=update_return"/>
+            <forward name="PropResLux_update" path="/PropResLuxCollateral.do?event=update_return"/>
+            <forward name="PropResStd_update" path="/PropResStdCollateral.do?event=update_return"/>
+            <forward name="PropSpHotel_update" path="/PropSpHotelCollateral.do?event=update_return"/>
+            <forward name="PropSpOther_update" path="/PropSpOtherCollateral.do?event=update_return"/>
+
+            <forward name="PropAgri_read" path="/PropAgriCollateral.do?event=read_return"/>
+            <forward name="PropRural_read" path="/PropRuralCollateral.do?event=read_return"/>
+            <forward name="PropCommGeneral_read" path="/PropCommGeneralCollateral.do?event=read_return"/>
+            <forward name="PropCommServiceApt_read" path="/PropCommServiceAptCollateral.do?event=read_return"/>
+            <forward name="PropIndusSpec_read" path="/PropIndusSpecCollateral.do?event=read_return"/>
+            <forward name="PropCommShop_read" path="/PropCommShopCollateral.do?event=read_return"/>
+            <forward name="PropIndus_read" path="/PropIndusCollateral.do?event=read_return"/>
+            <forward name="PropLandUrban_read" path="/PropLandUrbanCollateral.do?event=read_return"/>
+            <forward name="PropResLux_read" path="/PropResLuxCollateral.do?event=read_return"/>
+            <forward name="PropResStd_read" path="/PropResStdCollateral.do?event=read_return"/>
+            <forward name="PropSpHotel_read" path="/PropSpHotelCollateral.do?event=read_return"/>
+            <forward name="PropSpOther_read" path="/PropSpOtherCollateral.do?event=read_return"/>
+
+            <forward name="PropAgri_process" path="/PropAgriCollateral.do?event=process_return"/>
+            <forward name="PropRural_process" path="/PropRuralCollateral.do?event=process_return"/>
+            <forward name="PropCommGeneral_process" path="/PropCommGeneralCollateral.do?event=process_return"/>
+            <forward name="PropCommServiceApt_process" path="/PropCommServiceAptCollateral.do?event=process_return"/>
+            <forward name="PropIndusSpec_process" path="/PropIndusSpecCollateral.do?event=process_return"/>
+            <forward name="PropCommShop_process" path="/PropCommShopCollateral.do?event=process_return"/>
+            <forward name="PropIndus_process" path="/PropIndusCollateral.do?event=process_return"/>
+            <forward name="PropLandUrban_process" path="/PropLandUrbanCollateral.do?event=process_return"/>
+            <forward name="PropResLux_process" path="/PropResLuxCollateral.do?event=process_return"/>
+            <forward name="PropResStd_process" path="/PropResStdCollateral.do?event=process_return"/>
+            <forward name="PropSpHotel_process" path="/PropSpHotelCollateral.do?event=process_return"/>
+            <forward name="PropSpOther_process" path="/PropSpOtherCollateral.do?event=process_return"/>
+
+            <forward name="PropAgri_close" path="/PropAgriCollateral.do?event=close_return"/>
+            <forward name="PropRural_close" path="/PropRuralCollateral.do?event=close_return"/>
+            <forward name="PropCommGeneral_close" path="/PropCommGeneralCollateral.do?event=close_return"/>
+            <forward name="PropCommServiceApt_close" path="/PropCommServiceAptCollateral.do?event=close_return"/>
+            <forward name="PropIndusSpec_close" path="/PropIndusSpecCollateral.do?event=close_return"/>
+            <forward name="PropCommShop_close" path="/PropCommShopCollateral.do?event=close_return"/>
+            <forward name="PropIndus_close" path="/PropIndusCollateral.do?event=close_return"/>
+            <forward name="PropLandUrban_close" path="/PropLandUrbanCollateral.do?event=close_return"/>
+            <forward name="PropResLux_close" path="/PropResLuxCollateral.do?event=close_return"/>
+            <forward name="PropResStd_close" path="/PropResStdCollateral.do?event=close_return"/>
+            <forward name="PropSpHotel_close" path="/PropSpHotelCollateral.do?event=close_return"/>
+            <forward name="PropSpOther_close" path="/PropSpOtherCollateral.do?event=close_return"/>
+
+            <forward name="PropAgri_track" path="/PropAgriCollateral.do?event=track_return"/>
+            <forward name="PropRural_track" path="/PropRuralCollateral.do?event=track_return"/>
+            <forward name="PropCommGeneral_track" path="/PropCommGeneralCollateral.do?event=track_return"/>
+            <forward name="PropCommServiceApt_track" path="/PropCommServiceAptCollateral.do?event=track_return"/>
+            <forward name="PropIndusSpec_track" path="/PropIndusSpecCollateral.do?event=track_return"/>
+            <forward name="PropCommShop_track" path="/PropCommShopCollateral.do?event=track_return"/>
+            <forward name="PropIndus_track" path="/PropIndusCollateral.do?event=track_return"/>
+            <forward name="PropLandUrban_track" path="/PropLandUrbanCollateral.do?event=track_return"/>
+            <forward name="PropResLux_track" path="/PropResLuxCollateral.do?event=track_return"/>
+            <forward name="PropResStd_track" path="/PropResStdCollateral.do?event=track_return"/>
+            <forward name="PropSpHotel_track" path="/PropSpHotelCollateral.do?event=track_return"/>
+            <forward name="PropSpOther_track" path="/PropSpOtherCollateral.do?event=track_return"/>
+        </action>
+
+      <action path="/PropertySecurityApportionment" type="com.integrosys.cms.ui.collateral.property.SecApportionmentAction"
+       name="SecurityApportionmentDtlForm" scope="request">
+        <forward name="read" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="prepare_update_sub" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="refresh" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/update_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="process" path="/template/common_template.jsp">
+           <set-property property="rightFrame" value="/collateral/secapportion/view_apportionment.jsp"/>
+           <set-property property="title" value="title.security"/>
+        </forward>
+        <forward name="PropAgri_update" path="/PropAgriCollateral.do?event=update_return"/>
+        <forward name="PropAgri_read" path="/PropAgriCollateral.do?event=read_return"/>
+        <forward name="PropAgri_process" path="/PropAgriCollateral.do?event=process_return"/>
+        <forward name="PropAgri_close" path="/PropAgriCollateral.do?event=close_return"/>
+        <forward name="PropAgri_track" path="/PropAgriCollateral.do?event=track_return"/>
+  
+        <forward name="PropRural_update" path="/PropRuralCollateral.do?event=update_return"/>
+        <forward name="PropRural_read" path="/PropRuralCollateral.do?event=read_return"/>
+        <forward name="PropRural_process" path="/PropRuralCollateral.do?event=process_return"/>
+        <forward name="PropRural_close" path="/PropRuralCollateral.do?event=close_return"/>
+        <forward name="PropRural_track" path="/PropRuralCollateral.do?event=track_return"/>
+
+        <forward name="PropCommGeneral_update" path="/PropCommGeneralCollateral.do?event=update_return"/>
+        <forward name="PropCommGeneral_read" path="/PropCommGeneralCollateral.do?event=read_return"/>
+        <forward name="PropCommGeneral_process" path="/PropCommGeneralCollateral.do?event=process_return"/>
+        <forward name="PropCommGeneral_close" path="/PropCommGeneralCollateral.do?event=close_return"/>
+        <forward name="PropCommGeneral_track" path="/PropCommGeneralCollateral.do?event=track_return"/>  
+
+        <forward name="PropCommShop_update" path="/PropCommShopCollateral.do?event=update_return"/>
+        <forward name="PropCommShop_read" path="/PropCommShopCollateral.do?event=read_return"/>
+        <forward name="PropCommShop_process" path="/PropCommShopCollateral.do?event=process_return"/>
+        <forward name="PropCommShop_close" path="/PropCommShopCollateral.do?event=close_return"/>
+        <forward name="PropCommShop_track" path="/PropCommShopCollateral.do?event=track_return"/>
+
+        <forward name="PropCommServiceApt_update" path="/PropCommServiceAptCollateral.do?event=update_return"/>
+        <forward name="PropCommServiceApt_read" path="/PropCommServiceAptCollateral.do?event=read_return"/>
+        <forward name="PropCommServiceApt_process" path="/PropCommServiceAptCollateral.do?event=process_return"/>
+        <forward name="PropCommServiceApt_close" path="/PropCommServiceAptCollateral.do?event=close_return"/>
+        <forward name="PropCommServiceApt_track" path="/PropCommServiceAptCollateral.do?event=track_return"/>
+        
+        <forward name="PropIndusSpec_update" path="/PropIndusSpecCollateral.do?event=update_return"/>
+        <forward name="PropIndusSpec_read" path="/PropIndusSpecCollateral.do?event=read_return"/>
+        <forward name="PropIndusSpec_process" path="/PropIndusSpecCollateral.do?event=process_return"/>
+        <forward name="PropIndusSpec_close" path="/PropIndusSpecCollateral.do?event=close_return"/>
+        <forward name="PropIndusSpec_track" path="/PropIndusSpecCollateral.do?event=track_return"/>        
+
+        <forward name="PropIndus_update" path="/PropIndusCollateral.do?event=update_return"/>
+        <forward name="PropIndus_read" path="/PropIndusCollateral.do?event=read_return"/>
+        <forward name="PropIndus_process" path="/PropIndusCollateral.do?event=process_return"/>
+        <forward name="PropIndus_close" path="/PropIndusCollateral.do?event=close_return"/>
+        <forward name="PropIndus_track" path="/PropIndusCollateral.do?event=track_return"/>
+
+        <forward name="PropResStd_update" path="/PropResStdCollateral.do?event=update_return"/>
+        <forward name="PropResStd_read" path="/PropResStdCollateral.do?event=read_return"/>
+        <forward name="PropResStd_process" path="/PropResStdCollateral.do?event=process_return"/>
+        <forward name="PropResStd_close" path="/PropResStdCollateral.do?event=close_return"/>
+        <forward name="PropResStd_track" path="/PropResStdCollateral.do?event=track_return"/>
+
+        <forward name="PropResLux_update" path="/PropResLuxCollateral.do?event=update_return"/>
+        <forward name="PropResLux_read" path="/PropResLuxCollateral.do?event=read_return"/>
+        <forward name="PropResLux_process" path="/PropResLuxCollateral.do?event=process_return"/>
+        <forward name="PropResLux_close" path="/PropResLuxCollateral.do?event=close_return"/>
+        <forward name="PropResLux_track" path="/PropResLuxCollateral.do?event=track_return"/>  
+
+        <forward name="PropSpHotel_update" path="/PropSpHotelCollateral.do?event=update_return"/>
+        <forward name="PropSpHotel_read" path="/PropSpHotelCollateral.do?event=read_return"/>
+        <forward name="PropSpHotel_process" path="/PropSpHotelCollateral.do?event=process_return"/>
+        <forward name="PropSpHotel_close" path="/PropSpHotelCollateral.do?event=close_return"/>
+        <forward name="PropSpHotel_track" path="/PropSpHotelCollateral.do?event=track_return"/>  
+        
+        <forward name="PropSpOther_update" path="/PropSpOtherCollateral.do?event=update_return"/>
+        <forward name="PropSpOther_read" path="/PropSpOtherCollateral.do?event=read_return"/>
+        <forward name="PropSpOther_process" path="/PropSpOtherCollateral.do?event=process_return"/>
+        <forward name="PropSpOther_close" path="/PropSpOtherCollateral.do?event=close_return"/>
+        <forward name="PropSpOther_track" path="/PropSpOtherCollateral.do?event=track_return"/>  
+
+        <forward name="PropLandUrban_update" path="/PropLandUrbanCollateral.do?event=update_return"/>
+        <forward name="PropLandUrban_read" path="/PropLandUrbanCollateral.do?event=read_return"/>
+        <forward name="PropLandUrban_process" path="/PropLandUrbanCollateral.do?event=process_return"/>
+        <forward name="PropLandUrban_close" path="/PropLandUrbanCollateral.do?event=close_return"/>
+        <forward name="PropLandUrban_track" path="/PropLandUrbanCollateral.do?event=track_return"/>  
+      </action>    
+      
+        <action path="/PropValuationFromLOS"
+              type="com.integrosys.cms.ui.collateral.valuationfromlos.PropValuationFromLOSAction"
+              name="PropValuationFromLOSForm"
+              validate="false"
+              scope="request">
+          <forward name="read" path="/template/common_template.jsp">
+              <set-property property="rightFrame" value="/collateral/valuationfromlos/view_valuationfromlos.jsp"/>
+              <set-property property="title" value="title.security"/>
+          </forward>
+        </action>
+        
+        <action path="/PropertyAddtionalDocumentFacilityDetails" type="com.integrosys.cms.ui.collateral.property.addtionalDocumentFacilityDetails.PropertyAddtionalDocumentFacilityDetailsAction"
+        	name="PropertyAddtionalDocumentFacilityDetailsForm" validate="false" scope="request">
+
+            <forward name="maker_add_addfacdocdet" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/addtionalDocumentFacilityDetails/add_additionalDocFacilityDetails.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+             <forward name="maker_edit_add_fac_doc_det" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/addtionalDocumentFacilityDetails/maker_edit_additionalDocFacilityDetails.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            <forward name="maker_update_add_fac_doc_det" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/collateral/property/addtionalDocumentFacilityDetails/maker_update_additionalDocFacilityDetails.jsp"/>
+                <set-property property="title" value="title.security"/>
+            </forward>
+            
+            <forward name="PropCommGeneral_update" path="/PropCommGeneralCollateral.do?event=update_return"/>
+         </action>
+          
+    </action-mappings>
+    
+    <message-resources key="message-col-property" parameter="ApplicationResources-col-property"/>
+</struts-config>

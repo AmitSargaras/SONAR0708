@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select PANNUMBER, BULKBORROWERNAME, ADDRESS1, ADDRESS2, PINCODE, CONTACTNO, EMAILID,
+			DATEOFBIRTH, DATEOFINCORPORATION, PRESENTTURNOVER, PREVIOUSTURNOVER,
+			STATUS, CAMSANCTIONEDAMOUNT, CAMTYPE, CAMNUMBER, CAMDATE, CAMEXPIRYDATE, CAMSRMEXPIRYDATE,
+			LOCATIONVAL, SEGMENTNAMEVAL, CONSTITUTIONVAL, RAMRATINGVAL, ASSETCLASSIFICATIONVAL,
+      		RMNAME, PARTYID, decode (INTERFACESTATUS, 'S', 'Success' ,'F', 'Reject', 'Pending') INTERFACESTATUS, ERRORMESSAGE
+			from CMS_ECBF_CUST_INTERFACE_LOG
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				1=1
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> and PARTYID = </condition>
+			</param>
+ 			<param>
+ 				<name>recordType</name>
+ 				<condition> and decode (INTERFACESTATUS, 'S', 'SUCCESS', 'F', 'REJECTED' , 'PENDING') = </condition>
+ 			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and TRUNC(REQUESTDATETIME) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+			<orderAndGroupByClause>
+ 				ORDER BY id desc
+ 			</orderAndGroupByClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PAN Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Name of Bulk Borrower</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Address 1</header>
+				</reportColumn>
+				<reportColumn>
+					<width>60</width>
+					<format>textFormat</format>
+					<header>Address 2</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Pin Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Contact No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Email Id.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of Birth</header>
+				</reportColumn>
+				<reportColumn>
+					<width>30</width>
+					<format>textFormat</format>
+					<header>Date of Incorporation</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Turn Over ( Present Financial Year)</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>40</width>
+					<format>amountFormat</format>
+					<header>Turn Over ( Previous Financial Year)</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>40</width>
+					<format>amountFormat</format>
+					<header>CAM Sanctioned Amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Expiry Date</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>40</width>
+					<format>textFormat</format>
+					<header>CAM SRM Expiry Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Constitution</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM Rating</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Asset Classification</header>
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>STATUS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>ERROR DESCRIPTION</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Success/Reject/Summary Report of Party CAM Details</reportName>
+		</reportParamters>
+	</report>
+</reports>

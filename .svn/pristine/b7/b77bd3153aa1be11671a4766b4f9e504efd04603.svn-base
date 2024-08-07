@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+		Inject proxy(s) into command class
+	</description>
+	
+	<bean id="UdfAction.UdfListCmd" class="com.integrosys.cms.ui.udf.UdfListCommand">
+		<property name="udfProxyManager" ref="udfProxyManager"/>
+	</bean>
+	<!-- <bean id="UdfAction.UdfAddCmd" class="com.integrosys.cms.ui.udf.UdfAddCommand">
+		<property name="udfProxyManager" ref="udfProxyManager"/>
+	</bean>
+	<bean id="UdfAction.UdfPrepareAddCmd" class="com.integrosys.cms.ui.udf.UdfPrepareAddCommand"/>
+	
+	<bean id="UdfAction.UdfDeleteCmd" class="com.integrosys.cms.ui.udf.UdfDeleteCommand">
+		<property name="udfProxyManager" ref="udfProxyManager"/>
+	</bean>
+	
+	<bean id="UdfAction.UdfFreezeCmd" class="com.integrosys.cms.ui.udf.UdfFreezeCommand">
+		<property name="udfProxyManager" ref="udfProxyManager"/>
+	</bean>  -->
+	
+	<bean id="UdfAction.MakerPrepareCreateUdfCmd" class="com.integrosys.cms.ui.udf.MakerPrepareCreateUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+       		</bean>
+       		
+       		<bean id="UdfAction.MakerCreateUdfCmd" class="com.integrosys.cms.ui.udf.MakerCreateUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean>
+    		
+    		<bean id="UdfAction.CheckerReadUdfCmd" class="com.integrosys.cms.ui.udf.CheckerReadUdfCmd">
+        	<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean>
+    		
+    		<bean id="UdfAction.CheckerApproveEditUdfCmd" class="com.integrosys.cms.ui.udf.CheckerApproveEditUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean>
+    		
+    		
+    		<!-- <bean id="UdfAction.MakerSaveUdfCmd" class="com.integrosys.cms.ui.udf.MakerSaveUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean> -->
+    		
+    		<bean id="UdfAction.MakerReadUdfCmd" class="com.integrosys.cms.ui.udf.MakerReadUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean> 
+    		
+    		<bean id="UdfAction.MakerEditUdfCmd" class="com.integrosys.cms.ui.udf.MakerEditUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean>
+    		
+    		<bean id="UdfAction.CheckerRejectEditUdfCmd" class="com.integrosys.cms.ui.udf.CheckerRejectEditUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean>
+    		
+    		<bean id="UdfAction.MakerDeleteUdfCmd" class="com.integrosys.cms.ui.udf.MakerDeleteUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean>
+    		
+    		<bean id="UdfAction.MakerCloseUdfCmd" class="com.integrosys.cms.ui.udf.MakerCloseUdfCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean>
+    		
+    		<bean id="UdfAction.PaginationCmd" class="com.integrosys.cms.ui.udf.PaginationCmd">
+       		<property name="udfProxyManager" ref="udfProxyManager" />
+    		</bean>
+	
+</beans>

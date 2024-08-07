@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.integrosys.cms.app.generateli.bus.OBLiDoc" table="CMS_LI_DOC" lazy="false">
+
+		<id name="id" column="LI_TEMPLATE_ID" type="long">
+			<generator
+				class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_LI_DOC_SEQ</param>
+			</generator>
+		</id>
+		<property name="liTemplateName" column="LI_TEMPLATE_NAME"/>
+		<property name="generatedBy" column="GENERATED_BY"/>
+		<property name="generatedDate" column="GENERATED_DATE" type="timestamp"/>
+		<property name="checklistId" column="CHECKLIST_ID"/>
+		<property name="fileLocation" column="FILE_LOC"/>
+	</class>
+	
+	<class name="com.integrosys.cms.app.generateli.bus.OBLiDoc" table="DUMMY" entity-name="oblidoc.getInfoEntity">
+		<id name="id" column="ID"/>
+		<property name="liTemplateName" column="LI_TEMPLATE_NAME" type="string"/>
+		<property name="firstGenDate" column="FIRST_GEN_DATE" type="timestamp"/>
+		<property name="lastGenDate" column="LAST_GEN_DATE" type="timestamp"/>
+		<property name="generatedBy" column="GENERATED_BY" type="string"/>
+	</class>
+	
+	
+	<resultset name="clims.gen.li.result">
+		<return-scalar column="LI_TEMPLATE_ID" type="string"/>
+		<return-scalar column="LI_TEMPLATE_NAME" type="string"/>
+		<return-scalar column="GENERATED_BY" type="string"/>
+		<return-scalar column="FIRST_GEN_DATE" type="timestamp"/>
+		<return-scalar column="LAST_GEN_DATE" type="timestamp"/>
+	</resultset>
+	
+
+	
+	<resultset name="clims.gen.li.result.oblidoc">
+    	<return class="com.integrosys.cms.app.generateli.bus.OBLiDoc" entity-name="oblidoc.getInfoEntity"/>
+    </resultset>
+	
+	<query name="HQL.findAllGenLi">
+		<![CDATA[
+		 from com.integrosys.cms.app.generateli.bus.OBLiDoc as lidoc]]>
+	</query>
+	
+	<sql-query name="clims.gen.li" resultset-ref="clims.gen.li.result.oblidoc">
+    <![CDATA[
+      SELECT TEMP1.* FROM(
+			SELECT 
+     	LI_TEMPLATE_ID AS ID, LI_TEMPLATE_NAME , 
+        (SELECT GENERATED_DATE
+    	FROM CMS_LI_DOC FIRSTDOC WHERE FIRSTDOC.LI_TEMPLATE_NAME = LIDOC.LI_TEMPLATE_NAME 
+        ORDER BY LI_TEMPLATE_NAME , GENERATED_DATE ASC
+        FETCH FIRST 1 ROWS ONLY) AS FIRST_GEN_DATE,
+        (SELECT GENERATED_DATE
+    	FROM CMS_LI_DOC LASTDOC WHERE LASTDOC.LI_TEMPLATE_ID = LIDOC.LI_TEMPLATE_ID ORDER BY LI_TEMPLATE_ID DESC
+        FETCH FIRST 1 ROWS ONLY) AS LAST_GEN_DATE,
+        (SELECT GENERATED_BY
+    	FROM CMS_LI_DOC LASTDOC WHERE LASTDOC.LI_TEMPLATE_ID = LIDOC.LI_TEMPLATE_ID ORDER BY LI_TEMPLATE_NAME , GENERATED_DATE DESC
+        FETCH FIRST 1 ROWS ONLY) AS GENERATED_BY
+        FROM CMS_LI_DOC LIDOC WHERE LIDOC.LI_TEMPLATE_NAME like '%Insurer%' ORDER by LI_TEMPLATE_ID desc FETCH FIRST 1 ROWS ONLY
+				) AS TEMP1
+			UNION
+			SELECT TEMP2.* FROM(
+			SELECT 
+     	LI_TEMPLATE_ID AS ID, LI_TEMPLATE_NAME , 
+        (SELECT GENERATED_DATE
+    	FROM CMS_LI_DOC FIRSTDOC WHERE FIRSTDOC.LI_TEMPLATE_NAME = LIDOC.LI_TEMPLATE_NAME 
+        ORDER BY LI_TEMPLATE_NAME , GENERATED_DATE ASC
+        FETCH FIRST 1 ROWS ONLY) AS FIRST_GEN_DATE,
+        (SELECT GENERATED_DATE
+    	FROM CMS_LI_DOC LASTDOC WHERE LASTDOC.LI_TEMPLATE_ID = LIDOC.LI_TEMPLATE_ID ORDER BY LI_TEMPLATE_ID DESC
+        FETCH FIRST 1 ROWS ONLY) AS LAST_GEN_DATE,
+        (SELECT GENERATED_BY
+    	FROM CMS_LI_DOC LASTDOC WHERE LASTDOC.LI_TEMPLATE_ID = LIDOC.LI_TEMPLATE_ID ORDER BY LI_TEMPLATE_NAME , GENERATED_DATE DESC
+        FETCH FIRST 1 ROWS ONLY) AS GENERATED_BY
+        FROM CMS_LI_DOC LIDOC WHERE LIDOC.LI_TEMPLATE_NAME like '%Solicitor%' ORDER by LI_TEMPLATE_ID desc FETCH FIRST 1 ROWS ONLY
+				) AS TEMP2
+	UNION
+			SELECT TEMP3.* FROM(
+			SELECT 
+     	LI_TEMPLATE_ID AS ID, LI_TEMPLATE_NAME , 
+        (SELECT GENERATED_DATE
+    	FROM CMS_LI_DOC FIRSTDOC WHERE FIRSTDOC.LI_TEMPLATE_NAME = LIDOC.LI_TEMPLATE_NAME 
+        ORDER BY LI_TEMPLATE_NAME , GENERATED_DATE ASC
+        FETCH FIRST 1 ROWS ONLY) AS FIRST_GEN_DATE,
+        (SELECT GENERATED_DATE
+    	FROM CMS_LI_DOC LASTDOC WHERE LASTDOC.LI_TEMPLATE_ID = LIDOC.LI_TEMPLATE_ID ORDER BY LI_TEMPLATE_ID DESC
+        FETCH FIRST 1 ROWS ONLY) AS LAST_GEN_DATE,
+        (SELECT GENERATED_BY
+    	FROM CMS_LI_DOC LASTDOC WHERE LASTDOC.LI_TEMPLATE_ID = LIDOC.LI_TEMPLATE_ID ORDER BY LI_TEMPLATE_NAME , GENERATED_DATE DESC
+        FETCH FIRST 1 ROWS ONLY) AS GENERATED_BY
+        FROM CMS_LI_DOC LIDOC WHERE LIDOC.LI_TEMPLATE_NAME like '%Valuer%' ORDER by LI_TEMPLATE_ID desc FETCH FIRST 1 ROWS ONLY
+				) AS TEMP3
+    ]]>
+    </sql-query>    
+    
+
+</hibernate-mapping>

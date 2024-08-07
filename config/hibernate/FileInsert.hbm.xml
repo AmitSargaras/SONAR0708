@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.fileInsertMapper.bus">
+	<class  entity-name="stageFileMapperId" name="com.integrosys.cms.app.fileInsertMapper.bus.OBFileMapperID" table="CMS_STAGE_FILE_ID_MAP" lazy="false">
+
+		<id name="Id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_FILE_ID_MAP_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="fileId" column="FILE_ID"/>
+	</class>
+
+	<class  entity-name="actualFileMapperId" name="com.integrosys.cms.app.fileInsertMapper.bus.OBFileMapperID" table="CMS_FILE_ID_MAP" lazy="false">
+												   
+		<id name="Id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_FILE_ID_MAP_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="fileId" column="FILE_ID"/>
+	</class>
+	
+	<class  entity-name="fileMapper" name="com.integrosys.cms.app.fileInsertMapper.bus.OBFileMapperMaster" table="CMS_FILE_MAPPER" lazy="false">
+
+		<id name="Id" column="ID" type="long">
+			<generator class="native"  >
+				<param name="sequence">CMS_FILE_MAPPER_MAP_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="fileId" column="FILE_ID"/>
+		<property name="transId" column="TRANS_ID"/>
+		<property name="sysId" column="SYS_ID"/>
+	</class>
+</hibernate-mapping>

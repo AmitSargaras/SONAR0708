@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CustExposureForm" type="com.integrosys.cms.ui.custexposure.CustExposureForm"/>       
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/CustExposure"
+		 type="com.integrosys.cms.ui.custexposure.CustExposureAction"
+         name="CustExposureForm"
+		 validate="false"
+		 scope="request">
+	     <forward name="view_cust_exposure" path="/template/common_template.jsp">
+		 	<set-property property="rightFrame" value="/custexposure/view_cust_exposure.jsp"/>
+		 	<set-property property="title" value="title.svc.detail"/>
+	     </forward> 
+	     <forward name="view_grp_exposure" path="/GrpExposure.do?event=view_grp_exposure"/>
+		 <forward name="view_grp_to_otr_grp_exposure" path="/GrpExposure.do?event=view_otr_grp_exposure"/>
+	     <forward name="view_cust_back_sys_exposure" path="/template/common_template.jsp">
+		 	<set-property property="rightFrame" value="/custexposure/view_cust_back_sys_exposure.jsp"/>
+		 	<set-property property="title" value="title.svc.detail"/>
+	     </forward> 	     
+        </action>
+    </action-mappings>
+    
+    <message-resources key="message-custexposure" parameter="ApplicationResources-custexposure"/>
+</struts-config>

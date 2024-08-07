@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				SELECT usr.login_id,
+					usr.user_name,
+					usr.branch_code,
+					sysbranch.system_bank_branch_name as branch_name,
+					rpt.module_name,
+					GET_ACTIVITY_MESSAGE(FROM_STATE,TO_STATE) AS MESSAGE,					
+					TO_CHAR(th.transaction_date,'DD-Mon-YYYY')  AS PERFORMED_DATE,
+				    TO_CHAR(th.transaction_date,'HH:MI AM')     AS PERFORMED_TIME,
+					coalesce(ip.ip_address,'0.0.0.0') as ip_address
+				  FROM 	TRANS_HISTORY th,
+				       	CMS_USER usr,
+				        TRX_TYPE_REPORT rpt,
+						CMS_SYSTEM_BANK_BRANCH sysBranch,
+						TRANS_HISTORY_IPADDRESS ip
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				usr.user_id = th.user_id
+				and ip.tr_history_id = th.tr_history_id
+				and usr.branch_code = to_char(sysbranch.system_bank_branch_code)
+				and th.transaction_type = rpt.transaction_type
+				and rpt.belongs_to='MASTERS'
+				AND usr.BRANCH_CODE =	TO_CHAR(sysBranch.SYSTEM_BANK_BRANCH_CODE)
+			</mandatoryClause>
+			<param>
+				<name>userId</name>
+				<condition> and usr.user_id = </condition>
+			</param>
+			<param>
+				<name>branch</name>
+				<condition> AND sysBranch.ID = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and TO_DATE(TRUNC(th.transaction_date)) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>User Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Login Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch Code</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Module Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Activity Performed</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Performed Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Performed Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>IP Address</header>
+				</reportColumn>
+				
+			</reportColumns>
+			<reportName>Master Admin Activity Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts config to context mapping files for manual feeds
+	</description>
+
+	<bean name="/feed_stock_index_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.stockindex.list.StockIndexListAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="ReadStockIndexListCommand" value-ref="StockIndexListAction.ReadStockIndexListCommand"/>
+				<entry key="AddStockIndexListCommand" value-ref="StockIndexListAction.AddStockIndexListCommand"/>
+				<entry key="DeleteStockIndexListCommand" value-ref="StockIndexListAction.DeleteStockIndexListCommand"/>
+				<entry key="SaveStockIndexListCommand" value-ref="StockIndexListAction.SaveStockIndexListCommand"/>
+				<entry key="PaginateStockIndexListCommand" value-ref="StockIndexListAction.PaginateStockIndexListCommand"/>
+				<entry key="SubmitStockIndexListCommand" value-ref="StockIndexListAction.SubmitStockIndexListCommand"/>
+				<entry key="CompareStockIndexListCommand" value-ref="StockIndexListAction.CompareStockIndexListCommand"/>
+				<entry key="ApproveStockIndexListCommand" value-ref="StockIndexListAction.ApproveStockIndexListCommand"/>
+				<entry key="RejectStockIndexListCommand" value-ref="StockIndexListAction.RejectStockIndexListCommand"/>
+				<entry key="ListStockIndexListCommand" value-ref="StockIndexListAction.ListStockIndexListCommand"/>
+				<entry key="ListCompareStockIndexListCommand" value-ref="StockIndexListAction.ListCompareStockIndexListCommand"/>
+				<entry key="ListViewStockIndexListCommand" value-ref="StockIndexListAction.ListViewStockIndexListCommand"/>
+				<entry key="CloseStockIndexListCommand" value-ref="StockIndexListAction.CloseStockIndexListCommand"/>
+				<entry key="ReloadMarketableSecValuationProfileCommand" value-ref="CollateralAction.ReloadMarketableSecValuationProfileSingletonCommand"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="/feed_stock_index_item" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.stockindex.item.StockIndexItemAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="SaveStockIndexItemCommand" value-ref="StockIndexItemAction.SaveStockIndexItemCommand" />
+				<entry key="PrepareStockIndexItemCommand" value-ref="StockIndexItemAction.PrepareStockIndexItemCommand" />
+			</map>
+		</property>
+	</bean>
+	
+  	<bean name="/feed_stock_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.stock.list.StockListAction">
+    	<property name="nameCommandMap">
+      		<map>
+		        <entry key="CompareStockListCommand" value-ref="StockListAction.CompareStockListCommand"/>
+		        <entry key="SaveStockListCommand" value-ref="StockListAction.SaveStockListCommand"/>
+		        <entry key="CloseStockListCommand" value-ref="StockListAction.CloseStockListCommand"/>
+		        <entry key="DeleteStockListCommand" value-ref="StockListAction.DeleteStockListCommand"/>
+		        <entry key="RejectStockListCommand" value-ref="StockListAction.RejectStockListCommand"/>
+		        <entry key="PaginateStockListCommand" value-ref="StockListAction.PaginateStockListCommand"/>
+		        <entry key="ApproveStockListCommand" value-ref="StockListAction.ApproveStockListCommand"/>
+		        <entry key="ListViewStockListCommand" value-ref="StockListAction.ListViewStockListCommand"/>
+		        <entry key="SubmitStockListCommand" value-ref="StockListAction.SubmitStockListCommand"/>
+		        <entry key="AddStockListCommand" value-ref="StockListAction.AddStockListCommand"/>
+		        <entry key="ListCompareStockListCommand" value-ref="StockListAction.ListCompareStockListCommand"/>
+		        <entry key="ListStockListCommand" value-ref="StockListAction.ListStockListCommand"/>
+		        <entry key="ReadStockListCommand" value-ref="StockListAction.ReadStockListCommand"/>
+		        <entry key="ReloadMarketableSecValuationProfileCommand" value-ref="CollateralAction.ReloadMarketableSecValuationProfileSingletonCommand"/>
+      		</map>
+    	</property>
+  	</bean>
+
+  	<bean name="/feed_stock_item" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.stock.item.StockItemAction">
+  		<property name="nameCommandMap">
+      		<map>
+        		<entry key="SaveStockItemCommand" value-ref="StockItemAction.SaveStockItemCommand"/>
+        		<entry key="PrepareStockItemCommand" value-ref="StockItemAction.PrepareStockItemCommand"/>
+      			<entry key="MakerPrepareUploadStockItemCommand" value-ref="StockItemAction.MakerPrepareUploadStockItemCommand"/>
+        	    <entry key="MakerUploadStockItemCommand" value-ref="StockItemAction.MakerUploadStockItemCommand"/>
+				<entry key="CheckerReadFileInsertListCommand" value-ref="StockItemAction.CheckerReadFileInsertListCommand" />
+				<entry key="CheckerApproveInsertStockItemCommand" value-ref="StockItemAction.CheckerApproveInsertStockItemCommand" />
+				<entry key="CheckerRejectInsertStockItemCommand" value-ref="StockItemAction.CheckerRejectInsertStockItemCommand" />
+				<entry key="MakerInsertCloseStockItemCommand" value-ref="StockItemAction.MakerInsertCloseStockItemCommand" />
+	
+      		</map>
+    	</property>
+  	</bean>
+	
+	<bean name="/feed_bond_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.bond.list.BondListAction">
+    	<property name="nameCommandMap">
+      		<map>
+		        <entry key="AddBondListCommand" value-ref="BondListAction.AddBondListCommand"/>
+		        <entry key="ApproveBondListCommand" value-ref="BondListAction.ApproveBondListCommand"/>
+		        <entry key="CloseBondListCommand" value-ref="BondListAction.CloseBondListCommand"/>
+		        <entry key="CompareBondListCommand" value-ref="BondListAction.CompareBondListCommand"/>
+		        <entry key="DeleteBondListCommand" value-ref="BondListAction.DeleteBondListCommand"/>
+		        <entry key="ListBondListCommand" value-ref="BondListAction.ListBondListCommand"/>
+		        <entry key="ListCompareBondListCommand" value-ref="BondListAction.ListCompareBondListCommand"/>
+		        <entry key="ListViewBondListCommand" value-ref="BondListAction.ListViewBondListCommand"/>
+		        <entry key="PaginateBondListCommand" value-ref="BondListAction.PaginateBondListCommand"/>
+		        <entry key="ReadBondListCommand" value-ref="BondListAction.ReadBondListCommand"/>
+		        <entry key="RejectBondListCommand" value-ref="BondListAction.RejectBondListCommand"/>
+		        <entry key="SaveBondListCommand" value-ref="BondListAction.SaveBondListCommand"/>
+		        <entry key="SubmitBondListCommand" value-ref="BondListAction.SubmitBondListCommand"/>
+		        <entry key="ReloadMarketableSecValuationProfileCommand" value-ref="CollateralAction.ReloadMarketableSecValuationProfileSingletonCommand"/>
+      		</map>
+    	</property>
+  	</bean>
+
+	<bean name="/feed_bond_item" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.bond.item.BondItemAction">
+  		<property name="nameCommandMap">
+      		<map>
+        		<entry key="PrepareBondItemCommand" value-ref="BondItemAction.PrepareBondItemCommand"/>
+        		<entry key="SaveBondItemCommand" value-ref="BondItemAction.SaveBondItemCommand"/>
+				<entry key="SaveCurWorkingBondCmd" value-ref="BondItemAction.SaveCurWorkingBondCmd"/>
+				<entry key="MakerPrepareUploadBondItemCommand" value-ref="BondItemAction.MakerPrepareUploadBondItemCommand"/>
+        	    <entry key="MakerUploadBondItemCommand" value-ref="BondItemAction.MakerUploadBondItemCommand"/>
+				<entry key="CheckerReadFileInsertListCommand" value-ref="BondItemAction.CheckerReadFileInsertListCommand" />
+				<entry key="CheckerApproveInsertBondItemCommand" value-ref="BondItemAction.CheckerApproveInsertBondItemCommand" />
+				<entry key="CheckerRejectInsertBondItemCommand" value-ref="BondItemAction.CheckerRejectInsertBondItemCommand" />
+				<entry key="MakerInsertCloseBondItemCommand" value-ref="BondItemAction.MakerInsertCloseBondItemCommand" />
+			
+      		</map>
+    	</property>
+  	</bean>
+
+	<bean name="/feed_exchange_rate_item" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.exchangerate.item.ExchangeRateItemAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="SaveExchangeRateItemCommand" value-ref="ExchangeRateItemAction.SaveExchangeRateItemCommand"/>
+				<entry key="PrepareExchangeRateItemCommand" value-ref="ExchangeRateItemAction.PrepareExchangeRateItemCommand"/>
+			    <entry key="MakerPrepareUploadExchangeRateItemCommand" value-ref="ExchangeRateItemAction.MakerPrepareUploadExchangeRateItemCommand"/>
+        	    <entry key="MakerUploadExchangeRateItemCommand" value-ref="ExchangeRateItemAction.MakerUploadExchangeRateItemCommand"/>
+				<entry key="CheckerReadFileInsertListCommand" value-ref="ExchangeRateItemAction.CheckerReadFileInsertListCommand" />
+				<entry key="CheckerApproveInsertExchangeRateItemCommand" value-ref="ExchangeRateItemAction.CheckerApproveInsertExchangeRateItemCommand" />
+				<entry key="CheckerRejectInsertExchangeRateItemCommand" value-ref="ExchangeRateItemAction.CheckerRejectInsertExchangeRateItemCommand" />
+				<entry key="MakerInsertCloseExchangeRateItemCommand" value-ref="ExchangeRateItemAction.MakerInsertCloseExchangeRateItemCommand" />
+			
+			</map>
+		</property>
+	</bean>
+
+	<bean name="/feed_exchange_rate_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.exchangerate.list.ExchangeRateListAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="SaveExchangeRateListCommand" value-ref="ExchangeRateListAction.SaveExchangeRateListCommand"/>
+				<entry key="AddExchangeRateListCommand" value-ref="ExchangeRateListAction.AddExchangeRateListCommand"/>
+				<entry key="ReadExchangeRateListCommand" value-ref="ExchangeRateListAction.ReadExchangeRateListCommand"/>
+				<entry key="SearchReadExchangeRateListCommand" value-ref="ExchangeRateListAction.SearchReadExchangeRateListCommand"/>
+				<entry key="PaginateExchangeRateListCommand" value-ref="ExchangeRateListAction.PaginateExchangeRateListCommand"/>
+				<entry key="ApproveExchangeRateListCommand" value-ref="ExchangeRateListAction.ApproveExchangeRateListCommand"/>
+				<entry key="ListExchangeRateListCommand" value-ref="ExchangeRateListAction.ListExchangeRateListCommand"/>
+				<entry key="CloseExchangeRateListCommand" value-ref="ExchangeRateListAction.CloseExchangeRateListCommand"/>
+				<entry key="CompareExchangeRateListCommand" value-ref="ExchangeRateListAction.CompareExchangeRateListCommand"/>
+				<entry key="RejectExchangeRateListCommand" value-ref="ExchangeRateListAction.RejectExchangeRateListCommand"/>
+				<entry key="ListViewExchangeRateListCommand" value-ref="ExchangeRateListAction.ListViewExchangeRateListCommand"/>
+				<entry key="ListCompareExchangeRateListCommand" value-ref="ExchangeRateListAction.ListCompareExchangeRateListCommand"/>
+				<entry key="DeleteExchangeRateListCommand" value-ref="ExchangeRateListAction.DeleteExchangeRateListCommand"/>
+				<entry key="SubmitExchangeRateListCommand" value-ref="ExchangeRateListAction.SubmitExchangeRateListCommand"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="/feed_gold_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.gold.list.GoldListAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="SaveGoldListCommand" value-ref="GoldListAction.SaveGoldListCommand"/>
+				<entry key="AddGoldListCommand" value-ref="GoldListAction.AddGoldListCommand"/>
+				<entry key="ReadGoldListCommand" value-ref="GoldListAction.ReadGoldListCommand"/>
+				<entry key="PaginateGoldListCommand" value-ref="GoldListAction.PaginateGoldListCommand"/>
+				<entry key="ApproveGoldListCommand" value-ref="GoldListAction.ApproveGoldListCommand"/>
+				<entry key="ListGoldListCommand" value-ref="GoldListAction.ListGoldListCommand"/>
+				<entry key="CloseGoldListCommand" value-ref="GoldListAction.CloseGoldListCommand"/>
+				<entry key="CompareGoldListCommand" value-ref="GoldListAction.CompareGoldListCommand"/>
+				<entry key="RejectGoldListCommand" value-ref="GoldListAction.RejectGoldListCommand"/>
+				<entry key="ListViewGoldListCommand" value-ref="GoldListAction.ListViewGoldListCommand"/>
+				<entry key="ListCompareGoldListCommand" value-ref="GoldListAction.ListCompareGoldListCommand"/>
+				<entry key="DeleteGoldListCommand" value-ref="GoldListAction.DeleteGoldListCommand"/>
+				<entry key="SubmitGoldListCommand" value-ref="GoldListAction.SubmitGoldListCommand"/>
+				<entry key="ReloadGoldValuationProfileCommand" value-ref="CollateralAction.ReloadAssetValuationProfileSingletonCommand"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean name="/feed_gold_item" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.gold.item.GoldItemAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="SaveGoldItemCommand" value-ref="GoldItemAction.SaveGoldItemCommand"/>
+				<entry key="PrepareGoldItemCommand" value-ref="GoldItemAction.PrepareGoldItemCommand"/>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="/feed_unit_trust_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.unittrust.list.UnitTrustListAction">
+    	<property name="nameCommandMap">
+      		<map>
+		        <entry key="AddUnitTrustListCommand" value-ref="UnitTrustListAction.AddUnitTrustListCommand"/>
+		        <entry key="ApproveUnitTrustListCommand" value-ref="UnitTrustListAction.ApproveUnitTrustListCommand"/>
+		        <entry key="CloseUnitTrustListCommand" value-ref="UnitTrustListAction.CloseUnitTrustListCommand"/>
+		        <entry key="CompareUnitTrustListCommand" value-ref="UnitTrustListAction.CompareUnitTrustListCommand"/>
+		        <entry key="DeleteUnitTrustListCommand" value-ref="UnitTrustListAction.DeleteUnitTrustListCommand"/>
+		        <entry key="ListCompareUnitTrustListCommand" value-ref="UnitTrustListAction.ListCompareUnitTrustListCommand"/>
+		        <entry key="ListUnitTrustListCommand" value-ref="UnitTrustListAction.ListUnitTrustListCommand"/>
+		        <entry key="ListViewUnitTrustListCommand" value-ref="UnitTrustListAction.ListViewUnitTrustListCommand"/>
+		        <entry key="PaginateUnitTrustListCommand" value-ref="UnitTrustListAction.PaginateUnitTrustListCommand"/>
+		        <entry key="ReadUnitTrustListCommand" value-ref="UnitTrustListAction.ReadUnitTrustListCommand"/>
+		        <entry key="RejectUnitTrustListCommand" value-ref="UnitTrustListAction.RejectUnitTrustListCommand"/>
+		        <entry key="SaveUnitTrustListCommand" value-ref="UnitTrustListAction.SaveUnitTrustListCommand"/>
+		        <entry key="SubmitUnitTrustListCommand" value-ref="UnitTrustListAction.SubmitUnitTrustListCommand"/>
+		        <entry key="UpdateUnitTrustListCommand" value-ref="UnitTrustListAction.UpdateUnitTrustListCommand"/>
+		        <entry key="ReloadMarketableSecValuationProfileCommand" value-ref="CollateralAction.ReloadMarketableSecValuationProfileSingletonCommand"/>
+      		</map>
+    	</property>
+  	</bean>
+
+  	<bean name="/feed_unit_trust_item" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.unittrust.item.UnitTrustItemAction">
+  		<property name="nameCommandMap">
+      		<map>
+        		<entry key="PrepareUnitTrustItemCommand" value-ref="UnitTrustItemAction.PrepareUnitTrustItemCommand"/>
+        		<entry key="PrepareUpdateUnitTrustItemCommand" value-ref="UnitTrustItemAction.PrepareUpdateUnitTrustItemCommand"/>
+        		<entry key="SaveUnitTrustItemCommand" value-ref="UnitTrustItemAction.SaveUnitTrustItemCommand"/>
+      		</map>
+    	</property>
+  	</bean>
+  	
+  	<!-- ################ Mutual Funds ################# -->
+  	
+  	<bean name="/feed_mutual_funds_list" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.mutualfunds.list.MutualFundsListAction">
+    	<property name="nameCommandMap">
+      		<map>
+		        <entry key="AddMutualFundsListCommand" value-ref="MutualFundsListAction.AddMutualFundsListCommand"/>
+		        <entry key="ApproveMutualFundsListCommand" value-ref="MutualFundsListAction.ApproveMutualFundsListCommand"/>
+		        <entry key="CloseMutualFundsListCommand" value-ref="MutualFundsListAction.CloseMutualFundsListCommand"/>
+		        <entry key="CompareMutualFundsListCommand" value-ref="MutualFundsListAction.CompareMutualFundsListCommand"/>
+		        <entry key="DeleteMutualFundsListCommand" value-ref="MutualFundsListAction.DeleteMutualFundsListCommand"/>
+		        <entry key="ListMutualFundsListCommand" value-ref="MutualFundsListAction.ListMutualFundsListCommand"/>
+		        <entry key="ListCompareMutualFundsListCommand" value-ref="MutualFundsListAction.ListCompareMutualFundsListCommand"/>
+		        <entry key="ListViewMutualFundsListCommand" value-ref="MutualFundsListAction.ListViewMutualFundsListCommand"/>
+		        <entry key="PaginateMutualFundsListCommand" value-ref="MutualFundsListAction.PaginateMutualFundsListCommand"/>
+		        <entry key="ReadMutualFundsListCommand" value-ref="MutualFundsListAction.ReadMutualFundsListCommand"/>
+		        <entry key="RejectMutualFundsListCommand" value-ref="MutualFundsListAction.RejectMutualFundsListCommand"/>
+		        <entry key="SaveMutualFundsListCommand" value-ref="MutualFundsListAction.SaveMutualFundsListCommand"/>
+		        <entry key="SubmitMutualFundsListCommand" value-ref="MutualFundsListAction.SubmitMutualFundsListCommand"/>
+		        <entry key="ReloadMarketableSecValuationProfileCommand" value-ref="CollateralAction.ReloadMarketableSecValuationProfileSingletonCommand"/>
+      		</map>
+    	</property>
+  	</bean>
+
+	<bean name="/feed_mutual_funds_item" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.feed.mutualfunds.item.MutualFundsItemAction">
+  		<property name="nameCommandMap">
+      		<map>
+        		<entry key="PrepareMutualFundsItemCommand" value-ref="MutualFundsItemAction.PrepareMutualFundsItemCommand"/>
+        		<entry key="SaveMutualFundsItemCommand" value-ref="MutualFundsItemAction.SaveMutualFundsItemCommand"/>
+				<entry key="SaveCurWorkingMutualFundsCmd" value-ref="MutualFundsItemAction.SaveCurWorkingMutualFundsCmd"/>
+      			<entry key="MakerPrepareUploadMutualFundsItemCommand" value-ref="MutualFundsItemAction.MakerPrepareUploadMutualFundsItemCommand"/>
+        	    <entry key="MakerUploadMutualFundsItemCommand" value-ref="MutualFundsItemAction.MakerUploadMutualFundsItemCommand"/>
+				<entry key="CheckerReadFileInsertListCommand" value-ref="MutualFundsItemAction.CheckerReadFileInsertListCommand" />
+				<entry key="CheckerApproveInsertMutualFundsItemCommand" value-ref="MutualFundsItemAction.CheckerApproveInsertMutualFundsItemCommand" />
+				<entry key="CheckerRejectInsertMutualFundsItemCommand" value-ref="MutualFundsItemAction.CheckerRejectInsertMutualFundsItemCommand" />
+				<entry key="MakerInsertCloseMutualFundsItemCommand" value-ref="MutualFundsItemAction.MakerInsertCloseMutualFundsItemCommand" />
+			
+      		</map>
+    	</property>
+  	</bean>
+
+</beans>

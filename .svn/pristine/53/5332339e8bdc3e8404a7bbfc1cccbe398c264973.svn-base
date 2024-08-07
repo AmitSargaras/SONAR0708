@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+        bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+        proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+    </description>
+
+
+  <!-- 	<bean id="geographyProxy" class="com.integrosys.cms.ui.geography.GeographyProxyManagerImpl">
+        <property name="geographyBusManager" ref="geographyBusManager"/>
+   	</bean>
+   
+   	<bean id="geographyBusManager" class="com.integrosys.cms.ui.geography.GeographyBusManagerImpl">
+        <property name="geographyDAO" ref="geographyDAO"/>
+        <property name="geographyJdbc" ref="geographyJdbc"/>
+    </bean>
+    
+    --><!--    Country Beans Start	-->
+       
+   	<bean id="countryProxy" class="com.integrosys.cms.ui.geography.country.CountryProxyManagerImpl">
+        <property name="countryBusManager" ref="countryBusManager"/>
+        <property name="stagingCountryBusManager" ref="stagingCountryBusManager"/>
+        <property name="trxControllerFactory" ref="countryTrxControllerFactory"/>
+   	</bean>
+    
+   	<bean id="countryBusManager" class="com.integrosys.cms.ui.geography.country.CountryBusManagerImpl">
+        <property name="countryDAO" ref="countryDAO"/>
+   	</bean>
+    
+   	<bean id="stagingCountryBusManager" class="com.integrosys.cms.app.geography.country.bus.CountryStagingImpl">
+		<property name="countryDAO" ref="countryDAO" />
+	</bean>
+	
+	<bean id="stagingCountryFileMapperIdBusManager" class="com.integrosys.cms.app.geography.country.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="countryDAO" ref="countryDAO" />
+	</bean>
+	<bean id="countryFileMapperIdBusManager" class="com.integrosys.cms.app.geography.country.bus.FileMapperIdBusManagerImpl">
+		<property name="countryDAO" ref="countryDAO" />
+	</bean>
+	
+	  <!--    Country Beans End	-->  
+    
+      <!--    Region Beans Start	-->
+
+	<bean id="regionProxy" class="com.integrosys.cms.ui.geography.region.RegionProxyManagerImpl">
+        <property name="regionBusManager" ref="regionBusManager"/>
+        <property name="stagingRegionBusManager" ref="stagingRegionBusManager"/>
+        <property name="trxControllerFactory" ref="regionTrxControllerFactory"/>
+   	</bean>
+    
+   	<bean id="regionBusManager" class="com.integrosys.cms.ui.geography.region.RegionBusManagerImpl">
+        <property name="regionDAO" ref="regionDAO"/>
+   	</bean>
+    
+   	<bean id="stagingRegionBusManager" class="com.integrosys.cms.app.geography.region.bus.RegionStagingImpl">
+		<property name="regionDAO" ref="regionDAO" />
+	</bean>
+	
+	<bean id="stagingRegionFileMapperIdBusManager" class="com.integrosys.cms.app.geography.region.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="regionDAO" ref="regionDAO" />
+	</bean>
+	<bean id="regionFileMapperIdBusManager" class="com.integrosys.cms.app.geography.region.bus.FileMapperIdBusManagerImpl">
+		<property name="regionDAO" ref="regionDAO" />
+	</bean>
+	    
+	  <!--    Region Beans End	-->  
+    
+      <!--    State Beans Start	-->
+      
+	<bean id="stateProxy" class="com.integrosys.cms.ui.geography.state.StateProxyManagerImpl">
+        <property name="stateBusManager" ref="stateBusManager"/>
+        <property name="stagingStateBusManager" ref="stagingStateBusManager"/>
+        <property name="trxControllerFactory" ref="stateTrxControllerFactory"/>
+   	</bean>
+    
+   	<bean id="stateBusManager" class="com.integrosys.cms.ui.geography.state.StateBusManagerImpl">
+        <property name="stateDAO" ref="stateDAO"/>
+   	</bean>
+    
+   	<bean id="stagingStateBusManager" class="com.integrosys.cms.app.geography.state.bus.StateStagingImpl">
+		<property name="stateDAO" ref="stateDAO" />
+	</bean>   
+	
+	<bean id="stagingStateFileMapperIdBusManager" class="com.integrosys.cms.app.geography.state.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="stateDAO" ref="stateDAO" />
+	</bean>
+	<bean id="stateFileMapperIdBusManager" class="com.integrosys.cms.app.geography.state.bus.FileMapperIdBusManagerImpl">
+		<property name="stateDAO" ref="stateDAO" />
+	</bean> 
+	
+	  <!--    State Beans End	-->  
+    
+      <!--    City Beans Start	-->
+      
+	<bean id="cityProxy" class="com.integrosys.cms.ui.geography.city.CityProxyManagerImpl">
+        <property name="cityBusManager" ref="cityBusManager"/>
+        <property name="stagingCityBusManager" ref="stagingCityBusManager"/>
+        <property name="trxControllerFactory" ref="cityTrxControllerFactory"/>
+   	</bean>
+    
+   	<bean id="cityBusManager" class="com.integrosys.cms.ui.geography.city.CityBusManagerImpl">
+        <property name="cityDAO" ref="cityDAO"/>
+   	</bean>
+    
+   	<bean id="stagingCityBusManager" class="com.integrosys.cms.app.geography.city.bus.CityStagingImpl">
+		<property name="cityDAO" ref="cityDAO" />
+	</bean>
+	
+	<bean id="stagingCityFileMapperIdBusManager" class="com.integrosys.cms.app.geography.city.bus.FileMapperIdBusManagerStagingImpl">
+		<property name="cityDAO" ref="cityDAO" />
+	</bean>
+	<bean id="cityFileMapperIdBusManager" class="com.integrosys.cms.app.geography.city.bus.FileMapperIdBusManagerImpl">
+		<property name="cityDAO" ref="cityDAO" />
+	</bean> 
+	
+	  <!--    City Beans End	--> 
+</beans>

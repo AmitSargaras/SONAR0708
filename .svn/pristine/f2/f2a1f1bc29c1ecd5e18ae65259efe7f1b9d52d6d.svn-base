@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejbbnd:EJBJarBinding xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:common="common.xmi" xmlns:ejb="ejb.xmi" xmlns:ejbbnd="ejbbnd.xmi" xmi:id="ejbjarbnd_ejb_Collateral" currentBackendId="ORACLE_V11_1">
+  <ejbJar href="META-INF/ejb-jar.xml#ejb_Collateral"/>
+  <ejbBindings xmi:id="ejbbnd_session_SBCollateralBusManager" jndiName="">
+    <enterpriseBean xmi:type="ejb:Session" href="META-INF/ejb-jar.xml#session_SBCollateralBusManager"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_SBCollateralBusManager" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_SBCollateralBusManager"/>
+    </resRefBindings>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_session_SBCollateralBusManagerStaging" jndiName="">
+    <enterpriseBean xmi:type="ejb:Session" href="META-INF/ejb-jar.xml#session_SBCollateralBusManagerStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_SBCollateralBusManagerStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_SBCollateralBusManagerStaging"/>
+    </resRefBindings>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_session_SBShareSecurityManager" jndiName="">
+    <enterpriseBean xmi:type="ejb:Session" href="META-INF/ejb-jar.xml#session_SBShareSecurityManager"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_SBShareSecurityManager" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_SBShareSecurityManager"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_SBShareSecurityManager_EBShareSecurity" jndiName="EBShareSecurityHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_SBShareSecurityManager_EBShareSecurity"/>
+    </ejbRefBindings>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateral" jndiName="EBCollateralHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateral"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateral" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateral"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBValuation" jndiName="EBValuationHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBValuation"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBInsurancePolicy" jndiName="EBInsurancePolicyHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBInsurancePolicy"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBCollateralSubType" jndiName="EBCollateralSubTypeHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBCollateralSubType"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBLimitCharge" jndiName="EBLimitChargeHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBLimitCharge"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBCollateralLimitMap" jndiName="EBCollateralLimitMapHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBCollateralLimitMap"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBCollateralPledgor" jndiName="EBCollateralPledgorHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBCollateralPledgor"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBSecApportionment" jndiName="EBSecApportionmentHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBSecApportionment"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBInstrumentBean" jndiName="EBInstrumentBeanHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBInstrumentBean"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateral_EBShareSecurity" jndiName="EBShareSecurityHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateral_EBShareSecurity"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralStaging" jndiName="EBCollateralStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBValuationStaging" jndiName="EBValuationStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBValuationStaging"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBInsurancePolicyStaging" jndiName="EBInsurancePolicyStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBInsurancePolicyStaging"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBCollateralSubType" jndiName="EBCollateralSubTypeHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBCollateralSubType"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBLimitChargeStaging" jndiName="EBLimitChargeStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBLimitChargeStaging"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBCollateralLimitMapStaging" jndiName="EBCollateralLimitMapStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBCollateralLimitMapStaging"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBCollateralPledgorStaging" jndiName="EBCollateralPledgorStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBCollateralPledgorStaging"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBSecApportionmentStaging" jndiName="EBSecApportionmentStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBSecApportionmentStaging"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBInstrumentStageBean" jndiName="EBInstrumentStageBeanHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBInstrumentStageBean"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralStaging_EBShareSecurity" jndiName="EBShareSecurityHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralStaging_EBShareSecurity"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCashCollateral" jndiName="EBCashCollateralHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCashCollateral"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCashCollateral" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCashCollateral"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCashCollateral_EBCashDeposit" jndiName="EBCashDepositHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCashCollateral_EBCashDeposit"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCashCollateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCashCollateralStaging" jndiName="EBCashCollateralStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCashCollateralStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCashCollateralStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCashCollateralStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCashCollateralStaging_EBCashDepositStaging" jndiName="EBCashDepositStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCashCollateralStaging_EBCashDepositStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCashCollateralStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCashDeposit" jndiName="EBCashDepositHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCashDeposit"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCashDeposit" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCashDeposit"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCashDeposit_EBLien" jndiName="EBLienHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCashDeposit_EBLien"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCashDeposit" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCashDepositStaging" jndiName="EBCashDepositStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCashDepositStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCashDepositStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCashDepositStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCashDepositStaging_EBLienStaging" jndiName="EBLienStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCashDepositStaging_EBLienStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCashDepositStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBGuaranteeCollateral" jndiName="EBGuaranteeCollateralHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBGuaranteeCollateral"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBGuaranteeCollateral" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBGuaranteeCollateral"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBGuaranteeCollateral_EBFeeDetails" jndiName="EBFeeDetailsHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBGuaranteeCollateral_EBFeeDetails"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBGuaranteeCollateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBGuaranteeCollateralStaging" jndiName="EBGuaranteeCollateralStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBGuaranteeCollateralStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBGuaranteeCollateralStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBGuaranteeCollateralStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBGuaranteeCollateralStaging_EBFeeDetailsStaging" jndiName="EBFeeDetailsStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBGuaranteeCollateralStaging_EBFeeDetailsStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBGuaranteeCollateralStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBFeeDetails" jndiName="EBFeeDetailsHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBFeeDetails"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBFeeDetails" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBFeeDetails"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBFeeDetails" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBFeeDetailsStaging" jndiName="EBFeeDetailsStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBFeeDetailsStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBFeeDetailsStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBFeeDetailsStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBFeeDetailsStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBChargeCommon" jndiName="EBChargeCommonHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBChargeCommon"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBChargeCommon" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBChargeCommon"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBChargeCommon" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBChargeCommonStaging" jndiName="EBChargeCommonStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBChargeCommonStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBChargeCommonStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBChargeCommonStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBChargeCommonStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBReceivableCommon" jndiName="EBReceivableCommonHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBReceivableCommon"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBReceivableCommon" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBReceivableCommon"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBReceivableCommon" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBReceivableCommonStaging" jndiName="EBReceivableCommonStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBReceivableCommonStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBReceivableCommonStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBReceivableCommonStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBReceivableCommonStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBAssetPostDatedCheque" jndiName="EBAssetPostDatedChequeHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBAssetPostDatedCheque"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBAssetPostDatedCheque" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBAssetPostDatedCheque"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBAssetPostDatedCheque_EBPostDatedCheque" jndiName="EBPostDatedChequeHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBAssetPostDatedCheque_EBPostDatedCheque"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBAssetPostDatedCheque" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBAssetPostDatedChequeStaging" jndiName="EBAssetPostDatedChequeStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBAssetPostDatedChequeStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBAssetPostDatedChequeStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBAssetPostDatedChequeStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBAssetPostDatedChequeStaging_EBPostDatedChequeStaging" jndiName="EBPostDatedChequeStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBAssetPostDatedChequeStaging_EBPostDatedChequeStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBAssetPostDatedChequeStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBPostDatedCheque" jndiName="EBPostDatedChequeHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBPostDatedCheque"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBPostDatedCheque" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBPostDatedCheque"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBPostDatedCheque" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBPostDatedChequeStaging" jndiName="EBPostDatedChequeStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBPostDatedChequeStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBPostDatedChequeStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBPostDatedChequeStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBPostDatedChequeStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBInsuranceCollateral" jndiName="EBInsuranceCollateralHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBInsuranceCollateral"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBInsuranceCollateral" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBInsuranceCollateral"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBInsuranceCollateral_EBCDSItem" jndiName="EBCDSItemHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBInsuranceCollateral_EBCDSItem"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBInsuranceCollateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBInsuranceCollateralStaging" jndiName="EBInsuranceCollateralStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBInsuranceCollateralStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBInsuranceCollateralStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBInsuranceCollateralStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBInsuranceCollateralStaging_EBCDSItemStaging" jndiName="EBCDSItemStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBInsuranceCollateralStaging_EBCDSItemStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBInsuranceCollateralStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCDSItem" jndiName="EBCDSItemHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCDSItem"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCDSItem" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCDSItem"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCDSItem" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCDSItemStaging" jndiName="EBCDSItemStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCDSItemStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCDSItemStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCDSItemStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCDSItemStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBPropertyCollateral" jndiName="EBPropertyCollateralHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBPropertyCollateral"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBPropertyCollateral" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBPropertyCollateral"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBPropertyCollateral_EBMFChecklist" jndiName="EBMFChecklistHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBPropertyCollateral_EBMFChecklist"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBPropertyCollateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBPropertyCollateralStaging" jndiName="EBPropertyCollateralStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBPropertyCollateralStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBPropertyCollateralStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBPropertyCollateralStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBPropertyCollateralStaging_EBMFChecklist" jndiName="EBMFChecklistHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBPropertyCollateralStaging_EBMFChecklist"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBPropertyCollateralStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBOthersCollateral" jndiName="EBOthersCollateralHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBOthersCollateral"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBOthersCollateral" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBOthersCollateral"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBOthersCollateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBOthersCollateralStaging" jndiName="EBOthersCollateralStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBOthersCollateralStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBOthersCollateralStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBOthersCollateralStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBOthersCollateralStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBDocumentCollateral" jndiName="EBDocumentCollateralHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBDocumentCollateral"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBDocumentCollateral" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBDocumentCollateral"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBDocumentCollateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBDocumentCollateralStaging" jndiName="EBDocumentCollateralStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBDocumentCollateralStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBDocumentCollateralStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBDocumentCollateralStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBDocumentCollateralStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMarketableCollateral" jndiName="EBMarketableCollateralHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMarketableCollateral"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMarketableCollateral" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMarketableCollateral"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBMarketableCollateral_EBMarketableEquity" jndiName="EBMarketableEquityHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBMarketableCollateral_EBMarketableEquity"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMarketableCollateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMarketableCollateralStaging" jndiName="EBMarketableCollateralStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMarketableCollateralStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMarketableCollateralStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMarketableCollateralStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBMarketableCollateralStaging_EBMarketableEquityStaging" jndiName="EBMarketableEquityStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBMarketableCollateralStaging_EBMarketableEquityStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMarketableCollateralStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMarketableEquity" jndiName="EBMarketableEquityHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMarketableEquity"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMarketableEquity" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMarketableEquity"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMarketableEquity" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMarketableEquityStaging" jndiName="EBMarketableEquityStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMarketableEquityStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMarketableEquityStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMarketableEquityStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMarketableEquityStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMarketableEquityDetail" jndiName="EBMarketableEquityDetailHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMarketableEquityDetail"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMarketableEquityDetail" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMarketableEquityDetail"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMarketableEquityDetail" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBValuation" jndiName="EBValuationHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBValuation"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBValuation" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBValuation"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBValuation" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBValuationStaging" jndiName="EBValuationStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBValuationStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBValuationStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBValuationStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBValuationStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBInsurancePolicy" jndiName="EBInsurancePolicyHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBInsurancePolicy"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBInsurancePolicy" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBInsurancePolicy"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBInsurancePolicy" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBInsurancePolicyStaging" jndiName="EBInsurancePolicyStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBInsurancePolicyStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBInsurancePolicyStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBInsurancePolicyStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBInsurancePolicyStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBPledgor" jndiName="EBPledgorHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBPledgor"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBPledgor" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBPledgor"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBPledgor" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBPledgorStaging" jndiName="EBPledgorStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBPledgorStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBPledgorStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBPledgorStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBPledgorStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBPledgorCreditGrade" jndiName="EBPledgorCreditGradeHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBPledgorCreditGrade"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBPledgorCreditGrade" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBPledgorCreditGrade"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBPledgorCreditGrade" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralPledgor" jndiName="EBCollateralPledgorHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralPledgor"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralPledgor" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralPledgor"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralPledgor_EBPledgor" jndiName="EBPledgorHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralPledgor_EBPledgor"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralPledgor" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralPledgorStaging" jndiName="EBCollateralPledgorStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralPledgorStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralPledgorStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralPledgorStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralPledgorStaging_EBPledgorStaging" jndiName="EBPledgorStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralPledgorStaging_EBPledgorStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralPledgorStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralSubType" jndiName="EBCollateralSubTypeHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralSubType"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralSubType" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralSubType"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralSubType" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralSubTypeStaging" jndiName="EBCollateralSubTypeStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralSubTypeStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralSubTypeStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralSubTypeStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralSubTypeStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralParameter" jndiName="EBCollateralParameterHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralParameter"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralParameter" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralParameter"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralParameter" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralParameterStaging" jndiName="EBCollateralParameterStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralParameterStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralParameterStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralParameterStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralParameterStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralLimitMap" jndiName="EBCollateralLimitMapHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralLimitMap"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralLimitMap" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralLimitMap"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralLimitMap_EBCMDSubLimit" jndiName="EBCMDSubLimitHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralLimitMap_EBCMDSubLimit"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralLimitMap" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralLimitMapStaging" jndiName="EBCollateralLimitMapStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralLimitMapStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralLimitMapStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralLimitMapStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBCollateralLimitMapStaging_EBCMDSubLimitStaging" jndiName="EBCMDSubLimitStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBCollateralLimitMapStaging_EBCMDSubLimitStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralLimitMapStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCMDSubLimit" jndiName="EBCMDSubLimitHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCMDSubLimit"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCMDSubLimit" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCMDSubLimit"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCMDSubLimit" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCMDSubLimitStaging" jndiName="EBCMDSubLimitStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCMDSubLimitStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCMDSubLimitStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCMDSubLimitStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCMDSubLimitStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBLimitChargeMap" jndiName="EBLimitChargeMapHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBLimitChargeMap"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBLimitChargeMap" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBLimitChargeMap"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBLimitChargeMap_EBCollateralLimitMap" jndiName="EBCollateralLimitMapHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBLimitChargeMap_EBCollateralLimitMap"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBLimitChargeMap" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBLimitChargeMapStaging" jndiName="EBLimitChargeMapStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBLimitChargeMapStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBLimitChargeMapStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBLimitChargeMapStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBLimitChargeMapStaging_EBCollateralLimitMapStaging" jndiName="EBCollateralLimitMapStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBLimitChargeMapStaging_EBCollateralLimitMapStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBLimitChargeMapStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBLimitCharge" jndiName="EBLimitChargeHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBLimitCharge"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBLimitCharge" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBLimitCharge"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBLimitCharge_EBLimitChargeMap" jndiName="EBLimitChargeMapHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBLimitCharge_EBLimitChargeMap"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBLimitCharge_EBCollateralLimitMap" jndiName="EBCollateralLimitMapHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBLimitCharge_EBCollateralLimitMap"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBLimitCharge" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBLimitChargeStaging" jndiName="EBLimitChargeStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBLimitChargeStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBLimitChargeStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBLimitChargeStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBLimitChargeStaging_EBLimitChargeMapStaging" jndiName="EBLimitChargeMapStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBLimitChargeStaging_EBLimitChargeMapStaging"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBLimitChargeStaging_EBCollateralLimitMapStaging" jndiName="EBCollateralLimitMapStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBLimitChargeStaging_EBCollateralLimitMapStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBLimitChargeStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBSecApportionment" jndiName="EBSecApportionmentHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBSecApportionment"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBSecApportionment" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBSecApportionment"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBSecApportionment" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBSecApportionmentStaging" jndiName="EBSecApportionmentStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBSecApportionmentStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBSecApportionmentStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBSecApportionmentStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBSecApportionmentStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBInstrumentBean" jndiName="EBInstrumentBeanHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBInstrumentBean"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBInstrumentBean" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBInstrumentBean"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBInstrumentBean" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBInstrumentStageBean" jndiName="EBInstrumentStageBeanHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBInstrumentStageBean"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBInstrumentStageBean" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBInstrumentStageBean"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBInstrumentStageBean" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBShareSecurity" jndiName="EBShareSecurityHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBShareSecurity"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBShareSecurity" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBShareSecurity"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBShareSecurity" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralAssetLife" jndiName="EBCollateralAssetLifeHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralAssetLife"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralAssetLife" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralAssetLife"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralAssetLife" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBCollateralAssetLifeStaging" jndiName="EBCollateralAssetLifeStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBCollateralAssetLifeStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBCollateralAssetLifeStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBCollateralAssetLifeStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBCollateralAssetLifeStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMFChecklist" jndiName="EBMFChecklistHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMFChecklist"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMFChecklist" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMFChecklist"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBMFChecklist_EBMFChecklistItem" jndiName="EBMFChecklistItemHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBMFChecklist_EBMFChecklistItem"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBMFChecklist_EBCollateral" jndiName="EBCollateralHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBMFChecklist_EBCollateral"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMFChecklist" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMFChecklistStaging" jndiName="EBMFChecklistStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMFChecklistStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMFChecklistStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMFChecklistStaging"/>
+    </resRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBMFChecklistStaging_EBMFChecklistItemStaging" jndiName="EBMFChecklistItemStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBMFChecklistStaging_EBMFChecklistItemStaging"/>
+    </ejbRefBindings>
+    <ejbRefBindings xmi:id="resrefbindings_ejblocalref_EBMFChecklistStaging_EBCollateralStaging" jndiName="EBCollateralStagingHome">
+      <bindingEjbRef xmi:type="common:EJBLocalRef" href="META-INF/ejb-jar.xml#ejblocalref_EBMFChecklistStaging_EBCollateralStaging"/>
+    </ejbRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMFChecklistStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMFChecklistItem" jndiName="EBMFChecklistItemHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMFChecklistItem"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMFChecklistItem" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMFChecklistItem"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMFChecklistItem" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBMFChecklistItemStaging" jndiName="EBMFChecklistItemStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBMFChecklistItemStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBMFChecklistItemStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBMFChecklistItemStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBMFChecklistItemStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBLien" jndiName="EBLienHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBLien"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBLien" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBLien"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBLien" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <ejbBindings xmi:id="ejbbnd_entity_EBLienStaging" jndiName="EBLienStagingHome">
+    <enterpriseBean xmi:type="ejb:ContainerManagedEntity" href="META-INF/ejb-jar.xml#entity_EBLienStaging"/>
+    <resRefBindings xmi:id="resRefBindings_resourceref_jdbc_EBLienStaging" jndiName="">
+      <bindingResourceRef href="META-INF/ejb-jar.xml#resourceref_jdbc_EBLienStaging"/>
+    </resRefBindings>
+    <cmpConnectionFactory xmi:id="cmpconnectionfactory_EBLienStaging" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+  </ejbBindings>
+  <defaultCMPConnectionFactory xmi:id="cmpconnectionfactorybinding_ejb_Collateral" jndiName="eis/CMSPool_CMP" resAuth="Container"/>
+</ejbbnd:EJBJarBinding>

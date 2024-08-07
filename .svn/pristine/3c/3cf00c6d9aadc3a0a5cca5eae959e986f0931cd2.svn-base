@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<!-- 
+	Ant build.xml for WebSphere specific tasks, This should be imported into main build.xml in root folder,
+	Which mean, this build.xml cannot be run standalone.
+-->
+
+<project name="Integro Technologies EON CMS - WebSphere">	
+
+	<patternset id="cms.public.html.was.packages">
+		<exclude name="**/server/**" />
+		<exclude name="**/weblogic.xml" />
+	</patternset>
+
+	<target name="deploy-was-win" depends="init, buildnumber" 
+			description="to copy files that is environmental specific for Windows' WebSphere">
+		<path id="original.integro.home">
+			<pathelement location="${current.dev.dir}" />
+		</path>
+		<pathconvert property="integro.home.for.java" refid="original.integro.home">
+			<filtermapper>
+				<replacestring from="\" to="/" />
+			</filtermapper>
+		</pathconvert>
+
+		<filter token="INTEGRO_HOME" value="${integro.home.for.java}" />
+		<filter token="FEED_HOME" value="${integro.home.for.java}/config/test/simessage" />
+
+		<property file="build.number" />
+		<filter token="BUILD_NUMBER" value="${build.number}" />
+
+		<tstamp>
+    		<format property="build.date" pattern="dd-MMM-yyyy"/>
+		</tstamp>
+		<filter token="BUILD_DATE" value="${build.date}" />
+
+		<echo message="-------- Copying WebSphere Deployment Stuff --------" />
+
+		<copy file="${config.dir}/websphere/AppContext_Master.xml"
+		      tofile="${config.dir}/spring/AppContext_Master.xml"
+		      overwrite="yes" />
+
+		<copy todir="${config.dir}/properties" filtering="yes" overwrite="yes">
+			<fileset dir="${config.dir}/websphere" includes="ofa_env.properties, batch.properties, logging.xml" />
+		</copy>
+	</target>
+
+	<target name="deploy-was" depends="init, buildnumber" 
+			description="to copy files that is environmental specific for UNIX's WebSphere">
+		<filter token="INTEGRO_HOME" value="${websphere.unix.home}" />
+		<filter token="FEED_HOME" value="${websphere.unix.feed.path}" />
+		<filter token="CLIMS_HOME_XML" value="${clims.home.xml}" />
+		<filter token="CLIMS_HOME_EAR" value="${clims.home.ear}" />
+		
+
+		<property file="build.number" />
+		<filter token="BUILD_NUMBER" value="${build.number}" />
+
+		<tstamp>
+    		<format property="build.date" pattern="dd-MMM-yyyy"/>
+		</tstamp>
+		<filter token="BUILD_DATE" value="${build.date}" />
+
+		<echo message="-------- Copying WebSphere Deployment Stuff --------" />
+
+		<copy file="${config.dir}/websphere/AppContext_Master.xml"
+		      tofile="${config.dir}/spring/AppContext_Master.xml"
+		      overwrite="yes" />
+
+		<copy todir="${config.dir}/properties" filtering="yes" overwrite="yes">
+			<fileset dir="${config.dir}/websphere" includes="ofa_env.properties, batch.properties, logging.xml" />
+		</copy>
+	</target>
+
+	<!-- WebSphere tasks -->
+	<target name="ws-ejbc-all" depends="dist-cms-jar">
+		<property file="build.properties" />
+		<property file="build.number" />
+
+		<exec dir="${current.dev.dir}" executable="${current.dev.dir}\bin\websphere\ws_ejbdeploy_all.bat">
+		</exec>
+	</target>
+
+	<target name="ws-ejbc" depends="dist-cms-jar">
+		<property file="build.properties" />
+		<property file="build.number" />
+
+		<exec dir="${current.dev.dir}" executable="${current.dev.dir}\bin\websphere\ws_ejbdeploy.bat">
+			<arg value="${ejb}" />
+			<arg value="${current.dev.dir}\build\dist" />
+		</exec>
+	</target>
+
+	<target name="dist-cms-war" depends="manifest" description="create cms.war for Websphere env">
+		<echo message="Creating cms.war for all the files in ${public.html.dir}" />
+	
+		<war destfile="${dist.dir}/cms.war"
+		     webxml="${public.html.dir}/WEB-INF/server/websphere/web.xml"
+		     defaultexcludes="true"
+		     manifest="${config.dir}/${manifest.file}">
+
+		    <webinf dir="${public.html.dir}/WEB-INF/server/websphere" includes="ibm-web-ext.xmi, ibm-web-bnd.xmi" />
+
+			<fileset dir="${public.html.dir}">
+				<patternset refid="cms.public.html.was.packages" />
+			</fileset>
+		</war>
+	</target>
+
+	<target name="dist-cms-ear" depends="manifest" 
+			description="Prepare cms.ear for Websphere env">
+		<echo message="Preparing distribution of cms.ear for Websphere Environment" />
+		<echo message="Make sure cms.war and other jars are prepared prior to this task" />
+
+		<ear destfile="${dist.dir}/cms.ear"
+		     appxml="${config.dir}/websphere/application.xml"
+		     defaultexcludes="true"
+		     manifest="${config.dir}/${manifest.file}">
+
+			<metainf dir="${config.dir}/websphere" includes="ibm-application-ext.xmi, ibm-application-bnd.xmi" />
+
+			<fileset dir="${dist.dir}" 
+					 includes="*.jar, *.war"
+					 excludes="wls_*.jar" />
+			<fileset dir="${3rdparty.dir}">
+				<patternset refid="cms.ear.dist.3rdparty.jars" />
+			</fileset>
+		</ear>
+	</target>
+
+	<target name="dist" depends="manifest, dist-config-jar, dist-cms-war, dist-cms-ear" 
+			description="Prepare distribution for Websphere env">
+		<echo message="Preparing distribution for Websphere Environment" />
+	</target>
+
+	<target name="dist-win"
+	        depends="createdirs, manifest, dist-cms-jar, ws-ejbc-all, deploy-was-win, dist"
+	        description="create distribution for Websphere windows env" />
+
+	
+	<target name="dist-unix-dms"
+		        depends="createdirs, manifest, dist-cms-jar-DMS, ws-ejbc-all, deploy-was, dist"
+		        description="create distribution for Websphere unix env" />
+	
+	<target name="dist-unix"
+	        depends="createdirs, manifest, dist-cms-jar, ws-ejbc-all, deploy-was, dist"
+	        description="create distribution for Websphere unix env" />
+
+	<target name="dist-unix-1"
+	        depends="createdirs, manifest, dist-cms-jar, deploy-was, dist"
+	        description="create distribution for Websphere unix env" />
+
+</project>

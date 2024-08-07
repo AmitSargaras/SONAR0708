@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <description>
+        To be used for transaction controller and transaction operation.
+        Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+    </description>
+    <bean id="MakerCreateImageUploadOperation" class="com.integrosys.cms.app.image.trx.MakerCreateImageUploadOperation">
+		 <property name="imageUploadBusManager" ref="imageUploadBusManager"/>
+        <property name="stagingImageUploadBusManager" ref="stagingImageUploadBusManager"/>
+	</bean>
+	
+	 <bean id="ImageUploadTrx.ReadImageUploadOperation" class="com.integrosys.cms.app.image.trx.ReadImageUploadOperation">
+        <property name="imageUploadBusManager" ref="imageUploadBusManager"/>
+        <property name="stagingImageUploadBusManager" ref="stagingImageUploadBusManager"/>
+    </bean>   
+    
+    <bean id="ImageUploadTrx.CheckerApproveUpdateImageUploadOperation" class="com.integrosys.cms.app.image.trx.CheckerApproveUpdateImageUploadOperation">
+		 <property name="imageUploadBusManager" ref="imageUploadBusManager"/>
+        <property name="stagingImageUploadBusManager" ref="stagingImageUploadBusManager"/>
+	</bean> 
+	
+	<bean id="ImageUploadTrx.CheckerApproveCreateImageUploadOperation" class="com.integrosys.cms.app.image.trx.CheckerApproveCreateImageUploadOperation">
+		 <property name="imageUploadBusManager" ref="imageUploadBusManager"/>
+        <property name="stagingImageUploadBusManager" ref="stagingImageUploadBusManager"/>
+	</bean>
+	
+	<bean id="ImageUploadTrx.CheckerRejectImageUploadOperation" class="com.integrosys.cms.app.image.trx.CheckerRejectImageUploadOperation">
+		 <property name="imageUploadBusManager" ref="imageUploadBusManager"/>
+        <property name="stagingImageUploadBusManager" ref="stagingImageUploadBusManager"/>
+	</bean> 
+	
+		<bean id="ImageUploadTrx.MakerCloseRejectedUpdateImageUploadOperation" class="com.integrosys.cms.app.image.trx.MakerCloseRejectedUpdateImageUploadOperation">
+		 <property name="imageUploadBusManager" ref="imageUploadBusManager"/>
+        <property name="stagingImageUploadBusManager" ref="stagingImageUploadBusManager"/>
+	</bean> 
+    
+     <bean id="ImageUploadTrx.ReadImageUploadIDOperation" class="com.integrosys.cms.app.image.trx.ReadImageUploadIDOperation">
+        <property name="imageUploadBusManager" ref="imageUploadBusManager"/>
+        <property name="stagingImageUploadBusManager" ref="stagingImageUploadBusManager"/>
+    </bean>    
+    
+    <bean id="imageUploadReadController" class="com.integrosys.cms.app.image.trx.ImageUploadReadController">
+        <property name="nameTrxOperationMap">
+            <map>
+                 <entry key="ReadImageUploadOperation" value-ref="ImageUploadTrx.ReadImageUploadOperation"/>
+                 <entry key="ReadImageUploadIDOperation" value-ref="ImageUploadTrx.ReadImageUploadIDOperation"/> 
+                 
+                               
+            </map>
+        </property>
+    </bean>
+    
+    
+    <bean id="imageUploadTrxController" class="com.integrosys.cms.app.image.trx.ImageUploadTrxController">
+        <property name="nameTrxOperationMap">
+            <map>
+            	  <entry key="MakerCreateImageUploadOperation" value-ref="MakerCreateImageUploadOperation"/>
+            	  <entry key="CheckerApproveCreateImageUploadOperation" value-ref="ImageUploadTrx.CheckerApproveCreateImageUploadOperation"/>
+            	  <entry key="CheckerApproveUpdateImageUploadOperation" value-ref="ImageUploadTrx.CheckerApproveUpdateImageUploadOperation"/>
+          		  <entry key="CheckerRejectImageUploadOperation" value-ref="ImageUploadTrx.CheckerRejectImageUploadOperation"/>
+          		  <entry key="MakerCloseRejectedUpdateImageUploadOperation" value-ref="ImageUploadTrx.MakerCloseRejectedUpdateImageUploadOperation"/>
+           </map>
+        </property>
+        <property name="processTrxManager" ref="processTrxManager"/>
+    </bean>
+    
+    <bean id="imageUploadTrxControllerFactory" class="com.integrosys.cms.app.image.trx.ImageUploadTrxControllerFactory">
+        <property name="imageUploadTrxController" ref="imageUploadTrxController"/>
+        <property name="imageUploadReadController" ref="imageUploadReadController"/>
+    </bean>
+ </beans>

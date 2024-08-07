@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			select distinct (PARTYID),
+			PARTYNAME,
+			SCMFLAG,
+			STATUS,
+			ERRORMESSAGE,
+			TO_CHAR(REQUESTDATETIME,'DD/Mon/YYYY') AS REQUESTDATETIME,
+			TO_CHAR(RESPONSEDATETIME,'DD/Mon/YYYY') AS RESPONSEDATETIME
+			from CMS_JS_INTERFACE_LOG 
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				MODULENAME = 'CUSTOMER'
+				and SCMFLAG = 'Y'
+			</mandatoryClause>
+
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(REQUESTDATETIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Borrower SCM Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SCF Interface Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SCF Interface Failed Reason</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Request Date and Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Response Date and Time</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Party Interface with SCF</reportName>
+		</reportParamters>
+	</report>
+</reports>

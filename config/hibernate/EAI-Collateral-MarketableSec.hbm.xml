@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="com.integrosys.cms.host.eai.security.bus.marketable.MarketableSecurity" table="CMS_MARKETABLE_SEC" polymorphism="explicit">
+    <id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+    
+    <property name="CappedPrice" column="CAPPED_PRICE" type="double" />
+    <property name="StockCounterCode" column="STOCK_COUNTER_CODE" />
+    <property name="InterestRate" column="INTEREST_RATE" type="double" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.marketable.StageMarketableSecurity" table="CMS_STAGE_MARKETABLE_SEC">
+    <id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+
+    <property name="CappedPrice" column="CAPPED_PRICE" type="double" />
+    <property name="StockCounterCode" column="STOCK_COUNTER_CODE" />
+    <property name="InterestRate" column="INTEREST_RATE" type="double" />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.marketable.PortfolioItem" table="CMS_PORTFOLIO_ITEM" polymorphism="explicit">
+	<id name="itemId" column="ITEM_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">MARKETABLE_EQUITY_SEQ</param>
+		</generator>
+	</id>
+   
+    <property name="collateralId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="shareId" column="CMS_REF_ID" type="long" />
+    
+    <component name="type" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="TYPE" />
+    </component>
+
+    <property name="equityUniqueID" column="UNIQUE_ITEM_ID" />
+     <property name="certificateNumber" column="CERTIFICATE_NO" />
+    <component name="nomineeName" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="AGENT_NAME" />
+    </component>
+    <property name="JDONomineeConfirmationDate" column="AGENT_CONFIRM_DATE" type="timestamp" />
+    <property name="RegisteredName" column="REGISTERED_NAME" />
+     <property name="RecognizedExchangeFlag" column="RECOGN_EXCHANGE"  />
+     <property name="JDOLegalEnforceDate" column="IS_LEGAL_ENFORCE_DATE" type="timestamp" />
+    <property name="clientCode" column="CLIENT_CODE"  />
+    <property name="CDSNumber" column="CDS_NUMBER" />
+    <property name="units" column="NO_OF_UNITS" type="long" />
+    <property name="unitPrice" column="UNIT_PRICE" type="double" />
+    <property name="nominalValue" column="NOMINAL_VALUE" type="double" />
+    <property name="currencyCode" column="CURRENCY_CODE" />
+    <property name="custodianType" column="CUSTODIAN_TYPE" />
+    <property name="custodian" column="SECURITY_CUSTODIAN" />
+    <property name="JDOMaturityDate" column="SECURITY_MATURITY_DATE" type="timestamp" />
+    <property name="blacklistedFlag" column="IS_BLACKLISTED" />
+    <property name="issuerName" column="ISSUER_NAME" />
+    <property name="issuerType" column="ISSUER_ID_TYPE" />
+    <property name="stockExchange" column="STOCK_EXCHANGE" />
+    <property name="stockExchangeCountry" column="STOCK_EXCHANGE_COUNTRY" />
+    <property name="LocalStockExchangeInd" column="LOCAL_EXCHANGE" />
+    <property name="indexName" column="INDEX_NAME" />
+    <property name="RIC" column="RIC" />
+    <property name="stockCode" column="STOCK_CODE" />
+    <property name="ISINCode" column="ISIN_CODE" />
+    <property name="exchangeControlObtainedFlag" column="EXCHANGE_CONTROL_OBTAINED" />
+    <property name="baselCompliantText" column="BASEL_COMPLIANT_TEXT" />
+    <property name="governmentGuaranteeFlag" column="GOVT_GUARANTEE" />
+    <property name="governmentName" column="NAME_OF_GOVT" />
+    <property name="leadManager" column="LEAD_MANAGER" />
+	<property name="JDOExchangeControlObtainedDate" column="EXCHANGE_CONTROL_DATE" type="timestamp" />
+	<property name="exercisePrice" column="EXERCISE_PRICE" type="double" />
+	<property name="brokerrName" column="BROKER_NAME" />
+
+    <component name="settlementOrganisation" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="SETTLEMENT_ORG" />
+    </component>
+
+    <property name="JDOBondIssueDate" column="BOND_ISSUE_DATE" type="timestamp" />
+    <property name="JDOBondMaturityDate" column="BOND_MATURITY_DATE" type="timestamp" />
+    <property name="bondRating" column="BOND_RATING" />
+    <property name="JDORecoveryDate" column="RECOVERY_DATE" type="timestamp" />
+    <property name="holdingPeriod" column="HOLDING_PERIOD" type="double" />
+    <property name="holdingPeriodUnit" column="HOLDING_PERIOD_UOM" />
+    <property name="unitCurrencyCode" column="UNIT_PRICE_CURRENCY" />
+    
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.marketable.StagePortfolioItem" table="CMS_STAGE_PORTFOLIO_ITEM">
+	<id name="itemId" column="ITEM_ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">MARKETABLE_EQUITY_SEQ</param>
+		</generator>
+	</id>
+    <property name="equityUniqueID" column="UNIQUE_ITEM_ID" />
+    <property name="collateralId" column="CMS_COLLATERAL_ID" type="long" />
+    <property name="shareId" column="CMS_REF_ID" type="long" />
+    
+    <component name="type" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="TYPE" />
+    </component>
+
+    <property name="certificateNumber" column="CERTIFICATE_NO" />
+    <component name="nomineeName" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="AGENT_NAME" />
+    </component>
+    <property name="JDONomineeConfirmationDate" column="AGENT_CONFIRM_DATE" type="timestamp" />
+    <property name="RegisteredName" column="REGISTERED_NAME" />
+    <property name="RecognizedExchangeFlag" column="RECOGN_EXCHANGE"  />
+    <property name="JDOLegalEnforceDate" column="IS_LEGAL_ENFORCE_DATE" type="timestamp" />
+    <property name="clientCode" column="CLIENT_CODE" />
+    <property name="CDSNumber" column="CDS_NUMBER" />
+    <property name="units" column="NO_OF_UNITS" type="long" />
+    <property name="unitPrice" column="UNIT_PRICE" type="double" />
+    <property name="nominalValue" column="NOMINAL_VALUE" type="double" />
+    <property name="currencyCode" column="CURRENCY_CODE" />
+    <property name="custodianType" column="CUSTODIAN_TYPE" />
+    <property name="custodian" column="SECURITY_CUSTODIAN" />
+    <property name="JDOMaturityDate" column="SECURITY_MATURITY_DATE" type="timestamp" />
+    <property name="blacklistedFlag" column="IS_BLACKLISTED" />
+    <property name="issuerName" column="ISSUER_NAME" />
+    <property name="issuerType" column="ISSUER_ID_TYPE" />
+    <property name="stockExchange" column="STOCK_EXCHANGE" />
+    <property name="stockExchangeCountry" column="STOCK_EXCHANGE_COUNTRY" />
+    <property name="LocalStockExchangeInd" column="LOCAL_EXCHANGE" />
+    <property name="indexName" column="INDEX_NAME" />
+    <property name="RIC" column="RIC" />
+    <property name="stockCode" column="STOCK_CODE" />
+    <property name="ISINCode" column="ISIN_CODE" />
+    <property name="exchangeControlObtainedFlag" column="EXCHANGE_CONTROL_OBTAINED" />
+    <property name="baselCompliantText" column="BASEL_COMPLIANT_TEXT" />
+    <property name="governmentGuaranteeFlag" column="GOVT_GUARANTEE" />
+    <property name="governmentName" column="NAME_OF_GOVT" />
+    <property name="leadManager" column="LEAD_MANAGER" />
+	<property name="JDOExchangeControlObtainedDate" column="EXCHANGE_CONTROL_DATE" type="timestamp" />
+	<property name="exercisePrice" column="EXERCISE_PRICE" type="double" />
+	<property name="brokerrName" column="BROKER_NAME" />
+
+    <component name="settlementOrganisation" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="SETTLEMENT_ORG" />
+    </component>
+
+    <property name="JDOBondIssueDate" column="BOND_ISSUE_DATE" type="timestamp" />
+    <property name="JDOBondMaturityDate" column="BOND_MATURITY_DATE" type="timestamp" />
+    <property name="bondRating" column="BOND_RATING" />
+    <property name="JDORecoveryDate" column="RECOVERY_DATE" type="timestamp" />
+    <property name="holdingPeriod" column="HOLDING_PERIOD" type="double" />
+    <property name="holdingPeriodUnit" column="HOLDING_PERIOD_UOM" />
+    <property name="unitCurrencyCode" column="UNIT_PRICE_CURRENCY" />
+  </class>
+</hibernate-mapping>

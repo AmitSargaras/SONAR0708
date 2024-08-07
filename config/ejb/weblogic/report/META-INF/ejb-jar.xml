@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN"
+                         "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar>
+    <display-name>Report</display-name>
+    <enterprise-beans>
+        <session id="session_SBReportRequestManagerBean">
+            <ejb-name>SBReportRequestManagerBean</ejb-name>
+            <home>com.integrosys.cms.batch.reports.SBReportRequestManagerHome</home>
+            <remote>com.integrosys.cms.batch.reports.SBReportRequestManager</remote>
+            <ejb-class>com.integrosys.cms.batch.reports.SBReportRequestManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+             <ejb-local-ref id="EJBLocalRef_1049084130199">
+                <ejb-ref-name>EBReportRequestLocalHome</ejb-ref-name>
+                <ejb-ref-type>Entity</ejb-ref-type>
+                <local-home>com.integrosys.cms.batch.reports.EBReportRequestLocalHome</local-home>
+                <local>com.integrosys.cms.batch.reports.EBReportRequestLocalHome</local>
+                <ejb-link>EBReportRequestBean</ejb-link>
+            </ejb-local-ref>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <entity id="entity_EBReportRequestBean">
+            <ejb-name>EBReportRequestBean</ejb-name>
+            <local-home>com.integrosys.cms.batch.reports.EBReportRequestLocalHome</local-home>
+            <local>com.integrosys.cms.batch.reports.EBReportRequestLocal</local>
+            <ejb-class>com.integrosys.cms.batch.reports.EBReportRequestBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBReportRequestBean</abstract-schema-name>
+            <cmp-field id="cmp_EBReportRequestBean_cMPCCCertID">
+                <field-name>eBReportRequestID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBReportRequestBean_reportID">
+                <field-name>reportID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBReportRequestBean_reportName">
+                <field-name>reportName</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBReportRequestBean_parameters">
+                <field-name>parameters</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBReportRequestBean_eBUserID">
+                <field-name>eBUserID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBReportRequestBean_requestTime">
+                <field-name>requestTime</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBReportRequestBean_reportGenTime">
+                <field-name>reportGenTime</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBReportRequestBean_status">
+                <field-name>status</field-name>
+            </cmp-field>
+            <primkey-field>eBReportRequestID</primkey-field>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+            <query>
+            	<description>FindByStatusQuery</description>
+            	<query-method>
+            		<method-name>findByStatus</method-name>
+            		<method-params>
+                        <method-param>java.lang.String</method-param>
+            		</method-params>
+            	</query-method>
+            	<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBReportRequestBean o WHERE o.status = ?1]]></ejb-ql>
+            </query>
+        </entity>
+
+    </enterprise-beans>
+
+    <assembly-descriptor>
+        <container-transaction>
+            <method>
+                <ejb-name>SBReportRequestManagerBean</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBReportRequestBean</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

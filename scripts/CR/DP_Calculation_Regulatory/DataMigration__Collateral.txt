@@ -1,0 +1,92 @@
+--Follow the steps below for Day0 Data migration activity after complition of 1_ReadMe_forMasterDay0.txt file steps
+
+
+---Important Note: Check CMS_COMPONENT master data, there should not be duplicate components with same component code and ACTIVE status. If such records --found, update these components manually.
+
+
+
+--- Step1 : Take backup of existing tables before Day0 data migration . Below are script  for backup ----------
+
+SET DEFINE OFF;
+ 
+  create table CMS_ASSET_GC_STOCK_DET_2907 as
+ ( select * from CMS_ASSET_GC_STOCK_DET );
+
+
+  create table CMS_STAGE_ASSET_GC_STOCK_DET_2907 as
+  ( select * from CMS_STAGE_ASSET_GC_STOCK_DET);
+
+
+--- Step2 : ----------To update GC_STOCK actual table------------------------------------------
+
+MERGE INTO CMS_ASSET_GC_STOCK_DET T1
+USING (SELECT distinct COMPONENT_CODE, COMPONENT_CATEGORY  FROM  CMS_COMPONENT WHERE STATUS='ACTIVE' AND DEPRECATED='N'  ) T2
+ON(T2.COMPONENT_CODE = T1.COMPONENT )
+WHEN MATCHED THEN UPDATE SET
+T1.STOCK_TYPE = T2.COMPONENT_CATEGORY   ;
+
+---Step 3 : -------------------------------------------------------------------
+
+update CMS_ASSET_GC_STOCK_DET set STOCK_TYPE='CurrentAsset' where STOCK_TYPE='Stock';
+update CMS_ASSET_GC_STOCK_DET set STOCK_TYPE='CurrentLiabilities' where STOCK_TYPE='Creditors';
+update CMS_ASSET_GC_STOCK_DET set STOCK_TYPE='ValueDebtors' where STOCK_TYPE='Debtors';
+update CMS_ASSET_GC_STOCK_DET set STOCK_TYPE='LessAdvances' where STOCK_TYPE='Advances';
+
+
+-----Step 4: ------To update GC_STOCK Staging table------------------
+
+MERGE INTO CMS_STAGE_ASSET_GC_STOCK_DET T1
+USING (SELECT distinct COMPONENT_CODE, COMPONENT_CATEGORY  FROM  CMS_COMPONENT WHERE STATUS='ACTIVE' AND DEPRECATED='N'  ) T2
+ON(T2.COMPONENT_CODE = T1.COMPONENT )
+WHEN MATCHED THEN UPDATE SET
+T1.STOCK_TYPE = T2.COMPONENT_CATEGORY   ;
+
+
+----Step 5: -------------------------
+
+update CMS_STAGE_ASSET_GC_STOCK_DET set STOCK_TYPE='CurrentAsset' where STOCK_TYPE='Stock';
+update CMS_STAGE_ASSET_GC_STOCK_DET set STOCK_TYPE='CurrentLiabilities' where STOCK_TYPE='Creditors';
+update CMS_STAGE_ASSET_GC_STOCK_DET set STOCK_TYPE='ValueDebtors' where STOCK_TYPE='Debtors';
+update CMS_STAGE_ASSET_GC_STOCK_DET set STOCK_TYPE='LessAdvances' where STOCK_TYPE='Advances';
+
+
+----Step 6 : -------------------------------------------------------------------------
+
+  update CMS_ASSET_GC_DET set MIGRATION_FLAG_DP_CR = 'Y';
+
+  update CMS_STAGE_ASSET_GC_DET set MIGRATION_FLAG_DP_CR = 'Y';
+
+
+COMMIT;
+SET DEFINE ON;
+
+-----------------------
+
+ 
+----Step 7:  DROP MATERIALIZED VIEW EWS_STOCK_DEFERRAL_MV ;
+
+----Step 8 Create MV using :    EWS_STOCK_DEFERRAL_MV.txt  (Execute On CLIMSPATCH)
+
+----Step 9 :  SYNONYM_for_CLIMSAPP_EWS.txt (Execute On CLIMSAPP) 
+
+----Step 10 :  SYNONYM_for_CLIMSPATCH_EWS.txt (Execute On CLIMSPATCH) 
+
+----Step 11 :  Execute below script in Climspatch
+
+
+		BEGIN
+ 			 SP_RFRESH_EWSSTOCKDEF_MV();
+		END;
+
+
+--- Step 12 : Create Procedur using :   sp_migrate_SRno.txt 
+
+-- Step 13: Execute this SP after all activities with below script.
+
+
+ 			        BEGIN
+
+                                sp_migrate_SRno();
+
+                    END;
+

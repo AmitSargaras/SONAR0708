@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+ <hibernate-mapping package="com.integrosys.cms.app.goodsMaster.bus">
+	<class  entity-name="actualGoodsMaster" name="OBGoodsMaster" table="CMS_GOODS_MASTER" lazy="false">
+		<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_GOODS_MASTER_SEQ</param>
+			</generator>
+		</id>
+			<version name="versionTime" column="VERSION_TIME" type="long"></version>
+
+		<property name="goodsCode" column="GOODS_CODE" />
+		<property name="goodsName" column="GOODS_NAME" />
+		<property name="goodsParentCode" column="GOODS_PARENT_CODE" />
+		
+		<property name="status" column="STATUS" />
+		<property name="deprecated" column="DEPRECATED" />
+		
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATED_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+		<property name="cpsId"     		column="CPS_ID" update= "false"/>
+		<property name="restrictionType" column="RESTRICTION_TYPE" />
+	</class>
+	<class  entity-name="stageGoodsMaster" name="OBGoodsMaster" table="CMS_STAGE_GOODS_MASTER" lazy="false">
+			<id name="id" column="ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_GOODS_MASTER_SEQ</param>
+			</generator>
+		</id>
+			<version name="versionTime" column="VERSION_TIME" type="long"></version>
+			
+		<property name="goodsCode" column="GOODS_CODE" />
+		<property name="goodsName" column="GOODS_NAME" />
+		<property name="goodsParentCode" column="GOODS_PARENT_CODE" />
+		
+		<property name="status" column="STATUS" />
+		<property name="deprecated" column="DEPRECATED" />
+		
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATED_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+		<property name="cpsId"     		column="CPS_ID" />
+		<property name="restrictionType" column="RESTRICTION_TYPE" />
+	</class>
+</hibernate-mapping>

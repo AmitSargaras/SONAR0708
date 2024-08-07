@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT 
+					DISTINCT SUB_PROFILE.LSP_LE_ID AS PARTYID,
+					SUB_PROFILE.LSP_SHORT_NAME AS PARTY_NAME,
+					sub_profile.borrower_duns_no as BorrowerDunsNo,
+					(SELECT REGION_NAME FROM CMS_REGION where id = grnt.region) AS REGION,
+					(SELECT rm_mgr_name from CMS_RELATIONSHIP_MGR where id =
+					sub_profile.relation_mgr) AS RMNAME,
+					cc.entry_name AS SEGMENT_NAME,
+					grnt.guaranters_pam AS PAN_NUMBER,
+					grnt.guaranters_name AS GUARANTOR_NAME,
+					grnt.GUARANTERS_NAME_PREFIX as IndividualNamePrefix,
+					grnt.GUARANTERS_FULL_NAME as FullName,
+					grnt.address_line1
+					|| ' '
+					|| grnt.address_line2
+					|| ' '
+					|| grnt.address_line3
+				
+					AS ADDRESS,
+					(SELECT CITY_NAME FROM CMS_CITY where id = grnt.city) AS CITY,
+					(SELECT STATE_NAME FROM CMS_STATE where id = grnt.state) AS STATE,
+					grnt.pincode AS PINCODE,
+					(SELECT COUNTRY_NAME FROM CMS_COUNTRY where id = grnt.country) AS COUNTRY,
+					grnt.telephone_area_code as STDCODE,
+					grnt.telephone_number AS TELEPHONE,
+					grnt.guaranters_duns_number AS DUNS_NUMBER,
+					grnt.guarantee_amt GuaranteeAmount,
+					(SELECT entry_name from COMMON_CODE_CATEGORY_ENTRY where entry_code =
+					grnt.guarantor_type and category_code = 'GUARANTOR_TYPE') as
+					GuarantorType,
+					(SELECT entry_name from COMMON_CODE_CATEGORY_ENTRY where entry_code =
+					grnt.guarantor_nature and category_code = 'GUARANTOR_NATURE') as
+					GuarantorNature
+
+			FROM CMS_LIMIT_SECURITY_MAP lsm,
+					SCI_LSP_APPR_LMTS lmts,
+					SCI_LSP_LMT_PROFILE pf,
+					SCI_LE_MAIN_PROFILE main_profile,
+					SCI_LE_SUB_PROFILE sub_profile,
+					(SELECT entry_name, entry_code FROM common_code_category_entry WHERE
+					category_code = 'HDFC_SEGMENT' ) cc ,
+					CMS_SECURITY secDetail,
+					cms_relationship_mgr rm ,
+					CMS_GUARANTEE grnt,
+  					SECURITY_MAP_CHARGE_ID_MV sec_mv
+			</query>
+			<whereClause>
+			<mandatoryClause>
+					sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+          			and sub_profile.CMS_LE_MAIN_PROFILE_ID  = main_profile.CMS_LE_MAIN_PROFILE_ID
+          			AND secdetail.cms_collateral_id = grnt.cms_collateral_id          
+					AND cc.entry_code           (+) =sub_profile.lsp_sgmnt_code_value
+					AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+					AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id					
+					AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = sub_profile.CMS_LE_MAIN_PROFILE_ID
+					AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+					AND rm.id                               = sub_profile.relation_mgr
+          			AND secDetail.TYPE_NAME = 'Guarantees'
+          			AND sub_profile.status != 'INACTIVE'
+          			AND secDetail.STATUS = 'ACTIVE'
+					AND lmts.CMS_LIMIT_STATUS = 'ACTIVE'
+					AND lsm.deletion_date is NULL
+					AND lsm.CHARGE_ID     = sec_mv.CHARGE_ID
+					AND  pf.cms_lsp_lmt_profile_id = sec_mv.CMS_LSP_LMT_PROFILE_ID
+			</mandatoryClause>		
+	    	<param>
+				<name>party</name>
+				<condition> AND sub_profile.cms_le_sub_profile_id = </condition>
+			</param>	
+			<param>
+				<name>guarantor</name>
+				<condition> AND SUBLINE.CMS_LE_SUBLINE_PARTY_ID = </condition>
+			</param>
+			<param>
+				<name>relationship</name>
+				<condition> AND DIRECTOR.relationship_type = </condition>
+			</param>					
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>DUNS Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>RM Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PAN Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantor Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Individual Name Prefix</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Address</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City</header>
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>State</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PinCode</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Country</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>STD_CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Telephone</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Guarantors DUNS Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Net Worth</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Guarantor Type</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Guarantor Nature</header>
+				</reportColumn>										
+			</reportColumns>
+			<reportName>CIBIL Report - Guarantor Segment</reportName>
+		</reportParamters>
+	</report>
+</reports>

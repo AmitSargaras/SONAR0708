@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<syncMasterTemplateOut>
+			<query>
+			SELECT *
+			FROM
+			  (SELECT OthBranch.ID,
+			    OthBranch.BRANCH_CODE,
+			    OthBranch.OTHER_BANK_CODE,
+			    OthBranch.BRANCH_NAME,
+			    OthBranch.ADDRESS,
+			    OthBranch.CITY_TOWN,
+			    OthBranch.STATE,
+			    OthBranch.COUNTRY,
+			    OthBranch.REGION,
+			    OthBranch.CONTACT_NUMBER,
+			    OthBranch.CONTACT_MAIL,
+			    OthBranch.DEPRECATED,
+			    OthBranch.STATUS,
+			    OthBranch.FAX_NO,
+			    OthBranch.RBI_CODE,
+			    'I' AS Action
+			  FROM Cms_Other_Bank_Branch OthBranch,
+			    trans_history trah ,
+			    transaction tra
+			  WHERE OthBranch.id                             = tra.reference_id
+			  AND OthBranch.id                               = trah.reference_id
+			  AND trah.transaction_type                      ='OTHER_BANK_BRANCH'
+			  AND trah.from_state                            = 'PENDING_CREATE'
+			  AND trah.STATUS                                = 'ACTIVE'
+			  AND tra.STATUS                                != 'DELETED'
+			  AND TO_CHAR(trah.transaction_date,'DD-MON-YY') =
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE param_code = 'LAST_EOD_DATE'
+			    )
+			  UNION
+			  SELECT OthBranch.ID,
+			    OthBranch.BRANCH_CODE,
+			    OthBranch.OTHER_BANK_CODE,
+			    OthBranch.BRANCH_NAME,
+			    OthBranch.ADDRESS,
+			    OthBranch.CITY_TOWN,
+			    OthBranch.STATE,
+			    OthBranch.COUNTRY,
+			    OthBranch.REGION,
+			    OthBranch.CONTACT_NUMBER,
+			    OthBranch.CONTACT_MAIL,
+			    OthBranch.DEPRECATED,
+			    OthBranch.STATUS,
+			    OthBranch.FAX_NO,
+			    OthBranch.RBI_CODE,
+			    CASE
+			      WHEN UPPER(OthBranch.EOD_SYNC_STATUS) = 'INSERT_SENT' or UPPER(OthBranch.EOD_SYNC_STATUS) = 'INSERT_FAILED' 
+			      THEN 'I'
+			      ELSE 'U'
+			    END AS Action
+			  FROM Cms_Other_Bank_Branch OthBranch,
+			    trans_history trah ,
+			    transaction tra
+			  WHERE OthBranch.id              = tra.reference_id
+			  AND Trah.Tr_History_Id          = Tra.Cur_Trx_History_Id
+			  AND tra.transaction_type        ='OTHER_BANK_BRANCH'
+			  AND Tra.Status                  = 'ACTIVE'
+			  AND TRUNC(tra.transaction_date) =
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE param_code = 'LAST_EOD_DATE'
+			    )
+			  AND OthBranch.id NOT IN
+			    (SELECT reference_id
+			    FROM trans_history
+			    WHERE transaction_type                    ='OTHER_BANK_BRANCH'
+			    AND from_state                            = 'PENDING_CREATE'
+			    AND STATUS                                = 'ACTIVE'
+			    AND TO_CHAR(transaction_date,'DD-MON-YY') =
+			      (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			      FROM Cms_General_Param
+			      WHERE param_code = 'LAST_EOD_DATE'
+			      )
+			    )
+			  UNION
+			  SELECT OthBranch.ID,
+			    OthBranch.BRANCH_CODE,
+			    OthBranch.OTHER_BANK_CODE,
+			    OthBranch.BRANCH_NAME,
+			    OthBranch.ADDRESS,
+			    OthBranch.CITY_TOWN,
+			    OthBranch.STATE,
+			    OthBranch.COUNTRY,
+			    OthBranch.REGION,
+			    OthBranch.CONTACT_NUMBER,
+			    OthBranch.CONTACT_MAIL,
+			    OthBranch.DEPRECATED,
+			    OthBranch.STATUS,
+			    OthBranch.FAX_NO,
+			    OthBranch.RBI_CODE,
+			    'D' AS Action
+			  FROM Cms_Other_Bank_Branch OthBranch,
+			    transaction tra
+			  WHERE Othbranch.Id              = Tra.Reference_Id
+			  AND tra.transaction_type        ='OTHER_BANK_BRANCH'
+			  AND Tra.Status                  = 'DELETED'
+			  AND Othbranch.Eod_Sync_Status  not in ( 'INSERT_SENT','INSERT_FAILED')
+			  AND TRUNC(tra.transaction_date) =
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE param_code = 'LAST_EOD_DATE'
+			    )
+			  AND OthBranch.id NOT IN
+			    (SELECT reference_id
+			    FROM trans_history
+			    WHERE transaction_type                    ='OTHER_BANK_BRANCH'
+			    AND from_state                            = 'PENDING_CREATE'
+			    AND STATUS                                = 'ACTIVE'
+			    AND TO_CHAR(transaction_date,'DD-MON-YY') =
+			      (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			      FROM Cms_General_Param
+			      WHERE param_code = 'LAST_EOD_DATE'
+			      )
+			    )
+			  UNION
+			  SELECT OthBranch.ID,
+			    OthBranch.BRANCH_CODE,
+			    OthBranch.OTHER_BANK_CODE,
+			    OthBranch.BRANCH_NAME,
+			    OthBranch.ADDRESS,
+			    OthBranch.CITY_TOWN,
+			    OthBranch.STATE,
+			    OthBranch.COUNTRY,
+			    OthBranch.REGION,
+			    OthBranch.CONTACT_NUMBER,
+			    OthBranch.CONTACT_MAIL,
+			    OthBranch.DEPRECATED,
+			    OthBranch.STATUS,
+			    OthBranch.FAX_NO,
+			    OthBranch.RBI_CODE,
+			    CASE
+			      WHEN UPPER(OthBranch.EOD_SYNC_STATUS) = 'INSERT_SENT'
+			      THEN 'I'
+			      WHEN Upper(Othbranch.Eod_Sync_Status) = 'DELETE_SENT'
+			      	OR Upper(Othbranch.Eod_Sync_Status)   = 'DELETE_FAILED'
+			      	OR (Upper(OthBranch.EOD_SYNC_STATUS)  = 'UPDATE_SENT' AND Tra.Status ='DELETED')
+			      THEN 'D'
+			      WHEN Upper(OthBranch.EOD_SYNC_STATUS) = 'UPDATE_SENT'
+			      THEN 'U'
+			    END AS Action
+			  FROM Cms_Other_Bank_Branch OthBranch,
+			    transaction tra
+			  WHERE Othbranch.Id               = Tra.Reference_Id
+			  AND tra.transaction_type         ='OTHER_BANK_BRANCH'
+			  AND TRUNC(tra.transaction_date) !=
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE param_code = 'LAST_EOD_DATE'
+			    )
+			   AND((Othbranch.Eod_Sync_Status = 'INSERT_SENT' AND Tra.Status                !='DELETED')
+				  OR Othbranch.Eod_Sync_Status  IN ('UPDATE_SENT','DELETE_SENT','DELETE_FAILED') )
+				  )
+		</query>
+	<whereClause>
+		<mandatoryClause>
+				1=1
+		</mandatoryClause>
+	</whereClause>
+	<reportType>TXT</reportType>
+	<delimiter>|||</delimiter>
+	<secondaryDelimiter>~~~</secondaryDelimiter>
+	
+	<reportParamters>
+		<reportColumns>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>BRANCH_CODE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>OTHER_BANK_CODE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>BRANCH_NAME</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ADDRESS</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>CITY_TOWN</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>STATE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>COUNTRY</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>REGION</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>CONTACT_NUMBER</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>CONTACT_MAIL</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>DEPRECATED</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>STATUS</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>FAX_NO</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>RBI_CODE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ACTION</header>
+			</reportColumn>
+		</reportColumns>
+		<reportName>CLIMS_OtherBankBranch_Mst</reportName>
+	</reportParamters>
+	</syncMasterTemplateOut>

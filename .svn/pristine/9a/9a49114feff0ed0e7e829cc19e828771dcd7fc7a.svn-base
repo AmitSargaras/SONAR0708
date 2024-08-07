@@ -1,0 +1,333 @@
+<?xml version="1.0"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN' 'http://java.sun.com/dtd/ejb-jar_2_0.dtd'>
+<ejb-jar>
+<display-name>CollaborationTask</display-name>
+    <enterprise-beans>
+        <session id="session_SBCollaborationTaskProxyManager">
+            <ejb-name>SBCollaborationTaskProxyManager</ejb-name>
+            <home>com.integrosys.cms.app.collaborationtask.proxy.SBCollaborationTaskProxyManagerHome</home>
+            <remote>com.integrosys.cms.app.collaborationtask.proxy.SBCollaborationTaskProxyManager</remote>
+            <ejb-class>com.integrosys.cms.app.collaborationtask.proxy.SBCollaborationTaskProxyManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session id="session_SBCollaborationTaskBusManager">
+            <ejb-name>SBCollaborationTaskBusManager</ejb-name>
+            <home>com.integrosys.cms.app.collaborationtask.bus.SBCollaborationTaskBusManagerHome</home>
+            <remote>com.integrosys.cms.app.collaborationtask.bus.SBCollaborationTaskBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.collaborationtask.bus.SBCollaborationTaskBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+
+        <session id="session_SBStagingCollaborationTaskBusManager">
+            <ejb-name>SBStagingCollaborationTaskBusManager</ejb-name>
+            <home>com.integrosys.cms.app.collaborationtask.bus.SBCollaborationTaskBusManagerHome</home>
+            <remote>com.integrosys.cms.app.collaborationtask.bus.SBCollaborationTaskBusManager</remote>
+            <ejb-class>com.integrosys.cms.app.collaborationtask.bus.SBStagingCollaborationTaskBusManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+                        
+        <entity id="entity_EBCollateralTask">
+            <ejb-name>EBCollateralTask</ejb-name>
+            <home>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTaskHome</home>
+            <remote>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTask</remote>
+            <local-home>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTaskLocalHome</local-home>
+            <local>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTaskLocal</local>
+            <ejb-class>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTaskBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCollateralTask</abstract-schema-name>
+            <cmp-field id="cmp_EBCollateralTask_cMPTaskID">
+                <field-name>cMPTaskID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCollateralTask_cMPLimitProfileID">
+                <field-name>cMPLimitProfileID</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBCollateralTask_cMPCollateralID">
+                <field-name>cMPCollateralID</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBCollateralTask_collateralLocation">
+                <field-name>collateralLocation</field-name>
+            </cmp-field>             
+            <cmp-field id="cmp_EBCollateralTask_remarks">
+                <field-name>remarks</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCollateralTask_isDeletedIndStr">
+                <field-name>isDeletedIndStr</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBCollateralTask_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field>  
+            <cmp-field >
+                <field-name>securityOrganisation</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cmsLeSubProfileID</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPCustomerCategory</field-name>
+            </cmp-field> 
+            <primkey-field>cMPTaskID</primkey-field>         
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>                     
+        </entity>        
+                      
+        <entity id="entity_EBStagingCollateralTask">
+            <ejb-name>EBStagingCollateralTask</ejb-name>
+            <home>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTaskHome</home>
+            <remote>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTask</remote>
+            <local-home>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTaskLocalHome</local-home>
+            <local>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTaskLocal</local>
+            <ejb-class>com.integrosys.cms.app.collaborationtask.bus.EBCollateralTaskBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingCollateralTask</abstract-schema-name>
+            <cmp-field id="cmp_EBStagingCollateralTask_cMPTaskID">
+                <field-name>cMPTaskID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingCollateralTask_cMPLimitProfileID">
+                <field-name>cMPLimitProfileID</field-name>
+            </cmp-field>                 
+            <cmp-field id="cmp_EBStagingCollateralTask_cMPCollateralID">
+                <field-name>cMPCollateralID</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBStagingCollateralTask_collateralLocation">
+                <field-name>collateralLocation</field-name>
+            </cmp-field>             
+            <cmp-field id="cmp_EBStagingCollateralTask_remarks">
+                <field-name>remarks</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingCollateralTask_isDeletedIndStr">
+                <field-name>isDeletedIndStr</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBStagingCollateralTask_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field> 
+             <cmp-field >
+                <field-name>securityOrganisation</field-name>
+            </cmp-field> 
+             <cmp-field >
+                <field-name>cmsLeSubProfileID</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cMPCustomerCategory</field-name>
+            </cmp-field>   
+            <primkey-field>cMPTaskID</primkey-field>              
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>                
+        </entity>       
+
+        <entity id="entity_EBCCTask">
+            <ejb-name>EBCCTask</ejb-name>
+            <home>com.integrosys.cms.app.collaborationtask.bus.EBCCTaskHome</home>
+            <remote>com.integrosys.cms.app.collaborationtask.bus.EBCCTask</remote>
+            <local-home>com.integrosys.cms.app.collaborationtask.bus.EBCCTaskLocalHome</local-home>
+            <local>com.integrosys.cms.app.collaborationtask.bus.EBCCTaskLocal</local>
+            <ejb-class>com.integrosys.cms.app.collaborationtask.bus.EBCCTaskBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCCTask</abstract-schema-name>
+            <cmp-field id="cmp_EBCCTask_cMPTaskID">
+                <field-name>cMPTaskID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCCTask_cMPLimitProfileID">
+                <field-name>cMPLimitProfileID</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBCCTask_cMPSubProfileID">
+                <field-name>cMPSubProfileID</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBCCTask_cMPPledgorID">
+                <field-name>cMPPledgorID</field-name>
+            </cmp-field>     
+            <cmp-field id="cmp_EBCCTask_customerCategory">
+                <field-name>customerCategory</field-name>
+            </cmp-field>     
+            <cmp-field id="cmp_EBCCTask_domicileCountry">
+                <field-name>domicileCountry</field-name>
+            </cmp-field>    
+            <cmp-field id="cmp_EBCCTask_orgCode">
+                <field-name>orgCode</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBCCTask_remarks">
+                <field-name>remarks</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBCCTask_isDeletedIndStr">
+                <field-name>isDeletedIndStr</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBCCTask_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field>  
+            <primkey-field>cMPTaskID</primkey-field>         
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>                      
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileAndSubProfile</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.Long</method-param>                        
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCCTask o WHERE o.cMPLimitProfileID = ?1 AND o.cMPSubProfileID = ?2 AND o.isDeletedIndStr = 'N']]></ejb-ql>
+            </query>
+                       
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileAndPledgorID</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.Long</method-param>                        
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBCCTask o WHERE o.cMPLimitProfileID = ?1 AND o.cMPPledgorID = ?2 AND o.isDeletedIndStr = 'N']]></ejb-ql>
+            </query>
+        </entity>        
+
+        <entity id="entity_EBStagingCCTask">
+            <ejb-name>EBStagingCCTask</ejb-name>
+            <home>com.integrosys.cms.app.collaborationtask.bus.EBCCTaskHome</home>
+            <remote>com.integrosys.cms.app.collaborationtask.bus.EBCCTask</remote>
+            <local-home>com.integrosys.cms.app.collaborationtask.bus.EBCCTaskLocalHome</local-home>
+            <local>com.integrosys.cms.app.collaborationtask.bus.EBCCTaskLocal</local>
+            <ejb-class>com.integrosys.cms.app.collaborationtask.bus.EBCCTaskBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBStagingCCTask</abstract-schema-name>
+            <cmp-field id="cmp_EBStagingCCTask_cMPTaskID">
+                <field-name>cMPTaskID</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingCCTask_cMPLimitProfileID">
+                <field-name>cMPLimitProfileID</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBStagingCCTask_cMPSubProfileID">
+                <field-name>cMPSubProfileID</field-name>
+            </cmp-field> 
+            <cmp-field id="cmp_EBStagingCCTask_cMPPledgorID">
+                <field-name>cMPPledgorID</field-name>
+            </cmp-field>     
+            <cmp-field id="cmp_EBStagingCCTask_customerCategory">
+                <field-name>customerCategory</field-name>
+            </cmp-field>     
+            <cmp-field id="cmp_EBStagingCCTask_domicileCountry">
+                <field-name>domicileCountry</field-name>
+            </cmp-field>    
+            <cmp-field id="cmp_EBStagingCCTask_orgCode">
+                <field-name>orgCode</field-name>
+            </cmp-field>                      
+            <cmp-field id="cmp_EBStagingCCTask_remarks">
+                <field-name>remarks</field-name>
+            </cmp-field>
+            <cmp-field id="cmp_EBStagingCCTask_isDeletedIndStr">
+                <field-name>isDeletedIndStr</field-name>
+            </cmp-field>            
+            <cmp-field id="cmp_EBStagingCCTask_versionTime">
+                <field-name>versionTime</field-name>
+            </cmp-field>  
+            <primkey-field>cMPTaskID</primkey-field>         
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>            
+            
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileAndSubProfile</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.Long</method-param>                        
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCCTask o WHERE o.cMPLimitProfileID = ?1 AND o.cMPSubProfileID = ?2 AND o.isDeletedIndStr = 'N']]></ejb-ql>
+            </query>
+                       
+            <query>
+                <query-method>
+                    <method-name>findByLimitProfileAndPledgorID</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.Long</method-param>                        
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT  OBJECT(o) FROM EBStagingCCTask o WHERE o.cMPLimitProfileID = ?1 AND o.cMPPledgorID = ?2 AND o.isDeletedIndStr = 'N']]></ejb-ql>
+            </query>
+                     
+        </entity>
+    </enterprise-beans>    
+                
+    <assembly-descriptor>
+        <container-transaction>            
+            <method>
+                <ejb-name>SBCollaborationTaskProxyManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBCollaborationTaskBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>SBStagingCollaborationTaskBusManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBCollateralTask</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBStagingCollateralTask</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBCCTask</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            <method>
+                <ejb-name>EBStagingCCTask</ejb-name>
+                <method-name>*</method-name>
+            </method>
+           <trans-attribute>Required</trans-attribute>
+        </container-transaction>
+    </assembly-descriptor>
+</ejb-jar>

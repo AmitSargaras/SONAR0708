@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="MaintainUserForm" type="com.integrosys.cms.ui.user.MaintainUserForm">
+        </form-bean>
+
+        <form-bean name="MaintainTeamForm" type="com.integrosys.cms.ui.bizstructure.MaintainTeamForm">
+        </form-bean>
+
+        <form-bean name="BizSearchForm" type="com.integrosys.cms.ui.user.NewUserSearchForm">
+        </form-bean>    
+		
+		<form-bean name="MaintainFunctionForm" type="com.integrosys.cms.ui.function.TeamFunctionGrpForm">
+        </form-bean> 
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/user" type="com.integrosys.cms.ui.user.MaintainUserAction" name="MaintainUserForm" validate="false" scope="request">
+            <forward name="get_list_user_page" path="/user.do?event=redirect_list_user">
+            </forward>
+            <forward name="user_detail_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/console/monitor/useronlineDetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="kill_user_login_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/console/monitor/useronlineDetails.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="broadcast_message" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/console/monitor/create_broadcast_msg.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="user_hand_off" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/console/monitor/user_hand_off.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward> 
+            <forward name="kill_user_hand_off_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/console/monitor/user_hand_off.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>            
+            <forward name="maker_list_user_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/user/maker_list_user.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="search_user_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/user/search_user.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>            
+            <forward name="maker_add_edit_user_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/user/maker_add_edit_user.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="maker_view_delete_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/user/maker_view_delete_user.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="work_in_process_invalid_user_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/invalidUser.html"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="checker_user_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/user/checker_user.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="rejected_read_page" path="/user/forward.jsp"/>
+             <forward name="refresh_region_id" path="/user/refresh_maker_create_region.jsp"/>
+            <forward name="refresh_state_id" path="/user/refresh_maker_create_state.jsp"/>
+            <forward name="refresh_city_id" path="/user/refresh_maker_create_city.jsp"/>
+            
+			<forward name="maker_prepare_upload_user" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/user/maker_upload_user.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+            <forward name="refresh_branch_detail" path="/user/branchdetaillist.jsp"/>
+            <forward name="maker_fileupload_user_error_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/user/maker_fileupload_user_error.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>
+        </action>
+		
+		<action path="/MaintainFunction" type="com.integrosys.cms.ui.function.TeamFunctionGrpAction" name="MaintainFunctionForm" validate="false" scope="request">
+            <!--<forward name="get_list_user_page" path="/user.do?event=redirect_list_user">
+            </forward>-->
+            <forward name="prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/function/item.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>
+            <forward name="list" path="/template/common_template.jsp">
+				<set-property property="rightFrame" value="/function/list.jsp" />
+				<set-property property="title" value="title.sys.admin.maint.function" />
+			</forward>
+            <forward name="submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>
+           <forward name="list2ForChecker" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/function/list2.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>            
+             <!--<forward name="maker_add_edit_user_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/user/maker_add_edit_user.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.user"/>
+            </forward>-->
+            <forward name="view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/function/view.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>
+            <forward name="workInProgress" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>
+            <forward name="approve" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>
+            <forward name="reject" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>
+            <forward name="close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>
+            <forward name="read_checker_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/function/item.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.function"/>
+            </forward>
+        </action>
+		
+        <action path="/bizstructure" type="com.integrosys.cms.ui.bizstructure.MaintainTeamAction" name="MaintainTeamForm" validate="false" scope="request">
+            <forward name="get_list_team_page" path="/bizstructure.do?event=redirect_list_team"/>
+            <forward name="search_team_user_for_add" path="/bizSearch.do?event=start"/>
+            <forward name="search_team_user_for_edit" path="/bizSearch.do?event=start"/>
+            <forward name="search_team_user_for_add_reject" path="/bizSearch.do?event=start_rejected"/>
+            <forward name="search_team_user_for_edit_reject" path="/bizSearch.do?event=start_rejected"/>
+
+            <forward name="after_start" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/bizstructure/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/bizstructure/maker_list_team.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="maker_list_team_page" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/bizstructure/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/bizstructure/maker_list_team.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="maker_add_edit_team_page" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/bizstructure/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/bizstructure/maker_add_edit_team.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="maker_view_delete_page" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/bizstructure/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/bizstructure/maker_view_delete_team.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="maker_view_team_wf" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bizstructure/maker_view_delete_team.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="maker_view_delete_rejected_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bizstructure/maker_view_delete_team.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+
+            <forward name="maker_add_edit_team_page_rejected" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bizstructure/maker_add_edit_team.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+
+            <forward name="checker_team_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bizstructure/checker_team.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/bizstructure/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>                
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="common_submit_frame_page" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/bizstructure/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="rejected_read_page" path="/bizstructure/forward.jsp"/>
+        </action>
+
+        <action path="/bizSearch" type="com.integrosys.cms.ui.bizstructure.AddUserAction" name="BizSearchForm" validate="false" scope="request">
+            <forward name="after_start" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/bizstructure/maker_left_frame.jsp"/>
+                <set-property property="rightFrame" value="/bizstructure/list_users.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="after_start_rejected" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/bizstructure/list_users.jsp"/>
+                <set-property property="title" value="title.sys.admin.maint.team"/>
+            </forward>
+            <forward name="add_users_for_add" path="/bizstructure.do?event=add_team_users_for_add"/>
+            <forward name="add_users_for_edit" path="/bizstructure.do?event=add_team_users_for_edit"/>
+            <forward name="add_users_for_add_reject" path="/bizstructure.do?event=add_team_users_for_add_reject"/>
+            <forward name="add_users_for_edit_reject" path="/bizstructure.do?event=add_team_users_for_edit_reject"/>
+        </action>
+            
+    </action-mappings>
+    
+    <message-resources key="message-userteam" parameter="ApplicationResources-userteam"/>
+</struts-config>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+	
+	<bean id="OtherBankAction.ListOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.ListOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.PrepareCreateOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.PrepareCreateOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.SubmitCreateOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.SubmitCreateOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.ViewOtherBankByIndexCommand" class="com.integrosys.cms.ui.otherbankbranch.ViewOtherBankByIndexCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.PrepareDeleteOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.PrepareDeleteOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.DeleteOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.DeleteOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.PrepareEditOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.PrepareEditOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.EditOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.EditOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.CheckerReadOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerReadOtherBankCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+    </bean>
+    
+    <bean id="OtherBankAction.CheckerApproveEditOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerApproveEditOtherBankCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+    </bean>
+    <bean id="OtherBankAction.CheckerRejectEditOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerRejectEditOtherBankCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+    </bean>
+    
+    <bean id="OtherBankAction.MakerReadOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerReadOtherBankCmd">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.MakerCloseOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerCloseOtherBankCmd">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.MakerDraftCloseOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerDraftCloseOtherBankCmd">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.MakerSubmitDraftOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.MakerSubmitDraftOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.SaveCreateOtherBankCommand" class="com.integrosys.cms.ui.otherbankbranch.SaveCreateOtherBankCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBankAction.RefreshCityTownCommand" class="com.integrosys.cms.ui.otherbankbranch.RefreshCityTownCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+    
+
+    <bean id="AssetPostDatedChqsAction.ProcessingViewChequeDetailCmd" class="com.integrosys.cms.ui.collateral.ProcessingViewChequeDetailCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+    
+    <bean id="AssetPostDatedChqsAction.BankCodePopulationCmd" class="com.integrosys.cms.ui.collateral.BankCodePopulationCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+    
+    <bean id="AssetPostDatedChqsAction.ProcessingCollateralCommand" class="com.integrosys.cms.ui.collateral.ProcessingCollateralCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean> 
+        
+    <bean id="AssetPostDatedChqsAction.ViewchequeCmd" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.ViewchequeCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+    
+   
+ 
+   	      
+ <bean id="InsKeymanAction.PrepareInsKeymanCommand" class="com.integrosys.cms.ui.collateral.insprotection.inskeyman.PrepareInsKeymanCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+     
+    
+     <bean id="ChequeAction.PrepareChequeCommand" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.PrepareChequeCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+        <property name="systemBankProxy" ref="systemBankProxy" />
+    </bean>
+    <bean id="ChequeAction.ReadChequeCommand" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.ReadChequeCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+        <property name="systemBankProxy" ref="systemBankProxy" />
+    </bean>
+    
+    	      
+    <bean id="ChequeAction.AddChequeCommand" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.AddChequeCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+    
+    <bean id="ChequeAction.RefreshBranchCommand" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.RefreshBranchCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+        <property name="systemBankBranchProxy" ref="systemBankBranchProxy" />
+    </bean>
+    
+     <bean id="ChequeAction.UpdateChequeCommand" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.UpdateChequeCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+     <bean id="ChequeAction.ViewchequeCmd" class="com.integrosys.cms.ui.collateral.assetbased.assetpostdatedchqs.ViewchequeCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+    
+    
+    
+    
+    <bean id="OtherBankAction.RefreshCountryCommmand" class="com.integrosys.cms.ui.geography.city.RefreshCountryCommmand">
+
+        <property name="cityProxy" ref="cityProxy" />
+    </bean>
+    
+    <bean id="OtherBankAction.RefreshCityCommmand" class="com.integrosys.cms.ui.otherbankbranch.RefreshCityCommmand">
+        <property name="cityProxy" ref="cityProxy" />
+    </bean>
+    
+    <bean id="PaginateOtherBankListCommand" class="com.integrosys.cms.ui.otherbankbranch.PaginateOtherBankListCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+    
+    <bean id="PaginateOtherBankBranchListCommand" class="com.integrosys.cms.ui.otherbankbranch.PaginateOtherBankBranchListCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+    
+     
+    
+  <!-- ###################################################UPLOAD OTHER BANK#################################################################### -->
+    
+    
+    
+	 <bean id="OtherBankAction.MakerPrepareUploadOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerPrepareUploadOtherBankCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+    
+    <bean id="OtherBankAction.MakerUploadOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerUploadOtherBankCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+
+      <bean id="OtherBankAction.MakerInsertCloseOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerInsertCloseOtherBankCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+
+     <bean id="OtherBankAction.CheckerApproveInsertOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerApproveInsertOtherBankCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+	
+	<bean id="OtherBankAction.CheckerRejectInsertOtherBankCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerRejectInsertOtherBankCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+	
+	<bean id="OtherBankAction.CheckerReadFileInsertListCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerReadFileInsertListCmd">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+	
+	<!-- ####################################################################################################################### -->
+	
+	<bean id="OtherBranchAction.ListOtherBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.ListOtherBranchCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.ViewOtherBranchByIndexCommand" class="com.integrosys.cms.ui.otherbankbranch.ViewOtherBranchByIndexCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.PrepareEditOtherBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.PrepareEditOtherBranchCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.PrepareDeleteOtherBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.PrepareDeleteOtherBranchCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.DeleteOtherBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.DeleteOtherBranchCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.EditOtherBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.EditOtherBranchCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.PrepareCreateOtherBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.PrepareCreateOtherBranchCommand">
+		<property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.SubmitCreateOtherBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.SubmitCreateOtherBranchCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.CheckerReadOtherBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerReadOtherBranchCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+        <property name="otherBankProxyManager" ref="otherBankProxyManager"/>
+    </bean>
+    
+    <bean id="OtherBranchAction.CheckerApproveEditOtherBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerApproveEditOtherBranchCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+    </bean>
+    <bean id="OtherBranchAction.CheckerRejectEditOtherBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerRejectEditOtherBranchCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+    </bean>
+    
+    <bean id="OtherBranchAction.MakerReadOtherBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerReadOtherBranchCmd">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.MakerCloseOtherBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerCloseOtherBranchCmd">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	
+	<bean id="OtherBranchAction.MakerDraftCloseOtherBankBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerDraftCloseOtherBankBranchCmd">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.MakerSubmitDraftOtherBankBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.MakerSubmitDraftOtherBankBranchCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+	<bean id="OtherBranchAction.SaveCreateOtherBankBranchCommand" class="com.integrosys.cms.ui.otherbankbranch.SaveCreateOtherBankBranchCommand">
+		<property name="otherBranchProxyManager" ref="otherBranchProxyManager"/>
+	</bean>
+	
+     <bean id="OtherBranchAction.RefreshCountryCommmand" class="com.integrosys.cms.ui.otherbankbranch.RefreshCountryCommmand">
+        <property name="cityProxy" ref="cityProxy" />
+    </bean> 
+    
+	<bean id="OtherBranchAction.RefreshCityCommmand" class="com.integrosys.cms.ui.otherbankbranch.RefreshCityCommmand">
+        <property name="cityProxy" ref="cityProxy" />
+    </bean>
+
+    <bean id="OtherBranchAction.RefreshCityTownCommand" class="com.integrosys.cms.ui.otherbankbranch.RefreshCityTownCommand">
+        <property name="otherBankProxyManager" ref="otherBankProxyManager" />
+    </bean>
+	
+	 <!-- ###################################################UPLOAD OTHER BANK BRANCH#################################################################### -->
+ 
+	
+	 
+	 <bean id="OtherBranchAction.MakerPrepareUploadOtherBankBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerPrepareUploadOtherBankBranchCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager" />
+    </bean>
+    
+    <bean id="OtherBranchAction.MakerUploadOtherBankBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerUploadOtherBankBranchCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager" />
+    </bean>
+
+      <bean id="OtherBranchAction.MakerInsertCloseOtherBankBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.MakerInsertCloseOtherBankBranchCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager" />
+    </bean>
+
+     <bean id="OtherBranchAction.CheckerApproveInsertOtherBankBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerApproveInsertOtherBankBranchCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager" />
+    </bean>
+	
+	<bean id="OtherBranchAction.OtherBankBranchCheckerReadFileInsertListCmd" class="com.integrosys.cms.ui.otherbankbranch.OtherBankBranchCheckerReadFileInsertListCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager" />
+    </bean>
+	
+	<bean id="OtherBranchAction.CheckerRejectInsertOtherBankBranchCmd" class="com.integrosys.cms.ui.otherbankbranch.CheckerRejectInsertOtherBankBranchCmd">
+        <property name="otherBranchProxyManager" ref="otherBranchProxyManager" />
+    </bean>
+	
+</beans>

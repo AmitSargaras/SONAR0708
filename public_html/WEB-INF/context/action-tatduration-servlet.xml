@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		struts config to context mapping files for Tat Document module
+	</description>
+
+	<bean name="/TatDuration" scope="prototype" autowire="byName" class="com.integrosys.cms.ui.tatduration.TatDurationAction">
+		<property name="nameCommandMap">
+			<map>
+				<entry key="ReadAppListCmd" value-ref="TatDurationAction.ReadAppListCmd"/>
+				<entry key="ReadTatParamCmd" value-ref="TatDurationAction.ReadTatParamCmd"/>
+				<entry key="MakerSubmitTatParamDurationCmd" value-ref="TatDurationAction.MakerSubmitTatParamDurationCmd"/>
+				<entry key="CheckerProcessTatParamCmd" value-ref="TatDurationAction.CheckerProcessTatParamCmd"/>
+				<entry key="CheckerApproveSubmitTatParamCmd" value-ref="TatDurationAction.CheckerApproveSubmitTatParamCmd"/>
+				<entry key="CheckerRejectSubmitTatParamCmd" value-ref="TatDurationAction.CheckerRejectSubmitTatParamCmd"/>
+				<entry key="MakerCloseTatParamCmd" value-ref="TatDurationAction.MakerCloseTatParamCmd"/>
+			</map>
+		</property>
+	</bean>
+
+
+</beans>

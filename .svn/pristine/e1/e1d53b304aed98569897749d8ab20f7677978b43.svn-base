@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar>
+<display-name>Notification</display-name>
+	<enterprise-beans>
+		<session id="session_SBCMSNotificationProxyBean">
+            <ejb-name>SBCMSNotificationProxyManagerBean</ejb-name>
+            <home>com.integrosys.cms.app.notification.proxy.SBCMSNotificationProxyManagerHome</home>
+            <remote>com.integrosys.cms.app.notification.proxy.SBCMSNotificationProxyManager</remote>
+            <ejb-class>com.integrosys.cms.app.notification.proxy.SBCMSNotificationProxyManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        	 
+		<session id="session_SBNotificationProxyBean">
+            <ejb-name>SBNotificationProxyBean</ejb-name>
+            <home>com.integrosys.component.notification.proxy.SBNotificationProxyHome</home>
+            <remote>com.integrosys.component.notification.proxy.SBNotificationProxy</remote>
+            <ejb-class>com.integrosys.component.notification.proxy.SBNotificationProxyBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+	 	<session id="session_SBCMSNotificationManagerBean">
+            <ejb-name>SBCMSNotificationManagerBean</ejb-name>
+            <home>com.integrosys.component.notification.bus.SBNotificationManagerHome</home>
+            <remote>com.integrosys.component.notification.bus.SBNotificationManager</remote>
+            <ejb-class>com.integrosys.cms.app.notification.bus.SBCMSNotificationManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <ejb-local-ref id="EJBLocalRef_1049084130099">
+               <ejb-ref-name>EBNotificationTypeLocalBean</ejb-ref-name>
+               <ejb-ref-type>Entity</ejb-ref-type>
+               <local-home>com.integrosys.component.notification.bus.EBNotificationTypeLocalHome</local-home>
+               <local>com.integrosys.component.notification.bus.EBNotificationTypeLocal</local>
+               <ejb-link>EBNotificationTypeBean</ejb-link>
+            </ejb-local-ref>
+            
+            <ejb-local-ref id="EJBLocalRef_1049084130101">
+               <ejb-ref-name>EBNotificationTypeRecipientLocalBean</ejb-ref-name>
+               <ejb-ref-type>Entity</ejb-ref-type>
+               <local-home>com.integrosys.component.notification.bus.EBNotificationTypeRecipientLocalHome</local-home>
+               <local>com.integrosys.component.notification.bus.EBNotificationTypeRecipientLocal</local>
+               <ejb-link>EBNotificationTypeRecipientBean</ejb-link>
+            </ejb-local-ref>
+          
+            <ejb-local-ref id="EJBLocalRef_1049084130102">
+               <ejb-ref-name>EBNotificationTypeRecurrenceLocalBean</ejb-ref-name>
+               <ejb-ref-type>Entity</ejb-ref-type>
+               <local-home>com.integrosys.component.notification.bus.EBNotificationTypeRecurrenceLocalHome</local-home>
+               <local>com.integrosys.component.notification.bus.EBNotificationTypeRecurrenceLocal</local>
+               <ejb-link>EBNotificationTypeRecurrenceBean</ejb-link>
+            </ejb-local-ref>
+            
+            <ejb-local-ref id="EJBLocalRef_1049084130103">
+               <ejb-ref-name>EBCMSNotificationLocalBean</ejb-ref-name>
+               <ejb-ref-type>Entity</ejb-ref-type>
+               <local-home>com.integrosys.component.notification.bus.EBCMSNotificationLocalHome</local-home>
+               <local>com.integrosys.component.notification.bus.EBCMSNotificationLocal</local>
+               <ejb-link>EBCMSNotificationBean</ejb-link>
+            </ejb-local-ref>
+            
+            <ejb-local-ref id="EJBLocalRef_1049084130104">
+               <ejb-ref-name>EBNotificationRecipientLocalBean</ejb-ref-name>
+               <ejb-ref-type>Entity</ejb-ref-type>
+               <local-home>com.integrosys.component.notification.bus.EBNotificationRecipientLocalHome</local-home>
+               <local>com.integrosys.component.notification.bus.EBNotificationRecipientLocal</local>
+               <ejb-link>EBNotificationRecipientBean</ejb-link>
+            </ejb-local-ref>
+          
+            <ejb-local-ref id="EJBLocalRef_1049084130105">
+               <ejb-ref-name>EBNotificationRecurrenceLocalBean</ejb-ref-name>
+               <ejb-ref-type>Entity</ejb-ref-type>
+               <local-home>com.integrosys.component.notification.bus.EBNotificationRecurrenceLocalHome</local-home>
+               <local>com.integrosys.component.notification.bus.EBNotificationRecurrenceLocal</local>
+               <ejb-link>EBNotificationRecurrenceBean</ejb-link>
+            </ejb-local-ref>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+            
+         </session>
+		<entity id="entity_EBNotificationTypeBean">
+			<ejb-name>EBNotificationTypeBean</ejb-name>
+			<local-home>com.integrosys.component.notification.bus.EBNotificationTypeLocalHome</local-home>
+			<local>com.integrosys.component.notification.bus.EBNotificationTypeLocal</local>
+			<ejb-class>com.integrosys.component.notification.bus.EBNotificationTypeBean</ejb-class>
+			<persistence-type>Container</persistence-type>
+			<prim-key-class>java.lang.Long</prim-key-class>
+			<reentrant>False</reentrant>
+			<cmp-version>2.x</cmp-version>
+			<abstract-schema-name>EBNotificationTypeBean</abstract-schema-name>
+			<cmp-field id="cmp_EBNotificationTypeBean_notificationTypePK">
+				<field-name>notificationTypePK</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeBean_notificationTypeName">
+				<field-name>notificationTypeName</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeBean_severity">
+				<field-name>severity</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeBean_notificatonChannels">
+				<field-name>notificatonChannelsStr</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeBean_notificationTitle">
+				<field-name>notificationTitle</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeBean_notificationTypeCode">
+				<field-name>notificationTypeCode</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeBean_isRecurring">
+				<field-name>recurring</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeBean_versionTime">
+				<field-name>versionTime</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeBean_status">
+				<field-name>status</field-name>
+			</cmp-field>
+			<primkey-field>notificationTypePK</primkey-field>
+			<resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+			<query id="Query_1049084131421">
+				<query-method id="QueryMethod_1049084131421">
+					<method-name>findAll</method-name>
+					<method-params/>
+				</query-method>
+				<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBNotificationTypeBean o ]]></ejb-ql>
+			</query>
+		</entity>
+		<entity id="entity_EBNotificationTypeRecipientBean">
+			<ejb-name>EBNotificationTypeRecipientBean</ejb-name>
+			<local-home>com.integrosys.component.notification.bus.EBNotificationTypeRecipientLocalHome</local-home>
+			<local>com.integrosys.component.notification.bus.EBNotificationTypeRecipientLocal</local>
+			<ejb-class>com.integrosys.component.notification.bus.EBNotificationTypeRecipientBean</ejb-class>
+			<persistence-type>Container</persistence-type>
+			<prim-key-class>java.lang.Long</prim-key-class>
+			<reentrant>False</reentrant>
+			<cmp-version>2.x</cmp-version>
+			<abstract-schema-name>EBNotificationTypeRecipientBean</abstract-schema-name>
+			<cmp-field id="cmp_EBNotificationTypeRecipientBean_notificationTypeRecipientPK">
+				<field-name>recipientPK</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeRecipientBean_recipientTypeInt">
+				<field-name>recipientTypeInt</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeRecipientBean_userID">
+				<field-name>userID</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeRecipientBean_teamID">
+				<field-name>teamID</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeRecipientBean_notificationTypeIDFK">
+				<field-name>notificationTypeIDFK</field-name>
+			</cmp-field>
+			<primkey-field>recipientPK</primkey-field>
+			<resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+			<query id="Query_1049084131491">
+				<query-method id="QueryMethod_1049084131491">
+					<method-name>findAll</method-name>
+					<method-params>
+                  </method-params>
+				</query-method>
+				<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBNotificationTypeRecipientBean o ]]></ejb-ql>
+			</query>
+		</entity>
+		<entity id="entity_EBNotificationTypeRecurrenceBean">
+			<ejb-name>EBNotificationTypeRecurrenceBean</ejb-name>
+			<local-home>com.integrosys.component.notification.bus.EBNotificationTypeRecurrenceLocalHome</local-home>
+			<local>com.integrosys.component.notification.bus.EBNotificationTypeRecurrenceLocal</local>
+			<ejb-class>com.integrosys.component.notification.bus.EBNotificationTypeRecurrenceBean</ejb-class>
+			<persistence-type>Container</persistence-type>
+			<prim-key-class>java.lang.Long</prim-key-class>
+			<reentrant>False</reentrant>
+			<cmp-version>2.x</cmp-version>
+			<abstract-schema-name>EBNotificationTypeRecurrenceBean</abstract-schema-name>
+			<cmp-field id="cmp_EBNotificationTypeRecurrenceBean_notificationTypeRecurrencePK">
+				<field-name>notificationTypeRecurrencePK</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeRecurrenceBean_recurringFrequencyUnitID">
+				<field-name>recurringFrequencyUnitID</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeRecurrenceBean_recurringFrequency">
+				<field-name>recurringFrequency</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationTypeRecurrenceBean_notificationTypeIDFK">
+				<field-name>notificationTypeIDFK</field-name>
+			</cmp-field>
+			<primkey-field>notificationTypeRecurrencePK</primkey-field>
+			<resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+			<query id="EBNotificationTypeRecurrenceBean_Query">
+				<query-method id="EBNotificationTypeRecurrenceBean_QueryMethod_findAll">
+					<method-name>findAll</method-name>
+					<method-params>
+                  </method-params>
+				</query-method>
+				<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBNotificationTypeRecurrenceBean o ]]></ejb-ql>
+			</query>
+		</entity>
+		
+		<entity id="entity_EBCMSNotificationBean">
+			<ejb-name>EBCMSNotificationBean</ejb-name>
+			<local-home>com.integrosys.cms.app.notification.bus.EBCMSNotificationLocalHome</local-home>
+			<local>com.integrosys.cms.app.notification.bus.EBCMSNotificationLocal</local>
+			<ejb-class>com.integrosys.cms.app.notification.bus.EBCMSNotificationBean</ejb-class>
+			<persistence-type>Container</persistence-type>
+			<prim-key-class>java.lang.Long</prim-key-class>
+			<reentrant>False</reentrant>
+			<cmp-version>2.x</cmp-version>
+			<abstract-schema-name>EBCMSNotificationBean</abstract-schema-name>
+			<cmp-field id="cmp_EBCMSNotificationBean_notificationPK">
+				<field-name>notificationPK</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_creationDate">
+				<field-name>creationDate</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_effectiveDate">
+				<field-name>effectiveDate</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_expiryDate">
+				<field-name>expiryDate</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_url">
+				<field-name>url</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_originatorID">
+				<field-name>originatorID</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_notificationStateInt">
+				<field-name>notificationStateInt</field-name>
+			</cmp-field>
+			<!-- replaced by messagePart1, messagePart2, messagePart3, messagePart4, messagePart5
+			<cmp-field id="cmp_EBCMSNotificationBean_notificationMessage">
+				<field-name>notificationMessage</field-name>
+			</cmp-field>
+			-->
+			<cmp-field id="cmp_EBCMSNotificationBean_messagePart1">
+				<field-name>messagePart1</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_messagePart2">
+				<field-name>messagePart2</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_messagePart3">
+				<field-name>messagePart3</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_messagePart4">
+				<field-name>messagePart4</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_messagePart5">
+				<field-name>messagePart5</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_messageSize">
+				<field-name>messageSize</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_pastNotificationID">
+				<field-name>pastNotificationID</field-name>
+			</cmp-field>
+			<!--
+			<cmp-field id="cmp_EBCMSNotificationBean_messageObjectDaya">
+				<field-name>messageObjectData</field-name>
+			</cmp-field>
+			-->
+			<cmp-field id="cmp_EBCMSNotificationBean_versionTime">
+				<field-name>versionTime</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_status">
+				<field-name>status</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_notificationTypePK">
+				<field-name>notificationTypePK</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_notificationTypeName">
+				<field-name>notificationTypeName</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_severity">
+				<field-name>severity</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBeann_notificatonChannels">
+				<field-name>notificatonChannelsStr</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_notificationTitle">
+				<field-name>notificationTitle</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_notificationTypeCode">
+				<field-name>notificationTypeCode</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_recurring">
+				<field-name>recurring</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_leID">
+				<field-name>leID</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_leName">
+				<field-name>leName</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBCMSNotificationBean_details">
+				<field-name>details</field-name>
+			</cmp-field>
+			<primkey-field>notificationPK</primkey-field>
+			<ejb-local-ref id="EJBLocalRef_1049084131101">
+               <ejb-ref-name>EBNotificationRecipientLocalBean</ejb-ref-name>
+               <ejb-ref-type>Entity</ejb-ref-type>
+               <local-home>com.integrosys.component.notification.bus.EBNotificationRecipientLocalHome</local-home>
+               <local>com.integrosys.component.notification.bus.EBNotificationRecipientLocal</local>
+               <ejb-link>EBNotificationRecipientBean</ejb-link>
+            </ejb-local-ref>
+
+            <ejb-local-ref id="EJBLocalRef_1049084131102">
+               <ejb-ref-name>EBNotificationRecurrenceLocalBean</ejb-ref-name>
+               <ejb-ref-type>Entity</ejb-ref-type>
+               <local-home>com.integrosys.component.notification.bus.EBNotificationRecurrenceLocalHome</local-home>
+               <local>com.integrosys.component.notification.bus.EBNotificationRecurrenceLocal</local>
+               <ejb-link>EBNotificationRecurrenceBean</ejb-link>
+            </ejb-local-ref>
+            <resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+
+			<query id="Query_1049084131521">
+				<query-method id="QueryMethod_1049084131521">
+					<method-name>findAll</method-name>
+					<method-params>
+                  </method-params>
+				</query-method>
+				<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCMSNotificationBean o ]]></ejb-ql>
+			</query>
+		</entity>
+		<entity id="entity_EBNotificationRecipientBean">
+			<ejb-name>EBNotificationRecipientBean</ejb-name>
+			<local-home>com.integrosys.component.notification.bus.EBNotificationRecipientLocalHome</local-home>
+			<local>com.integrosys.component.notification.bus.EBNotificationRecipientLocal</local>
+			<ejb-class>com.integrosys.component.notification.bus.EBNotificationRecipientBean</ejb-class>
+			<persistence-type>Container</persistence-type>
+			<prim-key-class>java.lang.Long</prim-key-class>
+			<reentrant>False</reentrant>
+			<cmp-version>2.x</cmp-version>
+			<abstract-schema-name>EBNotificationRecipientBean</abstract-schema-name>
+			<cmp-field id="cmp_EBNotificationRecipientBean_notificationRecipientPK">
+				<field-name>notificationRecipientPK</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationRecipientBean_recipientTypeInt">
+				<field-name>recipientTypeInt</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationRecipientBean_userID">
+				<field-name>userID</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationRecipientBean_teamID">
+				<field-name>teamID</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationRecipientBean_notificationIDFK">
+				<field-name>notificationIDFK</field-name>
+			</cmp-field>
+			<primkey-field>notificationRecipientPK</primkey-field>
+			<resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+			<query id="EBNotificationRecipientBean_Query">
+				<query-method id="EBNotificationRecipientBean_QueryMethod_findAll">
+					<method-name>findAll</method-name>
+					<method-params>
+                  </method-params>
+				</query-method>
+				<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBNotificationRecipientBean o ]]></ejb-ql>
+			</query>
+		</entity>
+		<entity id="entity_EBNotificationRecurrenceBean">
+			<ejb-name>EBNotificationRecurrenceBean</ejb-name>
+			<local-home>com.integrosys.component.notification.bus.EBNotificationRecurrenceLocalHome</local-home>
+			<local>com.integrosys.component.notification.bus.EBNotificationRecurrenceLocal</local>
+			<ejb-class>com.integrosys.component.notification.bus.EBNotificationRecurrenceBean</ejb-class>
+			<persistence-type>Container</persistence-type>
+			<prim-key-class>java.lang.Long</prim-key-class>
+			<reentrant>False</reentrant>
+			<cmp-version>2.x</cmp-version>
+			<abstract-schema-name>EBNotificationRecurrenceBean</abstract-schema-name>
+			<cmp-field id="cmp_EBNotificationRecurrenceBean_notificationRecurrencePK">
+				<field-name>notificationRecurrencePK</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationRecurrenceBean_recurringFrequencyUnitID">
+				<field-name>recurringFrequencyUnitID</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationRecurrenceBean_recurringFrequency">
+				<field-name>recurringFrequency</field-name>
+			</cmp-field>
+			<cmp-field id="cmp_EBNotificationRecurrenceBean_notificationIDFK">
+				<field-name>notificationIDFK</field-name>
+			</cmp-field>
+			<primkey-field>notificationRecurrencePK</primkey-field>
+			<resource-ref>
+               <res-ref-name>jdbc/CMSPool</res-ref-name>
+               <res-type>javax.sql.DataSource</res-type>
+               <res-auth>Container</res-auth>
+               <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+			<query id="Query_1049084131391">
+				<query-method id="QueryMethod_1049084131391">
+					<method-name>findAll</method-name>
+					<method-params>
+                  </method-params>
+				</query-method>
+				<ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBNotificationRecurrenceBean o ]]></ejb-ql>
+			</query>
+		</entity>
+
+	</enterprise-beans>
+
+
+	<!-- EBNotificationTypeBean relations -->
+	<!-- 1. (ONE) NotificationType ->  (MANY) NotificationTypeRecipient -->
+	<relationships id="Relationships_1049084131001">
+		<ejb-relation id="relation_NotificationType-NotificationTypeRecipient">
+			<ejb-relation-name>NotificationType-NotificationTypeRecipient</ejb-relation-name>
+			<ejb-relationship-role id="relationrole_NotificationType-Has-NotificationTypeRecipient">
+				<ejb-relationship-role-name>NotificationType-Has-NotificationTypeRecipient</ejb-relationship-role-name>
+				<multiplicity>One</multiplicity>
+				<relationship-role-source id="RoleSource_1049084131010">
+					<ejb-name>EBNotificationTypeBean</ejb-name>
+				</relationship-role-source>
+				<cmr-field id="notificationTypeRecipientsCMR_1049084131001">
+					<cmr-field-name>notificationTypeRecipientsCMR</cmr-field-name>
+					<cmr-field-type>java.util.Collection</cmr-field-type>
+				</cmr-field>
+			</ejb-relationship-role>
+			<ejb-relationship-role id="relationrole_NotificationTypeRecipient-BelongsTo-NotificationType">
+				<ejb-relationship-role-name>NotificationTypeRecipient-BelongsTo-NotificationType</ejb-relationship-role-name>
+				<multiplicity>Many</multiplicity>
+				<cascade-delete/>
+				<relationship-role-source id="RoleSource_1049084131011">
+					<ejb-name>EBNotificationTypeRecipientBean</ejb-name>
+				</relationship-role-source>
+			</ejb-relationship-role>
+		</ejb-relation>
+		<!-- 2. (ONE) NotificationType ->  (MANY) NotificationTypeRecurrence -->
+		<ejb-relation id="relation_NotificationType-NotificationTypeRecurrence">
+			<ejb-relation-name>NotificationType-NotificationTypeRecurrence</ejb-relation-name>
+			<ejb-relationship-role id="relationrole_NotificationType-Has-NotificationTypeRecurrence">
+				<ejb-relationship-role-name>NotificationType-Has-NotificationTypeRecurrence</ejb-relationship-role-name>
+				<multiplicity>One</multiplicity>
+				<relationship-role-source id="RoleSource_1049084111012">
+					<ejb-name>EBNotificationTypeBean</ejb-name>
+				</relationship-role-source>
+				<cmr-field id="notificationTypeRecurrencesCMR_1049084111112">
+					<cmr-field-name>notificationTypeRecurrencesCMR</cmr-field-name>
+					<cmr-field-type>java.util.Collection</cmr-field-type>
+				</cmr-field>
+			</ejb-relationship-role>
+			<ejb-relationship-role id="relationrole_NotificationTypeRecurrence-BelongsTo-NotificationType">
+				<ejb-relationship-role-name>NotificationTypeRecurrence-BelongsTo-NotificationType</ejb-relationship-role-name>
+				<multiplicity>Many</multiplicity>
+				<cascade-delete/>
+				<relationship-role-source id="RoleSource_1049084111113">
+					<ejb-name>EBNotificationTypeRecurrenceBean</ejb-name>
+				</relationship-role-source>
+			</ejb-relationship-role>
+		</ejb-relation>
+		<!-- EBCMSNotificationBean relations -->
+		<!-- 1. (ONE) Notification ->  (MANY) NotificationRecipient -->
+		<ejb-relation id="relation_Notification-NotificationRecipient">
+			<ejb-relation-name>Notification-NotificationRecipient</ejb-relation-name>
+			<ejb-relationship-role id="relationrole_Notification-Has-NotificationRecipient">
+				<ejb-relationship-role-name>Notification-Has-NotificationRecipient</ejb-relationship-role-name>
+				<multiplicity>One</multiplicity>
+				<relationship-role-source id="RoleSource_1049084131114">
+					<ejb-name>EBCMSNotificationBean</ejb-name>
+				</relationship-role-source>
+				<cmr-field id="notificationRecipientsCMR_1049084131013">
+					<cmr-field-name>notificationRecipientsCMR</cmr-field-name>
+					<cmr-field-type>java.util.Collection</cmr-field-type>
+				</cmr-field>
+			</ejb-relationship-role>
+			<ejb-relationship-role id="relationrole_NotificationRecipient-BelongsTo-Notification">
+				<ejb-relationship-role-name>NotificationRecipient-BelongsTo-Notification</ejb-relationship-role-name>
+				<multiplicity>Many</multiplicity>
+				<cascade-delete/>
+				<relationship-role-source id="RoleSource_1049084131115">
+					<ejb-name>EBNotificationRecipientBean</ejb-name>
+				</relationship-role-source>
+			</ejb-relationship-role>
+		</ejb-relation>
+		
+		<!-- 2. (ONE) Notification ->  (MANY) NotificationRecurrence -->
+		<ejb-relation id="relation_Notification-NotificationRecurrence">
+			<ejb-relation-name>Notification-NotificationRecurrence</ejb-relation-name>
+			<ejb-relationship-role id="relationrole_Notification-Has-NotificationRecurrence">
+				<ejb-relationship-role-name>Notification-Has-NotificationRecurrence</ejb-relationship-role-name>
+				<multiplicity>One</multiplicity>
+				<relationship-role-source id="RoleSource_1049084131116">
+					<ejb-name>EBCMSNotificationBean</ejb-name>
+				</relationship-role-source>
+				<cmr-field id="notificationRecurrencesCMR_1049084131014">
+					<cmr-field-name>notificationRecurrencesCMR</cmr-field-name>
+					<cmr-field-type>java.util.Collection</cmr-field-type>
+				</cmr-field>
+			</ejb-relationship-role>
+			<ejb-relationship-role id="relationrole_NotificationRecurrence-BelongsTo-Notification">
+				<ejb-relationship-role-name>NotificationRecurrence-BelongsTo-Notification</ejb-relationship-role-name>
+				<multiplicity>Many</multiplicity>
+				<cascade-delete/>
+				<relationship-role-source id="RoleSource_1049084131117">
+					<ejb-name>EBNotificationRecurrenceBean</ejb-name>
+				</relationship-role-source>
+			</ejb-relationship-role>
+		</ejb-relation>
+		
+	</relationships>
+	
+	<!-- Trx attributes -->
+	<assembly-descriptor id="AssemblyDescriptor_ID">
+		<container-transaction id="MethodTransaction_1049084131471">
+			<description>Transaction attributes for 'EBNotificationTypeBean' methods</description>
+			<method id="MethodElement_1049084131481">
+				<ejb-name>EBNotificationTypeBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+		
+		<container-transaction id="MethodTransaction_1049084131472">
+			<description>Transaction attributes for 'EBNotificationTypeRecipientBean' methods</description>
+			<method>
+				<ejb-name>EBNotificationTypeRecipientBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+		
+		<container-transaction id="MethodTransaction_1049084131473">
+			<description>Transaction attributes for 'EBNotificationTypeRecurrenceBean' methods</description>
+			<method>
+				<ejb-name>EBNotificationTypeRecurrenceBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+		
+		
+		
+		
+		<container-transaction id="MethodTransaction_1049084131474">
+			<description>Transaction attributes for 'EBCMSNotificationBean' methods</description>
+			<method>
+				<ejb-name>EBCMSNotificationBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+		
+		<container-transaction id="MethodTransaction_1049084131475">
+			<description>Transaction attributes for 'EBNotificationRecipientBean' methods</description>
+			<method>
+				<ejb-name>EBNotificationRecipientBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+		
+		<container-transaction id="MethodTransaction_1049084131476">
+			<description>Transaction attributes for 'EBNotificationRecurrenceBean' methods</description>
+			<method>
+				<ejb-name>EBNotificationRecurrenceBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+		
+		<container-transaction id="MethodTransaction_1049084131480">
+			<description>Transaction attributes for 'SBNotificationManagerBean' methods</description>
+			<method>
+				<ejb-name>SBCMSNotificationManagerBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>RequiresNew</trans-attribute>
+		</container-transaction>
+		
+		<container-transaction id="MethodTransaction_1049084131481">
+			<description>Transaction attributes for 'SBNotificationProxyBean' methods</description>
+			<method>
+				<ejb-name>SBNotificationProxyBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<method>
+				<ejb-name>SBCMSNotificationProxyManagerBean</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<trans-attribute>Required</trans-attribute>
+		</container-transaction>
+		
+		
+		
+	</assembly-descriptor>
+</ejb-jar>

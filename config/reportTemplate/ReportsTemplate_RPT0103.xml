@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT CDDEL.REFERENCE_NO AS WEB_SERVICE_REFERENCE_NO,
+  CDDEL.PAN_NO,
+  CDDEL.PARTY_ID,
+  CDDEL.CLIMS_SYSTEM_ID,
+  CASE
+    WHEN slmp.LMP_LE_ID=CDDEL.PARTY_ID
+    THEN
+      (SELECT SLMPP.LMP_SHORT_NAME
+      FROM SCI_LE_MAIN_PROFILE SLMPP
+      WHERE SLMPP.LMP_LE_ID=PARTY_ID
+      )
+  END AS party_NAME,
+  CDDEL.INTERFACE_STATUS,
+  CDDEL.INTERFACE_FAILED_REASON,
+  TO_CHAR(CDDEL.REQUEST_DATE ,'DD-Mon-yy HH:MI:SS'),
+  TO_CHAR(CDDEL.RESPONSE_DATE ,'DD-Mon-yy HH:MI:SS')
+FROM CMS_DIGILIB_DOC_EXPORT_LOG CDDEL,
+  SCI_LE_MAIN_PROFILE SLMP
+
+		</query>
+		<whereClause>
+			<mandatoryClause>
+(slmp.LMP_LE_ID = CDDEL.PARTY_ID
+OR SLMP.PAN          = CDDEL.PAN_NO)
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition></condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition>AND TRUNC(CDDEL.REQUEST_DATE) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>REFERENCE NO</header>
+				</reportColumn>
+				<reportColumn>
+					<width>2000</width>
+					<format>textFormat</format>
+					<header>PAN NUMBER</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>PARTY ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CLIMS SYSTEM ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>PARTY NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>INTERFACE STATUS</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>INTERFACE FAILED REASON</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>REQUEST DATE AND TIME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>300</width>
+					<format>textFormat</format>
+					<header>RESPONSE DATE AND TIME</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Digital Library Service Interface Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

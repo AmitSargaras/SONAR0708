@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.generalparam.bus">
+  <class entity-name="actualGeneralParamEntry" name="OBGeneralParamEntry" table="CMS_GENERAL_PARAM" lazy="false">
+	<id name="paramID" type="long" column="PARAM_ID" >
+		<generator class="increment">
+        </generator>
+	</id>
+    <property name="paramCode" column="PARAM_CODE" />
+    <property name="paramName" column="PARAM_NAME" />
+    <property name="paramValue" column="PARAM_VALUE" />
+    <property name="uiView" column="UI_VIEW" />    
+    <property name="lastUpdatedDate" column="LAST_UPDATE_DATE" />
+    <property name="handUpTime" column="HAND_UP_TIME" />
+    <property name="generalParamEntryRef" column="FEED_REF" type="long"/>
+  </class>
+
+  <class entity-name="actualGeneralParamGroup" name="OBGeneralParamGroup" table="CMS_FEED_GROUP">
+	<id name="generalParamGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="actualGeneralParamEntry" />
+	</set>
+  </class>
+
+  <class entity-name="stageGeneralParamEntry" name="OBGeneralParamEntry" table="CMS_STAGE_GENERAL_PARAM" lazy="false">
+	<id name="paramID" type="long" column="PARAM_ID" >
+		<generator class="increment">
+                </generator>
+	</id>
+    <property name="paramCode" column="PARAM_CODE" />
+    <property name="paramName" column="PARAM_NAME" />
+    <property name="paramValue" column="PARAM_VALUE" />
+    <property name="uiView" column="UI_VIEW" />    
+    <property name="lastUpdatedDate" column="LAST_UPDATE_DATE" />
+    <property name="generalParamEntryRef" column="FEED_REF" type="long"/>
+  </class>
+
+  <class entity-name="stageGeneralParamGroup" name="OBGeneralParamGroup" table="CMS_STAGE_FEED_GROUP">
+	<id name="generalParamGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="stageGeneralParamEntry" />
+	</set>
+  </class>
+
+</hibernate-mapping>

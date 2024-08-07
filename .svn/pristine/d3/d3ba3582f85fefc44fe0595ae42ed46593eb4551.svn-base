@@ -1,0 +1,1079 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+	    <form-bean name="BridgingLoanForm" type="com.integrosys.cms.ui.bridgingloan.BridgingLoanForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_ProjectScheduleForm" type="com.integrosys.cms.ui.bridgingloan.ProjectScheduleForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_PropertyTypeForm" type="com.integrosys.cms.ui.bridgingloan.PropertyTypeForm">
+	    </form-bean>
+	
+	    <!-- BridgingLoan - Advances Payment -->
+	    <form-bean name="BL_AdvsPaymentForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.AdvsPaymentForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_DevelopmentDocForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.DevelopmentDocForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_DisbursementForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.DisbursementForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_DisbursementDetailForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.DisbursementDetailForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_SettlementForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.SettlementForm">
+	    </form-bean>
+	
+	    <!-- BridgingLoan - Advances Payment - SG -->
+	    <form-bean name="BL_SG_AdvsPaymentForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.AdvsPaymentForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_SG_DevelopmentDocForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.DevelopmentDocForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_SG_DisbursementForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.DisbursementForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_SG_DisbursementDetailForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.DisbursementDetailForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_SG_SettlementForm" type="com.integrosys.cms.ui.bridgingloan.advspayment.SettlementForm">
+	    </form-bean>
+	
+	    <!-- BridgingLoan - Build Up -->
+	    <form-bean name="BL_BuildUpForm" type="com.integrosys.cms.ui.bridgingloan.buildup.BuildUpForm">
+	    </form-bean>
+	
+	    <form-bean name="BL_SalesProceedsForm" type="com.integrosys.cms.ui.bridgingloan.buildup.SalesProceedsForm">
+	    </form-bean>
+	
+	    <!-- BridgingLoan - FDR -->
+	    <form-bean name="BL_FDRForm" type="com.integrosys.cms.ui.bridgingloan.fdr.FDRForm">
+	    </form-bean>    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+	    <action path="/BridgingLoan"
+	        type="com.integrosys.cms.ui.bridgingloan.BridgingLoanAction"
+	        name="BridgingLoanForm" validate="false" scope="request">
+	        <forward name="after_list_summary" path="/template/common_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/bridgingloan_list.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectinfo_update.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectinfo_update.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectinfo_view.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_close" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectinfo_view.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectinfo_update.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_save" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_save.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_submit" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectinfo_view.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_delete" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_delete.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_process" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectinfo_checker_view.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_approve" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_reject" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_close" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_to_track" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectinfo_view.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="wip" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/common/wip.html"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	
+	        <forward name="after_propertytype_add" path="/BL_PropertyType.do?event=maker_prepare_create"/>
+	        <forward name="after_propertytype_update" path="/BL_PropertyType.do?event=maker_prepare_update"/>
+	        <forward name="after_propertytype_view" path="/BL_PropertyType.do?event=view"/>
+	        <forward name="after_propertytype_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/propertytype/propertytype_view.jsp"/>
+	           	<set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	
+	        <forward name="after_projectschedule_add" path="/BL_ProjectSchedule.do?event=maker_prepare_create"/>
+	        <forward name="after_projectschedule_update" path="/BL_ProjectSchedule.do?event=maker_prepare_update"/>
+	        <forward name="after_projectschedule_view" path="/BL_ProjectSchedule.do?event=view"/>
+	        <forward name="after_projectschedule_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectschedule/projectschedule_view.jsp"/>
+	           	<set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>    
+	    
+	    <action path="/BL_ProjectSchedule"
+	        type="com.integrosys.cms.ui.bridgingloan.ProjectScheduleAction"
+	        name="BL_ProjectScheduleForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectschedule/projectschedule_view.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectschedule/projectschedule_checker_view.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectschedule/projectschedule_update.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectschedule/projectschedule_update.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectschedule/projectschedule_view.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/projectschedule/projectschedule_update.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_delete" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+    
+	    <action path="/BL_PropertyType"
+	        type="com.integrosys.cms.ui.bridgingloan.PropertyTypeAction"
+	        name="BL_PropertyTypeForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/projectinfo/propertytype/propertytype_view.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/propertytype/propertytype_checker_view.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/propertytype/propertytype_update.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/projectinfo/propertytype/propertytype_update.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/projectinfo/propertytype/propertytype_view.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/projectinfo/propertytype/propertytype_update.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_delete" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>	  
+
+	    <action path="/BL_AdvsPayment"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.AdvsPaymentAction"
+	        name="BL_AdvsPaymentForm" validate="false" scope="request">
+	        <forward name="after_list_summary" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/advspayment_list.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_list_summary" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/advspayment_checker_list.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	    
+	    <action path="/BL_DevelopmentDoc"	    	    
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.DevelopmentDocAction"
+	        name="BL_DevelopmentDocForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentdoc_view.jsp"/>
+		        <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentdoc_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view_item" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentsubdoc_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentdoc_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create_item" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentsubdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update_item" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentsubdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete_item" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentsubdoc_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_refresh" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_view_item" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/developmentsubdoc_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_create_item" path="/BL_DevelopmentDoc.do?event=maker_prepare_create"/>
+	        <forward name="after_update_item" path="/BL_DevelopmentDoc.do?event=maker_prepare_create"/>
+	        <forward name="after_delete_item" path="/BL_DevelopmentDoc.do?event=maker_prepare_create"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - DisbursementAction -->
+	    <action path="/BL_Disbursement"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.DisbursementAction"
+	        name="BL_DisbursementForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursement_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursement_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursement_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_save_create" path="/BL_DisbursementDetail.do?event=maker_prepare_create" />
+	
+	        <forward name="after_create" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - DisbursementDetailAction -->
+	    <action path="/BL_DisbursementDetail"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.DisbursementDetailAction"
+	        name="BL_DisbursementDetailForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursementdetail_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursementdetail_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursementdetail_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursementdetail_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursementdetail_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/disbursementdetail_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_Disbursement.do?event=maker_prepare_update"/>
+	        <forward name="after_update" path="/BL_Disbursement.do?event=maker_prepare_update"/>
+	        <forward name="after_delete" path="/BL_Disbursement.do?event=maker_prepare_update"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - SettlementAction -->
+	    <action path="/BL_Settlement"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.SettlementAction"
+	        name="BL_SettlementForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/settlement_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/settlement_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/settlement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/settlement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/settlement_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/settlement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - SG AdvsPaymentAction -->
+	    <action path="/BL_SG_AdvsPayment"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.SG_AdvsPaymentAction"
+	        name="BL_SG_AdvsPaymentForm" validate="false" scope="request">
+	        <forward name="after_list_summary" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/SG_advspayment_list.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_list_summary" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/SG_advspayment_checker_list.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=view"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=maker_prepare_create"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=maker_prepare_update"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - SG DevelopmentDocAction -->
+	    <action path="/BL_SG_DevelopmentDoc"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.SG_DevelopmentDocAction"
+	        name="BL_SG_DevelopmentDocForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentdoc_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentdoc_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentdoc_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create_item" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentsubdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update_item" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentsubdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete_item" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentsubdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_refresh" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/developmentdoc/SG_developmentdoc_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_create_item" path="/BL_DevelopmentDoc.do?event=maker_prepare_create"/>
+	        <forward name="after_update_item" path="/BL_DevelopmentDoc.do?event=maker_prepare_create"/>
+	        <forward name="after_delete_item" path="/BL_DevelopmentDoc.do?event=maker_prepare_create"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - SG DisbursementAction -->
+	    <action path="/BL_SG_Disbursement"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.SG_DisbursementAction"
+	        name="BL_SG_DisbursementForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursement_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursement_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursement_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - SG DisbursementDetailAction -->
+	    <action path="/BL_SG_DisbursementDetail"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.SG_DisbursementDetailAction"
+	        name="BL_SG_DisbursementDetailForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursementdetail_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursementdetail_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursementdetail_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursementdetail_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursementdetail_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/disbursement/SG_disbursementdetail_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - SettlementAction -->
+	    <action path="/BL_SG_Settlement"
+	        type="com.integrosys.cms.ui.bridgingloan.advspayment.SG_SettlementAction"
+	        name="BL_SG_SettlementForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/SG_settlement_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/SG_settlement_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/SG_settlement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/SG_settlement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/SG_settlement_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/settlement/SG_settlement_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - BuildUpAction -->
+	    <action path="/BL_BuildUp"
+	        type="com.integrosys.cms.ui.bridgingloan.buildup.BuildUpAction"
+	        name="BL_BuildUpForm" validate="false" scope="request">
+	        <forward name="after_list_summary" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/buildup_list.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_list_summary" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/buildup_checker_list.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/buildup_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/buildup_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/buildup_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/buildup/buildup_update.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/buildup_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/buildup_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_generateBLDisclaimerLetter" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/reports/disclaimer_report.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_add_copy" path="/bridgingloan/buildup/buildup_copy.jsp" />
+	        <forward name="after_add_copy" path="/BL_BuildUp.do?event=list_summary" />
+	
+	        <forward name="after_create" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_BuildUp.do?event=list_summary"/>
+	
+	        <forward name="after_salesproceeds_add" path="/BL_SalesProceeds.do?event=maker_prepare_create"/>
+	        <forward name="after_salesproceeds_update" path="/BL_SalesProceeds.do?event=maker_prepare_update"/>
+	        <forward name="after_salesproceeds_view" path="/BL_SalesProceeds.do?event=view"/>
+	        <forward name="after_salesproceeds_delete" path="/template/common_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/salesproceeds/salesproceeds_view.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - SalesProceedsAction -->
+	    <action path="/BL_SalesProceeds"
+	        type="com.integrosys.cms.ui.bridgingloan.buildup.SalesProceedsAction"
+	        name="BL_SalesProceedsForm" validate="false" scope="request">
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/buildup/salesproceeds/salesproceeds_view.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/buildup/salesproceeds/salesproceeds_checker_view.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/salesproceeds/salesproceeds_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/salesproceeds/salesproceeds_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/buildup/salesproceeds/salesproceeds_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/advspayment/salesproceeds/salesproceeds_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_BuildUp.do?event=maker_prepare_update"/>
+	        <forward name="after_update" path="/BL_BuildUp.do?event=maker_prepare_update"/>
+	        <forward name="after_delete" path="/BL_BuildUp.do?event=maker_prepare_update"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	    </action>
+	
+	    <!-- Bridging Loan - FDR -->
+	    <action path="/BL_FDR"
+	        type="com.integrosys.cms.ui.bridgingloan.fdr.FDRAction"
+	        name="BL_FDRForm" validate="false" scope="request">
+	        <forward name="after_list_summary" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/fdr/fdr_list.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_list_summary" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/fdr/fdr_checker_list.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/fdr/fdr_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_checker_view" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/fdr/fdr_checker_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_create" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/fdr/fdr_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_update" path="/template/common_tab_template.jsp">
+	           <set-property property="rightFrame" value="/bridgingloan/fdr/fdr_update.jsp"/>
+	           <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	           <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_maker_prepare_delete" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/fdr/fdr_view.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_prepare_form" path="/template/common_tab_template.jsp">
+	            <set-property property="rightFrame" value="/bridgingloan/fdr/fdr_update.jsp"/>
+	            <set-property property="rightFrameTab" value="/bridgingloan/bridgingloan_frame.jsp"/>
+	            <set-property property="title" value="title.bridgingloan"/>
+	        </forward>
+	        <forward name="after_create" path="/BL_FDR.do?event=list_summary"/>
+	        <forward name="after_update" path="/BL_FDR.do?event=list_summary"/>
+	        <forward name="after_delete" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->
+	        <forward name="after_projectinfo_process" path="/BridgingLoan.do?event=process"/>
+	        <forward name="after_projectinfo_view" path="/BridgingLoan.do?event=view"/>
+	        <forward name="after_projectinfo_to_track" path="/BridgingLoan.do?event=to_track"/>
+	        <forward name="after_projectinfo_maker_prepare_create" path="/BridgingLoan.do?event=maker_prepare_create"/>
+	        <forward name="after_projectinfo_maker_prepare_update" path="/BridgingLoan.do?event=maker_prepare_update"/>
+	        <forward name="after_projectinfo_maker_prepare_close" path="/BridgingLoan.do?event=maker_prepare_close"/>
+	        <forward name="after_projectinfo_maker_process" path="/BridgingLoan.do?event=maker_process"/>
+	        <forward name="after_projectinfo_maker_prepare_delete" path="/BridgingLoan.do?event=maker_prepare_delete"/>
+	        <forward name="after_advspayment_checker" path="/BL_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment_sg_checker" path="/BL_SG_AdvsPayment.do?event=checker_list_summary"/>
+	        <forward name="after_advspayment" path="/BL_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_advspayment_sg" path="/BL_SG_AdvsPayment.do?event=list_summary"/>
+	        <forward name="after_buildup_checker" path="/BL_BuildUp.do?event=checker_list_summary"/>
+	        <forward name="after_buildup" path="/BL_BuildUp.do?event=list_summary"/>
+	        <forward name="after_fdr_checker" path="/BL_FDR.do?event=checker_list_summary"/>
+	        <forward name="after_fdr" path="/BL_FDR.do?event=list_summary"/>
+	        <!--standard for bridging loan -->         
+	    </action>	      
+    </action-mappings>
+    
+    <message-resources key="message-bridgingloan" parameter="ApplicationResources-bridgingloan"/>
+</struts-config>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		To be used for ICommand instances. 'id' naming recommended
+		to be 'Action.Command'.
+		All the ICommand instances will be injected
+		into 'nameCommandMap' property of Action class.
+		Injecting is done in
+		'action-[module]-servlet.xml' context file, resided in
+		/WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse
+		or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+
+	<bean id="ImageTagAction.ImageTagViewCommand" class="com.integrosys.cms.ui.imageTag.ImageTagViewCommand">
+	</bean>
+	<bean id="ImageTagAction.ImageListCustomerCommand" class="com.integrosys.cms.ui.imageTag.ImageListCustomerCommand">
+	</bean>
+	<bean id="ImageTagAction.ImageTagResultCommand" class="com.integrosys.cms.ui.imageTag.ImageTagResultCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+	<bean id="ImageTagAction.ImageTagResultPrintCommand" class="com.integrosys.cms.ui.imageTag.ImageTagResultPrintCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+	<bean id="ImageTagAction.RefreshSecSubtypeCmd" class="com.integrosys.cms.ui.imageTag.RefreshSecSubtypeCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+	</bean>
+	<bean id="ImageTagAction.CreateImageTagAddCommand" class="com.integrosys.cms.ui.imageTag.CreateImageTagAddCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+	</bean>
+	<bean id="ImageTagAction.CreateImageUntagCommand" class="com.integrosys.cms.ui.imageTag.CreateImageUntagCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+	</bean>
+	<bean id="ImageTagAction.EditImageTagCommand" class="com.integrosys.cms.ui.imageTag.EditImageTagCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+	</bean>
+	<bean id="ImageTagAction.CreatePrepareImageUntagCommand" class="com.integrosys.cms.ui.imageTag.CreatePrepareImageUntagCommand">
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+	<bean id="ImageTagAction.PrepareUntagImageListCommand" class="com.integrosys.cms.ui.imageTag.PrepareUntagImageListCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="collateralProxy" ref="collateralProxy" />
+		<property name="limitProxy" ref="limitProxy" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+	<bean id="ImageTagAction.CheckerReadImageTagCmd" class="com.integrosys.cms.ui.imageTag.CheckerReadImageTagCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="collateralProxy" ref="collateralProxy" />
+		<property name="limitProxy" ref="limitProxy" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+	<bean id="ImageTagAction.CheckerApproveCreateImageTagCmd"
+		class="com.integrosys.cms.ui.imageTag.CheckerApproveCreateImageTagCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+	</bean>
+	<bean id="ImageTagAction.CheckerRejectEditImageTagCmd"
+		class="com.integrosys.cms.ui.imageTag.CheckerRejectEditImageTagCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+	</bean>
+	<bean id="ImageTagAction.MakerCloseImageTagCmd" class="com.integrosys.cms.ui.imageTag.MakerCloseImageTagCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+	</bean>
+	<bean id="ImageTagAction.RefreshChecklistItemsCmd" class="com.integrosys.cms.ui.imageTag.RefreshChecklistItemsCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+	<bean id="ImageTagAction.RefreshImageTagDropdownsCmd"
+		class="com.integrosys.cms.ui.imageTag.RefreshImageTagDropdownsCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+	<bean id="ImageTagAction.MakerPreapreResubmitImageTagCmd" class="com.integrosys.cms.ui.imageTag.MakerPreapreResubmitImageTagCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="collateralProxy" ref="collateralProxy" />
+		<property name="limitProxy" ref="limitProxy" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+	<bean id="ImageTagAction.GetImageFiltersSubFolderCommand" class="com.integrosys.cms.ui.imageTag.GetImageFiltersSubFolderCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<bean id="ImageTagAction.GetImageFiltersDocNameCommand" class="com.integrosys.cms.ui.imageTag.GetImageFiltersDocNameCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<bean id="ImageTagAction.GetImageFiltersSubFolderPrintCommand" class="com.integrosys.cms.ui.imageTag.GetImageFiltersSubFolderPrintCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<bean id="ImageTagAction.GetImageFiltersDocNamePrintCommand" class="com.integrosys.cms.ui.imageTag.GetImageFiltersDocNamePrintCommand">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="imageUploadProxyManager" ref="imageUploadProxy" />
+	</bean>
+	<!-- Added for DMS Integration -->
+	<bean id="ImageTagAction.RetriveImageCommand" class="com.integrosys.cms.ui.imageTag.RetriveImageCommand">
+		<property name="contentManagerFactory" ref="contentManagerFactory" />
+	</bean>
+		<bean id="ImageTagAction.RetriveImageViewCheckerCommand" class="com.integrosys.cms.ui.imageTag.RetriveImageViewCheckerCommand">
+		<property name="contentManagerFactory" ref="contentManagerFactory" />
+	</bean>
+	<bean id="ImageTagAction.RetriveUntagImageCommand" class="com.integrosys.cms.ui.imageTag.RetriveUntagImageCommand">
+		<property name="contentManagerFactory" ref="contentManagerFactory" />
+	</bean>
+	<bean id="contentManagerFactory" class="com.integrosys.cms.app.contentManager.factory.ContentManagerFactory" >
+	</bean>
+	<bean id="ImageTagAction.DownloadImageCommand" class="com.integrosys.cms.ui.imageTag.DownloadImageCommand">
+		<property name="contentManagerFactory" ref="contentManagerFactory" />
+	</bean>
+	<bean id="ImageTagAction.RefreshImageStatusDateCmd"
+		class="com.integrosys.cms.ui.imageTag.RefreshImageStatusDateCmd">
+		<property name="imageTagProxyManager" ref="imageTagProxy" />
+		<property name="checkListProxyManager" ref="checklistProxy" />
+	</bean>
+</beans>
+

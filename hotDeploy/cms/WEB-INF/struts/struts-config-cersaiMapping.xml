@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="CersaiMappingForm" type="com.integrosys.cms.ui.cersaiMapping.CersaiMappingForm">
+        </form-bean>
+    </form-beans>
+    
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/cersaiMapping" type="com.integrosys.cms.ui.cersaiMapping.CersaiMappingAction" name="CersaiMappingForm" validate="false" scope="request">
+  
+           <forward name="maker_list_cersai_mapping_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cersaiMapping/MakerListCersaiMapping.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+            <forward name="checker_list_cersai_mapping_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cersaiMapping/CheckerListCersaiMapping.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+            <forward name="checker_list_cersai_mapping_view" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cersaiMapping/CheckerListCersaiMapping_View.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+            <forward name="common_submit_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+               <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+             <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+            <forward name="common_approve_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cersaiMapping/maker_prepare_resubmit_delete.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cersaiMapping/maker_close_cersai_mapping.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.cersai_mapping.name"/>
+            </forward>
+            
+          <!--   
+           <forward name="maker_prepare_create_product_master" path="/template/common_template.jsp">
+			<set-property property="title" value="menu.manual_feeds.product_master.name"/>
+			<set-property property="rightFrame" value="/productMaster/maker_create_product_master.jsp"/>
+			</forward>
+          
+           
+            
+            <forward name="checker_product_master_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/productMaster/checker_product_master.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+            </forward>
+            
+             
+            
+            added by Santosh CR UBS LIMIT
+            
+            <forward name="maker_view_product_master_page" path="/template/common_template.jsp">
+               <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+			   <set-property property="rightFrame" value="/productMaster/maker_view_product_master.jsp"/>
+            </forward>
+            
+            <forward name="maker_edit_product_master_read_page" path="/template/common_template.jsp">
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+			   <set-property property="rightFrame" value="/productMaster/maker_edit_product_master_read.jsp"/>
+            </forward>
+            
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+            </forward>
+            
+            <forward name="common_reject_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+            </forward>
+            
+            <forward name="maker_prepare_resubmit_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/productMaster/maker_prepare_resubmit_delete.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+            </forward>
+            
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/productMaster/maker_close_product_master.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+            </forward>
+            
+            <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+            </forward>
+            
+            <forward name="maker_view_save_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/productMaster/maker_read_save_product_master.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+            </forward>
+            
+            <forward name="checker_list_product_master_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/productMaster/checker_list_product_master.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.product_master.name"/>
+            </forward>
+            <forward name="maker_view_save_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/excludedFacility/maker_read_save_excluded_facility.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.excluded_facility_category.name"/>
+            </forward>
+            
+             <forward name="maker_add_edit_excluded_facility_category_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/excludedFacility/maker_add_edit_excluded_facility.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.excluded_facility_category.name"/>
+            </forward>
+            
+             <forward name="maker_view_delete_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/excludedFacility/maker_read_delete_excluded_facility.jsp"/>
+               <set-property property="title" value="menu.manual_feeds.excluded_facility_category.name"/>
+            </forward>
+            
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+               <set-property property="title" value="menu.manual_feeds.excluded_facility_category.name"/>
+            </forward>
+            
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/excludedFacility/maker_close_excluded_facility.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.excluded_facility_category.name"/>
+            </forward>
+            
+            <forward name="checker_list_excluded_facility_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/excludedFacility/checker_list_excluded_facility.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.excluded_facility_category.name"/>
+            </forward>
+            
+             <forward name="maker_view_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/excludedFacility/maker_view_excluded_facility.jsp"/>
+                <set-property property="title" value="menu.manual_feeds.excluded_facility_category.name"/>
+            </forward> -->
+            
+        </action>
+        </action-mappings>
+</struts-config>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.partygroup.bus">
+	<class entity-name="actualOBPartyGroup" name="OBPartyGroup"
+		table="CMS_PARTY_GROUP" lazy="false">
+		<id name="id" column="ID" type="long">
+			 <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_PARTY_GROUP_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="partyCode" column="party_group_code" />
+		<property name="partyName" column="party_group_name" />
+	
+        <component name="groupExpLimit" class="com.integrosys.base.businfra.currency.Amount">
+		<property name="amountAsBigDecimal" column="group_exp_limit" />
+		<property name="currencyCode" column="CURRENCY_CODE"/>
+	    </component>
+	    
+		<property name="status" column="STATUS" />
+		<property name="deprecated" column="DEPRECATED" />
+		<property name="masterId" column="MASTER_ID" />
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATE_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+		<property name="cpsId"     		column="CPS_ID" update= "false"/>
+	</class>
+
+	<class entity-name="stageOBPartyGroup" name="OBPartyGroup"
+		table="CMS_STAGE_PARTY_GROUP" lazy="false">
+		<id name="id" column="ID" type="long">
+			 <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STG_PARTY_GROUP_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="partyCode" column="party_group_code" />
+		<property name="partyName" column="party_group_name" />
+		
+		 <component name="groupExpLimit" class="com.integrosys.base.businfra.currency.Amount">
+		<property name="amountAsBigDecimal" column="group_exp_limit" />
+		<property name="currencyCode" column="CURRENCY_CODE"/>
+	    </component>
+
+		<property name="status" column="STATUS" />
+		<property name="deprecated" column="DEPRECATED" />
+		<property name="masterId" column="MASTER_ID" />
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATE_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+		<property name="cpsId"     		column="CPS_ID" />
+	</class>
+</hibernate-mapping>

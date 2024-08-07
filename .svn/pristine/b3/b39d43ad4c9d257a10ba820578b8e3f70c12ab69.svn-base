@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.feed.bus.stockindex">
+
+  <class entity-name="actualStockIndexFeedEntry" name="OBStockIndexFeedEntry" table="CMS_PRICE_FEED" lazy="false">
+
+		<id name="stockIndexFeedEntryID" type="long" column="FEED_ID" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_PRICE_FEED_SEQ</param>
+			</generator>
+		</id>
+		
+		<version name="versionTime" column="cms_version_time" type="long" />
+		<property name="countryCode" column="COUNTRY" />
+		<property name="currencyCode" column="CURRENCY" />
+		<property name="exchange" column="EXCHANGE" />
+		<property name="fundManagerName" column="FUND_MANAGER_NAME" />
+		<property name="isinCode" column="ISIN_CODE" />
+		<property name="lastUpdatedDate" column="LAST_UPDATED_DATE" type="timestamp"/>
+		<property name="name" column="NAME" />
+		<property name="offer" column="OFFER" type="double" />
+		<property name="ric" column="RIC" />
+		<property name="type" column="TYPE" />
+		<property name="unitPrice" column="UNIT_PRICE" type="double"/>
+		<property name="blackListed" column="IS_BLACKLISTED" />
+		<property name="suspended" column="IS_SUSPENDED" />
+		<property name="ticker" column="TICKER" />
+		<property name="stockIndexFeedEntryRef" column="FEED_REF" type="long" />
+
+  </class>
+  
+  <class entity-name="stageStockIndexFeedEntry" name="OBStockIndexFeedEntry" table="CMS_STAGE_PRICE_FEED" lazy="false">
+
+		<id name="stockIndexFeedEntryID" type="long" column="FEED_ID" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_PRICE_FEED_SEQ</param>
+			</generator>
+		</id>
+		
+		<version name="versionTime" column="cms_version_time" type="long" />
+		<property name="countryCode" column="COUNTRY" />
+		<property name="currencyCode" column="CURRENCY" />
+		<property name="exchange" column="EXCHANGE" />
+		<property name="fundManagerName" column="FUND_MANAGER_NAME" />
+		<property name="isinCode" column="ISIN_CODE" />
+		<property name="lastUpdatedDate" column="LAST_UPDATED_DATE" type="timestamp"/>
+		<property name="name" column="NAME" />
+		<property name="offer" column="OFFER" type="double" />
+		<property name="ric" column="RIC" />
+		<property name="type" column="TYPE" />
+		<property name="unitPrice" column="UNIT_PRICE" type="double"/>
+		<property name="blackListed" column="IS_BLACKLISTED" />
+		<property name="suspended" column="IS_SUSPENDED" />
+		<property name="ticker" column="TICKER" />
+		<property name="stockIndexFeedEntryRef" column="FEED_REF" type="long" />
+
+  </class>
+  
+  <class entity-name="actualStockIndexFeedGroup" name="OBStockIndexFeedGroup" table="CMS_FEED_GROUP" lazy="false">
+		<id name="stockIndexFeedGroupID" type="long" column="FEED_GROUP_ID" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+			</generator>
+		</id>
+ 
+ 		<version name="versionTime" column="cms_version_time" type="long"/>
+ 		<property name="type" column="GROUP_TYPE" />
+ 		<property name="subType" column="GROUP_SUBTYPE" />
+ 		
+    	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+    		<key column="FEED_GROUP_ID" not-null="true" />
+    		<one-to-many entity-name="actualStockIndexFeedEntry" />
+    	</set>
+
+  </class>
+  
+  <class entity-name="stageStockIndexFeedGroup" name="OBStockIndexFeedGroup" table="CMS_STAGE_FEED_GROUP" lazy="false">
+		<id name="stockIndexFeedGroupID" type="long" column="FEED_GROUP_ID" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+			</generator>
+		</id>
+ 
+ 		<version name="versionTime" column="cms_version_time" type="long" />
+ 		<property name="type" column="GROUP_TYPE" />
+ 		<property name="subType" column="GROUP_SUBTYPE" />
+ 		
+    	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+    		<key column="FEED_GROUP_ID" not-null="true" />
+    		<one-to-many entity-name="stageStockIndexFeedEntry" />
+    	</set>
+
+  </class>
+
+</hibernate-mapping>

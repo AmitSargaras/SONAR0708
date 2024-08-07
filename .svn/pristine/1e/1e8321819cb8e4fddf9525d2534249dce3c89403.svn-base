@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for ICommand instances. 'id' naming recommended to be 'Action.Command'.
+		All the ICommand instances will be injected into 'nameCommandMap' property of Action class.
+		Injecting is done in 'action-[module]-servlet.xml' context file, resided in /WEB-INF/context folder.
+
+		Avoid getting ICommand instance via BeanHouse or ApplicationContext.
+
+		Inject proxy(s) into command class
+	</description>
+	
+	<bean id="FacilityMainAction.ReadFacilityMainCommand" class="com.integrosys.cms.ui.limit.facility.main.ReadFacilityMainCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+		<property name="facilityTrxStatusMapper" ref="facilityTrxStatusMapper"/>
+	</bean>
+	<bean id="FacilityMainAction.NavigateFacilityCommand" class="com.integrosys.cms.ui.limit.facility.main.NavigateFacilityCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMainAction.SaveFacilityMainCommand" class="com.integrosys.cms.ui.limit.facility.main.SaveFacilityMainCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMainAction.SubmitFacilityMainCommand" class="com.integrosys.cms.ui.limit.facility.main.SubmitFacilityMainCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMainAction.CloseFacilityMainCommand" class="com.integrosys.cms.ui.limit.facility.main.CloseFacilityMainCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMainAction.ApproveFacilityMainCommand" class="com.integrosys.cms.ui.limit.facility.main.ApproveFacilityMainCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMainAction.RejectFacilityMainCommand" class="com.integrosys.cms.ui.limit.facility.main.RejectFacilityMainCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMainAction.FacilityObjectValidatorCommand" class="com.integrosys.cms.ui.limit.facility.main.FacilityObjectValidatorCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	
+	<bean id="FacilityMasterAction.ReadFacilityMasterCommand" class="com.integrosys.cms.ui.limit.facility.master.ReadFacilityMasterCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+		<property name="allowedInsuranceProductTypeList">
+			<list>
+				<value>FS</value>
+			</list>
+		</property>
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+    </bean>
+
+	<bean id="FacilityMasterAction.SaveFacilityMasterToSessionCommand" class="com.integrosys.cms.ui.limit.facility.master.SaveFacilityMasterToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	
+	<bean id="FacilityBNMCodesAction.ReadBNMCodesCommand" class="com.integrosys.cms.ui.limit.facility.bnmcodes.ReadBNMCodesCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityBNMCodesAction.SaveBNMCodesToSessionCommand" class="com.integrosys.cms.ui.limit.facility.bnmcodes.SaveBNMCodesToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+
+	<bean id="FacilityOfficerAction.ReadOfficerCommand" class="com.integrosys.cms.ui.limit.facility.officer.ReadOfficerCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityOfficerAction.ReadListOfficerCommand" class="com.integrosys.cms.ui.limit.facility.officer.ReadListOfficerCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityOfficerAction.SaveOfficerDetailToSessionCommand" class="com.integrosys.cms.ui.limit.facility.officer.SaveOfficerDetailToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityOfficerAction.DeleteOfficerCommand" class="com.integrosys.cms.ui.limit.facility.officer.DeleteOfficerCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityOfficerAction.CompareOfficerListCommand" class="com.integrosys.cms.ui.limit.facility.officer.CompareOfficerListCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+
+	<bean id="FacilityRelationshipAction.ReadRelationshipCommand" class="com.integrosys.cms.ui.limit.facility.relationship.ReadRelationshipCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityRelationshipAction.ReadListRelationshipCommand" class="com.integrosys.cms.ui.limit.facility.relationship.ReadListRelationshipCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityRelationshipAction.SaveRelationshipDetailToSessionCommand" class="com.integrosys.cms.ui.limit.facility.relationship.SaveRelationshipDetailToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityRelationshipAction.DeleteRelationshipCommand" class="com.integrosys.cms.ui.limit.facility.relationship.DeleteRelationshipCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityRelationshipAction.CompareRelationshipListCommand" class="com.integrosys.cms.ui.limit.facility.relationship.CompareRelationshipListCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityRelationshipAction.PrepareAddCommand" class="com.integrosys.cms.ui.limit.facility.relationship.PrepareAddCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityRelationshipAction.SearchCustomerCommand" class="com.integrosys.cms.ui.limit.facility.relationship.SearchCustomerCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	
+	<bean id="FacilityInsuranceAction.ReadInsuranceCommand" class="com.integrosys.cms.ui.limit.facility.insurance.ReadInsuranceCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityInsuranceAction.SaveInsuranceToSessionCommand" class="com.integrosys.cms.ui.limit.facility.insurance.SaveInsuranceToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	
+	<bean id="FacilityIslamicMasterAction.ReadFacilityIslamicMasterCommand" class="com.integrosys.cms.ui.limit.facility.islamic.ReadFacilityIslamicMasterCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityIslamicMasterAction.SaveFacilityIslamicMasterToSessionCommand" class="com.integrosys.cms.ui.limit.facility.islamic.SaveFacilityIslamicMasterToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>	
+	<bean id="FacilityIslamicBbaVariPackageAction.ReadFacilityIslamicBbaVariPackageCommand" class="com.integrosys.cms.ui.limit.facility.bbavaripkg.ReadFacilityIslamicBbaVariPackageCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityIslamicBbaVariPackageAction.SaveFacilityIslamicBbaVariPackageToSessionCommand" class="com.integrosys.cms.ui.limit.facility.bbavaripkg.SaveFacilityIslamicBbaVariPackageToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>	
+	
+	<bean id="FacilityMultiTierFinAction.ReadMultiTierFinCommand" class="com.integrosys.cms.ui.limit.facility.multitierfin.ReadMultiTierFinCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMultiTierFinAction.ReadMultiTierFinListCommand" class="com.integrosys.cms.ui.limit.facility.multitierfin.ReadMultiTierFinListCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMultiTierFinAction.SaveMultiTierFinDetailToSessionCommand" class="com.integrosys.cms.ui.limit.facility.multitierfin.SaveMultiTierFinDetailToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMultiTierFinAction.DeleteMultiTierFinCommand" class="com.integrosys.cms.ui.limit.facility.multitierfin.DeleteMultiTierFinCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMultiTierFinAction.CompareMultiTierFinListCommand" class="com.integrosys.cms.ui.limit.facility.multitierfin.CompareMultiTierFinListCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityMultiTierFinAction.PrepareAddCommand" class="com.integrosys.cms.ui.limit.facility.multitierfin.PrepareAddCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	
+	<bean id="FacilityIslamicRentalRenewalAction.ReadFacilityIslamicRentalRenewalCommand" class="com.integrosys.cms.ui.limit.facility.rentalrenewal.ReadFacilityIslamicRentalRenewalCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>
+	<bean id="FacilityIslamicRentalRenewalAction.SaveFacilityIslamicRentalRenewalToSessionCommand" class="com.integrosys.cms.ui.limit.facility.rentalrenewal.SaveFacilityIslamicRentalRenewalToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>		
+	
+	<bean id="FacilityIslamicSecDepositAction.ReadFacilityIslamicSecDepositCommand" class="com.integrosys.cms.ui.limit.facility.securitydeposit.ReadFacilityIslamicSecDepositCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>	
+	<bean id="FacilityIslamicSecDepositAction.SaveFacilityIslamicSecDepositToSessionCommand" class="com.integrosys.cms.ui.limit.facility.securitydeposit.SaveFacilityIslamicSecDepositToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>		
+	
+	<bean id="FacilityIncrementalAction.ReadListIncrementalCommand" class="com.integrosys.cms.ui.limit.facility.incremental.ReadListIncrementalCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>		
+	<bean id="FacilityIncrementalAction.ReadIncrementalCommand" class="com.integrosys.cms.ui.limit.facility.incremental.ReadIncrementalCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>		
+	<bean id="FacilityIncrementalAction.SaveIncrementalDetailToSessionCommand" class="com.integrosys.cms.ui.limit.facility.incremental.SaveIncrementalDetailToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>		
+	
+	<bean id="FacilityReductionAction.ReadListReductionCommand" class="com.integrosys.cms.ui.limit.facility.reduction.ReadListReductionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>		
+	<bean id="FacilityReductionAction.ReadReductionCommand" class="com.integrosys.cms.ui.limit.facility.reduction.ReadReductionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>		
+	<bean id="FacilityReductionAction.SaveReductionDetailToSessionCommand" class="com.integrosys.cms.ui.limit.facility.reduction.SaveReductionDetailToSessionCommand">
+		<property name="facilityProxy" ref="facilityProxy"/>
+	</bean>			
+</beans>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT DISTINCT
+			          (SELECT region_name FROM cms_region WHERE id=sub_profile.rm_region
+					  )                               AS region,
+					  sub_profile.lsp_short_name      AS party,
+					 -- rm.rm_mgr_name                  AS RMName,
+            (select rm_mgr_name from cms_relationship_mgr where id = sub_profile.relation_mgr) RMName,
+					 -- cc_segment.entry_name           AS segment,
+             (select entry_name from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = sub_profile.LSP_SGMNT_CODE_VALUE and category_code = 'HDFC_SEGMENT')  AS segment,
+					  secdetail.type_name             AS SecurityType,
+					  secdetail.subtype_name          AS SecuritySubType,
+					  secdetail.SCI_SECURITY_CURRENCY AS CurrencyCode,
+					  secdetail.CMV                   AS SecurityOMV,
+					  secDetail.MARGIN                AS Margin,
+					  guarantee.address_line1
+					  ||' '
+					  || guarantee.address_line2
+					  ||' '
+					  || guarantee.address_line3 AS Address,
+					  ( SELECT DISTINCT(cri.customer_ram_id)
+					  FROM SCI_LE_SUB_PROFILE sp,
+					    sci_le_subline subline,
+					    sci_le_cri cri
+					  WHERE sp.cms_le_sub_profile_id         = subline.cms_le_subline_party_id
+					  AND subline.cms_le_main_profile_id     = sub_profile.cms_le_main_profile_id
+					  AND sub_profile.cms_le_main_profile_id = cri.cms_le_main_profile_id
+					  )                                                       AS RamId,
+					  TO_CHAR(guarantee.guarantee_date,'DD/Mon/YYYY')         AS StartDate,
+					  TO_CHAR(secdetail.security_maturity_date,'DD/Mon/YYYY') AS MaturityDate,
+					  guarantee.guaranters_name                               as bank_name,
+					 (SELECT system_bank_branch_code
+					      ||'-'
+					     ||system_bank_branch_name
+					    FROM CMS_SYSTEM_BANK_BRANCH
+					    WHERE SYSTEM_BANK_BRANCH_CODE = secDetail.SECURITY_ORGANISATION
+					    )                      AS branchName,
+					  guarantee.reference_no AS referenceno,
+					  guarantee.discription_of_assets,
+					(select UDF45  from sci_le_udf where  cms_le_main_profile_id= sub_profile.CMS_LE_MAIN_PROFILE_ID)        AS Metagrid_id,
+					  secdetail.cms_collateral_id                             AS sourcesecid,
+					  (select COUNTRY_NAME  from cms_country where COUNTRY_CODE=secdetail.security_location)   AS securityLocation,
+					  sbb.custodian1                                          AS securityCustodian1,
+					  sbb.custodian2                                          AS securityCustodian2,
+					  guarantee.claim_period
+					  ||''
+					  || (
+					  CASE
+					    WHEN guarantee.claim_period_time_unit='D'
+					    THEN 'Day(s)'
+					    WHEN guarantee.claim_period_time_unit='W'
+					    THEN 'Week(s)'
+					    WHEN guarantee.claim_period_time_unit='M'
+					    THEN 'Month(s)'
+					    WHEN guarantee.claim_period_time_unit='Y'
+					    THEN 'Year(s)'
+					  END)                                        AS holdingPeriod,
+					  guarantee.guarantee_amt                     AS netWorth,
+					  TO_CHAR(guarantee.claim_date,'DD/MON/YYYY') AS netWorthDate,
+					  guarantee.telephone_number                  AS telNo,
+					  guarantee.guaranters_duns_number            AS guaDUNSNo,
+					  guarantee.guaranters_pam                    AS guaPAN,
+					  guarantee.guaranters_name_prefix            AS guaPrefix,
+					  guarantee.guaranters_full_name              AS guaFullName,
+					  ( SELECT city_name FROM cms_city WHERE id=guarantee.city
+					  ) AS city,
+					  (SELECT state_name FROM cms_state WHERE id=guarantee.state
+					  ) AS state,
+					  (
+					  CASE
+					    WHEN charge.CHARGE_TYPE='G'
+					    THEN 'General'
+					    WHEN charge.CHARGE_TYPE='S'
+					    THEN 'Specific'
+					    ELSE '-'
+					  END)                      AS chargeType,
+					  guarantee.rating          AS rating,
+					  guarantee.recourse        AS recourse,
+					  guarantee.asset_statement AS assetStatement,
+					  ( select entry_name from common_code_category_entry where entry_code=guarantee.guarantor_type
+					   and category_code='GUARANTOR_TYPE')  AS guarantorType
+					  --reg.region_name AS Region,
+					  --guarantee.guaranters_name                               AS GuarantorsName,
+					 					
+					 FROM CMS_LIMIT_SECURITY_MAP lsm,
+					  SCI_LSP_APPR_LMTS lmts,
+					  SCI_LSP_LMT_PROFILE pf,
+					  SCI_LE_SUB_PROFILE sub_profile,
+--					  (SELECT entry_name,
+--					    entry_code
+--					  FROM common_code_category_entry
+--					  WHERE category_code = 'HDFC_SEGMENT'
+--					  ) cc_segment,
+					  CMS_SECURITY secDetail,
+					--  cms_relationship_mgr rm ,
+					  --SCI_LE_REG_ADDR addr,
+					--  CMS_REGION reg,
+					--  SCI_LE_MAIN_PROFILE MAN,
+					--  sci_le_udf UDF1,
+					  CMS_GUARANTEE guarantee,
+					  CMS_SYSTEM_BANK_BRANCH sbb,
+					  CMS_CHARGE_DETAIL charge--,
+					--  transaction trans
+			</query>
+		<whereClause>
+			<mandatoryClause>
+	 		sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+			AND secDetail.SECURITY_ORGANISATION     = sbb.SYSTEM_BANK_BRANCH_CODE(+)
+	--		AND cc_segment.entry_code(+)            = sub_profile.lsp_sgmnt_code_value
+		--	AND sub_profile.cms_le_main_profile_id  = addr.cms_le_main_profile_id
+			AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+		--	AND UDF1.cms_le_main_profile_id         = sub_profile.CMS_LE_MAIN_PROFILE_ID
+			AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+			AND (lsm.update_status_ind             &lt;&gt; 'D'
+			OR lsm.update_status_ind               IS NULL)
+			AND secdetail.cms_collateral_id         = LSM.CMS_COLLATERAL_ID
+		--	AND rm.id                               = sub_profile.relation_mgr
+		--	AND reg.id                              = addr.lra_region
+			AND guarantee.cms_collateral_id         = LSM.CMS_COLLATERAL_ID
+	--		AND addr.lra_type_value                 = 'CORPORATE'
+			AND secDetail.SECURITY_SUB_TYPE_ID     IN ('GT400','GT402')
+		--	AND trans.reference_id                  = sub_profile.cms_le_sub_profile_id
+			AND sub_profile.status                 != 'INACTIVE'
+      		AND charge.CMS_COLLATERAL_ID            = secDetail.cms_collateral_id
+			AND lmts.cms_limit_status              &lt;&gt; 'DELETED'
+			</mandatoryClause>
+			<param>
+				<name>party</name>
+				<condition> and sub_profile.cms_le_sub_profile_id =  </condition>
+			</param>
+			<param>
+				<name>segment</name>
+				<condition> AND sub_profile.lsp_sgmnt_code_value =  </condition>
+			</param>
+			<param>
+				<name>transactionDate</name>
+				<condition> and TRUNC(trans.transaction_date) = </condition>
+			</param>			
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment Name</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Security Type</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Security Sub Type</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Currency Code</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security OMV</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Margin</header><!-- 9 -->
+				</reportColumn>			
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Asset Location/Address</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RAM Id</header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Start Date</header><!-- 12 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Maturity Date</header><!-- 13 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Bank Name</header><!-- 14 -->  
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Branch Name</header><!-- 15 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Reference Number Of Guarantee</header><!-- 16 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Description Of Assets</header><!-- 17 -->
+				</reportColumn>						
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>METAGRID Id</header><!-- 18 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Source Security Id</header><!-- 19 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Location</header><!-- 20 -->
+				</reportColumn>				
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Custodian 1</header><!-- 21 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Security Custodian 2</header><!-- 22 -->
+				</reportColumn>		
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Holding Period</header><!-- 23 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net Worth Date</header><!-- 24 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Net Date</header><!-- 25 -->
+				</reportColumn>			
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Telephone Number</header><!-- 26 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantors DUNS Numbers</header><!-- 27 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantors PAN</header><!-- 28 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantors Name Prefix</header><!-- 29 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantors Full Name</header><!-- 30 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>City</header><!-- 31 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>State</header><!-- 32 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Charge Type</header><!-- 33 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Rating</header><!-- 34 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Recourse</header><!-- 35 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Asset Statement</header><!-- 36 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Guarantor Type</header><!-- 37 -->
+				</reportColumn>
+			</reportColumns>
+			<reportName>SBBG and SBLC Report (Standby Bank Guarantee and Standby Letter of Credit)</reportName>
+		</reportParamters>
+	</report>
+</reports>

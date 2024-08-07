@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN" "http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+<ejb-jar id="ejb_Customer">
+   <display-name>Customer</display-name>
+   <enterprise-beans>
+      <session id="session_SBCustomerProxy">
+         <ejb-name>SBCustomerProxy</ejb-name>
+         <home>com.integrosys.cms.app.customer.proxy.SBCustomerProxyHome</home>
+         <remote>com.integrosys.cms.app.customer.proxy.SBCustomerProxy</remote>
+         <ejb-class>com.integrosys.cms.app.customer.proxy.SBCustomerProxyBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCustomerProxy">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <session id="session_SBCustomerManager">
+         <ejb-name>SBCustomerManager</ejb-name>
+         <home>com.integrosys.cms.app.customer.bus.SBCustomerManagerHome</home>
+         <remote>com.integrosys.cms.app.customer.bus.SBCustomerManager</remote>
+         <ejb-class>com.integrosys.cms.app.customer.bus.SBCustomerManagerBean</ejb-class>
+         <session-type>Stateless</session-type>
+         <transaction-type>Container</transaction-type>
+         <resource-ref id="resourceref_jdbc_SBCustomerManager">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </session>
+      <entity id="entity_EBCMSCustomer">
+         <ejb-name>EBCMSCustomer</ejb-name>
+         <home>com.integrosys.cms.app.customer.bus.EBCMSCustomerHome</home>
+         <remote>com.integrosys.cms.app.customer.bus.EBCMSCustomer</remote>
+         <local-home>com.integrosys.cms.app.customer.bus.EBCMSCustomerLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBCMSCustomerLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBCMSCustomerBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCMSCustomer</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCMSCustomer_customerPK">
+            <field-name>customerPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_lEFK">
+            <field-name>lEFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_customerReference">
+            <field-name>customerReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_disclosureAgreementStr">
+            <field-name>disclosureAgreementStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_treasuryAppStr">
+            <field-name>treasuryAppStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_customerName">
+            <field-name>customerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_customerRelationshipStartDate">
+            <field-name>customerRelationshipStartDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_domicileCountry">
+            <field-name>domicileCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_domicileCountryRegNumber">
+            <field-name>domicileCountryRegNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_swiftCode">
+            <field-name>swiftCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_customerOriginType">
+            <field-name>customerOriginType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_disclosureAgreementDate">
+            <field-name>disclosureAgreementDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_languageCode">
+            <field-name>languageCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_serviceLevelPriority">
+            <field-name>serviceLevelPriority</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_operationStatus">
+            <field-name>operationStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_operationEffectiveDate">
+            <field-name>operationEffectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_cCCStatus">
+            <field-name>cCCStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_originatingCountry">
+            <field-name>originatingCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_originatingOrganisation">
+            <field-name>originatingOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_nonBorrowerStr">
+            <field-name>nonBorrowerStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSCustomer_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <primkey-field>customerPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCMSCustomer_EBCMSLegalEntity">
+            <ejb-ref-name>EBCMSLegalEntityLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.customer.bus.EBCMSLegalEntityLocalHome</local-home>
+            <local>com.integrosys.cms.app.customer.bus.EBCMSLegalEntityLocal</local>
+            <ejb-link>EBCMSLegalEntity</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCMSCustomer_EBCustomerSysXRef">
+            <ejb-ref-name>EBCustomerSysXRefLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefLocalHome</local-home>
+            <local>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefLocal</local>
+            <ejb-link>EBCustomerSysXRef</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCMSCustomer_EBOffAddress">
+            <ejb-ref-name>EBOffAddressLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.customer.bus.EBContactLocalHome</local-home>
+            <local>com.integrosys.cms.app.customer.bus.EBContactLocal</local>
+            <ejb-link>EBOffAddress</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCMSCustomer">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBCMSLegalEntity">
+         <ejb-name>EBCMSLegalEntity</ejb-name>
+         <home>com.integrosys.cms.app.customer.bus.EBCMSLegalEntityHome</home>
+         <remote>com.integrosys.cms.app.customer.bus.EBCMSLegalEntity</remote>
+         <local-home>com.integrosys.cms.app.customer.bus.EBCMSLegalEntityLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBCMSLegalEntityLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBCMSLegalEntityBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCMSLegalEntity</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_lEPK">
+            <field-name>lEPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_top1000Str">
+            <field-name>top1000Str</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_blackListedStr">
+            <field-name>blackListedStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_legalName">
+            <field-name>legalName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_shortName">
+            <field-name>shortName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_legalConstitution">
+            <field-name>legalConstitution</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_legalRegCountry">
+            <field-name>legalRegCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_legalRegNumber">
+            <field-name>legalRegNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_relationshipStartDate">
+            <field-name>relationshipStartDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_lEReference">
+            <field-name>lEReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_customerSegment">
+            <field-name>customerSegment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_customerSubSegment">
+            <field-name>customerSubSegment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_baselSegment">
+            <field-name>baselSegment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_baselSubSegment">
+            <field-name>baselSubSegment</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_customerBizType">
+            <field-name>customerBizType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_environmentRisk">
+            <field-name>environmentRisk</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_operationStatus">
+            <field-name>operationStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_operationEffectiveDate">
+            <field-name>operationEffectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_operationDescription">
+            <field-name>operationDescription</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_customerType">
+            <field-name>customerType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_businessGroup">
+            <field-name>businessGroup</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_tFAAmount">
+            <field-name>tFAAmount</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_incomeRange">
+            <field-name>incomeRange</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_businessSector">
+            <field-name>businessSector</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_iDTypeCode">
+            <field-name>iDTypeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_iDType">
+            <field-name>iDType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_countryPR">
+            <field-name>countryPR</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_languagePrefer">
+            <field-name>languagePrefer</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_versionTime">
+            <field-name>versionTime</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_incorporateDate">
+            <field-name>incorporateDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_idOldNO">
+            <field-name>idOldNO</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_sourceID">
+            <field-name>sourceID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_legalIDSourceCode">
+            <field-name>legalIDSourceCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_legalIDSource">
+            <field-name>legalIDSource</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_accountOfficerID">
+            <field-name>accountOfficerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCMSLegalEntity_accountOfficerName">
+            <field-name>accountOfficerName</field-name>
+         </cmp-field>
+         <primkey-field>lEPK</primkey-field>
+         <ejb-local-ref id="ejblocalref_EBCMSLegalEntity_EBRegAddress">
+            <ejb-ref-name>EBRegAddressLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.customer.bus.EBContactLocalHome</local-home>
+            <local>com.integrosys.cms.app.customer.bus.EBContactLocal</local>
+            <ejb-link>EBRegAddress</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCMSLegalEntity_EBCreditGrade">
+            <ejb-ref-name>EBCreditGradeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.customer.bus.EBCreditGradeLocalHome</local-home>
+            <local>com.integrosys.cms.app.customer.bus.EBCreditGradeLocal</local>
+            <ejb-link>EBCreditGrade</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCMSLegalEntity_EBISICCode">
+            <ejb-ref-name>EBISICCodeLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.customer.bus.EBISICCodeLocalHome</local-home>
+            <local>com.integrosys.cms.app.customer.bus.EBISICCodeLocal</local>
+            <ejb-link>EBISICCode</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCMSLegalEntity_EBCreditStatus">
+            <ejb-ref-name>EBCreditStatusLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.customer.bus.EBCreditStatusLocalHome</local-home>
+            <local>com.integrosys.cms.app.customer.bus.EBCreditStatusLocal</local>
+            <ejb-link>EBCreditStatus</ejb-link>
+         </ejb-local-ref>
+         <ejb-local-ref id="ejblocalref_EBCMSLegalEntity_EBKYC">
+            <ejb-ref-name>EBKYCLocalHome</ejb-ref-name>
+            <ejb-ref-type>Entity</ejb-ref-type>
+            <local-home>com.integrosys.cms.app.customer.bus.EBKYCLocalHome</local-home>
+            <local>com.integrosys.cms.app.customer.bus.EBKYCLocal</local>
+            <ejb-link>EBKYC</ejb-link>
+         </ejb-local-ref>
+         <resource-ref id="resourceref_jdbc_EBCMSLegalEntity">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBCustomerSysXRef">
+         <ejb-name>EBCustomerSysXRef</ejb-name>
+         <home>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefHome</home>
+         <remote>com.integrosys.cms.app.customer.bus.EBCustomerSysXRef</remote>
+         <local-home>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCustomerSysXRef</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_xRefPK">
+            <field-name>xRefPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_customerFK">
+            <field-name>customerFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalXRef">
+            <field-name>externalXRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_bookingLocation">
+            <field-name>bookingLocation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalSystemCode">
+            <field-name>externalSystemCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalCustomerID">
+            <field-name>externalCustomerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalCustomerName">
+            <field-name>externalCustomerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalAccountNo">
+            <field-name>externalAccountNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalAccountStatus">
+            <field-name>externalAccountStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalSysCountry">
+            <field-name>externalSysCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_accountDelqInd">
+            <field-name>accountDelqInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_acctEffectiveDate">
+            <field-name>acctEffectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_accountStatus">
+            <field-name>accountStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalSystemCodeNum">
+            <field-name>externalSystemCodeNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_bookingLoctnCountry">
+            <field-name>bookingLoctnCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_bookingLoctnOrganisation">
+            <field-name>bookingLoctnOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_eBAccountRv">
+            <field-name>eBAccountRv</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_accountRvCcy">
+            <field-name>accountRvCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_externalAccountType">
+            <field-name>externalAccountType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_colAllocationAmtCcy">
+            <field-name>colAllocationAmtCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_outstandingAmtCcy">
+            <field-name>outstandingAmtCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_eBCollateralAllocationAmt">
+            <field-name>eBCollateralAllocationAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_eBOutstandingAmt">
+            <field-name>eBOutstandingAmt</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRef_lastAllocationDate">
+            <field-name>lastAllocationDate</field-name>
+         </cmp-field>
+         <primkey-field>xRefPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCustomerSysXRef">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBCustomerSysXRefStaging">
+         <ejb-name>EBCustomerSysXRefStaging</ejb-name>
+         <home>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefHome</home>
+         <remote>com.integrosys.cms.app.customer.bus.EBCustomerSysXRef</remote>
+         <local-home>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBCustomerSysXRefStagingBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCustomerSysXRefStaging</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_xRefPK">
+            <field-name>xRefPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_customerFK">
+            <field-name>customerFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalXRef">
+            <field-name>externalXRef</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_bookingLocation">
+            <field-name>bookingLocation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalSystemCode">
+            <field-name>externalSystemCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalCustomerID">
+            <field-name>externalCustomerID</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalCustomerName">
+            <field-name>externalCustomerName</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalAccountNo">
+            <field-name>externalAccountNo</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalAccountStatus">
+            <field-name>externalAccountStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalSysCountry">
+            <field-name>externalSysCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_accountDelqInd">
+            <field-name>accountDelqInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_acctEffectiveDate">
+            <field-name>acctEffectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_accountStatus">
+            <field-name>accountStatus</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalSystemCodeNum">
+            <field-name>externalSystemCodeNum</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_bookingLoctnCountry">
+            <field-name>bookingLoctnCountry</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_bookingLoctnOrganisation">
+            <field-name>bookingLoctnOrganisation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_eBAccountRv">
+            <field-name>eBAccountRv</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_accountRvCcy">
+            <field-name>accountRvCcy</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCustomerSysXRefStaging_externalAccountType">
+            <field-name>externalAccountType</field-name>
+         </cmp-field>
+         <primkey-field>xRefPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCustomerSysXRefStaging">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBOffAddress">
+         <ejb-name>EBOffAddress</ejb-name>
+         <local-home>com.integrosys.cms.app.customer.bus.EBContactLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBContactLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBContactBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBOffAddress</abstract-schema-name>
+         <cmp-field id="cmpfield_EBOffAddress_contactPK">
+            <field-name>contactPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_lEFK">
+            <field-name>lEFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_contactReference">
+            <field-name>contactReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_contactType">
+            <field-name>contactType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_attentionParty">
+            <field-name>attentionParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_addressLine1">
+            <field-name>addressLine1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_addressLine2">
+            <field-name>addressLine2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_addressLine3">
+            <field-name>addressLine3</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_addressLine4">
+            <field-name>addressLine4</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_addressLine5">
+            <field-name>addressLine5</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_city">
+            <field-name>city</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_state">
+            <field-name>state</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_postalCode">
+            <field-name>postalCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_countryCode">
+            <field-name>countryCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_faxNumber">
+            <field-name>faxNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_emailAddress">
+            <field-name>emailAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_telephoneNumer">
+            <field-name>telephoneNumer</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBOffAddress_telex">
+            <field-name>telex</field-name>
+         </cmp-field>
+         <primkey-field>contactPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBOffAddress">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBRegAddress">
+         <ejb-name>EBRegAddress</ejb-name>
+         <local-home>com.integrosys.cms.app.customer.bus.EBContactLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBContactLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBContactBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBRegAddress</abstract-schema-name>
+         <cmp-field id="cmpfield_EBRegAddress_contactPK">
+            <field-name>contactPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_lEFK">
+            <field-name>lEFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_contactReference">
+            <field-name>contactReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_contactType">
+            <field-name>contactType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_attentionParty">
+            <field-name>attentionParty</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_addressLine1">
+            <field-name>addressLine1</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_addressLine2">
+            <field-name>addressLine2</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_addressLine3">
+            <field-name>addressLine3</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_addressLine4">
+            <field-name>addressLine4</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_addressLine5">
+            <field-name>addressLine5</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_city">
+            <field-name>city</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_state">
+            <field-name>state</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_postalCode">
+            <field-name>postalCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_countryCode">
+            <field-name>countryCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_faxNumber">
+            <field-name>faxNumber</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_emailAddress">
+            <field-name>emailAddress</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_telephoneNumer">
+            <field-name>telephoneNumer</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBRegAddress_telex">
+            <field-name>telex</field-name>
+         </cmp-field>
+         <primkey-field>contactPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBRegAddress">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBCreditGrade">
+         <ejb-name>EBCreditGrade</ejb-name>
+         <local-home>com.integrosys.cms.app.customer.bus.EBCreditGradeLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBCreditGradeLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBCreditGradeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCreditGrade</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCreditGrade_cGPK">
+            <field-name>cGPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_lEFK">
+            <field-name>lEFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_cGReference">
+            <field-name>cGReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_cGType">
+            <field-name>cGType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_cGCode">
+            <field-name>cGCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_effectiveDate">
+            <field-name>effectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_reasonForChange">
+            <field-name>reasonForChange</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_approverBookingLoc">
+            <field-name>approverBookingLoc</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_approverEmployeeCode">
+            <field-name>approverEmployeeCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_approverEmployeeType">
+            <field-name>approverEmployeeType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_updateStatusInd">
+            <field-name>updateStatusInd</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditGrade_lastUpdateDate">
+            <field-name>lastUpdateDate</field-name>
+         </cmp-field>
+         <primkey-field>cGPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCreditGrade">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBISICCode">
+         <ejb-name>EBISICCode</ejb-name>
+         <local-home>com.integrosys.cms.app.customer.bus.EBISICCodeLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBISICCodeLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBISICCodeBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBISICCode</abstract-schema-name>
+         <cmp-field id="cmpfield_EBISICCode_iSICPK">
+            <field-name>iSICPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBISICCode_lEFK">
+            <field-name>lEFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBISICCode_iSICReference">
+            <field-name>iSICReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBISICCode_iSICType">
+            <field-name>iSICType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBISICCode_iSICCode">
+            <field-name>iSICCode</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBISICCode_effectiveDate">
+            <field-name>effectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBISICCode_iSICWeightage">
+            <field-name>iSICWeightage</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBISICCode_iSICStatus">
+            <field-name>iSICStatus</field-name>
+         </cmp-field>
+         <primkey-field>iSICPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBISICCode">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBCreditStatus">
+         <ejb-name>EBCreditStatus</ejb-name>
+         <local-home>com.integrosys.cms.app.customer.bus.EBCreditStatusLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBCreditStatusLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBCreditStatusBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBCreditStatus</abstract-schema-name>
+         <cmp-field id="cmpfield_EBCreditStatus_cSPK">
+            <field-name>cSPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditStatus_lEFK">
+            <field-name>lEFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditStatus_cSReference">
+            <field-name>cSReference</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditStatus_cSType">
+            <field-name>cSType</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditStatus_cSValue">
+            <field-name>cSValue</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditStatus_effectiveDate">
+            <field-name>effectiveDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBCreditStatus_comments">
+            <field-name>comments</field-name>
+         </cmp-field>
+         <primkey-field>cSPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBCreditStatus">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+      <entity id="entity_EBKYC">
+         <ejb-name>EBKYC</ejb-name>
+         <local-home>com.integrosys.cms.app.customer.bus.EBKYCLocalHome</local-home>
+         <local>com.integrosys.cms.app.customer.bus.EBKYCLocal</local>
+         <ejb-class>com.integrosys.cms.app.customer.bus.EBKYCBean</ejb-class>
+         <persistence-type>Container</persistence-type>
+         <prim-key-class>java.lang.Long</prim-key-class>
+         <reentrant>False</reentrant>
+         <cmp-version>2.x</cmp-version>
+         <abstract-schema-name>EBKYC</abstract-schema-name>
+         <cmp-field id="cmpfield_EBKYC_kYCPK">
+            <field-name>kYCPK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_lEFK">
+            <field-name>lEFK</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_originatingLocation">
+            <field-name>originatingLocation</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_riskRating">
+            <field-name>riskRating</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_lastReviewDate">
+            <field-name>lastReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_nextReviewDate">
+            <field-name>nextReviewDate</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_cDDSubmitStr">
+            <field-name>cDDSubmitStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_kYCSubmitStr">
+            <field-name>kYCSubmitStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_gICSubmitStr">
+            <field-name>gICSubmitStr</field-name>
+         </cmp-field>
+         <cmp-field id="cmpfield_EBKYC_exceptionalApprovalStr">
+            <field-name>exceptionalApprovalStr</field-name>
+         </cmp-field>
+         <primkey-field>kYCPK</primkey-field>
+         <resource-ref id="resourceref_jdbc_EBKYC">
+            <res-ref-name>jdbc/CMSPool</res-ref-name>
+            <res-type>javax.sql.DataSource</res-type>
+            <res-auth>Container</res-auth>
+            <res-sharing-scope>Shareable</res-sharing-scope>
+         </resource-ref>
+      </entity>
+   </enterprise-beans>
+   <relationships>
+      <ejb-relation id="relation_LegalEntity-RegisteredAddress">
+         <ejb-relation-name>LegalEntity-RegisteredAddress</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_LegalEntity-Has-RegisteredAddress">
+            <ejb-relationship-role-name>LegalEntity-Has-RegisteredAddress</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCMSLegalEntity</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRRegisteredAddress</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_RegisteredAddress-BelongsTo-LegalEntity">
+            <ejb-relationship-role-name>RegisteredAddress-BelongsTo-LegalEntity</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBRegAddress</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_LegalEntity-CreditGrade">
+         <ejb-relation-name>LegalEntity-CreditGrade</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_LegalEntity-Has-CreditGrades">
+            <ejb-relationship-role-name>LegalEntity-Has-CreditGrades</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCMSLegalEntity</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCreditGrades</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_CreditGrades-BelongTo-LegalEntity">
+            <ejb-relationship-role-name>CreditGrades-BelongTo-LegalEntity</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCreditGrade</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_LegalEntity-ISICCode">
+         <ejb-relation-name>LegalEntity-ISICCode</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_LegalEntity-Has-ISICCode">
+            <ejb-relationship-role-name>LegalEntity-Has-ISICCode</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCMSLegalEntity</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRISICCode</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_ISICCode-BelongsTo-LegalEntity">
+            <ejb-relationship-role-name>ISICCode-BelongsTo-LegalEntity</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBISICCode</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_LegalEntity-CreditStatus">
+         <ejb-relation-name>LegalEntity-CreditStatus</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_LegalEntity-Has-CreditStatus">
+            <ejb-relationship-role-name>LegalEntity-Has-CreditStatus</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCMSLegalEntity</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRCreditStatus</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_CreditStatus-BelongTo-LegalEntity">
+            <ejb-relationship-role-name>CreditStatus-BelongTo-LegalEntity</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCreditStatus</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_LegalEntity-KYC">
+         <ejb-relation-name>LegalEntity-KYC</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_LegalEntity-Has-KYC">
+            <ejb-relationship-role-name>LegalEntity-Has-KYC</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCMSLegalEntity</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRKYCRecords</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_KYC-BelongsTo-LegalEntity">
+            <ejb-relationship-role-name>KYC-BelongsTo-LegalEntity</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBKYC</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Customer-LegalEntity">
+         <ejb-relation-name>Customer-LegalEntity</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Customer-Has-LegalEntity">
+            <ejb-relationship-role-name>Customer-Has-LegalEntity</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCMSCustomer</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMRLegalEntity</cmr-field-name>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_LegalEntity-BelongsTo-Customer">
+            <ejb-relationship-role-name>LegalEntity-BelongsTo-Customer</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCMSLegalEntity</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+      <ejb-relation id="relation_Customer-OfficialAddresses">
+         <ejb-relation-name>Customer-OfficialAddresses</ejb-relation-name>
+         <ejb-relationship-role id="relationshiprole_Customer-Has-OfficialAddresses">
+            <ejb-relationship-role-name>Customer-Has-OfficialAddresses</ejb-relationship-role-name>
+            <multiplicity>One</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBCMSCustomer</ejb-name>
+            </relationship-role-source>
+            <cmr-field>
+               <cmr-field-name>cMROfficialAddresses</cmr-field-name>
+               <cmr-field-type>java.util.Collection</cmr-field-type>
+            </cmr-field>
+         </ejb-relationship-role>
+         <ejb-relationship-role id="relationshiprole_OfficialAddresses-BelongTo-Customer">
+            <ejb-relationship-role-name>OfficialAddresses-BelongTo-Customer</ejb-relationship-role-name>
+            <multiplicity>Many</multiplicity>
+            <relationship-role-source>
+               <ejb-name>EBOffAddress</ejb-name>
+            </relationship-role-source>
+         </ejb-relationship-role>
+      </ejb-relation>
+   </relationships>
+   <assembly-descriptor>
+      <container-transaction>
+         <method>
+            <ejb-name>SBCustomerProxy</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>SBCustomerManager</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCMSCustomer</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCMSLegalEntity</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCustomerSysXRef</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBOffAddress</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBRegAddress</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCreditGrade</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBISICCode</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBCreditStatus</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <method>
+            <ejb-name>EBKYC</ejb-name>
+            <method-name>*</method-name>
+         </method>
+         <trans-attribute>Required</trans-attribute>
+      </container-transaction>
+   </assembly-descriptor>
+</ejb-jar>

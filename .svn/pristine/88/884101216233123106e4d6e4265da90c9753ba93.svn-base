@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+  
+  <bean id="cashValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.CashValuator" />
+  
+  <bean id="goldValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.GoldValuator">
+  	<property name="goldFeedProfileSingleton" ref="goldFeedProfileSingleton" />
+  </bean>
+  
+  <bean id="guaranteeValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.GuaranteeValuator" />
+  
+  <bean id="cgcValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.CGCValuator" >
+      <property name="cgcValuationDAO" ref="cgcValuationJdbc" />
+  </bean>
+
+  <bean id="insuranceValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.InsuranceValuator" />
+  
+  <bean id="marketableValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.MarketableRunningTotalValuator" >
+      <property name="marketableProfileSingleton" ref="mktFeedSingleton" />
+  </bean>
+  
+  <bean id="pdcValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.PDCValuator" />
+  
+  <bean id="propertyValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.PropertyValuator">
+  	<property name="propertyProfileSingleton" ref="propertyProfileSingleton" />
+  </bean>
+
+  <bean id="propertyIndexValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.PropertyIndexValuator">
+  	  <constructor-arg value="true" />
+  	  <constructor-arg value="true" />
+      <property name="propertyProfileSingleton" ref="propertyProfileSingleton" />
+  </bean>
+
+  <bean id="straightLineValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.StrtLineValuator" >
+      <property name="assetLifeProfileSingleton" ref="assetLifeProfileSingleton" />
+  </bean>
+
+  <bean id="vehicleValuator" class="com.integrosys.cms.app.collateral.bus.valuation.valuator.VehicleValuator">
+  	<property name="vehicleFeedProfileSingleton" ref="vehicleFeedProfileSingleton" />
+    <property name="assetLifeProfileSingleton" ref="assetLifeProfileSingleton" />
+    <property name="commonCodeRegionSingleton" ref="commonCodeRegionSingleton" />
+  </bean>
+  
+  <bean id="assetLifeProfileSingleton" class="com.integrosys.cms.app.collateral.bus.valuation.support.AssetLifeProfileSingleton" init-method="init" lazy-init="true">
+      <property name="strtLineValuationDao" ref="straightLineValuationJdbc" />
+  </bean>
+
+  <bean id="commonCodeRegionSingleton" class="com.integrosys.cms.app.collateral.bus.valuation.support.CommonCodeRegionSingleton" init-method="init" lazy-init="true">
+      <property name="vehicleValuationDao" ref="vehicleValuationJdbc" />
+  </bean>
+
+  <bean id="goldFeedProfileSingleton" class="com.integrosys.cms.app.collateral.bus.valuation.support.GoldFeedProfileSingleton" init-method="init" lazy-init="true">
+  	<property name="goldValuationDao" ref="goldValuationJdbc" />
+  </bean>
+  
+  <bean id="vehicleFeedProfileSingleton" class="com.integrosys.cms.app.collateral.bus.valuation.support.VehicleFeedProfileSingleton" init-method="init" lazy-init="true">
+  	<property name="vehicleValuationDao" ref="vehicleValuationJdbc" />
+  </bean>
+  
+  <bean id="stockPriceCapSingleton" class="com.integrosys.cms.app.collateral.bus.valuation.support.StockPriceCapSingleton" init-method="init" lazy-init="true">
+      <property name="marketableValuationDao" ref="marketableValuationJdbc" />
+  </bean>
+
+  <bean id="mktFeedSingleton" class="com.integrosys.cms.app.collateral.bus.valuation.support.MktFeedSingleton" init-method="init" lazy-init="true">
+      <property name="marketableValuationDao" ref="marketableValuationJdbc" />
+  </bean>
+
+  <bean id="propertyProfileSingleton" class="com.integrosys.cms.app.collateral.bus.valuation.support.PropertyProfileSingleton" init-method="init" lazy-init="true">
+  	<property name="propertyValuationDao" ref="propertyValuationJdbc" />
+  </bean>
+  
+  <bean id="valuationHandler" class="com.integrosys.cms.app.collateral.bus.valuation.ValuationHandler">
+  	<property name="genericValuationDao" ref="genericValuationJdbc" />
+    <property name="valuationDaoMap">
+  		<map>
+  			<entry key="AB101" value-ref="straightLineValuationJdbc" />
+  			<entry key="AB102" value-ref="vehicleValuationJdbc" />
+  			<entry key="AB109" value-ref="straightLineValuationJdbc" />
+  			<entry key="AB110" value-ref="goldValuationJdbc" />
+  			<entry key="AB111" value-ref="straightLineValuationJdbc" />
+  			<entry key="CS200" value-ref="cashValuationJdbc" />
+  			<entry key="CS202" value-ref="cashValuationJdbc" />
+  			<entry key="CS203" value-ref="cashValuationJdbc" />
+  			<entry key="GT400" value-ref="guaranteeValuationJdbc" />
+  			<entry key="GT402" value-ref="guaranteeValuationJdbc" />
+  			<entry key="GT404" value-ref="guaranteeValuationJdbc" />
+  			<entry key="GT405" value-ref="guaranteeValuationJdbc" />
+  			<entry key="GT406" value-ref="guaranteeValuationJdbc" />
+  			<entry key="GT407" value-ref="guaranteeValuationJdbc" />
+  			<entry key="GT408" value-ref="guaranteeValuationJdbc" />
+  			<entry key="GT409" value-ref="cgcValuationJdbc" />
+  			<entry key="GT410" value-ref="guaranteeValuationJdbc" />
+            <entry key="GT411" value-ref="guaranteeValuationJdbc" />
+            <entry key="GT412" value-ref="guaranteeValuationJdbc" />
+            <entry key="GT413" value-ref="guaranteeValuationJdbc" />
+            <entry key="GT414" value-ref="guaranteeValuationJdbc" />
+  			<entry key="IN500" value-ref="insuranceValuationJdbc" />
+  			<entry key="IN501" value-ref="insuranceValuationJdbc" />
+  			<entry key="IN502" value-ref="insuranceValuationJdbc" />
+  			<entry key="IN502" value-ref="insuranceValuationJdbc" />
+  			<entry key="MS600" value-ref="marketableValuationJdbc" />
+  			<entry key="MS601" value-ref="marketableValuationJdbc" />
+  			<entry key="MS602" value-ref="marketableValuationJdbc" />
+  			<entry key="MS603" value-ref="marketableValuationJdbc" />
+  			<entry key="MS605" value-ref="marketableValuationJdbc" />
+  			<entry key="MS606" value-ref="marketableValuationJdbc" />
+  			<entry key="MS607" value-ref="marketableValuationJdbc" />
+  			<entry key="MS610" value-ref="marketableValuationJdbc" />
+  			<entry key="MS611" value-ref="marketableValuationJdbc" />
+  			<entry key="PT700" value-ref="propertyValuationJdbc" />
+  			<entry key="PT701" value-ref="propertyValuationJdbc" />
+  			<entry key="PT702" value-ref="propertyValuationJdbc" />
+  			<entry key="PT703" value-ref="propertyValuationJdbc" />
+  			<entry key="PT704" value-ref="propertyValuationJdbc" />
+  			<entry key="PT705" value-ref="propertyValuationJdbc" />
+  			<entry key="PT706" value-ref="propertyValuationJdbc" />
+            <entry key="PT707" value-ref="propertyValuationJdbc" />
+  			<entry key="PT708" value-ref="propertyValuationJdbc" />
+  			<entry key="PT709" value-ref="propertyValuationJdbc" />
+  			<entry key="PT710" value-ref="propertyValuationJdbc" />
+  			<entry key="PT711" value-ref="propertyValuationJdbc" />
+  		</map>
+  	</property>
+  	<property name="valuatorMap">
+  		<map>
+  			<entry key="AB101" value-ref="straightLineValuator" />
+  			<entry key="AB102" value-ref="vehicleValuator" />
+  			<entry key="AB109" value-ref="straightLineValuator" />
+  			<entry key="AB110" value-ref="goldValuator" />
+  			<entry key="AB111" value-ref="straightLineValuator" />
+  			<entry key="CS200" value-ref="cashValuator" />
+  			<entry key="CS202" value-ref="cashValuator" />
+  			<entry key="CS203" value-ref="cashValuator" />
+  			<entry key="GT400" value-ref="guaranteeValuator" />
+  			<entry key="GT402" value-ref="guaranteeValuator" />
+  			<entry key="GT404" value-ref="guaranteeValuator" />
+  			<entry key="GT405" value-ref="guaranteeValuator" />
+  			<entry key="GT406" value-ref="guaranteeValuator" />
+  			<entry key="GT407" value-ref="guaranteeValuator" />
+  			<entry key="GT408" value-ref="guaranteeValuator" />
+  			<entry key="GT409" value-ref="cgcValuator" />
+  			<entry key="GT410" value-ref="guaranteeValuator" />
+  			<entry key="IN500" value-ref="insuranceValuator" />
+  			<entry key="IN501" value-ref="insuranceValuator" />
+  			<entry key="IN502" value-ref="insuranceValuator" />
+  			<entry key="IN502" value-ref="insuranceValuator" />
+  			<entry key="MS600" value-ref="marketableValuator" />
+  			<entry key="MS601" value-ref="marketableValuator" />
+  			<entry key="MS602" value-ref="marketableValuator" />
+  			<entry key="MS603" value-ref="marketableValuator" />
+  			<entry key="MS605" value-ref="marketableValuator" />
+  			<entry key="MS606" value-ref="marketableValuator" />
+  			<entry key="MS607" value-ref="marketableValuator" />
+  			<entry key="MS610" value-ref="marketableValuator" />
+  			<entry key="MS611" value-ref="marketableValuator" />
+  			<entry key="PT700" value-ref="propertyIndexValuator" />
+  			<entry key="PT701" value-ref="propertyIndexValuator" />
+  			<entry key="PT702" value-ref="propertyIndexValuator" />
+  			<entry key="PT703" value-ref="propertyIndexValuator" />
+  			<entry key="PT704" value-ref="propertyIndexValuator" />
+  			<entry key="PT705" value-ref="propertyIndexValuator" />
+  			<entry key="PT706" value-ref="propertyIndexValuator" />
+            <entry key="PT707" value-ref="propertyIndexValuator" />
+  			<entry key="PT708" value-ref="propertyIndexValuator" />
+  			<entry key="PT709" value-ref="propertyIndexValuator" />
+  			<entry key="PT710" value-ref="propertyIndexValuator" />
+  			<entry key="PT711" value-ref="propertyIndexValuator" />
+  		</map>
+  	</property>
+  </bean>
+</beans>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	
+	<description>
+		To be used for transaction controller and transaction operation.
+		Transaction operation will have the property to set bus manager, which get from 'AppContext_Services.xml'
+	</description>
+
+	<bean id="TeamFunctionGrpTrx.MakerUpdateOperation" class="com.integrosys.cms.app.function.trx.MakerUpdateOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="TeamFunctionGrpTrx.MakerCloseRejectedOperation" class="com.integrosys.cms.app.function.trx.MakerCloseRejectedOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="TeamFunctionGrpTrx.CheckerApproveUpdateOperation" class="com.integrosys.cms.app.function.trx.CheckerApproveUpdateOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="TeamFunctionGrpTrx.CheckerRejectOperation" class="com.integrosys.cms.app.function.trx.CheckerRejectOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="TeamFunctionGrpTrx.MakerSubmitOperationCreate" class="com.integrosys.cms.app.function.trx.MakerSubmitOperationCreate">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="TeamFunctionGrpTrx.MakerSubmitOperationUpdate" class="com.integrosys.cms.app.function.trx.MakerSubmitOperationUpdate">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="TeamFunctionGrpTrx.MakerUpdateRejectedOperation" class="com.integrosys.cms.app.function.trx.MakerUpdateRejectedOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="TeamFunctionGrpTrx.MakerSubmitRejectedOperation" class="com.integrosys.cms.app.function.trx.MakerSubmitRejectedOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<!--<bean id="TeamFunctionGrpTrx.MakerCloseDraftOperation" class="com.integrosys.cms.app.function.trx.MakerCloseDraftOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>-->
+	
+	<bean id="TeamFunctionGrpTrx.ReadTeamFunctionGrpOperation" class="com.integrosys.cms.app.function.trx.ReadTeamFunctionGrpOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="TeamFunctionGrpTrx.SystemCloseOperation" class="com.integrosys.cms.app.function.trx.SystemCloseOperation">
+		<property name="teamFunctionGrpBusManager" ref="teamFunctionGrpBusManager"/>
+		<property name="stagingTeamFunctionGrpBusManager" ref="stagingTeamFunctionGrpBusManager"/>
+	</bean>
+	
+	<bean id="teamFunctionGrpReadController" class="com.integrosys.cms.app.function.trx.TeamFunctionGrpReadController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="ReadTeamFunctionGrpOperation" value-ref="TeamFunctionGrpTrx.ReadTeamFunctionGrpOperation"/>
+      		</map>
+	    </property>
+	</bean>
+
+  	<bean id="teamFunctionGrpTrxController" class="com.integrosys.cms.app.function.trx.TeamFunctionGrpTrxController">
+    	<property name="nameTrxOperationMap">
+      		<map>
+		        <entry key="MakerUpdateOperation" value-ref="TeamFunctionGrpTrx.MakerUpdateOperation"/>
+		        <entry key="MakerCloseRejectedOperation" value-ref="TeamFunctionGrpTrx.MakerCloseRejectedOperation"/>
+		        <entry key="CheckerApproveUpdateOperation" value-ref="TeamFunctionGrpTrx.CheckerApproveUpdateOperation"/>
+		        <entry key="CheckerRejectOperation" value-ref="TeamFunctionGrpTrx.CheckerRejectOperation"/>
+		        <entry key="MakerSubmitOperationCreate" value-ref="TeamFunctionGrpTrx.MakerSubmitOperationCreate"/>
+		        <entry key="MakerSubmitOperationUpdate" value-ref="TeamFunctionGrpTrx.MakerSubmitOperationUpdate"/>
+		        <entry key="MakerUpdateRejectedOperation" value-ref="TeamFunctionGrpTrx.MakerUpdateRejectedOperation"/>
+		        <entry key="MakerSubmitRejectedOperation" value-ref="TeamFunctionGrpTrx.MakerSubmitRejectedOperation"/>
+				<entry key="SystemCloseOperation" value-ref="TeamFunctionGrpTrx.SystemCloseOperation"/>
+      		</map>
+    	</property>
+		<property name="processTrxManager" ref="processTrxManager" />
+  	</bean>
+	
+	<bean id="teamFunctionGrpTrxControllerFactory" class="com.integrosys.cms.app.function.trx.TeamFunctionGrpTrxControllerFactory">
+		<property name="teamFunctionGrpReadController" ref="teamFunctionGrpReadController" />
+		<property name="teamFunctionGrpTrxController" ref="teamFunctionGrpTrxController" />
+	</bean>
+</beans>

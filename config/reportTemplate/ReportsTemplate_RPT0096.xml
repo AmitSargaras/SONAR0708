@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+		select distinct il.PARTYID,
+			il.PARTYNAME,
+			lmts.LMT_ID as FACILITY_ID,
+			lmts.FACILITY_NAME,
+			il.LINE_NO,
+			il.SERIAL_NO,
+			il.SCMFLAG,
+			fac.NEW_FACILITY_SYSTEM as SYSTEM_ID,
+			lmts.LMT_TYPE_VALUE as Sub_Limit,
+			il.STATUS as SCF_Interface_Status,
+			 CASE 
+			  WHEN il.STATUS ='Success' or il.STATUS='SUCCESS'
+			  THEN '-'
+			  ELSE il.ERRORMESSAGE
+			  END AS SCF_Interface_Failed_Reason,
+			TO_CHAR(il.REQUESTDATETIME,'DD/Mon/YYYY') as REQUESTDATETIME,
+			TO_CHAR(il.RESPONSEDATETIME,'DD/Mon/YYYY') as RESPONSEDATETIME
+			from
+			CMS_JS_INTERFACE_LOG il, 
+			SCI_LSP_APPR_LMTS lmts,
+			SCI_LSP_LMT_PROFILE cam,
+			CMS_FACILITY_NEW_MASTER fac
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				il.MODULENAME NOT IN ('CUSTOMER', 'CAM')
+				AND lmts.LINE_NO=il.LINE_NO
+				AND lmts.CMS_LIMIT_PROFILE_ID = cam.CMS_LSP_LMT_PROFILE_ID
+                AND cam.LLP_LE_ID= il.PARTYID
+                AND lmts.LMT_FAC_CODE = fac.NEW_FACILITY_CODE
+                AND il.SCMFLAG = 'Y'
+				<!-- AND lmts.cms_limit_status='ACTIVE' -->
+			</mandatoryClause>
+
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(REQUESTDATETIME) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Facility Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Serial No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SCM Flag</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>System ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Sub Limit</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SCF Interface Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>SCF Interface Failed Reason</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Request Date and Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Response Date and Time</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Line Interface with SCF</reportName>
+		</reportParamters>
+	</report>
+</reports>

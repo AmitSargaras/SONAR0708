@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT rownum as SR_NO,
+			  LSP_LE_ID AS PARTY_ID,
+			  --LSP_SHORT_NAME AS PARTY_NAME,
+			  trim((REPLACE (REPLACE (LSP_SHORT_NAME, chr (13), ''), chr (10), ' '))) AS PARTY_NAME,
+			  LMT_ID AS FACILITY_ID,
+			  UTILIZED_AMOUNT AS CURRENT_TOTAL_UTILIZED_AMOUNT,
+			  c_sec AS CURRENT_SEC_VALUE_AS_PER_COVERAGE,
+			  C_sec_Per AS CURRENT_MONTH_SECURITY_COVERAGE,
+			  P_UTILIZED_AMOUNT AS PREVIOUS_TOTAL_UTILIZED_AMOUNT,
+			  P_sec AS PREVIOUS_SEC_VALUE_AS_PER_COVERAGE,
+			  P_sec_Per AS PREVIOUS_MONTH_SECURITY_COVERAGE,
+			  Security_coverage_erosion,
+			  Erosion_threshold AS EROSION_ABOVE_THRESHOLD
+			FROM CLMS_TRQ_PRON_RPT_FAC
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				TRN_DATE=
+				  (SELECT
+				    TRUNC(to_Date( CASE
+				      WHEN LAST_DAY(to_Date(param_value, 'DD-MON-YYYY'))=to_Date(param_value, 'DD-MON-YYYY')
+				      THEN TRUNC(to_Date(param_value, 'DD-MON-YYYY'),'MM')
+				      ELSE to_Date(param_value, 'DD-MON-YYYY')
+				    END ) )
+				  FROM cms_general_param
+				  WHERE param_code = 'EROSION_DATE'
+				  )
+			</mandatoryClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Sr. No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>100</width>
+					<format>textFormat</format>
+					<header>Party name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Facility ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Current -Total utilized amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Current -Sec value as per Coverage</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Current month security coverage</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Previous -Total utilized amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Previous -Sec value as per Coverage</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Previous -month security coverage</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Security coverage erosion</header>
+				</reportColumn>
+				<reportColumn>
+					<width>20</width>
+					<format>textFormat</format>
+					<header>Erosion</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>CLIMS TRAQ Provision Report (Facility wise erosion report)</reportName>
+		</reportParamters>
+	</report>
+</reports>

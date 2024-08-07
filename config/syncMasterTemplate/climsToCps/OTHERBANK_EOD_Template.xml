@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<syncMasterTemplateOut>
+			<query>
+			SELECT *
+			FROM
+			  (SELECT Othbank.Id,
+			    Othbank.Bank_Code,
+			    Othbank.Bank_Name,
+			    Othbank.Address,
+			    Othbank.City,
+			    Othbank.State,
+			    Othbank.Region,
+			    Othbank.Country,
+			    Othbank.Contact_No,
+			    Othbank.Contact_Mail_Id,
+			    othBank.Deprecated,
+			    Othbank.Status,
+			    Othbank.Fax_No,
+			    'I' AS Action
+			  FROM Cms_Other_Bank othBank,
+			    trans_history trah ,
+			    transaction tra
+			  WHERE othBank.id                               = tra.reference_id
+			  AND othBank.id                                 = trah.reference_id
+			  AND trah.transaction_type                      ='OTHER_BANK'
+			  AND trah.from_state                            = 'PENDING_CREATE'
+			  AND trah.STATUS                                = 'ACTIVE'
+			  AND tra.STATUS                                != 'DELETED'
+			  AND TO_CHAR(trah.transaction_date,'DD-MON-YY') =
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE param_code = 'LAST_EOD_DATE'
+			    )
+			  UNION
+			  SELECT Othbank.Id,
+			    Othbank.Bank_Code,
+			    Othbank.Bank_Name,
+			    Othbank.Address,
+			    Othbank.City,
+			    Othbank.State,
+			    Othbank.Region,
+			    Othbank.Country,
+			    Othbank.Contact_No,
+			    Othbank.Contact_Mail_Id,
+			    othBank.Deprecated,
+			    Othbank.Status,
+			    Othbank.Fax_No,
+			    CASE
+			      WHEN UPPER(Othbank.EOD_SYNC_STATUS) = 'INSERT_SENT' or UPPER(Othbank.EOD_SYNC_STATUS) = 'INSERT_FAILED' 
+			      THEN 'I'
+			      ELSE 'U'
+			    END AS Action 
+			  FROM Cms_Other_Bank othBank,
+			    trans_history trah ,
+			    transaction tra
+			  WHERE othBank.id                = tra.reference_id
+			  AND trah.tr_history_id          = tra.cur_trx_history_id
+			  AND tra.transaction_type        ='OTHER_BANK'
+			  AND Tra.Status                  = 'ACTIVE'
+			  AND TRUNC(tra.transaction_date) =
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE param_code = 'LAST_EOD_DATE'
+			    )
+			  AND othBank.id NOT IN
+			    (SELECT reference_id
+			    FROM trans_history
+			    WHERE transaction_type                    ='OTHER_BANK'
+			    AND from_state                            = 'PENDING_CREATE'
+			    AND STATUS                                = 'ACTIVE'
+			    AND TO_CHAR(transaction_date,'DD-MON-YY') =
+			      (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			      FROM Cms_General_Param
+			      WHERE param_code = 'LAST_EOD_DATE'
+			      )
+			    )
+			  UNION
+			  SELECT Othbank.Id,
+			    Othbank.Bank_Code,
+			    Othbank.Bank_Name,
+			    Othbank.Address,
+			    Othbank.City,
+			    Othbank.State,
+			    Othbank.Region,
+			    Othbank.Country,
+			    Othbank.Contact_No,
+			    Othbank.Contact_Mail_Id,
+			    othBank.Deprecated,
+			    Othbank.Status,
+			    Othbank.Fax_No,
+			    'D' AS Action
+			  FROM Cms_Other_Bank othBank,
+			    transaction tra
+			  WHERE Othbank.Id                = Tra.Reference_Id
+			  AND Othbank.Eod_Sync_Status    not in ( 'INSERT_SENT','INSERT_FAILED')
+			  AND tra.transaction_type        ='OTHER_BANK'
+			  AND Tra.Status                  = 'DELETED'
+			  AND TRUNC(tra.transaction_date) =
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE param_code = 'LAST_EOD_DATE'
+			    )
+			  AND othBank.id NOT IN
+			    (SELECT reference_id
+			    FROM trans_history
+			    WHERE transaction_type                    ='OTHER_BANK'
+			    AND from_state                            = 'PENDING_CREATE'
+			    AND STATUS                                = 'ACTIVE'
+			    AND TO_CHAR(transaction_date,'DD-MON-YY') =
+			      (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			      FROM Cms_General_Param
+			      WHERE param_code = 'LAST_EOD_DATE'
+			      )
+			    )
+			  UNION
+			  SELECT Othbank.Id,
+			    Othbank.Bank_Code,
+			    Othbank.Bank_Name,
+			    Othbank.Address,
+			    Othbank.City,
+			    Othbank.State,
+			    Othbank.Region,
+			    Othbank.Country,
+			    Othbank.Contact_No,
+			    Othbank.Contact_Mail_Id,
+			    othBank.Deprecated,
+			    Othbank.Status,
+			    Othbank.Fax_No,
+			    CASE
+			      WHEN UPPER(Othbank.EOD_SYNC_STATUS) = 'INSERT_SENT'
+			      THEN 'I'
+			      WHEN Upper(Othbank.Eod_Sync_Status) = 'DELETE_SENT'
+			        OR Upper(Othbank.Eod_Sync_Status)   = 'DELETE_FAILED'
+			        OR (Upper(Othbank.EOD_SYNC_STATUS)  = 'UPDATE_SENT' AND Tra.Status ='DELETED')
+			      THEN 'D'
+			      WHEN Upper(Othbank.Eod_Sync_Status) = 'UPDATE_SENT'
+			      THEN 'U'
+			    END AS Action
+			  FROM Cms_Other_Bank Othbank ,
+			    transaction tra
+			  WHERE Othbank.Id                 = Tra.Reference_Id
+			  AND tra.transaction_type         ='OTHER_BANK'
+			  AND TRUNC(tra.transaction_date) !=
+			    (SELECT To_Date(Param_Value,'DD-Mon-YYYY')
+			    FROM Cms_General_Param
+			    WHERE param_code = 'LAST_EOD_DATE'
+			    )
+			  AND((Othbank.Eod_Sync_Status = 'INSERT_SENT' AND Othbank.Status          !='DELETED')
+  				OR Othbank.Eod_Sync_Status  IN ('UPDATE_SENT','DELETE_SENT','DELETE_FAILED') )
+			  ) 
+		</query>
+	<whereClause>
+		<mandatoryClause>
+				1=1
+		</mandatoryClause>
+	</whereClause>
+	<reportType>TXT</reportType>
+	<delimiter>|||</delimiter>
+	<secondaryDelimiter>~~~</secondaryDelimiter>
+	
+	<reportParamters>
+		<reportColumns>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>Id</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>BANK CODE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>Bank Name</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>Address</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>City</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>State</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>Region</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>Country</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>Contact_No</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>CONTACT_MAIL_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>Deprecated</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>Status</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>Fax No</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ACTION</header>
+			</reportColumn>
+		</reportColumns>
+		<reportName>CLIMS_OtherBank_Mst</reportName>
+	</reportParamters>
+	</syncMasterTemplateOut>

@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 2.0//EN"
+"http://java.sun.com/dtd/ejb-jar_2_0.dtd">
+
+<ejb-jar>
+    
+    <display-name>CommonCodeEntry</display-name>
+    
+    <enterprise-beans>
+        
+        <session id="session_SBCommonCodeEntryManager">
+            <ejb-name>SBCommonCodeEntryManager</ejb-name>
+            <home>com.integrosys.cms.app.commoncodeentry.bus.SBCommonCodeEntryManagerHome</home>
+            <remote>com.integrosys.cms.app.commoncodeentry.bus.SBCommonCodeEntryManager</remote>
+            <ejb-class>com.integrosys.cms.app.commoncodeentry.bus.SBCommonCodeEntryManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref id="resourceref_SBCommonCodeEntryManager_1">
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        
+        
+        <session id="session_SBCommonCodeEntriesProxyManager">
+            <ejb-name>SBCommonCodeEntriesProxyManager</ejb-name>
+            <home>com.integrosys.cms.app.commoncodeentry.proxy.SBCommonCodeEntriesProxyManagerHome</home>
+            <remote>com.integrosys.cms.app.commoncodeentry.proxy.SBCommonCodeEntriesProxyManager</remote>
+            <ejb-class>com.integrosys.cms.app.commoncodeentry.proxy.SBCommonCodeEntriesProxyManagerBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Container</transaction-type>
+            <resource-ref id="resourceref_SBCommonCodeEntriesProxyManager_1">
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+        </session>
+        
+        <entity id="entity_EBCommonCodeEntryStage">
+            <ejb-name>EBCommonCodeEntryStage</ejb-name>
+            <home>com.integrosys.cms.app.commoncodeentry.bus.EBCommonCodeEntryStageHome</home>
+            <remote>com.integrosys.cms.app.commoncodeentry.bus.EBCommonCodeEntryStage</remote>
+            <ejb-class>com.integrosys.cms.app.commoncodeentry.bus.EBCommonCodeEntryStageBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCommonCodeEntryStage</abstract-schema-name>
+            
+            
+            <cmp-field >
+                <field-name>stageId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cmpEntryId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>entryCode</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>entryName</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>activeStatus</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>categoryCode</field-name>
+            </cmp-field>  
+            <cmp-field >
+                <field-name>categoryCodeId</field-name>
+            </cmp-field>            
+            <cmp-field >
+                <field-name>entrySource</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>country</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>refEntryCode</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>groupId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>status</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>isNew</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>stageRefId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>creationDate</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>lastUpdateDate</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cpsId</field-name>
+            </cmp-field>
+            
+            <primkey-field>stageId</primkey-field>
+            
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+                        
+            <query>
+                <query-method>
+                    <method-name>findByEntryId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonCodeEntryStage o WHERE (?1 = o.cmpEntryId )]]></ejb-ql>
+            </query>
+            <query>
+                <query-method>
+                    <method-name>findByEntryId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>boolean</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonCodeEntryStage o WHERE ((?1 = o.cmpEntryId ) AND (o.activeStatus=?2))]]></ejb-ql>
+            </query>
+            <query>
+                <query-method>
+                    <method-name>findByStagingRefId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonCodeEntryStage o WHERE (?1 = o.stageRefId)]]></ejb-ql>
+            </query>
+            
+        </entity>
+        
+        
+        <entity id="entity_EBCommonCodeEntry">
+            <ejb-name>EBCommonCodeEntry</ejb-name>
+            <home>com.integrosys.cms.app.commoncodeentry.bus.EBCommonCodeEntryHome</home>
+            <remote>com.integrosys.cms.app.commoncodeentry.bus.EBCommonCodeEntry</remote>
+            <ejb-class>com.integrosys.cms.app.commoncodeentry.bus.EBCommonCodeEntryBean</ejb-class>
+            <persistence-type>Container</persistence-type>
+            <prim-key-class>java.lang.Long</prim-key-class>
+            <reentrant>False</reentrant>
+            <cmp-version>2.x</cmp-version>
+            <abstract-schema-name>EBCommonCodeEntry</abstract-schema-name>
+            
+            
+            <cmp-field >
+                <field-name>cmpEntryId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>entryCode</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>entryName</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>activeStatus</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>categoryCode</field-name>
+            </cmp-field>  
+            <cmp-field >
+                <field-name>categoryCodeId</field-name>
+            </cmp-field>            
+            <cmp-field >
+                <field-name>entrySource</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>country</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>refEntryCode</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>groupId</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>status</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>versionTime</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>creationDate</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>lastUpdateDate</field-name>
+            </cmp-field>
+            <cmp-field >
+                <field-name>cpsId</field-name>
+            </cmp-field>
+            
+            <primkey-field>cmpEntryId</primkey-field>
+            
+            <resource-ref>
+                <res-ref-name>jdbc/CMSPool</res-ref-name>
+                <res-type>javax.sql.DataSource</res-type>
+                <res-auth>Container</res-auth>
+                <res-sharing-scope>Shareable</res-sharing-scope>
+            </resource-ref>
+            
+            <query>
+                <query-method>
+                    <method-name>findByCategoryCodeId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonCodeEntry o WHERE (?1 = o.categoryCodeId)]]></ejb-ql>
+            </query>
+            
+            <query>
+                <query-method>
+                    <method-name>findByCategoryAndEntryCode</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.String</method-param>
+                        <method-param>java.lang.String</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonCodeEntry o WHERE ((?1 = o.categoryCodeId) AND (?2 = o.entryCode)) AND (?3 = o.country)]]></ejb-ql>
+            </query>
+            
+            <query>
+                <query-method>
+                    <method-name>findByCategoryAndEntryCodeAndSourceId</method-name>
+                    <method-params>
+                        <method-param>java.lang.Long</method-param>
+                        <method-param>java.lang.String</method-param>
+                        <method-param>java.lang.String</method-param>
+                        <method-param>java.lang.String</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonCodeEntry o WHERE ((?1 = o.categoryCodeId) AND (?2 = o.entryCode)) AND (?3 = o.country) AND (?4 = o.entrySource)]]></ejb-ql>
+            </query>            
+            
+            <query>
+                <query-method>
+                    <method-name>findByCategoryCode</method-name>
+                    <method-params>
+                        <method-param>java.lang.String</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonCodeEntry o WHERE (o.categoryCode = ?1)]]></ejb-ql>
+            </query>
+            
+            <query>
+                <query-method>
+                    <method-name>findByCategoryCodeAndRefEntryCode</method-name>
+                    <method-params>
+                        <method-param>java.lang.String</method-param>
+                        <method-param>java.lang.String</method-param>
+                    </method-params>
+                </query-method>
+                <ejb-ql><![CDATA[SELECT OBJECT(o) FROM EBCommonCodeEntry o WHERE ((?1 = o.categoryCode) AND (o.refEntryCode = ?2))]]></ejb-ql>
+            </query>
+            
+        </entity>
+        
+    </enterprise-beans>
+    
+    <assembly-descriptor>
+        
+        <container-transaction>
+            
+            <method>
+                <ejb-name>SBCommonCodeEntryManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>SBCommonCodeEntriesProxyManager</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>EBCommonCodeEntry</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <method>
+                <ejb-name>EBCommonCodeEntryStage</ejb-name>
+                <method-name>*</method-name>
+            </method>
+            
+            <trans-attribute>Required</trans-attribute>
+            
+        </container-transaction>
+        
+    </assembly-descriptor>
+    
+</ejb-jar>

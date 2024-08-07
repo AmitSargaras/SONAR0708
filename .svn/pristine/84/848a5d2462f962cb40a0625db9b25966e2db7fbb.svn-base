@@ -1,0 +1,28 @@
+drop index TM_CNT_COD_U1;
+
+CREATE INDEX "TM_CNT_COD_U1" ON "CMS_TEAM_COUNTRY_CODE"
+        ("TEAM_ID" ASC,
+         "COUNTRY_CODE" ASC)
+        ALLOW REVERSE SCANS;
+        
+        
+drop index TM_ORG_COD_U1;
+    
+CREATE INDEX "TM_ORG_COD_U1" ON "CMS_TEAM_ORGANISATION_CODE"
+        ("TEAM_ID" ASC,
+         "ORGANISATION_CODE" ASC)
+        ALLOW REVERSE SCANS;        
+    
+drop index TM_SEG_COD_U1;
+
+CREATE INDEX "TM_SEG_COD_U1" ON "CMS_TEAM_SEGMENT_CODE"
+        ("TEAM_ID" ASC,
+         "SEGMENT_CODE" ASC)
+        ALLOW REVERSE SCANS;        
+
+drop index TM_CMS_SEG_COD_U1;
+                
+CREATE INDEX "TM_CMS_SEG_COD_U1" ON "CMS_TEAM_CMS_SEGMENT_CODE"
+        ("TEAM_ID" ASC,
+         "SEGMENT_CODE" ASC)
+        ALLOW REVERSE SCANS;        

@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+        <form-bean name="DocumentTemplateForm" type="com.integrosys.cms.ui.doctemplate.DocumentTemplateForm">
+        </form-bean>
+        
+        <form-bean name="CCGlobalForm" type="com.integrosys.cms.ui.ccglobal.CCGlobalForm">
+        </form-bean>
+
+        <form-bean name="CCMasterForm" type="com.integrosys.cms.ui.ccmaster.CCMasterForm">
+        </form-bean>
+
+        <form-bean name="CCCountryForm" type="com.integrosys.cms.ui.cccountry.CCCountryForm">
+        </form-bean>
+        
+        <form-bean name="SecurityGlobalForm" type="com.integrosys.cms.ui.secglobal.SecurityGlobalForm">
+        </form-bean>
+        
+        
+
+        <form-bean name="SecurityMasterForm" type="com.integrosys.cms.ui.secmaster.SecurityMasterForm">
+        </form-bean>
+
+        <form-bean name="SecurityCountryForm" type="com.integrosys.cms.ui.seccountry.SecurityCountryForm">
+        </form-bean>
+        
+         <form-bean name="FacilityGlobalForm" type="com.integrosys.cms.ui.facglobal.FacilityGlobalForm">
+        </form-bean>
+         <form-bean name="CAMGlobalForm" type="com.integrosys.cms.ui.cam.CAMGlobalForm">
+        </form-bean>
+         <form-bean name="OtherGlobalForm" type="com.integrosys.cms.ui.otherdoc.OtherGlobalForm">
+        </form-bean>
+        
+        <form-bean name="RecurrentGlobalForm" type="com.integrosys.cms.ui.recurrentMaster.RecurrentGlobalForm">
+        </form-bean>
+        
+        <form-bean name="DocFacilityMasterForm" type="com.integrosys.cms.ui.facmaster.FacilityMasterForm">
+        </form-bean>
+    
+    </form-beans>
+            
+    <action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+        <action path="/DocumentTemplate" type="com.integrosys.cms.ui.doctemplate.DocumentTemplateAction"
+            name="DocumentTemplateForm" validate="false" scope="request">
+            <forward name="cc_master" path="/CCMaster.do">
+            </forward>
+            <forward name="cc_country" path="/CCCountry.do">
+            </forward>
+            <forward name="sec_master" path="/SecurityMaster.do">
+            </forward>
+            <forward name="fac_master" path="/DocFacilityMaster.do">
+            </forward>
+<!--            <forward name="sec_country" path="/SecurityCountry.do">-->
+<!--            </forward>-->
+        </action>
+
+
+        <!-- for global document item redirection -->
+        <action path="/DocGlobalRedirect" type="com.integrosys.cms.ui.docglobal.DocumentGlobalRedirectAction"
+                 name="DocumentTemplateForm" validate="false"  scope="request">
+             <forward name="CC_GLOBAL_TEMPLATE" path="/CCGlobal.do"/>
+             <forward name="COL_GLOBAL_TEMPLATE" path="/SecurityGlobal.do"/>
+             <forward name="FAC_GLOBAL_TEMPLATE" path="/FacilityGlobal.do"/>
+             <forward name="CAM_GLOBAL_TEMPLATE" path="/CAMGlobal.do"/>
+               <forward name="OTHER_GLOBAL_TEMPLATE" path="/OtherGlobal.do"/>
+                <forward name="RECURRENT_GLOBAL_TEMPLATE" path="/RecurrentGlobal.do"/>
+         </action>
+
+       <!-- for cc global -->
+        <action path="/CCGlobal" type="com.integrosys.cms.ui.ccglobal.CCGlobalAction"
+            name="CCGlobalForm" validate="false" scope="request">
+            <forward name="after_global_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccglobal/global_doc_checklist.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="after_view_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccglobal/global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="after_edit_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccglobal/global_doc_edit.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="after_prepare_create_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccglobal/global_doc_create.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="after_create_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccglobal/chk_global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="after_approve_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="after_reject_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="after_close_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+            <forward name="checker_global_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.global.doc.cc"/>
+            </forward>
+        </action>
+        <!--  for Document Master template -->
+        <action path="/CCMaster" type="com.integrosys.cms.ui.ccmaster.CCMasterAction" name="CCMasterForm" validate="false" scope="request">
+            <forward name="after_master_cc_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccmaster/cc_master_list.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="after_edit_cc_master" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccmaster/cc_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="after_add_cc_master" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccmaster/cc_add_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="after_submit_cc_master" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="after_view_cc_master" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccmaster/cc_template_list_view.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/ccmaster/chk_cc_template_list_view.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="after_approve_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="after_reject_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="after_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+            <forward name="no_template" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/no_template.jsp"/>
+                <set-property property="title" value="title.master.doc.cc"/>
+            </forward>
+
+        </action>
+
+        <!-- for cc country -->
+        <action path="/CCCountry" type="com.integrosys.cms.ui.cccountry.CCCountryAction" name="CCCountryForm" validate="false" scope="request">
+            <forward name="after_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/country_list.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_country_law_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/country_law_list.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_create_template_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/cc_template_list.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_add_template_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/cc_add_template_list.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_create_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/add_template.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_submit" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/chk_cc_template_list_view.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_approve_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_reject_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="after_view_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/cc_template_list_view.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="no_template" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/no_template.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+            <forward name="template_error" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cccountry/error_message.jsp"/>
+                <set-property property="title" value="title.country.doc.cc"/>
+            </forward>
+        </action>
+
+        <!-- for security global -->
+        <action path="/SecurityGlobal" type="com.integrosys.cms.ui.secglobal.SecurityGlobalAction"
+            name="SecurityGlobalForm" validate="false" scope="request">
+            <forward name="after_global_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secglobal/global_doc_checklist.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_view_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secglobal/global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_edit_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secglobal/global_doc_edit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="maker_update_save_process"
+                path="/template/common_template.jsp">
+                 <set-property property="rightFrame" value="/secglobal/mkr_save_global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_prepare_create_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secglobal/global_doc_create.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_create_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secglobal/chk_global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_approve_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_reject_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_close_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="prepare_delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secglobal/global_doc_delete.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+        </action>
+
+        <!-- for security master -->
+        <action path="/SecurityMaster" type="com.integrosys.cms.ui.secmaster.SecurityMasterAction" name="SecurityMasterForm" validate="false" scope="request">
+            <forward name="after_prepare_sectype" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secmaster/sectype_list.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_show_subtype_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secmaster/sectype_list.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_create_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secmaster/subtype_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_prepare_add_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secmaster/subtype_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+			<forward name="after_add_security_master" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secmaster/security_add_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_submit_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secmaster/chk_template_list_view.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_approve_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_reject_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="after_view_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/secmaster/subtype_template_list_view.jsp"/>
+                <set-property property="title" value="title.master.doc.security"/>
+            </forward>
+            <forward name="refresh_collateral_id"	path="/secmaster/collateralIdList.jsp" />
+        </action>
+        <!-- for security country -->
+        <action path="/SecurityCountry" type="com.integrosys.cms.ui.seccountry.SecurityCountryAction" name="SecurityCountryForm" validate="false" scope="request">
+            <forward name="after_prepare" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/country_list.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_country_sec_list" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/seccountry/sec_type.jsp"/>
+                <set-property property="rightFrame" value="/seccountry/subtype_list.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_create_template_item" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/seccountry/sec_type.jsp"/>
+                <set-property property="rightFrame" value="/seccountry/template_list.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_create_item" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/seccountry/sec_type.jsp"/>
+                <set-property property="rightFrame" value="/seccountry/add_template.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_submit" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/seccountry/sec_type.jsp"/>
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/chk_template_list.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_approve_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_reject_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_view_template_item" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/seccountry/sec_type.jsp"/>
+                <set-property property="rightFrame" value="/seccountry/template_list_view.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_close_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/template_list_view.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="no_template" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/seccountry/sec_type.jsp"/>
+                <set-property property="rightFrame" value="/seccountry/no_template.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="wip" path="/template/common_basic_frame_template.jsp">
+                <set-property property="leftFrame" value="/seccountry/sec_type.jsp"/>
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+
+            <!-- without frames -->
+            <forward name="after_prepare_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/country_list.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_country_sec_list_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/subtype_list.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_create_template_item_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/template_list.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_create_item_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/add_template.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_submit_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_process_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/chk_template_list.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_approve_template_item_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_reject_template_item_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_view_template_item_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/template_list_view.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_close_template_item_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/template_list_view.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="no_template_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/seccountry/no_template.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="after_close_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+            <forward name="wip_WF" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.country.doc.security"/>
+            </forward>
+        </action>   
+        
+        
+        
+         <!-- for facility global -->
+        <action path="/FacilityGlobal" type="com.integrosys.cms.ui.facglobal.FacilityGlobalAction"
+            name="FacilityGlobalForm" validate="false" scope="request">
+            <forward name="after_global_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facglobal/global_doc_checklist.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_view_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facglobal/global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_edit_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facglobal/global_doc_edit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_prepare_create_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facglobal/global_doc_create.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_create_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facglobal/chk_global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_approve_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_reject_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_close_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+             <forward name="prepare_delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facglobal/global_doc_delete.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+        </action>
+
+        <!-- for Facility master -->
+        
+        
+        <action path="/DocFacilityMaster" type="com.integrosys.cms.ui.facmaster.FacilityMasterAction" 
+        name="DocFacilityMasterForm" validate="false" scope="request">
+            <forward name="after_prepare_sectype" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/sectype_list.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_show_subtype_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/sectype_list.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_create_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/subtype_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_resubmit_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/subtype_template_list_resubmit.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="wip" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_prepare_add_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/subtype_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+			<forward name="after_add_facility_master" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/facility_add_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_submit_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+             <forward name="after_submit_template_item_error" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/subtype_template_list.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/chk_template_list_view.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_approve_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_reject_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+            <forward name="after_view_template_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/facmaster/subtype_template_list_view.jsp"/>
+                <set-property property="title" value="title.master.doc"/>
+            </forward>
+        </action>     
+         <!-- for CAM global -->
+        <action path="/CAMGlobal" type="com.integrosys.cms.ui.cam.CAMGlobalAction"
+            name="CAMGlobalForm" validate="false" scope="request">
+            <forward name="after_global_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cam/global_doc_checklist.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_view_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cam/global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_edit_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cam/global_doc_edit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_prepare_create_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cam/global_doc_create.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_create_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cam/chk_global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_approve_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_reject_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_close_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+             <forward name="prepare_delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/cam/global_doc_delete.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+        </action>
+        
+        <action path="/OtherGlobal" type="com.integrosys.cms.ui.otherdoc.OtherGlobalAction"
+            name="OtherGlobalForm" validate="false" scope="request">
+            <forward name="after_global_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/other/global_doc_checklist.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_view_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/other/global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_edit_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/other/global_doc_edit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_prepare_create_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/other/global_doc_create.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_create_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/other/chk_global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_approve_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_reject_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_close_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+             <forward name="prepare_delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/other/global_doc_delete.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+        </action>
+        <action path="/RecurrentGlobal" type="com.integrosys.cms.ui.recurrentMaster.RecurrentGlobalAction"
+            name="RecurrentGlobalForm" validate="false" scope="request">
+            <forward name="after_global_list" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/recurrentMaster/global_doc_checklist.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_view_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/recurrentMaster/global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_edit_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/recurrentMaster/global_doc_edit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_prepare_create_doc_item"
+                path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/recurrentMaster/global_doc_create.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_create_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_process" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/recurrentMaster/chk_global_doc_view.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_approve_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_approve.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_reject_doc" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="after_close_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+             <forward name="prepare_delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/recurrentMaster/global_doc_delete.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+            <forward name="delete_doc_item" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+                <set-property property="title" value="title.global.doc"/>
+            </forward>
+        </action>
+    </action-mappings>
+
+    
+    <message-resources key="message-documenttemplate" parameter="ApplicationResources-documenttemplate"/>
+</struts-config>

@@ -1,0 +1,13 @@
+"$DB2_HOME"/bin/db2 ALTER TABLESPACE CMS_DATA AUTORESIZE YES INCREASESIZE 50 M MAXSIZE NONE
+
+"$DB2_HOME"/bin/db2 UPDATE DATABASE CONFIGURATION FOR $DB_NAME USING STMTHEAP 131072
+
+"$DB2_HOME"/bin/db2 update db cfg for $DB_NAME using LOGPRIMARY 20
+
+"$DB2_HOME"/bin/db2 update db cfg for $DB_NAME using LOGSECOND  10
+
+"$DB2_HOME"/bin/db2 terminate
+
+"$DB2_HOME"/bin/db2 db2stop force
+
+"$DB2_HOME"/bin/db2 db2start

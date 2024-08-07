@@ -1,0 +1,11438 @@
+--------------------------------------------------------
+--  File created - Thursday-March-24-2022   
+--------------------------------------------------------
+--------------------------------------------------------
+--  DDL for View APPLICABLE_LAW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "APPLICABLE_LAW" ("LAW_CODE", "LAW_CODE_DESC") AS 
+  SELECT  ENTRY_CODE  AS law_code , ENTRY_NAME  AS law_code_desc  FROM COMMON_CODE_CATEGORY_ENTRY WHERE CATEGORY_CODE = 'APP_LAW'
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_FD_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_FD_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+SELECT
+  spro.lsp_short_name As Customer_Name,
+  DP.DEPOSIT_MATURITY_DATE   AS D_F_MATURITY_DATE ,
+  NULL   AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+ -- sysdate AS FIC_MIS_DATE ,
+  (select /*+ RESULT_CACHE */ to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+   ''      AS N_F_MKT_MITIGANT_VALUE ,
+
+    TO_CHAR(ln.LIEN_AMOUNT,'999999999999999999999.999')   AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+
+    Months_between (DP.DEPOSIT_MATURITY_DATE,DP.ISSUE_DATE)       AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+
+    (CASE
+         WHEN MONTHS_BETWEEN(DP.DEPOSIT_MATURITY_DATE,(select /*+ RESULT_CACHE */ to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE')) < 0
+         --WHEN Months_between(DP.DEPOSIT_MATURITY_DATE,sysdate) < 0
+         THEN
+              0
+         WHEN MONTHS_BETWEEN(DP.DEPOSIT_MATURITY_DATE,(select /*+ RESULT_CACHE */ to_date (param_value,'dd/mm/yyyy hh24:mi')
+   from cms_general_param where param_code = 'APPLICATION_DATE')) >= 0
+        -- WHEN Months_between(DP.DEPOSIT_MATURITY_DATE,sysdate) >= 0
+         THEN
+              MONTHS_BETWEEN(DP.DEPOSIT_MATURITY_DATE,(select /*+ RESULT_CACHE */ to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE'))
+            --  Months_between(DP.DEPOSIT_MATURITY_DATE,sysdate)
+         END )
+   AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+  sec.sci_security_currency ----CCY code coming from Security module
+     AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+    TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)      || TO_CHAR(ln.basel_serial)  AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || (
+--   TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)      || TO_CHAR(ln.basel_serial) ) AS V_F_MITIGANT_CODE,
+
+   (
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+ || (
+   TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)      || TO_CHAR(ln.basel_serial) )
+ AS V_F_MITIGANT_CODE ,
+
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+  (
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+
+    'SEC0001066'   AS V_F_MITIGANT_TYPE_CODE , ------changed
+
+  NULL AS V_F_RATING_ID ,
+    DP.ISSUE_DATE   AS D_F_START_DATE,
+   DP.SYSTEM_ID    AS V_F_TPFD_CUST_ID ,
+ null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  null AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+ null AS F_F_RATING_TYPE ,
+  null AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT ,     ------------Facility Sec/Primary Field
+cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+cri.THIRD_YEAR AS THIRD_YEAR,
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,-- By sachin 27/06/2012
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  /*(SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,*/
+  -- By sachin 27/06/2012
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  (select * from cms_cash_deposit where status = 'ACTIVE' and ACTIVE = 'active') dp,
+
+  CMS_LIEN LN--,
+ -- TRANSACTION trx
+ ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE
+ SUB.SECURITY_SUB_TYPE_ID = 'CS202'
+ and SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND CRI.CMS_LE_MAIN_PROFILE_ID(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+--AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+--AND SEC.CMS_COLLATERAL_ID       = DP.CMS_COLLATERAL_ID(+) -- By sachin 27/06/2012
+AND sec.CMS_COLLATERAL_ID       = dp.cms_collateral_id
+AND DP.CASH_DEPOSIT_ID          = LN.CASH_DEPOSIT_ID(+)
+--AND TRX.REFERENCE_ID            = spro.cms_le_sub_profile_id
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+--and SUB.SECURITY_SUB_TYPE_ID = 'CS202'
+AND SEC.CMS_COLLATERAL_ID IN (SELECT CMS_COLLATERAL_ID FROM CMS_CASH_DEPOSIT)
+
+
+--  AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+--    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+   AND MAPS.CHARGE_ID   in 
+                (SELECT MAX(MAPS2.CHARGE_ID)
+		        from cms_limit_security_map maps2
+		        where maps2.cms_lsp_appr_lmts_id = SCI.cms_lsp_appr_lmts_id
+		        AND maps2.cms_collateral_id      =sec.cms_collateral_id
+		        ) 
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+
+--AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+--AND (MAPS.update_status_ind <> 'D')
+--group by
+--DP.DEPOSIT_MATURITY_DATE ,
+--DP.ISSUE_DATE,
+--DP.SYSTEM_ID ,
+--DP.DEPOSIT_REFERENCE_NUMBER,
+--ln.LIEN_AMOUNT,
+--ln.SERIAL_NO,
+--
+--sec.sci_security_currency ,
+--SEC.SEC_PRIORITY,
+--
+--XREF.FACILITY_SYSTEM,
+--XREF.FACILITY_SYSTEM_ID,
+--XREF.LINE_NO,
+--XREF.SERIAL_NO,
+--
+--spro.PARTY_GRP_NM,
+--
+--cri.FIRST_YEAR,
+--cri.FIRST_YEAR_TURNOVER ,
+--cri.SECOND_YEAR ,
+--cri.SECOND_YEAR_TURNOVER ,
+--cri.THIRD_YEAR ,
+--CRI.THIRD_YEAR_TURNOVER ,
+--cri.CUSTOMER_RAM_ID
+
+);
+--------------------------------------------------------
+--  DDL for View BASEL_GC_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_GC_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID", "COMPONENT") AS 
+  (SELECT 
+---------- GC Null control ----------- 
+ spro.lsp_short_name As Customer_Name,
+ null AS D_F_MATURITY_DATE , 
+   MAX(det.due_date)    AS D_F_VALUE_DATE, 
+  NULL    AS F_F_AGREEMENT_FLAG, 
+  (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+  --sysdate AS FIC_MIS_DATE , 
+  TO_CHAR(((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100),'999999999999999999999999999999.999')   AS N_F_MKT_MITIGANT_VALUE , 
+  TO_CHAR(((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100),'999999999999999999999999999999.999')  AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT' 
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months 
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data 
+  null AS N_F_RESIDUAL_MATURITY, 
+  30 AS N_F_REVAL_FREQUENCY , -------no data 
+  'INR'    AS V_F_CCY_CODE , ---changed 
+  'INDIA' AS V_F_COUNTRY_ID, 
+  NULL    AS V_F_CREDIT_RATING , 
+  NULL    AS V_F_ISSUER_CODE , 
+   TO_CHAR(SEC.CMS_COLLATERAL_ID) 
+    || (SELECT substr(TRY.ENTRY_ID, 11, length(TRY.ENTRY_ID))   FROM COMMON_CODE_CATEGORY_ENTRY TRY 
+      WHERE   try.ENTRY_CODE    = TO_CHAR(GC.COMPONENT) and try.category_code = 'CURRENT_ASSET' 
+      ) ------newly added_06_feb 
+     AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15 
+--  ( 
+--  CASE 
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS' 
+--    THEN 'UBS' 
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS' 
+--    THEN 'FW' 
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' 
+--    THEN 'FN' 
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED 
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS , 
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND , 
+  XREF.LINE_NO              AS V_F_LINE_CODE , 
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL , 
+  -----21 = 22+15---- 
+--  ( 
+--  CASE 
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS' 
+--    THEN 'UBS' 
+--      ||XREF.FACILITY_SYSTEM_ID 
+--      ||XREF.LINE_NO 
+--      ||XREF.SERIAL_NO 
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS' 
+--    THEN 'FW' 
+--      ||XREF.FACILITY_SYSTEM_ID 
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' 
+--    THEN 'FN' 
+--      ||XREF.FACILITY_SYSTEM_ID 
+--  END )  ----22 
+--  || ( 
+--  
+--    TO_CHAR(SEC.CMS_COLLATERAL_ID) 
+--    || --TO_CHAR(GC.COMPONENT) 
+--    (SELECT substr(TRY.ENTRY_ID, 11, length(TRY.ENTRY_ID)) 
+--      FROM COMMON_CODE_CATEGORY_ENTRY TRY 
+--      WHERE 
+--      try.ENTRY_CODE    = TO_CHAR(GC.COMPONENT) and try.category_code = 'CURRENT_ASSET' 
+--      ) ------newly added_06_feb 
+-- ) AS V_F_MITIGANT_CODE, 
+ 
+ (
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+ || ( 
+  
+    TO_CHAR(SEC.CMS_COLLATERAL_ID) 
+    || --TO_CHAR(GC.COMPONENT) 
+    (SELECT substr(TRY.ENTRY_ID, 11, length(TRY.ENTRY_ID)) 
+      FROM COMMON_CODE_CATEGORY_ENTRY TRY 
+      WHERE 
+      try.ENTRY_CODE    = TO_CHAR(GC.COMPONENT) and try.category_code = 'CURRENT_ASSET' 
+      ) ------newly added_06_feb 
+ )
+ AS V_F_MITIGANT_CODE ,
+ 
+ 
+--  ( 
+--  CASE 
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno 
+--    THEN 'UBS' 
+--      ||XREF.FACILITY_SYSTEM_ID 
+--      ||XREF.LINE_NO 
+--      ||XREF.SERIAL_NO 
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid 
+--    THEN 'FW' 
+--      ||XREF.FACILITY_SYSTEM_ID 
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid 
+--    THEN 'FN' 
+--      ||XREF.FACILITY_SYSTEM_ID 
+--  END ) AS V_F_MAP_ID , 
+
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  
+  GC.COMPONENT   AS V_F_MITIGANT_TYPE_CODE , ------changed 
+  
+  NULL AS V_F_RATING_ID , 
+  --XREF.RELEASE_DATE AS D_F_START_DATE,
+  (case when gc.debtors = 'Y'
+  then PF.llp_bca_ref_appr_date - GC.age
+  else PF.llp_bca_ref_appr_date
+  end ) as D_F_START_DATE,  
+  NULL                     AS V_F_TPFD_CUST_ID ,
+  NULL                     AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY , 
+  null AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED 
+  null AS F_F_RATING_TYPE , 
+  null AS F_F_RECOURSE_AVAILABLE , 
+  (SELECT G.party_group_code 
+  FROM cms_party_group g 
+  WHERE g.id = spro.PARTY_GRP_NM 
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code) 
+  /*SCI.PURPOSE*/ 
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed 
+  ( 
+  CASE 
+    WHEN SEC.SEC_PRIORITY= 'Y' 
+    THEN 'P' 
+    WHEN SEC.SEC_PRIORITY= 'N' 
+    THEN 'S' 
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT,     ------------Facility Sec/Primary Field 
+cri.FIRST_YEAR AS FIRST_YEAR, 
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER, 
+cri.SECOND_YEAR AS SECOND_YEAR, 
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER, 
+cri.THIRD_YEAR AS THIRD_YEAR, 
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER, 
+  cri.CUSTOMER_RAM_ID      AS RAM_ID,
+  GC.COMPONENT
+FROM CMS_SECURITY SEC, 
+  CMS_SECURITY_SUB_TYPE SUB, 
+  SECURITY_TYPE TYP, 
+  SCI_LSP_APPR_LMTS SCI, 
+  SCI_LSP_SYS_XREF XREF, 
+  --SCI_LSP_LMTS_XREF_MAP MAPSS, 
+  CMS_LIMIT_SECURITY_MAP MAPS, 
+  (SELECT * 
+  FROM SCI_LSP_LMTS_XREF_MAP 
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN 
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID) 
+    FROM SCI_LSP_LMTS_XREF_MAP 
+    WHERE CMS_LSP_APPR_LMTS_ID IN 
+      (SELECT CMS_LSP_APPR_LMTS_ID 
+      FROM SCI_LSP_LMTS_XREF_MAP 
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID 
+      ) 
+  
+    ) 
+  ) MAPSS, 
+  SCI_LSP_LMT_PROFILE PF, 
+  SCI_LE_SUB_PROFILE SPRO , 
+  SCI_LE_MAIN_PROFILE MAN, 
+  sci_le_cri  cri, 
+  (SELECT * FROM CMS_ASSET_GC_STOCK_DET gc1 ,CMS_COMPONENT cm
+WHERE gc1.STOCK_TYPE = 'CurrentAsset'
+and cm.component_type = 'Current_Asset'
+and cm.component_code = gc1.component
+and cm.status= 'ACTIVE'
+and (( cm.debtors = 'Y' and cm.age < 365) or (cm.debtors = 'N'))
+  ) GC,
+  CMS_ASSET_GC_DET DET, 
+  CMS_ASSET AST 
+  ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID 
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID 
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID 
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID 
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID 
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID 
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID 
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID 
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID 
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID 
+AND GC.GC_DET_ID (+)            = DET.GC_DET_ID 
+AND SEC.CMS_COLLATERAL_ID       = det.cms_collateral_id(+) 
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID 
+AND spro.status               = 'ACTIVE' 
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS') 
+and basel_master.system= XREF.FACILITY_SYSTEM
+AND det.due_date  = (SELECT MAX(sh.due_date) FROM cms_asset_gc_det sh WHERE sh.cms_collateral_id=DET.cms_collateral_id) 
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL') 
+AND SUB.security_sub_type_id = 'AB100' 
+ and component not like 'DUMMY%' 
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET) 
+ AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL) 
+ and ( 
+ AST.PHY_INSPECTION_FREQ <> '0' or 
+              AST.PHY_INSPECTION_DONE <> 'N' or 
+              AST.LAST_USED_ID_IDX_STOCK <> 0 or 
+              AST.LAST_USED_ID_IDX_FAO <> 0 or 
+              AST.LAST_USED_ID_IDX_INSR <> 0 
+              OR GC.COMPONENT IS NOT NULL 
+ ) 
+  
+ GROUP BY 
+  spro.lsp_short_name,
+  det.due_date ,
+GC.COMPONENT_AMOUNT,
+SPRO.FUNDED_SHARE_PERCENT,
+SEC.CMS_COLLATERAL_ID,
+GC.COMPONENT,
+XREF.FACILITY_SYSTEM,
+XREF.FACILITY_SYSTEM_ID   ,
+XREF.LINE_NO              ,
+XREF.SERIAL_NO ,
+XREF.RELEASE_DATE ,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR ,
+cri.FIRST_YEAR_TURNOVER ,
+cri.SECOND_YEAR ,
+cri.SECOND_YEAR_TURNOVER ,
+cri.THIRD_YEAR ,
+CRI.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+gc.age,
+PF.llp_bca_ref_appr_date,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE,
+gc.debtors
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_GLOD_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_GLOD_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (SELECT
+   spro.lsp_short_name As Customer_Name,
+SEC.SECURITY_MATURITY_DATE    AS D_F_MATURITY_DATE ,
+null  AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+ (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+ -- sysdate AS FIC_MIS_DATE ,
+ TO_CHAR(sec.cmv,'999999999999999999999.999')     AS N_F_MKT_MITIGANT_VALUE ,
+ TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+ null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+ null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+  sec.sci_security_currency  AS V_F_CCY_CODE ,----CCY code coming from Security module
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+ TO_CHAR (SEC.CMS_COLLATERAL_ID)  AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || (
+--  TO_CHAR (SEC.CMS_COLLATERAL_ID) ) AS V_F_MITIGANT_CODE, --------15
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+   TO_CHAR(sec.COLLATERAL_CODE)  AS V_F_MITIGANT_TYPE_CODE , ------changed
+
+  NULL AS V_F_RATING_ID ,
+  null AS D_F_START_DATE,
+  null AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+ null AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  null AS F_F_RATING_TYPE ,
+ null AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT ,     ------------Facility Sec/Primary Field
+cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+cri.THIRD_YEAR AS THIRD_YEAR,
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  CMS_ASSET AST
+  ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB110')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+GROUP BY 
+ spro.lsp_short_name,
+ SEC.SECURITY_MATURITY_DATE  ,
+sec.cmv,
+sec.sci_security_currency ,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM,
+XREF.FACILITY_SYSTEM_ID,
+XREF.LINE_NO ,
+XREF.SERIAL_NO,
+sec.COLLATERAL_CODE,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR ,
+cri.FIRST_YEAR_TURNOVER ,
+cri.SECOND_YEAR ,
+cri.SECOND_YEAR_TURNOVER ,
+cri.THIRD_YEAR ,
+CRI.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+  --ORDER BY 1
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_GUARNTEE_SECURITY_GT400
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_GUARNTEE_SECURITY_GT400" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+SELECT
+ spro.lsp_short_name As Customer_Name,
+  SEC.SECURITY_MATURITY_DATE
+      AS D_F_MATURITY_DATE ,
+  null   AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+--SYSDATE AS FIC_MIS_DATE ,
+ (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+    ''                                                   -- for guarantee this should be null
+      AS N_F_MKT_MITIGANT_VALUE ,
+  TO_CHAR(sec.cmv,'999999999999999999999.999')
+      AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+   sec.sci_security_currency ----CCY code coming from Security module
+      AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || TO_CHAR (SEC.CMS_COLLATERAL_ID)  AS V_F_MITIGANT_CODE,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+
+  TO_CHAR(sec.COLLATERAL_CODE)   AS V_F_MITIGANT_TYPE_CODE , ------changed
+
+  NULL AS V_F_RATING_ID ,
+    grnte.GUARANTEE_DATE
+
+  /*XREF.RELEASE_DATE*/
+  AS D_F_START_DATE,
+  NULL AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  (
+
+    CASE
+        WHEN GRNTE.RAMID = 0 THEN
+          ''
+        WHEN GRNTE.RAMID != 0 THEN
+          TO_CHAR(GRNTE.RAMID)
+      END
+   ) AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'L'
+    ELSE NULL
+  END AS F_F_RATING_TYPE ,
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'Y'
+    ELSE NULL
+  END AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT ,     ------------Facility Sec/Primary Field
+
+  cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR AS THIRD_YEAR,
+cri.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+    sci_le_cri  cri,
+
+  cms_guarantee grnte
+,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT400')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv IS NOT NULL OR
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    grnte.RAMID <> 0 )
+GROUP BY
+ spro.lsp_short_name,
+SEC.SECURITY_MATURITY_DATE,
+sec.cmv,
+sec.sci_security_currency,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID,
+XREF.LINE_NO ,
+XREF.SERIAL_NO,
+SEC.CMS_COLLATERAL_ID,
+SUB.SECURITY_SUB_TYPE_ID ,
+sec.COLLATERAL_CODE,
+grnte.GUARANTOR_TYPE,
+grnte.GUARANTEE_DATE,
+GRNTE.RAMID ,
+TYP.SECURITY_TYPE_ID,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR ,
+cri.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+
+
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_GUARNTEE_SECURITY_GT402
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_GUARNTEE_SECURITY_GT402" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+SELECT
+ spro.lsp_short_name As Customer_Name,
+  SEC.SECURITY_MATURITY_DATE
+      AS D_F_MATURITY_DATE ,
+  null   AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+--SYSDATE AS FIC_MIS_DATE ,
+ (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+    ''                                                   -- for guarantee this should be null
+      AS N_F_MKT_MITIGANT_VALUE ,
+  TO_CHAR(sec.cmv,'999999999999999999999.999')
+      AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+   sec.sci_security_currency ----CCY code coming from Security module
+      AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || TO_CHAR (SEC.CMS_COLLATERAL_ID)  AS V_F_MITIGANT_CODE,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+
+  TO_CHAR(sec.COLLATERAL_CODE)   AS V_F_MITIGANT_TYPE_CODE , ------changed
+
+  NULL AS V_F_RATING_ID ,
+    grnte.GUARANTEE_DATE
+
+  /*XREF.RELEASE_DATE*/
+  AS D_F_START_DATE,
+  NULL AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  (
+
+    CASE
+        WHEN GRNTE.RAMID = 0 THEN
+          ''
+        WHEN GRNTE.RAMID != 0 THEN
+          TO_CHAR(GRNTE.RAMID)
+      END
+   ) AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'L'
+    ELSE NULL
+  END AS F_F_RATING_TYPE ,
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'Y'
+    ELSE NULL
+  END AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT ,     ------------Facility Sec/Primary Field
+
+  cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR AS THIRD_YEAR,
+cri.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+    sci_le_cri  cri,
+
+  cms_guarantee grnte
+,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT402')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv IS NOT NULL OR
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    grnte.RAMID <> 0 )
+GROUP BY
+ spro.lsp_short_name,
+SEC.SECURITY_MATURITY_DATE,
+sec.cmv,
+sec.sci_security_currency,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID,
+XREF.LINE_NO ,
+XREF.SERIAL_NO,
+SEC.CMS_COLLATERAL_ID,
+SUB.SECURITY_SUB_TYPE_ID ,
+sec.COLLATERAL_CODE,
+grnte.GUARANTOR_TYPE,
+grnte.GUARANTEE_DATE,
+GRNTE.RAMID ,
+TYP.SECURITY_TYPE_ID,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR ,
+cri.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_GUARNTEE_SECURITY_GT405
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_GUARNTEE_SECURITY_GT405" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+SELECT
+ spro.lsp_short_name As Customer_Name,
+  SEC.SECURITY_MATURITY_DATE
+      AS D_F_MATURITY_DATE ,
+  null   AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+--SYSDATE AS FIC_MIS_DATE ,
+ (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+    ''                                                   -- for guarantee this should be null
+      AS N_F_MKT_MITIGANT_VALUE ,
+  TO_CHAR(sec.cmv,'999999999999999999999.999')
+      AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+   sec.sci_security_currency ----CCY code coming from Security module
+      AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || TO_CHAR (SEC.CMS_COLLATERAL_ID)  AS V_F_MITIGANT_CODE,
+  
+   (
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+ 
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  (
+  CASE
+    WHEN grnte.GUARANTOR_TYPE IN ('1','BUSENTIN')  --------------Business Entity Registered in India
+    THEN 'STY0000009'
+    WHEN grnte.GUARANTOR_TYPE IN ('2','RESINDV')     ------------Resident Indian Individual
+    THEN 'STY0000008'
+    WHEN grnte.GUARANTOR_TYPE IN ('3','BUSENTOUT') --------------Business Entity Registered Outside India
+    THEN 'STY0000009'
+    WHEN grnte.GUARANTOR_TYPE IN ('4','FRGNONREGI') -------------Foreign/Non-Resident Indian Individual
+    THEN 'STY0000008'
+  END )
+  AS V_F_MITIGANT_TYPE_CODE , ------changed
+
+  NULL AS V_F_RATING_ID ,
+    grnte.GUARANTEE_DATE
+
+  /*XREF.RELEASE_DATE*/
+  AS D_F_START_DATE,
+  NULL AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  (
+
+    CASE
+        WHEN GRNTE.RAMID = 0 THEN
+          ''
+        WHEN GRNTE.RAMID != 0 THEN
+          TO_CHAR(GRNTE.RAMID)
+      END
+   ) AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'L'
+    ELSE NULL
+  END AS F_F_RATING_TYPE ,
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'Y'
+    ELSE NULL
+  END AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT ,     ------------Facility Sec/Primary Field
+
+  cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR AS THIRD_YEAR,
+cri.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+    sci_le_cri  cri,
+
+  cms_guarantee grnte
+  ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT405')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv <> 0 or
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    GRNTE.RAMID <> 0
+                                    OR GRNTE.COUNTRY IS NOT NULL)
+GROUP BY
+spro.lsp_short_name,
+SEC.SECURITY_MATURITY_DATE,
+sec.cmv,
+sec.sci_security_currency,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID,
+XREF.LINE_NO ,
+XREF.SERIAL_NO,
+SEC.CMS_COLLATERAL_ID,
+SUB.SECURITY_SUB_TYPE_ID ,
+sec.COLLATERAL_CODE,
+grnte.GUARANTOR_TYPE,
+grnte.GUARANTEE_DATE,
+GRNTE.RAMID ,
+TYP.SECURITY_TYPE_ID,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR ,
+cri.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+
+
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_GUARNTEE_SECURITY_GT406
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_GUARNTEE_SECURITY_GT406" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+SELECT
+ spro.lsp_short_name As Customer_Name,
+  SEC.SECURITY_MATURITY_DATE
+      AS D_F_MATURITY_DATE ,
+  null   AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+--SYSDATE AS FIC_MIS_DATE ,
+ (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+    ''                                                   -- for guarantee this should be null
+      AS N_F_MKT_MITIGANT_VALUE ,
+  TO_CHAR(sec.cmv,'999999999999999999999.999')
+      AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+   sec.sci_security_currency ----CCY code coming from Security module
+      AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || TO_CHAR (SEC.CMS_COLLATERAL_ID)  AS V_F_MITIGANT_CODE,
+  
+   (
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+ 
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  (
+  CASE
+    WHEN grnte.GUARANTOR_TYPE IN ('1','BUSENTIN')  --------------Business Entity Registered in India
+    THEN 'STY0000009'
+    WHEN grnte.GUARANTOR_TYPE IN ('2','RESINDV')     ------------Resident Indian Individual
+    THEN 'STY0000008'
+    WHEN grnte.GUARANTOR_TYPE IN ('3','BUSENTOUT') --------------Business Entity Registered Outside India
+    THEN 'STY0000009'
+    WHEN grnte.GUARANTOR_TYPE IN ('4','FRGNONREGI') -------------Foreign/Non-Resident Indian Individual
+    THEN 'STY0000008'
+  END )
+  AS V_F_MITIGANT_TYPE_CODE , ------changed
+
+  NULL AS V_F_RATING_ID ,
+    grnte.GUARANTEE_DATE
+
+  /*XREF.RELEASE_DATE*/
+  AS D_F_START_DATE,
+  NULL AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  (
+
+    CASE
+        WHEN GRNTE.RAMID = 0 THEN
+          ''
+        WHEN GRNTE.RAMID != 0 THEN
+          TO_CHAR(GRNTE.RAMID)
+      END
+   ) AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'L'
+    ELSE NULL
+  END AS F_F_RATING_TYPE ,
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'Y'
+    ELSE NULL
+  END AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT ,     ------------Facility Sec/Primary Field
+
+  cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR AS THIRD_YEAR,
+cri.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+    sci_le_cri  cri,
+
+  cms_guarantee grnte
+  ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT406')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv <> 0 or
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    GRNTE.RAMID <> 0
+                                    OR GRNTE.COUNTRY IS NOT NULL)
+GROUP BY
+spro.lsp_short_name,
+SEC.SECURITY_MATURITY_DATE,
+sec.cmv,
+sec.sci_security_currency,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID,
+XREF.LINE_NO ,
+XREF.SERIAL_NO,
+SEC.CMS_COLLATERAL_ID,
+SUB.SECURITY_SUB_TYPE_ID ,
+sec.COLLATERAL_CODE,
+grnte.GUARANTOR_TYPE,
+grnte.GUARANTEE_DATE,
+GRNTE.RAMID ,
+TYP.SECURITY_TYPE_ID,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR ,
+cri.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+
+
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_GUARNTEE_SECURITY_GT408
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_GUARNTEE_SECURITY_GT408" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+SELECT
+ spro.lsp_short_name As Customer_Name,
+  SEC.SECURITY_MATURITY_DATE
+      AS D_F_MATURITY_DATE ,
+  null   AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+--SYSDATE AS FIC_MIS_DATE ,
+ (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+    ''                                                   -- for guarantee this should be null
+      AS N_F_MKT_MITIGANT_VALUE ,
+  TO_CHAR(sec.cmv,'999999999999999999999.999')
+      AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+   sec.sci_security_currency ----CCY code coming from Security module
+      AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || TO_CHAR (SEC.CMS_COLLATERAL_ID)  AS V_F_MITIGANT_CODE,
+  
+   (
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+ 
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  (
+  CASE
+    WHEN grnte.GUARANTOR_TYPE IN ('1','BUSENTIN')  --------------Business Entity Registered in India
+    THEN 'STY0000009'
+    WHEN grnte.GUARANTOR_TYPE IN ('2','RESINDV')     ------------Resident Indian Individual
+    THEN 'STY0000008'
+    WHEN grnte.GUARANTOR_TYPE IN ('3','BUSENTOUT') --------------Business Entity Registered Outside India
+    THEN 'STY0000009'
+    WHEN grnte.GUARANTOR_TYPE IN ('4','FRGNONREGI') -------------Foreign/Non-Resident Indian Individual
+    THEN 'STY0000008'
+  END )
+  AS V_F_MITIGANT_TYPE_CODE , ------changed
+
+  NULL AS V_F_RATING_ID ,
+    grnte.GUARANTEE_DATE
+
+  /*XREF.RELEASE_DATE*/
+  AS D_F_START_DATE,
+  NULL AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  (
+
+    CASE
+        WHEN GRNTE.RAMID = 0 THEN
+          ''
+        WHEN GRNTE.RAMID != 0 THEN
+          TO_CHAR(GRNTE.RAMID)
+      END
+   ) AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'L'
+    ELSE NULL
+  END AS F_F_RATING_TYPE ,
+  CASE
+    WHEN TYP.SECURITY_TYPE_ID = 'GT'
+    THEN 'Y'
+    ELSE NULL
+  END AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT ,     ------------Facility Sec/Primary Field
+
+  cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR AS THIRD_YEAR,
+cri.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+    sci_le_cri  cri,
+
+  cms_guarantee grnte
+  ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT408')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv <> 0 or
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    GRNTE.RAMID <> 0
+                                    OR GRNTE.COUNTRY IS NOT NULL)
+GROUP BY
+spro.lsp_short_name,
+SEC.SECURITY_MATURITY_DATE,
+sec.cmv,
+sec.sci_security_currency,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID,
+XREF.LINE_NO ,
+XREF.SERIAL_NO,
+SEC.CMS_COLLATERAL_ID,
+SUB.SECURITY_SUB_TYPE_ID ,
+sec.COLLATERAL_CODE,
+grnte.GUARANTOR_TYPE,
+grnte.GUARANTEE_DATE,
+GRNTE.RAMID ,
+TYP.SECURITY_TYPE_ID,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR ,
+cri.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+
+
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_INSURANCE_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_INSURANCE_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (SELECT
+   spro.lsp_short_name As Customer_Name,
+INS.expiry_date AS D_F_MATURITY_DATE ,
+null    AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+  (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+TO_CHAR(sec.cmv,'999999999999999999999.999') AS N_F_MKT_MITIGANT_VALUE ,
+TO_CHAR(sec.cmv,'999999999999999999999999999999.999')  AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+''   AS N_F_REMARGIN_FREQUENCY, ------no data
+null AS N_F_RESIDUAL_MATURITY,
+null AS N_F_REVAL_FREQUENCY , -------no data
+sec.sci_security_currency ----CCY code coming from Security module
+     AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID)  AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || (TO_CHAR (SEC.CMS_COLLATERAL_ID)--------15
+--
+--  ) AS V_F_MITIGANT_CODE,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+  (
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  
+  TO_CHAR(sec.COLLATERAL_CODE)  AS V_F_MITIGANT_TYPE_CODE , ------changed
+  NULL AS V_F_RATING_ID ,
+  INS.EFFECTIVE_DATE  AS D_F_START_DATE,
+  null AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  null AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  null AS F_F_RATING_TYPE ,
+  null AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT,     ------------Facility Sec/Primary Field
+cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+CRI.THIRD_YEAR AS THIRD_YEAR,
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+
+  CMS_INSURANCE INS
+,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND INS.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID = 'IN501'
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_INSURANCE)
+--AND SEC.CMS_COLLATERAL_ID IN (20120112000002225,20120119000002285,20120107000002150)-- 20120208000002368
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+            INS.BANK_RISK_CONFIRMATION <>'N' or
+            INS.BANK_INT_NOTED <> 'N'or
+            INS.INSURED_AMOUNT <> 0 or
+            INS.INSURANCE_PREMIUM <> 0
+            OR INS.POLICY_NO IS NOT NULL
+            OR sec.cmv IS NOT NULL
+
+            )
+
+group by
+ spro.lsp_short_name,
+INS.expiry_date ,
+sec.cmv,
+sec.sci_security_currency ,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID   ,
+XREF.LINE_NO    ,
+XREF.SERIAL_NO ,
+SEC.CMS_COLLATERAL_ID,
+sec.COLLATERAL_CODE,
+INS.EFFECTIVE_DATE ,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER ,
+cri.SECOND_YEAR ,
+cri.SECOND_YEAR_TURNOVER ,
+cri.THIRD_YEAR ,
+CRI.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+
+ )
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_PDC_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_PDC_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+SELECT
+ spro.lsp_short_name As Customer_Name,
+PDC.MATURITY_DATE AS D_F_MATURITY_DATE ,
+null    AS D_F_VALUE_DATE,
+NULL    AS F_F_AGREEMENT_FLAG,
+(select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+--sysdate AS FIC_MIS_DATE ,
+TO_CHAR(sec.cmv,'999999999999999999999.999') AS N_F_MKT_MITIGANT_VALUE ,
+TO_CHAR(sec.cmv,'999999999999999999999999999999.999')  AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+''   AS N_F_REMARGIN_FREQUENCY, ------no data
+null AS N_F_RESIDUAL_MATURITY,
+null AS N_F_REVAL_FREQUENCY , -------no data
+sec.sci_security_currency AS V_F_CCY_CODE , ---changed
+'INDIA' AS V_F_COUNTRY_ID,
+NULL    AS V_F_CREDIT_RATING ,
+NULL    AS V_F_ISSUER_CODE ,
+TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || (
+-- TO_CHAR (SEC.CMS_COLLATERAL_ID)--------15
+--
+--) AS V_F_MITIGANT_CODE,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+  (
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  
+TO_CHAR(sec.COLLATERAL_CODE)  AS V_F_MITIGANT_TYPE_CODE , ------changed
+NULL AS V_F_RATING_ID ,
+PDC.START_DATE AS D_F_START_DATE,
+null AS V_F_TPFD_CUST_ID ,
+null AS F_F_PROPERTY_TYPE ,
+''  AS V_F_RATING_AGENCY ,
+TO_CHAR(PDC.RAM_ID) AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+null AS F_F_RATING_TYPE ,
+null AS F_F_RECOURSE_AVAILABLE ,
+(SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+'' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT,     ------------Facility Sec/Primary Field
+cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+cri.THIRD_YEAR AS THIRD_YEAR,
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  CMS_ASSET_PDC PDC ,
+  CMS_ASSET AST
+  ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND PDC.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB108')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and(
+        AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                                    AST.LAST_USED_ID_IDX_FAO <> 0 or
+                                    AST.LAST_USED_ID_IDX_INSR <> 0 or
+                                    AST.INTEREST_RATE <> 0
+                                    OR sec.cmv IS NOT NULL
+)
+group by
+spro.lsp_short_name,
+PDC.MATURITY_DATE ,
+sec.cmv,
+sec.sci_security_currency ,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID   ,
+XREF.LINE_NO            ,
+XREF.SERIAL_NO,
+SEC.CMS_COLLATERAL_ID,
+sec.COLLATERAL_CODE,
+PDC.START_DATE ,
+PDC.RAM_ID,
+spro.PARTY_GRP_NM ,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER ,
+cri.SECOND_YEAR ,
+cri.SECOND_YEAR_TURNOVER ,
+cri.THIRD_YEAR ,
+CRI.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+
+
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_PLANT_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_PLANT_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (SELECT
+   spro.lsp_short_name As Customer_Name,
+SEC.SECURITY_MATURITY_DATE AS D_F_MATURITY_DATE ,
+  null AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+ (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+--  sysdate AS FIC_MIS_DATE ,
+  TO_CHAR(sec.cmv,'999999999999999999999.999') AS N_F_MKT_MITIGANT_VALUE ,
+ TO_CHAR(sec.cmv,'999999999999999999999999999999.999') AS GROSS_VALUE ,
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+  sec.sci_security_currency     AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || (
+-- TO_CHAR (SEC.CMS_COLLATERAL_ID))--------15
+--AS V_F_MITIGANT_CODE,
+
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  TO_CHAR(sec.COLLATERAL_CODE)  AS V_F_MITIGANT_TYPE_CODE , ------changed
+  NULL AS V_F_RATING_ID ,
+ -- PLNT.invoice_date  AS D_F_START_DATE,
+  PF.llp_bca_ref_appr_date  AS D_F_START_DATE,
+  null AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  TO_CHAR(PLNT.RAM_ID)   AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  null AS F_F_RATING_TYPE ,
+  null AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT ,     ------------Facility Sec/Primary Field
+cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+cri.THIRD_YEAR AS THIRD_YEAR,
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+  )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  CMS_ASSET_PLANT_EQUIP PLNT,
+  CMS_ASSET AST
+  ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+  WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND PLNT.CMS_COLLATERAL_ID (+) = SEC.CMS_COLLATERAL_ID
+
+
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB101')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+        AST.PHY_INSPECTION_FREQ <> '-1' or
+                                    AST.MANUFACTURE_YEAR <> 0 or
+                                    AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                                    AST.LAST_USED_ID_IDX_FAO <> 0 or
+                                    AST.LAST_USED_ID_IDX_INSR <> 0 or
+                                    AST.RESIDUAL_ASSET_LIFE <> 0 or
+                                    AST.DOC_PERFECT_AGE <> 0 or
+                                    AST.REPOSSESSION_AGE <> 0
+                                    or sec.cmv IS NOT NULL
+)
+group by
+ spro.lsp_short_name,
+SEC.SECURITY_MATURITY_DATE ,
+sec.cmv,
+sec.sci_security_currency  ,
+SEC.CMS_COLLATERAL_ID ,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID  ,
+XREF.LINE_NO   ,
+XREF.SERIAL_NO,
+SEC.CMS_COLLATERAL_ID,
+sec.COLLATERAL_CODE,
+PLNT.invoice_date  ,
+PLNT.RAM_ID,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR ,
+cri.FIRST_YEAR_TURNOVER ,
+cri.SECOND_YEAR ,
+cri.SECOND_YEAR_TURNOVER ,
+cri.THIRD_YEAR ,
+CRI.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+PF.llp_bca_ref_appr_date,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_PROPERTY_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_PROPERTY_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (SELECT
+   spro.lsp_short_name As Customer_Name,
+  null AS D_F_MATURITY_DATE ,
+  prty.VALUATION_DATE     AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+  (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+  --SYSDATE AS FIC_MIS_DATE ,
+  TO_CHAR(sec.cmv,'999999999999999999999.999')   AS N_F_MKT_MITIGANT_VALUE ,
+  TO_CHAR(sec.cmv,'999999999999999999999999999999.999') AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+  'INR'    AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR(SEC.CMS_COLLATERAL_ID)   AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  ||    TO_CHAR(SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE,
+
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+
+  (SELECT TRY.ENTRY_CODE
+      FROM COMMON_CODE_CATEGORY_ENTRY TRY ,
+        COMMON_CODE_CATEGORY CAT
+      WHERE prty.PROPERTY_TYPE = TRY.ENTRY_CODE
+      AND CAT.CATEGORY_ID      = TRY.CATEGORY_CODE_ID
+      AND CAT.CATEGORY_CODE    = 'PROPERTY_TYPE'
+      )  AS V_F_MITIGANT_TYPE_CODE , ------changed
+
+  NULL AS V_F_RATING_ID ,
+ -- XREF.RELEASE_DATE  AS D_F_START_DATE,
+  PF.llp_bca_ref_appr_date  AS D_F_START_DATE,
+  null AS V_F_TPFD_CUST_ID ,
+
+      (SELECT SUBSTR(TRY.ENTRY_NAME,1,1)
+      FROM COMMON_CODE_CATEGORY_ENTRY TRY ,
+        COMMON_CODE_CATEGORY CAT
+      WHERE prty.PROPERTY_TYPE = TRY.ENTRY_CODE
+      AND CAT.CATEGORY_ID      = TRY.CATEGORY_CODE_ID
+      AND CAT.CATEGORY_CODE    = 'PROPERTY_TYPE'
+      )
+       AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  null AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  null AS F_F_RATING_TYPE ,
+  null AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT  ,    ------------Facility Sec/Primary Field
+cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+cri.THIRD_YEAR AS THIRD_YEAR,
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  cms_property prty
+  ,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND prty.cms_collateral_id(+)   = sec.cms_collateral_id
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+
+and SUB.SECURITY_SUB_TYPE_ID = 'PT701'
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_PROPERTY)
+
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (           prty.IS_PHY_INSPECT <>'N' or
+                prty.PHY_INSPECT_FREQ <> 0 or
+                prty.LAND_AREA <> 0 or
+                prty.TENURE <> 0 or
+                prty.REMAINING_TENURE <> 0 or
+                prty.QUIT_RENT_PAID <> '-1' or
+                prty.BUILTUP_AREA <> 0 or
+                prty.SALE_PURCHASE_VALUE <> '-1' or
+                prty.STD_QUIT_RENT <> 'N' or
+                prty.NON_STD_QUIT_RENT <> 'N' or
+                prty.QUIT_RENT_RECEIPT <> 'N' or
+                prty.ASSESSMENT <> 'N' or
+                prty.COMBINED_VALUE_AMT <> 0 or
+                prty.VALUE_NUMBER <> 0 or
+                PRTY.ASSESSMENT_PERIOD <>0 OR
+                PRTY.ASSUMPTION  <> 'N'
+                 OR PRTY.PROPERTY_TYPE IS NOT NULL
+                 OR PRTY.MARGAGE_TYPE IS NOT NULL
+)
+GROUP BY
+spro.lsp_short_name,
+  prty.VALUATION_DATE     ,
+sec.cmv,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID   ,
+XREF.LINE_NO              ,
+XREF.SERIAL_NO,
+XREF.FACILITY_SYSTEM ,
+XREF.FACILITY_SYSTEM_ID,
+XREF.LINE_NO,
+XREF.SERIAL_NO,
+SEC.CMS_COLLATERAL_ID,
+XREF.RELEASE_DATE  ,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR ,
+cri.FIRST_YEAR_TURNOVER ,
+cri.SECOND_YEAR ,
+cri.SECOND_YEAR_TURNOVER ,
+cri.THIRD_YEAR ,
+CRI.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID ,
+prty.PROPERTY_TYPE,
+PF.llp_bca_ref_appr_date,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+);
+--------------------------------------------------------
+--  DDL for View BASEL_SPECIFIC_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_SPECIFIC_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+
+SELECT
+ spro.lsp_short_name As Customer_Name,
+(
+
+  CASE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB109'
+    THEN AIR.MATURITY_DATE
+    --WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+    --THEN SEC.SECURITY_MATURITY_DATE
+  END) AS D_F_MATURITY_DATE ,
+  null   AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+  (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+ TO_CHAR(sec.cmv,'999999999999999999999.999') AS N_F_MKT_MITIGANT_VALUE ,
+  TO_CHAR(sec.cmv,'999999999999999999999999999999.999') AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+  sec.sci_security_currency ----CCY code coming from Security module
+    AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || (
+-- TO_CHAR (SEC.CMS_COLLATERAL_ID)--------15
+--
+-- ) AS V_F_MITIGANT_CODE,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  TO_CHAR(sec.COLLATERAL_CODE)  AS V_F_MITIGANT_TYPE_CODE , ------changed
+  NULL AS V_F_RATING_ID ,
+--  CASE
+--    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB109'
+--    THEN AIR.START_DATE
+--    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+--    THEN VHCL.START_DATE
+--  END
+--  /*XREF.RELEASE_DATE*/
+--  AS D_F_START_DATE,
+  PF.llp_bca_ref_appr_date  AS D_F_START_DATE,
+  null AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  (
+  CASE
+   -- WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+   -- THEN TO_CHAR(VHCL.RAM_ID)
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB109'
+    THEN TO_CHAR(AIR.RAMID)
+
+  END) AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  null AS F_F_RATING_TYPE ,
+  null AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT,     ------------Facility Sec/Primary Field
+cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+cri.THIRD_YEAR AS THIRD_YEAR,
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  CMS_ASSET_AIRCRAFT AIR,
+  --CMS_ASSET_VEHICLE VHCL ,
+  CMS_ASSET AST
+,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND AIR.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+--AND VHCL.CMS_COLLATERAL_ID (+) = SEC.CMS_COLLATERAL_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB109')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+                AST.PHY_INSPECTION_FREQ <>'-1' or
+                AST.MANUFACTURE_YEAR <> 0 or
+                AST.PHY_INSPECTION_DONE <> 'N' or
+                AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                AST.LAST_USED_ID_IDX_FAO <> 0 or
+                AST.LAST_USED_ID_IDX_INSR <> 0 or
+                AST.RESIDUAL_ASSET_LIFE <> 0 or
+                AST.DOC_PERFECT_AGE <> 0 or
+                AST.REPOSSESSION_AGE <> 0
+                OR sec.cmv IS NOT NULL
+)
+group by
+spro.lsp_short_name,
+SUB.SECURITY_SUB_TYPE_ID,
+AIR.MATURITY_DATE,
+SEC.SECURITY_MATURITY_DATE,
+sec.cmv,
+sec.sci_security_currency ,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM,
+XREF.FACILITY_SYSTEM_ID ,
+XREF.LINE_NO ,
+XREF.SERIAL_NO,
+sec.COLLATERAL_CODE,
+AIR.START_DATE,
+--VHCL.START_DATE,
+--VHCL.RAM_ID,
+AIR.RAMID,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER ,
+cri.SECOND_YEAR ,
+cri.SECOND_YEAR_TURNOVER ,
+cri.THIRD_YEAR ,
+CRI.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+PF.llp_bca_ref_appr_date,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BASEL_VEHICAL_SECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BASEL_VEHICAL_SECURITY" ("CUSTOMER_NAME", "D_F_MATURITY_DATE", "D_F_VALUE_DATE", "F_F_AGREEMENT_FLAG", "FIC_MIS_DATE", "N_F_MKT_MITIGANT_VALUE", "GROSS_VALUE", "N_F_ORIGINAL_MATURITY", "N_F_REMARGIN_FREQUENCY", "N_F_RESIDUAL_MATURITY", "N_F_REVAL_FREQUENCY", "V_F_CCY_CODE", "V_F_COUNTRY_ID", "V_F_CREDIT_RATING", "V_F_ISSUER_CODE", "V_F_SECURITY_ID", "V_F_EXP_SOURCE_SYS", "V_F_MITIGANT_SOURCE_SYS", "V_F_SYSTEM_EXP_IND", "V_F_LINE_CODE", "N_F_LINE_SERIAL", "V_F_MITIGANT_CODE", "V_F_MAP_ID", "V_F_MITIGANT_TYPE_CODE", "V_F_RATING_ID", "D_F_START_DATE", "V_F_TPFD_CUST_ID", "F_F_PROPERTY_TYPE", "V_F_RATING_AGENCY", "V_F_GURANTOR_RAM_ID", "F_F_RATING_TYPE", "F_F_RECOURSE_AVAILABLE", "V_F_LSSEXTAG_PARTY_GROUP_ID", "V_F_LSSEXTAG_LOAN_PURPOSE", "F_F_LSSEXTAG_PRIMSEC_COLL_STAT", "FIRST_YEAR", "FIRST_YEAR_TURNOVER", "SECOND_YEAR", "SECOND_YEAR_TURNOVER", "THIRD_YEAR", "THIRD_YEAR_TURNOVER", "RAM_ID") AS 
+  (
+
+SELECT
+ spro.lsp_short_name As Customer_Name,
+(
+  CASE
+       WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+    THEN SEC.SECURITY_MATURITY_DATE
+  END) AS D_F_MATURITY_DATE ,
+  null   AS D_F_VALUE_DATE,
+  NULL    AS F_F_AGREEMENT_FLAG,
+ (select to_date (param_value,'dd/mm/yyyy hh24:mi')
+    from cms_general_param where param_code = 'APPLICATION_DATE') AS FIC_MIS_DATE ,
+ TO_CHAR(sec.cmv,'999999999999999999999.999') AS N_F_MKT_MITIGANT_VALUE ,
+  TO_CHAR(sec.cmv,'999999999999999999999999999999.999') AS GROSS_VALUE ,                                    --------GROSS_VALUE IS SAME AS FOR N_F_MKT_MITIGANT_VALUE EXCEPT FOR 'GT'
+  null AS N_F_ORIGINAL_MATURITY , -----Differece in Months
+  ''   AS N_F_REMARGIN_FREQUENCY, ------no data
+  null AS N_F_RESIDUAL_MATURITY,
+  null AS N_F_REVAL_FREQUENCY , -------no data
+  sec.sci_security_currency ----CCY code coming from Security module
+    AS V_F_CCY_CODE , ---changed
+  'INDIA' AS V_F_COUNTRY_ID,
+  NULL    AS V_F_CREDIT_RATING ,
+  NULL    AS V_F_ISSUER_CODE ,
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_SECURITY_ID ,                   -----COLUMN NO - 15
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--  END )                     AS V_F_EXP_SOURCE_SYS ,           --------HARD CODED
+basel_master.EXPOSURE_SOURCE  AS V_F_EXP_SOURCE_SYS ,
+  'LSS'                     AS V_F_MITIGANT_SOURCE_SYS ,
+  XREF.FACILITY_SYSTEM_ID   AS V_F_SYSTEM_EXP_IND ,
+  XREF.LINE_NO              AS V_F_LINE_CODE ,
+  to_number(XREF.SERIAL_NO) AS N_F_LINE_SERIAL ,
+  -----21 = 22+15----
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END )  ----22
+--  || (
+-- TO_CHAR (SEC.CMS_COLLATERAL_ID)--------15
+--
+-- ) AS V_F_MITIGANT_CODE,
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end) 
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID) AS V_F_MITIGANT_CODE ,
+--  (
+--  CASE
+--    WHEN XREF.FACILITY_SYSTEM ='UBS-LIMITS'  ----------'UBS' + a.systemid + f.creditlineno + a.creditsrno
+--    THEN 'UBS'
+--      ||XREF.FACILITY_SYSTEM_ID
+--      ||XREF.LINE_NO
+--      ||XREF.SERIAL_NO
+--    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'----------------'FW' + a.systemid
+--    THEN 'FW'
+--      ||XREF.FACILITY_SYSTEM_ID
+--    WHEN XREF.FACILITY_SYSTEM = 'FINNESS' --------------------'FN' + a.systemid
+--    THEN 'FN'
+--      ||XREF.FACILITY_SYSTEM_ID
+--  END ) AS V_F_MAP_ID ,
+
+(
+ case 
+ when basel_master.BASEL_VALIDATION = 'L' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID|| XREF.LINE_NO|| XREF.SERIAL_NO
+ when basel_master.BASEL_VALIDATION = 'A' then
+ basel_master.SYSTEM_VALUE || XREF.FACILITY_SYSTEM_ID
+ end)  AS V_F_MAP_ID ,
+  TO_CHAR(sec.COLLATERAL_CODE)  AS V_F_MITIGANT_TYPE_CODE , ------changed
+  NULL AS V_F_RATING_ID ,
+--  CASE
+--    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB109'
+--    THEN AIR.START_DATE
+--    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+--    THEN VHCL.START_DATE
+--  END
+--  /*XREF.RELEASE_DATE*/
+--  AS D_F_START_DATE,
+  PF.llp_bca_ref_appr_date  AS D_F_START_DATE,
+  null AS V_F_TPFD_CUST_ID ,
+  null AS F_F_PROPERTY_TYPE ,
+  ''  AS V_F_RATING_AGENCY ,
+  (
+  CASE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+    THEN TO_CHAR(VHCL.RAM_ID)
+   
+  END) AS V_F_GURANTOR_RAM_ID , -----GOLD TO BE ADDED
+  null AS F_F_RATING_TYPE ,
+  null AS F_F_RECOURSE_AVAILABLE ,
+  (SELECT G.party_group_code
+  FROM cms_party_group g
+  WHERE g.id = spro.PARTY_GRP_NM
+  ) AS V_F_LSSEXTAG_PARTY_GROUP_ID, ----------------ptygroupid from Party Master(Party Group Code)
+  /*SCI.PURPOSE*/
+  '' AS V_F_LSSEXTAG_LOAN_PURPOSE, ---changed
+  (
+  CASE
+    WHEN SEC.SEC_PRIORITY= 'Y'
+    THEN 'P'
+    WHEN SEC.SEC_PRIORITY= 'N'
+    THEN 'S'
+  END) AS F_F_LSSEXTAG_PRIMSEC_COLL_STAT,     ------------Facility Sec/Primary Field
+cri.FIRST_YEAR AS FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER AS FIRST_YEAR_TURNOVER,
+cri.SECOND_YEAR AS SECOND_YEAR,
+cri.SECOND_YEAR_TURNOVER AS SECOND_YEAR_TURNOVER,
+cri.THIRD_YEAR AS THIRD_YEAR,
+CRI.THIRD_YEAR_TURNOVER AS THIRD_YEAR_TURNOVER,
+cri.CUSTOMER_RAM_ID as RAM_ID
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  (SELECT *
+  FROM SCI_LSP_LMTS_XREF_MAP
+  WHERE CMS_LSP_LMTS_XREF_MAP_ID IN
+    (SELECT (CMS_LSP_LMTS_XREF_MAP_ID)
+    FROM SCI_LSP_LMTS_XREF_MAP
+    WHERE CMS_LSP_APPR_LMTS_ID IN
+      (SELECT CMS_LSP_APPR_LMTS_ID
+      FROM SCI_LSP_LMTS_XREF_MAP
+      GROUP BY CMS_LSP_APPR_LMTS_ID,CMS_LSP_LMTS_XREF_MAP_ID
+      )
+
+    )
+  ) MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+ -- CMS_ASSET_AIRCRAFT AIR,
+  CMS_ASSET_VEHICLE VHCL ,
+  CMS_ASSET AST
+,(select system,system_value,exposure_source,basel_validation from CMS_BASEL_MASTER where deprecated = 'N' and status = 'ACTIVE' and reported_handoff = 'Y') basel_master
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+--AND AIR.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+AND VHCL.CMS_COLLATERAL_ID (+) = SEC.CMS_COLLATERAL_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+and basel_master.system= XREF.FACILITY_SYSTEM
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB102')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+                AST.PHY_INSPECTION_FREQ <>'-1' or
+                AST.MANUFACTURE_YEAR <> 0 or
+                AST.PHY_INSPECTION_DONE <> 'N' or
+                AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                AST.LAST_USED_ID_IDX_FAO <> 0 or
+                AST.LAST_USED_ID_IDX_INSR <> 0 or
+                AST.RESIDUAL_ASSET_LIFE <> 0 or
+                AST.DOC_PERFECT_AGE <> 0 or
+                AST.REPOSSESSION_AGE <> 0
+                OR sec.cmv IS NOT NULL
+)
+group by
+spro.lsp_short_name,
+SUB.SECURITY_SUB_TYPE_ID,
+--AIR.MATURITY_DATE,
+SEC.SECURITY_MATURITY_DATE,
+sec.cmv,
+sec.sci_security_currency ,
+SEC.CMS_COLLATERAL_ID,
+XREF.FACILITY_SYSTEM,
+XREF.FACILITY_SYSTEM_ID ,
+XREF.LINE_NO ,
+XREF.SERIAL_NO,
+sec.COLLATERAL_CODE,
+--AIR.START_DATE,
+VHCL.START_DATE,
+VHCL.RAM_ID,
+--AIR.RAMID,
+spro.PARTY_GRP_NM,
+SEC.SEC_PRIORITY,
+cri.FIRST_YEAR,
+cri.FIRST_YEAR_TURNOVER ,
+cri.SECOND_YEAR ,
+cri.SECOND_YEAR_TURNOVER ,
+cri.THIRD_YEAR ,
+CRI.THIRD_YEAR_TURNOVER ,
+cri.CUSTOMER_RAM_ID,
+PF.llp_bca_ref_appr_date,
+basel_master.EXPOSURE_SOURCE,
+basel_master.BASEL_VALIDATION,
+basel_master.SYSTEM_VALUE
+)
+ ;
+--------------------------------------------------------
+--  DDL for View BORROWER_LOCATION_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "BORROWER_LOCATION_VIEW" ("LMTPROFILE", "CMS_ORIG_COUNTRY", "PROF_ORG", "LIMIT_COUNTRY", "LIMIT_ORG", "SECURITY_LOCATION", "SECURITY_ORGANISATION", "CO_BO_LMT_LOC", "CO_BO_LMT_ORG") AS 
+  SELECT DISTINCT PROF.CMS_LSP_LMT_PROFILE_ID  AS LMTPROFILE , PROF.CMS_ORIG_COUNTRY , PROF.CMS_ORIG_ORGANISATION  AS PROF_ORG , LIMITS.CMS_BKG_COUNTRY  AS LIMIT_COUNTRY , LIMITS.CMS_BKG_ORGANISATION  AS LIMIT_ORG , SEC.SECURITY_LOCATION , SEC.SECURITY_ORGANISATION , SCI_LSP_CO_BORROW_LMT.CMS_BKG_COUNTRY  AS CO_BO_LMT_LOC , SCI_LSP_CO_BORROW_LMT.CMS_BKG_ORGANISATION  AS CO_BO_LMT_ORG  FROM SCI_LSP_LMT_PROFILE PROF LEFT JOIN SCI_LSP_APPR_LMTS LIMITS ON PROF.CMS_LSP_LMT_PROFILE_ID = LIMITS.CMS_LIMIT_PROFILE_ID LEFT JOIN CMS_LIMIT_SECURITY_MAP SEC_MAP ON LIMITS.CMS_LSP_APPR_LMTS_ID = SEC_MAP.CMS_LSP_APPR_LMTS_ID LEFT JOIN SCI_LSP_CO_BORROW_LMT ON LIMITS.CMS_LSP_APPR_LMTS_ID = SCI_LSP_CO_BORROW_LMT.CMS_LIMIT_ID LEFT JOIN CMS_SECURITY SEC ON SEC_MAP.CMS_COLLATERAL_ID = SEC.CMS_COLLATERAL_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CB_SECURITY_LOCATION_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CB_SECURITY_LOCATION_VIEW" ("SUB_PF_ID", "CUS_LOC", "CUS_ORGA", "LMT_LOC", "LMT_ORG", "SEC_LOC", "SEC_ORG", "MB_CUS_LOC", "MB_CUS_ORG") AS 
+  SELECT DISTINCT customer.CMS_LE_SUB_PROFILE_ID  AS sub_pf_id , customer.CMS_SUB_ORIG_COUNTRY  AS cus_loc , customer.CMS_SUB_ORIG_ORGANISATION  AS cus_org , co_lmt.CMS_BKG_COUNTRY  AS lmt_loc , co_lmt.CMS_BKG_ORGANISATION  AS lmt_org , sec.SECURITY_LOCATION  AS sec_loc , sec.SECURITY_ORGANISATION  AS sec_org , mb_customer.CMS_SUB_ORIG_COUNTRY  AS mb_cus_loc , mb_customer.CMS_SUB_ORIG_ORGANISATION  AS mb_cus_org  FROM SCI_LE_SUB_PROFILE customer LEFT JOIN SCI_LSP_CO_BORROW_LMT co_lmt ON customer.CMS_LE_SUB_PROFILE_ID = co_lmt.CMS_CUSTOMER_ID LEFT JOIN CMS_LIMIT_SECURITY_MAP sec_map ON co_lmt.CMS_LSP_CO_BORROW_LMT_ID = sec_map.CMS_LSP_CO_BORROW_LMT_ID LEFT JOIN CMS_SECURITY sec ON sec_map.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID LEFT JOIN SCI_LSP_APPR_LMTS mb_limits ON co_lmt.CMS_LIMIT_ID = mb_limits.CMS_LSP_APPR_LMTS_ID LEFT JOIN SCI_LSP_LMT_PROFILE mb_prof ON mb_limits.CMS_LIMIT_PROFILE_ID = mb_prof.CMS_LSP_LMT_PROFILE_ID LEFT JOIN SCI_LE_SUB_PROFILE mb_customer ON mb_prof.CMS_CUSTOMER_ID = mb_customer.CMS_LE_SUB_PROFILE_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CMS_BDW_CHK_LIST
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CMS_BDW_CHK_LIST" ("CHECKLIST_ID", "CATEGORY", "SUB_CATEGORY", "CMS_PLEDGOR_DTL_ID", "PLG_PLEDGOR_ID", "CMS_LSP_LMT_PROFILE_ID", "LLP_ID", "CMS_LMP_SUB_PROFILE_ID", "LSP_ID", "LSP_LE_ID", "CMS_COLLATERAL_ID", "SCI_SECURITY_DTL_ID") AS 
+  SELECT DISTINCT stage.CHECKLIST_ID , stage.CATEGORY , stage.SUB_CATEGORY , stage.CMS_PLEDGOR_DTL_ID , pledgor.PLG_PLEDGOR_ID , stage.CMS_LSP_LMT_PROFILE_ID , prof.LLP_ID , stage.CMS_LMP_SUB_PROFILE_ID , LSP_ID , LSP_LE_ID , stage.CMS_COLLATERAL_ID , sec.SCI_SECURITY_DTL_ID  FROM CMS_SECURITY sec RIGHT JOIN ((SELECT  * FROM STAGE_CHECKLIST) stage) ON sec.CMS_COLLATERAL_ID = stage.CMS_COLLATERAL_ID, SCI_PLEDGOR_DTL pledgor RIGHT JOIN ((SELECT  * FROM STAGE_CHECKLIST) stage1) ON pledgor.CMS_PLEDGOR_DTL_ID = stage1.CMS_PLEDGOR_DTL_ID, SCI_LSP_LMT_PROFILE prof RIGHT JOIN ((SELECT  * FROM STAGE_CHECKLIST) stage2) ON prof.CMS_LSP_LMT_PROFILE_ID = stage2.CMS_LSP_LMT_PROFILE_ID, SCI_LE_SUB_PROFILE cust RIGHT JOIN ((SELECT  * FROM STAGE_CHECKLIST) stage3) ON cust.CMS_LE_SUB_PROFILE_ID = stage3.CMS_LMP_SUB_PROFILE_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CMS_RECP_CUST_LEGAL_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CMS_RECP_CUST_LEGAL_VIEW" ("CUSTOMER_BKEY", "VIABILITY_CODE", "CUSTOMER_TYPE_CODE", "IRAC_STATUS_CODE", "IRAC_CLASSIFICATION_DATE", "LEGAL_SUIT_STATUS", "OTHER_BANKERS", "COMPANY_DIRECTOR1_NAME", "COMPANY_DIRECTOR2_NAME", "FILED_WITH_LEGAL_IND", "FILING_COST_AMT", "LEGAL_ENTITY_IND", "NOTICES_ISSUED_COUNT", "INVOLVED_AMT", "RECOVERED_AMT", "OUTSTANDING_SUIT_AMT", "COMPROMISE_PROPOSAL_AMT", "IS_WILFUL_IND", "COMPANY_DIRECTOR3_NAME", "COMPANY_DIRECTOR4_NAME", "COMPANY_DIRECTOR5_NAME", "COMPANY_DIRECTOR6_NAME", "COMPANY_DIRECTOR7_NAME", "COMPANY_DIRECTOR8_NAME", "COMPANY_DIRECTOR9_NAME", "COMPANY_DIRECTOR10_NAME", "COMPANY_DIRECTOR11_NAME", "COMPANY_DIRECTOR12_NAME", "COMPANY_DIRECTOR13_NAME", "COMPANY_DIRECTOR14_NAME", "COMPANY_DIRECTOR15_NAME", "COMPANY_DIRECTOR16_NAME", "COMPANY_DIRECTOR17_NAME", "COMPANY_DIRECTOR18_NAME", "COMPANY_DIRECTOR19_NAME", "COMPANY_DIRECTOR20_NAME", "CURRENCY_CODE", "STATE_CODE", "COMPANY_DIRECTOR1_IDENT_NO", "COMPANY_DIRECTOR2_IDENT_NO", "COMPANY_DIRECTOR3_IDENT_NO", "COMPANY_DIRECTOR4_IDENT_NO", "COMPANY_DIRECTOR5_IDENT_NO", "COMPANY_DIRECTOR6_IDENT_NO", "COMPANY_DIRECTOR7_IDENT_NO", "COMPANY_DIRECTOR8_IDENT_NO", "COMPANY_DIRECTOR9_IDENT_NO", "COMPANY_DIRECTOR10_IDENT_NO", "COMPANY_DIRECTOR11_IDENT_NO", "COMPANY_DIRECTOR12_IDENT_NO", "COMPANY_DIRECTOR13_IDENT_NO", "COMPANY_DIRECTOR14_IDENT_NO", "COMPANY_DIRECTOR15_IDENT_NO", "COMPANY_DIRECTOR16_IDENT_NO", "COMPANY_DIRECTOR17_IDENT_NO", "COMPANY_DIRECTOR18_IDENT_NO", "COMPANY_DIRECTOR19_IDENT_NO", "COMPANY_DIRECTOR20_IDENT_NO", "NO_OF_RECOVERY", "NO_OF_COMPROMISE", "PARTY_BKEY", "SARFAESI_FLAG", "DRT_FLAG", "LOK_ADALAT_FLAG", "PARTY_NAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+SELECT  
+ SPRO.LSP_LE_ID as Customer_Bkey,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'VIABILITY' ))) from dual) as Viability_Code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Type of Non-SSI Unit' ))) from dual) as Customer_Type_Code,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'ASSET_ClASSIFICATION' and entry_code = pf.ASSET_CLASSIFICATION) as IRAC_Status_Code, 
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'NPA Classification Date' ))) from dual) as IRAC_Classification_Date,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'SUIT_FILLED_STATUS' and entry_code = spro.SUIT_FILLED_STATUS) as Legal_Suit_Status, 
+COALESCE ( (SELECT OTHER_BANK.BANK_NAME ||'-'||OTHERBANKBRANCH.BRANCH_NAME FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as Other_Bankers,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,1,1) from dual) as Company_Director1_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,2,1) from dual) as Company_Director2_Name,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'SUIT_FILLED_STATUS' and entry_code = spro.SUIT_FILLED_STATUS) as Filed_With_Legal_Ind,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Filing Cost (Amt. in Mio)' ))) from dual) as Filing_Cost_Amt,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.ENTITY) as Legal_Entity_Ind, 
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. of Legal Notices Issued (Count)' ))) from dual) as Notices_Issued_Count,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Amt. involved (Amt. in Mio)' ))) from dual) as Involved_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Recovered Amt (Amt. in Mio)' ))) from dual) as Recovered_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Outstanding Suit Amt (Amt. in Mio)' ))) from dual) as Outstanding_Suit_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Compromise Proposal Amt (Amt. in Mio)' ))) from dual) as Compromise_Proposal_Amt,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'WILLFUL_DEFAULT_STATUS' and entry_code = spro.WILLFUL_DEFAULT_STATUS) as Is_Wilful_Ind,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,3,1) from dual) as Company_Director3_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,4,1) from dual) as Company_Director4_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,5,1) from dual) as Company_Director5_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,6,1) from dual) as Company_Director6_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,7,1) from dual) as Company_Director7_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,8,1) from dual) as Company_Director8_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,9,1) from dual) as Company_Director9_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,10,1) from dual) as Company_Director10_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,11,1) from dual) as Company_Director11_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,12,1) from dual) as Company_Director12_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,13,1) from dual) as Company_Director13_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,14,1) from dual) as Company_Director14_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,15,1) from dual) as Company_Director15_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,16,1) from dual) as Company_Director16_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,17,1) from dual) as Company_Director17_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,18,1) from dual) as Company_Director18_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,19,1) from dual) as Company_Director19_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,20,1) from dual) as Company_Director20_Name,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'SUIT CASE CURRENCY CASE' ))) from dual) as Currency_Code,
+(select STATE_NAME from cms_state where status= 'ACTIVE' and id = ra.LRA_STATE) as State_Code,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,1,2) from dual) as Company_Director1_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,2,2) from dual) as Company_Director2_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,3,2) from dual) as Company_Director3_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,4,2) from dual) as Company_Director4_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,5,2) from dual) as Company_Director5_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,6,2) from dual) as Company_Director6_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,7,2) from dual) as Company_Director7_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,8,2) from dual) as Company_Director8_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,9,2) from dual) as Company_Director9_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,10,2) from dual) as Company_Director10_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,11,2) from dual) as Company_Director11_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,12,2) from dual) as Company_Director12_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,13,2) from dual) as Company_Director13_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,14,2) from dual) as Company_Director14_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,15,2) from dual) as Company_Director15_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,16,2) from dual) as Company_Director16_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,17,2) from dual) as Company_Director17_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,18,2) from dual) as Company_Director18_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,19,2) from dual) as Company_Director19_Ident_No, 
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,20,2) from dual) as Company_Director20_Ident_No,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. Of Recovery/s (Count)' ))) from dual) as No_Of_Recovery,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. Of Compromise/s (Count)' ))) from dual) as No_Of_Compromise,
+SPRO.LSP_LE_ID            AS party_bkey,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Sarfaesi flag' ))) from dual) as sarfaesi_flag,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DRT flag' ))) from dual) as DRT_flag,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Lok Adalat flag' ))) from dual) as Lok_adalat_flag,
+  SPRO.LSP_Short_name       AS party_name,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		,
+     (CUSTOMERMAKERDATE(Spro.CMS_LE_SUB_PROFILE_ID)) as maker_date, 
+  (CUSTOMERCHEKERDATE(Spro.CMS_LE_SUB_PROFILE_ID)) as checker_date
+FROM 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  SCI_LE_REG_ADDR ra,
+  SCI_LE_BANKING_METHOD BANKING
+ WHERE
+PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+and spro.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+				AND ra.LRA_TYPE_VALUE                   = 'CORPORATE'
+    and    BANKING.cms_le_main_profile_id    = spro.cms_le_main_profile_id  
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CMS_RECUR_NEW_REPORT
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CMS_RECUR_NEW_REPORT" ("PARTY_ID", "PARTY_NAME", "SEGMENTNAME", "RMREGION", "RMNAME", "CAMTYPE", "RAMRATING", "STATEMENTTYPE", "STATUS", "DOCUMENT_CODE", "TRANSACTION_DATE", "RELATION_MGR", "ENTRY_CODE", "PROFILE_ID") AS 
+  (SELECT
+    ------------------------------------------------------------------
+    sub_profile.lsp_le_id      AS party_id,
+    sub_profile.lsp_short_name AS party_name,
+    cc_segment.entry_name      AS segmentName,
+    -- reg.region_name            AS rmRegion,
+    (
+    SELECT region_name
+    FROM CMS_REGION
+    WHERE id = sub_profile.rm_region
+    ) AS rmRegion,
+    -- rm.rm_mgr_name             AS rmname,
+    (
+    SELECT rm_mgr_name
+    FROM cms_relationship_mgr
+    WHERE id= sub_profile.relation_mgr
+    )                         AS rmname,
+    pf.cam_type               AS CAMType,
+    pf.cms_appr_officer_grade AS RAMRating,
+    chklist.statement_type    AS statementType,
+    chklist.status            AS status,
+    -------------------------------------------------------------------
+    --glb.document_code,
+    chklist.document_code,
+    trx.transaction_date,
+    sub_profile.relation_mgr,
+    cc_segment.entry_code,
+    sub_profile.cms_le_sub_profile_id AS profile_id
+    -------------------------------------------------------------------
+  FROM --cms_document_globallist glb,
+    cms_checklist checklist,
+    (SELECT DISTINCT item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    FROM cms_checklist_item item,
+      cms_checklist chk
+    WHERE item.checklist_id = chk.checklist_id
+    AND chk.checklist_id    = item.checklist_id
+    AND item.is_deleted     = 'N'
+      -- and chk.checklist_id = 20140224000003317
+    GROUP BY item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    )chklist,
+    SCI_LSP_LMT_PROFILE pf,
+    SCI_LE_SUB_PROFILE sub_profile,
+    (SELECT entry_name,
+      entry_code
+    FROM common_code_category_entry
+    WHERE category_code = 'HDFC_SEGMENT'
+    ) cc_segment,
+    --  cms_relationship_mgr rm ,
+    SCI_LE_REG_ADDR addr,
+    --  CMS_REGION reg,
+    transaction trx
+  WHERE
+    --  glb.document_code IN
+    --    (SELECT item.document_code
+    --    FROM cms_checklist_item item
+    --    WHERE item.checklist_id = chklist.checklist_id
+    --    )
+    --  AND
+    checklist.checklist_id = chklist.checklist_id
+    -- AND glb.category                       = 'REC'
+    -- AND glb.statement_type                 = chklist.statement_type
+    -- AND glb.deprecated                     = 'N'
+  AND sub_profile.cms_le_sub_profile_id     = pf.cms_customer_id(+)
+  AND checklist.cms_lsp_lmt_profile_id      = pf.cms_lsp_lmt_profile_id
+  AND checklist.checklist_id                = trx.reference_id(+)
+  AND (trx.transaction_type                 ='CHECKLIST'
+  OR trx.transaction_type                  IS NULL)
+  AND cc_segment.entry_code(+)              = sub_profile.lsp_sgmnt_code_value
+  AND sub_profile.cms_le_main_profile_id(+) = addr.cms_le_main_profile_id
+    -- AND rm.id(+)                          = sub_profile.relation_mgr
+    --  AND reg.id(+)                          = sub_profile.rm_region
+  AND addr.lra_type_value = 'CORPORATE'
+  AND sub_profile.status != 'INACTIVE'
+    --AND glb.document_code                  = chklist.document_code(+)
+    -- and checklist.checklist_id = 20140224000003317
+  )
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CMS_RECUR_NEW_REPORT_V1
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CMS_RECUR_NEW_REPORT_V1" ("PARTY_ID", "PARTY_NAME", "SEGMENTNAME", "RMREGION", "RMNAME", "CAMTYPE", "RAMRATING", "STATEMENTTYPE", "STATUS", "DOCUMENT_CODE", "TRANSACTION_DATE", "PROFILE_ID") AS 
+  ( SELECT DISTINCT
+    ------------------------------------------------------------------
+    chklist.party_id      AS party_id,
+    chklist.party_name    AS party_name,
+    chklist.segmentName   AS segmentName,
+    chklist.rmRegion      AS rmRegion,
+    chklist.rmname        AS rmname,
+    chklist.CAMType       AS CAMType,
+    chklist.RAMRating     AS RAMRating,
+    chklist.statementType AS statementType,
+    chklist.status        AS status,
+    -------------------------------------------------------------------
+    glb.document_code,
+    chklist.transaction_date,
+    chklist.profile_id AS profile_id
+    -------------------------------------------------------------------
+  FROM (select * from cms_document_globallist where category = 'REC' and deprecated     = 'N')glb ,
+    RECURENT_DOC_VIEW chklist ,
+    cms_checklist_item item
+  WHERE
+    --    glb.document_code NOT IN
+    --      (SELECT item.document_code
+    --      FROM cms_checklist_item item
+    --      WHERE item.checklist_id = chklist.checklist_id
+    --      )
+     chklist.document_code = glb.document_code
+  AND item.checklist_id  = chklist.checklist_id
+ -- AND glb.category       = 'REC'
+  AND glb.statement_type = chklist.statementType
+ -- AND glb.deprecated     = 'N'
+  )
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CMS_REC_RPT_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CMS_REC_RPT_VIEW" ("PARTY_ID", "PARTY_NAME", "SEGMENTNAME", "RMREGION", "RMNAME", "CAMTYPE", "RAMRATING", "STATEMENTTYPE", "STATUS", "DOCUMENT_CODE", "TRANSACTION_DATE", "RELATION_MGR", "ENTRY_CODE", "PROFILE_ID") AS 
+  (SELECT
+    ------------------------------------------------------------------
+    sub_profile.lsp_le_id      AS party_id,
+    sub_profile.lsp_short_name AS party_name,
+    cc_segment.entry_name      AS segmentName,
+    -- reg.region_name            AS rmRegion,
+    (
+    SELECT region_name
+    FROM CMS_REGION
+    WHERE id = sub_profile.rm_region
+    ) AS rmRegion,
+    -- rm.rm_mgr_name             AS rmname,
+    (
+    SELECT rm_mgr_name
+    FROM cms_relationship_mgr
+    WHERE id= sub_profile.relation_mgr
+    )                         AS rmname,
+    pf.cam_type               AS CAMType,
+    pf.cms_appr_officer_grade AS RAMRating,
+    chklist.statement_type    AS statementType,
+    chklist.status            AS status,
+    -------------------------------------------------------------------
+    --glb.document_code,
+    chklist.document_code,
+    trx.transaction_date,
+    sub_profile.relation_mgr,
+    cc_segment.entry_code,
+    sub_profile.cms_le_sub_profile_id AS profile_id
+    -------------------------------------------------------------------
+  FROM --cms_document_globallist glb,
+    cms_checklist checklist,
+    (SELECT DISTINCT item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    FROM cms_checklist_item item,
+      cms_checklist chk
+    WHERE item.checklist_id = chk.checklist_id
+    AND chk.checklist_id    = item.checklist_id
+    AND item.is_deleted     = 'N'
+    and to_char(item.expiry_date,'YYYY')  = (select to_char(sysdate,'YYYY') from dual)
+      -- and chk.checklist_id = 20140224000003317
+    GROUP BY item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    )chklist,
+    SCI_LSP_LMT_PROFILE pf,
+    SCI_LE_SUB_PROFILE sub_profile,
+    (SELECT entry_name,
+      entry_code
+    FROM common_code_category_entry
+    WHERE category_code = 'HDFC_SEGMENT'
+    ) cc_segment,
+    --  cms_relationship_mgr rm ,
+    SCI_LE_REG_ADDR addr,
+    --  CMS_REGION reg,
+    transaction trx
+  WHERE
+    --  glb.document_code IN
+    --    (SELECT item.document_code
+    --    FROM cms_checklist_item item
+    --    WHERE item.checklist_id = chklist.checklist_id
+    --    )
+    --  AND
+    checklist.checklist_id = chklist.checklist_id
+    -- AND glb.category                       = 'REC'
+    -- AND glb.statement_type                 = chklist.statement_type
+    -- AND glb.deprecated                     = 'N'
+  AND sub_profile.cms_le_sub_profile_id     = pf.cms_customer_id(+)
+  AND checklist.cms_lsp_lmt_profile_id      = pf.cms_lsp_lmt_profile_id
+  AND checklist.checklist_id                = trx.reference_id(+)
+  AND (trx.transaction_type                 ='CHECKLIST'
+  OR trx.transaction_type                  IS NULL)
+  AND cc_segment.entry_code(+)              = sub_profile.lsp_sgmnt_code_value
+  AND sub_profile.cms_le_main_profile_id(+) = addr.cms_le_main_profile_id
+    -- AND rm.id(+)                          = sub_profile.relation_mgr
+    --  AND reg.id(+)                          = sub_profile.rm_region
+  AND addr.lra_type_value = 'CORPORATE'
+  AND sub_profile.status != 'INACTIVE'
+  and checklist.category = 'REC'
+    --AND glb.document_code                  = chklist.document_code(+)
+    -- and checklist.checklist_id = 20140224000003317
+  )
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View COMPONENT_COLLATERAL_ID
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "COMPONENT_COLLATERAL_ID" ("INSCODE", "COLLATERALID") AS 
+  (select distinct regexp_substr(ins_select_component,'[^-]+', 1, level),cms_collateral_id
+        from cms_gc_insurance 
+          connect by regexp_substr(ins_select_component, '[^-]+', 1, level) is not null
+        )
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View COMPONENT_COLLATERAL_ID1
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "COMPONENT_COLLATERAL_ID1" ("INSCODE", "COLLATERALID") AS 
+  (select distinct regexp_substr(ins_select_component,'[^-]+', 1, level),cms_collateral_id
+        from cms_gc_insurance 
+          connect by regexp_substr(ins_select_component, '[^-]+', 1, level) is not null
+        )
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View COUNTRY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "COUNTRY" ("COUNTRY_ISO_CODE", "REGION_CODE", "COUNTRY_NAME", "DATA_PROTECT_IND", "CURRENCY_ISO_CODE", "AREA_CODE", "REGION_NAME", "SWIFT_CODE") AS 
+  SELECT  CTR_CNTRY_ISO_CODE  AS country_iso_code , (SELECT  ENTRY_CODE  from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = CTR_AREA_CODE_VALUE and CATEGORY_CODE = '36' and ACTIVE_STATUS = '1')  AS region_code , CTR_CNTRY_NAME  AS country_name , CTR_DATA_PROTECT_IND  AS data_protect_ind , CTR_CRRNCY_ISO_CODE  AS currency_iso_code , CTR_AREA_CODE_VALUE  AS area_code , (SELECT  ENTRY_NAME  from COMMON_CODE_CATEGORY_ENTRY where ENTRY_CODE = CTR_AREA_CODE_VALUE and CATEGORY_CODE = '36' and ACTIVE_STATUS = '1')  AS region_name , ''  AS swift_code  FROM SCI_COUNTRY country
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CO_BORROWER_LOCATION_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CO_BORROWER_LOCATION_VIEW" ("SUB_PF_ID", "CUS_LOC", "CUS_ORGA", "LMT_LOC", "LMT_ORG") AS 
+  SELECT DISTINCT customer.CMS_LE_SUB_PROFILE_ID  AS sub_pf_id , customer.CMS_SUB_ORIG_COUNTRY  AS cus_loc , customer.CMS_SUB_ORIG_ORGANISATION  AS cus_orga , co_lmt.CMS_BKG_COUNTRY  AS lmt_loc , co_lmt.CMS_BKG_ORGANISATION  AS lmt_org  FROM SCI_LE_SUB_PROFILE customer LEFT JOIN SCI_LSP_CO_BORROW_LMT co_lmt ON customer.CMS_LE_SUB_PROFILE_ID = co_lmt.CMS_CUSTOMER_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CURRENCY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CURRENCY" ("CURRENCY_ISO_CODE", "CURRENCY_DESC", "CURRENCY_COUNTRY", "EURO_IND", "RESTRICT_CURRENCY_IND", "UNITS", "DECIMAL_PLACE") AS 
+  SELECT  CUR_CRRNCY_ISO_CODE  AS currency_iso_code , CUR_CRRNCY_DESC  AS currency_desc , CUR_CNTRY_ISO_CODE  AS currency_country , CUR_EURO_CRRNCY_IND  AS euro_ind , CUR_RSTRCT_CRRNCY_IND  AS restrict_currency_ind , 0  AS units , CUR_DECIMAL_PLACE_NUM  AS decimal_place  FROM SCI_CURRENCY
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CUSTOMER_LEGAL_CONSTITUTION
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CUSTOMER_LEGAL_CONSTITUTION" ("CUSTOMER_LEGAL_CONST_CODE", "CUSTOMER_LEGAL_CONST_DESC") AS 
+  SELECT  ENTRY_CODE  AS customer_legal_const_code , ENTRY_NAME  AS customer_legal_const_desc  FROM COMMON_CODE_CATEGORY_ENTRY a WHERE CATEGORY_CODE = '56' AND ACTIVE_STATUS = '1' AND ENTRY_SOURCE = 'ARBS'
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CUSTOMER_LOCATION_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CUSTOMER_LOCATION_VIEW" ("CUSTOMERID", "LSP_DMCL_CNTRY_ISO_CODE", "CMS_ORIG_COUNTRY", "PROF_ORG", "LIMIT_COUNTRY", "LIMIT_ORG", "SECURITY_LOCATION", "SECURITY_ORGANISATION", "COLLAB_SECURITY_LOCATION", "COLLAB_CC_COUNTRY") AS 
+  SELECT DISTINCT cust.CMS_LE_SUB_PROFILE_ID  AS customerid , cust.LSP_DMCL_CNTRY_ISO_CODE , COALESCE(prof.CMS_ORIG_COUNTRY, cust.CMS_SUB_ORIG_COUNTRY) , COALESCE(prof.CMS_ORIG_ORGANISATION, cust.CMS_SUB_ORIG_ORGANISATION)  AS prof_org , limits.CMS_BKG_COUNTRY  AS limit_country , limits.CMS_BKG_ORGANISATION  AS limit_org , sec.SECURITY_LOCATION , sec.SECURITY_ORGANISATION , col_task.SECURITY_LOCATION , cc.DMCL_CNTRY_ISO_CODE  FROM SCI_LE_SUB_PROFILE cust LEFT JOIN SCI_LSP_LMT_PROFILE prof ON cust.CMS_LE_SUB_PROFILE_ID = prof.CMS_CUSTOMER_ID LEFT JOIN SCI_LSP_APPR_LMTS limits ON prof.CMS_LSP_LMT_PROFILE_ID = limits.CMS_LIMIT_PROFILE_ID LEFT JOIN CMS_CC_TASK cc ON prof.CMS_LSP_LMT_PROFILE_ID = cc.CMS_LSP_LMT_PROFILE_ID LEFT JOIN CMS_LIMIT_SECURITY_MAP sec_map ON limits.CMS_LSP_APPR_LMTS_ID = sec_map.CMS_LSP_APPR_LMTS_ID LEFT JOIN CMS_SECURITY sec ON sec_map.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID LEFT JOIN CMS_COLLATERAL_TASK col_task ON sec_map.CMS_COLLATERAL_ID = col_task.CMS_COLLATERAL_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CUSTOMER_SEGMENT
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CUSTOMER_SEGMENT" ("CUSTOMER_TYPE_CODE", "CUSTOMER_TYPE_DESC") AS 
+  SELECT  ENTRY_CODE  AS customer_type_code , ENTRY_NAME  AS customer_type_desc  FROM COMMON_CODE_CATEGORY_ENTRY a WHERE CATEGORY_CODE = '5' AND ACTIVE_STATUS = '1'
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CUST_WISE_SEC
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CUST_WISE_SEC" ("PARTY_ID", "PARTY_NAME", "SEGMENTNAME", "FACILITYNAME", "SECNATURE", "SECSUBTYPE", "COLLATERAL_NAME", "SECPRIORITY", "CURRCODE", "SECURITYAMOUNT", "LINENO", "SERIALNO", "SYSTEMNAME", "SYSTEMID", "RELEASEDAMOUNT", "RMNAME", "REGION", "COLID", "FACID", "VALUATIONAMT", "DATEOFVAL", "REVALFREQ", "NEXTVALDATE", "TYPEOFCHARGE", "PECTFSTCHGBYBANK", "MONITORPROCCOL", "MONITORPROCCOLFREQ", "PHYVERIFOFCOL", "PHYVERIFOFCOLFREQ", "PHYVERIFDONEON", "NXTPHYVERIFDUEON", "PRIORCLAIM", "TYPEOFCLAIM", "MAKER", "MAKERDATETIME", "CHECKER", "CHECKERDATETIME") AS 
+  (SELECT party_id,
+				  party_name,
+				  segmentName,
+				  facilityName,				    
+				  secNature,
+				  secSubType,
+				  Collateral_name,
+				  secPriority,
+				  currCode,
+				  securityAmount,
+				  lineNo,
+				  serialNo,
+				  systemName,
+				  systemId,
+				  releasedAmount,
+				  rmname,
+				  region,
+				  colId,
+				  facId,
+				  valuationAmt,
+				  to_char(dateOfVal,'DD/MON/YYYY') as dateOfVal,
+          (select entry_name from common_code_category_entry 
+				  where category_code='FREQUENCY' AND entry_code= revalFreq)AS  revalFreq,
+				  to_char(nextRevalDate,'DD/MON/YYYY') as nextValDate,
+				  typeOfCharge,
+				  pectFstChgByBank,
+				  (case 
+				  when monitorProcCol='Y'
+				  Then 'Yes'
+				  when monitorProcCol='N'
+				  Then 'No'
+				  End)   As monitorProcCol,
+				  (select entry_name from common_code_category_entry 
+				  where category_code='FREQUENCY' AND entry_code= monitorProcColFreq)AS monitorProcColFreq ,
+				  (case When phyVerifOfCol='Y'
+				  Then 'Yes'
+				  When phyVerifOfCol='N'
+				  Then 'No'
+				  end)as  phyVerifOfCol,
+				  (select entry_name from common_code_category_entry 
+				  where category_code='FREQUENCY' AND entry_code= phyVerifOfColFreq) as phyVerifOfColFreq,
+				  to_char(phyVerifDoneOn,'DD/MON/YYYY') as phyVerifDoneOn,
+				  to_char(nxtPhyVerifDueOn,'DD/MON/YYYY') as nxtPhyVerifDueOn,
+				  (case When priorClaim='Y'
+				  Then 'Yes'
+				  When priorClaim='N'
+				  Then 'No'
+				  end)as  priorClaim,
+				  (case when typeOfClaim ='LITIGATION'
+								  Then 'Litigation'
+								  when typeOfClaim ='PROPERTY_TAX'
+								  Then 'Property Tax'
+								   when typeOfClaim ='OTHERS_CLAIM'
+								  Then 'Others'
+								  else '-'
+								  end    )              AS typeOfClaim,
+                  
+                  case
+                    WHEN trx.from_state = 'PENDING_PERFECTION' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.transaction_id = trx.transaction_id
+		                            AND hist.from_state    = 'PENDING_PERFECTION'
+		                            AND hist.to_state        ='DRAFT')
+                    
+                    
+		                WHEN trx.from_state = 'PENDING_CREATE' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.transaction_id = trx.transaction_id
+		                            AND hist.from_state      IN ('ND','DRAFT')
+		                            AND hist.to_state        ='PENDING_CREATE')
+		                WHEN trx.from_state = 'PENDING_UPDATE' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+                                AND from_state IN ('ACTIVE','DRAFT')
+                                AND to_state  = 'PENDING_UPDATE')
+		                  )
+		                WHEN trx.from_state = 'PENDING_DELETE' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                            AND from_state ='ACTIVE'
+		                            AND to_state   ='PENDING_DELETE')
+		                  )
+		                WHEN trx.from_state = 'ACTIVE' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                            AND from_state ='ACTIVE'
+		                            AND to_state   IN ('PENDING_UPDATE','PENDING_DELETE'))
+		                  )
+		                
+		                WHEN trx.from_state = 'REJECTED' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                            AND from_state = 'REJECTED'
+		                            AND to_state   ='ACTIVE')
+		                  ) 
+		                
+		                WHEN trx.from_state = 'DRAFT' THEN
+		                  case
+		                    WHEN trx.status = 'PENDING_UPDATE' THEN
+		                        (SELECT hist.login_id
+		                            FROM trans_history hist
+		                            WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                                  AND from_state = 'DRAFT'
+		                                  AND to_state   ='PENDING_UPDATE')
+		                        )
+		                    WHEN trx.status = 'ACTIVE' THEN
+		                        (SELECT hist.login_id
+		                            FROM trans_history hist
+		                            WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                                  AND from_state = 'DRAFT'
+		                                  AND to_state   ='ACTIVE')
+		                        )
+		                  END      
+		            END AS Maker,
+						        
+		            case
+                
+                      WHEN trx.from_state = 'PENDING_PERFECTION' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.transaction_id = trx.transaction_id
+		                              AND hist.from_state      = 'PENDING_PERFECTION' 
+		                              AND hist.to_state        ='DRAFT')
+		                
+		                  WHEN trx.from_state = 'PENDING_CREATE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.transaction_id = trx.transaction_id
+		                              AND hist.from_state      IN ('ND','DRAFT')
+		                              AND hist.to_state        ='PENDING_CREATE')
+		                  WHEN trx.from_state = 'PENDING_UPDATE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                            AND from_state IN ('ACTIVE','DRAFT')
+                                	AND to_state  = 'PENDING_UPDATE')
+		                    )
+		                  WHEN trx.from_state = 'PENDING_DELETE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='ACTIVE'
+		                              AND to_state   ='PENDING_DELETE')
+		                    )
+		                    
+		                  WHEN trx.from_state = 'ACTIVE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='ACTIVE'
+		                              AND to_state IN ('PENDING_UPDATE','PENDING_DELETE'))
+		                    )
+		                   
+		                   WHEN trx.from_state = 'REJECTED' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state = 'REJECTED'
+		                              AND to_state   ='ACTIVE')
+		                    ) 
+		                    
+		                   WHEN trx.from_state = 'DRAFT' THEN
+		                      case
+		                          WHEN trx.status = 'PENDING_UPDATE' THEN
+		                              (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+		                                  FROM trans_history hist
+		                                  WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                                        AND from_state = 'DRAFT'
+		                                        AND to_state   ='PENDING_UPDATE')
+		                              ) 
+		                           WHEN trx.status = 'ACTIVE' THEN
+		                              (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+		                                  FROM trans_history hist
+		                                  WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                                        AND from_state = 'DRAFT'
+		                                        AND to_state   ='ACTIVE')
+		                              ) 
+		                      END        
+		                  
+		            	END AS MakerDateTime,    
+						        
+		                CASE
+						          WHEN trx.status = 'PENDING_CREATE' or trx.from_state = 'PENDING_PERFECTION' THEN 
+		                      ''				          
+		                  WHEN trx.status = 'PENDING_UPDATE' THEN 
+		                      (SELECT hist.login_id
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state IN ('PENDING_UPDATE','ACTIVE')
+		                              AND to_state   IN ('PENDING_UPDATE','ACTIVE'))
+		                    )
+		                  WHEN ((trx.status != 'PENDING_CREATE' and trx.from_state != 'PENDING_PERFECTION') AND trx.status != 'PENDING_UPDATE') THEN 
+		                      to_char(trx.login_id)  
+						        END AS checker,				       
+		       
+		              case
+		                
+		                  WHEN trx.from_state = 'PENDING_CREATE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.transaction_id = trx.transaction_id
+		                              AND hist.from_state      ='PENDING_CREATE'
+		                              AND hist.to_state        ='ACTIVE')
+		                  WHEN trx.from_state = 'PENDING_UPDATE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='PENDING_UPDATE'
+		                              AND to_state   ='ACTIVE')
+		                    )
+		                  WHEN trx.from_state = 'PENDING_DELETE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='PENDING_DELETE'
+		                              AND to_state   ='ACTIVE')
+		                    )
+		                    
+		                  WHEN trx.from_state = 'ACTIVE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state IN ('PENDING_UPDATE','ACTIVE')
+		                              AND to_state   IN ('PENDING_UPDATE','ACTIVE'))
+		                    )  
+		                  
+		                  WHEN trx.from_state = 'REJECTED' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='REJECTED'
+		                              AND to_state   ='ACTIVE')
+		                    ) 
+		                  
+		                   WHEN trx.from_state = 'DRAFT' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id                               
+		                              AND to_state   ='ACTIVE')
+		                    )  
+		            	END AS CheckerDateTime
+				  
+				  --  securityAmount
+				FROM (
+				  --For fd
+				  (SELECT DISTINCT sub_profile.lsp_le_id AS party_id,
+				    sub_profile.lsp_short_name           AS party_name,
+				    cc_segment.entry_name                AS segmentName,
+				    lmts.facility_name                   AS facilityName,				    
+				    secdetail.type_name                               AS secNature,
+				    secdetail.subtype_name                            AS secSubType,
+				    colMaster.new_collateral_description              AS collateral_name,
+				    find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+				    secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+				    (select sum(lien_amount) from cms_lien 
+    where cash_deposit_id in(select cash_deposit_id from cms_cash_deposit where
+    cms_collateral_id=secdetail.cms_collateral_id AND status='ACTIVE' AND ACTIVE='active'))  AS securityAmount,                      
+				    facdetail.line_no                                 AS lineNo,
+				    facdetail.serial_no                               AS serialNo,
+				    lmts.facility_system                              AS systemName,
+				    --lmts.FACILITY_SYSTEM_ID   AS systemId,
+				          facdetail.FACILITY_SYSTEM_ID                       AS systemId,
+				    facdetail.released_amount                         AS releasedAmount,
+				    rm.rm_mgr_name                                    AS rmname,
+				    (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+				    )                             AS region,
+				    secDetail.cms_collateral_id   AS colId,
+				    lmts.lmt_id                   AS facId,
+				    secdetail.valuation_amount    AS valuationAmt,
+				    secdetail.valuatioin_date     AS dateOfVal,
+				    secdetail.reval_freq          AS revalFreq,
+				    secdetail.next_valuation_date AS nextRevalDate,
+				    secdetail.monitor_process     AS monitorProcCol,
+				    secdetail.monitor_frequency   AS monitorProcColFreq,
+				    (select entry_name from common_code_category_entry 
+            where category_code='TYPE_CHARGE' and entry_code= secdetail.change_type)         AS typeOfCharge,
+				    secdetail.other_bank_charge   AS pectFstChgByBank,
+				    NULL                          AS phyVerifOfCol,
+				    NULL                          AS phyVerifOfColFreq,
+				    NULL                          AS phyVerifDoneOn,
+				    NULL                          AS nxtPhyVerifDueOn,
+				    NULL                          AS priorClaim,
+				    NULL                          AS typeOfClaim,
+				    
+				    sub_profile.cms_le_sub_profile_id AS partyID,
+				    sub_profile.lsp_sgmnt_code_value,
+				    rm.id as relationManager
+				  FROM CMS_LIMIT_SECURITY_MAP lsm,
+				    SCI_LSP_APPR_LMTS lmts,
+				    SCI_LSP_LMT_PROFILE pf,
+				    SCI_LE_SUB_PROFILE sub_profile,
+				    SCI_LE_MAIN_PROFILE lmp ,
+				    (SELECT entry_name,
+				      entry_code
+				    FROM common_code_category_entry
+				    WHERE category_code = 'HDFC_SEGMENT'
+				    ) cc_segment ,
+				    CMS_SECURITY secDetail,
+				    cms_relationship_mgr rm ,
+				    SCI_LSP_SYS_XREF facDetail ,
+				    SCI_LSP_LMTS_XREF_MAP xrefmap ,
+				    SCI_LE_REG_ADDR addr ,
+         --   SCI_LE_OTHER_SYSTEM sys,
+				    cms_collateral_new_master colMaster				    
+				  WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+				  AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+         -- AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID 
+				  AND addr.lra_type_value                 = 'CORPORATE'
+				  AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+				  AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+				  AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+				  AND (lsm.update_status_ind             != 'D'
+				  OR lsm.update_status_ind               IS NULL)
+				  AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+				  AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+				  AND rm.id                               = sub_profile.relation_mgr
+				  AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				  AND facDetail.CMS_LSP_SYS_XREF_ID(+)       =xrefmap.CMS_LSP_SYS_XREF_ID
+				  AND sub_profile.status                  = 'ACTIVE'
+				  AND secdetail.security_sub_type_id      ='CS202'
+          AND lsm.CHARGE_ID   in 
+                (SELECT MAX(MAPS2.CHARGE_ID)
+		        from cms_limit_security_map maps2
+		        where maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id
+		        AND maps2.cms_collateral_id      =secDetail.cms_collateral_id
+		        )
+				  AND colMaster.new_collateral_code       = secDetail.collateral_code
+				  AND lmts.cms_limit_status   <>  'DELETED'
+				  )
+				  UNION
+				    --For property
+				    (
+				    SELECT DISTINCT sub_profile.lsp_le_id AS party_id,
+				      sub_profile.lsp_short_name          AS party_name,
+				      cc_segment.entry_name               AS segmentName,
+				      lmts.facility_name                  AS facilityName,
+				       secdetail.type_name                               AS secNature,
+				      secdetail.subtype_name                            AS secSubType,
+				      colMaster.new_collateral_description              AS collateral_name,
+				      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+				      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+				      secDetail.CMV                     AS securityAmount,
+				      facdetail.line_no                                 AS lineNo,
+				      facdetail.serial_no                               AS serialNo,
+				      lmts.facility_system                              AS systemName,
+				     -- lmts.FACILITY_SYSTEM_ID   AS systemId,
+				       facdetail.FACILITY_SYSTEM_ID                       AS systemId,
+				      facdetail.released_amount                         AS releasedAmount,
+				      rm.rm_mgr_name                                    AS rmname,
+				      (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+				      )                             AS region,
+				      secDetail.cms_collateral_id   AS colId,
+				      lmts.lmt_id                   AS facId,
+				      secdetail.valuation_amount    AS valuationAmt,
+				      secdetail.valuatioin_date     AS dateOfVal,
+				      secdetail.reval_freq          AS revalFreq,
+				      secdetail.next_valuation_date AS nextRevalDate,
+				      secdetail.monitor_process     AS monitorProcCol,
+				      secdetail.monitor_frequency   AS monitorProcColFreq,
+				      (select entry_name from common_code_category_entry 
+            where category_code='TYPE_CHARGE' and entry_code= secdetail.change_type)         AS typeOfCharge,
+				      secdetail.other_bank_charge   AS pectFstChgByBank,
+				      prop.is_phy_inspect           AS phyVerifOfCol,
+				     -- prop.phy_inspect_freq
+				      --|| ' '||
+				      prop.phy_inspect_freq_unit      AS phyVerifOfColFreq,
+				      prop.last_phy_inspect_date        AS phyVerifDoneOn,
+				      prop.next_phy_inspect_date        AS nxtPhyVerifDueOn,
+				      prop.claim                        AS priorClaim,
+				      prop.claim_type                   AS typeOfClaim,
+				      
+				      sub_profile.cms_le_sub_profile_id AS partyID,
+				      sub_profile.lsp_sgmnt_code_value,
+				      rm.id as relationManager
+				    FROM CMS_LIMIT_SECURITY_MAP lsm,
+				      SCI_LSP_APPR_LMTS lmts,
+				      SCI_LSP_LMT_PROFILE pf,
+				      SCI_LE_SUB_PROFILE sub_profile,
+				      SCI_LE_MAIN_PROFILE lmp ,
+				      (SELECT entry_name,
+				        entry_code
+				      FROM common_code_category_entry
+				      WHERE category_code = 'HDFC_SEGMENT'
+				      ) cc_segment ,
+				      CMS_SECURITY secDetail,
+				      cms_relationship_mgr rm ,
+				      SCI_LSP_SYS_XREF facDetail ,
+				      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+				      SCI_LE_REG_ADDR addr,
+           --   SCI_LE_OTHER_SYSTEM sys,
+				      cms_collateral_new_master colMaster,
+				      CMS_PROPERTY prop
+				    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+				    AND secDetail.cms_collateral_id         = prop.cms_collateral_id(+)
+				    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+         --   AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID 
+				    AND addr.lra_type_value                 = 'CORPORATE'
+				    AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+				    AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+				    AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+				    AND (lsm.update_status_ind             != 'D'
+				    OR lsm.update_status_ind               IS NULL)
+				    AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+				    AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+				    AND rm.id                               = sub_profile.relation_mgr
+				    AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				    AND facDetail.CMS_LSP_SYS_XREF_ID(+)       =xrefmap.CMS_LSP_SYS_XREF_ID
+				    AND sub_profile.status                  = 'ACTIVE'
+				    AND secdetail.security_sub_type_id      ='PT701'
+				    AND colMaster.new_collateral_code       = secDetail.collateral_code
+				    AND lmts.cms_limit_status     <>    'DELETED'
+				    )
+				    UNION
+				      (SELECT DISTINCT sub_profile.lsp_le_id AS party_id,
+				        sub_profile.lsp_short_name           AS party_name,
+				        cc_segment.entry_name                AS segmentName,
+				        lmts.facility_name                   AS facilityName,				         
+				        secdetail.type_name                               AS secNature,
+				        secdetail.subtype_name                            AS secSubType,
+				        colMaster.new_collateral_description              AS collateral_name,
+				        find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+				        secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+				        secDetail.CMV                     AS securityAmount,
+				        facdetail.line_no                                 AS lineNo,
+				        facdetail.serial_no                               AS serialNo,
+				        lmts.facility_system                              AS systemName,
+				       --lmts.FACILITY_SYSTEM_ID   AS systemId,
+				        facdetail.FACILITY_SYSTEM_ID                       AS systemId,
+				        facdetail.released_amount                         AS releasedAmount,
+				        rm.rm_mgr_name                                    AS rmname,
+				        (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+				        )                                 AS region,
+				        secDetail.cms_collateral_id       AS colId,
+				        lmts.lmt_id                       AS facId,
+				        secdetail.valuation_amount        AS valuationAmt,
+				        secdetail.valuatioin_date         AS dateOfVal,
+				        secdetail.reval_freq              AS revalFreq,
+				        secdetail.next_valuation_date     AS nextRevalDate,
+				        secdetail.monitor_process         AS monitorProcCol,
+				        secdetail.monitor_frequency       AS monitorProcColFreq,
+				        (select entry_name from common_code_category_entry 
+            where category_code='TYPE_CHARGE' and entry_code= secdetail.change_type)            AS typeOfCharge,
+				        secdetail.other_bank_charge       AS pectFstChgByBank,
+				        NULL                              AS phyVerifOfCol,
+				        NULL                              AS phyVerifOfColFreq,
+				        NULL                              AS phyVerifDoneOn,
+				        NULL                              AS nxtPhyVerifDueOn,
+				        NULL                              AS priorClaim,
+				        NULL                              AS typeOfClaim,
+				        
+				        sub_profile.cms_le_sub_profile_id AS partyID,
+				        sub_profile.lsp_sgmnt_code_value,
+				        rm.id as relationManager
+				      FROM CMS_LIMIT_SECURITY_MAP lsm,
+				        SCI_LSP_APPR_LMTS lmts,
+				        SCI_LSP_LMT_PROFILE pf,
+				        SCI_LE_SUB_PROFILE sub_profile,
+				        SCI_LE_MAIN_PROFILE lmp ,
+				        (SELECT entry_name,
+				          entry_code
+				        FROM common_code_category_entry
+				        WHERE category_code = 'HDFC_SEGMENT'
+				        ) cc_segment ,
+				        CMS_SECURITY secDetail,
+				        cms_relationship_mgr rm ,
+				        SCI_LSP_SYS_XREF facDetail ,
+				        SCI_LSP_LMTS_XREF_MAP xrefmap ,
+				        SCI_LE_REG_ADDR addr,
+          --    SCI_LE_OTHER_SYSTEM sys,
+				        cms_collateral_new_master colMaster,
+				        CMS_INSURANCE ins
+				      WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+				      AND secDetail.cms_collateral_id         = ins.cms_collateral_id
+         --     AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID 
+				      AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+				      AND addr.lra_type_value                 = 'CORPORATE'
+				      AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+				      AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+				      AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+				      AND (lsm.update_status_ind             != 'D'
+				      OR lsm.update_status_ind               IS NULL)
+				      AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+				      AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+				      AND rm.id                               = sub_profile.relation_mgr
+				      AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				      AND facDetail.CMS_LSP_SYS_XREF_ID(+)       =xrefmap.CMS_LSP_SYS_XREF_ID
+				      AND sub_profile.status                  = 'ACTIVE'
+				      AND secdetail.security_sub_type_id      ='IN501'
+				      AND colMaster.new_collateral_code       = secDetail.collateral_code
+				      AND lmts.cms_limit_status       <>    'DELETED'
+				      )
+				      UNION
+				        (SELECT DISTINCT sub_profile.lsp_le_id AS party_id,
+				          sub_profile.lsp_short_name           AS party_name,
+				          cc_segment.entry_name                AS segmentName,
+				          lmts.facility_name                   AS facilityName,				           
+				          secdetail.type_name                               AS secNature,
+				          secdetail.subtype_name                            AS secSubType,
+				          colMaster.new_collateral_description              AS collateral_name,
+				          find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+				          secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+                  (case
+                  when secdetail.security_sub_type_id='AB100'
+                  Then(SELECT CALCULATEDDP
+				            FROM CMS_ASSET_GC_DET gc_det
+				             
+				            WHERE 
+				             gc_det.cms_collateral_id = secdetail.cms_collateral_id
+				            AND gc_det.doc_code          =LATEST_GC_DOCCODE(secdetail.cms_collateral_id)
+				            )   
+                  else  secDetail.CMV end)                                      AS securityAmount,
+				          facdetail.line_no                                 AS lineNo,
+				          facdetail.serial_no                               AS serialNo,
+				          lmts.facility_system                              AS systemName,
+				         --lmts.FACILITY_SYSTEM_ID   AS systemId,
+				         facdetail.FACILITY_SYSTEM_ID                       AS systemId,
+				          facdetail.released_amount                         AS releasedAmount,
+				          rm.rm_mgr_name                                    AS rmname,
+				          (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+				          )                             AS region,
+				          secDetail.cms_collateral_id   AS colId,
+				          lmts.lmt_id                   AS facId,
+				          secdetail.valuation_amount    AS valuationAmt,
+				          secdetail.valuatioin_date     AS dateOfVal,
+				          secdetail.reval_freq          AS revalFreq,
+				          secdetail.next_valuation_date AS nextRevalDate,
+				          secdetail.monitor_process     AS monitorProcCol,
+				          secdetail.monitor_frequency   AS monitorProcColFreq,
+				          (select entry_name from common_code_category_entry 
+            where category_code='TYPE_CHARGE' and entry_code= secdetail.change_type)         AS typeOfCharge,
+				          secdetail.other_bank_charge   AS pectFstChgByBank,
+				          asset.PHY_INSPECTION_DONE     AS phyVerifOfCol,
+				         -- asset.PHY_INSPECTION_FREQ
+				          --|| ' ' ||
+				          asset.PHY_INSPECTION_FREQ_UNIT  AS phyVerifOfColFreq,
+				          asset.last_phy_inspect_date       AS phyVerifDoneOn,
+				          asset.next_phy_inspect_date       AS nxtPhyVerifDueOn,
+				          ''                                AS priorClaim,
+				          ''                                AS typeOfClaim,
+				          
+				          sub_profile.cms_le_sub_profile_id AS partyID,
+				          sub_profile.lsp_sgmnt_code_value,
+				          rm.id as relationManager
+				        FROM CMS_LIMIT_SECURITY_MAP lsm,
+				          SCI_LSP_APPR_LMTS lmts,
+				          SCI_LSP_LMT_PROFILE pf,
+				          SCI_LE_SUB_PROFILE sub_profile,
+				          SCI_LE_MAIN_PROFILE lmp ,
+				          (SELECT entry_name,
+				            entry_code
+				          FROM common_code_category_entry
+				          WHERE category_code = 'HDFC_SEGMENT'
+				          ) cc_segment ,
+				          CMS_SECURITY secDetail,
+				          cms_relationship_mgr rm ,
+				          SCI_LSP_SYS_XREF facDetail ,
+				          SCI_LSP_LMTS_XREF_MAP xrefmap ,
+				          SCI_LE_REG_ADDR addr,
+             --    SCI_LE_OTHER_SYSTEM sys,
+				          cms_collateral_new_master colMaster,
+				          CMS_ASSET asset
+				        WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+				        AND secDetail.cms_collateral_id         = asset.cms_collateral_id(+)
+             --   AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID 
+				        AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+				        AND addr.lra_type_value                 = 'CORPORATE'
+				        AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+				        AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+				        AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+				        AND (lsm.update_status_ind             != 'D'
+				        OR lsm.update_status_ind               IS NULL)
+				        AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+				        AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+				        AND rm.id                               = sub_profile.relation_mgr
+				        AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				        AND facDetail.CMS_LSP_SYS_XREF_ID(+)       =xrefmap.CMS_LSP_SYS_XREF_ID
+				        AND sub_profile.status                  = 'ACTIVE'
+				        AND secdetail.security_sub_type_id     IN ('AB100','AB110', 'AB101', 'AB109', 'AB102', 'AB108', 'GT402','GT400','GT406','GT408','GT405')
+				        AND colMaster.new_collateral_code       = secDetail.collateral_code
+				        AND lmts.cms_limit_status       <>
+				        'DELETED'
+				        )
+) temp , transaction trx
+where  
+trx.reference_id = temp.colId
+					AND trx.transaction_type='COL')
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View CUST_WISE_SEC1
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "CUST_WISE_SEC1" ("PARTY_ID", "PARTY_NAME", "SEGMENTNAME", "FACILITYNAME", "SECNATURE", "SECSUBTYPE", "COLLATERAL_NAME", "SECPRIORITY", "CURRCODE", "SECURITYAMOUNT", "LINENO", "SERIALNO", "SYSTEMNAME", "SYSTEMID", "RELEASEDAMOUNT", "RMNAME", "REGION", "COLID", "FACID", "VALUATIONAMT", "DATEOFVAL", "REVALFREQ", "NEXTVALDATE", "TYPEOFCHARGE", "PECTFSTCHGBYBANK", "MONITORPROCCOL", "MONITORPROCCOLFREQ", "PHYVERIFOFCOL", "PHYVERIFOFCOLFREQ", "PHYVERIFDONEON", "NXTPHYVERIFDUEON", "PRIORCLAIM", "TYPEOFCLAIM", "MAKER", "MAKERDATETIME", "CHECKER", "CHECKERDATETIME") AS 
+  (SELECT party_id,
+				  party_name,
+				  segmentName,
+				  facilityName,				    
+				  secNature,
+				  secSubType,
+				  Collateral_name,
+				  secPriority,
+				  currCode,
+				  securityAmount,
+				  lineNo,
+				  serialNo,
+				  systemName,
+				  systemId,
+				  releasedAmount,
+				  rmname,
+				  region,
+				  colId,
+				  facId,
+				  valuationAmt,
+				  to_char(dateOfVal,'DD/MON/YYYY') as dateOfVal,
+          (select entry_name from common_code_category_entry 
+				  where category_code='FREQUENCY' AND entry_code= revalFreq)AS  revalFreq,
+				  to_char(nextRevalDate,'DD/MON/YYYY') as nextValDate,
+				  typeOfCharge,
+				  pectFstChgByBank,
+				  (case 
+				  when monitorProcCol='Y'
+				  Then 'Yes'
+				  when monitorProcCol='N'
+				  Then 'No'
+				  End)   As monitorProcCol,
+				  (select entry_name from common_code_category_entry 
+				  where category_code='FREQUENCY' AND entry_code= monitorProcColFreq)AS monitorProcColFreq ,
+				  (case When phyVerifOfCol='Y'
+				  Then 'Yes'
+				  When phyVerifOfCol='N'
+				  Then 'No'
+				  end)as  phyVerifOfCol,
+				  (select entry_name from common_code_category_entry 
+				  where category_code='FREQUENCY' AND entry_code= phyVerifOfColFreq) as phyVerifOfColFreq,
+				  to_char(phyVerifDoneOn,'DD/MON/YYYY') as phyVerifDoneOn,
+				  to_char(nxtPhyVerifDueOn,'DD/MON/YYYY') as nxtPhyVerifDueOn,
+				  (case When priorClaim='Y'
+				  Then 'Yes'
+				  When priorClaim='N'
+				  Then 'No'
+				  end)as  priorClaim,
+				  (case when typeOfClaim ='LITIGATION'
+								  Then 'Litigation'
+								  when typeOfClaim ='PROPERTY_TAX'
+								  Then 'Property Tax'
+								   when typeOfClaim ='OTHERS_CLAIM'
+								  Then 'Others'
+								  else '-'
+								  end    )              AS typeOfClaim,
+                  
+                  case
+                    WHEN trx.from_state = 'PENDING_PERFECTION' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.transaction_id = trx.transaction_id
+		                            AND hist.from_state    = 'PENDING_PERFECTION'
+		                            AND hist.to_state        ='DRAFT')
+                    
+                    
+		                WHEN trx.from_state = 'PENDING_CREATE' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.transaction_id = trx.transaction_id
+		                            AND hist.from_state      IN ('ND','DRAFT')
+		                            AND hist.to_state        ='PENDING_CREATE')
+		                WHEN trx.from_state = 'PENDING_UPDATE' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+                                AND from_state IN ('ACTIVE','DRAFT')
+                                AND to_state  = 'PENDING_UPDATE')
+		                  )
+		                WHEN trx.from_state = 'PENDING_DELETE' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                            AND from_state ='ACTIVE'
+		                            AND to_state   ='PENDING_DELETE')
+		                  )
+		                WHEN trx.from_state = 'ACTIVE' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                            AND from_state ='ACTIVE'
+		                            AND to_state   IN ('PENDING_UPDATE','PENDING_DELETE'))
+		                  )
+		                
+		                WHEN trx.from_state = 'REJECTED' THEN
+		                  (SELECT hist.login_id
+		                      FROM trans_history hist
+		                      WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                            AND from_state = 'REJECTED'
+		                            AND to_state   ='ACTIVE')
+		                  ) 
+		                
+		                WHEN trx.from_state = 'DRAFT' THEN
+		                  case
+		                    WHEN trx.status = 'PENDING_UPDATE' THEN
+		                        (SELECT hist.login_id
+		                            FROM trans_history hist
+		                            WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                                  AND from_state = 'DRAFT'
+		                                  AND to_state   ='PENDING_UPDATE')
+		                        )
+		                    WHEN trx.status = 'ACTIVE' THEN
+		                        (SELECT hist.login_id
+		                            FROM trans_history hist
+		                            WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                                  AND from_state = 'DRAFT'
+		                                  AND to_state   ='ACTIVE')
+		                        )
+		                  END      
+		            END AS Maker,
+						        
+		            case
+                
+                      WHEN trx.from_state = 'PENDING_PERFECTION' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.transaction_id = trx.transaction_id
+		                              AND hist.from_state      = 'PENDING_PERFECTION' 
+		                              AND hist.to_state        ='DRAFT')
+		                
+		                  WHEN trx.from_state = 'PENDING_CREATE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.transaction_id = trx.transaction_id
+		                              AND hist.from_state      IN ('ND','DRAFT')
+		                              AND hist.to_state        ='PENDING_CREATE')
+		                  WHEN trx.from_state = 'PENDING_UPDATE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                            AND from_state IN ('ACTIVE','DRAFT')
+                                	AND to_state  = 'PENDING_UPDATE')
+		                    )
+		                  WHEN trx.from_state = 'PENDING_DELETE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='ACTIVE'
+		                              AND to_state   ='PENDING_DELETE')
+		                    )
+		                    
+		                  WHEN trx.from_state = 'ACTIVE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='ACTIVE'
+		                              AND to_state IN ('PENDING_UPDATE','PENDING_DELETE'))
+		                    )
+		                   
+		                   WHEN trx.from_state = 'REJECTED' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state = 'REJECTED'
+		                              AND to_state   ='ACTIVE')
+		                    ) 
+		                    
+		                   WHEN trx.from_state = 'DRAFT' THEN
+		                      case
+		                          WHEN trx.status = 'PENDING_UPDATE' THEN
+		                              (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+		                                  FROM trans_history hist
+		                                  WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                                        AND from_state = 'DRAFT'
+		                                        AND to_state   ='PENDING_UPDATE')
+		                              ) 
+		                           WHEN trx.status = 'ACTIVE' THEN
+		                              (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+		                                  FROM trans_history hist
+		                                  WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                                        AND from_state = 'DRAFT'
+		                                        AND to_state   ='ACTIVE')
+		                              ) 
+		                      END        
+		                  
+		            	END AS MakerDateTime,    
+						        
+		                CASE
+						          WHEN trx.status = 'PENDING_CREATE' or trx.from_state = 'PENDING_PERFECTION' THEN 
+		                      ''				          
+		                  WHEN trx.status = 'PENDING_UPDATE' THEN 
+		                      (SELECT hist.login_id
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state IN ('PENDING_UPDATE','ACTIVE')
+		                              AND to_state   IN ('PENDING_UPDATE','ACTIVE'))
+		                    )
+		                  WHEN ((trx.status != 'PENDING_CREATE' and trx.from_state != 'PENDING_PERFECTION') AND trx.status != 'PENDING_UPDATE') THEN 
+		                      to_char(trx.login_id)  
+						        END AS checker,				       
+		       
+		              case
+		                
+		                  WHEN trx.from_state = 'PENDING_CREATE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.transaction_id = trx.transaction_id
+		                              AND hist.from_state      ='PENDING_CREATE'
+		                              AND hist.to_state        ='ACTIVE')
+		                  WHEN trx.from_state = 'PENDING_UPDATE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='PENDING_UPDATE'
+		                              AND to_state   ='ACTIVE')
+		                    )
+		                  WHEN trx.from_state = 'PENDING_DELETE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='PENDING_DELETE'
+		                              AND to_state   ='ACTIVE')
+		                    )
+		                    
+		                  WHEN trx.from_state = 'ACTIVE' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state IN ('PENDING_UPDATE','ACTIVE')
+		                              AND to_state   IN ('PENDING_UPDATE','ACTIVE'))
+		                    )  
+		                  
+		                  WHEN trx.from_state = 'REJECTED' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id 
+		                              AND from_state ='REJECTED'
+		                              AND to_state   ='ACTIVE')
+		                    ) 
+		                  
+		                   WHEN trx.from_state = 'DRAFT' THEN
+		                    (SELECT to_char(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS') 
+		                        FROM trans_history hist
+		                        WHERE hist.TR_HISTORY_ID=(SELECT max(TR_HISTORY_ID) from trans_history where transaction_id = trx.transaction_id                               
+		                              AND to_state   ='ACTIVE')
+		                    )  
+		            	END AS CheckerDateTime
+				  
+				  --  securityAmount
+				FROM (
+				  --For fd
+				  (SELECT DISTINCT sub_profile.lsp_le_id AS party_id,
+				    sub_profile.lsp_short_name           AS party_name,
+				    cc_segment.entry_name                AS segmentName,
+				    lmts.facility_name                   AS facilityName,				    
+				    secdetail.type_name                               AS secNature,
+				    secdetail.subtype_name                            AS secSubType,
+				    colMaster.new_collateral_description              AS collateral_name,
+				    find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+				    secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+				    (select sum(lien_amount) from cms_lien 
+    where cash_deposit_id in(select cash_deposit_id from cms_cash_deposit where
+    cms_collateral_id=secdetail.cms_collateral_id AND status='ACTIVE' AND ACTIVE='active'))  AS securityAmount,                      
+				    facdetail.line_no                                 AS lineNo,
+				    facdetail.serial_no                               AS serialNo,
+				    lmts.facility_system                              AS systemName,
+				    --lmts.FACILITY_SYSTEM_ID   AS systemId,
+				          facdetail.FACILITY_SYSTEM_ID                       AS systemId,
+				    facdetail.released_amount                         AS releasedAmount,
+				    rm.rm_mgr_name                                    AS rmname,
+				    (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+				    )                             AS region,
+				    secDetail.cms_collateral_id   AS colId,
+				    lmts.lmt_id                   AS facId,
+				    secdetail.valuation_amount    AS valuationAmt,
+				    secdetail.valuatioin_date     AS dateOfVal,
+				    secdetail.reval_freq          AS revalFreq,
+				    secdetail.next_valuation_date AS nextRevalDate,
+				    secdetail.monitor_process     AS monitorProcCol,
+				    secdetail.monitor_frequency   AS monitorProcColFreq,
+				    (select entry_name from common_code_category_entry 
+            where category_code='TYPE_CHARGE' and entry_code= secdetail.change_type)         AS typeOfCharge,
+				    secdetail.other_bank_charge   AS pectFstChgByBank,
+				    NULL                          AS phyVerifOfCol,
+				    NULL                          AS phyVerifOfColFreq,
+				    NULL                          AS phyVerifDoneOn,
+				    NULL                          AS nxtPhyVerifDueOn,
+				    NULL                          AS priorClaim,
+				    NULL                          AS typeOfClaim,
+				    
+				    sub_profile.cms_le_sub_profile_id AS partyID,
+				    sub_profile.lsp_sgmnt_code_value,
+				    rm.id as relationManager
+				  FROM CMS_LIMIT_SECURITY_MAP lsm,
+				    SCI_LSP_APPR_LMTS lmts,
+				    SCI_LSP_LMT_PROFILE pf,
+				    SCI_LE_SUB_PROFILE sub_profile,
+				    SCI_LE_MAIN_PROFILE lmp ,
+				    (SELECT entry_name,
+				      entry_code
+				    FROM common_code_category_entry
+				    WHERE category_code = 'HDFC_SEGMENT'
+				    ) cc_segment ,
+				    CMS_SECURITY secDetail,
+				    cms_relationship_mgr rm ,
+				    SCI_LSP_SYS_XREF facDetail ,
+				    SCI_LSP_LMTS_XREF_MAP xrefmap ,
+				    SCI_LE_REG_ADDR addr ,
+         --   SCI_LE_OTHER_SYSTEM sys,
+				    cms_collateral_new_master colMaster				    
+				  WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+				  AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+         -- AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID 
+				  AND addr.lra_type_value                 = 'CORPORATE'
+				  AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+				  AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+				  AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+				  AND (lsm.update_status_ind             != 'D'
+				  OR lsm.update_status_ind               IS NULL)
+				  AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+				  AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+				  AND rm.id                               = sub_profile.relation_mgr
+				  AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				  AND facDetail.CMS_LSP_SYS_XREF_ID(+)       =xrefmap.CMS_LSP_SYS_XREF_ID
+				  AND sub_profile.status                  = 'ACTIVE'
+				  AND secdetail.security_sub_type_id      ='CS202'
+          AND lsm.CHARGE_ID   in 
+                (SELECT MAX(MAPS2.CHARGE_ID)
+		        from cms_limit_security_map maps2
+		        where maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id
+		        AND maps2.cms_collateral_id      =secDetail.cms_collateral_id
+		        )
+				  AND colMaster.new_collateral_code       = secDetail.collateral_code
+				  AND lmts.cms_limit_status   <>  'DELETED'
+				  )
+				  UNION
+				    --For property
+				    (
+				    SELECT DISTINCT sub_profile.lsp_le_id AS party_id,
+				      sub_profile.lsp_short_name          AS party_name,
+				      cc_segment.entry_name               AS segmentName,
+				      lmts.facility_name                  AS facilityName,
+				       secdetail.type_name                               AS secNature,
+				      secdetail.subtype_name                            AS secSubType,
+				      colMaster.new_collateral_description              AS collateral_name,
+				      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+				      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+				      secDetail.CMV                     AS securityAmount,
+				      facdetail.line_no                                 AS lineNo,
+				      facdetail.serial_no                               AS serialNo,
+				      lmts.facility_system                              AS systemName,
+				     -- lmts.FACILITY_SYSTEM_ID   AS systemId,
+				       facdetail.FACILITY_SYSTEM_ID                       AS systemId,
+				      facdetail.released_amount                         AS releasedAmount,
+				      rm.rm_mgr_name                                    AS rmname,
+				      (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+				      )                             AS region,
+				      secDetail.cms_collateral_id   AS colId,
+				      lmts.lmt_id                   AS facId,
+				      secdetail.valuation_amount    AS valuationAmt,
+				      secdetail.valuatioin_date     AS dateOfVal,
+				      secdetail.reval_freq          AS revalFreq,
+				      secdetail.next_valuation_date AS nextRevalDate,
+				      secdetail.monitor_process     AS monitorProcCol,
+				      secdetail.monitor_frequency   AS monitorProcColFreq,
+				      (select entry_name from common_code_category_entry 
+            where category_code='TYPE_CHARGE' and entry_code= secdetail.change_type)         AS typeOfCharge,
+				      secdetail.other_bank_charge   AS pectFstChgByBank,
+				      prop.is_phy_inspect           AS phyVerifOfCol,
+				     -- prop.phy_inspect_freq
+				      --|| ' '||
+				      prop.phy_inspect_freq_unit      AS phyVerifOfColFreq,
+				      prop.last_phy_inspect_date        AS phyVerifDoneOn,
+				      prop.next_phy_inspect_date        AS nxtPhyVerifDueOn,
+				      prop.claim                        AS priorClaim,
+				      prop.claim_type                   AS typeOfClaim,
+				      
+				      sub_profile.cms_le_sub_profile_id AS partyID,
+				      sub_profile.lsp_sgmnt_code_value,
+				      rm.id as relationManager
+				    FROM CMS_LIMIT_SECURITY_MAP lsm,
+				      SCI_LSP_APPR_LMTS lmts,
+				      SCI_LSP_LMT_PROFILE pf,
+				      SCI_LE_SUB_PROFILE sub_profile,
+				      SCI_LE_MAIN_PROFILE lmp ,
+				      (SELECT entry_name,
+				        entry_code
+				      FROM common_code_category_entry
+				      WHERE category_code = 'HDFC_SEGMENT'
+				      ) cc_segment ,
+				      CMS_SECURITY secDetail,
+				      cms_relationship_mgr rm ,
+				      SCI_LSP_SYS_XREF facDetail ,
+				      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+				      SCI_LE_REG_ADDR addr,
+           --   SCI_LE_OTHER_SYSTEM sys,
+				      cms_collateral_new_master colMaster,
+				      CMS_PROPERTY prop
+				    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+				    AND secDetail.cms_collateral_id         = prop.cms_collateral_id(+)
+				    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+         --   AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID 
+				    AND addr.lra_type_value                 = 'CORPORATE'
+				    AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+				    AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+				    AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+				    AND (lsm.update_status_ind             != 'D'
+				    OR lsm.update_status_ind               IS NULL)
+				    AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+				    AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+				    AND rm.id                               = sub_profile.relation_mgr
+				    AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				    AND facDetail.CMS_LSP_SYS_XREF_ID(+)       =xrefmap.CMS_LSP_SYS_XREF_ID
+				    AND sub_profile.status                  = 'ACTIVE'
+				    AND secdetail.security_sub_type_id      ='PT701'
+				    AND colMaster.new_collateral_code       = secDetail.collateral_code
+				    AND lmts.cms_limit_status     <>    'DELETED'
+				    )
+				    UNION
+				      (SELECT DISTINCT sub_profile.lsp_le_id AS party_id,
+				        sub_profile.lsp_short_name           AS party_name,
+				        cc_segment.entry_name                AS segmentName,
+				        lmts.facility_name                   AS facilityName,				         
+				        secdetail.type_name                               AS secNature,
+				        secdetail.subtype_name                            AS secSubType,
+				        colMaster.new_collateral_description              AS collateral_name,
+				        find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+				        secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+				        secDetail.CMV                     AS securityAmount,
+				        facdetail.line_no                                 AS lineNo,
+				        facdetail.serial_no                               AS serialNo,
+				        lmts.facility_system                              AS systemName,
+				       --lmts.FACILITY_SYSTEM_ID   AS systemId,
+				        facdetail.FACILITY_SYSTEM_ID                       AS systemId,
+				        facdetail.released_amount                         AS releasedAmount,
+				        rm.rm_mgr_name                                    AS rmname,
+				        (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+				        )                                 AS region,
+				        secDetail.cms_collateral_id       AS colId,
+				        lmts.lmt_id                       AS facId,
+				        secdetail.valuation_amount        AS valuationAmt,
+				        secdetail.valuatioin_date         AS dateOfVal,
+				        secdetail.reval_freq              AS revalFreq,
+				        secdetail.next_valuation_date     AS nextRevalDate,
+				        secdetail.monitor_process         AS monitorProcCol,
+				        secdetail.monitor_frequency       AS monitorProcColFreq,
+				        (select entry_name from common_code_category_entry 
+            where category_code='TYPE_CHARGE' and entry_code= secdetail.change_type)            AS typeOfCharge,
+				        secdetail.other_bank_charge       AS pectFstChgByBank,
+				        NULL                              AS phyVerifOfCol,
+				        NULL                              AS phyVerifOfColFreq,
+				        NULL                              AS phyVerifDoneOn,
+				        NULL                              AS nxtPhyVerifDueOn,
+				        NULL                              AS priorClaim,
+				        NULL                              AS typeOfClaim,
+				        
+				        sub_profile.cms_le_sub_profile_id AS partyID,
+				        sub_profile.lsp_sgmnt_code_value,
+				        rm.id as relationManager
+				      FROM CMS_LIMIT_SECURITY_MAP lsm,
+				        SCI_LSP_APPR_LMTS lmts,
+				        SCI_LSP_LMT_PROFILE pf,
+				        SCI_LE_SUB_PROFILE sub_profile,
+				        SCI_LE_MAIN_PROFILE lmp ,
+				        (SELECT entry_name,
+				          entry_code
+				        FROM common_code_category_entry
+				        WHERE category_code = 'HDFC_SEGMENT'
+				        ) cc_segment ,
+				        CMS_SECURITY secDetail,
+				        cms_relationship_mgr rm ,
+				        SCI_LSP_SYS_XREF facDetail ,
+				        SCI_LSP_LMTS_XREF_MAP xrefmap ,
+				        SCI_LE_REG_ADDR addr,
+          --    SCI_LE_OTHER_SYSTEM sys,
+				        cms_collateral_new_master colMaster,
+				        CMS_INSURANCE ins
+				      WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+				      AND secDetail.cms_collateral_id         = ins.cms_collateral_id
+         --     AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID 
+				      AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+				      AND addr.lra_type_value                 = 'CORPORATE'
+				      AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+				      AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+				      AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+				      AND (lsm.update_status_ind             != 'D'
+				      OR lsm.update_status_ind               IS NULL)
+				      AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+				      AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+				      AND rm.id                               = sub_profile.relation_mgr
+				      AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				      AND facDetail.CMS_LSP_SYS_XREF_ID(+)       =xrefmap.CMS_LSP_SYS_XREF_ID
+				      AND sub_profile.status                  = 'ACTIVE'
+				      AND secdetail.security_sub_type_id      ='IN501'
+				      AND colMaster.new_collateral_code       = secDetail.collateral_code
+				      AND lmts.cms_limit_status       <>    'DELETED'
+				      )
+				      UNION
+				        (SELECT DISTINCT sub_profile.lsp_le_id AS party_id,
+				          sub_profile.lsp_short_name           AS party_name,
+				          cc_segment.entry_name                AS segmentName,
+				          lmts.facility_name                   AS facilityName,				           
+				          secdetail.type_name                               AS secNature,
+				          secdetail.subtype_name                            AS secSubType,
+				          colMaster.new_collateral_description              AS collateral_name,
+				          find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+				          secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+                  (case
+                  when secdetail.security_sub_type_id='AB100'
+                  Then(SELECT CALCULATEDDP
+				            FROM CMS_ASSET_GC_DET gc_det
+				             
+				            WHERE 
+				             gc_det.cms_collateral_id = secdetail.cms_collateral_id
+				            AND gc_det.doc_code          =LATEST_GC_DOCCODE(secdetail.cms_collateral_id)
+				            )   
+                  else  secDetail.CMV end)                                      AS securityAmount,
+				          facdetail.line_no                                 AS lineNo,
+				          facdetail.serial_no                               AS serialNo,
+				          lmts.facility_system                              AS systemName,
+				         --lmts.FACILITY_SYSTEM_ID   AS systemId,
+				         facdetail.FACILITY_SYSTEM_ID                       AS systemId,
+				          facdetail.released_amount                         AS releasedAmount,
+				          rm.rm_mgr_name                                    AS rmname,
+				          (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+				          )                             AS region,
+				          secDetail.cms_collateral_id   AS colId,
+				          lmts.lmt_id                   AS facId,
+				          secdetail.valuation_amount    AS valuationAmt,
+				          secdetail.valuatioin_date     AS dateOfVal,
+				          secdetail.reval_freq          AS revalFreq,
+				          secdetail.next_valuation_date AS nextRevalDate,
+				          secdetail.monitor_process     AS monitorProcCol,
+				          secdetail.monitor_frequency   AS monitorProcColFreq,
+				          (select entry_name from common_code_category_entry 
+            where category_code='TYPE_CHARGE' and entry_code= secdetail.change_type)         AS typeOfCharge,
+				          secdetail.other_bank_charge   AS pectFstChgByBank,
+				          asset.PHY_INSPECTION_DONE     AS phyVerifOfCol,
+				         -- asset.PHY_INSPECTION_FREQ
+				          --|| ' ' ||
+				          asset.PHY_INSPECTION_FREQ_UNIT  AS phyVerifOfColFreq,
+				          asset.last_phy_inspect_date       AS phyVerifDoneOn,
+				          asset.next_phy_inspect_date       AS nxtPhyVerifDueOn,
+				          ''                                AS priorClaim,
+				          ''                                AS typeOfClaim,
+				          
+				          sub_profile.cms_le_sub_profile_id AS partyID,
+				          sub_profile.lsp_sgmnt_code_value,
+				          rm.id as relationManager
+				        FROM CMS_LIMIT_SECURITY_MAP lsm,
+				          SCI_LSP_APPR_LMTS lmts,
+				          SCI_LSP_LMT_PROFILE pf,
+				          SCI_LE_SUB_PROFILE sub_profile,
+				          SCI_LE_MAIN_PROFILE lmp ,
+				          (SELECT entry_name,
+				            entry_code
+				          FROM common_code_category_entry
+				          WHERE category_code = 'HDFC_SEGMENT'
+				          ) cc_segment ,
+				          CMS_SECURITY secDetail,
+				          cms_relationship_mgr rm ,
+				          SCI_LSP_SYS_XREF facDetail ,
+				          SCI_LSP_LMTS_XREF_MAP xrefmap ,
+				          SCI_LE_REG_ADDR addr,
+             --    SCI_LE_OTHER_SYSTEM sys,
+				          cms_collateral_new_master colMaster,
+				          CMS_ASSET asset
+				        WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+				        AND secDetail.cms_collateral_id         = asset.cms_collateral_id(+)
+             --   AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID 
+				        AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+				        AND addr.lra_type_value                 = 'CORPORATE'
+				        AND cc_segment.entry_code(+)            =lmp.lmp_sgmnt_code_value
+				        AND pf.cms_lsp_lmt_profile_id           = lmts.CMS_LIMIT_PROFILE_ID
+				        AND lmts.cms_lsp_appr_lmts_id           = lsm.cms_lsp_appr_lmts_id
+				        AND (lsm.update_status_ind             != 'D'
+				        OR lsm.update_status_ind               IS NULL)
+				        AND sub_profile.CMS_LE_MAIN_PROFILE_ID  = lmp.CMS_LE_MAIN_PROFILE_ID
+				        AND secdetail.cms_collateral_id         =LSM.CMS_COLLATERAL_ID
+				        AND rm.id                               = sub_profile.relation_mgr
+				        AND lmts.CMS_LSP_APPR_LMTS_ID           =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+				        AND facDetail.CMS_LSP_SYS_XREF_ID(+)       =xrefmap.CMS_LSP_SYS_XREF_ID
+				        AND sub_profile.status                  = 'ACTIVE'
+				        AND secdetail.security_sub_type_id     IN ('AB100','AB110', 'AB101', 'AB109', 'AB102', 'AB108', 'GT402','GT400','GT406','GT408','GT405')
+				        AND colMaster.new_collateral_code       = secDetail.collateral_code
+				        AND lmts.cms_limit_status       <>
+				        'DELETED'
+				        )
+) temp , transaction trx
+where  
+trx.reference_id = temp.colId
+					AND trx.transaction_type='COL')
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View DAP_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "DAP_VIEW" ("CUSTOMERID", "LMTPROFILE", "LSP_DMCL_CNTRY_ISO_CODE", "CMS_ORIG_COUNTRY", "PROF_ORG", "LIMIT_COUNTRY", "LIMIT_ORG", "SECURITY_LOCATION", "COLLAB_SECURITY_LOCATION", "COLLAB_CC_COUNTRY") AS 
+  SELECT DISTINCT cust.CMS_LE_SUB_PROFILE_ID , prof.CMS_LSP_LMT_PROFILE_ID  AS customerid , cust.LSP_DMCL_CNTRY_ISO_CODE , COALESCE(prof.CMS_ORIG_COUNTRY, cust.CMS_SUB_ORIG_COUNTRY) , COALESCE(prof.CMS_ORIG_ORGANISATION, cust.CMS_SUB_ORIG_ORGANISATION)  AS prof_org , limits.CMS_BKG_COUNTRY  AS limit_country , limits.CMS_BKG_ORGANISATION  AS limit_org , sec.SECURITY_LOCATION , col_task.SECURITY_LOCATION , cc.DMCL_CNTRY_ISO_CODE  FROM SCI_LE_SUB_PROFILE cust LEFT JOIN SCI_LSP_LMT_PROFILE prof ON cust.CMS_LE_SUB_PROFILE_ID = prof.CMS_CUSTOMER_ID LEFT JOIN SCI_LSP_APPR_LMTS limits ON prof.CMS_LSP_LMT_PROFILE_ID = limits.CMS_LIMIT_PROFILE_ID LEFT JOIN CMS_CC_TASK cc ON prof.CMS_LSP_LMT_PROFILE_ID = cc.CMS_LSP_LMT_PROFILE_ID LEFT JOIN CMS_LIMIT_SECURITY_MAP sec_map ON limits.CMS_LSP_APPR_LMTS_ID = sec_map.CMS_LSP_APPR_LMTS_ID LEFT JOIN CMS_SECURITY sec ON sec_map.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID LEFT JOIN CMS_COLLATERAL_TASK col_task ON sec_map.CMS_COLLATERAL_ID = col_task.CMS_COLLATERAL_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View DIRECTOR_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "DIRECTOR_VIEW" ("CMS_LE_MAIN_PROFILE_ID", "COMPANY_DIRECTOR1_NAME", "COMPANY_DIRECTOR2_NAME", "COMPANY_DIRECTOR3_NAME", "COMPANY_DIRECTOR4_NAME", "COMPANY_DIRECTOR5_NAME", "COMPANY_DIRECTOR6_NAME", "COMPANY_DIRECTOR7_NAME", "COMPANY_DIRECTOR8_NAME", "COMPANY_DIRECTOR9_NAME", "COMPANY_DIRECTOR10_NAME", "COMPANY_DIRECTOR11_NAME", "COMPANY_DIRECTOR12_NAME", "COMPANY_DIRECTOR13_NAME", "COMPANY_DIRECTOR14_NAME", "COMPANY_DIRECTOR15_NAME", "COMPANY_DIRECTOR16_NAME", "COMPANY_DIRECTOR17_NAME", "COMPANY_DIRECTOR18_NAME", "COMPANY_DIRECTOR19_NAME", "COMPANY_DIRECTOR20_NAME", "COMPANY_DIRECTOR1_IDENT_NO", "COMPANY_DIRECTOR2_IDENT_NO", "COMPANY_DIRECTOR3_IDENT_NO", "COMPANY_DIRECTOR4_IDENT_NO", "COMPANY_DIRECTOR5_IDENT_NO", "COMPANY_DIRECTOR6_IDENT_NO", "COMPANY_DIRECTOR7_IDENT_NO", "COMPANY_DIRECTOR8_IDENT_NO", "COMPANY_DIRECTOR9_IDENT_NO", "COMPANY_DIRECTOR10_IDENT_NO", "COMPANY_DIRECTOR11_IDENT_NO", "COMPANY_DIRECTOR12_IDENT_NO", "COMPANY_DIRECTOR13_IDENT_NO", "COMPANY_DIRECTOR14_IDENT_NO", "COMPANY_DIRECTOR15_IDENT_NO", "COMPANY_DIRECTOR16_IDENT_NO", "COMPANY_DIRECTOR17_IDENT_NO", "COMPANY_DIRECTOR18_IDENT_NO", "COMPANY_DIRECTOR19_IDENT_NO", "COMPANY_DIRECTOR20_IDENT_NO") AS 
+  (SELECT MAN.CMS_LE_MAIN_PROFILE_ID,
+    ( SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,1,1) FROM dual
+    ) AS Company_Director1_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,2,1) FROM dual
+    ) AS Company_Director2_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,3,1) FROM dual
+    ) AS Company_Director3_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,4,1) FROM dual
+    ) AS Company_Director4_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,5,1) FROM dual
+    ) AS Company_Director5_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,6,1) FROM dual
+    ) AS Company_Director6_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,7,1) FROM dual
+    ) AS Company_Director7_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,8,1) FROM dual
+    ) AS Company_Director8_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,9,1) FROM dual
+    ) AS Company_Director9_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,10,1) FROM dual
+    ) AS Company_Director10_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,11,1) FROM dual
+    ) AS Company_Director11_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,12,1) FROM dual
+    ) AS Company_Director12_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,13,1) FROM dual
+    ) AS Company_Director13_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,14,1) FROM dual
+    ) AS Company_Director14_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,15,1) FROM dual
+    ) AS Company_Director15_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,16,1) FROM dual
+    ) AS Company_Director16_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,17,1) FROM dual
+    ) AS Company_Director17_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,18,1) FROM dual
+    ) AS Company_Director18_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,19,1) FROM dual
+    ) AS Company_Director19_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,20,1) FROM dual
+    ) AS Company_Director20_Name,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,1,2) FROM dual
+    ) AS Company_Director1_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,2,2) FROM dual
+    ) AS Company_Director2_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,3,2) FROM dual
+    ) AS Company_Director3_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,4,2) FROM dual
+    ) AS Company_Director4_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,5,2) FROM dual
+    ) AS Company_Director5_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,6,2) FROM dual
+    ) AS Company_Director6_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,7,2) FROM dual
+    ) AS Company_Director7_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,8,2) FROM dual
+    ) AS Company_Director8_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,9,2) FROM dual
+    ) AS Company_Director9_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,10,2) FROM dual
+    ) AS Company_Director10_Ident_No ,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,11,2) FROM dual
+    ) AS Company_Director11_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,12,2) FROM dual
+    ) AS Company_Director12_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,13,2) FROM dual
+    ) AS Company_Director13_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,14,2) FROM dual
+    ) AS Company_Director14_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,15,2) FROM dual
+    ) AS Company_Director15_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,16,2) FROM dual
+    ) AS Company_Director16_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,17,2) FROM dual
+    ) AS Company_Director17_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,18,2) FROM dual
+    ) AS Company_Director18_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,19,2) FROM dual
+    ) AS Company_Director19_Ident_No,
+    (SELECT DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,20,2) FROM dual
+    ) AS Company_Director20_Ident_No
+  FROM SCI_LE_MAIN_PROFILE MAN,
+    SCI_LE_SUB_PROFILE SPRO
+  WHERE SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+  )
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View FINCON_CUST_WISE_SEC_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "FINCON_CUST_WISE_SEC_VIEW" ("PARTY_ID", "PARTY_NAME", "SEGMENTNAME", "FACILITYNAME", "SECNATURE", "SECSUBTYPE", "COLLATERAL_NAME", "SECPRIORITY", "CURRCODE", "SECURITYAMOUNT", "LINENO", "SERIALNO", "SYSTEMNAME", "SYSTEMID", "RELEASEDAMOUNT", "RMNAME", "REGION", "COLID", "FACID", "VALUATIONAMT", "DATEOFVAL", "REVALFREQ", "NEXTVALDATE", "TYPEOFCHARGE", "PECTFSTCHGBYBANK", "MONITORPROCCOL", "MONITORPROCCOLFREQ", "PHYVERIFOFCOL", "PHYVERIFOFCOLFREQ", "PHYVERIFDONEON", "NXTPHYVERIFDUEON", "PRIORCLAIM", "TYPEOFCLAIM", "MAKER", "MAKERDATETIME", "CHECKER", "CHECKERDATETIME") AS 
+  (SELECT party_id,
+    party_name,
+    segmentName,
+    facilityName,
+    secNature,
+    secSubType,
+    Collateral_name,
+    secPriority,
+    currCode,
+    securityAmount,
+    lineNo,
+    serialNo,
+    systemName,
+    systemId,
+    releasedAmount,
+    rmname,
+    region,
+    colId,
+    facId,
+    valuationAmt,
+    TO_CHAR(dateOfVal,'DD/MON/YYYY') AS dateOfVal,
+    (SELECT entry_name
+    FROM common_code_category_entry
+    WHERE category_code='FREQUENCY'
+    AND entry_code     = revalFreq
+    )                                    AS revalFreq,
+    TO_CHAR(nextRevalDate,'DD/MON/YYYY') AS nextValDate,
+    typeOfCharge,
+    pectFstChgByBank,
+    (
+    CASE
+      WHEN monitorProcCol='Y'
+      THEN 'Yes'
+      WHEN monitorProcCol='N'
+      THEN 'No'
+    END) AS monitorProcCol,
+    (SELECT entry_name
+    FROM common_code_category_entry
+    WHERE category_code='FREQUENCY'
+    AND entry_code     = monitorProcColFreq
+    )AS monitorProcColFreq ,
+    (
+    CASE
+      WHEN phyVerifOfCol='Y'
+      THEN 'Yes'
+      WHEN phyVerifOfCol='N'
+      THEN 'No'
+    END)AS phyVerifOfCol,
+    (SELECT entry_name
+    FROM common_code_category_entry
+    WHERE category_code='FREQUENCY'
+    AND entry_code     = phyVerifOfColFreq
+    )                                       AS phyVerifOfColFreq,
+    TO_CHAR(phyVerifDoneOn,'DD/MON/YYYY')   AS phyVerifDoneOn,
+    TO_CHAR(nxtPhyVerifDueOn,'DD/MON/YYYY') AS nxtPhyVerifDueOn,
+    (
+    CASE
+      WHEN priorClaim='Y'
+      THEN 'Yes'
+      WHEN priorClaim='N'
+      THEN 'No'
+    END)AS priorClaim,
+    (
+    CASE
+      WHEN typeOfClaim ='LITIGATION'
+      THEN 'Litigation'
+      WHEN typeOfClaim ='PROPERTY_TAX'
+      THEN 'Property Tax'
+      WHEN typeOfClaim ='OTHERS_CLAIM'
+      THEN 'Others'
+      ELSE '-'
+    END ) AS typeOfClaim,
+    CASE
+      WHEN trx.from_state = 'PENDING_PERFECTION'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state       = 'PENDING_PERFECTION'
+        AND hist.to_state         ='DRAFT'
+        )
+      WHEN trx.from_state = 'PENDING_CREATE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state      IN ('ND','DRAFT')
+        AND hist.to_state         ='PENDING_CREATE'
+        )
+      WHEN trx.from_state = 'PENDING_UPDATE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state      IN ('ACTIVE','DRAFT')
+          AND to_state         = 'PENDING_UPDATE'
+          )
+        )
+      WHEN trx.from_state = 'PENDING_DELETE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='ACTIVE'
+          AND to_state         ='PENDING_DELETE'
+          )
+        )
+      WHEN trx.from_state = 'ACTIVE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='ACTIVE'
+          AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+          )
+        )
+      WHEN trx.from_state = 'REJECTED'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       = 'REJECTED'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'DRAFT'
+      THEN
+        CASE
+          WHEN trx.status = 'PENDING_UPDATE'
+          THEN
+            (SELECT hist.login_id
+            FROM trans_history hist
+            WHERE hist.TR_HISTORY_ID=
+              (SELECT MAX(TR_HISTORY_ID)
+              FROM trans_history
+              WHERE transaction_id = trx.transaction_id
+              AND from_state       = 'DRAFT'
+              AND to_state         ='PENDING_UPDATE'
+              )
+            )
+          WHEN trx.status = 'ACTIVE'
+          THEN
+            (SELECT hist.login_id
+            FROM trans_history hist
+            WHERE hist.TR_HISTORY_ID=
+              (SELECT MAX(TR_HISTORY_ID)
+              FROM trans_history
+              WHERE transaction_id = trx.transaction_id
+              AND from_state       = 'DRAFT'
+              AND to_state         ='ACTIVE'
+              )
+            )
+        END
+    END AS Maker,
+    CASE
+      WHEN trx.from_state = 'PENDING_PERFECTION'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state       = 'PENDING_PERFECTION'
+        AND hist.to_state         ='DRAFT'
+        )
+      WHEN trx.from_state = 'PENDING_CREATE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state      IN ('ND','DRAFT')
+        AND hist.to_state         ='PENDING_CREATE'
+        )
+      WHEN trx.from_state = 'PENDING_UPDATE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state      IN ('ACTIVE','DRAFT')
+          AND to_state         = 'PENDING_UPDATE'
+          )
+        )
+      WHEN trx.from_state = 'PENDING_DELETE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='ACTIVE'
+          AND to_state         ='PENDING_DELETE'
+          )
+        )
+      WHEN trx.from_state = 'ACTIVE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='ACTIVE'
+          AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+          )
+        )
+      WHEN trx.from_state = 'REJECTED'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       = 'REJECTED'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'DRAFT'
+      THEN
+        CASE
+          WHEN trx.status = 'PENDING_UPDATE'
+          THEN
+            (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+            FROM trans_history hist
+            WHERE hist.TR_HISTORY_ID=
+              (SELECT MAX(TR_HISTORY_ID)
+              FROM trans_history
+              WHERE transaction_id = trx.transaction_id
+              AND from_state       = 'DRAFT'
+              AND to_state         ='PENDING_UPDATE'
+              )
+            )
+          WHEN trx.status = 'ACTIVE'
+          THEN
+            (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+            FROM trans_history hist
+            WHERE hist.TR_HISTORY_ID=
+              (SELECT MAX(TR_HISTORY_ID)
+              FROM trans_history
+              WHERE transaction_id = trx.transaction_id
+              AND from_state       = 'DRAFT'
+              AND to_state         ='ACTIVE'
+              )
+            )
+        END
+    END AS MakerDateTime,
+    CASE
+      WHEN trx.status   = 'PENDING_CREATE'
+      OR trx.from_state = 'PENDING_PERFECTION'
+      THEN ''
+      WHEN trx.status = 'PENDING_UPDATE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+          AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+          )
+        )
+      WHEN ((trx.status  != 'PENDING_CREATE'
+      AND trx.from_state != 'PENDING_PERFECTION')
+      AND trx.status     != 'PENDING_UPDATE')
+      THEN TO_CHAR(trx.login_id)
+    END AS checker,
+    CASE
+      WHEN trx.from_state = 'PENDING_CREATE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state       ='PENDING_CREATE'
+        AND hist.to_state         ='ACTIVE'
+        )
+      WHEN trx.from_state = 'PENDING_UPDATE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='PENDING_UPDATE'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'PENDING_DELETE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='PENDING_DELETE'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'ACTIVE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+          AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+          )
+        )
+      WHEN trx.from_state = 'REJECTED'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='REJECTED'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'DRAFT'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND to_state         ='ACTIVE'
+          )
+        )
+    END AS CheckerDateTime
+    --  securityAmount
+  FROM (
+    --For fd
+    (SELECT DISTINCT sub_profile.lsp_le_id              AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+      (SELECT SUM(lien_amount)
+      FROM cms_lien
+      WHERE cash_deposit_id IN
+        (SELECT cash_deposit_id
+        FROM cms_cash_deposit
+        WHERE cms_collateral_id=secdetail.cms_collateral_id
+        AND status             ='ACTIVE'
+        AND ACTIVE             ='active'
+        )
+      )                    AS securityAmount,
+      facdetail.line_no    AS lineNo,
+      facdetail.serial_no  AS serialNo,
+      lmts.facility_system AS systemName,
+      --lmts.FACILITY_SYSTEM_ID   AS systemId,
+      facdetail.FACILITY_SYSTEM_ID AS systemId,
+      facdetail.released_amount    AS releasedAmount,
+      rm.rm_mgr_name               AS rmname,
+      (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )                             AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+      (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )                                 AS typeOfCharge,
+      secdetail.other_bank_charge       AS pectFstChgByBank,
+      NULL                              AS phyVerifOfCol,
+      NULL                              AS phyVerifOfColFreq,
+      NULL                              AS phyVerifDoneOn,
+      NULL                              AS nxtPhyVerifDueOn,
+      NULL                              AS priorClaim,
+      NULL                              AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr ,
+      --   SCI_LE_OTHER_SYSTEM sys,
+      cms_collateral_new_master colMaster
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+      -- AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                = 'CORPORATE'
+    AND cc_segment.entry_code(+)           =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id          = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id          = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind            != 'D'
+    OR lsm.update_status_ind              IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id        =LSM.CMS_COLLATERAL_ID
+    AND rm.id                              = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID          =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)   =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                 = 'ACTIVE'
+    AND secdetail.security_sub_type_id     ='CS202'
+    AND lsm.CHARGE_ID                     IN
+      (SELECT MAX(MAPS2.CHARGE_ID)
+      FROM cms_limit_security_map maps2
+      WHERE maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id
+      AND maps2.cms_collateral_id      =secDetail.cms_collateral_id
+      )
+    AND colMaster.new_collateral_code = secDetail.collateral_code
+    AND lmts.cms_limit_status        <> 'DELETED'
+    )
+  UNION
+    --For property
+    (
+    SELECT DISTINCT sub_profile.lsp_le_id               AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+      secDetail.CMV                                     AS securityAmount,
+      facdetail.line_no                                 AS lineNo,
+      facdetail.serial_no                               AS serialNo,
+      lmts.facility_system                              AS systemName,
+      -- lmts.FACILITY_SYSTEM_ID   AS systemId,
+      facdetail.FACILITY_SYSTEM_ID AS systemId,
+      facdetail.released_amount    AS releasedAmount,
+      rm.rm_mgr_name               AS rmname,
+      (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )                             AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+      (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )                           AS typeOfCharge,
+      secdetail.other_bank_charge AS pectFstChgByBank,
+      prop.is_phy_inspect         AS phyVerifOfCol,
+      -- prop.phy_inspect_freq
+      --|| ' '||
+      prop.phy_inspect_freq_unit        AS phyVerifOfColFreq,
+      prop.last_phy_inspect_date        AS phyVerifDoneOn,
+      prop.next_phy_inspect_date        AS nxtPhyVerifDueOn,
+      prop.claim                        AS priorClaim,
+      prop.claim_type                   AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr,
+      --   SCI_LE_OTHER_SYSTEM sys,
+      cms_collateral_new_master colMaster,
+      CMS_PROPERTY prop
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+    AND secDetail.cms_collateral_id         = prop.cms_collateral_id(+)
+    AND lmp.CMS_LE_MAIN_PROFILE_ID          = addr.CMS_LE_MAIN_PROFILE_ID
+      --   AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                = 'CORPORATE'
+    AND cc_segment.entry_code(+)           =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id          = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id          = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind            != 'D'
+    OR lsm.update_status_ind              IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id        =LSM.CMS_COLLATERAL_ID
+    AND rm.id                              = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID          =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)   =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                 = 'ACTIVE'
+    AND secdetail.security_sub_type_id     ='PT701'
+    AND colMaster.new_collateral_code      = secDetail.collateral_code
+    AND lmts.cms_limit_status             <> 'DELETED'
+    )
+  UNION
+    (SELECT DISTINCT sub_profile.lsp_le_id              AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+      secDetail.CMV                                     AS securityAmount,
+      facdetail.line_no                                 AS lineNo,
+      facdetail.serial_no                               AS serialNo,
+      lmts.facility_system                              AS systemName,
+      --lmts.FACILITY_SYSTEM_ID   AS systemId,
+      facdetail.FACILITY_SYSTEM_ID AS systemId,
+      facdetail.released_amount    AS releasedAmount,
+      rm.rm_mgr_name               AS rmname,
+      (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )                             AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+      (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )                                 AS typeOfCharge,
+      secdetail.other_bank_charge       AS pectFstChgByBank,
+      NULL                              AS phyVerifOfCol,
+      NULL                              AS phyVerifOfColFreq,
+      NULL                              AS phyVerifDoneOn,
+      NULL                              AS nxtPhyVerifDueOn,
+      NULL                              AS priorClaim,
+      NULL                              AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr,
+      --    SCI_LE_OTHER_SYSTEM sys,
+      cms_collateral_new_master colMaster,
+      CMS_INSURANCE ins
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id(+)
+    AND secDetail.cms_collateral_id         = ins.cms_collateral_id
+      --     AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND lmp.CMS_LE_MAIN_PROFILE_ID         = addr.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                = 'CORPORATE'
+    AND cc_segment.entry_code(+)           =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id          = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id          = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind            != 'D'
+    OR lsm.update_status_ind              IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id        =LSM.CMS_COLLATERAL_ID
+    AND rm.id                              = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID          =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)   =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                 = 'ACTIVE'
+    AND secdetail.security_sub_type_id     ='IN501'
+    AND colMaster.new_collateral_code      = secDetail.collateral_code
+    AND lmts.cms_limit_status             <> 'DELETED'
+    )
+  UNION
+    (SELECT DISTINCT sub_profile.lsp_le_id              AS party_id,
+      sub_profile.lsp_short_name                        AS party_name,
+      cc_segment.entry_name                             AS segmentName,
+      lmts.facility_name                                AS facilityName,
+      secdetail.type_name                               AS secNature,
+      secdetail.subtype_name                            AS secSubType,
+      colMaster.new_collateral_description              AS collateral_name,
+      find_secPriority_priOrSec(secdetail.sec_priority) AS secPriority,
+      secdetail.SCI_SECURITY_CURRENCY                   AS currCode,
+      (
+      CASE
+        WHEN secdetail.security_sub_type_id='AB100'
+        THEN
+          (SELECT CALCULATEDDP
+          FROM CMS_ASSET_GC_DET gc_det
+          WHERE gc_det.cms_collateral_id = secdetail.cms_collateral_id
+          AND gc_det.doc_code            =LATEST_GC_DOCCODE(secdetail.cms_collateral_id)
+          )
+        ELSE secDetail.CMV
+      END)                 AS securityAmount,
+      facdetail.line_no    AS lineNo,
+      facdetail.serial_no  AS serialNo,
+      lmts.facility_system AS systemName,
+      --lmts.FACILITY_SYSTEM_ID   AS systemId,
+      facdetail.FACILITY_SYSTEM_ID AS systemId,
+      facdetail.released_amount    AS releasedAmount,
+      rm.rm_mgr_name               AS rmname,
+      (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+      )                             AS region,
+      secDetail.cms_collateral_id   AS colId,
+      lmts.lmt_id                   AS facId,
+      secdetail.valuation_amount    AS valuationAmt,
+      secdetail.valuatioin_date     AS dateOfVal,
+      secdetail.reval_freq          AS revalFreq,
+      secdetail.next_valuation_date AS nextRevalDate,
+      secdetail.monitor_process     AS monitorProcCol,
+      secdetail.monitor_frequency   AS monitorProcColFreq,
+      (SELECT entry_name
+      FROM common_code_category_entry
+      WHERE category_code='TYPE_CHARGE'
+      AND entry_code     = secdetail.change_type
+      )                           AS typeOfCharge,
+      secdetail.other_bank_charge AS pectFstChgByBank,
+      asset.PHY_INSPECTION_DONE   AS phyVerifOfCol,
+      -- asset.PHY_INSPECTION_FREQ
+      --|| ' ' ||
+      asset.PHY_INSPECTION_FREQ_UNIT    AS phyVerifOfColFreq,
+      asset.last_phy_inspect_date       AS phyVerifDoneOn,
+      asset.next_phy_inspect_date       AS nxtPhyVerifDueOn,
+      ''                                AS priorClaim,
+      ''                                AS typeOfClaim,
+      sub_profile.cms_le_sub_profile_id AS partyID,
+      sub_profile.lsp_sgmnt_code_value,
+      rm.id AS relationManager
+    FROM CMS_LIMIT_SECURITY_MAP lsm,
+      SCI_LSP_APPR_LMTS lmts,
+      SCI_LSP_LMT_PROFILE pf,
+      SCI_LE_SUB_PROFILE sub_profile,
+      SCI_LE_MAIN_PROFILE lmp ,
+      (SELECT entry_name,
+        entry_code
+      FROM common_code_category_entry
+      WHERE category_code = 'HDFC_SEGMENT'
+      ) cc_segment ,
+      CMS_SECURITY secDetail,
+      cms_relationship_mgr rm ,
+      SCI_LSP_SYS_XREF facDetail ,
+      SCI_LSP_LMTS_XREF_MAP xrefmap ,
+      SCI_LE_REG_ADDR addr,
+      --    SCI_LE_OTHER_SYSTEM sys,
+      cms_collateral_new_master colMaster,
+      CMS_ASSET asset
+    WHERE sub_profile.cms_le_sub_profile_id = pf.cms_customer_id
+    AND secDetail.cms_collateral_id         = asset.cms_collateral_id(+)
+      --   AND sys.CMS_LE_MAIN_PROFILE_ID         = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND lmp.CMS_LE_MAIN_PROFILE_ID         = addr.CMS_LE_MAIN_PROFILE_ID
+    AND addr.lra_type_value                = 'CORPORATE'
+    AND cc_segment.entry_code(+)           =lmp.lmp_sgmnt_code_value
+    AND pf.cms_lsp_lmt_profile_id          = lmts.CMS_LIMIT_PROFILE_ID
+    AND lmts.cms_lsp_appr_lmts_id          = lsm.cms_lsp_appr_lmts_id
+    AND (lsm.update_status_ind            != 'D'
+    OR lsm.update_status_ind              IS NULL)
+    AND sub_profile.CMS_LE_MAIN_PROFILE_ID = lmp.CMS_LE_MAIN_PROFILE_ID
+    AND secdetail.cms_collateral_id        =LSM.CMS_COLLATERAL_ID
+    AND rm.id                              = sub_profile.relation_mgr
+    AND lmts.CMS_LSP_APPR_LMTS_ID          =xrefmap.CMS_LSP_APPR_LMTS_ID(+)
+    AND facDetail.CMS_LSP_SYS_XREF_ID(+)   =xrefmap.CMS_LSP_SYS_XREF_ID
+    AND sub_profile.status                 = 'ACTIVE'
+    AND secdetail.security_sub_type_id    IN ('AB100','AB110', 'AB101', 'AB109', 'AB102', 'AB108', 'GT402','GT400','GT406','GT408','GT405')
+    AND colMaster.new_collateral_code      = secDetail.collateral_code
+    AND lmts.cms_limit_status             <> 'DELETED'
+    ) ) temp ,
+    transaction trx
+  WHERE trx.reference_id  = temp.colId
+  AND trx.transaction_type='COL'
+  )
+ ;
+--------------------------------------------------------
+--  DDL for View FINCON_MASTER_INDUSTRY_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "FINCON_MASTER_INDUSTRY_VIEW" ("CMS_LE_OTHER_SYS_CUST_ID", "PARTY_NAME", "PARTY_ID", "CMS_LE_SYSTEM_NAME", "ENTRY_NAME", "PARTYENTITY", "RM_MGR_NAME", "INDUSTRYID", "BANKING_METHOD", "SUB_LINE", "STATUS", "CMS_APPR_OFFICER_GRADE", "INDUSTRYNAME", "RBIINDUSTRYCODE", "PARTY_GROUP_NAME", "ADDRESS", "CITY_NAME", "STATE_NAME", "CUSTOMER_RAM_ID", "REGION", "MAKER", "MAKERDATETIME", "CHECKER", "CHECKERDATETIME") AS 
+  (SELECT DISTINCT os.CMS_LE_OTHER_SYS_CUST_ID,
+    sp.lsp_short_name AS party_name,
+    sp.lsp_le_id      AS party_id,
+    os.CMS_LE_SYSTEM_NAME,
+    ce.ENTRY_NAME,
+    cc_party_entity.entry_name AS partyEntity,
+    rm.RM_MGR_NAME ,
+    cc_industry.ENTRY_code AS industryId,
+    sp.BANKING_METHOD,
+    sp.SUB_LINE,
+    sp.STATUS,
+    lp.CMS_APPR_OFFICER_GRADE,
+    cc_industry.ENTRY_NAME AS INDUSTRYNAME,
+    sp.RBI_IND_CODE
+    ||'-'
+    ||cc_rbi.entry_name AS rbiIndustryCode,
+    pg.PARTY_GROUP_NAME,
+    ra.LRA_ADDR_LINE_1
+    ||' '
+    ||ra.LRA_ADDR_LINE_2
+    ||' '
+    ||ra.LRA_ADDR_LINE_3 AS Address,
+    cc.CITY_NAME,
+    cs.STATE_NAME,
+    lc.CUSTOMER_RAM_ID,
+    reg.region_name AS Region,
+    CASE
+      WHEN trx.from_state = 'PENDING_PERFECTION'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state       = 'PENDING_PERFECTION'
+        AND hist.to_state         ='DRAFT'
+        )
+      WHEN trx.from_state = 'PENDING_CREATE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state      IN ('ND','DRAFT')
+        AND hist.to_state         ='PENDING_CREATE'
+        )
+      WHEN trx.from_state = 'PENDING_UPDATE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state      IN ('ACTIVE','DRAFT')
+          AND to_state         = 'PENDING_UPDATE'
+          )
+        )
+      WHEN trx.from_state = 'PENDING_DELETE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='ACTIVE'
+          AND to_state         ='PENDING_DELETE'
+          )
+        )
+      WHEN trx.from_state = 'ACTIVE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='ACTIVE'
+          AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+          )
+        )
+      WHEN trx.from_state = 'REJECTED'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       = 'REJECTED'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'DRAFT'
+      THEN
+        CASE
+          WHEN trx.status = 'PENDING_UPDATE'
+          THEN
+            (SELECT hist.login_id
+            FROM trans_history hist
+            WHERE hist.TR_HISTORY_ID=
+              (SELECT MAX(TR_HISTORY_ID)
+              FROM trans_history
+              WHERE transaction_id = trx.transaction_id
+              AND from_state       = 'DRAFT'
+              AND to_state         ='PENDING_UPDATE'
+              )
+            )
+          WHEN trx.status = 'ACTIVE'
+          THEN
+            (SELECT hist.login_id
+            FROM trans_history hist
+            WHERE hist.TR_HISTORY_ID=
+              (SELECT MAX(TR_HISTORY_ID)
+              FROM trans_history
+              WHERE transaction_id = trx.transaction_id
+              AND from_state       = 'DRAFT'
+              AND to_state         ='ACTIVE'
+              )
+            )
+        END
+    END AS Maker,
+    CASE
+      WHEN trx.from_state = 'PENDING_PERFECTION'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state       = 'PENDING_PERFECTION'
+        AND hist.to_state         ='DRAFT'
+        )
+      WHEN trx.from_state = 'PENDING_CREATE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state      IN ('ND','DRAFT')
+        AND hist.to_state         ='PENDING_CREATE'
+        )
+      WHEN trx.from_state = 'PENDING_UPDATE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state      IN ('ACTIVE','DRAFT')
+          AND to_state         = 'PENDING_UPDATE'
+          )
+        )
+      WHEN trx.from_state = 'PENDING_DELETE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='ACTIVE'
+          AND to_state         ='PENDING_DELETE'
+          )
+        )
+      WHEN trx.from_state = 'ACTIVE'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='ACTIVE'
+          AND to_state        IN ('PENDING_UPDATE','PENDING_DELETE')
+          )
+        )
+      WHEN trx.from_state = 'REJECTED'
+      THEN
+        (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       = 'REJECTED'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'DRAFT'
+      THEN
+        CASE
+          WHEN trx.status = 'PENDING_UPDATE'
+          THEN
+            (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+            FROM trans_history hist
+            WHERE hist.TR_HISTORY_ID=
+              (SELECT MAX(TR_HISTORY_ID)
+              FROM trans_history
+              WHERE transaction_id = trx.transaction_id
+              AND from_state       = 'DRAFT'
+              AND to_state         ='PENDING_UPDATE'
+              )
+            )
+          WHEN trx.status = 'ACTIVE'
+          THEN
+            (SELECT TO_CHAR(hist.TRANSACTION_DATE ,'DD-Mon-yy HH:MI:SS')
+            FROM trans_history hist
+            WHERE hist.TR_HISTORY_ID=
+              (SELECT MAX(TR_HISTORY_ID)
+              FROM trans_history
+              WHERE transaction_id = trx.transaction_id
+              AND from_state       = 'DRAFT'
+              AND to_state         ='ACTIVE'
+              )
+            )
+        END
+    END AS MakerDateTime,
+    CASE
+      WHEN trx.status   = 'PENDING_CREATE'
+      OR trx.from_state = 'PENDING_PERFECTION'
+      THEN ''
+      WHEN trx.status = 'PENDING_UPDATE'
+      THEN
+        (SELECT hist.login_id
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+          AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+          )
+        )
+      WHEN ((trx.status  != 'PENDING_CREATE'
+      AND trx.from_state != 'PENDING_PERFECTION')
+      AND trx.status     != 'PENDING_UPDATE')
+      THEN TO_CHAR(trx.login_id)
+    END AS checker,
+    CASE
+      WHEN trx.from_state = 'PENDING_CREATE'
+      THEN
+        (SELECT hist.TRANSACTION_DATE
+        FROM trans_history hist
+        WHERE hist.transaction_id = trx.transaction_id
+        AND hist.from_state       ='PENDING_CREATE'
+        AND hist.to_state         ='ACTIVE'
+        )
+      WHEN trx.from_state = 'PENDING_UPDATE'
+      THEN
+        (SELECT hist.TRANSACTION_DATE
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='PENDING_UPDATE'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'PENDING_DELETE'
+      THEN
+        (SELECT hist.TRANSACTION_DATE
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='PENDING_DELETE'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'ACTIVE'
+      THEN
+        (SELECT hist.TRANSACTION_DATE
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state      IN ('PENDING_UPDATE','ACTIVE')
+          AND to_state        IN ('PENDING_UPDATE','ACTIVE')
+          )
+        )
+      WHEN trx.from_state = 'REJECTED'
+      THEN
+        (SELECT hist.TRANSACTION_DATE
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND from_state       ='REJECTED'
+          AND to_state         ='ACTIVE'
+          )
+        )
+      WHEN trx.from_state = 'DRAFT'
+      THEN
+        (SELECT hist.TRANSACTION_DATE
+        FROM trans_history hist
+        WHERE hist.TR_HISTORY_ID=
+          (SELECT MAX(TR_HISTORY_ID)
+          FROM trans_history
+          WHERE transaction_id = trx.transaction_id
+          AND to_state         ='ACTIVE'
+          )
+        )
+    END AS CheckerDateTime
+  FROM SCI_LE_SUB_PROFILE sp,
+    SCI_LE_REG_ADDR ra ,
+    SCI_LSP_LMT_PROFILE lp,
+    SCI_LE_CRI lc ,
+    SCI_LE_OTHER_SYSTEM os ,
+    COMMON_CODE_CATEGORY_ENTRY ce,
+    CMS_RELATIONSHIP_MGR rm,
+    CMS_PARTY_GROUP pg,
+    CMS_CITY cc,
+    CMS_STATE cs,
+    CMS_REGION reg,
+    COMMON_CODE_CATEGORY_ENTRY ci,
+    common_code_category_entry cc_industry,
+    common_code_category_entry cc_rbi,
+    common_code_category_entry cc_party_entity,
+    transaction trx
+  WHERE (sp.CMS_LE_MAIN_PROFILE_ID  = ra.CMS_LE_MAIN_PROFILE_ID
+  AND ra.LRA_TYPE_VALUE             = 'CORPORATE')
+  AND sp.LSP_LE_ID                  = lp.LLP_LE_ID
+  AND sp.CMS_LE_MAIN_PROFILE_ID     = lc.CMS_LE_MAIN_PROFILE_ID(+)
+  AND sp.CMS_LE_MAIN_PROFILE_ID     = os.CMS_LE_MAIN_PROFILE_ID
+  AND sp.ENTITY                     = cc_party_entity.entry_code
+  AND sp.LSP_SGMNT_CODE_VALUE       =ce.ENTRY_CODE
+  AND sp.IND_NM                     =cc_industry.entry_code
+  AND sp.RBI_IND_CODE               = cc_rbi.entry_code
+  AND rm.ID(+)                      = sp.RELATION_MGR
+  AND pg.ID(+)                      = sp.PARTY_GRP_NM
+  AND cc.ID(+)                      = ra.LRA_CITY_TEXT
+  AND cs.ID(+)                      = ra.LRA_STATE
+  AND sp.IND_NM                     =ci.ENTRY_CODE
+  AND ra.lra_region                 = reg.id
+  AND cc_industry.category_code     = 'HDFC_INDUSTRY'
+  AND cc_rbi.category_code          = 'HDFC_RBI_CODE'
+  AND cc_party_entity.category_code = 'Entity'
+  AND sp.status                    != 'INACTIVE'
+  AND trx.reference_id              = sp.cms_le_sub_profile_id
+  AND trx.transaction_type          ='CUSTOMER'
+  )
+ ;
+--------------------------------------------------------
+--  DDL for View INSURANCE_ADEQUECY_RPT
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "INSURANCE_ADEQUECY_RPT" ("SEGCODE", "SUBPROFID", "COLLATERALID", "PARTYNAME", "PARTYID", "SEGMENTNAME", "RMNAME", "REGION", "COMPONENTAMT", "INSUREDAMT", "CAMDATE", "INADEQUATEAMOUNT", "POLICYNUMBER", "INSUCOMPANY", "INSURANCEREQ", "DUEDATE", "COMPONENT", "STOCKTYPE", "INSURANCECODE", "GC_STOCK_DET_ID", "GC_DET_ID", "TOTAL_INSURED_AMT", "TOTAL_COMPONENT_AMT", "ADEQUECY") AS 
+  SELECT segcode,
+    subProfId,
+    collateralid,
+    partyname,
+    partyId,
+    segmentname,
+    rmname,
+    region,
+    componentamt,
+    insuredamt,
+    camdate,
+    inadequateamount,
+    policynumber,
+    insucompany,
+    insurancereq,
+    duedate,
+    component,
+    stocktype,
+    insurancecode,
+    gc_stock_det_id,
+    gc_det_id,
+    CASE
+      WHEN count1 = rnum
+      THEN total_insured_amt
+      ELSE 0
+    END AS total_insured_amt,
+    CASE
+      WHEN count1 = rnum
+      THEN total_component_amt
+      ELSE 0
+    END AS total_component_amt,
+    CASE
+      WHEN (count1 <> rnum)
+      THEN '-'
+      WHEN (total_insured_amt > total_component_amt)
+      THEN 'adequete'
+      WHEN (total_insured_amt < total_component_amt)
+      THEN 'inadequete'
+    END AS adequecy
+  FROM
+    (SELECT segcode,
+      subProfId,
+      collateralid,
+      partyname,
+      partyId,
+      segmentname,
+      rmname,
+      region,
+      componentamt,
+      insuredamt,
+      camdate,
+      inadequateamount,
+      policynumber,
+      insucompany,
+      insurancereq,
+      duedate,
+      component,
+      stocktype,
+      insurancecode,
+      gc_stock_det_id,
+      gc_det_id,
+      row_number() over (partition BY collateralid order by collateralid) AS rnum,
+      COUNT(1) over (partition BY collateralid order by collateralid)     AS count1,
+      total_insured_amt,
+      CASE
+        WHEN total_insured_amt = 0
+        THEN (TOTAL_COMP_AMT_INS_NULL(GC_DET_ID,collateralid))
+        WHEN total_insured_amt IS NOT NULL
+        THEN total_component_amt
+      END AS total_component_amt
+    FROM
+      (SELECT DISTINCT sp.lsp_sgmnt_code_value AS segcode,
+        sp.CMS_LE_SUB_PROFILE_ID               AS subProfId,
+        date1.cms_collateral_id                AS collateralid,
+        sp.lsp_short_name                      AS partyname,
+        sp.lsp_le_id                           AS partyId,
+        ci.entry_name                          AS segmentname,
+        rm.rm_mgr_name                         AS rmname,
+        (SELECT region_name FROM cms_region WHERE id =sp.rm_region
+        )                                                              AS region,
+        stockdet.component_amount                                      AS componentamt,
+        ins.insured_amount                                             AS insuredamt,
+        TO_CHAR(date1.due_date,'DD/Mon/YYYY')                          AS camdate,
+        (NVL(ins.insured_amount,0) - NVL(stockdet.component_amount,0)) AS inadequateAmount,
+        ins.ins_policy_no                                              AS policynumber,
+        (SELECT inscovg.company_name
+        FROM cms_insurance_coverage inscovg
+        WHERE inscovg.insurance_coverage_code=ins.ins_company
+        )                        AS insucompany,
+        ins.ins_required         AS insurancereq,
+        date1.due_date           AS duedate,
+        cc.entry_name            AS component,
+        stockdet.stock_type      AS stocktype,
+        ins.ins_code             AS insurancecode,
+        stockdet.gc_stock_det_id AS gc_stock_det_id,
+        stockdet.gc_det_id       AS gc_det_id,
+        COALESCE (
+        (SELECT SUM(insured_amount)
+        FROM cms_gc_insurance insurance
+        WHERE insurance.cms_collateral_id = date1.cms_collateral_id
+        AND insurance.deprecated          = 'N'
+        AND insurance.ins_required        = 'All'
+        AND insurance.expiry_date        >= sysdate
+        ),0) + COALESCE(
+        (SELECT SUM(ins.insured_amount)
+        FROM cms_gc_insurance ins
+        WHERE ins.cms_collateral_id = date1.cms_collateral_id
+        AND ins.ins_required        = 'Component_wise'
+        AND ins.deprecated          = 'N'
+        AND ins.expiry_date        >= sysdate
+        ) ,0)                                                     AS total_insured_amt,
+        (TOTAL_COMP_AMT(date1.GC_DET_ID,date1.cms_collateral_id)) AS total_component_amt
+      FROM CMS_ASSET_GC_DET date1,
+        CMS_ASSET_GC_STOCK_DET stockdet,
+        CMS_RELATIONSHIP_MGR rm,
+        CMS_LIMIT_SECURITY_MAP lsm,
+        SCI_LSP_APPR_LMTS lmts ,
+        SCI_LSP_LMT_PROFILE pf,
+        SCI_LE_SUB_PROFILE sp,
+        common_code_category_entry ci,
+        ( SELECT * FROM cms_gc_insurance WHERE expiry_date >= sysdate
+        ) ins,
+        common_code_category_entry cc
+      WHERE stockdet.GC_DET_ID      = date1.GC_DET_ID
+      AND lsm.CMS_LSP_APPR_LMTS_ID  = lmts.CMS_LSP_APPR_LMTS_ID
+      AND (lsm.UPDATE_STATUS_IND   != 'D'
+      OR lsm.UPDATE_STATUS_IND     IS NULL)
+      AND lsm.CMS_COLLATERAL_ID     = date1.CMS_COLLATERAL_ID
+      AND pf.CMS_LSP_LMT_PROFILE_ID = lmts.CMS_LIMIT_PROFILE_ID
+      AND sp.CMS_LE_SUB_PROFILE_ID  = pf.CMS_CUSTOMER_ID
+      AND rm.id(+)                  = sp.relation_mgr
+        --   AND (ins.expiry_date          >= sysdate OR ins.expiry_date is null)
+      AND ci.entry_code(+)         = sp.lsp_sgmnt_code_value
+      AND ins.cms_collateral_id(+) = date1.cms_collateral_id
+      AND (ins.deprecated          = 'N'
+      OR ins.deprecated           IS NULL)
+      AND date1.due_date           =
+        (SELECT MAX(due_date)
+        FROM cms_asset_gc_det
+        WHERE cms_collateral_id = date1.cms_collateral_id
+        )
+      AND lsm.CHARGE_ID IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      = date1.cms_collateral_id
+        )
+      AND date1.STATUS        = 'APPROVED'
+      AND ci.category_code    ='HDFC_SEGMENT'
+      AND sp.status          != 'INACTIVE'
+      AND (cc.category_code   ='CURRENT_ASSET')
+      AND stockdet.component  = cc.entry_code
+      AND stockdet.component IN
+        (SELECT DISTINCT common.entry_code
+        FROM cms_component comp,
+          common_code_category_entry common
+        WHERE common.category_code = 'CURRENT_ASSET'
+        AND comp.component_type    = 'Current_Asset'
+        AND comp.component_name    = common.entry_name
+        AND comp.has_insurance     = 'Yes'
+        AND deprecated             = 'N'
+        )
+        --      AND upper(cc.entry_name) IN
+        --        (SELECT upper(component_name)
+        --        FROM cms_component comp
+        --        WHERE 0 <>
+        --          (SELECT instr(ins.ins_select_component, comp.component_code) FROM dual
+        --          )
+        --        )
+      )
+    )
+  ORDER BY collateralid
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View INSURANCE_ADEQUECY_RPT123
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "INSURANCE_ADEQUECY_RPT123" ("SEGCODE", "SUBPROFID", "COLLATERALID", "PARTYNAME", "SEGMENTNAME", "RMNAME", "REGION", "COMPONENTAMT", "INSUREDAMT", "CAMDATE", "INADEQUATEAMOUNT", "POLICYNUMBER", "INSUCOMPANY", "INSURANCEREQ", "DUEDATE", "COMPONENT", "STOCKTYPE", "INSURANCECODE", "ID1", "RNUM", "TOTAL_INSURED_AMT", "TOTAL_COMPONENT_AMT", "ADEQUECY") AS 
+  SELECT segcode,
+    subProfId,
+    collateralid,
+    partyname,
+    segmentname,
+    rmname,
+    region,
+    componentamt,
+    insuredamt,
+    camdate,
+    inadequateamount,
+    policynumber,
+    insucompany,
+    insurancereq,
+    duedate,
+    component,
+    stocktype,
+    insurancecode,
+    id1,
+    row_number() over (partition BY collateralid order by collateralid) AS rnum,
+    total_insured_amt,
+     total_component_amt,
+    CASE
+      WHEN (total_insured_amt > total_component_amt)
+      THEN 'adequete'
+      WHEN (total_insured_amt < total_component_amt)
+      then 'inadequete'
+    end as adequecy
+from
+      (SELECT sp.lsp_sgmnt_code_value AS segcode,
+        sp.CMS_LE_SUB_PROFILE_ID      AS subProfId,
+        date1.cms_collateral_id       AS collateralid,
+        sp.lsp_short_name             AS partyname,
+        ci.entry_name                 AS segmentname,
+        rm.rm_mgr_name                AS rmname,
+        (SELECT region_name FROM cms_region WHERE id =sp.rm_region
+        )                                                              AS region,
+        stockdet.component_amount                                      AS componentamt,
+        ins.insured_amount                                             AS insuredamt,
+        TO_CHAR(date1.due_date,'DD/Mon/YYYY')                          AS camdate,
+        (NVL(ins.insured_amount,0) - NVL(stockdet.component_amount,0)) AS inadequateAmount,
+        ins.ins_policy_no                                              AS policynumber,
+        (SELECT inscovg.company_name
+        FROM cms_insurance_coverage inscovg
+        WHERE inscovg.insurance_coverage_code=ins.ins_company
+        )                                                                                                       AS insucompany,
+        ins.ins_required                                                                                        AS insurancereq,
+        date1.due_date                                                                                          AS duedate,
+        stockdet.component                                                                                      AS component,
+        stockdet.stock_type                                                                                     AS stocktype,
+        ins.ins_code                                                                                            AS insurancecode,
+        stockdet.gc_stock_det_id                                                                                as id1,
+        COALESCE (
+        (SELECT SUM(insured_amount)
+        FROM cms_gc_insurance insurance
+        WHERE insurance.cms_collateral_id = date1.cms_collateral_id
+        AND insurance.deprecated          = 'N'
+        AND insurance.ins_required        = 'All'
+        ),0) + COALESCE(
+        (SELECT SUM (insured_amount)
+        FROM cms_gc_insurance
+        WHERE id IN
+          (SELECT DISTINCT(id)
+          FROM cms_gc_insurance insurance,
+            common_code_category_entry cc
+          WHERE insurance.cms_collateral_id = date1.cms_collateral_id
+          AND insurance.ins_required        = 'Component_wise'
+          AND insurance.deprecated          = 'N'
+          AND (cc.category_code             ='CURRENT_ASSET')
+          AND upper(cc.entry_code)         IN
+            (SELECT component
+            FROM cms_asset_gc_stock_det
+            WHERE gc_det_id= stockdet.gc_det_id
+            AND due_date   =
+              (SELECT MAX(due_date)
+              FROM cms_asset_gc_det
+              WHERE cms_collateral_id = date1.cms_collateral_id
+              )
+            )
+          AND upper(cc.entry_name) IN
+            (SELECT upper(component_name)
+            FROM cms_component comp
+            WHERE 0 <>
+              (SELECT instr(insurance.ins_select_component, comp.component_code) FROM dual
+              )
+            )
+          )
+        ) ,0) AS total_insured_amt,
+        (SELECT SUM(component_amount)
+        FROM cms_asset_gc_stock_det det
+        WHERE det.gc_stock_det_id IN
+          (SELECT gc_stock_det_id
+          FROM cms_asset_gc_stock_det
+          WHERE gc_det_id= date1.gc_det_id
+          )
+        AND det.component IN
+          (SELECT DISTINCT common.entry_code
+          FROM cms_component comp,
+            common_code_category_entry common
+          WHERE common.category_code = 'CURRENT_ASSET'
+          AND comp.component_type    = 'Current_Asset'
+          AND comp.component_name    = common.entry_name
+          AND comp.has_insurance     = 'Yes'
+          AND deprecated             = 'N'
+          )
+        )  AS total_component_amt
+      
+      FROM CMS_ASSET_GC_DET date1,
+        CMS_ASSET_GC_STOCK_DET stockdet,
+        CMS_RELATIONSHIP_MGR rm,
+        CMS_LIMIT_SECURITY_MAP lsm,
+        SCI_LSP_APPR_LMTS lmts ,
+        SCI_LSP_LMT_PROFILE pf,
+        SCI_LE_SUB_PROFILE sp,
+        common_code_category_entry ci,
+        cms_gc_insurance ins,
+        common_code_category_entry cc
+      WHERE stockdet.GC_DET_ID      = date1.GC_DET_ID
+      AND lsm.CMS_LSP_APPR_LMTS_ID  = lmts.CMS_LSP_APPR_LMTS_ID
+      AND (lsm.UPDATE_STATUS_IND   != 'D'
+      OR lsm.UPDATE_STATUS_IND     IS NULL)
+      AND lsm.CMS_COLLATERAL_ID     = date1.CMS_COLLATERAL_ID
+      AND pf.CMS_LSP_LMT_PROFILE_ID = lmts.CMS_LIMIT_PROFILE_ID
+      AND sp.CMS_LE_SUB_PROFILE_ID  = pf.CMS_CUSTOMER_ID
+      AND rm.id(+)                  = sp.relation_mgr
+      AND ci.entry_code(+)          = sp.lsp_sgmnt_code_value
+      AND ins.cms_collateral_id     = date1.cms_collateral_id
+      AND ins.deprecated            = 'N'
+      AND date1.due_date            =
+        (SELECT MAX(due_date)
+        FROM cms_asset_gc_det
+        WHERE cms_collateral_id = date1.cms_collateral_id
+        )
+      AND lsm.CHARGE_ID IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      = date1.cms_collateral_id
+        )
+      AND date1.STATUS        = 'APPROVED'
+      AND ci.category_code    ='HDFC_SEGMENT'
+      AND sp.status          != 'INACTIVE'
+      AND (cc.category_code   ='CURRENT_ASSET')
+      AND stockdet.component  = cc.entry_code
+      AND stockdet.component IN
+        (SELECT DISTINCT common.entry_code
+        FROM cms_component comp,
+          common_code_category_entry common
+        WHERE common.category_code = 'CURRENT_ASSET'
+        AND comp.component_type    = 'Current_Asset'
+        AND comp.component_name    = common.entry_name
+        AND comp.has_insurance     = 'Yes'
+        AND deprecated             = 'N'
+        )
+      AND upper(cc.entry_name) IN
+        (SELECT upper(component_name)
+        FROM cms_component comp
+        WHERE 0 <>
+          (SELECT instr(ins.ins_select_component, comp.component_code) FROM dual
+          )
+        )
+      )
+  ORDER BY collateralid
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View INSURANCE_ADEQUECY_RPT_NEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "INSURANCE_ADEQUECY_RPT_NEW" ("SEGCODE", "SUBPROFID", "COLLATERALID", "PARTYNAME", "PARTYID", "SEGMENTNAME", "RMNAME", "REGION", "COMPONENTAMT", "INSUREDAMT", "CAMDATE", "INADEQUATEAMOUNT", "POLICYNUMBER", "INSUCOMPANY", "INSURANCEREQ", "DUEDATE", "COMPONENT", "STOCKTYPE", "INSURANCECODE", "GC_STOCK_DET_ID", "GC_DET_ID", "TOTAL_INSURED_AMT", "TOTAL_COMPONENT_AMT", "ADEQUECY") AS 
+  SELECT distinct segcode,
+    subProfId,
+    collateralid,
+    partyname,
+    partyId,
+    segmentname,
+    rmname,
+    region,
+    componentamt,
+    insuredamt,
+    camdate,
+    inadequateamount,
+    policynumber,
+    insucompany,
+    insurancereq,
+    duedate,
+    component,
+    stocktype,
+    insurancecode,
+    gc_stock_det_id,
+    gc_det_id,
+    CASE
+      WHEN count1 = rnum
+      THEN total_insured_amt
+      ELSE 0
+    END AS total_insured_amt,
+    CASE
+      WHEN count1 = rnum
+      THEN total_component_amt
+      ELSE 0
+    END AS total_component_amt,
+    CASE
+      WHEN (count1 <> rnum)
+      THEN '-'
+      WHEN (total_insured_amt > total_component_amt)
+      THEN 'adequete'
+      WHEN (total_insured_amt < total_component_amt)
+      THEN 'inadequete'
+    END AS adequecy
+  FROM
+    (SELECT segcode,
+      subProfId,
+      collateralid,
+      partyname,
+      partyId,
+      segmentname,
+      rmname,
+      region,
+      componentamt,
+      insuredamt,
+      camdate,
+      inadequateamount,
+      policynumber,
+      insucompany,
+      insurancereq,
+      duedate,
+      component,
+      stocktype,
+      insurancecode,
+      gc_stock_det_id,
+      gc_det_id,
+      row_number() over (partition BY collateralid order by collateralid) AS rnum,
+      COUNT(1) over (partition BY collateralid order by collateralid)     AS count1,
+      total_insured_amt,
+      total_component_amt
+    FROM
+      (SELECT sp.lsp_sgmnt_code_value AS segcode,
+        sp.CMS_LE_SUB_PROFILE_ID      AS subProfId,
+        date1.cms_collateral_id       AS collateralid,
+        sp.lsp_short_name             AS partyname,
+        sp.lsp_le_id                  AS partyId,
+        ci.entry_name                 AS segmentname,
+        rm.rm_mgr_name                AS rmname,
+        (SELECT region_name FROM cms_region WHERE id =sp.rm_region
+        )                                                              AS region,
+        stockdet.component_amount                                      AS componentamt,
+        ins.insured_amount                                             AS insuredamt,
+        TO_CHAR(date1.due_date,'DD/Mon/YYYY')                          AS camdate,
+        (NVL(ins.insured_amount,0) - NVL(stockdet.component_amount,0)) AS inadequateAmount,
+        ins.ins_policy_no                                              AS policynumber,
+        (SELECT inscovg.company_name
+        FROM cms_insurance_coverage inscovg
+        WHERE inscovg.insurance_coverage_code=ins.ins_company
+        )                        AS insucompany,
+        ins.ins_required         AS insurancereq,
+        date1.due_date           AS duedate,
+        cc.entry_name            AS component,
+        stockdet.stock_type      AS stocktype,
+        ins.ins_code             AS insurancecode,
+        stockdet.gc_stock_det_id AS gc_stock_det_id,
+        stockdet.gc_det_id       AS gc_det_id,
+        COALESCE (
+        (SELECT SUM(insured_amount)
+        FROM cms_gc_insurance insurance
+        WHERE insurance.cms_collateral_id = date1.cms_collateral_id
+        AND insurance.deprecated          = 'N'
+        AND insurance.ins_required        = 'All'
+        AND insurance.expiry_date        >= sysdate
+        ),0) + COALESCE(
+        (SELECT SUM(ins.insured_amount)
+        FROM cms_gc_insurance ins
+        WHERE ins.cms_collateral_id = date1.cms_collateral_id
+        AND ins.ins_required        = 'Component_wise'
+        AND ins.deprecated          = 'N'
+        AND ins.expiry_date        >= sysdate
+        ) ,0)                                                     AS total_insured_amt,
+        (TOTAL_COMP_AMT(date1.GC_DET_ID,date1.cms_collateral_id)) AS total_component_amt
+      FROM CMS_ASSET_GC_DET date1,
+        CMS_ASSET_GC_STOCK_DET stockdet,
+        CMS_RELATIONSHIP_MGR rm,
+        CMS_LIMIT_SECURITY_MAP lsm,
+        SCI_LSP_APPR_LMTS lmts ,
+        SCI_LSP_LMT_PROFILE pf,
+        SCI_LE_SUB_PROFILE sp,
+        common_code_category_entry ci,
+        cms_gc_insurance ins,
+        common_code_category_entry cc
+      WHERE stockdet.GC_DET_ID      = date1.GC_DET_ID
+      AND lsm.CMS_LSP_APPR_LMTS_ID  = lmts.CMS_LSP_APPR_LMTS_ID
+      AND (lsm.UPDATE_STATUS_IND   != 'D'
+      OR lsm.UPDATE_STATUS_IND     IS NULL)
+      AND lsm.CMS_COLLATERAL_ID     = date1.CMS_COLLATERAL_ID
+      AND pf.CMS_LSP_LMT_PROFILE_ID = lmts.CMS_LIMIT_PROFILE_ID
+      AND sp.CMS_LE_SUB_PROFILE_ID  = pf.CMS_CUSTOMER_ID
+      AND rm.id(+)                  = sp.relation_mgr
+      AND ins.expiry_date          >= sysdate
+      AND ci.entry_code(+)          = sp.lsp_sgmnt_code_value
+      AND ins.cms_collateral_id     = date1.cms_collateral_id
+      AND ins.deprecated            = 'N'
+      AND date1.due_date            =
+        (SELECT MAX(due_date)
+        FROM cms_asset_gc_det
+        WHERE cms_collateral_id = date1.cms_collateral_id
+        )
+      AND lsm.CHARGE_ID IN
+        (SELECT MAX(MAPS2.CHARGE_ID)
+        FROM cms_limit_security_map maps2
+        WHERE maps2.cms_lsp_appr_lmts_id = lmts.cms_lsp_appr_lmts_id
+        AND maps2.cms_collateral_id      = date1.cms_collateral_id
+        )
+      AND date1.STATUS        = 'APPROVED'
+      AND ci.category_code    ='HDFC_SEGMENT'
+      AND sp.status          != 'INACTIVE'
+      AND (cc.category_code   ='CURRENT_ASSET')
+      AND stockdet.component  = cc.entry_code
+      AND stockdet.component IN
+        (SELECT DISTINCT common.entry_code
+        FROM cms_component comp,
+          common_code_category_entry common
+        WHERE common.category_code = 'CURRENT_ASSET'
+        AND comp.component_type    = 'Current_Asset'
+        AND comp.component_name    = common.entry_name
+        AND comp.has_insurance     = 'Yes'
+        AND deprecated             = 'N'
+        )
+      AND upper(cc.entry_name) IN
+        (SELECT upper(component_name)
+        FROM cms_component comp
+        WHERE 0 <>
+          (SELECT instr(ins.ins_select_component, comp.component_code) FROM dual
+          )
+        )
+      )
+    )
+  ORDER BY collateralid
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View LOGGED_IN_USER_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "LOGGED_IN_USER_VIEW" ("LOGIN_ID", "SERVER_NAME", "IP_ADDRESS") AS 
+  SELECT S.LOGIN_ID AS LOGIN_ID ,
+    LA.SERVER       AS SERVER_NAME ,
+    LA.IP_ADDRESS   AS IP_ADDRESS
+  FROM CMS_USER_SESSION USR, CMS_USER S, CMS_AUTHENTICATION CA, CMS_LOGIN_AUDIT LA
+    WHERE (USR.USER_ID = S.USER_ID) AND (S.LOGIN_ID = CA.LOGIN_ID) AND LA.LOGIN_ID = S.LOGIN_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View MV_BASE_TABLE_TEST1
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "MV_BASE_TABLE_TEST1" ("PARTY_ID", "PARTY_NAME", "SEGMENTNAME", "RMREGION", "RMNAME", "CAMTYPE", "RAMRATING", "STATEMENTTYPE", "STATUS", "DOCUMENT_CODE", "TRANSACTION_DATE", "PROFILE_ID") AS 
+  (
+  (SELECT DISTINCT
+    ------------------------------------------------------------------
+    sub_profile.lsp_le_id      AS party_id,
+    sub_profile.lsp_short_name AS party_name,
+    cc_segment.entry_name      AS segmentName,
+    reg.region_name            AS rmRegion,
+    rm.rm_mgr_name             AS rmname,
+    pf.cam_type                AS CAMType,
+    pf.cms_appr_officer_grade  AS RAMRating,
+    chklist.statement_type     AS statementType,
+    'Not Maintained'           AS status,
+    -------------------------------------------------------------------
+    glb.document_code,
+    trx.transaction_date,
+    sub_profile.cms_le_sub_profile_id AS profile_id
+    -------------------------------------------------------------------
+  FROM  
+    cms_checklist checklist,
+    (select * from cms_document_globallist where deprecated = 'N'
+   AND category = 'REC')glb,
+    (SELECT item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    FROM cms_checklist_item item,
+      cms_checklist chk
+    WHERE item.checklist_id = chk.checklist_id
+    AND item.is_deleted     = 'N'
+    GROUP BY item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    )chklist,
+    SCI_LSP_LMT_PROFILE pf,
+    (select * from  SCI_LE_SUB_PROFILE where  status!= 'INACTIVE') sub_profile,
+    (SELECT entry_name,
+      entry_code
+    FROM common_code_category_entry
+    WHERE category_code = 'HDFC_SEGMENT'
+    ) cc_segment,
+    cms_relationship_mgr rm ,
+    (select * from SCI_LE_REG_ADDR where lra_type_value= 'CORPORATE') addr,
+    CMS_REGION reg,
+   (select * from  transaction where  (transaction_type              ='CHECKLIST'
+  OR transaction_type               IS NULL)) trx
+  WHERE glb.document_code NOT IN
+    (SELECT item.document_code
+    FROM cms_checklist_item item
+    WHERE item.checklist_id = checklist.checklist_id
+    AND item.is_deleted     = 'N'
+    )
+  AND checklist.checklist_id             = chklist.checklist_id
+ -- AND glb.category                       = 'REC'
+  AND glb.statement_type                 = chklist.statement_type
+ -- AND glb.deprecated                     = 'N'
+  AND sub_profile.cms_le_sub_profile_id  = pf.cms_customer_id(+)
+  AND checklist.cms_lsp_lmt_profile_id   = pf.cms_lsp_lmt_profile_id
+  AND checklist.checklist_id             = trx.reference_id(+)
+--  AND (trx.transaction_type              ='CHECKLIST'
+--  OR trx.transaction_type               IS NULL)
+  AND cc_segment.entry_code(+)           = sub_profile.lsp_sgmnt_code_value
+  AND sub_profile.cms_le_main_profile_id = addr.cms_le_main_profile_id(+)
+  AND rm.id(+)                           = sub_profile.relation_mgr
+  AND reg.id (+)                         = sub_profile.rm_region
+  --AND addr.lra_type_value                = 'CORPORATE'
+--  AND sub_profile.status                != 'INACTIVE'
+  )
+UNION ALL
+  ( SELECT DISTINCT
+    ------------------------------------------------------------------
+    sub_profile.lsp_le_id      AS party_id,
+    sub_profile.lsp_short_name AS party_name,
+    cc_segment.entry_name      AS segmentName,
+    reg.region_name            AS rmRegion,
+    rm.rm_mgr_name             AS rmname,
+    pf.cam_type                AS CAMType,
+    pf.cms_appr_officer_grade  AS RAMRating,
+    chklist.statement_type     AS statementType,
+    chklist.status             AS status,
+    -------------------------------------------------------------------
+    glb.document_code,
+    trx.transaction_date,
+    sub_profile.cms_le_sub_profile_id AS profile_id
+    -------------------------------------------------------------------
+  FROM 
+  
+   
+    cms_checklist checklist,
+    (select * from cms_document_globallist where deprecated = 'N'
+   AND category = 'REC')glb, 
+    (SELECT DISTINCT item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    FROM cms_checklist_item item,
+      cms_checklist chk
+    WHERE item.checklist_id = chk.checklist_id
+    AND chk.checklist_id    = item.checklist_id
+    AND item.is_deleted     = 'N'
+    GROUP BY item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    )chklist,
+    SCI_LSP_LMT_PROFILE pf,
+    (select * from  SCI_LE_SUB_PROFILE where  status!= 'INACTIVE') sub_profile,
+    (SELECT entry_name,
+      entry_code
+    FROM common_code_category_entry
+    WHERE category_code = 'HDFC_SEGMENT'
+    ) cc_segment,
+    cms_relationship_mgr rm ,
+    (select * from SCI_LE_REG_ADDR where lra_type_value= 'CORPORATE') addr,
+    CMS_REGION reg,
+    (select * from  transaction where  (transaction_type              ='CHECKLIST'
+  OR transaction_type IS NULL)) trx
+  WHERE glb.document_code IN
+    (SELECT item.document_code
+    FROM cms_checklist_item item
+    WHERE item.checklist_id = chklist.checklist_id
+    )
+  AND checklist.checklist_id             = chklist.checklist_id
+ -- AND glb.category                       = 'REC'
+  AND glb.statement_type                 = chklist.statement_type
+  --AND glb.deprecated                     = 'N'
+  AND sub_profile.cms_le_sub_profile_id  = pf.cms_customer_id(+)
+  AND checklist.cms_lsp_lmt_profile_id   = pf.cms_lsp_lmt_profile_id
+  AND checklist.checklist_id             = trx.reference_id(+)
+--  AND (trx.transaction_type              ='CHECKLIST'
+--  OR trx.transaction_type               IS NULL)
+  AND cc_segment.entry_code(+)           = sub_profile.lsp_sgmnt_code_value
+  AND sub_profile.cms_le_main_profile_id = addr.cms_le_main_profile_id(+)
+  AND rm.id(+)                           = sub_profile.relation_mgr
+  AND reg.id (+)                         = sub_profile.rm_region
+ -- AND addr.lra_type_value                = 'CORPORATE'
+  --AND sub_profile.status                != 'INACTIVE'
+  AND glb.document_code                  = chklist.document_code
+  ) )
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View PREDEAL_DATA_VW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "PREDEAL_DATA_VW" ("FEED_ID", "IS_INT_SUSPEND", "IS_SUSPENDED", "SHARE_STATUS", "TICKER", "EXPIRY_DATE", "GROUP_STOCK_TYPE", "NAME", "RIC", "STOCK_EXCHANGE_NAME", "GROUP_SUBTYPE", "COUNTRY_ISO_CODE", "CURRENCY", "UNIT_PRICE", "LAST_BATCH_UPDATE", "CMS_ACTUAL_HOLDING", "TOTAL_NO_OF_UNITS", "EARMARK_HOLDING", "EARMARK_CURRENT", "ISIN_CODE", "LISTEDSHARE_QUANTITY", "GROUP_TYPE", "IS_FI", "BOARD_TYPE", "PAR_VALUE") AS 
+  SELECT  TABLE1.FEED_ID  AS FEED_ID , IS_INT_SUSPEND , IS_SUSPENDED , SHARE_STATUS , TICKER , EXPIRY_DATE , GROUP_STOCK_TYPE , NAME , RIC , STOCK_EXCHANGE_NAME , GROUP_SUBTYPE , COUNTRY_ISO_CODE , CURRENCY , MAX(UNIT_PRICE)  AS UNIT_PRICE , MAX(LAST_BATCH_UPDATE)  AS LAST_BATCH_UPDATE , SUM(CMS_ACTUAL_HOLDING)  AS CMS_ACTUAL_HOLDING , SUM(TOTAL_NO_OF_UNITS)  AS TOTAL_NO_OF_UNITS , MAX(EARMARK_HOLDING)  AS EARMARK_HOLDING , MAX(EARMARK_CURRENT)  AS EARMARK_CURRENT , ISIN_CODE , MAX(LISTEDSHARE_QUANTITY)  AS LISTEDSHARE_QUANTITY , GROUP_TYPE , IS_FI , BOARD_TYPE , PAR_VALUE  FROM ((SELECT  TEMP_TABLE.FEED_ID , TEMP_TABLE.IS_SUSPENDED , TEMP_TABLE.TICKER , TEMP_TABLE.NAME , TEMP_TABLE.RIC , TEMP_TABLE.ISIN_CODE , TEMP_TABLE.CURRENCY , TEMP_TABLE.UNIT_PRICE , TEMP_TABLE.GROUP_TYPE , TEMP_TABLE.EXPIRY_DATE , TEMP_TABLE.GROUP_STOCK_TYPE , TEMP_TABLE.STOCK_EXCHANGE_NAME , TEMP_TABLE.GROUP_SUBTYPE , TEMP_TABLE.COUNTRY_ISO_CODE , TEMP_TABLE.LISTEDSHARE_QUANTITY , TEMP_TABLE.PAR_VALUE , CMS_CREDIT_RISK_PARAM.IS_INT_SUSPEND , CMS_CREDIT_RISK_PARAM.SHARE_STATUS , CMS_CREDIT_RISK_PARAM.IS_FI , CMS_CREDIT_RISK_PARAM.BOARD_TYPE  FROM ((SELECT  CMS_PRICE_FEED.FEED_ID  AS FEED_ID , CMS_PRICE_FEED.IS_SUSPENDED , CMS_PRICE_FEED.TICKER , CMS_PRICE_FEED.NAME , CMS_PRICE_FEED.RIC , CMS_PRICE_FEED.ISIN_CODE , CMS_PRICE_FEED.CURRENCY , CMS_PRICE_FEED.UNIT_PRICE , CMS_PRICE_FEED.EXPIRY_DATE , CMS_FEED_GROUP.GROUP_TYPE , CMS_FEED_GROUP.GROUP_STOCK_TYPE , CMS_STOCK_EXCHANGE.STOCK_EXCHANGE_NAME , CMS_FEED_GROUP.GROUP_SUBTYPE , CMS_STOCK_EXCHANGE.COUNTRY_ISO_CODE , CMS_PRICE_FEED.LISTEDSHARE_QUANTITY , CMS_PRICE_FEED.PAR_VALUE  FROM CMS_FEED_GROUP, CMS_PRICE_FEED, CMS_STOCK_EXCHANGE WHERE CMS_FEED_GROUP.FEED_GROUP_ID = CMS_PRICE_FEED.FEED_GROUP_ID AND CMS_FEED_GROUP.GROUP_SUBTYPE = CMS_STOCK_EXCHANGE.STOCK_EXCHANGE) TEMP_TABLE) LEFT JOIN CMS_CREDIT_RISK_PARAM ON TEMP_TABLE.FEED_ID = CMS_CREDIT_RISK_PARAM.FEED_ID) TABLE1) LEFT JOIN ((SELECT  CMS_EARMARK_GROUP.FEED_ID , MAX(CMS_EARMARK_GROUP.LAST_BATCH_UPDATE)  AS LAST_BATCH_UPDATE , SUM(CMS_EARMARK_GROUP.CMS_ACTUAL_HOLDING)  AS CMS_ACTUAL_HOLDING , SUM(CMS_EARMARK_GROUP.TOTAL_NO_OF_UNITS)  AS TOTAL_NO_OF_UNITS , SUM(EARMARK_HOLDING)  AS EARMARK_HOLDING , SUM(EARMARK_CURRENT)  AS EARMARK_CURRENT  FROM CMS_EARMARK_GROUP GROUP BY CMS_EARMARK_GROUP.FEED_ID) TABLE2) ON TABLE1.FEED_ID = TABLE2.FEED_ID GROUP BY TABLE1.FEED_ID, IS_INT_SUSPEND, IS_SUSPENDED, SHARE_STATUS, TICKER, NAME, EXPIRY_DATE, GROUP_STOCK_TYPE, RIC, STOCK_EXCHANGE_NAME, GROUP_SUBTYPE, COUNTRY_ISO_CODE, CURRENCY, ISIN_CODE, GROUP_TYPE, IS_FI, BOARD_TYPE, PAR_VALUE
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_FD
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_FD" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+SELECT
+  
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || (
+   TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)      || TO_CHAR(ln.SERIAL_NO) ) AS Collateral_BKey,
+   (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+    case
+					when sec.sec_priority = 'Y' then
+					'Primary'
+					when sec.sec_priority = 'N' then
+					'Secondary'
+					END as Possession_Type_Code,
+       DP.ISSUE_DATE as Collateral_Value_Date,
+   DP.DEPOSIT_MATURITY_DATE  as Collateral_Expiry_Date,
+       ln.LIEN_AMOUNT    as Revalued_Amt,
+    ln.LIEN_AMOUNT   as Collateral_Amt,
+    ln.LIEN_AMOUNT   as Collateral_Cover_Value,
+    ln.LIEN_AMOUNT    as Effective_Collateral_Amt,  
+    dp.DEPOSITOR_NAME as Collateral_Owner_Name,
+    sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID, 
+    SPRO.LSP_LE_ID as party_bkey,
+        null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+      SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date  
+    
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,  
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  (select * from cms_cash_deposit where status = 'ACTIVE' and ACTIVE = 'active') dp,
+
+  CMS_LIEN LN
+
+ WHERE
+ SUB.SECURITY_SUB_TYPE_ID = 'CS202'
+ and SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+AND  MAPS.update_status_ind IS not NULL
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND CRI.CMS_LE_MAIN_PROFILE_ID(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND sec.CMS_COLLATERAL_ID       = dp.cms_collateral_id
+AND DP.CASH_DEPOSIT_ID          = LN.CASH_DEPOSIT_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+AND SEC.CMS_COLLATERAL_ID IN (SELECT CMS_COLLATERAL_ID FROM CMS_CASH_DEPOSIT)
+  AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+ AND MAPS.UPDATE_STATUS_IND = 'I'
+
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_FD_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_FD_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (
+SELECT
+ distinct
+-- SEC.CMS_COLLATERAL_ID,
+  TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)|| TO_CHAR(ln.SERIAL_NO) AS Collateral_BKey,
+   (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  '' as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+        case
+					when sec.sec_priority = 'Y' then
+					'Primary'
+					when sec.sec_priority = 'N' then
+					'Secondary'
+					END as Possession_Type_Code,
+       DP.ISSUE_DATE as Collateral_Value_Date,
+   DP.DEPOSIT_MATURITY_DATE  as Collateral_Expiry_Date,
+       ln.LIEN_AMOUNT    as Revalued_Amt,
+    ln.LIEN_AMOUNT   as Collateral_Amt,
+   to_char( ln.LIEN_AMOUNT )  as Collateral_Cover_Value,
+    ln.LIEN_AMOUNT    as Effective_Collateral_Amt,  
+    dp.DEPOSITOR_NAME as Collateral_Owner_Name,
+        sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    '' as Customer_Data_Source_ID, 
+    SPRO.LSP_LE_ID as party_bkey,
+        null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+      SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment--,
+--   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+--  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date  
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+ -- SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,  
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+--  sci_le_cri  cri,
+  (select * from cms_cash_deposit where status = 'ACTIVE' and ACTIVE = 'active') dp,
+  CMS_LIEN LN
+ WHERE
+ SUB.SECURITY_SUB_TYPE_ID = 'CS202'
+ and SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+AND  MAPS.update_status_ind IS not NULL
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND CRI.CMS_LE_MAIN_PROFILE_ID(+) = MAN.CMS_LE_MAIN_PROFILE_ID
+AND sec.CMS_COLLATERAL_ID       = dp.cms_collateral_id
+AND DP.CASH_DEPOSIT_ID          = LN.CASH_DEPOSIT_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+AND SEC.CMS_COLLATERAL_ID IN (SELECT CMS_COLLATERAL_ID FROM CMS_CASH_DEPOSIT)
+  AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+ -- AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+--  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+ AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_GC
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_GC" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (SELECT
+---------- GC Null control -----------
+
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || (
+    TO_CHAR(SEC.CMS_COLLATERAL_ID)
+    || --TO_CHAR(GC.COMPONENT)
+    (SELECT substr(TRY.ENTRY_ID, 11, length(TRY.ENTRY_ID))
+      FROM COMMON_CODE_CATEGORY_ENTRY TRY
+      WHERE
+      try.ENTRY_CODE    = TO_CHAR(GC.COMPONENT) and try.category_code = 'CURRENT_ASSET'
+      ) ------newly added_06_feb
+ )
+ AS Collateral_BKey,
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+    XREF.RELEASE_DATE as Collateral_Value_Date,
+  null  as Collateral_Expiry_Date,
+   TO_CHAR(((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100),'999999999999999999999999999999.999')    as Revalued_Amt,
+   TO_CHAR(((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100),'999999999999999999999999999999.999')    as Collateral_Amt,
+   TO_CHAR(((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100),'999999999999999999999999999999.999')    as Collateral_Cover_Value,
+   TO_CHAR(((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100),'999999999999999999999999999999.999')    as Effective_Collateral_Amt,     
+    null as Collateral_Owner_Name,
+    sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+        null as security_reference, 
+          SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date  
+
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+   (select * from CMS_ASSET_GC_STOCK_DET where STOCK_TYPE = 'CurrentAsset' and component not like 'DUMMY%') GC,
+  CMS_ASSET_GC_DET DET,
+  CMS_ASSET AST
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND GC.GC_DET_ID (+)            = DET.GC_DET_ID
+AND SEC.CMS_COLLATERAL_ID       = det.cms_collateral_id(+)
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+AND det.due_date  = (SELECT MAX(sh.due_date) FROM cms_asset_gc_det sh WHERE sh.cms_collateral_id=DET.cms_collateral_id)
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+AND SUB.security_sub_type_id = 'AB100'
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+ AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+ and (
+ AST.PHY_INSPECTION_FREQ <> '0' or
+              AST.PHY_INSPECTION_DONE <> 'N' or
+              AST.LAST_USED_ID_IDX_STOCK <> 0 or
+              AST.LAST_USED_ID_IDX_FAO <> 0 or
+              AST.LAST_USED_ID_IDX_INSR <> 0
+              OR GC.COMPONENT IS NOT NULL
+ )
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_GC_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_GC_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (SELECT
+--distinct
+  TO_CHAR(SEC.CMS_COLLATERAL_ID)
+    || (SELECT substr(TRY.ENTRY_ID, 11, length(TRY.ENTRY_ID))   FROM COMMON_CODE_CATEGORY_ENTRY TRY
+      WHERE   try.ENTRY_CODE    = TO_CHAR(GC.COMPONENT) and try.category_code = 'CURRENT_ASSET'
+      ) 
+ AS Collateral_BKey,
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  '' as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+    (select min(XREF.RELEASE_DATE) from SCI_LSP_SYS_XREF XREF
+where XREF.CMS_LSP_SYS_XREF_ID 
+in (select MAPSS.CMS_LSP_SYS_XREF_ID from SCI_LSP_LMTS_XREF_MAP MAPSS where  
+MAPSS.CMS_LSP_APPR_LMTS_ID = SCI.CMS_LSP_APPR_LMTS_ID)) as Collateral_Value_Date,
+  null  as Collateral_Expiry_Date,
+  ((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100)    as Revalued_Amt,
+   ((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100)    as Collateral_Amt,
+  to_char( ((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100))    as Collateral_Cover_Value,
+   ((GC.COMPONENT_AMOUNT) * NVL(SPRO.FUNDED_SHARE_PERCENT,0)/100)    as Effective_Collateral_Amt,     
+    null as Collateral_Owner_Name,
+    sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    '' as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+        null as security_reference, 
+          SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment--,
+   --(MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  --(CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date  
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  --SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+   (select * from CMS_ASSET_GC_STOCK_DET where STOCK_TYPE = 'CurrentAsset' and component not like 'DUMMY%') GC,
+  CMS_ASSET_GC_DET DET,
+  CMS_ASSET AST
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+--AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND GC.GC_DET_ID (+)            = DET.GC_DET_ID
+AND SEC.CMS_COLLATERAL_ID       = det.cms_collateral_id(+)
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+AND det.due_date  = (SELECT MAX(sh.due_date) FROM cms_asset_gc_det sh WHERE sh.cms_collateral_id=DET.cms_collateral_id)
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+AND SUB.security_sub_type_id = 'AB100'
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+ AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+ and (
+ AST.PHY_INSPECTION_FREQ <> '0' or
+              AST.PHY_INSPECTION_DONE <> 'N' or
+              AST.LAST_USED_ID_IDX_STOCK <> 0 or
+              AST.LAST_USED_ID_IDX_FAO <> 0 or
+              AST.LAST_USED_ID_IDX_INSR <> 0
+              OR GC.COMPONENT IS NOT NULL
+ )
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  --AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  --AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_GLD
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_GLD" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (SELECT
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || (
+  TO_CHAR (SEC.CMS_COLLATERAL_ID) )
+ AS Collateral_BKey,
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code, 
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+     null as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,  
+  TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Revalued_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')   as Collateral_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Collateral_Cover_Value,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')   as Effective_Collateral_Amt, 
+   null as Collateral_Owner_Name,
+sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey ,
+     null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+  SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = 
+spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date  
+    
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS, 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN, 
+  CMS_ASSET AST
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB110')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_GLD_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_GLD_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (SELECT
+   TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  '' as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code, 
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+     null as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,  
+  sec.cmv    as Revalued_Amt,
+   sec.cmv    as Collateral_Amt,
+    sec.loanable_amount    as Collateral_Cover_Value,
+   sec.cmv   as Effective_Collateral_Amt, 
+   null as Collateral_Owner_Name,
+sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    '' as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey ,
+     null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+  SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment--,
+ --  (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  --(CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date  
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  --SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS, 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN, 
+  CMS_ASSET AST
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+--AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB110')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+--  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+ -- AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_GT400_2
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_GT400_2" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+SELECT
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,  
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,  
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+   grnte.GUARANTEE_DATE as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,
+     TO_CHAR(sec.cmv,'999999999999999999999.999')    as Revalued_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999.999')    as Collateral_Amt,
+    TO_CHAR(sec.cmv,'999999999999999999999.999')    as Collateral_Cover_Value,
+   TO_CHAR(sec.cmv,'999999999999999999999.999')    as Effective_Collateral_Amt,
+      null as Collateral_Owner_Name,
+       sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey , 
+    grnte.REFERENCE_NO as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+    SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+ 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+    
+
+  cms_guarantee grnte
+
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT400','GT402')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv IS NOT NULL OR
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    grnte.RAMID <> 0 )
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+
+
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_GT400_2_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_GT400_2_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (
+SELECT
+ TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,  
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  '' as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,  
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+   grnte.GUARANTEE_DATE as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,
+  sec.cmv    as Revalued_Amt,
+   sec.cmv    as Collateral_Amt,
+    sec.loanable_amount    as Collateral_Cover_Value,
+   sec.cmv   as Effective_Collateral_Amt, 
+      null as Collateral_Owner_Name,
+       sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    '' as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey , 
+    grnte.REFERENCE_NO as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+    SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment--,
+ --  (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+ -- (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+ -- SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  cms_guarantee grnte
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+--AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT400','GT402')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv IS NOT NULL OR
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    grnte.RAMID <> 0 )
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+ -- AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+ -- AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_GT406_8_5
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_GT406_8_5" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+SELECT
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+      grnte.GUARANTEE_DATE as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,
+  TO_CHAR(sec.cmv,'999999999999999999999.999')    as Revalued_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999.999')    as Collateral_Amt,
+    TO_CHAR(sec.cmv,'999999999999999999999.999')    as Collateral_Cover_Value,
+   TO_CHAR(sec.cmv,'999999999999999999999.999')    as Effective_Collateral_Amt, 
+   null as Collateral_Owner_Name,
+   sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+     null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+    SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN, 
+  cms_guarantee grnte
+
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT406','GT408','GT405')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv <> 0 or
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    GRNTE.RAMID <> 0
+                                    OR GRNTE.COUNTRY IS NOT NULL)
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+ AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_GT406_8_5_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_GT406_8_5_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (
+SELECT
+ TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  '' as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+      grnte.GUARANTEE_DATE as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,
+  sec.cmv    as Revalued_Amt,
+   sec.cmv    as Collateral_Amt,
+    sec.loanable_amount    as Collateral_Cover_Value,
+   sec.cmv   as Effective_Collateral_Amt, 
+   null as Collateral_Owner_Name,
+   sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    '' as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+     null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+    SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment--,
+--   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+--  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date   
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  --SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN, 
+  cms_guarantee grnte
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+--AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND sec.CMS_COLLATERAL_ID       = grnte.CMS_COLLATERAL_ID(+)
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID in('GT406','GT408','GT405')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_GUARANTEE)
+AND (MAPS.UPDATE_STATUS_IND <> 'D' OR MAPS.UPDATE_STATUS_IND IS NULL)
+and (grnte.GUARANTEE_AMT <> 0 or sec.cmv <> 0 or
+                                    grnte.SECURED_PORTION <> 0 or
+                                    grnte.UNSECURED_PORTION <> 0 or
+                                    grnte.TELEPHONE_NUMBER <> 0 or
+                                    grnte.TELEPHONE_AREA_CODE <> 0 or
+                                    GRNTE.RAMID <> 0
+                                    OR GRNTE.COUNTRY IS NOT NULL)
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+ -- AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+ -- AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+ AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_IN
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_IN" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (SELECT
+
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,   
+    (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,   
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+   INS.EFFECTIVE_DATE as Collateral_Value_Date,
+  INS.expiry_date  as Collateral_Expiry_Date,   
+    TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Revalued_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Collateral_Amt,
+    TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Collateral_Cover_Value,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Effective_Collateral_Amt,  
+    null as Collateral_Owner_Name,
+    sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+        null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+    SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date  
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_INSURANCE INS
+
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND INS.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID = 'IN501'
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_INSURANCE)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+            INS.BANK_RISK_CONFIRMATION <>'N' or
+            INS.BANK_INT_NOTED <> 'N'or
+            INS.INSURED_AMOUNT <> 0 or
+            INS.INSURANCE_PREMIUM <> 0
+            OR INS.POLICY_NO IS NOT NULL
+            OR sec.cmv IS NOT NULL
+            )
+
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+ )
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_IN_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_IN_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (SELECT
+    TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,   
+    (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  '' as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,   
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+   INS.EFFECTIVE_DATE as Collateral_Value_Date,
+  INS.expiry_date  as Collateral_Expiry_Date,   
+  sec.cmv    as Revalued_Amt,
+   sec.cmv    as Collateral_Amt,
+    sec.loanable_amount    as Collateral_Cover_Value,
+   sec.cmv   as Effective_Collateral_Amt, 
+    null as Collateral_Owner_Name,
+    sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    '' as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+        null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+    SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment--,
+--   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+---  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date  
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  --SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_INSURANCE INS
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+--AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND INS.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID = 'IN501'
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_INSURANCE)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+            INS.BANK_RISK_CONFIRMATION <>'N' or
+            INS.BANK_INT_NOTED <> 'N'or
+            INS.INSURED_AMOUNT <> 0 or
+            INS.INSURANCE_PREMIUM <> 0
+            OR INS.POLICY_NO IS NOT NULL
+            OR sec.cmv IS NOT NULL
+            )
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+ -- AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+ -- AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+ )
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_LIMIT_LINK
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_LIMIT_LINK" ("COLLATERAL_BKEY", "LIMIT_BKEY", "LIMIT_REFERENCE_BKEY", "LIMIT_LEVEL_CODE", "LIMIT_DATA_SOURCE_ID", "COLLATERAL_COVER_PERCENT", "PARTY_BKEY", "PARTY_NAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+ (SELECT 
+  (
+  CASE
+     
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'CS202'
+    THEN (
+      CASE
+        WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+        THEN 'UBS'
+          ||XREF.FACILITY_SYSTEM_ID
+          ||XREF.LINE_NO
+          ||XREF.SERIAL_NO
+        WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+        THEN 'FW'
+          ||XREF.FACILITY_SYSTEM_ID
+        WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+        THEN 'FN'
+          ||XREF.FACILITY_SYSTEM_ID
+      END ) 
+      || ( TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)
+      || TO_CHAR(ln.SERIAL_NO) )
+  END ) AS Collateral_BKey,
+  
+  XREF.FACILITY_SYSTEM_ID as Limit_BKey,
+   xref.line_no as Limit_Reference_BKey,
+  xref.serial_no as Limit_Level_Code,
+ 
+  (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS-LIMITS'
+    WHEN XREF.FACILITY_SYSTEM <> 'UBS-LIMITS'
+    THEN ''
+  END ) AS Limit_Data_Source_ID,
+MAPS.LMT_SECURITY_COVERAGE as Collateral_Cover_Percent,
+ 
+  SPRO.LSP_LE_ID            AS party_bkey,
+  SPRO.LSP_Short_name       AS party_name,
+  (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		,
+     (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date, 
+  (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+FROM SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  (SELECT * FROM cms_cash_deposit WHERE status = 'ACTIVE' AND ACTIVE = 'active'
+  ) dp,
+  CMS_LIEN LN,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB
+WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+AND sec.CMS_COLLATERAL_ID         = dp.cms_collateral_id
+AND DP.CASH_DEPOSIT_ID            = LN.CASH_DEPOSIT_ID(+)
+AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status                   = 'ACTIVE'
+AND MAPS.CHARGE_ID                =
+  (SELECT MAX(CHARGE_ID)
+  FROM CMS_LIMIT_SECURITY_MAP MAPS1
+  WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+  )
+AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+)
+
+union all
+
+(SELECT 
+  (
+  CASE
+     
+   WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB100'
+    THEN (
+      CASE
+        WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+        THEN 'UBS'
+          ||XREF.FACILITY_SYSTEM_ID
+          ||XREF.LINE_NO
+          ||XREF.SERIAL_NO
+        WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+        THEN 'FW'
+          ||XREF.FACILITY_SYSTEM_ID
+        WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+        THEN 'FN'
+          ||XREF.FACILITY_SYSTEM_ID
+      END ) 
+      || ( TO_CHAR(SEC.CMS_COLLATERAL_ID)
+      || --TO_CHAR(GC.COMPONENT)
+      (SELECT SUBSTR(TRY.ENTRY_ID, 11, LENGTH(TRY.ENTRY_ID))
+      FROM COMMON_CODE_CATEGORY_ENTRY TRY
+      WHERE try.ENTRY_CODE  = TO_CHAR(GC.COMPONENT)
+      AND try.category_code = 'CURRENT_ASSET'
+      ) )
+  END) AS Collateral_BKey,
+    XREF.FACILITY_SYSTEM_ID as Limit_BKey,
+   xref.line_no as Limit_Reference_BKey,
+  xref.serial_no as Limit_Level_Code,
+ 
+  (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS-LIMITS'
+    WHEN XREF.FACILITY_SYSTEM <> 'UBS-LIMITS'
+    THEN ''
+  END ) AS Limit_Data_Source_ID,
+MAPS.LMT_SECURITY_COVERAGE as Collateral_Cover_Percent,
+ 
+  SPRO.LSP_LE_ID            AS party_bkey,
+  SPRO.LSP_Short_name       AS party_name,
+  (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		,
+     (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date, 
+  (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+FROM SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  (SELECT *
+  FROM CMS_ASSET_GC_STOCK_DET
+  WHERE STOCK_TYPE = 'CurrentAsset'
+  AND component NOT LIKE 'DUMMY%'
+  ) GC,
+  CMS_ASSET_GC_DET DET,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB
+WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+AND GC.GC_DET_ID (+)              = DET.GC_DET_ID
+AND SEC.CMS_COLLATERAL_ID         = det.cms_collateral_id(+)
+AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status                   = 'ACTIVE'
+AND MAPS.CHARGE_ID                =
+  (SELECT MAX(CHARGE_ID)
+  FROM CMS_LIMIT_SECURITY_MAP MAPS1
+  WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+  )
+AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+)
+
+union all
+
+(SELECT 
+  (
+  CASE
+        WHEN (SUB.SECURITY_SUB_TYPE_ID <> 'AB100'
+    AND SUB.SECURITY_SUB_TYPE_ID   <> 'CS202')
+    THEN (
+      CASE
+        WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+        THEN 'UBS'
+          ||XREF.FACILITY_SYSTEM_ID
+          ||XREF.LINE_NO
+          ||XREF.SERIAL_NO
+        WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+        THEN 'FW'
+          ||XREF.FACILITY_SYSTEM_ID
+        WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+        THEN 'FN'
+          ||XREF.FACILITY_SYSTEM_ID
+      END ) 
+      ||( TO_CHAR (SEC.CMS_COLLATERAL_ID) )
+  END) AS Collateral_BKey,
+    XREF.FACILITY_SYSTEM_ID as Limit_BKey,
+  xref.line_no as Limit_Reference_BKey,
+  xref.serial_no as Limit_Level_Code,
+ 
+  (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW-LIMITS'
+    WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+    THEN ''
+  END ) AS Limit_Data_Source_ID,
+MAPS.LMT_SECURITY_COVERAGE as Collateral_Cover_Percent,
+ 
+  SPRO.LSP_LE_ID            AS party_bkey,
+  SPRO.LSP_Short_name       AS party_name,
+  (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		,
+     (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date, 
+  (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+FROM SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB
+WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status                   = 'ACTIVE'
+AND MAPS.CHARGE_ID                =
+  (SELECT MAX(CHARGE_ID)
+  FROM CMS_LIMIT_SECURITY_MAP MAPS1
+  WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+  )
+AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+) )
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_LIMIT_LINK_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_LIMIT_LINK_ALL" ("COLLATERAL_BKEY", "LIMIT_BKEY", "LIMIT_REFERENCE_BKEY", "LIMIT_LEVEL_CODE", "LIMIT_DATA_SOURCE_ID", "COLLATERAL_COVER_PERCENT", "PARTY_BKEY", "PARTY_NAME", "PARTY_SEGMENT") AS 
+  (
+  (SELECT DISTINCT TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)
+    || TO_CHAR(ln.BASEL_SERIAL) AS Collateral_BKey,
+    XREF.FACILITY_SYSTEM_ID  AS Limit_BKey,
+    sci.line_no              AS Limit_Reference_BKey,
+    xref.serial_no           AS Limit_Level_Code,
+    -- (
+    --  CASE
+    --    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    --    THEN 'UBS-LIMITS'
+    --    WHEN XREF.FACILITY_SYSTEM <> 'UBS-LIMITS'
+    --   THEN ''
+    -- END )
+    sci.FACILITY_SYSTEM        AS Limit_Data_Source_ID,
+    MAPS.LMT_SECURITY_COVERAGE AS Collateral_Cover_Percent,
+    SPRO.LSP_LE_ID             AS party_bkey,
+    SPRO.LSP_Short_name        AS party_name,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    ) AS party_segment-- ,
+    -- (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date,
+    --(LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+  FROM SCI_LSP_APPR_LMTS SCI,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    (SELECT *
+    FROM cms_cash_deposit
+    WHERE status = 'ACTIVE'
+    AND ACTIVE   = 'active'
+    ) dp,
+    CMS_LIEN LN,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB
+  WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+  AND sec.CMS_COLLATERAL_ID         = dp.cms_collateral_id
+  AND DP.CASH_DEPOSIT_ID            = LN.CASH_DEPOSIT_ID(+)
+  AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND MAPS.CHARGE_ID                =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND SUB.SECURITY_SUB_TYPE_ID  = 'CS202'
+    --AND XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+  AND XREF.FACILITY_SYSTEM IN('UBS-LIMITS','HONGKONG','BAHRAIN')
+  )
+UNION 
+  (SELECT DISTINCT (TO_CHAR(SEC.CMS_COLLATERAL_ID)
+    ||
+    (SELECT SUBSTR(TRY.ENTRY_ID, 11, LENGTH(TRY.ENTRY_ID))
+    FROM COMMON_CODE_CATEGORY_ENTRY TRY
+    WHERE try.ENTRY_CODE  = TO_CHAR(GC.COMPONENT)
+    AND try.category_code = 'CURRENT_ASSET'
+    ) )                     AS Collateral_BKey,
+    XREF.FACILITY_SYSTEM_ID AS Limit_BKey,
+    sci.line_no             AS Limit_Reference_BKey,
+    xref.serial_no          AS Limit_Level_Code,
+    -- (
+    --  CASE
+    --    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    --    THEN 'UBS-LIMITS'
+    --    WHEN XREF.FACILITY_SYSTEM <> 'UBS-LIMITS'
+    --   THEN ''
+    -- END )
+    sci.FACILITY_SYSTEM        AS Limit_Data_Source_ID,
+    MAPS.LMT_SECURITY_COVERAGE AS Collateral_Cover_Percent,
+    SPRO.LSP_LE_ID             AS party_bkey,
+    SPRO.LSP_Short_name        AS party_name,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    ) AS party_segment --,
+    -- (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date,
+    -- (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+  FROM SCI_LSP_APPR_LMTS SCI,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    (SELECT *
+    FROM CMS_ASSET_GC_STOCK_DET
+    WHERE STOCK_TYPE = 'CurrentAsset'
+    AND component NOT LIKE 'DUMMY%'
+    ) GC,
+    CMS_ASSET_GC_DET DET,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB
+  WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+  AND GC.GC_DET_ID (+)              = DET.GC_DET_ID
+  AND SEC.CMS_COLLATERAL_ID         = det.cms_collateral_id(+)
+  AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND MAPS.CHARGE_ID                =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND SUB.SECURITY_SUB_TYPE_ID  = 'AB100'
+    --AND XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+  AND XREF.FACILITY_SYSTEM IN('UBS-LIMITS','HONGKONG','BAHRAIN')
+  )
+UNION 
+  (SELECT DISTINCT TO_CHAR (SEC.CMS_COLLATERAL_ID) AS Collateral_BKey,
+    XREF.FACILITY_SYSTEM_ID                        AS Limit_BKey,
+    sci.line_no                                    AS Limit_Reference_BKey,
+    xref.serial_no                                 AS Limit_Level_Code,
+    -- (
+    --  CASE
+    --    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    --    THEN 'UBS-LIMITS'
+    --    WHEN XREF.FACILITY_SYSTEM <> 'UBS-LIMITS'
+    --   THEN ''
+    -- END )
+    sci.FACILITY_SYSTEM        AS Limit_Data_Source_ID,
+    MAPS.LMT_SECURITY_COVERAGE AS Collateral_Cover_Percent,
+    SPRO.LSP_LE_ID             AS party_bkey,
+    SPRO.LSP_Short_name        AS party_name,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    ) AS party_segment--,
+    --   (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date,
+    -- (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+  FROM SCI_LSP_APPR_LMTS SCI,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB
+  WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+  AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND MAPS.CHARGE_ID                =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+  AND SCI.CMS_LSP_APPR_LMTS_ID   = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID  = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND (SUB.SECURITY_SUB_TYPE_ID <> 'AB100'
+  AND SUB.SECURITY_SUB_TYPE_ID  <> 'CS202')
+    --AND XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+  AND XREF.FACILITY_SYSTEM IN('UBS-LIMITS','HONGKONG','BAHRAIN')
+  ) );
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_PDC
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_PDC" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+SELECT
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,   
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+    PDC.START_DATE as Collateral_Value_Date,
+  PDC.MATURITY_DATE  as Collateral_Expiry_Date,
+ TO_CHAR(sec.cmv,'999999999999999999999999999999.999')   as Revalued_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')   as Collateral_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Collateral_Cover_Value,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Effective_Collateral_Amt, 
+   
+null as Collateral_Owner_Name,
+sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+        null as security_reference, 
+      SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date 
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS, 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_ASSET_PDC PDC ,
+  CMS_ASSET AST
+WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND PDC.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB108')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and(
+        AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                                    AST.LAST_USED_ID_IDX_FAO <> 0 or
+                                    AST.LAST_USED_ID_IDX_INSR <> 0 or
+                                    AST.INTEREST_RATE <> 0
+                                    OR sec.cmv IS NOT NULL
+)
+                                    
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+
+
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_PDC_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_PDC_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  ( SELECT DISTINCT TO_CHAR (SEC.CMS_COLLATERAL_ID) AS Collateral_BKey,
+    (sec.COLLATERAL_CODE)
+    ||'-'
+    ||(sec.SUBTYPE_NAME) AS Collateral_Desc,
+    ''                   AS Customer_BKey,
+    (sec.TYPE_NAME )
+    ||'-'
+    ||(sec.SUBTYPE_NAME)      AS Collateral_Type_BKey,
+    sec.sci_security_currency AS Currency_Code,
+    MAPS.update_status_ind    AS Collateral_Status_Code,
+    CASE
+      WHEN sec.sec_priority = 'Y'
+      THEN 'Primary'
+      WHEN sec.sec_priority = 'N'
+      THEN 'Secondary'
+    END                   AS Possession_Type_Code,
+    PDC.START_DATE        AS Collateral_Value_Date,
+    PDC.MATURITY_DATE     AS Collateral_Expiry_Date,
+    sec.cmv               AS Revalued_Amt,
+    sec.cmv               AS Collateral_Amt,
+    sec.loanable_amount   AS Collateral_Cover_Value,
+    sec.cmv               AS Effective_Collateral_Amt,
+    NULL                  AS Collateral_Owner_Name,
+    sec.CMS_COLLATERAL_ID AS Collateral_Internal_Bkey,
+    ''                    AS Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID        AS party_bkey,
+    NULL                  AS security_reference,
+    SPRO.LSP_SHORT_NAME   AS party_bname,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    ) AS Party_Segment--,
+    --   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date,
+    -- (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date
+  FROM CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB,
+    SECURITY_TYPE TYP,
+    SCI_LSP_APPR_LMTS SCI,
+    --SCI_LSP_SYS_XREF XREF,
+    --SCI_LSP_LMTS_XREF_MAP MAPSS,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_ASSET_PDC PDC ,
+    CMS_ASSET AST
+  WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+  AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+  AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+    --AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+    --AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+  AND PDC.CMS_COLLATERAL_ID = SEC.CMS_COLLATERAL_ID
+  AND AST.cms_collateral_id = SEC.CMS_COLLATERAL_ID
+  AND spro.status           = 'ACTIVE'
+    --and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+    --and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+  AND SUB.SECURITY_SUB_TYPE_ID IN('AB108')
+  AND sec.cms_collateral_id    IN
+    (SELECT CMS_COLLATERAL_ID FROM CMS_ASSET
+    )
+  AND (MAPS.update_status_ind     <> 'D'
+  OR MAPS.update_status_ind       IS NULL)
+  AND( AST.LAST_USED_ID_IDX_STOCK <> 0
+  OR AST.LAST_USED_ID_IDX_FAO     <> 0
+  OR AST.LAST_USED_ID_IDX_INSR    <> 0
+  OR AST.INTEREST_RATE            <> 0
+  OR sec.cmv                      IS NOT NULL )
+  AND MAPS.CHARGE_ID               =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+    -- AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+    -- AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+  and (pdc.status is  null or pdc.status = 'ACTIVE')
+    --and sec.cms_collateral_id = 20120429100040719
+  )
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_PROD_LINK
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_PROD_LINK" ("COLLATERAL_BKEY", "PRODUCT_DATA_SOURCE_ID", "PRODUCT_INSTANCE_BKEY", "SYSTEM_IDENTIFIER", "COLLATERAL_COVER_PERCENT", "PARTY_BKEY", "PARTY_NAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+-- product link
+
+(SELECT 
+  (
+  CASE
+     
+  WHEN SUB.SECURITY_SUB_TYPE_ID = 'CS202'
+    THEN (
+      CASE
+        WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+        THEN 'UBS'
+          ||XREF.FACILITY_SYSTEM_ID
+          ||XREF.LINE_NO
+          ||XREF.SERIAL_NO
+        WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+        THEN 'FW'
+          ||XREF.FACILITY_SYSTEM_ID
+        WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+        THEN 'FN'
+          ||XREF.FACILITY_SYSTEM_ID
+      END ) 
+      || ( TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)
+      || TO_CHAR(ln.SERIAL_NO) )
+  END ) AS Collateral_BKey,
+  (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW-LIMITS'
+    WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+    THEN ''
+  END ) AS Product_Data_Source_ID,
+  (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+    THEN ''
+  END ) AS Product_Instance_BKey,
+  XREF.FACILITY_SYSTEM as System_Identifier,
+  --SEC.CMS_COLLATERAL_ID ,
+MAPS.LMT_SECURITY_COVERAGE as Collateral_Cover_Percent,
+  SPRO.LSP_LE_ID            AS party_bkey,
+  SPRO.LSP_Short_name       AS party_name,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		,
+     (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date, 
+  (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+FROM SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  (SELECT *
+  FROM cms_cash_deposit
+  WHERE status = 'ACTIVE'
+  AND ACTIVE   = 'active'
+  ) dp,
+  CMS_LIEN LN,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB
+WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+AND sec.CMS_COLLATERAL_ID         = dp.cms_collateral_id
+AND DP.CASH_DEPOSIT_ID            = LN.CASH_DEPOSIT_ID(+)
+AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status                   = 'ACTIVE'
+AND MAPS.CHARGE_ID                =
+  (SELECT MAX(CHARGE_ID)
+  FROM CMS_LIMIT_SECURITY_MAP MAPS1
+  WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+  )
+AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+)
+UNION ALL
+  (SELECT 
+    (
+    CASE
+           WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB100'
+      THEN (
+        CASE
+          WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+          THEN 'UBS'
+            ||XREF.FACILITY_SYSTEM_ID
+            ||XREF.LINE_NO
+            ||XREF.SERIAL_NO
+          WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+          THEN 'FW'
+            ||XREF.FACILITY_SYSTEM_ID
+          WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+          THEN 'FN'
+            ||XREF.FACILITY_SYSTEM_ID
+        END )
+        || ( TO_CHAR(SEC.CMS_COLLATERAL_ID)
+        || --TO_CHAR(GC.COMPONENT)
+        (SELECT SUBSTR(TRY.ENTRY_ID, 11, LENGTH(TRY.ENTRY_ID))
+        FROM COMMON_CODE_CATEGORY_ENTRY TRY
+        WHERE try.ENTRY_CODE  = TO_CHAR(GC.COMPONENT)
+        AND try.category_code = 'CURRENT_ASSET'
+        ) )
+    END) AS Collateral_BKey,
+   
+    (
+    CASE
+      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+      THEN 'FW-LIMITS'
+      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+      THEN ''
+    END ) AS Product_Data_Source_ID,
+    (
+    CASE
+      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+      THEN XREF.FACILITY_SYSTEM_ID
+      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+      THEN ''
+    END ) AS Product_Instance_BKey,
+      XREF.FACILITY_SYSTEM as System_Identifier,
+   -- SEC.CMS_COLLATERAL_ID ,
+MAPS.LMT_SECURITY_COVERAGE as Collateral_Cover_Percent,
+    SPRO.LSP_LE_ID            AS party_bkey,
+    SPRO.LSP_Short_name       AS party_name,
+      (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		,
+     (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date, 
+  (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+  FROM SCI_LSP_APPR_LMTS SCI,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    (SELECT *
+    FROM CMS_ASSET_GC_STOCK_DET
+    WHERE STOCK_TYPE = 'CurrentAsset'
+    AND component NOT LIKE 'DUMMY%'
+    ) GC,
+    CMS_ASSET_GC_DET DET,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB
+  WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+  AND GC.GC_DET_ID (+)              = DET.GC_DET_ID
+  AND SEC.CMS_COLLATERAL_ID         = det.cms_collateral_id(+)
+  AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND MAPS.CHARGE_ID                =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  )
+UNION ALL
+  (SELECT 
+    (
+    CASE
+       
+    WHEN (SUB.SECURITY_SUB_TYPE_ID <> 'AB100'
+      AND SUB.SECURITY_SUB_TYPE_ID   <> 'CS202')
+      THEN (
+        CASE
+          WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+          THEN 'UBS'
+            ||XREF.FACILITY_SYSTEM_ID
+            ||XREF.LINE_NO
+            ||XREF.SERIAL_NO
+          WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+          THEN 'FW'
+            ||XREF.FACILITY_SYSTEM_ID
+          WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+          THEN 'FN'
+            ||XREF.FACILITY_SYSTEM_ID
+        END )
+        ||( TO_CHAR (SEC.CMS_COLLATERAL_ID) )
+    END) AS Collateral_BKey,
+   
+    (
+    CASE
+      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+      THEN 'FW-LIMITS'
+      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+      THEN ''
+    END ) AS Product_Data_Source_ID,
+    (
+    CASE
+      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+      THEN XREF.FACILITY_SYSTEM_ID
+      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+      THEN ''
+    END ) AS Product_Instance_BKey,
+      XREF.FACILITY_SYSTEM as System_Identifier,
+    --SEC.CMS_COLLATERAL_ID ,
+MAPS.LMT_SECURITY_COVERAGE as Collateral_Cover_Percent,
+    SPRO.LSP_LE_ID            AS party_bkey,
+    SPRO.LSP_Short_name       AS party_name,
+     (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		,
+     (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date, 
+  (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+  FROM SCI_LSP_APPR_LMTS SCI,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB
+  WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+  AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND MAPS.CHARGE_ID                =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  ) )
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_PROD_LINK_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_PROD_LINK_ALL" ("COLLATERAL_BKEY", "PRODUCT_DATA_SOURCE_ID", "PRODUCT_INSTANCE_BKEY", "SYSTEM_IDENTIFIER", "COLLATERAL_COVER_PERCENT", "PARTY_BKEY", "PARTY_NAME", "PARTY_SEGMENT") AS 
+  (
+  -- product link
+  (SELECT DISTINCT TO_CHAR (DP.DEPOSIT_REFERENCE_NUMBER)
+    || TO_CHAR(ln.SERIAL_NO) AS Collateral_BKey,
+--    (
+--    CASE
+--      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--      THEN 'FW-LIMITS'
+--      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+--      THEN ''
+--    END ) AS Product_Data_Source_ID,
+XREF.FACILITY_SYSTEM AS Product_Data_Source_ID,
+--    (
+--    CASE
+--      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--      THEN XREF.FACILITY_SYSTEM_ID
+--      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+--      THEN ''
+--    END )                AS Product_Instance_BKey,
+    XREF.FACILITY_SYSTEM_ID AS Product_Instance_BKey,
+    XREF.FACILITY_SYSTEM AS System_Identifier,
+    --SEC.CMS_COLLATERAL_ID ,
+    MAPS.LMT_SECURITY_COVERAGE AS Collateral_Cover_Percent,
+    SPRO.LSP_LE_ID             AS party_bkey,
+    SPRO.LSP_Short_name        AS party_name,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    ) AS party_segment-- ,
+    -- (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date,
+    -- (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+  FROM SCI_LSP_APPR_LMTS SCI,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    (SELECT *
+    FROM cms_cash_deposit
+    WHERE status = 'ACTIVE'
+    AND ACTIVE   = 'active'
+    ) dp,
+    CMS_LIEN LN,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB
+  WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+  AND sec.CMS_COLLATERAL_ID         = dp.cms_collateral_id
+  AND DP.CASH_DEPOSIT_ID            = LN.CASH_DEPOSIT_ID(+)
+  AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND MAPS.CHARGE_ID                =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND SUB.SECURITY_SUB_TYPE_ID  = 'CS202'
+  -- AND XREF.FACILITY_SYSTEM <> 'UBS-LIMITS'
+   AND XREF.FACILITY_SYSTEM not in('UBS-LIMITS','HONGKONG','BAHRAIN')
+  )
+UNION ALL
+  (SELECT DISTINCT TO_CHAR(SEC.CMS_COLLATERAL_ID)
+    ||
+    (SELECT SUBSTR(TRY.ENTRY_ID, 11, LENGTH(TRY.ENTRY_ID))
+    FROM COMMON_CODE_CATEGORY_ENTRY TRY
+    WHERE try.ENTRY_CODE  = TO_CHAR(GC.COMPONENT)
+    AND try.category_code = 'CURRENT_ASSET'
+    ) AS Collateral_BKey,
+   --    (
+--    CASE
+--      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--      THEN 'FW-LIMITS'
+--      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+--      THEN ''
+--    END ) AS Product_Data_Source_ID,
+XREF.FACILITY_SYSTEM AS Product_Data_Source_ID,
+--    (
+--    CASE
+--      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--      THEN XREF.FACILITY_SYSTEM_ID
+--      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+--      THEN ''
+--    END )                AS Product_Instance_BKey,
+    XREF.FACILITY_SYSTEM_ID AS Product_Instance_BKey,
+    XREF.FACILITY_SYSTEM AS System_Identifier,
+    -- SEC.CMS_COLLATERAL_ID ,
+    MAPS.LMT_SECURITY_COVERAGE AS Collateral_Cover_Percent,
+    SPRO.LSP_LE_ID             AS party_bkey,
+    SPRO.LSP_Short_name        AS party_name,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    ) AS party_segment--,
+    -- (LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date,
+    --(LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+  FROM SCI_LSP_APPR_LMTS SCI,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    (SELECT *
+    FROM CMS_ASSET_GC_STOCK_DET
+    WHERE STOCK_TYPE = 'CurrentAsset'
+    AND component NOT LIKE 'DUMMY%'
+    ) GC,
+    CMS_ASSET_GC_DET DET,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB
+  WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+  AND GC.GC_DET_ID (+)              = DET.GC_DET_ID
+  AND SEC.CMS_COLLATERAL_ID         = det.cms_collateral_id(+)
+  AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND MAPS.CHARGE_ID                =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND SUB.SECURITY_SUB_TYPE_ID  = 'AB100'
+   -- AND XREF.FACILITY_SYSTEM <> 'UBS-LIMITS'
+   AND XREF.FACILITY_SYSTEM not in('UBS-LIMITS','HONGKONG','BAHRAIN')
+  )
+UNION ALL
+  (SELECT DISTINCT TO_CHAR (SEC.CMS_COLLATERAL_ID) AS Collateral_BKey,
+     --    (
+--    CASE
+--      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--      THEN 'FW-LIMITS'
+--      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+--      THEN ''
+--    END ) AS Product_Data_Source_ID,
+XREF.FACILITY_SYSTEM AS Product_Data_Source_ID,
+--    (
+--    CASE
+--      WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+--      THEN XREF.FACILITY_SYSTEM_ID
+--      WHEN XREF.FACILITY_SYSTEM <> 'FW-LIMITS'
+--      THEN ''
+--    END )                AS Product_Instance_BKey,
+    XREF.FACILITY_SYSTEM_ID AS Product_Instance_BKey,
+    XREF.FACILITY_SYSTEM AS System_Identifier,
+    --SEC.CMS_COLLATERAL_ID ,
+    MAPS.LMT_SECURITY_COVERAGE AS Collateral_Cover_Percent,
+    SPRO.LSP_LE_ID             AS party_bkey,
+    SPRO.LSP_Short_name        AS party_name,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    ) AS party_segment--,
+    --(LIMITMAKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as maker_date,
+    -- (LIMITCHEKERDATE(SCI.CMS_LSP_APPR_LMTS_ID)) as checker_date
+  FROM SCI_LSP_APPR_LMTS SCI,
+    SCI_LSP_SYS_XREF XREF,
+    SCI_LSP_LMTS_XREF_MAP MAPSS,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LE_MAIN_PROFILE MAN,
+    CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB
+  WHERE SCI.CMS_LIMIT_PROFILE_ID(+) = PF.CMS_LSP_LMT_PROFILE_ID
+  AND PF.CMS_CUSTOMER_ID(+)         = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SEC.SECURITY_SUB_TYPE_ID      = SUB.SECURITY_SUB_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID         = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID     = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND MAPS.CHARGE_ID                =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+  AND SCI.CMS_LSP_APPR_LMTS_ID   = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID  = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND (SUB.SECURITY_SUB_TYPE_ID <> 'AB100'
+  AND SUB.SECURITY_SUB_TYPE_ID  <> 'CS202')
+  -- AND XREF.FACILITY_SYSTEM <> 'UBS-LIMITS'
+   AND XREF.FACILITY_SYSTEM not in('UBS-LIMITS','HONGKONG','BAHRAIN')
+  ) )
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_PT
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_PT" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (SELECT
+  
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,   
+     (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+     case
+					when sec.sec_priority = 'Y' then
+					'Primary'
+					when sec.sec_priority = 'N' then
+					'Secondary'
+					END as Possession_Type_Code,
+    XREF.RELEASE_DATE as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,
+       TO_CHAR(sec.cmv,'999999999999999999999.999')    as Revalued_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999.999')    as Collateral_Amt,
+    TO_CHAR(sec.cmv,'999999999999999999999.999')    as Collateral_Cover_Value,
+   TO_CHAR(sec.cmv,'999999999999999999999.999')    as Effective_Collateral_Amt,
+null as Collateral_Owner_Name,
+   sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+   XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+        null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+    SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = 
+spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date
+        
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+
+  cms_property prty
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND prty.cms_collateral_id(+)   = sec.cms_collateral_id
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+
+and SUB.SECURITY_SUB_TYPE_ID = 'PT701'
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_PROPERTY)
+
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (           prty.IS_PHY_INSPECT <>'N' or
+                prty.PHY_INSPECT_FREQ <> 0 or
+                prty.LAND_AREA <> 0 or
+                prty.TENURE <> 0 or
+                prty.REMAINING_TENURE <> 0 or
+                prty.QUIT_RENT_PAID <> '-1' or
+                prty.BUILTUP_AREA <> 0 or
+                prty.SALE_PURCHASE_VALUE <> '-1' or
+                prty.STD_QUIT_RENT <> 'N' or
+                prty.NON_STD_QUIT_RENT <> 'N' or
+                prty.QUIT_RENT_RECEIPT <> 'N' or
+                prty.ASSESSMENT <> 'N' or
+                prty.COMBINED_VALUE_AMT <> 0 or
+                prty.VALUE_NUMBER <> 0 or
+                PRTY.ASSESSMENT_PERIOD <>0 OR
+                PRTY.ASSUMPTION  <> 'N'
+                 OR PRTY.PROPERTY_TYPE IS NOT NULL
+                 OR PRTY.MARGAGE_TYPE IS NOT NULL
+)
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_PT_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_PT_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (SELECT
+    --distinct
+    TO_CHAR (SEC.CMS_COLLATERAL_ID) AS Collateral_BKey,
+    (sec.COLLATERAL_CODE)
+    ||'-'
+    ||(sec.SUBTYPE_NAME) AS Collateral_Desc,
+    ''                   AS Customer_BKey,
+    (sec.TYPE_NAME )
+    ||'-'
+    ||(sec.SUBTYPE_NAME)      AS Collateral_Type_BKey,
+    sec.sci_security_currency AS Currency_Code,
+    MAPS.update_status_ind    AS Collateral_Status_Code,
+    CASE
+      WHEN sec.sec_priority = 'Y'
+      THEN 'Primary'
+      WHEN sec.sec_priority = 'N'
+      THEN 'Secondary'
+    END AS Possession_Type_Code,
+    (SELECT MIN(XREF.RELEASE_DATE)
+    FROM SCI_LSP_SYS_XREF XREF
+    WHERE XREF.CMS_LSP_SYS_XREF_ID IN
+      (SELECT MAPSS.CMS_LSP_SYS_XREF_ID
+      FROM SCI_LSP_LMTS_XREF_MAP MAPSS
+      WHERE MAPSS.CMS_LSP_APPR_LMTS_ID = SCI.CMS_LSP_APPR_LMTS_ID
+      )
+    )                          AS Collateral_Value_Date,
+    SEC.SECURITY_MATURITY_DATE AS Collateral_Expiry_Date,
+    sec.cmv                    AS Revalued_Amt,
+    sec.cmv                    AS Collateral_Amt,
+    sec.loanable_amount        AS Collateral_Cover_Value,
+    sec.cmv                    AS Effective_Collateral_Amt,
+    prty.developer_group_company    AS Collateral_Owner_Name,
+    sec.CMS_COLLATERAL_ID      AS Collateral_Internal_Bkey,
+    ''                         AS Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID             AS party_bkey,
+    NULL                       AS security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402
+    SPRO.LSP_SHORT_NAME        AS party_bname,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    ) AS Party_Segment--,
+    --(MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date,
+    --(CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date
+  FROM CMS_SECURITY SEC,
+    CMS_SECURITY_SUB_TYPE SUB,
+    SECURITY_TYPE TYP,
+    SCI_LSP_APPR_LMTS SCI,
+    -- SCI_LSP_SYS_XREF XREF,
+    --SCI_LSP_LMTS_XREF_MAP MAPSS,
+    CMS_LIMIT_SECURITY_MAP MAPS,
+    SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    SCI_LE_MAIN_PROFILE MAN,
+    cms_property prty
+  WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+  AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+  AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+  AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+  AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+  AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+    --AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+    --AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+  AND prty.cms_collateral_id(+) = sec.cms_collateral_id
+  AND spro.status               = 'ACTIVE'
+    --and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+    --and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+  AND SUB.SECURITY_SUB_TYPE_ID = 'PT701'
+  AND sec.cms_collateral_id   IN
+    (SELECT CMS_COLLATERAL_ID FROM CMS_PROPERTY
+    )
+  AND (MAPS.update_status_ind <> 'D'
+  OR MAPS.update_status_ind   IS NULL)
+  AND ( prty.IS_PHY_INSPECT   <>'N'
+  OR prty.PHY_INSPECT_FREQ    <> 0
+  OR prty.LAND_AREA           <> 0
+  OR prty.TENURE              <> 0
+  OR prty.REMAINING_TENURE    <> 0
+  OR prty.QUIT_RENT_PAID      <> '-1'
+  OR prty.BUILTUP_AREA        <> 0
+  OR prty.SALE_PURCHASE_VALUE <> '-1'
+  OR prty.STD_QUIT_RENT       <> 'N'
+  OR prty.NON_STD_QUIT_RENT   <> 'N'
+  OR prty.QUIT_RENT_RECEIPT   <> 'N'
+  OR prty.ASSESSMENT          <> 'N'
+  OR prty.COMBINED_VALUE_AMT  <> 0
+  OR prty.VALUE_NUMBER        <> 0
+  OR PRTY.ASSESSMENT_PERIOD   <>0
+  OR PRTY.ASSUMPTION          <> 'N'
+  OR PRTY.PROPERTY_TYPE       IS NOT NULL
+  OR PRTY.MARGAGE_TYPE        IS NOT NULL )
+  AND MAPS.CHARGE_ID           =
+    (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1
+    WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID
+    )
+    -- AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+    --AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+  )
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_P_M
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_P_M" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (SELECT
+
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,   
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code, 
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+     PLNT.invoice_date as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,     
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Revalued_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Collateral_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Collateral_Cover_Value,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Effective_Collateral_Amt,
+   null as Collateral_Owner_Name,
+sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+    null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+  SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date 
+       
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_ASSET_PLANT_EQUIP PLNT,
+  CMS_ASSET AST
+  WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND PLNT.CMS_COLLATERAL_ID (+) = SEC.CMS_COLLATERAL_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB101')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+        AST.PHY_INSPECTION_FREQ <> '-1' or
+                                    AST.MANUFACTURE_YEAR <> 0 or
+                                    AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                                    AST.LAST_USED_ID_IDX_FAO <> 0 or
+                                    AST.LAST_USED_ID_IDX_INSR <> 0 or
+                                    AST.RESIDUAL_ASSET_LIFE <> 0 or
+                                    AST.DOC_PERFECT_AGE <> 0 or
+                                    AST.REPOSSESSION_AGE <> 0
+                                    or sec.cmv IS NOT NULL
+)
+
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_P_M_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_P_M_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (SELECT
+TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey, 
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  '' as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code, 
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+     PLNT.invoice_date as Collateral_Value_Date,
+  SEC.SECURITY_MATURITY_DATE  as Collateral_Expiry_Date,     
+  sec.cmv    as Revalued_Amt,
+   sec.cmv    as Collateral_Amt,
+    sec.loanable_amount    as Collateral_Cover_Value,
+   sec.cmv   as Effective_Collateral_Amt, 
+   null as Collateral_Owner_Name,
+sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    '' as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+    null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+  SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment--,
+   --(MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  --(CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date        
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+ -- SCI_LSP_SYS_XREF XREF,
+  --SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  CMS_ASSET_PLANT_EQUIP PLNT,
+  CMS_ASSET AST
+  WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+--AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND PLNT.CMS_COLLATERAL_ID (+) = SEC.CMS_COLLATERAL_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB101')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+        AST.PHY_INSPECTION_FREQ <> '-1' or
+                                    AST.MANUFACTURE_YEAR <> 0 or
+                                    AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                                    AST.LAST_USED_ID_IDX_FAO <> 0 or
+                                    AST.LAST_USED_ID_IDX_INSR <> 0 or
+                                    AST.RESIDUAL_ASSET_LIFE <> 0 or
+                                    AST.DOC_PERFECT_AGE <> 0 or
+                                    AST.REPOSSESSION_AGE <> 0
+                                    or sec.cmv IS NOT NULL
+)
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+ -- AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+ -- AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_V_SP
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_V_SP" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+
+SELECT
+   (
+  CASE
+    WHEN XREF.FACILITY_SYSTEM = 'UBS-LIMITS'
+    THEN 'UBS'
+      ||XREF.FACILITY_SYSTEM_ID
+      ||XREF.LINE_NO
+      ||XREF.SERIAL_NO
+    WHEN XREF.FACILITY_SYSTEM = 'FW-LIMITS'
+    THEN 'FW'
+      ||XREF.FACILITY_SYSTEM_ID
+    WHEN XREF.FACILITY_SYSTEM = 'FINNESS'
+    THEN 'FN'
+      ||XREF.FACILITY_SYSTEM_ID
+  END )  ----22
+  || TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,   
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  XREF.FACILITY_SYSTEM_ID as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+    (CASE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB109'
+    THEN AIR.START_DATE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+    THEN VHCL.START_DATE
+  END) as Collateral_Value_Date,
+  (CASE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB109'
+    THEN AIR.MATURITY_DATE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+    THEN SEC.SECURITY_MATURITY_DATE
+  END)  as Collateral_Expiry_Date,
+   
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')   as Revalued_Amt,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Collateral_Amt,
+    TO_CHAR(sec.cmv,'999999999999999999999999999999.999')   as Collateral_Cover_Value,
+   TO_CHAR(sec.cmv,'999999999999999999999999999999.999')    as Effective_Collateral_Amt,    
+   null as Collateral_Owner_Name,
+sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    XREF.FACILITY_SYSTEM as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+      null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+  SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = 
+spro.lsp_sgmnt_code_value) as Party_Segment,
+   (MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  (CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date
+    
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS, 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN, 
+  CMS_ASSET_AIRCRAFT AIR,
+  CMS_ASSET_VEHICLE VHCL ,
+  CMS_ASSET AST
+
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND AIR.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+AND VHCL.CMS_COLLATERAL_ID (+) = SEC.CMS_COLLATERAL_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB102','AB109')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+                AST.PHY_INSPECTION_FREQ <>'-1' or
+                AST.MANUFACTURE_YEAR <> 0 or
+                AST.PHY_INSPECTION_DONE <> 'N' or
+                AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                AST.LAST_USED_ID_IDX_FAO <> 0 or
+                AST.LAST_USED_ID_IDX_INSR <> 0 or
+                AST.RESIDUAL_ASSET_LIFE <> 0 or
+                AST.DOC_PERFECT_AGE <> 0 or
+                AST.REPOSSESSION_AGE <> 0
+                OR sec.cmv IS NOT NULL
+)
+
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_COLLATERAL_V_SP_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_COLLATERAL_V_SP_ALL" ("COLLATERAL_BKEY", "COLLATERAL_DESC", "CUSTOMER_BKEY", "COLLATERAL_TYPE_BKEY", "CURRENCY_CODE", "COLLATERAL_STATUS_CODE", "POSSESSION_TYPE_CODE", "COLLATERAL_VALUE_DATE", "COLLATERAL_EXPIRY_DATE", "REVALUED_AMT", "COLLATERAL_AMT", "COLLATERAL_COVER_VALUE", "EFFECTIVE_COLLATERAL_AMT", "COLLATERAL_OWNER_NAME", "COLLATERAL_INTERNAL_BKEY", "CUSTOMER_DATA_SOURCE_ID", "PARTY_BKEY", "SECURITY_REFERENCE", "PARTY_BNAME", "PARTY_SEGMENT") AS 
+  (
+SELECT
+--distinct
+   TO_CHAR (SEC.CMS_COLLATERAL_ID)
+ AS Collateral_BKey,  
+ (sec.COLLATERAL_CODE)||'-'||(sec.SUBTYPE_NAME) as Collateral_Desc,
+  '' as Customer_BKey,  
+   (sec.TYPE_NAME )||'-'||(sec.SUBTYPE_NAME) as Collateral_Type_BKey,
+    sec.sci_security_currency as Currency_Code,    
+    MAPS.update_status_ind as Collateral_Status_Code,
+    case
+when sec.sec_priority = 'Y' then
+'Primary'
+when sec.sec_priority = 'N' then
+'Secondary'
+END as Possession_Type_Code,
+    (CASE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB109'
+    THEN AIR.START_DATE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+    THEN VHCL.START_DATE
+  END) as Collateral_Value_Date,
+  (CASE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB109'
+    THEN AIR.MATURITY_DATE
+    WHEN SUB.SECURITY_SUB_TYPE_ID = 'AB102'
+    THEN SEC.SECURITY_MATURITY_DATE
+  END)  as Collateral_Expiry_Date,
+  sec.cmv    as Revalued_Amt,
+   sec.cmv    as Collateral_Amt,
+    sec.loanable_amount    as Collateral_Cover_Value,
+   sec.cmv   as Effective_Collateral_Amt,     
+   null as Collateral_Owner_Name,
+sec.CMS_COLLATERAL_ID as Collateral_Internal_Bkey,
+    '' as Customer_Data_Source_ID,
+    SPRO.LSP_LE_ID as party_bkey,
+      null as security_reference, -- grnte.REFERENCE_NO in case of GT400,GT402 
+  SPRO.LSP_SHORT_NAME as party_bname,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment--,
+   --(MAKERDATE(sec.CMS_COLLATERAL_ID)) as maker_date, 
+  --(CHEKERDATE(sec.CMS_COLLATERAL_ID)) as checker_date
+FROM CMS_SECURITY SEC,
+  CMS_SECURITY_SUB_TYPE SUB,
+  SECURITY_TYPE TYP,
+  SCI_LSP_APPR_LMTS SCI,
+ -- SCI_LSP_SYS_XREF XREF,
+ -- SCI_LSP_LMTS_XREF_MAP MAPSS,
+  CMS_LIMIT_SECURITY_MAP MAPS, 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN, 
+  CMS_ASSET_AIRCRAFT AIR,
+  CMS_ASSET_VEHICLE VHCL ,
+  CMS_ASSET AST
+ WHERE SEC.SECURITY_SUB_TYPE_ID  = SUB.SECURITY_SUB_TYPE_ID
+AND SUB.SECURITY_TYPE_ID        = TYP.SECURITY_TYPE_ID
+AND SEC.CMS_COLLATERAL_ID       = MAPS.CMS_COLLATERAL_ID
+AND MAPS.CMS_LSP_APPR_LMTS_ID   = SCI.CMS_LSP_APPR_LMTS_ID
+AND SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+--AND SCI.CMS_LSP_APPR_LMTS_ID    = MAPSS.CMS_LSP_APPR_LMTS_ID
+--AND MAPSS.CMS_LSP_SYS_XREF_ID   = XREF.CMS_LSP_SYS_XREF_ID
+AND AIR.CMS_COLLATERAL_ID (+)  = SEC.CMS_COLLATERAL_ID
+AND VHCL.CMS_COLLATERAL_ID (+) = SEC.CMS_COLLATERAL_ID
+AND AST.cms_collateral_id(+)    = SEC.CMS_COLLATERAL_ID
+AND spro.status               = 'ACTIVE'
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS','FINNESS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware','FWL')
+and SUB.SECURITY_SUB_TYPE_ID  in('AB102','AB109')
+and sec.cms_collateral_id in (select CMS_COLLATERAL_ID from CMS_ASSET)
+AND (MAPS.update_status_ind <> 'D' OR MAPS.update_status_ind IS NULL)
+and (
+                AST.PHY_INSPECTION_FREQ <>'-1' or
+                AST.MANUFACTURE_YEAR <> 0 or
+                AST.PHY_INSPECTION_DONE <> 'N' or
+                AST.LAST_USED_ID_IDX_STOCK <> 0 or
+                AST.LAST_USED_ID_IDX_FAO <> 0 or
+                AST.LAST_USED_ID_IDX_INSR <> 0 or
+                AST.RESIDUAL_ASSET_LIFE <> 0 or
+                AST.DOC_PERFECT_AGE <> 0 or
+                AST.REPOSSESSION_AGE <> 0
+                OR sec.cmv IS NOT NULL
+)
+AND MAPS.CHARGE_ID            = (SELECT MAX(CHARGE_ID)
+    FROM CMS_LIMIT_SECURITY_MAP MAPS1 WHERE MAPS1.CMS_COLLATERAL_ID=SEC.CMS_COLLATERAL_ID )
+ -- AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+ -- AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+  AND MAPS.UPDATE_STATUS_IND = 'I'
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_CUSTOMER
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_CUSTOMER" ("CUSTOMER_BKEY", "INDUSTRY_CODE", "CUSTOMER_CATEGORY_CODE", "CUSTOMER_TYPE_CODE", "CUSTOMER_SEGMENT_CODE", "CREDIT_RATING_CODE", "BORROWER_GROUP_CODE", "PARTY_BKEY", "PARTY_BNAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE", "CUSTOMER_SOURCE_SYSTEM") AS 
+  (
+(
+SELECT distinct
+XREF.FACILITY_SYSTEM_ID as Customer_BKey, 
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm)  as Industry_Code  ,
+ (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Customer_Category_Code ,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as Customer_Type_Code   , 
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code ) as Customer_Segment_Code  , 
+PF.cms_appr_officer_grade as Credit_Rating_Code   , 
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as Borrower_Group_Code  , 
+    SPRO.LSP_LE_ID as party_bkey,   
+       SPRO.LSP_SHORT_NAME as party_bname, 
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment ,
+   (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date, 
+  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date,
+      XREF.FACILITY_SYSTEM as Customer_source_system 
+
+FROM 
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN
+ WHERE
+SCI.CMS_LIMIT_PROFILE_ID(+)    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID(+)          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware')
+)
+union all
+(
+SELECT distinct
+udf.udf45 as Customer_BKey, 
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm)  as Industry_Code  , 
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Customer_Category_Code ,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as Customer_Type_Code   , 
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code ) as Customer_Segment_Code  , 
+PF.cms_appr_officer_grade as Credit_Rating_Code   , 
+--(select pf.cms_appr_officer_grade from SCI_LSP_LMT_PROFILE pf where PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID) as Credit_Rating_Code   , 
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as Borrower_Group_Code  , 
+    SPRO.LSP_LE_ID as party_bkey,  
+           SPRO.LSP_SHORT_NAME as party_bname, 
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment ,
+   (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date, 
+  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date,
+    'METAGRID ID' as Customer_source_system      
+FROM 
+--  SCI_LSP_APPR_LMTS SCI,
+ -- SCI_LSP_SYS_XREF XREF,
+ -- SCI_LSP_LMTS_XREF_MAP MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  sci_le_udf udf,
+  SCI_LE_MAIN_PROFILE MAN
+ WHERE
+--SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+--AND 
+PF.CMS_CUSTOMER_ID(+)          = Spro.CMS_LE_SUB_PROFILE_ID
+AND 
+SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+--  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+--  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+and udf.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+and udf.udf45 is not null
+)
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_CUSTOMER_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_CUSTOMER_ALL" ("CUSTOMER_BKEY", "INDUSTRY_CODE", "CUSTOMER_CATEGORY_CODE", "CUSTOMER_TYPE_CODE", "CUSTOMER_SEGMENT_CODE", "CREDIT_RATING_CODE", "BORROWER_GROUP_CODE", "PARTY_BKEY", "PARTY_BNAME", "PARTY_SEGMENT", "CUSTOMER_SOURCE_SYSTEM") AS 
+  (
+(
+SELECT distinct
+XREF.FACILITY_SYSTEM_ID as Customer_BKey, 
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm)  as Industry_Code  ,
+ (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Customer_Category_Code ,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as Customer_Type_Code   , 
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code ) as Customer_Segment_Code  , 
+PF.cms_appr_officer_grade as Credit_Rating_Code   , 
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as Borrower_Group_Code  , 
+    SPRO.LSP_LE_ID as party_bkey,   
+       SPRO.LSP_SHORT_NAME as party_bname, 
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment ,
+--   (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date, 
+--  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date,
+      XREF.FACILITY_SYSTEM as Customer_source_system 
+FROM 
+  SCI_LSP_APPR_LMTS SCI,
+  SCI_LSP_SYS_XREF XREF,
+  SCI_LSP_LMTS_XREF_MAP MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN
+ WHERE
+SCI.CMS_LIMIT_PROFILE_ID(+)    = PF.CMS_LSP_LMT_PROFILE_ID
+AND PF.CMS_CUSTOMER_ID(+)          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+--and XREF.FACILITY_SYSTEM in ('UBS-LIMITS','FW-LIMITS')
+--and XREF.FACILITY_SYSTEM in ('UBSL','Finware')
+)
+union all
+(
+SELECT distinct
+udf.udf45 as Customer_BKey, 
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm)  as Industry_Code  , 
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Customer_Category_Code ,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as Customer_Type_Code   , 
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code ) as Customer_Segment_Code  , 
+PF.cms_appr_officer_grade as Credit_Rating_Code   , 
+--(select pf.cms_appr_officer_grade from SCI_LSP_LMT_PROFILE pf where PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID) as Credit_Rating_Code   , 
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as Borrower_Group_Code  , 
+    SPRO.LSP_LE_ID as party_bkey,  
+           SPRO.LSP_SHORT_NAME as party_bname, 
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as Party_Segment ,
+--   (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date, 
+--  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date,
+    'METAGRID ID' as Customer_source_system      
+FROM 
+--  SCI_LSP_APPR_LMTS SCI,
+ -- SCI_LSP_SYS_XREF XREF,
+ -- SCI_LSP_LMTS_XREF_MAP MAPSS,
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  sci_le_udf udf,
+  SCI_LE_MAIN_PROFILE MAN
+ WHERE
+--SCI.CMS_LIMIT_PROFILE_ID    = PF.CMS_LSP_LMT_PROFILE_ID
+--AND 
+PF.CMS_CUSTOMER_ID(+)          = Spro.CMS_LE_SUB_PROFILE_ID
+AND 
+SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+--  AND SCI.CMS_LSP_APPR_LMTS_ID  = MAPSS.CMS_LSP_APPR_LMTS_ID(+)
+--  AND MAPSS.CMS_LSP_SYS_XREF_ID = XREF.CMS_LSP_SYS_XREF_ID(+)
+and udf.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+and udf.udf45 is not null
+)
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_CUSTOMER_LEGAL_DETAIL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_CUSTOMER_LEGAL_DETAIL" ("CUSTOMER_BKEY", "VIABILITY_CODE", "CUSTOMER_TYPE_CODE", "IRAC_STATUS_CODE", "IRAC_CLASSIFICATION_DATE", "LEGAL_SUIT_STATUS", "OTHER_BANKERS", "COMPANY_DIRECTOR1_NAME", "COMPANY_DIRECTOR2_NAME", "FILED_WITH_LEGAL_IND", "FILING_COST_AMT", "LEGAL_ENTITY_IND", "NOTICES_ISSUED_COUNT", "INVOLVED_AMT", "RECOVERED_AMT", "OUTSTANDING_SUIT_AMT", "COMPROMISE_PROPOSAL_AMT", "IS_WILFUL_IND", "COMPANY_DIRECTOR3_NAME", "COMPANY_DIRECTOR4_NAME", "COMPANY_DIRECTOR5_NAME", "COMPANY_DIRECTOR6_NAME", "COMPANY_DIRECTOR7_NAME", "COMPANY_DIRECTOR8_NAME", "COMPANY_DIRECTOR9_NAME", "COMPANY_DIRECTOR10_NAME", "COMPANY_DIRECTOR11_NAME", "COMPANY_DIRECTOR12_NAME", "COMPANY_DIRECTOR13_NAME", "COMPANY_DIRECTOR14_NAME", "COMPANY_DIRECTOR15_NAME", "COMPANY_DIRECTOR16_NAME", "COMPANY_DIRECTOR17_NAME", "COMPANY_DIRECTOR18_NAME", "COMPANY_DIRECTOR19_NAME", "COMPANY_DIRECTOR20_NAME", "CURRENCY_CODE", "STATE_CODE", "COMPANY_DIRECTOR1_IDENT_NO", "COMPANY_DIRECTOR2_IDENT_NO", "COMPANY_DIRECTOR3_IDENT_NO", "COMPANY_DIRECTOR4_IDENT_NO", "COMPANY_DIRECTOR5_IDENT_NO", "COMPANY_DIRECTOR6_IDENT_NO", "COMPANY_DIRECTOR7_IDENT_NO", "COMPANY_DIRECTOR8_IDENT_NO", "COMPANY_DIRECTOR9_IDENT_NO", "COMPANY_DIRECTOR10_IDENT_NO", "COMPANY_DIRECTOR11_IDENT_NO", "COMPANY_DIRECTOR12_IDENT_NO", "COMPANY_DIRECTOR13_IDENT_NO", "COMPANY_DIRECTOR14_IDENT_NO", "COMPANY_DIRECTOR15_IDENT_NO", "COMPANY_DIRECTOR16_IDENT_NO", "COMPANY_DIRECTOR17_IDENT_NO", "COMPANY_DIRECTOR18_IDENT_NO", "COMPANY_DIRECTOR19_IDENT_NO", "COMPANY_DIRECTOR20_IDENT_NO", "NO_OF_RECOVERY", "NO_OF_COMPROMISE", "PARTY_BKEY", "SARFAESI_FLAG", "DRT_FLAG", "LOK_ADALAT_FLAG", "PARTY_NAME", "PARTY_SEGMENT", "MAKER_DATE", "CHECKER_DATE") AS 
+  (
+SELECT  
+ SPRO.LSP_LE_ID as Customer_Bkey,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'VIABILITY' ))) from dual) as Viability_Code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Type of Non-SSI Unit' ))) from dual) as Customer_Type_Code,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'ASSET_ClASSIFICATION' and entry_code = pf.ASSET_CLASSIFICATION) as IRAC_Status_Code, 
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'NPA Classification Date' ))) from dual) as IRAC_Classification_Date,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'SUIT_FILLED_STATUS' and entry_code = spro.SUIT_FILLED_STATUS) as Legal_Suit_Status, 
+COALESCE ( (SELECT OTHER_BANK.BANK_NAME ||'-'||OTHERBANKBRANCH.BRANCH_NAME FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as Other_Bankers,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,1,1) from dual) as Company_Director1_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,2,1) from dual) as Company_Director2_Name,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'SUIT_FILLED_STATUS' and entry_code = spro.SUIT_FILLED_STATUS) as Filed_With_Legal_Ind,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Filing Cost (Amt. in Mio)' ))) from dual) as Filing_Cost_Amt,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.ENTITY) as Legal_Entity_Ind, 
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. of Legal Notices Issued (Count)' ))) from dual) as Notices_Issued_Count,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Amt. involved (Amt. in Mio)' ))) from dual) as Involved_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Recovered Amt (Amt. in Mio)' ))) from dual) as Recovered_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Outstanding Suit Amt (Amt. in Mio)' ))) from dual) as Outstanding_Suit_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Compromise Proposal Amt (Amt. in Mio)' ))) from dual) as Compromise_Proposal_Amt,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'WILLFUL_DEFAULT_STATUS' and entry_code = spro.WILLFUL_DEFAULT_STATUS) as Is_Wilful_Ind,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,3,1) from dual) as Company_Director3_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,4,1) from dual) as Company_Director4_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,5,1) from dual) as Company_Director5_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,6,1) from dual) as Company_Director6_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,7,1) from dual) as Company_Director7_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,8,1) from dual) as Company_Director8_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,9,1) from dual) as Company_Director9_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,10,1) from dual) as Company_Director10_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,11,1) from dual) as Company_Director11_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,12,1) from dual) as Company_Director12_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,13,1) from dual) as Company_Director13_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,14,1) from dual) as Company_Director14_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,15,1) from dual) as Company_Director15_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,16,1) from dual) as Company_Director16_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,17,1) from dual) as Company_Director17_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,18,1) from dual) as Company_Director18_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,19,1) from dual) as Company_Director19_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,20,1) from dual) as Company_Director20_Name,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'SUIT CASE CURRENCY CASE' ))) from dual) as Currency_Code,
+(select STATE_NAME from cms_state where status= 'ACTIVE' and id = ra.LRA_STATE) as State_Code,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,1,2) from dual) as Company_Director1_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,2,2) from dual) as Company_Director2_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,3,2) from dual) as Company_Director3_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,4,2) from dual) as Company_Director4_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,5,2) from dual) as Company_Director5_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,6,2) from dual) as Company_Director6_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,7,2) from dual) as Company_Director7_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,8,2) from dual) as Company_Director8_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,9,2) from dual) as Company_Director9_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,10,2) from dual) as Company_Director10_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,11,2) from dual) as Company_Director11_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,12,2) from dual) as Company_Director12_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,13,2) from dual) as Company_Director13_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,14,2) from dual) as Company_Director14_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,15,2) from dual) as Company_Director15_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,16,2) from dual) as Company_Director16_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,17,2) from dual) as Company_Director17_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,18,2) from dual) as Company_Director18_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,19,2) from dual) as Company_Director19_Ident_No, 
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,20,2) from dual) as Company_Director20_Ident_No,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. Of Recovery/s (Count)' ))) from dual) as No_Of_Recovery,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. Of Compromise/s (Count)' ))) from dual) as No_Of_Compromise,
+SPRO.LSP_LE_ID            AS party_bkey,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Sarfaesi flag' ))) from dual) as sarfaesi_flag,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DRT flag' ))) from dual) as DRT_flag,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Lok Adalat flag' ))) from dual) as Lok_adalat_flag,
+  SPRO.LSP_Short_name       AS party_name,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		,
+     (CUSTOMERMAKERDATE(Spro.CMS_LE_SUB_PROFILE_ID)) as maker_date, 
+  (CUSTOMERCHEKERDATE(Spro.CMS_LE_SUB_PROFILE_ID)) as checker_date
+FROM 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  SCI_LE_REG_ADDR ra,
+  SCI_LE_BANKING_METHOD BANKING
+ WHERE
+PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+and spro.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+				AND ra.LRA_TYPE_VALUE                   = 'CORPORATE'
+    and    BANKING.cms_le_main_profile_id    = spro.cms_le_main_profile_id  
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_CUSTOMER_LEGAL_DETAIL_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_CUSTOMER_LEGAL_DETAIL_ALL" ("CUSTOMER_BKEY", "VIABILITY_CODE", "CUSTOMER_TYPE_CODE", "IRAC_STATUS_CODE", "IRAC_CLASSIFICATION_DATE", "LEGAL_SUIT_STATUS", "OTHER_BANKERS", "COMPANY_DIRECTOR1_NAME", "COMPANY_DIRECTOR2_NAME", "FILED_WITH_LEGAL_IND", "FILING_COST_AMT", "LEGAL_ENTITY_IND", "NOTICES_ISSUED_COUNT", "INVOLVED_AMT", "RECOVERED_AMT", "OUTSTANDING_SUIT_AMT", "COMPROMISE_PROPOSAL_AMT", "IS_WILFUL_IND", "COMPANY_DIRECTOR3_NAME", "COMPANY_DIRECTOR4_NAME", "COMPANY_DIRECTOR5_NAME", "COMPANY_DIRECTOR6_NAME", "COMPANY_DIRECTOR7_NAME", "COMPANY_DIRECTOR8_NAME", "COMPANY_DIRECTOR9_NAME", "COMPANY_DIRECTOR10_NAME", "COMPANY_DIRECTOR11_NAME", "COMPANY_DIRECTOR12_NAME", "COMPANY_DIRECTOR13_NAME", "COMPANY_DIRECTOR14_NAME", "COMPANY_DIRECTOR15_NAME", "COMPANY_DIRECTOR16_NAME", "COMPANY_DIRECTOR17_NAME", "COMPANY_DIRECTOR18_NAME", "COMPANY_DIRECTOR19_NAME", "COMPANY_DIRECTOR20_NAME", "CURRENCY_CODE", "STATE_CODE", "COMPANY_DIRECTOR1_IDENT_NO", "COMPANY_DIRECTOR2_IDENT_NO", "COMPANY_DIRECTOR3_IDENT_NO", "COMPANY_DIRECTOR4_IDENT_NO", "COMPANY_DIRECTOR5_IDENT_NO", "COMPANY_DIRECTOR6_IDENT_NO", "COMPANY_DIRECTOR7_IDENT_NO", "COMPANY_DIRECTOR8_IDENT_NO", "COMPANY_DIRECTOR9_IDENT_NO", "COMPANY_DIRECTOR10_IDENT_NO", "COMPANY_DIRECTOR11_IDENT_NO", "COMPANY_DIRECTOR12_IDENT_NO", "COMPANY_DIRECTOR13_IDENT_NO", "COMPANY_DIRECTOR14_IDENT_NO", "COMPANY_DIRECTOR15_IDENT_NO", "COMPANY_DIRECTOR16_IDENT_NO", "COMPANY_DIRECTOR17_IDENT_NO", "COMPANY_DIRECTOR18_IDENT_NO", "COMPANY_DIRECTOR19_IDENT_NO", "COMPANY_DIRECTOR20_IDENT_NO", "NO_OF_RECOVERY", "NO_OF_COMPROMISE", "PARTY_BKEY", "SARFAESI_FLAG", "DRT_FLAG", "LOK_ADALAT_FLAG", "DEFAULTER_NON_SUIT_ABOVE_1_CRO", "PARTY_NAME", "PARTY_SEGMENT") AS 
+  (
+SELECT  
+ SPRO.LSP_LE_ID as Customer_Bkey,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'VIABILITY' ))) from dual) as Viability_Code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Type of Non-SSI Unit' ))) from dual) as Customer_Type_Code,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'ASSET_ClASSIFICATION' and entry_code = pf.ASSET_CLASSIFICATION) as IRAC_Status_Code, 
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'NPA Classification Date' ))) from dual) as IRAC_Classification_Date,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'SUIT_FILLED_STATUS' and entry_code = spro.SUIT_FILLED_STATUS) as Legal_Suit_Status, 
+COALESCE ( (SELECT OTHER_BANK.BANK_NAME ||'-'||OTHERBANKBRANCH.BRANCH_NAME FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as Other_Bankers,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,1,1) from dual) as Company_Director1_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,2,1) from dual) as Company_Director2_Name,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'SUIT_FILLED_STATUS' and entry_code = spro.SUIT_FILLED_STATUS) as Filed_With_Legal_Ind,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Filing Cost (Amt. in Mio)' ))) from dual) as Filing_Cost_Amt,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.ENTITY) as Legal_Entity_Ind, 
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. of Legal Notices Issued (Count)' ))) from dual) as Notices_Issued_Count,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Amt. involved (Amt. in Mio)' ))) from dual) as Involved_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Case Recovered Amt (Amt. in Mio)' ))) from dual) as Recovered_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Outstanding Suit Amt (Amt. in Mio)' ))) from dual) as Outstanding_Suit_Amt,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Compromise Proposal Amt (Amt. in Mio)' ))) from dual) as Compromise_Proposal_Amt,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'WILLFUL_DEFAULT_STATUS' and entry_code = spro.WILLFUL_DEFAULT_STATUS) as Is_Wilful_Ind,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,3,1) from dual) as Company_Director3_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,4,1) from dual) as Company_Director4_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,5,1) from dual) as Company_Director5_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,6,1) from dual) as Company_Director6_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,7,1) from dual) as Company_Director7_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,8,1) from dual) as Company_Director8_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,9,1) from dual) as Company_Director9_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,10,1) from dual) as Company_Director10_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,11,1) from dual) as Company_Director11_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,12,1) from dual) as Company_Director12_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,13,1) from dual) as Company_Director13_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,14,1) from dual) as Company_Director14_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,15,1) from dual) as Company_Director15_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,16,1) from dual) as Company_Director16_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,17,1) from dual) as Company_Director17_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,18,1) from dual) as Company_Director18_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,19,1) from dual) as Company_Director19_Name,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,20,1) from dual) as Company_Director20_Name,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'SUIT CASE CURRENCY CASE' ))) from dual) as Currency_Code,
+(select STATE_NAME from cms_state where status= 'ACTIVE' and id = ra.LRA_STATE) as State_Code,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,1,2) from dual) as Company_Director1_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,2,2) from dual) as Company_Director2_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,3,2) from dual) as Company_Director3_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,4,2) from dual) as Company_Director4_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,5,2) from dual) as Company_Director5_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,6,2) from dual) as Company_Director6_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,7,2) from dual) as Company_Director7_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,8,2) from dual) as Company_Director8_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,9,2) from dual) as Company_Director9_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,10,2) from dual) as Company_Director10_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,11,2) from dual) as Company_Director11_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,12,2) from dual) as Company_Director12_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,13,2) from dual) as Company_Director13_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,14,2) from dual) as Company_Director14_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,15,2) from dual) as Company_Director15_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,16,2) from dual) as Company_Director16_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,17,2) from dual) as Company_Director17_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,18,2) from dual) as Company_Director18_Ident_No,
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,19,2) from dual) as Company_Director19_Ident_No, 
+(select DIR_NAME_NO(MAN.CMS_LE_MAIN_PROFILE_ID,20,2) from dual) as Company_Director20_Ident_No,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. Of Recovery/s (Count)' ))) from dual) as No_Of_Recovery,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'No. Of Compromise/s (Count)' ))) from dual) as No_Of_Compromise,
+SPRO.LSP_LE_ID            AS party_bkey,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Sarfaesi flag' ))) from dual) as sarfaesi_flag,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DRT flag' ))) from dual) as DRT_flag,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Lok Adalat flag' ))) from dual) as Lok_adalat_flag,
+  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Defaulter Non Suit Above 1 Crore' ))) from dual) as Defaulter_Non_Suit_Above_1_Cro,
+  SPRO.LSP_Short_name       AS party_name,
+   (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as party_segment		--,
+--     (CUSTOMERMAKERDATE(Spro.CMS_LE_SUB_PROFILE_ID)) as maker_date, 
+--  (CUSTOMERCHEKERDATE(Spro.CMS_LE_SUB_PROFILE_ID)) as checker_date
+FROM 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  SCI_LE_REG_ADDR ra,
+  SCI_LE_BANKING_METHOD BANKING
+ WHERE
+PF.CMS_CUSTOMER_ID          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+and spro.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+				AND ra.LRA_TYPE_VALUE                   = 'CORPORATE'
+    and    BANKING.cms_le_main_profile_id    = spro.cms_le_main_profile_id  
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_PARTY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_PARTY" ("PARTY_BKEY", "PARTY_TYPE_CODE", "PARTY_NAME", "COUNTRY_CODE", "PARTY_CATEGORY_CODE", "CITY_CODE", "PARTY_ADDRESS_LINE_1", "PARTY_ADDRESS_LINE_2", "PARTY_ADDRESS_LINE_3", "PARTY_ADDRESS_LINE_4", "PARENT_PARTY_BKEY", "INDUTRY", "RBI_INDUSTRY", "MPBF", "FUNDED_LIMIT", "NON_FUNDED_LIMIT", "MEMO_EXPOSURE", "FUNDED_SHARE_PERCENT", "NON_FUNDED_SHARE_PERCENT", "BANKING_METHOD", "FUNDED_SHARE_LIMIT", "NON_FUNDED_SHARE_LIMIT", "LEAD_NODAL_BANK", "LEAD_BANK_BRANCH", "RBI_ASSET_CLASSIFICATION", "TYPE_OF_UNIT", "DSA_CODE", "DSA_NAME", "PARTY_ID", "MAKER_DATE", "CHECKER_DATE", "FORM_RBI_INDUSTRY", "RBI_PARTY_IECD_CODE", "RBI_SECTOR") AS 
+  (
+(
+SELECT
+distinct
+SPRO.LSP_LE_ID as party_bkey,	
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as PARTY_TYPE_CODE		,
+SPRO.LSP_SHORT_NAME as PARTY_NAME			,
+'India' as COUNTRY_CODE		,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as PARTY_CATEGORY_CODE		,
+(select CITY_NAME from cms_city where status= 'ACTIVE' 
+and id in (select ra.lra_city_text from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE')) 
+as CITY_CODE			,
+(select ra.lra_addr_line_1 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_1,
+(select ra.lra_addr_line_2 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_2,
+(select ra.lra_addr_line_3 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_3,
+(select ra.lra_addr_line_4 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_4,
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as PARENT_PARTY_BKEY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm) as INDUTRY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code) as RBI_INDUSTRY	,
+spro.mpbf as MPBF			, 
+spro.total_funded_limit as FUNDED_LIMIT		, 
+spro.total_non_funded_limit as NON_FUNDED_LIMIT		,
+spro.MEMO_EXPOSURE as MEMO_EXPOSURE		,
+spro.FUNDED_SHARE_PERCENT as FUNDED_SHARE_PERCENT		,
+spro.NON_FUNDED_SHARE_PERCENT as NON_FUNDED_SHARE_PERCENT		,
+spro.banking_method  as BANKING_METHOD		, 
+spro.FUNDED_SHARE_LIMIT as FUNDED_SHARE_LIMIT,
+spro.NON_FUNDED_SHARE_LIMIT as NON_FUNDED_SHARE_LIMIT,
+ COALESCE ( (SELECT OTHER_BANK.BANK_NAME  FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as LEAD_NODAL_BANK		,  
+COALESCE ( (SELECT OTHER_BANK.BANK_NAME ||'-'||OTHERBANKBRANCH.BRANCH_NAME FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as LEAD_BANK_BRANCH		,         
+pf.RBI_ASSET_CLASSIFICATION as RBI_ASSET_CLASSIFICATION	,
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'MSME_CLASSIC' and entry_code = cri.MSME_CLASSIFICATION) as type_of_unit,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+   SPRO.LSP_LE_ID as Party_ID,
+    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+FROM 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  SCI_LE_BANKING_METHOD BANKING 
+ WHERE
+PF.CMS_CUSTOMER_ID(+)          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+    and    BANKING.cms_le_main_profile_id    = spro.cms_le_main_profile_id
+    AND spro.banking_method = 'MULTIPLE'
+    AND banking.cms_le_nodal = 'Y'
+)
+union all
+(
+SELECT
+distinct
+SPRO.LSP_LE_ID as party_bkey,	
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as PARTY_TYPE_CODE		,
+SPRO.LSP_SHORT_NAME as PARTY_NAME			,
+'India' as COUNTRY_CODE		,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as PARTY_CATEGORY_CODE		,
+(select CITY_NAME from cms_city where status= 'ACTIVE' 
+and id in (select ra.lra_city_text from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE')) 
+as CITY_CODE			,
+(select ra.lra_addr_line_1 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_1,
+(select ra.lra_addr_line_2 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_2,
+(select ra.lra_addr_line_3 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_3,
+(select ra.lra_addr_line_4 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_4,
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as PARENT_PARTY_BKEY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm) as INDUTRY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code) as RBI_INDUSTRY	,
+spro.mpbf as MPBF			, 
+spro.total_funded_limit as FUNDED_LIMIT		, 
+spro.total_non_funded_limit as NON_FUNDED_LIMIT		,
+spro.MEMO_EXPOSURE as MEMO_EXPOSURE		,
+spro.FUNDED_SHARE_PERCENT as FUNDED_SHARE_PERCENT		,
+spro.NON_FUNDED_SHARE_PERCENT as NON_FUNDED_SHARE_PERCENT		,
+spro.banking_method  as BANKING_METHOD		, 
+spro.FUNDED_SHARE_LIMIT as FUNDED_SHARE_LIMIT,
+spro.NON_FUNDED_SHARE_LIMIT as NON_FUNDED_SHARE_LIMIT,
+ COALESCE ( (SELECT OTHER_BANK.BANK_NAME  FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as LEAD_NODAL_BANK		,  
+COALESCE ( (SELECT OTHER_BANK.BANK_NAME ||'-'||OTHERBANKBRANCH.BRANCH_NAME FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as LEAD_BANK_BRANCH		,          
+pf.RBI_ASSET_CLASSIFICATION as RBI_ASSET_CLASSIFICATION	,
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'MSME_CLASSIC' and entry_code = cri.MSME_CLASSIFICATION) as type_of_unit,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+   SPRO.LSP_LE_ID as Party_ID,
+    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+FROM 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  SCI_LE_BANKING_METHOD BANKING
+ 
+ WHERE
+PF.CMS_CUSTOMER_ID(+)          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+    and    BANKING.cms_le_main_profile_id    = spro.cms_le_main_profile_id
+ AND spro.banking_method = 'CONSORTIUM'
+AND banking.cms_le_lead = 'Y'
+)
+union all
+(
+SELECT
+distinct
+SPRO.LSP_LE_ID as party_bkey,	
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as PARTY_TYPE_CODE		,
+SPRO.LSP_SHORT_NAME as PARTY_NAME			,
+'India' as COUNTRY_CODE		,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as PARTY_CATEGORY_CODE		,
+(select CITY_NAME from cms_city where status= 'ACTIVE' 
+and id in (select ra.lra_city_text from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE')) 
+as CITY_CODE			,
+(select ra.lra_addr_line_1 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_1,
+(select ra.lra_addr_line_2 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_2,
+(select ra.lra_addr_line_3 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_3,
+(select ra.lra_addr_line_4 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_4,
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as PARENT_PARTY_BKEY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm) as INDUTRY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code) as RBI_INDUSTRY	,
+spro.mpbf as MPBF			, 
+spro.total_funded_limit as FUNDED_LIMIT		, 
+spro.total_non_funded_limit as NON_FUNDED_LIMIT		,
+spro.MEMO_EXPOSURE as MEMO_EXPOSURE		,
+spro.FUNDED_SHARE_PERCENT as FUNDED_SHARE_PERCENT		,
+spro.NON_FUNDED_SHARE_PERCENT as NON_FUNDED_SHARE_PERCENT		,
+spro.banking_method  as BANKING_METHOD		, 
+spro.FUNDED_SHARE_LIMIT as FUNDED_SHARE_LIMIT,
+spro.NON_FUNDED_SHARE_LIMIT as NON_FUNDED_SHARE_LIMIT,
+'' as LEAD_NODAL_BANK		,  
+'' as LEAD_BANK_BRANCH		,         
+pf.RBI_ASSET_CLASSIFICATION as RBI_ASSET_CLASSIFICATION	,
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'MSME_CLASSIC' and entry_code = cri.MSME_CLASSIFICATION) as type_of_unit,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+   SPRO.LSP_LE_ID as Party_ID,
+    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+FROM 
+ SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri
+ WHERE
+PF.CMS_CUSTOMER_ID(+)           = Spro.CMS_LE_SUB_PROFILE_ID
+AND
+SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+ AND ( spro.banking_method in ('SOLE','OUTSIDECONSORTIUM','OUTSIDEMULTIPLE') or  spro.banking_method is null)
+)
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_PARTY_ALL
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_PARTY_ALL" ("PARTY_BKEY", "PARTY_TYPE_CODE", "PARTY_NAME", "COUNTRY_CODE", "PARTY_CATEGORY_CODE", "CITY_CODE", "PARTY_ADDRESS_LINE_1", "PARTY_ADDRESS_LINE_2", "PARTY_ADDRESS_LINE_3", "PARTY_ADDRESS_LINE_4", "PARENT_PARTY_BKEY", "INDUTRY", "RBI_INDUSTRY", "MPBF", "FUNDED_LIMIT", "NON_FUNDED_LIMIT", "MEMO_EXPOSURE", "FUNDED_SHARE_PERCENT", "NON_FUNDED_SHARE_PERCENT", "BANKING_METHOD", "FUNDED_SHARE_LIMIT", "NON_FUNDED_SHARE_LIMIT", "LEAD_NODAL_BANK", "LEAD_BANK_BRANCH", "RBI_ASSET_CLASSIFICATION", "TYPE_OF_UNIT", "DSA_CODE", "DSA_NAME", "PARTY_ID", "FORM_RBI_INDUSTRY", "RBI_PARTY_IECD_CODE", "RBI_SECTOR") AS 
+  (
+(
+SELECT
+SPRO.LSP_LE_ID as party_bkey,	
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as PARTY_TYPE_CODE		,
+SPRO.LSP_SHORT_NAME as PARTY_NAME			,
+'India' as COUNTRY_CODE		,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as PARTY_CATEGORY_CODE		,
+(select CITY_NAME from cms_city where status= 'ACTIVE' 
+and id in (select ra.lra_city_text from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE')) 
+as CITY_CODE			,
+(select ra.lra_addr_line_1 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_1,
+(select ra.lra_addr_line_2 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_2,
+(select ra.lra_addr_line_3 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_3,
+(select ra.lra_addr_line_4 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_4,
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as PARENT_PARTY_BKEY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm) as INDUTRY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code) as RBI_INDUSTRY	,
+spro.mpbf as MPBF			, 
+spro.total_funded_limit as FUNDED_LIMIT		, 
+spro.total_non_funded_limit as NON_FUNDED_LIMIT		,
+spro.MEMO_EXPOSURE as MEMO_EXPOSURE		,
+spro.FUNDED_SHARE_PERCENT as FUNDED_SHARE_PERCENT		,
+spro.NON_FUNDED_SHARE_PERCENT as NON_FUNDED_SHARE_PERCENT		,
+spro.banking_method  as BANKING_METHOD		, 
+spro.FUNDED_SHARE_LIMIT as FUNDED_SHARE_LIMIT,
+spro.NON_FUNDED_SHARE_LIMIT as NON_FUNDED_SHARE_LIMIT,
+ COALESCE ( (SELECT OTHER_BANK.BANK_NAME  FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as LEAD_NODAL_BANK		,  
+COALESCE ( (SELECT OTHER_BANK.BANK_NAME ||'-'||OTHERBANKBRANCH.BRANCH_NAME FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as LEAD_BANK_BRANCH		,         
+pf.RBI_ASSET_CLASSIFICATION as RBI_ASSET_CLASSIFICATION	,
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'MSME_CLASSIC' and entry_code = cri.MSME_CLASSIFICATION) as type_of_unit,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+   SPRO.LSP_LE_ID as Party_ID,
+--    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+--  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+FROM 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  SCI_LE_BANKING_METHOD BANKING 
+ WHERE
+PF.CMS_CUSTOMER_ID(+)          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+    and    BANKING.cms_le_main_profile_id    = spro.cms_le_main_profile_id
+    AND spro.banking_method = 'MULTIPLE'
+    AND banking.cms_le_nodal = 'Y'
+)
+union all
+(
+SELECT
+SPRO.LSP_LE_ID as party_bkey,	
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as PARTY_TYPE_CODE		,
+SPRO.LSP_SHORT_NAME as PARTY_NAME			,
+'India' as COUNTRY_CODE		,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as PARTY_CATEGORY_CODE		,
+(select CITY_NAME from cms_city where status= 'ACTIVE' 
+and id in (select ra.lra_city_text from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE')) 
+as CITY_CODE			,
+(select ra.lra_addr_line_1 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_1,
+(select ra.lra_addr_line_2 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_2,
+(select ra.lra_addr_line_3 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_3,
+(select ra.lra_addr_line_4 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_4,
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as PARENT_PARTY_BKEY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm) as INDUTRY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code) as RBI_INDUSTRY	,
+spro.mpbf as MPBF			, 
+spro.total_funded_limit as FUNDED_LIMIT		, 
+spro.total_non_funded_limit as NON_FUNDED_LIMIT		,
+spro.MEMO_EXPOSURE as MEMO_EXPOSURE		,
+spro.FUNDED_SHARE_PERCENT as FUNDED_SHARE_PERCENT		,
+spro.NON_FUNDED_SHARE_PERCENT as NON_FUNDED_SHARE_PERCENT		,
+spro.banking_method  as BANKING_METHOD		, 
+spro.FUNDED_SHARE_LIMIT as FUNDED_SHARE_LIMIT,
+spro.NON_FUNDED_SHARE_LIMIT as NON_FUNDED_SHARE_LIMIT,
+ COALESCE ( (SELECT OTHER_BANK.BANK_NAME  FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as LEAD_NODAL_BANK		,  
+COALESCE ( (SELECT OTHER_BANK.BANK_NAME ||'-'||OTHERBANKBRANCH.BRANCH_NAME FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+				CMS_OTHER_BANK OTHER_BANK WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+			  AND OTHER_BANK.ID   = OTHERBANKBRANCH.OTHER_BANK_CODE AND BANKING.CMS_LE_BANK_TYPE = 'O'),
+			  (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+			  WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID  AND BANKING.CMS_LE_BANK_TYPE = 'S' ) ) as LEAD_BANK_BRANCH		,          
+pf.RBI_ASSET_CLASSIFICATION as RBI_ASSET_CLASSIFICATION	,
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'MSME_CLASSIC' and entry_code = cri.MSME_CLASSIFICATION) as type_of_unit,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+   SPRO.LSP_LE_ID as Party_ID,
+--    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+--  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+FROM 
+  SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri,
+  SCI_LE_BANKING_METHOD BANKING
+ WHERE
+PF.CMS_CUSTOMER_ID(+)          = Spro.CMS_LE_SUB_PROFILE_ID
+AND SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+    and    BANKING.cms_le_main_profile_id    = spro.cms_le_main_profile_id
+ AND spro.banking_method = 'CONSORTIUM'
+AND banking.cms_le_lead = 'Y'
+)
+union all
+(
+SELECT
+SPRO.LSP_LE_ID as party_bkey,	
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_SEGMENT' and entry_code = spro.lsp_sgmnt_code_value) as PARTY_TYPE_CODE		,
+SPRO.LSP_SHORT_NAME as PARTY_NAME			,
+'India' as COUNTRY_CODE		,
+(select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'Entity' and entry_code = spro.entity) as PARTY_CATEGORY_CODE		,
+(select CITY_NAME from cms_city where status= 'ACTIVE' 
+and id in (select ra.lra_city_text from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE')) 
+as CITY_CODE			,
+(select ra.lra_addr_line_1 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_1,
+(select ra.lra_addr_line_2 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_2,
+(select ra.lra_addr_line_3 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_3,
+(select ra.lra_addr_line_4 from SCI_LE_REG_ADDR ra where ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID AND ra.LRA_TYPE_VALUE   = 'CORPORATE') as PARTY_ADDRESS_LINE_4,
+(select party_group_name from CMS_PARTY_GROUP where id = spro.party_grp_nm and status = 'ACTIVE') as PARENT_PARTY_BKEY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_INDUSTRY'  and entry_code = spro.ind_nm) as INDUTRY		,
+(select entry_code||'-'||ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'HDFC_RBI_CODE' and  entry_code = spro.rbi_ind_code) as RBI_INDUSTRY	,
+spro.mpbf as MPBF			, 
+spro.total_funded_limit as FUNDED_LIMIT		, 
+spro.total_non_funded_limit as NON_FUNDED_LIMIT		,
+spro.MEMO_EXPOSURE as MEMO_EXPOSURE		,
+spro.FUNDED_SHARE_PERCENT as FUNDED_SHARE_PERCENT		,
+spro.NON_FUNDED_SHARE_PERCENT as NON_FUNDED_SHARE_PERCENT		,
+spro.banking_method  as BANKING_METHOD		, 
+spro.FUNDED_SHARE_LIMIT as FUNDED_SHARE_LIMIT,
+spro.NON_FUNDED_SHARE_LIMIT as NON_FUNDED_SHARE_LIMIT,
+'' as LEAD_NODAL_BANK		,  
+'' as LEAD_BANK_BRANCH		,         
+pf.RBI_ASSET_CLASSIFICATION as RBI_ASSET_CLASSIFICATION	,
+    (select ENTRY_NAME from COMMON_CODE_CATEGORY_ENTRY where category_code = 'MSME_CLASSIC' and entry_code = cri.MSME_CLASSIFICATION) as type_of_unit,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+   SPRO.LSP_LE_ID as Party_ID,
+--    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+--  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+FROM 
+ SCI_LSP_LMT_PROFILE PF,
+  SCI_LE_SUB_PROFILE SPRO ,
+  SCI_LE_MAIN_PROFILE MAN,
+  sci_le_cri  cri
+ WHERE
+PF.CMS_CUSTOMER_ID(+)           = Spro.CMS_LE_SUB_PROFILE_ID
+AND
+SPRO.CMS_LE_MAIN_PROFILE_ID = MAN.CMS_LE_MAIN_PROFILE_ID
+AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+AND spro.status               = 'ACTIVE'
+ AND ( spro.banking_method in ('SOLE','OUTSIDECONSORTIUM','OUTSIDEMULTIPLE') or  spro.banking_method is null)
+)
+)
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECP_PARTY_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECP_PARTY_VIEW" ("DATA_SOURCE_ID", "PARTY_BKEY", "PARTY_TYPE_CODE", "PARTY_NAME", "PARTY_NAME_ALT_LANG", "LOAD_EXECUTION_ID", "COUNTRY_CODE", "PARTY_CATEGORY_CODE", "CITY_CODE", "EXP_IMP_IND", "PARTY_LIMIT", "IECD_REFERENCE", "PARTY_STATUS_CODE", "GENDER_CODE", "OPEN_DATE", "CLOSE_DATE", "NATIONALITY_CODE", "CUSTOMER_BKEY", "PARTY_ADDRESS_LINE_1", "PARTY_ADDRESS_LINE_2", "PARTY_ADDRESS_LINE_3", "PARTY_ADDRESS_LINE_4", "PSU_IND", "PARENT_PARTY_BKEY", "PARENT_PARTY_TYPE_CODE", "INDUTRY", "RBI_INDUSTRY", "MPBF", "FUNDED_LIMIT", "NON_FUNDED_LIMIT", "MEMO_EXPOSURE", "FUNDED_SHARE_PERCENT", "NON_FUNDED_SHARE_PERCENT", "BANKING_METHOD", "FUNDED_SHARE_LIMIT", "NON_FUNDED_SHARE_LIMIT", "LEAD_NODAL_BANK", "LEAD_BANK_BRANCH", "RBI_ASSET_CLASSIFICATION", "METAGRID_ID", "TYPE_OF_UNIT", "DSA_CODE", "DSA_NAME", "PARTY_ID", "FORM_RBI_INDUSTRY", "RBI_PARTY_IECD_CODE", "RBI_SECTOR", "EXTRACTDATE") AS 
+  (
+  (SELECT
+    --distinct
+    ''             AS Data_Source_ID,
+    SPRO.LSP_LE_ID AS party_bkey,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    )                   AS PARTY_TYPE_CODE,
+    SPRO.LSP_SHORT_NAME AS PARTY_NAME ,
+    ''                  AS Party_Name_Alt_Lang,
+    ''                  AS Load_Execution_ID,
+    'India'             AS COUNTRY_CODE ,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'Entity'
+    AND entry_code      = spro.entity
+    ) AS PARTY_CATEGORY_CODE,
+    (SELECT CITY_NAME
+    FROM cms_city
+    WHERE status= 'ACTIVE'
+    AND id     IN
+      (SELECT ra.lra_city_text
+      FROM SCI_LE_REG_ADDR ra
+      WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+      AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+      )
+    )  AS CITY_CODE ,
+    '' AS Exp_Imp_Ind,
+    '' AS Party_Limit,
+    '' AS IECD_Reference,
+    '' AS Party_Status_Code,
+    '' AS Gender_Code,
+    '' AS Open_Date,
+    '' AS Close_Date,
+    '' AS Nationality_Code,
+    '' AS Customer_BKey,
+    (SELECT ra.lra_addr_line_1
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_1,
+    (SELECT ra.lra_addr_line_2
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_2,
+    (SELECT ra.lra_addr_line_3
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_3,
+    (SELECT ra.lra_addr_line_4
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    )  AS PARTY_ADDRESS_LINE_4,
+    '' AS PSU_Ind,
+    (SELECT party_group_name
+    FROM CMS_PARTY_GROUP
+    WHERE id   = spro.party_grp_nm
+    AND status = 'ACTIVE'
+    )  AS PARENT_PARTY_BKEY ,
+    '' AS Parent_Party_Type_Code,
+    (SELECT entry_code
+      ||'-'
+      ||ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_INDUSTRY'
+    AND entry_code      = spro.ind_nm
+    ) AS INDUTRY ,
+    (SELECT entry_code
+      ||'-'
+      ||ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_RBI_CODE'
+    AND entry_code      = spro.rbi_ind_code
+    )                             AS RBI_INDUSTRY ,
+    spro.mpbf                     AS MPBF ,
+    spro.total_funded_limit       AS FUNDED_LIMIT,
+    spro.total_non_funded_limit   AS NON_FUNDED_LIMIT,
+    spro.MEMO_EXPOSURE            AS MEMO_EXPOSURE ,
+    spro.FUNDED_SHARE_PERCENT     AS FUNDED_SHARE_PERCENT,
+    spro.NON_FUNDED_SHARE_PERCENT AS NON_FUNDED_SHARE_PERCENT,
+    spro.banking_method           AS BANKING_METHOD,
+    spro.FUNDED_SHARE_LIMIT       AS FUNDED_SHARE_LIMIT,
+    spro.NON_FUNDED_SHARE_LIMIT   AS NON_FUNDED_SHARE_LIMIT,
+    COALESCE (
+    (SELECT OTHER_BANK.BANK_NAME
+    FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+      CMS_OTHER_BANK OTHER_BANK
+    WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+    AND OTHER_BANK.ID            = OTHERBANKBRANCH.OTHER_BANK_CODE
+    AND BANKING.CMS_LE_BANK_TYPE = 'O'
+    ),
+    (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME
+    FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+    WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID
+    AND BANKING.CMS_LE_BANK_TYPE = 'S'
+    ) ) AS LEAD_NODAL_BANK,
+    COALESCE (
+    (SELECT OTHER_BANK.BANK_NAME
+      ||'-'
+      ||OTHERBANKBRANCH.BRANCH_NAME
+    FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+      CMS_OTHER_BANK OTHER_BANK
+    WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+    AND OTHER_BANK.ID            = OTHERBANKBRANCH.OTHER_BANK_CODE
+    AND BANKING.CMS_LE_BANK_TYPE = 'O'
+    ),
+    (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME
+    FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+    WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID
+    AND BANKING.CMS_LE_BANK_TYPE = 'S'
+    ) )                         AS LEAD_BANK_BRANCH,
+    pf.RBI_ASSET_CLASSIFICATION AS RBI_ASSET_CLASSIFICATION,
+    ''                          AS Metagrid_id,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'MSME_CLASSIC'
+    AND entry_code      = cri.MSME_CLASSIFICATION
+    ) AS type_of_unit,
+    --(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+    --(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+    (
+    SELECT UDF3
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS dsa_code, --DSA CODE
+    (SELECT UDF4
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    )              AS dsa_name, --DSA NAME
+    SPRO.LSP_LE_ID AS Party_ID,
+    --    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+    --  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+    --  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    --    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+    --   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+    (
+    SELECT UDF66
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS Form_RBI_Industry, --Form A RBI Industry Code
+    (SELECT UDF67
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS RBI_Party_IECD_Code, --RBI Party (IECD) Code
+    (SELECT UDF65
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS RBI_Sector, --RBI Sector
+    (SELECT to_date (param_value,'dd/mm/yyyy')
+    FROM CMS_GENERAL_PARAM
+    WHERE param_code = 'APPLICATION_DATE'
+    ) AS EXTRACTDATE
+  FROM SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    SCI_LE_MAIN_PROFILE MAN,
+    sci_le_cri cri,
+    SCI_LE_BANKING_METHOD BANKING
+  WHERE PF.CMS_CUSTOMER_ID(+)        = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID    = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND cri.cms_le_main_profile_id (+) = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                    = 'ACTIVE'
+  AND BANKING.cms_le_main_profile_id = spro.cms_le_main_profile_id
+  AND spro.banking_method            = 'MULTIPLE'
+  AND banking.cms_le_nodal           = 'Y'
+  )
+UNION
+  (SELECT
+    --distinct
+    ''             AS Data_Source_ID,
+    SPRO.LSP_LE_ID AS party_bkey,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    )                   AS PARTY_TYPE_CODE,
+    SPRO.LSP_SHORT_NAME AS PARTY_NAME,
+    ''                  AS Party_Name_Alt_Lang,
+    ''                  AS Load_Execution_ID,
+    'India'             AS COUNTRY_CODE,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'Entity'
+    AND entry_code      = spro.entity
+    ) AS PARTY_CATEGORY_CODE,
+    (SELECT CITY_NAME
+    FROM cms_city
+    WHERE status= 'ACTIVE'
+    AND id     IN
+      (SELECT ra.lra_city_text
+      FROM SCI_LE_REG_ADDR ra
+      WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+      AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+      )
+    )  AS CITY_CODE ,
+    '' AS Exp_Imp_Ind,
+    '' AS Party_Limit,
+    '' AS IECD_Reference,
+    '' AS Party_Status_Code,
+    '' AS Gender_Code,
+    '' AS Open_Date,
+    '' AS Close_Date,
+    '' AS Nationality_Code,
+    '' AS Customer_BKey,
+    (SELECT ra.lra_addr_line_1
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_1,
+    (SELECT ra.lra_addr_line_2
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_2,
+    (SELECT ra.lra_addr_line_3
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_3,
+    (SELECT ra.lra_addr_line_4
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    )  AS PARTY_ADDRESS_LINE_4,
+    '' AS PSU_Ind,
+    (SELECT party_group_name
+    FROM CMS_PARTY_GROUP
+    WHERE id   = spro.party_grp_nm
+    AND status = 'ACTIVE'
+    )  AS PARENT_PARTY_BKEY ,
+    '' AS Parent_Party_Type_Code,
+    (SELECT entry_code
+      ||'-'
+      ||ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_INDUSTRY'
+    AND entry_code      = spro.ind_nm
+    ) AS INDUTRY ,
+    (SELECT entry_code
+      ||'-'
+      ||ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_RBI_CODE'
+    AND entry_code      = spro.rbi_ind_code
+    )                             AS RBI_INDUSTRY ,
+    spro.mpbf                     AS MPBF ,
+    spro.total_funded_limit       AS FUNDED_LIMIT ,
+    spro.total_non_funded_limit   AS NON_FUNDED_LIMIT ,
+    spro.MEMO_EXPOSURE            AS MEMO_EXPOSURE ,
+    spro.FUNDED_SHARE_PERCENT     AS FUNDED_SHARE_PERCENT ,
+    spro.NON_FUNDED_SHARE_PERCENT AS NON_FUNDED_SHARE_PERCENT ,
+    spro.banking_method           AS BANKING_METHOD ,
+    spro.FUNDED_SHARE_LIMIT       AS FUNDED_SHARE_LIMIT,
+    spro.NON_FUNDED_SHARE_LIMIT   AS NON_FUNDED_SHARE_LIMIT,
+    COALESCE (
+    (SELECT OTHER_BANK.BANK_NAME
+    FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+      CMS_OTHER_BANK OTHER_BANK
+    WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+    AND OTHER_BANK.ID            = OTHERBANKBRANCH.OTHER_BANK_CODE
+    AND BANKING.CMS_LE_BANK_TYPE = 'O'
+    ),
+    (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME
+    FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+    WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID
+    AND BANKING.CMS_LE_BANK_TYPE = 'S'
+    ) ) AS LEAD_NODAL_BANK,
+    COALESCE (
+    (SELECT OTHER_BANK.BANK_NAME
+      ||'-'
+      ||OTHERBANKBRANCH.BRANCH_NAME
+    FROM CMS_OTHER_BANK_BRANCH OTHERBANKBRANCH,
+      CMS_OTHER_BANK OTHER_BANK
+    WHERE BANKING.CMS_LE_BANK_ID = OTHERBANKBRANCH.ID
+    AND OTHER_BANK.ID            = OTHERBANKBRANCH.OTHER_BANK_CODE
+    AND BANKING.CMS_LE_BANK_TYPE = 'O'
+    ),
+    (SELECT SYSTEMBANKBRANCH.SYSTEM_BANK_NAME
+    FROM CMS_SYSTEM_BANK SYSTEMBANKBRANCH
+    WHERE BANKING.CMS_LE_BANK_ID = SYSTEMBANKBRANCH.ID
+    AND BANKING.CMS_LE_BANK_TYPE = 'S'
+    ) )                         AS LEAD_BANK_BRANCH ,
+    pf.RBI_ASSET_CLASSIFICATION AS RBI_ASSET_CLASSIFICATION,
+    ''                          AS Metagrid_id,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'MSME_CLASSIC'
+    AND entry_code      = cri.MSME_CLASSIFICATION
+    ) AS type_of_unit,
+    --(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+    --(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+    (
+    SELECT UDF3
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS dsa_code, --DSA CODE
+    (SELECT UDF4
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    )              AS dsa_name, --DSA NAME
+    SPRO.LSP_LE_ID AS Party_ID, --    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+    --  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+    --  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    --    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+    --   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+    (
+    SELECT UDF66
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS Form_RBI_Industry, --Form A RBI Industry Code
+    (SELECT UDF67
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS RBI_Party_IECD_Code, --RBI Party (IECD) Code
+    (SELECT UDF65
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS RBI_Sector, --RBI Sector
+    (SELECT to_date (param_value,'dd/mm/yyyy')
+    FROM CMS_GENERAL_PARAM
+    WHERE param_code = 'APPLICATION_DATE'
+    ) AS EXTRACTDATE
+  FROM SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    SCI_LE_MAIN_PROFILE MAN,
+    sci_le_cri cri,
+    SCI_LE_BANKING_METHOD BANKING
+  WHERE PF.CMS_CUSTOMER_ID(+)        = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID    = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND cri.cms_le_main_profile_id (+) = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                    = 'ACTIVE'
+  AND BANKING.cms_le_main_profile_id = spro.cms_le_main_profile_id
+  AND spro.banking_method            = 'CONSORTIUM'
+  AND banking.cms_le_lead            = 'Y'
+  )
+UNION
+  (SELECT
+    --distinct
+    ''             AS Data_Source_ID,
+    SPRO.LSP_LE_ID AS party_bkey,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_SEGMENT'
+    AND entry_code      = spro.lsp_sgmnt_code_value
+    )                   AS PARTY_TYPE_CODE ,
+    SPRO.LSP_SHORT_NAME AS PARTY_NAME ,
+    ''                  AS Party_Name_Alt_Lang,
+    ''                  AS Load_Execution_ID,
+    'India'             AS COUNTRY_CODE ,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'Entity'
+    AND entry_code      = spro.entity
+    ) AS PARTY_CATEGORY_CODE ,
+    (SELECT CITY_NAME
+    FROM cms_city
+    WHERE status= 'ACTIVE'
+    AND id     IN
+      (SELECT ra.lra_city_text
+      FROM SCI_LE_REG_ADDR ra
+      WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+      AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+      )
+    )  AS CITY_CODE,
+    '' AS Exp_Imp_Ind,
+    '' AS Party_Limit,
+    '' AS IECD_Reference,
+    '' AS Party_Status_Code,
+    '' AS Gender_Code,
+    '' AS Open_Date,
+    '' AS Close_Date,
+    '' AS Nationality_Code,
+    '' AS Customer_BKey,
+    (SELECT ra.lra_addr_line_1
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_1,
+    (SELECT ra.lra_addr_line_2
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_2,
+    (SELECT ra.lra_addr_line_3
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    ) AS PARTY_ADDRESS_LINE_3,
+    (SELECT ra.lra_addr_line_4
+    FROM SCI_LE_REG_ADDR ra
+    WHERE ra.CMS_LE_MAIN_PROFILE_ID = spro.CMS_LE_MAIN_PROFILE_ID
+    AND ra.LRA_TYPE_VALUE           = 'CORPORATE'
+    )  AS PARTY_ADDRESS_LINE_4,
+    '' AS PSU_Ind,
+    (SELECT party_group_name
+    FROM CMS_PARTY_GROUP
+    WHERE id   = spro.party_grp_nm
+    AND status = 'ACTIVE'
+    )  AS PARENT_PARTY_BKEY ,
+    '' AS Parent_Party_Type_Code,
+    (SELECT entry_code
+      ||'-'
+      ||ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_INDUSTRY'
+    AND entry_code      = spro.ind_nm
+    ) AS INDUTRY ,
+    (SELECT entry_code
+      ||'-'
+      ||ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'HDFC_RBI_CODE'
+    AND entry_code      = spro.rbi_ind_code
+    )                             AS RBI_INDUSTRY ,
+    spro.mpbf                     AS MPBF ,
+    spro.total_funded_limit       AS FUNDED_LIMIT,
+    spro.total_non_funded_limit   AS NON_FUNDED_LIMIT,
+    spro.MEMO_EXPOSURE            AS MEMO_EXPOSURE ,
+    spro.FUNDED_SHARE_PERCENT     AS FUNDED_SHARE_PERCENT,
+    spro.NON_FUNDED_SHARE_PERCENT AS NON_FUNDED_SHARE_PERCENT,
+    spro.banking_method           AS BANKING_METHOD,
+    spro.FUNDED_SHARE_LIMIT       AS FUNDED_SHARE_LIMIT,
+    spro.NON_FUNDED_SHARE_LIMIT   AS NON_FUNDED_SHARE_LIMIT,
+    ''                            AS LEAD_NODAL_BANK,
+    ''                            AS LEAD_BANK_BRANCH ,
+    pf.RBI_ASSET_CLASSIFICATION   AS RBI_ASSET_CLASSIFICATION,
+    ''                            AS Metagrid_id,
+    (SELECT ENTRY_NAME
+    FROM COMMON_CODE_CATEGORY_ENTRY
+    WHERE category_code = 'MSME_CLASSIC'
+    AND entry_code      = cri.MSME_CLASSIFICATION
+    ) AS type_of_unit,--(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA CODE' ))) from dual) as dsa_code,
+    --(select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'DSA NAME' ))) from dual) as dsa_name,
+    (
+    SELECT UDF3
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS dsa_code, --DSA CODE
+    (SELECT UDF4
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    )              AS dsa_name, --DSA NAME
+    SPRO.LSP_LE_ID AS Party_ID, --    (CUSTOMERMAKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as maker_date,
+    --  (CUSTOMERCHEKERDATE(SPRO.CMS_LE_SUB_PROFILE_ID)) as checker_date ,
+    --  (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'Form A RBI Industry Code' ))) from dual) as Form_RBI_Industry,
+    --    (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Party (IECD) Code' ))) from dual) as RBI_Party_IECD_Code,
+    --   (select UDFDATA(MAN.CMS_LE_MAIN_PROFILE_ID,((SELECT sequence FROM cms_udf WHERE fieldname LIKE 'RBI Sector' ))) from dual) as RBI_Sector
+    (
+    SELECT UDF66
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS Form_RBI_Industry, --Form A RBI Industry Code
+    (SELECT UDF67
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS RBI_Party_IECD_Code, --RBI Party (IECD) Code
+    (SELECT UDF65
+    FROM sci_le_udf UDF
+    WHERE UDF.cms_le_main_profile_id = MAN.CMS_LE_MAIN_PROFILE_ID
+    ) AS RBI_Sector, --RBI Sector
+    (SELECT to_date (param_value,'dd/mm/yyyy')
+    FROM CMS_GENERAL_PARAM
+    WHERE param_code = 'APPLICATION_DATE'
+    ) AS EXTRACTDATE
+  FROM SCI_LSP_LMT_PROFILE PF,
+    SCI_LE_SUB_PROFILE SPRO ,
+    SCI_LE_MAIN_PROFILE MAN,
+    sci_le_cri cri
+  WHERE PF.CMS_CUSTOMER_ID(+)       = Spro.CMS_LE_SUB_PROFILE_ID
+  AND SPRO.CMS_LE_MAIN_PROFILE_ID   = MAN.CMS_LE_MAIN_PROFILE_ID
+  AND cri.cms_le_main_profile_id (+)= MAN.CMS_LE_MAIN_PROFILE_ID
+  AND spro.status                   = 'ACTIVE'
+  AND ( spro.banking_method        IN ('SOLE','OUTSIDECONSORTIUM','OUTSIDEMULTIPLE')
+  OR spro.banking_method           IS NULL)
+  ))
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View RECURENT_DOC_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "RECURENT_DOC_VIEW" ("PARTY_ID", "PARTY_NAME", "SEGMENTNAME", "RMREGION", "RMNAME", "CAMTYPE", "RAMRATING", "STATEMENTTYPE", "STATUS", "DOCUMENT_CODE", "TRANSACTION_DATE", "PROFILE_ID", "CHECKLIST_ID") AS 
+  (SELECT
+    ------------------------------------------------------------------
+    sub_profile.lsp_le_id      AS party_id,
+    sub_profile.lsp_short_name AS party_name,
+    cc_segment.entry_name      AS segmentName,
+    reg.region_name            AS rmRegion,
+    rm.rm_mgr_name             AS rmname,
+    pf.cam_type                AS CAMType,
+    pf.cms_appr_officer_grade  AS RAMRating,
+    chklist.statement_type     AS statementType,
+    chklist.status             AS status,
+    -------------------------------------------------------------------
+    -- glb.document_code,
+    chklist.document_code,
+    trx.transaction_date,
+    sub_profile.cms_le_sub_profile_id AS profile_id,
+    chklist.checklist_id
+    -------------------------------------------------------------------
+  FROM --cms_document_globallist glb,
+    cms_checklist checklist,
+    (SELECT DISTINCT item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    FROM cms_checklist_item item,
+      cms_checklist chk
+    WHERE item.checklist_id = chk.checklist_id
+    AND chk.checklist_id    = item.checklist_id
+    AND item.is_deleted     = 'N'
+    GROUP BY item.document_code,
+      item.statement_type,
+      chk.checklist_id,
+      item.status
+    )chklist,
+    SCI_LSP_LMT_PROFILE pf,
+    SCI_LE_SUB_PROFILE sub_profile,
+    (SELECT entry_name,
+      entry_code
+    FROM common_code_category_entry
+    WHERE category_code = 'HDFC_SEGMENT'
+    ) cc_segment,
+    cms_relationship_mgr rm ,
+    SCI_LE_REG_ADDR addr,
+    CMS_REGION reg,
+    transaction trx
+  WHERE
+    --    glb.document_code IN
+    --      (SELECT item.document_code
+    --      FROM cms_checklist_item item
+    --      WHERE item.checklist_id = chklist.checklist_id
+    --      )
+    --    AND
+    checklist.checklist_id = chklist.checklist_id
+    --    AND glb.category                       = 'REC'
+    --    AND glb.statement_type                 = chklist.statement_type
+    --    AND glb.deprecated                     = 'N'
+  AND sub_profile.cms_le_sub_profile_id  = pf.cms_customer_id(+)
+  AND checklist.cms_lsp_lmt_profile_id   = pf.cms_lsp_lmt_profile_id
+  AND checklist.checklist_id             = trx.reference_id(+)
+  AND (trx.transaction_type              ='CHECKLIST'
+  OR trx.transaction_type               IS NULL)
+  AND cc_segment.entry_code(+)           = sub_profile.lsp_sgmnt_code_value
+  AND sub_profile.cms_le_main_profile_id = addr.cms_le_main_profile_id(+)
+  AND rm.id(+)                           = sub_profile.relation_mgr
+  AND reg.id (+)                         = sub_profile.rm_region
+  AND addr.lra_type_value                = 'CORPORATE'
+  AND sub_profile.status                != 'INACTIVE'
+  )
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View REGION
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "REGION" ("REGION_CODE", "REGION_NAME", "REGION_DESCRIPTION") AS 
+  SELECT  ENTRY_CODE  AS region_code , ENTRY_NAME  AS region_name , ''  AS region_description  FROM COMMON_CODE_CATEGORY_ENTRY WHERE ACTIVE_STATUS = '1' AND CATEGORY_CODE = '36'
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View SECURITY_PENDING_CASES_VIEW
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "SECURITY_PENDING_CASES_VIEW" ("CMS_LSP_LMT_PROFILE_ID", "SEC_COUNT", "SEC_MIGRATED_COUNT", "SEC_PERFECTED_COUNT") AS 
+  SELECT  CMS_LSP_LMT_PROFILE_ID , sec_count , (SELECT  COUNT(distinct sec2.CMS_COLLATERAL_ID)  from CMS_LIMIT_SECURITY_MAP lsm2, CMS_SECURITY sec2 where lsm2.CMS_COLLATERAL_ID = sec2.CMS_COLLATERAL_ID and lsm2.CMS_LSP_LMT_PROFILE_ID = t1.CMS_LSP_LMT_PROFILE_ID and (lsm2.UPDATE_STATUS_IND <> 'D' or lsm2.UPDATE_STATUS_IND is null) and IS_MIGRATED_IND = 'Y')  AS sec_migrated_count , (SELECT  COUNT(distinct sec3.CMS_COLLATERAL_ID)  from CMS_LIMIT_SECURITY_MAP lsm3, CMS_SECURITY sec3 where lsm3.CMS_COLLATERAL_ID = sec3.CMS_COLLATERAL_ID and lsm3.CMS_LSP_LMT_PROFILE_ID = t1.CMS_LSP_LMT_PROFILE_ID and (lsm3.UPDATE_STATUS_IND <> 'D' or lsm3.UPDATE_STATUS_IND is null) and IS_SECURITY_PERFECTED = 'Y')  AS sec_perfected_count  from ((SELECT  CMS_LSP_LMT_PROFILE_ID , COUNT(distinct CMS_COLLATERAL_ID)  AS sec_count  from CMS_LIMIT_SECURITY_MAP lsm where lsm.UPDATE_STATUS_IND <> 'D' or lsm.UPDATE_STATUS_IND is null group BY CMS_LSP_LMT_PROFILE_ID) t1) where t1.sec_count > 0
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View TAT_RPT_FOR_BRANCH
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "TAT_RPT_FOR_BRANCH" ("EVENT", "CATEGORY", "PARTY_REGION", "RM_REGION", "LINE_NO", "LIMIT_RELEASED_AMOUNT", "SERIAL_NO", "CASE_RM", "PARTY_RM", "CASE_NO", "PARTY_NAME", "PARTY_ID", "CUSTOMER_SEGMENT", "ACTUALCASERECEIVEDDATEBR", "ACTUALCASERECEIVEDTIMEBR", "ACTUALCASEPROCESSEDDATEBR", "ACTUALCASEPROCESSEDTIMEBR", "CASERECEIVEDDATEBR", "CASERECEIVEDTIMEBR", "CASEPROCESSEDDATEBR", "CASEPROCESSEDTIMEBR", "TOTAL_TIME", "CASE_INITIATE_TIME", "TURN_AROUND_TIME") AS 
+  SELECT EVENT,
+    CATEGORY,
+    PARTY_REGION,
+    RM_REGION,
+    LINE_NO,
+    LIMIT_RELEASED_AMOUNT,
+    SERIAL_NO,
+    CASE_RM,
+    PARTY_RM,
+    CASE_NO,
+    PARTY_NAME,
+    PARTY_ID,
+    CUSTOMER_SEGMENT,
+    to_char(trunc(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'))) AS ActualCaseReceivedDateBR,
+    to_char(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi') AS ActualCaseReceivedTimeBR,
+    to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))  AS ActualCaseProcessedDateBR,
+    to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')  AS ActualCaseProcessedTimeBR,
+    --For Branch User
+    LIMIT_DOCUMENT_RECEIVED_DATE AS CaseReceivedDateBR,
+    LIMIT_DOCUMENT_RECEIVED_TIME AS CaseReceivedTimeBR,
+    LIMIT_DOCUMENT_SCANNED_DATE  AS CaseProcessedDateBR,
+    LIMIT_DOCUMENT_SCANNED_TIME  AS CaseProcessedTimeBR,
+    TOTAL_TIME,
+    (SELECT ACTIVITY_TIME
+    FROM CMS_STAGE_NEW_TAT
+    WHERE deprecated='N'
+    AND case_id     = CASE_NO
+    AND rownum      = 1
+    ) AS CASE_INITIATE_TIME,
+    TURN_AROUND_TIME
+  FROM CMS_NEW_TAT_REPORT_CASEBASE
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View TAT_RPT_FOR_CPU
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "TAT_RPT_FOR_CPU" ("EVENT", "CATEGORY", "PARTY_REGION", "RM_REGION", "LINE_NO", "LIMIT_RELEASED_AMOUNT", "SERIAL_NO", "CASE_RM", "PARTY_RM", "CASE_NO", "PARTY_NAME", "PARTY_ID", "CUSTOMER_SEGMENT", "ACTUALCASERECEIVEDDATECPU", "ACTUALCASERECEIVEDTIMECPU", "ACTUALCASEPROCESSEDDATECPU", "ACTUALCASEPROCESSEDTIMECPU", "CASERECEIVEDDATECPU", "CASERECEIVEDTIMECPU", "CASEPROCESSEDDATECPU", "CASEPROCESSEDTIMECPU", "TOTAL_TIME", "CASE_INITIATE_TIME", "TURN_AROUND_TIME") AS 
+  SELECT EVENT,
+    CATEGORY,
+    PARTY_REGION,
+    RM_REGION,
+    LINE_NO,
+    LIMIT_RELEASED_AMOUNT,
+    SERIAL_NO,
+    CASE_RM,
+    PARTY_RM,
+    CASE_NO,
+    PARTY_NAME,
+    PARTY_ID,
+    CUSTOMER_SEGMENT,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'))) IS NOT NULL
+          AND to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))       IS NULL
+          THEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))<to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          THEN to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))>to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          THEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))=to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          THEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      ='PDDC'
+      OR EVENT        ='CAM') )
+      THEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+    END AS ActualCaseReceivedDateCPU,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi') IS NOT NULL
+          AND to_char(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')       IS NULL
+          THEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+         WHEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))< to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'))) 
+          THEN to_char(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          WHEN  to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))> to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'))) 
+          THEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+         WHEN  to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))= to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'))) 
+               and to_char(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')>to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          THEN to_char(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          WHEN  to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))= to_char(trunc(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'))) 
+               and to_char(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')<=to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          THEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      ='PDDC'
+      OR EVENT        ='CAM') )
+      THEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+    END AS ActualCaseReceivedTimeCPU,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF')))
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF')))    IS NULL
+          AND to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'))) IS NULL
+          THEN ''
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF')))    IS NULL
+          AND to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'))) IS NOT NULL
+          THEN to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF')))
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF')))    IS NOT NULL
+          AND to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'))) IS NULL
+          THEN ''
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF')))    IS NOT NULL
+          AND to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'))) IS NOT NULL
+          THEN to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF')))
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      = 'PDDC'
+      OR EVENT        = 'CAM'))
+      THEN
+        CASE
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))<to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF')))
+          THEN to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF')))
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))>to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF')))
+          THEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          WHEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))=to_char(trunc(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF')))
+          THEN to_char(trunc(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+        END
+    END AS ActualCaseProcessedDateCPU,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi')
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN to_char(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')    IS NULL
+          AND to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi') IS NULL
+          THEN ''
+          WHEN to_char(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')    IS NOT NULL
+          AND to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi') IS NULL
+          THEN ''
+          WHEN to_char(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')    IS NULL
+          AND to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi') IS NOT NULL
+          THEN to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi')
+          WHEN to_char(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')    IS NOT NULL
+          AND to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi') IS NOT NULL
+          THEN to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi')
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      = 'PDDC'
+      OR EVENT        = 'CAM'))
+      THEN
+        CASE
+          WHEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')<to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi')
+          THEN to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi')
+          WHEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')>to_char(TO_TIMESTAMP (actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi')
+          THEN to_char(TO_TIMESTAMP (actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+        END
+    END AS ActualCaseProcessedTimeCPU,
+    --For CPU USer
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN LIMIT_DOCUMENT_SCANNED_DATE
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN LIMIT_DOCUMENT_SCANNED_DATE IS NOT NULL
+          AND DEFERRAL_APPROVED_DATE       IS NULL
+          THEN LIMIT_DOCUMENT_SCANNED_DATE
+          WHEN LIMIT_DOCUMENT_SCANNED_DATE<DEFERRAL_APPROVED_DATE
+          THEN DEFERRAL_APPROVED_DATE
+          WHEN LIMIT_DOCUMENT_SCANNED_DATE>DEFERRAL_APPROVED_DATE
+          THEN LIMIT_DOCUMENT_SCANNED_DATE
+          WHEN LIMIT_DOCUMENT_SCANNED_DATE=DEFERRAL_APPROVED_DATE
+          THEN LIMIT_DOCUMENT_SCANNED_DATE
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      ='PDDC'
+      OR EVENT        ='CAM') )
+      THEN LIMIT_DOCUMENT_SCANNED_DATE
+    END AS CaseReceivedDateCPU,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN LIMIT_DOCUMENT_SCANNED_TIME
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+      CASE
+          WHEN LIMIT_DOCUMENT_SCANNED_TIME IS NOT NULL
+          AND DEFERRAL_APPROVED_TIME       IS NULL
+          THEN LIMIT_DOCUMENT_SCANNED_TIME
+          
+          
+          WHEN LIMIT_DOCUMENT_SCANNED_TIME < DEFERRAL_APPROVED_TIME
+          THEN DEFERRAL_APPROVED_TIME
+          
+          WHEN LIMIT_DOCUMENT_SCANNED_DATE < DEFERRAL_APPROVED_DATE
+          THEN DEFERRAL_APPROVED_TIME
+          WHEN  LIMIT_DOCUMENT_SCANNED_DATE > DEFERRAL_APPROVED_DATE
+          THEN LIMIT_DOCUMENT_SCANNED_TIME
+         WHEN  LIMIT_DOCUMENT_SCANNED_DATE= DEFERRAL_APPROVED_DATE
+               and DEFERRAL_APPROVED_TIME > LIMIT_DOCUMENT_SCANNED_TIME
+          THEN DEFERRAL_APPROVED_TIME
+           WHEN  LIMIT_DOCUMENT_SCANNED_DATE= DEFERRAL_APPROVED_DATE
+               and DEFERRAL_APPROVED_TIME <= LIMIT_DOCUMENT_SCANNED_TIME
+          THEN LIMIT_DOCUMENT_SCANNED_TIME
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      ='PDDC'
+      OR EVENT        ='CAM') )
+      THEN LIMIT_DOCUMENT_SCANNED_TIME
+    END AS CaseReceivedTimeCPU,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN CPU_LIMIT_SET_CLIMS_DATE
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN DEFERRAL_RAISED_DATE    IS NULL
+          AND CPU_LIMIT_SET_CLIMS_DATE IS NULL
+          THEN ''
+          WHEN DEFERRAL_RAISED_DATE    IS NULL
+          AND CPU_LIMIT_SET_CLIMS_DATE IS NOT NULL
+          THEN CPU_LIMIT_SET_CLIMS_DATE
+          WHEN DEFERRAL_RAISED_DATE    IS NOT NULL
+          AND CPU_LIMIT_SET_CLIMS_DATE IS NULL
+          THEN ''
+          WHEN DEFERRAL_RAISED_DATE    IS NOT NULL
+          AND CPU_LIMIT_SET_CLIMS_DATE IS NOT NULL
+          THEN CPU_LIMIT_SET_CLIMS_DATE
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      = 'PDDC'
+      OR EVENT        = 'CAM'))
+      THEN
+        CASE
+          WHEN LIMIT_DOCUMENT_SCANNED_DATE<CPU_LIMIT_SET_CLIMS_DATE
+          THEN CPU_LIMIT_SET_CLIMS_DATE
+          WHEN LIMIT_DOCUMENT_SCANNED_DATE>CPU_LIMIT_SET_CLIMS_DATE
+          THEN LIMIT_DOCUMENT_SCANNED_DATE
+          WHEN LIMIT_DOCUMENT_SCANNED_DATE=CPU_LIMIT_SET_CLIMS_DATE
+          THEN LIMIT_DOCUMENT_SCANNED_DATE
+        END
+    END AS CaseProcessedDateCPU,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN CPU_LIMIT_SET_CLIMS_TIME
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN DEFERRAL_RAISED_TIME    IS NULL
+          AND CPU_LIMIT_SET_CLIMS_TIME IS NULL
+          THEN ''
+          WHEN DEFERRAL_RAISED_TIME    IS NOT NULL
+          AND CPU_LIMIT_SET_CLIMS_TIME IS NULL
+          THEN ''
+          WHEN DEFERRAL_RAISED_TIME    IS NULL
+          AND CPU_LIMIT_SET_CLIMS_TIME IS NOT NULL
+          THEN CPU_LIMIT_SET_CLIMS_TIME
+           WHEN DEFERRAL_RAISED_TIME    IS NOT NULL
+          AND CPU_LIMIT_SET_CLIMS_TIME IS NOT NULL
+          THEN CPU_LIMIT_SET_CLIMS_TIME
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      = 'PDDC'
+      OR EVENT        = 'CAM'))
+      THEN
+        CASE
+          WHEN LIMIT_DOCUMENT_SCANNED_TIME<CPU_LIMIT_SET_CLIMS_TIME
+          THEN CPU_LIMIT_SET_CLIMS_TIME
+          WHEN LIMIT_DOCUMENT_SCANNED_TIME>CPU_LIMIT_SET_CLIMS_TIME
+          THEN LIMIT_DOCUMENT_SCANNED_TIME
+        END
+    END AS CaseProcessedTimeCPU,
+    TOTAL_TIME,
+    (SELECT ACTIVITY_TIME
+    FROM CMS_STAGE_NEW_TAT
+    WHERE deprecated='N'
+    AND case_id     = CASE_NO
+    AND rownum      = 1
+    ) AS CASE_INITIATE_TIME,
+    TURN_AROUND_TIME
+  FROM CMS_NEW_TAT_REPORT_CASEBASE
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View TAT_RPT_FOR_RM
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "TAT_RPT_FOR_RM" ("EVENT", "CATEGORY", "PARTY_REGION", "RM_REGION", "LINE_NO", "LIMIT_RELEASED_AMOUNT", "SERIAL_NO", "CASE_RM", "PARTY_RM", "CASE_NO", "PARTY_NAME", "PARTY_ID", "CUSTOMER_SEGMENT", "ACTUALCASERECEIVEDDATERM", "ACTUALCASERECEIVEDTIMERM", "ACTUALCASEPROCESSEDDATERM", "ACTUALCASEPROCESSEDTIMERM", "CASERECEIVEDDATERM", "CASERECEIVEDTIMERM", "CASEPROCESSEDDATERM", "CASEPROCESSEDTIMERM", "TOTAL_TIME", "CASE_INITIATE_TIME", "TURN_AROUND_TIME") AS 
+  SELECT EVENT,
+    CATEGORY,
+    PARTY_REGION,
+    RM_REGION,
+    LINE_NO,
+    LIMIT_RELEASED_AMOUNT,
+    SERIAL_NO,
+    CASE_RM,
+    PARTY_RM,
+    CASE_NO,
+    PARTY_NAME,
+    PARTY_ID,
+    CUSTOMER_SEGMENT,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN ''
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       ='LIMIT')
+      THEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       ='PDDC'
+      OR EVENT        ='CAM')
+      THEN ''
+    END AS ActualCaseReceivedDateRM,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN ''
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       ='LIMIT')
+      THEN TO_CHAR(TO_TIMESTAMP (actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       ='PDDC'
+      OR EVENT        ='CAM')
+      THEN ''
+    END AS ActualCaseReceivedTimeRM,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'))) IS NULL
+          THEN TO_CHAR(TRUNC(TO_TIMESTAMP (ACTUAL_LIMIT_DOC_REC_TIME, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          WHEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))< TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          THEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          WHEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))> TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          THEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          WHEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))= TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          THEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      ='PDDC'
+      OR EVENT        ='CAM') )
+      THEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+    END AS ActualCaseProcessedDateRM,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN TO_CHAR(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN TO_CHAR(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi') IS NULL
+          THEN TO_CHAR(TO_TIMESTAMP (ACTUAL_LIMIT_DOC_REC_TIME, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          WHEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))> TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          THEN TO_CHAR(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          WHEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))< TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          THEN TO_CHAR(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          WHEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))   = TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          AND TO_CHAR(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')>TO_CHAR(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          THEN TO_CHAR(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          WHEN TO_CHAR(TRUNC(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')))    = TO_CHAR(TRUNC(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')))
+          AND TO_CHAR(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')<=TO_CHAR(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+          THEN TO_CHAR(TO_TIMESTAMP (actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      ='PDDC'
+      OR EVENT        ='CAM') )
+      THEN TO_CHAR(TO_TIMESTAMP (actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi')
+    END AS ActualCaseProcessedTimeRM,
+    --for RM User
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN ''
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       ='LIMIT')
+      THEN DEFERRAL_RAISED_DATE
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       ='PDDC'
+      OR EVENT        ='CAM')
+      THEN ''
+    END AS CaseReceivedDateRM,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN ''
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       ='LIMIT')
+      THEN DEFERRAL_RAISED_TIME
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       ='PDDC'
+      OR EVENT        ='CAM')
+      THEN ''
+    END AS CaseReceivedTimeRM,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN LIMIT_DOCUMENT_RECEIVED_DATE
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN DEFERRAL_APPROVED_DATE IS NULL
+          THEN LIMIT_DOCUMENT_RECEIVED_DATE
+          WHEN LIMIT_DOCUMENT_RECEIVED_DATE<DEFERRAL_APPROVED_DATE
+          THEN DEFERRAL_APPROVED_DATE
+          WHEN LIMIT_DOCUMENT_RECEIVED_DATE>DEFERRAL_APPROVED_DATE
+          THEN LIMIT_DOCUMENT_RECEIVED_DATE
+          WHEN LIMIT_DOCUMENT_RECEIVED_DATE=DEFERRAL_APPROVED_DATE
+          THEN LIMIT_DOCUMENT_RECEIVED_DATE
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      ='PDDC'
+      OR EVENT        ='CAM') )
+      THEN LIMIT_DOCUMENT_RECEIVED_DATE
+    END AS CaseProcessedDateRM,
+    CASE
+      WHEN ( CATEGORY = 'FTR')
+      THEN LIMIT_DOCUMENT_RECEIVED_TIME
+      WHEN ( CATEGORY = 'FTNR'
+      AND EVENT       = 'LIMIT')
+      THEN
+        CASE
+          WHEN DEFERRAL_APPROVED_TIME IS NULL
+          THEN LIMIT_DOCUMENT_RECEIVED_TIME
+          WHEN LIMIT_DOCUMENT_RECEIVED_DATE> DEFERRAL_APPROVED_DATE
+          THEN LIMIT_DOCUMENT_RECEIVED_TIME
+          WHEN LIMIT_DOCUMENT_RECEIVED_DATE < DEFERRAL_APPROVED_DATE
+          THEN DEFERRAL_APPROVED_TIME
+          WHEN LIMIT_DOCUMENT_RECEIVED_DATE = DEFERRAL_APPROVED_DATE
+          AND LIMIT_DOCUMENT_RECEIVED_TIME  > DEFERRAL_APPROVED_TIME
+          THEN LIMIT_DOCUMENT_RECEIVED_TIME
+          WHEN LIMIT_DOCUMENT_RECEIVED_DATE = DEFERRAL_APPROVED_DATE
+          AND LIMIT_DOCUMENT_RECEIVED_TIME <= DEFERRAL_APPROVED_TIME
+          THEN DEFERRAL_APPROVED_TIME
+        END
+      WHEN ( CATEGORY = 'FTNR'
+      AND (EVENT      ='PDDC'
+      OR EVENT        ='CAM') )
+      THEN LIMIT_DOCUMENT_RECEIVED_TIME
+    END AS CaseProcessedTimeRM,
+    TOTAL_TIME,
+    (SELECT ACTIVITY_TIME
+    FROM CMS_STAGE_NEW_TAT
+    WHERE deprecated='N'
+    AND case_id     = CASE_NO
+    AND rownum      = 1
+    ) AS CASE_INITIATE_TIME,
+    TURN_AROUND_TIME
+  FROM CMS_NEW_TAT_REPORT_CASEBASE
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View TRANSACTION_CHECKLIST
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "TRANSACTION_CHECKLIST" ("TRANSACTION_ID", "FROM_STATE", "USER_ID", "LOGIN_ID", "TRANSACTION_TYPE", "CREATION_DATE", "TRANSACTION_DATE", "REFERENCE_ID", "STATUS", "STAGING_REFERENCE_ID", "TEAM_ID", "VERSION", "REMARKS", "TRX_REFERENCE_ID", "OPSDESC", "LEGAL_NAME", "LEGAL_ID", "CUSTOMER_NAME", "CUSTOMER_ID", "TRX_ORIGIN_COUNTRY", "TRX_ORIGIN_ORGANISATION", "LIMIT_PROFILE_ID", "LIMIT_PROFILE_REF_NUM", "TRX_SEGMENT", "USER_INFO", "CUR_TRX_HISTORY_ID", "TEAM_TYPE_ID", "TRANSACTION_SUBTYPE", "TO_GROUP_TYPE_ID", "TO_GROUP_ID", "TO_USER_ID", "DEAL_NO", "TEAM_MEMBERSHIP_ID", "SYSTEM_DATE") AS 
+  (select "TRANSACTION_ID","FROM_STATE","USER_ID","LOGIN_ID","TRANSACTION_TYPE","CREATION_DATE","TRANSACTION_DATE","REFERENCE_ID","STATUS","STAGING_REFERENCE_ID","TEAM_ID","VERSION","REMARKS","TRX_REFERENCE_ID","OPSDESC","LEGAL_NAME","LEGAL_ID","CUSTOMER_NAME","CUSTOMER_ID","TRX_ORIGIN_COUNTRY","TRX_ORIGIN_ORGANISATION","LIMIT_PROFILE_ID","LIMIT_PROFILE_REF_NUM","TRX_SEGMENT","USER_INFO","CUR_TRX_HISTORY_ID","TEAM_TYPE_ID","TRANSACTION_SUBTYPE","TO_GROUP_TYPE_ID","TO_GROUP_ID","TO_USER_ID","DEAL_NO","TEAM_MEMBERSHIP_ID","SYSTEM_DATE" from  transaction where (transaction_type ='CHECKLIST'  OR transaction_type IS NULL))
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VIEW_COLLATERAL_MATURITY_DATE
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VIEW_COLLATERAL_MATURITY_DATE" ("SCI_SECURITY_DTL_ID", "CMS_COLLATERAL_ID", "SECURITY_SUB_TYPE_ID", "SUBTYPE_NAME", "SECURITY_LOCATION", "SECURITY_MATURITY_DATE", "STATUS", "SECURITY_CURRENCY") AS 
+  SELECT  sec.SCI_SECURITY_DTL_ID , sec.CMS_COLLATERAL_ID , sec.SECURITY_SUB_TYPE_ID , (SELECT  st.SECURITY_TYPE_NAME || ' - ' || st.SUBTYPE_NAME  FROM CMS_SECURITY_SUB_TYPE st WHERE st.SECURITY_SUB_TYPE_ID = sec.SECURITY_SUB_TYPE_ID)  AS subtype_name , sec.SECURITY_LOCATION , sec.SECURITY_MATURITY_DATE , sec.STATUS , sec.SCI_SECURITY_CURRENCY  FROM CMS_SECURITY sec WHERE sec.SECURITY_SUB_TYPE_ID NOT IN ('AB108', 'IN503') AND sec.SECURITY_SUB_TYPE_ID NOT LIKE 'MS%' AND sec.SECURITY_SUB_TYPE_ID NOT LIKE 'CS%' 
+  UNION 
+  SELECT  sec.SCI_SECURITY_DTL_ID , sec.CMS_COLLATERAL_ID , sec.SECURITY_SUB_TYPE_ID , (SELECT  st.SECURITY_TYPE_NAME || ' - ' || st.SUBTYPE_NAME  FROM CMS_SECURITY_SUB_TYPE st WHERE st.SECURITY_SUB_TYPE_ID = sec.SECURITY_SUB_TYPE_ID)  AS subtype_name , sec.SECURITY_LOCATION , (SELECT  MIN(pdc.EXPIRY_DATE)  FROM CMS_ASSET_PDC pdc WHERE pdc.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID AND (pdc.STATUS IS NULL OR pdc.STATUS <> 'DELETED'))  AS security_maturity_date , sec.STATUS , sec.SCI_SECURITY_CURRENCY  FROM CMS_SECURITY sec WHERE sec.SECURITY_SUB_TYPE_ID = 'AB108' GROUP BY sec.SCI_SECURITY_DTL_ID, sec.CMS_COLLATERAL_ID, sec.SECURITY_SUB_TYPE_ID, sec.SECURITY_LOCATION, sec.STATUS, sec.SCI_SECURITY_CURRENCY
+
+  UNION 
+  SELECT  sec.SCI_SECURITY_DTL_ID , sec.CMS_COLLATERAL_ID , sec.SECURITY_SUB_TYPE_ID , (SELECT  st.SECURITY_TYPE_NAME || ' - ' || st.SUBTYPE_NAME  FROM CMS_SECURITY_SUB_TYPE st WHERE st.SECURITY_SUB_TYPE_ID = sec.SECURITY_SUB_TYPE_ID)  AS subtype_name , sec.SECURITY_LOCATION , (SELECT  MIN(cds.CDS_MATURITY_DATE)  FROM CMS_INSURANCE_CDS cds WHERE cds.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID AND (cds.STATUS IS NULL OR cds.STATUS <> 'DELETED'))  AS security_maturity_date , sec.STATUS , sec.SCI_SECURITY_CURRENCY  FROM CMS_SECURITY sec WHERE sec.SECURITY_SUB_TYPE_ID = 'IN503' GROUP BY sec.SCI_SECURITY_DTL_ID, sec.CMS_COLLATERAL_ID, sec.SECURITY_SUB_TYPE_ID, sec.SECURITY_LOCATION, sec.STATUS, sec.SCI_SECURITY_CURRENCY
+
+  UNION 
+  SELECT  sec.SCI_SECURITY_DTL_ID , sec.CMS_COLLATERAL_ID , sec.SECURITY_SUB_TYPE_ID , (SELECT  st.SECURITY_TYPE_NAME || ' - ' || st.SUBTYPE_NAME  FROM CMS_SECURITY_SUB_TYPE st WHERE st.SECURITY_SUB_TYPE_ID = sec.SECURITY_SUB_TYPE_ID)  AS subtype_name , sec.SECURITY_LOCATION , (SELECT  MIN(portfolio.SECURITY_MATURITY_DATE)  FROM CMS_PORTFOLIO_ITEM portfolio WHERE portfolio.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID AND (portfolio.STATUS IS NULL OR portfolio.STATUS <> 'DELETED'))  AS security_maturity_date , sec.STATUS , sec.SCI_SECURITY_CURRENCY  FROM CMS_SECURITY sec WHERE sec.SECURITY_SUB_TYPE_ID LIKE 'MS%' GROUP BY sec.SCI_SECURITY_DTL_ID, sec.CMS_COLLATERAL_ID, sec.SECURITY_SUB_TYPE_ID, sec.SECURITY_LOCATION, sec.STATUS, sec.SCI_SECURITY_CURRENCY
+
+  UNION 
+  SELECT  sec.SCI_SECURITY_DTL_ID , sec.CMS_COLLATERAL_ID , sec.SECURITY_SUB_TYPE_ID , (SELECT  st.SECURITY_TYPE_NAME || ' - ' || st.SUBTYPE_NAME  FROM CMS_SECURITY_SUB_TYPE st WHERE st.SECURITY_SUB_TYPE_ID = sec.SECURITY_SUB_TYPE_ID)  AS subtype_name , sec.SECURITY_LOCATION , (SELECT  MIN(deposit.DEPOSIT_MATURITY_DATE)  FROM CMS_CASH_DEPOSIT deposit WHERE deposit.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID AND (deposit.STATUS IS NULL OR deposit.STATUS <> 'DELETED'))  AS security_maturity_date , sec.STATUS , sec.SCI_SECURITY_CURRENCY  FROM CMS_SECURITY sec WHERE sec.SECURITY_SUB_TYPE_ID LIKE 'CS%' GROUP BY sec.SCI_SECURITY_DTL_ID, sec.CMS_COLLATERAL_ID, sec.SECURITY_SUB_TYPE_ID, sec.SECURITY_LOCATION, sec.STATUS, sec.SCI_SECURITY_CURRENCY
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_ACCOUNTMAPSECURITY
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_ACCOUNTMAPSECURITY" ("COLLATERALID", "AANO", "ACCOUTNO", "SUBTYPENAME", "STGCOLLATERALID", "SOURCEID", "GCIFNO") AS 
+  SELECT distinct (sec.CMS_COLLATERAL_ID) , pro.CMS_LSP_LMT_PROFILE_ID , acc.LSX_EXT_SYS_ACCT_NUM , sec.SUBTYPE_NAME , trx.STAGING_REFERENCE_ID , sec.SOURCE_ID , mainprofile.LMP_LE_ID  FROM SCI_LSP_LMT_PROFILE pro, SCI_LSP_APPR_LMTS lmt, CMS_LIMIT_SECURITY_MAP map, CMS_SECURITY sec, SCI_LSP_SYS_XREF acc, SCI_LSP_LMTS_XREF_MAP accmap, TRANSACTION trx, SCI_LE_MAIN_PROFILE mainprofile, SCI_LE_SUB_PROFILE subprofile where pro.CMS_LSP_LMT_PROFILE_ID = lmt.CMS_LIMIT_PROFILE_ID and lmt.CMS_LSP_APPR_LMTS_ID = map.CMS_LSP_APPR_LMTS_ID and map.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID and lmt.CMS_LSP_APPR_LMTS_ID = accmap.CMS_LSP_APPR_LMTS_ID and accmap.CMS_LSP_SYS_XREF_ID = acc.CMS_LSP_SYS_XREF_ID and mainprofile.LMP_LE_ID = subprofile.LSP_LE_ID and subprofile.LSP_LE_ID = pro.LLP_LE_ID and sec.SECURITY_SUB_TYPE_ID like 'MS%' and trx.REFERENCE_ID = sec.CMS_COLLATERAL_ID and trx.TRANSACTION_TYPE = 'COL'
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_BCA_DETAILS
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_BCA_DETAILS" ("CMS_LSP_LMT_PROFILE_ID", "LLP_LE_ID", "LLP_ID", "CMS_ORIG_COUNTRY", "CMS_ORIG_ORGANISATION", "CMS_TAT_CREATE_DATE", "CMS_BCA_STATUS", "LLP_EXTD_NEXT_RVW_DATE", "LLP_NEXT_ANNL_RVW_DATE", "CMS_BCA_CREATE_DATE", "LLP_BCA_REF_NUM", "LOS_BCA_REF_NUM", "LLP_BCA_REF_APPR_DATE", "CMS_BCA_LOCAL_IND", "CMS_BCA_RENEWAL_IND", "CMS_BFL_REQUIRED_IND", "CMS_FULL_DOC_REVIEW_IND", "LSP_SHORT_NAME", "LSP_LE_ID", "LSP_ID", "CMS_LE_SUB_PROFILE_ID", "CMS_LE_MAIN_PROFILE_ID", "CMS_NON_BORROWER_IND") AS 
+  SELECT  pf.CMS_LSP_LMT_PROFILE_ID , pf.LLP_LE_ID , pf.LLP_ID , pf.CMS_ORIG_COUNTRY , pf.CMS_ORIG_ORGANISATION , pf.CMS_TAT_CREATE_DATE , pf.CMS_BCA_STATUS , pf.LLP_EXTD_NEXT_RVW_DATE , pf.LLP_NEXT_ANNL_RVW_DATE , pf.CMS_BCA_CREATE_DATE , pf.LLP_BCA_REF_NUM , pf.LOS_BCA_REF_NUM , pf.LLP_BCA_REF_APPR_DATE , pf.CMS_BCA_LOCAL_IND , pf.CMS_BCA_RENEWAL_IND , pf.CMS_BFL_REQUIRED_IND , pf.CMS_FULL_DOC_REVIEW_IND , sp.LSP_SHORT_NAME , sp.LSP_LE_ID , sp.LSP_ID , sp.CMS_LE_SUB_PROFILE_ID , sp.CMS_LE_MAIN_PROFILE_ID , sp.CMS_NON_BORROWER_IND  FROM SCI_LE_SUB_PROFILE sp, SCI_LSP_LMT_PROFILE pf where pf.CMS_CUSTOMER_ID = sp.CMS_LE_SUB_PROFILE_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_BCA_SEC_MAP
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_BCA_SEC_MAP" ("CMS_LSP_LMT_PROFILE_ID", "CMS_CUSTOMER_ID", "CMS_COLLATERAL_ID", "SCI_SECURITY_DTL_ID", "LLP_LE_ID", "CMS_ORIG_COUNTRY", "CMS_ORIG_ORGANISATION", "SECURITY_LOCATION", "CMS_BCA_STATUS", "STATUS", "SECURITY_ORGANISATION", "CB_CUSTOMER_ID", "CB_ORIG_COUNTRY", "CB_ORIG_ORGANISATION", "CUSTOMER_CATEGORY", "LSP_SHORT_NAME", "LSP_LE_ID", "CB_LEGAL_NAME", "CB_LE_ID", "FAM_CODE", "FAM_NAME", "CUSTOMER_SEGMENT_CODE", "CUSTOMER_SEGMENT", "LLP_ID", "LSP_ID", "CB_LSP_ID") AS 
+  SELECT  p.CMS_LSP_LMT_PROFILE_ID , p.CMS_CUSTOMER_ID , sec.CMS_COLLATERAL_ID , sec.SCI_SECURITY_DTL_ID , p.LLP_LE_ID , p.CMS_ORIG_COUNTRY , p.CMS_ORIG_ORGANISATION , sec.SECURITY_LOCATION , p.CMS_BCA_STATUS , sec.STATUS , sec.SECURITY_ORGANISATION , 0  AS cb_customer_id , CAST (NULL AS CHAR(2))  AS cb_orig_country , CAST (NULL AS VARCHAR2(20))  AS cb_orig_organisation , 'MB'  AS customer_category , sp.LSP_SHORT_NAME , sp.LSP_LE_ID , '-'  AS cb_legal_name , CAST (NULL AS VARCHAR2(20))  AS cb_le_id , FAM.FAM_CODE , FAM.FAM_NAME , (SELECT  ENTRY_CODE  FROM COMMON_CODE_CATEGORY_ENTRY ccce, SCI_LE_MAIN_PROFILE mp WHERE ccce.CATEGORY_CODE = TO_CHAR(mp.LMP_SGMNT_CODE_NUM) AND ccce.ENTRY_CODE = mp.LMP_SGMNT_CODE_VALUE AND mp.CMS_LE_MAIN_PROFILE_ID = sp.CMS_LE_MAIN_PROFILE_ID)  AS customer_segment_code , (SELECT  ENTRY_NAME  FROM COMMON_CODE_CATEGORY_ENTRY ccce, SCI_LE_MAIN_PROFILE mp WHERE ccce.CATEGORY_CODE = TO_CHAR(mp.LMP_SGMNT_CODE_NUM) AND ccce.ENTRY_CODE = mp.LMP_SGMNT_CODE_VALUE AND mp.CMS_LE_MAIN_PROFILE_ID = sp.CMS_LE_MAIN_PROFILE_ID)  AS customer_segment , p.LLP_ID , sp.LSP_ID , 0  AS cb_lsp_id  FROM ((SELECT DISTINCT SCI_LAS_LLP_ID , CMS_COLLATERAL_ID  FROM CMS_LIMIT_SECURITY_MAP MAP WHERE MAP.UPDATE_STATUS_IND <> 'D' AND MAP.CUSTOMER_CATEGORY = 'MB' 
+  UNION 
+  (SELECT DISTINCT SCI_LAS_LLP_ID , MAP.CMS_COLLATERAL_ID  FROM SCI_LSP_LMT_PROFILE pf, CMS_LIMIT_SECURITY_MAP MAP, CMS_CHECKLIST chklist, TRANSACTION WHERE MAP.CMS_COLLATERAL_ID = chklist.CMS_COLLATERAL_ID AND TRANSACTION.REFERENCE_ID = chklist.CHECKLIST_ID AND MAP.SCI_LAS_LLP_ID = pf.LLP_ID AND pf.CMS_LSP_LMT_PROFILE_ID = chklist.CMS_LSP_LMT_PROFILE_ID AND TRANSACTION.STATUS <> 'OBSOLETE' AND TRANSACTION.TRANSACTION_TYPE = 'CHECKLIST' AND MAP.UPDATE_STATUS_IND = 'D' AND MAP.CUSTOMER_CATEGORY = 'MB' AND chklist.SUB_CATEGORY = 'MAIN_BORROWER' AND chklist.CATEGORY = 'S')) MAP), CMS_SECURITY sec, SCI_LE_SUB_PROFILE sp, SCI_LSP_LMT_PROFILE p LEFT JOIN CUST_LOC_FAM fam ON (p.CMS_CUSTOMER_ID = FAM.CUSTOMER_ID AND p.CMS_ORIG_COUNTRY = FAM.BKG_LOC_CTRY AND p.CMS_ORIG_ORGANISATION = FAM.BKG_LOC_ORG) WHERE p.LLP_ID = MAP.SCI_LAS_LLP_ID AND MAP.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID AND p.CMS_CUSTOMER_ID = sp.CMS_LE_SUB_PROFILE_ID 
+  UNION 
+  SELECT  p.CMS_LSP_LMT_PROFILE_ID , p.CMS_CUSTOMER_ID , sec.CMS_COLLATERAL_ID , sec.SCI_SECURITY_DTL_ID , p.LLP_LE_ID , p.CMS_ORIG_COUNTRY , p.CMS_ORIG_ORGANISATION , sec.SECURITY_LOCATION , p.CMS_BCA_STATUS , sec.STATUS , sec.SECURITY_ORGANISATION , cosp.CMS_LE_SUB_PROFILE_ID  AS cb_customer_id , cosp.CMS_SUB_ORIG_COUNTRY  AS cb_orig_country , cosp.CMS_SUB_ORIG_ORGANISATION  AS cb_orig_organisation , 'CB'  AS customer_category , sp.LSP_SHORT_NAME , sp.LSP_LE_ID , cosp.LSP_SHORT_NAME  AS cb_legal_name , cosp.LSP_LE_ID  AS cb_le_id , FAM.FAM_CODE , FAM.FAM_NAME , (SELECT  ENTRY_CODE  FROM COMMON_CODE_CATEGORY_ENTRY ccce, SCI_LE_MAIN_PROFILE mp WHERE ccce.CATEGORY_CODE = TO_CHAR(mp.LMP_SGMNT_CODE_NUM) AND ccce.ENTRY_CODE = mp.LMP_SGMNT_CODE_VALUE AND mp.CMS_LE_MAIN_PROFILE_ID = sp.CMS_LE_MAIN_PROFILE_ID)  AS customer_segment_code , (SELECT  ENTRY_NAME  FROM COMMON_CODE_CATEGORY_ENTRY ccce, SCI_LE_MAIN_PROFILE mp WHERE ccce.CATEGORY_CODE = TO_CHAR(mp.LMP_SGMNT_CODE_NUM) AND ccce.ENTRY_CODE = mp.LMP_SGMNT_CODE_VALUE AND mp.CMS_LE_MAIN_PROFILE_ID = sp.CMS_LE_MAIN_PROFILE_ID)  AS customer_segment , p.LLP_ID , sp.LSP_ID , cosp.LSP_ID  FROM ((SELECT DISTINCT SCI_LAS_LLP_ID , CMS_COLLATERAL_ID , co.CMS_CUSTOMER_ID  FROM CMS_LIMIT_SECURITY_MAP MAP, SCI_LSP_CO_BORROW_LMT co WHERE MAP.UPDATE_STATUS_IND <> 'D' AND MAP.CUSTOMER_CATEGORY = 'CB' AND co.CMS_LSP_CO_BORROW_LMT_ID = MAP.CMS_LSP_CO_BORROW_LMT_ID 
+  UNION 
+  (SELECT DISTINCT SCI_LAS_LLP_ID , MAP.CMS_COLLATERAL_ID , co.CMS_CUSTOMER_ID  FROM SCI_LSP_LMT_PROFILE pf, CMS_LIMIT_SECURITY_MAP MAP, CMS_CHECKLIST chklist, TRANSACTION trx, SCI_LSP_CO_BORROW_LMT co WHERE co.CMS_LSP_CO_BORROW_LMT_ID = MAP.CMS_LSP_CO_BORROW_LMT_ID AND MAP.CMS_COLLATERAL_ID = chklist.CMS_COLLATERAL_ID AND MAP.SCI_LAS_LLP_ID = pf.LLP_ID AND MAP.CUSTOMER_CATEGORY = 'CB' AND MAP.UPDATE_STATUS_IND = 'D' AND pf.CMS_LSP_LMT_PROFILE_ID = chklist.CMS_LSP_LMT_PROFILE_ID AND trx.REFERENCE_ID = chklist.CHECKLIST_ID AND trx.STATUS <> 'OBSOLETE' AND trx.TRANSACTION_TYPE = 'CHECKLIST' AND chklist.CATEGORY = 'CO_BORROWER' AND chklist.CATEGORY = 'S')) MAP), CMS_SECURITY sec, SCI_LE_SUB_PROFILE sp, SCI_LE_SUB_PROFILE cosp, SCI_LSP_LMT_PROFILE p LEFT JOIN CUST_LOC_FAM fam ON (p.CMS_CUSTOMER_ID = FAM.CUSTOMER_ID AND p.CMS_ORIG_COUNTRY = FAM.BKG_LOC_CTRY AND p.CMS_ORIG_ORGANISATION = FAM.BKG_LOC_ORG) WHERE p.LLP_ID = MAP.SCI_LAS_LLP_ID AND MAP.CMS_COLLATERAL_ID = sec.CMS_COLLATERAL_ID AND cosp.CMS_LE_SUB_PROFILE_ID = MAP.CMS_CUSTOMER_ID AND p.CMS_CUSTOMER_ID = sp.CMS_LE_SUB_PROFILE_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_CF_BL_IND
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_CF_BL_IND" ("CMS_LSP_LMT_PROFILE_ID", "HAS_CONTRACT_FINANCE", "HAS_BRIDGING_LOAN") AS 
+  SELECT  CMS_LSP_LMT_PROFILE_ID , (SELECT  'Y'  FROM SCI_LSP_APPR_LMTS APPR WHERE APPR.CMS_LIMIT_PROFILE_ID = SCI_LSP_LMT_PROFILE.CMS_LSP_LMT_PROFILE_ID AND APPR.LOAN_TYPE = 'CF' AND CMS_LIMIT_STATUS = 'ACTIVE' GROUP BY CMS_LIMIT_PROFILE_ID)  AS HASCONTRACT , (SELECT  'Y'  FROM SCI_LSP_APPR_LMTS APPR WHERE APPR.CMS_LIMIT_PROFILE_ID = SCI_LSP_LMT_PROFILE.CMS_LSP_LMT_PROFILE_ID AND APPR.LOAN_TYPE = 'BL' AND CMS_LIMIT_STATUS = 'ACTIVE' GROUP BY CMS_LIMIT_PROFILE_ID)  AS HASBRIDGING  FROM SCI_LSP_LMT_PROFILE WHERE SCI_LSP_LMT_PROFILE.CMS_BCA_STATUS = 'ACTIVE'
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_CMS_CAM_QUAR_FINAL_RPT
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_CMS_CAM_QUAR_FINAL_RPT" ("RM_REGION", "CAMID", "CMS_LE_SUB_PROFILE_ID", "SEGMENTNAME", "PARTYID", "RMNAME", "PARTYNAME", "CAMDATE", "FUNDEDAMOUNT", "NONFUNDED", "MEMO_EXPOSURE", "RAMRATING", "INDUSTRYNAME", "CONSTITUTION") AS 
+  SELECT distinct
+						  (SELECT region_name FROM cms_region WHERE id=sub_profile.rm_region
+						  )                          AS rm_region,
+             cam.cms_lsp_lmt_profile_id as camid,
+             sub_profile.cms_le_sub_profile_id,
+						cc_segment.entry_name AS segmentName,
+						  sub_profile.lsp_le_id      AS partyid,
+						  rm.rm_mgr_name             AS rmname,
+						  sub_profile.lsp_short_name AS partyname,
+              TO_CHAR(cam.LLP_BCA_REF_APPR_DATE,'DD/Mon/YYYY')  AS camdate,
+              sub_profile.TOTAL_FUNDED_LIMIT     AS fundedAmount,
+						  sub_profile.total_non_funded_limit AS nonfunded,
+						  sub_profile.memo_exposure,
+              cam.CMS_APPR_OFFICER_GRADE AS RAMRating,--same as riskGrade,
+              cc_industry.entry_name AS industryname,
+				    (SELECT entry_name from common_code_category_entry where entry_code = sub_profile.entity AND category_code = 'Entity')   AS Constitution
+              FROM SCI_LE_SUB_PROFILE sub_profile,
+						  common_code_category_entry cc_segment,
+						  cms_relationship_mgr rm,
+						  SCI_LSP_LMT_PROFILE cam,
+						  common_code_category_entry cc_rbi,
+						  common_code_category_entry cc_industry,
+			
+             SCI_LE_REG_ADDR ra ,
+						  cms_region reg
+			where
+         			sub_profile.lsp_sgmnt_code_value  =cc_segment.entry_code(+)
+						AND rm.id(+)                            = sub_profile.relation_mgr
+						AND sub_profile.cms_le_sub_profile_id   = cam.cms_customer_id(+)
+						AND cc_rbi.entry_code(+)                = sub_profile.RBI_IND_CODE
+						AND sub_profile.ind_nm                  =cc_industry.entry_code(+)
+			
+
+						AND (sub_profile.CMS_LE_MAIN_PROFILE_ID = ra.CMS_LE_MAIN_PROFILE_ID (+)
+						AND ra.LRA_TYPE_VALUE                   = 'CORPORATE')
+						AND to_char(reg.id)                              = to_char(ra.lra_region)
+			
+            AND (cc_industry.category_code          = 'HDFC_INDUSTRY'
+						OR cc_industry.category_code           IS NULL)
+            	AND (cc_segment.category_code           = 'HDFC_SEGMENT'
+						OR cc_segment.category_code            IS NULL)
+						AND (cc_segment.entry_code not in(select entry_code from common_code_category_entry 
+             where category_code='CAM_QUARTER_ACTIVITY_SEGMENT'  and active_status='1'))
+            AND (cc_rbi.category_code               = 'HDFC_RBI_CODE'
+						OR cc_rbi.category_code                IS NULL)
+						AND sub_profile.status                 != 'INACTIVE';
+--------------------------------------------------------
+--  DDL for View VW_COLLATERAL_VALUATION
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_COLLATERAL_VALUATION" ("A_CMS_COLLATERAL_ID", "A_SECURITY_LOCATION", "A_SECURITY_SUB_TYPE_ID", "A_SCI_SECURITY_CURRENCY", "A_CMV", "A_CMV_CURRENCY", "A_FSV", "A_FSV_CURRENCY", "A_VERSION_TIME", "A_MARGIN", "SECURITY_TYPE", "S_CMS_COLLATERAL_ID", "S_SECURITY_LOCATION", "S_SECURITY_SUB_TYPE_ID", "S_SCI_SECURITY_CURRENCY", "S_CMV", "S_CMV_CURRENCY", "S_FSV", "S_FSV_CURRENCY", "S_VERSION_TIME", "S_MARGIN", "A_V_VALUATION_ID", "A_V_VALUATION_CURRENCY", "A_V_VALUATION_DATE", "A_V_VALUER", "A_V_CMV", "A_V_FSV", "A_V_VALUE_BEFORE_MARGIN", "A_V_REVAL_FREQ", "A_V_REVAL_FREQ_UNIT", "A_V_CMS_COLLATERAL_ID", "A_V_NON_REVAL_FREQ", "A_V_NON_REVAL_FREQ_UNIT", "A_V_COMMENTS", "S_V_VALUATION_ID", "S_V_VALUATION_CURRENCY", "S_V_VALUATION_DATE", "S_V_VALUER", "S_V_CMV", "S_V_FSV", "S_V_VALUE_BEFORE_MARGIN", "S_V_REVAL_FREQ", "S_V_REVAL_FREQ_UNIT", "S_V_CMS_COLLATERAL_ID", "S_V_NON_REVAL_FREQ", "S_V_NON_REVAL_FREQ_UNIT", "S_V_COMMENTS", "TRANSACTION_ID") AS 
+  SELECT  CMS_SECURITY.CMS_COLLATERAL_ID  AS a_cms_collateral_id , CMS_SECURITY.SECURITY_LOCATION  AS a_security_location , CMS_SECURITY.SECURITY_SUB_TYPE_ID  AS a_security_sub_type_id , CMS_SECURITY.SCI_SECURITY_CURRENCY  AS a_sci_security_currency , CMS_SECURITY.CMV  AS a_cmv , CMS_SECURITY.CMV_CURRENCY  AS a_cmv_currency , CMS_SECURITY.FSV  AS a_fsv , CMS_SECURITY.FSV_CURRENCY  AS a_fsv_currency , CMS_SECURITY.VERSION_TIME  AS a_version_time , CMS_SECURITY.MARGIN  AS a_margin , CMS_SECURITY.SCI_SECURITY_TYPE_VALUE  AS security_type , CMS_STAGE_SECURITY.CMS_COLLATERAL_ID  AS s_cms_collateral_id , CMS_STAGE_SECURITY.SECURITY_LOCATION  AS s_security_location , CMS_STAGE_SECURITY.SECURITY_SUB_TYPE_ID  AS s_security_sub_type_id , CMS_STAGE_SECURITY.SCI_SECURITY_CURRENCY  AS s_sci_security_currency , CMS_STAGE_SECURITY.CMV  AS s_cmv , CMS_STAGE_SECURITY.CMV_CURRENCY  AS s_cmv_currency , CMS_STAGE_SECURITY.FSV  AS s_fsv , CMS_STAGE_SECURITY.FSV_CURRENCY  AS s_fsv_currency , CMS_STAGE_SECURITY.VERSION_TIME  AS s_version_time , CMS_STAGE_SECURITY.MARGIN  AS s_margin , a_cms_valuation.VALUATION_ID  AS a_v_valuation_id , a_cms_valuation.VALUATION_CURRENCY  AS a_v_valuation_currency , a_cms_valuation.VALUATION_DATE  AS a_v_valuation_date , a_cms_valuation.VALUER  AS a_v_valuer , a_cms_valuation.CMV  AS a_v_cmv , a_cms_valuation.FSV  AS a_v_fsv , a_cms_valuation.VALUE_BEFORE_MARGIN  AS a_v_value_before_margin , a_cms_valuation.REVAL_FREQ  AS a_v_reval_freq , a_cms_valuation.REVAL_FREQ_UNIT  AS a_v_reval_freq_unit , a_cms_valuation.CMS_COLLATERAL_ID  AS a_v_cms_collateral_id , a_cms_valuation.NON_REVAL_FREQ  AS a_v_non_reval_freq , a_cms_valuation.NON_REVAL_FREQ_UNIT  AS a_v_non_reval_freq_unit , a_cms_valuation.COMMENTS  AS a_v_comments , s_cms_valuation.VALUATION_ID  AS s_v_valuation_id , s_cms_valuation.VALUATION_CURRENCY  AS s_v_valuation_currency , s_cms_valuation.VALUATION_DATE  AS s_v_valuation_date , s_cms_valuation.VALUER  AS s_v_valuer , s_cms_valuation.CMV  AS s_v_cmv , s_cms_valuation.FSV  AS s_v_fsv , s_cms_valuation.VALUE_BEFORE_MARGIN  AS s_v_value_before_margin , s_cms_valuation.REVAL_FREQ  AS s_v_reval_freq , s_cms_valuation.REVAL_FREQ_UNIT  AS s_v_reval_freq_unit , s_cms_valuation.CMS_COLLATERAL_ID  AS s_v_cms_collateral_id , s_cms_valuation.NON_REVAL_FREQ  AS s_v_non_reval_freq , s_cms_valuation.NON_REVAL_FREQ_UNIT  AS s_v_non_reval_freq_unit , s_cms_valuation.COMMENTS  AS s_v_comments , TRANSACTION_ID  FROM TRANSACTION, CMS_STAGE_SECURITY, CMS_SECURITY, ((SELECT  ts_val_2.VALUATION_ID , ts_val_2.VALUATION_CURRENCY , ts_val_2.VALUATION_DATE , ts_val_2.VALUER , ts_val_2.CMV , ts_val_2.FSV , ts_val_2.VALUE_BEFORE_MARGIN , ts_val_2.REVAL_FREQ , ts_val_2.REVAL_FREQ_UNIT , ts_val_2.CMS_COLLATERAL_ID , ts_val_2.NON_REVAL_FREQ , ts_val_2.NON_REVAL_FREQ_UNIT , ts_val_2.COMMENTS  FROM CMS_STAGE_VALUATION ts_val_2, ((SELECT  MAX(VALUATION_ID)  AS valuation_id  FROM CMS_STAGE_VALUATION GROUP BY CMS_COLLATERAL_ID) ts_val_1) WHERE ts_val_2.VALUATION_ID = ts_val_1.VALUATION_ID) s_cms_valuation), ((SELECT  ta_val_2.VALUATION_ID , ta_val_2.VALUATION_CURRENCY , ta_val_2.VALUATION_DATE , ta_val_2.VALUER , ta_val_2.CMV , ta_val_2.FSV , ta_val_2.VALUE_BEFORE_MARGIN , ta_val_2.REVAL_FREQ , ta_val_2.REVAL_FREQ_UNIT , ta_val_2.CMS_COLLATERAL_ID , ta_val_2.NON_REVAL_FREQ , ta_val_2.NON_REVAL_FREQ_UNIT , ta_val_2.COMMENTS  FROM CMS_VALUATION ta_val_2, ((SELECT  MAX(VALUATION_ID)  AS valuation_id  FROM CMS_VALUATION GROUP BY CMS_COLLATERAL_ID) ta_val_1) WHERE ta_val_2.VALUATION_ID = ta_val_1.VALUATION_ID) a_cms_valuation) WHERE REFERENCE_ID = CMS_SECURITY.CMS_COLLATERAL_ID AND STAGING_REFERENCE_ID = CMS_STAGE_SECURITY.CMS_COLLATERAL_ID AND CMS_SECURITY.CMS_COLLATERAL_ID = a_cms_valuation.CMS_COLLATERAL_ID AND CMS_STAGE_SECURITY.CMS_COLLATERAL_ID = s_cms_valuation.CMS_COLLATERAL_ID AND TRANSACTION_TYPE = 'COL' AND CMS_SECURITY.SECURITY_SUB_TYPE_ID <> 'NA'
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_EARMARK_GROUP
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_EARMARK_GROUP" ("FEED_ID", "COUNTRY", "EARMARK_CURRENT", "EARMARK_HOLDING", "LAST_QUOTA_BREACH_DATE", "LAST_MAX_CAP_BREACH_DATE", "TOTAL_NO_OF_UNITS", "ENTITY") AS 
+  (SELECT  emg.FEED_ID , (SELECT  ccce.COUNTRY  from COMMON_CODE_CATEGORY_ENTRY ccce where ccce.CATEGORY_CODE = '37' and ccce.ENTRY_CODE = emg.SOURCE_SYSTEM_ID and ACTIVE_STATUS = '1')  AS country , sum(emg.EARMARK_CURRENT)  AS earmark_current , sum(emg.EARMARK_HOLDING)  AS earmark_holding , max(LAST_QUOTA_BREACH_DATE)  AS last_quota_breach_date , max(LAST_MAX_CAP_BREACH_DATE)  AS last_max_cap_breach_date , (sum(emg.TOTAL_NO_OF_UNITS) + sum(COALESCE(emg.CMS_ACTUAL_HOLDING, 0)))  AS total_no_of_units , emg.SOURCE_SYSTEM_ID  AS entity  FROM CMS_EARMARK_GROUP emg where emg.STATUS = 'ACTIVE' GROUP BY FEED_ID, SOURCE_SYSTEM_ID)
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_FAM
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_FAM" ("FAM_NAME", "FAM_CODE", "CUSTOMER_ID", "BKG_LOC_CTRY", "BKG_LOC_ORG", "FAM_COUNT") AS 
+  SELECT  MIN(LEM_EMP_NAME) , MIN(LEM_EMP_CODE) , CMS_LE_SUB_PROFILE_ID , LEM_EMP_BKG_LOC_CTRY , LEM_EMP_BKG_LOC_ORG , COUNT(*)  FROM SCI_LSP_EMP_MAP WHERE LEM_EMP_TYPE_VALUE = 'FAM' AND (UPDATE_STATUS_IND = 'D' OR UPDATE_STATUS_IND IS NULL) GROUP BY CMS_LE_SUB_PROFILE_ID, LEM_EMP_BKG_LOC_CTRY, LEM_EMP_BKG_LOC_ORG HAVING COUNT(*) = 1 
+  UNION 
+  SELECT  MIN(LEM_EMP_NAME) , MIN(LEM_EMP_CODE) , CMS_LE_SUB_PROFILE_ID , LEM_EMP_BKG_LOC_CTRY , LEM_EMP_BKG_LOC_ORG , COUNT(*)  FROM SCI_LSP_EMP_MAP WHERE LEM_EMP_TYPE_VALUE = 'FAM' AND LEM_PRINCIPAL_FAM_IND = 'Y' AND (UPDATE_STATUS_IND = 'D' OR UPDATE_STATUS_IND IS NULL) GROUP BY CMS_LE_SUB_PROFILE_ID, LEM_EMP_BKG_LOC_CTRY, LEM_EMP_BKG_LOC_ORG
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_LATEST_VALUATION
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_LATEST_VALUATION" ("VALUATION_ID", "VALUATION_DATE", "VALUER", "SOURCE_ID", "SOURCE_TYPE", "CMS_COLLATERAL_ID", "VALUATION_CURRENCY", "OLV") AS 
+  SELECT  VALUATION_ID , VALUATION_DATE , VALUER , SOURCE_ID , SOURCE_TYPE , CMS_COLLATERAL_ID , VALUATION_CURRENCY , OLV  from CMS_VALUATION where VALUATION_ID in (SELECT  max(VALUATION_ID)  from CMS_VALUATION group BY CMS_COLLATERAL_ID)
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_LMT_REDUCED_TOONEUNIT
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_LMT_REDUCED_TOONEUNIT" ("CMS_LSP_LMT_PROFILE_ID", "CMS_LSP_APPR_LMTS_ID", "LMT_ID", "LMTCCY", "TOTALAPPRLIMIT", "TOTALACTIVATEDLIMIT", "LMT_PRD_TYPE_NUM", "LMT_PRD_TYPE_VALUE", "LMT_TYPE_VALUE", "CMS_OUTER_LMT_REF") AS 
+  (SELECT  b.CMS_LSP_LMT_PROFILE_ID  AS profileid , c.CMS_LSP_APPR_LMTS_ID , c.LMT_ID , c.LMT_CRRNCY_ISO_CODE , c.LMT_AMT  AS totalapprlimit , c.CMS_ACTIVATED_LIMIT  AS totalactivatedlimit , c.LMT_PRD_TYPE_NUM  AS lmt_prd_type_num , c.LMT_PRD_TYPE_VALUE  AS lmt_prd_type_value , c.LMT_TYPE_VALUE , c.CMS_OUTER_LMT_REF  FROM SCI_LSP_LMT_PROFILE b, SCI_LSP_APPR_LMTS c WHERE c.CMS_ACTIVATED_LIMIT = 1 AND b.CMS_LSP_LMT_PROFILE_ID = c.CMS_LIMIT_PROFILE_ID)
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_MBS_FOREIGNER
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_MBS_FOREIGNER" ("CMS_LE_MAIN_PROFILE_ID", "LMP_LE_ID", "LMP_LONG_NAME", "LMP_SHORT_NAME", "LMP_LEGAL_CONST_NUM", "LMP_LEGAL_CONST_VALUE", "LMP_INC_CNTRY_ISO_CODE", "LMP_INC_NUM_TEXT", "LMP_TYPE_NUM", "LMP_INC_DATE", "LMP_TYPE_VALUE", "LMP_REL_START_DATE", "LMP_SGMNT_CODE_NUM", "LMP_SGMNT_CODE_VALUE", "LMP_SUB_SGMNT_CODE_NUM", "LMP_SUB_SGMNT_CODE_VALUE", "LMP_BSL_SGMNT_CODE_NUM", "LMP_BSL_SGMNT_CODE_VALUE", "LMP_BIZ_TYPE_NUM", "LMP_BSL_SUB_SGMNT_CODE_NUM", "LMP_BIZ_TYPE_VALUE", "LMP_BSL_SUB_SGMNT_CODE_VALUE", "LMP_ENV_RISK_GRADE_NUM", "LMP_ENV_RISK_GRADE_VALUE", "LMP_TOP_1000_BANK_IND", "LMP_OPR_STATUS_1_NUM", "LMP_OPR_STATUS_1_VALUE", "LMP_OPR_STATUS_1_EFF_DATE", "LMP_RFRRL_STATUS_NUM", "LMP_RFRRL_STATUS_VALUE", "LE_REG_ADDR_CHK_IND", "LE_INSTRC_REF_CHK_IND", "LE_ISIC_DTL_CHK_IND", "LE_CREDIT_GRADE_CHK_IND", "LE_CREDIT_STATUS_CHK_IND", "LE_KYC_CHK_IND", "LE_GRP_MAP_CHK_IND", "LE_PROFILE_CHK_IND", "LE_SUB_PROFILE_CHK_IND", "PROGRESS_STATUS_NUM", "PROGRESS_STATUS_VALUE", "CREATE_USER_ID", "LAST_UPDATE_USER_ID", "VERIFY_USER_ID", "CREATE_DATE", "LAST_UPDATE_DATE", "VERIFY_DATE", "UPDATE_COUNT", "UPDATE_STATUS_IND", "LOCK_IND", "LOCK_USER_ID", "MAKER_HUB_LOCTN_NUM", "CHANGE_IND", "MAKER_HUB_LOCTN_VALUE", "CMS_BLACK_LISTED_IND", "CMS_VERSION_TIME", "SOURCE_ID", "LMP_BIZ_GROUP", "LMP_TFA_AMT", "LMP_INCOME_CODE_NUM", "LMP_INCOME_CODE_VALUE", "LMP_BIZ_SECTOR_CODE_NUM", "LMP_BIZ_SECTOR_CODE_VALUE", "LMP_ID_OLD_NUM", "LMP_CTRY_PM_CODE_NUM", "LMP_CTRY_PM_CODE_VALUE", "LMP_LANG_CODE_NUM", "LMP_LANG_CODE_VALUE", "LMP_LE_ID_SRC_NUM", "LMP_LE_ID_SRC_VALUE", "LMP_ID_TYPE_NUM", "LMP_ID_TYPE_VALUE", "LMP_ID_NUMBER", "LMP_ID_COUNTRY_ISSUED", "LMP_ID_STARTDATE", "LMP_SECOND_ID_TYPE_NUM", "LMP_SECOND_ID_TYPE_VALUE", "LMP_SECOND_ID_NUMBER", "LMP_SECOND_ID_COUNTRY_ISSUED", "LMP_SECOND_ID_STARTDATE", "LMP_THIRD_ID_TYPE_NUM", "LMP_THIRD_ID_TYPE_VALUE", "LMP_THIRD_ID_NUMBER", "LMP_THIRD_ID_COUNTRY_ISSUED", "LMP_THIRD_ID_STARTDATE", "LMP_ACC_OFFICER_NUM", "LMP_ACC_OFFICER_VALUE") AS 
+  SELECT  "CMS_LE_MAIN_PROFILE_ID","LMP_LE_ID","LMP_LONG_NAME","LMP_SHORT_NAME","LMP_LEGAL_CONST_NUM","LMP_LEGAL_CONST_VALUE","LMP_INC_CNTRY_ISO_CODE","LMP_INC_NUM_TEXT","LMP_TYPE_NUM","LMP_INC_DATE","LMP_TYPE_VALUE","LMP_REL_START_DATE","LMP_SGMNT_CODE_NUM","LMP_SGMNT_CODE_VALUE","LMP_SUB_SGMNT_CODE_NUM","LMP_SUB_SGMNT_CODE_VALUE","LMP_BSL_SGMNT_CODE_NUM","LMP_BSL_SGMNT_CODE_VALUE","LMP_BIZ_TYPE_NUM","LMP_BSL_SUB_SGMNT_CODE_NUM","LMP_BIZ_TYPE_VALUE","LMP_BSL_SUB_SGMNT_CODE_VALUE","LMP_ENV_RISK_GRADE_NUM","LMP_ENV_RISK_GRADE_VALUE","LMP_TOP_1000_BANK_IND","LMP_OPR_STATUS_1_NUM","LMP_OPR_STATUS_1_VALUE","LMP_OPR_STATUS_1_EFF_DATE","LMP_RFRRL_STATUS_NUM","LMP_RFRRL_STATUS_VALUE","LE_REG_ADDR_CHK_IND","LE_INSTRC_REF_CHK_IND","LE_ISIC_DTL_CHK_IND","LE_CREDIT_GRADE_CHK_IND","LE_CREDIT_STATUS_CHK_IND","LE_KYC_CHK_IND","LE_GRP_MAP_CHK_IND","LE_PROFILE_CHK_IND","LE_SUB_PROFILE_CHK_IND","PROGRESS_STATUS_NUM","PROGRESS_STATUS_VALUE","CREATE_USER_ID","LAST_UPDATE_USER_ID","VERIFY_USER_ID","CREATE_DATE","LAST_UPDATE_DATE","VERIFY_DATE","UPDATE_COUNT","UPDATE_STATUS_IND","LOCK_IND","LOCK_USER_ID","MAKER_HUB_LOCTN_NUM","CHANGE_IND","MAKER_HUB_LOCTN_VALUE","CMS_BLACK_LISTED_IND","CMS_VERSION_TIME","SOURCE_ID","LMP_BIZ_GROUP","LMP_TFA_AMT","LMP_INCOME_CODE_NUM","LMP_INCOME_CODE_VALUE","LMP_BIZ_SECTOR_CODE_NUM","LMP_BIZ_SECTOR_CODE_VALUE","LMP_ID_OLD_NUM","LMP_CTRY_PM_CODE_NUM","LMP_CTRY_PM_CODE_VALUE","LMP_LANG_CODE_NUM","LMP_LANG_CODE_VALUE","LMP_LE_ID_SRC_NUM","LMP_LE_ID_SRC_VALUE","LMP_ID_TYPE_NUM","LMP_ID_TYPE_VALUE","LMP_ID_NUMBER","LMP_ID_COUNTRY_ISSUED","LMP_ID_STARTDATE","LMP_SECOND_ID_TYPE_NUM","LMP_SECOND_ID_TYPE_VALUE","LMP_SECOND_ID_NUMBER","LMP_SECOND_ID_COUNTRY_ISSUED","LMP_SECOND_ID_STARTDATE","LMP_THIRD_ID_TYPE_NUM","LMP_THIRD_ID_TYPE_VALUE","LMP_THIRD_ID_NUMBER","LMP_THIRD_ID_COUNTRY_ISSUED","LMP_THIRD_ID_STARTDATE","LMP_ACC_OFFICER_NUM","LMP_ACC_OFFICER_VALUE" from SCI_LE_MAIN_PROFILE where LMP_TYPE_VALUE in ('MN', 'MO', 'MZ', 'PP', 'ZN', 'ZX', 'ZZ', 'ZO') and SOURCE_ID = '700'
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_PASSWORD_POLICY_HIST
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_PASSWORD_POLICY_HIST" ("TIME_STAMP", "UPDATE_BY", "NUMBER_WARN_DAYS_CHANGES", "PWD_MAX_AGE_CHANGES", "MAX_REPEATED_CHARS_CHANGES", "PWD_MIN_AGE_CHANGES", "MIN_ALPHA_CHARS_CHANGES", "PWD_MIN_LENGTH_CHANGES", "PWD_MAX_LENGTH_CHANGES", "PWD_HISTORY_CHANGES") AS 
+  SELECT  TIME_STAMP , UPDATE_BY , CASE WHEN OLD_NUMBER_WARN_DAYS <> NEW_NUMBER_WARN_DAYS THEN 'FROM [' || RTRIM(TO_CHAR(OLD_NUMBER_WARN_DAYS)) || '] TO [' || RTRIM(TO_CHAR(NEW_NUMBER_WARN_DAYS)) || ']' ELSE 'N' END , CASE WHEN OLD_PWD_MAX_AGE <> NEW_PWD_MAX_AGE THEN 'FROM [' || RTRIM(TO_CHAR(OLD_PWD_MAX_AGE)) || '] TO [' || RTRIM(TO_CHAR(NEW_PWD_MAX_AGE)) || ']' ELSE 'N' END , CASE WHEN OLD_MAX_REPEATED_CHARS <> NEW_MAX_REPEATED_CHARS THEN 'FROM [' || RTRIM(TO_CHAR(OLD_MAX_REPEATED_CHARS)) || '] TO [' || RTRIM(TO_CHAR(NEW_MAX_REPEATED_CHARS)) || ']' ELSE 'N' END , CASE WHEN OLD_PWD_MIN_AGE <> NEW_PWD_MIN_AGE THEN 'FROM [' || RTRIM(TO_CHAR(OLD_PWD_MIN_AGE)) || '] TO [' || RTRIM(TO_CHAR(NEW_PWD_MIN_AGE)) || ']' ELSE 'N' END , CASE WHEN OLD_MIN_ALPHA_CHARS <> NEW_MIN_ALPHA_CHARS THEN 'FROM [' || RTRIM(TO_CHAR(OLD_MIN_ALPHA_CHARS)) || '] TO [' || RTRIM(TO_CHAR(NEW_MIN_ALPHA_CHARS)) || ']' ELSE 'N' END , CASE WHEN OLD_PWD_MIN_LENGTH <> NEW_PWD_MIN_LENGTH THEN 'FROM [' || RTRIM(TO_CHAR(OLD_PWD_MIN_LENGTH)) || '] TO [' || RTRIM(TO_CHAR(NEW_PWD_MIN_LENGTH)) || ']' ELSE 'N' END , CASE WHEN OLD_PWD_MAX_LENGTH <> NEW_PWD_MAX_LENGTH THEN 'FROM [' || RTRIM(TO_CHAR(OLD_PWD_MAX_LENGTH)) || '] TO [' || RTRIM(TO_CHAR(NEW_PWD_MAX_LENGTH)) || ']' ELSE 'N' END , CASE WHEN OLD_PWD_HISTORY <> NEW_PWD_HISTORY THEN 'FROM [' || RTRIM(TO_CHAR(OLD_PWD_HISTORY)) || '] TO [' || RTRIM(TO_CHAR(NEW_PWD_HISTORY)) || ']' ELSE 'N' END  FROM CMS_PASSWORD_POLICY_HISTORY
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_PORTFOLIO_ITEM_FEED_ID
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_PORTFOLIO_ITEM_FEED_ID" ("ITEM_ID", "TYPE", "CERTIFICATE_NO", "REGISTERED_NAME", "ISSUER_NAME", "NO_OF_UNITS", "NOMINAL_VALUE", "AGENT_NAME", "AGENT_CONFIRM_DATE", "BOND_ISSUE_DATE", "BOND_MATURITY_DATE", "CURRENCY_CODE", "CMS_COLLATERAL_ID", "IS_BLACKLISTED", "SETTLEMENT_ORG", "ISSUER_ID_TYPE", "STOCK_EXCHANGE", "STOCK_EXCHANGE_COUNTRY", "INDEX_NAME", "RIC", "BASEL_COMPLIANT_TEXT", "CMV", "FSV", "CMV_CURRENCY", "FSV_CURRENCY", "LOCAL_EXCHANGE", "GOVT_GUARANTEE", "NAME_OF_GOVT", "LEAD_MANAGER", "EXCHANGE_CONTROL_OBTAINED", "SECURITY_CUSTODIAN", "SECURITY_MATURITY_DATE", "CMS_REF_ID", "UNIT_PRICE", "UNIT_PRICE_CURRENCY", "STATUS", "CUSTODIAN_TYPE", "BOND_RATING", "COUNTER_CODE", "STOCK_CODE", "ISIN_CODE", "RECOVERY_DATE", "HOLDING_PERIOD", "HOLDING_PERIOD_UOM", "RECOGNIZED_EXCHANGE_FLAG", "SOURCE_ID", "CLIENT_CODE", "CDS_NUMBER", "EXERCISE_PRICE", "BROKER_NAME", "EXCHANGE_CONTROL_DATE", "RECOGN_EXCHANGE", "IS_LEGAL_ENFORCE_DATE", "FEED_ID") AS 
+  SELECT  pi."ITEM_ID",pi."TYPE",pi."CERTIFICATE_NO",pi."REGISTERED_NAME",pi."ISSUER_NAME",pi."NO_OF_UNITS",pi."NOMINAL_VALUE",pi."AGENT_NAME",pi."AGENT_CONFIRM_DATE",pi."BOND_ISSUE_DATE",pi."BOND_MATURITY_DATE",pi."CURRENCY_CODE",pi."CMS_COLLATERAL_ID",pi."IS_BLACKLISTED",pi."SETTLEMENT_ORG",pi."ISSUER_ID_TYPE",pi."STOCK_EXCHANGE",pi."STOCK_EXCHANGE_COUNTRY",pi."INDEX_NAME",pi."RIC",pi."BASEL_COMPLIANT_TEXT",pi."CMV",pi."FSV",pi."CMV_CURRENCY",pi."FSV_CURRENCY",pi."LOCAL_EXCHANGE",pi."GOVT_GUARANTEE",pi."NAME_OF_GOVT",pi."LEAD_MANAGER",pi."EXCHANGE_CONTROL_OBTAINED",pi."SECURITY_CUSTODIAN",pi."SECURITY_MATURITY_DATE",pi."CMS_REF_ID",pi."UNIT_PRICE",pi."UNIT_PRICE_CURRENCY",pi."STATUS",pi."CUSTODIAN_TYPE",pi."BOND_RATING",pi."COUNTER_CODE",pi."STOCK_CODE",pi."ISIN_CODE",pi."RECOVERY_DATE",pi."HOLDING_PERIOD",pi."HOLDING_PERIOD_UOM",pi."RECOGNIZED_EXCHANGE_FLAG",pi."SOURCE_ID",pi."CLIENT_CODE",pi."CDS_NUMBER",pi."EXERCISE_PRICE",pi."BROKER_NAME",pi."EXCHANGE_CONTROL_DATE",pi."RECOGN_EXCHANGE",pi."IS_LEGAL_ENFORCE_DATE", pf.FEED_ID  from CMS_PORTFOLIO_ITEM pi, CMS_PRICE_FEED pf where (pi.STOCK_CODE = pf.TICKER and pi.STOCK_CODE <> '') or (pi.ISIN_CODE = pf.ISIN_CODE and pi.ISIN_CODE <> '') or (pi.RIC = pf.RIC and pi.RIC <> '')
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_PROPERTY_BY_ALL_BU
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_PROPERTY_BY_ALL_BU" ("CMS_COLLATERAL_ID", "SECURITY_SUB_TYPE_ID", "FSV_BALANCE", "FSV_BALANCE_CCY", "COUNTRY", "CMS_LSP_APPR_LMTS_ID", "CMS_LSP_LMT_PROFILE_ID", "LLP_SEGMENT_CODE_VALUE", "LSM_CREATE_DATE", "LSM_ID") AS 
+  SELECT  sec.CMS_COLLATERAL_ID , sec.SECURITY_SUB_TYPE_ID , sec.FSV_BALANCE , sec.FSV_BALANCE_CCY , sec.SECURITY_LOCATION , appr.CMS_LSP_APPR_LMTS_ID , lmt.CMS_LSP_LMT_PROFILE_ID , lmt.LLP_SEGMENT_CODE_VALUE , lsm.CREATE_DATE , lsm.CHARGE_ID  from CMS_SECURITY sec, CMS_LIMIT_SECURITY_MAP lsm, SCI_LSP_APPR_LMTS appr, SCI_LSP_LMT_PROFILE lmt where sec.CMS_COLLATERAL_ID = lsm.CMS_COLLATERAL_ID and lsm.CMS_LSP_APPR_LMTS_ID = appr.CMS_LSP_APPR_LMTS_ID and appr.CMS_LIMIT_PROFILE_ID = lmt.CMS_LSP_LMT_PROFILE_ID and substr(SECURITY_SUB_TYPE_ID, 1, 2) = 'PT' and sec.IS_LEGAL_ENFORCE = 'Y' and (sec.STATUS is null or sec.STATUS = 'ACTIVE') and (lsm.UPDATE_STATUS_IND is null or lsm.UPDATE_STATUS_IND <> 'D') and (appr.UPDATE_STATUS_IND is null or appr.UPDATE_STATUS_IND <> 'D')
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_PROPERTY_BY_FIRST_BU
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_PROPERTY_BY_FIRST_BU" ("CMS_COLLATERAL_ID", "SECURITY_SUB_TYPE_ID", "FSV_BALANCE", "FSV_BALANCE_CCY", "COUNTRY", "CMS_LSP_APPR_LMTS_ID", "CMS_LSP_LMT_PROFILE_ID", "LLP_SEGMENT_CODE_VALUE", "LSM_CREATE_DATE", "LSM_ID") AS 
+  SELECT  abu.CMS_COLLATERAL_ID , abu.SECURITY_SUB_TYPE_ID , abu.FSV_BALANCE , abu.FSV_BALANCE_CCY , abu.COUNTRY , abu.CMS_LSP_APPR_LMTS_ID , abu.CMS_LSP_LMT_PROFILE_ID , abu.LLP_SEGMENT_CODE_VALUE , abu.LSM_CREATE_DATE , abu.LSM_ID  from VW_PROPERTY_BY_ALL_BU abu, VW_PROPERTY_KEY_BY_FIRST_BU fbu where abu.CMS_COLLATERAL_ID = fbu.CMS_COLLATERAL_ID and abu.LSM_CREATE_DATE = fbu.FIRST_LSM_CREATE_DATE
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_PROPERTY_KEY_BY_FIRST_BU
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_PROPERTY_KEY_BY_FIRST_BU" ("CMS_COLLATERAL_ID", "FIRST_LSM_CREATE_DATE") AS 
+  SELECT  CMS_COLLATERAL_ID , min(LSM_CREATE_DATE)  from VW_PROPERTY_BY_ALL_BU group BY CMS_COLLATERAL_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_SECURITY_BY_ALL_BUE
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_SECURITY_BY_ALL_BUE" ("CMS_COLLATERAL_ID", "SECURITY_TYPE", "FSV_BALANCE", "FSV_BALANCE_CCY", "COUNTRY", "CMS_LSP_APPR_LMTS_ID", "CMS_LSP_LMT_PROFILE_ID", "LLP_SEGMENT_CODE_VALUE", "LSM_CREATE_DATE", "LSM_ID") AS 
+  SELECT  sec.CMS_COLLATERAL_ID , substr(sec.SECURITY_SUB_TYPE_ID, 1, 2) , sec.FSV_BALANCE , sec.FSV_BALANCE_CCY , sec.SECURITY_LOCATION , appr.CMS_LSP_APPR_LMTS_ID , lmt.CMS_LSP_LMT_PROFILE_ID , lmt.LLP_SEGMENT_CODE_VALUE , lsm.CREATE_DATE , lsm.CHARGE_ID  from CMS_SECURITY sec, CMS_LIMIT_SECURITY_MAP lsm, SCI_LSP_APPR_LMTS appr, SCI_LSP_LMT_PROFILE lmt where sec.CMS_COLLATERAL_ID = lsm.CMS_COLLATERAL_ID and lsm.CMS_LSP_APPR_LMTS_ID = appr.CMS_LSP_APPR_LMTS_ID and appr.CMS_LIMIT_PROFILE_ID = lmt.CMS_LSP_LMT_PROFILE_ID and sec.IS_LEGAL_ENFORCE = 'Y' and (sec.STATUS is null or sec.STATUS = 'ACTIVE') and (lsm.UPDATE_STATUS_IND is null or lsm.UPDATE_STATUS_IND <> 'D') and (appr.UPDATE_STATUS_IND is null or appr.UPDATE_STATUS_IND <> 'D')
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_SECURITY_DETAILS
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_SECURITY_DETAILS" ("CMS_COLLATERAL_ID", "SCI_SECURITY_DTL_ID", "SECURITY_SUB_TYPE_ID", "ORIGIN_SECURITY_SUB_TYPE_ID", "SUBTYPE_NAME", "FSV", "FSV_CURRENCY", "RPT_CHARGE_DETAILS", "RPT_COLLATERAL_PARTICULARS", "SCI_SECURITY_CURRENCY", "SECURITY_LOCATION", "SECURITY_MATURITY_DATE", "STATUS") AS 
+  SELECT  sec.CMS_COLLATERAL_ID , sec.SCI_SECURITY_DTL_ID , COALESCE((SELECT  ccce.ENTRY_NAME  FROM COMMON_CODE_CATEGORY_ENTRY ccce WHERE ccce.CATEGORY_CODE = 'SEC_SUBTYP' AND ccce.ENTRY_CODE = sec.SECURITY_SUB_TYPE_ID), sec.SECURITY_SUB_TYPE_ID)  AS security_sub_type_id , sec.SECURITY_SUB_TYPE_ID  AS origin_security_sub_type_id , stype.SUBTYPE_NAME , sec.FSV , sec.FSV_CURRENCY , sec.RPT_CHARGE_DETAILS , sec.RPT_COLLATERAL_PARTICULARS , sec.SCI_SECURITY_CURRENCY , sec.SECURITY_LOCATION , sec.SECURITY_MATURITY_DATE , sec.STATUS  FROM CMS_SECURITY sec, CMS_SECURITY_SUB_TYPE stype WHERE sec.SECURITY_SUB_TYPE_ID = stype.SECURITY_SUB_TYPE_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_SECURITY_KEY_BY_FIRST_BUE
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_SECURITY_KEY_BY_FIRST_BUE" ("CMS_COLLATERAL_ID", "FIRST_LSM_CREATE_DATE") AS 
+  SELECT  CMS_COLLATERAL_ID , min(LSM_CREATE_DATE)  from VW_SECURITY_BY_ALL_BUE group BY CMS_COLLATERAL_ID
+ 
+ 
+ 
+ 
+ ;
+--------------------------------------------------------
+--  DDL for View VW_STOCK_EXCHANGE_META_INFO
+--------------------------------------------------------
+
+  CREATE OR REPLACE FORCE EDITIONABLE VIEW "VW_STOCK_EXCHANGE_META_INFO" ("STOCK_EXCHANGE", "STOCK_EXCHANGE_NAME", "COUNTRY_NAME", "COUNTRY_ISO_CODE", "CURRENCY_ISO_CODE") AS 
+  SELECT  STOCK_EXCHANGE , exch.STOCK_EXCHANGE_NAME , ctry.COUNTRY_NAME , ctry.COUNTRY_ISO_CODE , ctry.CURRENCY_ISO_CODE  FROM CMS_STOCK_EXCHANGE exch, COUNTRY ctry WHERE exch.COUNTRY_ISO_CODE = ctry.COUNTRY_ISO_CODE
+ 
+ 
+ 
+ 
+ ;

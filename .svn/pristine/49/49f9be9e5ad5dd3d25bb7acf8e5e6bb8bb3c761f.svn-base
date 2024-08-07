@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.feed.bus.stock">
+  <class entity-name="actualStockFeedEntry" name="OBStockFeedEntry" table="CMS_PRICE_FEED" lazy="false">
+  	<id name="stockFeedEntryID" type="long" column="FEED_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_PRICE_FEED_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="scriptCode" column="ISIN_CODE" />
+    <property name="scriptName" column="NAME" />
+    <property name="scriptValue" column="UNIT_PRICE" type="double" />
+    <property name="faceValue" column="PAR_VALUE" type="double" />
+    <property name="stockExchangeName" column="EXCHANGE" />
+    <property name="lastUpdatedDate" column="LAST_UPDATED_DATE" />
+    <property name="stockFeedEntryRef" column="FEED_REF" type="long" />
+    <property name="groupStockType" formula="(SELECT grp.GROUP_STOCK_TYPE FROM CMS_FEED_GROUP grp WHERE grp.FEED_GROUP_ID = FEED_GROUP_ID )"/>
+  </class>
+
+  <class entity-name="actualStockFeedGroup" name="OBStockFeedGroup" table="CMS_FEED_GROUP">
+	<id name="stockFeedGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+    
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="actualStockFeedEntry" />
+	</set>
+  </class>
+
+  <class entity-name="stageStockFeedEntry" name="OBStockFeedEntry" table="CMS_STAGE_PRICE_FEED" lazy="false">
+  	<id name="stockFeedEntryID" type="long" column="FEED_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_PRICE_FEED_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+  
+    <property name="scriptCode" column="ISIN_CODE" />
+    <property name="scriptName" column="NAME" />
+    <property name="scriptValue" column="UNIT_PRICE" type="double" />
+    <property name="faceValue" column="PAR_VALUE" type="double" />
+    <property name="stockExchangeName" column="EXCHANGE" />
+    <property name="lastUpdatedDate" column="LAST_UPDATED_DATE" />
+    <property name="stockFeedEntryRef" column="FEED_REF" type="long" />
+  </class>
+
+  <class entity-name="stageStockFeedGroup" name="OBStockFeedGroup" table="CMS_STAGE_FEED_GROUP">
+	<id name="stockFeedGroupID" type="long" column="FEED_GROUP_ID" >
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+			<param name="sequence">CMS_FEED_GROUP_SEQ</param>
+		</generator>
+	</id>
+	<version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+
+    <property name="type" column="GROUP_TYPE" />
+    <property name="subType" column="GROUP_SUBTYPE" />
+    <property name="stockType" column="GROUP_STOCK_TYPE" />
+    
+	<set name="feedEntriesSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+		<key column="FEED_GROUP_ID" not-null="true" />
+		<one-to-many entity-name="stageStockFeedEntry" />
+	</set>
+  </class>
+</hibernate-mapping>

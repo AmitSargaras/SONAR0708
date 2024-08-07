@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+  <class name="com.integrosys.cms.host.eai.security.bus.guarantee.GuaranteeSecurity" table="CMS_GUARANTEE" polymorphism="explicit">
+    <id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+
+    <property name="guaranteesDescription" column="DESCRIPTION" />
+    <property name="claimPeriod" column="CLAIM_PERIOD" />
+    <property name="claimPeriodUOM" column="CLAIM_PERIOD_TIME_UNIT"/>
+    <property name="refNo" column="REFERENCE_NO" />
+    <property name="guaranteeAmt" column="GUARANTEE_AMT" type="double" />
+    <property name="JDOGuaranteeDate" column="GUARANTEE_DATE" type="timestamp" />
+    <property name="bankCountryRiskApproval" column="BANK_COUNTRY_RISK_APPROVAL" />
+    <property name="issuingBank" column="ISSUING_BANK" />
+    <property name="issuingBankCtry" column="ISSUING_BANK_COUNTRY" />
+    <property name="beneficiaryName" column="BENEFICIARY_NAME" />
+    <property name="comments" column="COMMENTS" />
+     
+	<component name="reimbursementBank" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="REIMBURSEMENT_BANK_VALUE" />
+    </component>
+    <property name="JDOIssueDate" column="ISSUING_CONFIRM_DATE" />	
+    <component name="scheme" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="CURRENT_SCHEME" />
+    </component>
+    <property name="securedAmount" column="SECURED_AMOUNT_ORIGIN" type="double"  />
+    <property name="unsecuredAmount" column="UNSECURED_AMOUNT_ORIGIN" type="double"  />
+    <property name="securedPercentage" column="SECURED_PORTION" type="int"  />
+    <property name="unsecuredPercentage" column="UNSECURED_PORTION" type="int"  />
+    <property name="lgCancellationDate" column="LG_CANCELLATION_DATE" type="timestamp"  />
+    <property name="currency" column="CURRENCY_CODE"   />
+  </class>
+
+  <class name="com.integrosys.cms.host.eai.security.bus.guarantee.StageGuaranteeSecurity" table="CMS_STAGE_GUARANTEE">
+    <id name="CMSSecurityId" column="CMS_COLLATERAL_ID" type="long" />
+	
+    <property name="guaranteesDescription" column="DESCRIPTION" />
+    <property name="claimPeriod" column="CLAIM_PERIOD" />
+    <property name="claimPeriodUOM" column="CLAIM_PERIOD_TIME_UNIT" />
+    <property name="refNo" column="REFERENCE_NO" />
+    <property name="guaranteeAmt" column="GUARANTEE_AMT" type="double" />
+    <property name="JDOGuaranteeDate" column="GUARANTEE_DATE" type="timestamp" />
+    <property name="bankCountryRiskApproval" column="BANK_COUNTRY_RISK_APPROVAL" />
+    <property name="issuingBank" column="ISSUING_BANK" />
+    <property name="issuingBankCtry" column="ISSUING_BANK_COUNTRY" />
+    <property name="beneficiaryName" column="BENEFICIARY_NAME" />
+    <property name="comments" column="COMMENTS" />
+     
+	<component name="reimbursementBank" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="REIMBURSEMENT_BANK_VALUE" />
+    </component>
+    <property name="JDOIssueDate" column="ISSUING_CONFIRM_DATE" />
+    <component name="scheme" class="com.integrosys.cms.host.eai.StandardCode">
+    	<!-- <property name="standardCodeNumber" column="?" /> -->
+    	<property name="standardCodeValue" column="CURRENT_SCHEME" />
+    </component>
+    <property name="securedAmount" column="SECURED_AMOUNT_ORIGIN" type="double" />
+    <property name="unsecuredAmount" column="UNSECURED_AMOUNT_ORIGIN" type="double"/>
+    <property name="securedPercentage" column="SECURED_PORTION" type="int"  />
+    <property name="unsecuredPercentage" column="UNSECURED_PORTION" type="int"  />
+    <property name="lgCancellationDate" column="LG_CANCELLATION_DATE" type="timestamp"  />
+    <property name="currency" column="CURRENCY_CODE"   />
+  </class>
+</hibernate-mapping>

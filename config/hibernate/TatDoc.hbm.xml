@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.integrosys.cms.app.tatdoc.bus">
+	
+	<class entity-name="actualTatDoc" name="OBTatDoc" table="CMS_TAT_DOCUMENT" lazy="false">
+        <id name="tatDocID" type="long" column="TAT_ID" >
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_TAT_DOC_SEQ</param>
+            </generator>
+        </id>
+        <version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+        <property name="limitProfileID" column="CMS_LSP_LMT_PROFILE_ID" type="long" />
+        <property name="solicitorInstructionDate" column="SOLICITOR_INSTRUCTION_DATE"  type="timestamp" />
+        <property name="fileReceivedFromBizCenter" column="FILE_FROM_BIZ_CENTER_DATE" type="timestamp" />
+        <property name="docReceviceForPADate" column="DOC_READY_FOR_PA_DATE" type="timestamp" />
+        <property name="docPAExcuteDate" column="PA_EXCEUTED_DATE" type="timestamp" />
+        <property name="preDisbursementRemarks" column="PRE_DISBURSE_REMARKS" />
+        <property name="solicitorAdviseReleaseDate" column="SOLICITOR_ADVISE_RELEASE_DATE" type="timestamp" />
+        <property name="disbursementDocCompletionDate" column="DISBURSMENT_DOC_COMPLETED_DATE" type="timestamp" />
+        <property name="disbursementDate" column="DISBURSEMENT_DATE" type="timestamp" />
+        <property name="disbursementRemarks" column="DISBURSEMENT_REMARKS" />
+        <property name="docCompletionDate" column="DOC_COMPLETION_DATE" type="timestamp" />
+        <property name="postDisbursementRemarks" column="POST_DISBURSEMENT_REMARKS" />
+		<property name="isPAOrSolInvolvementReq" column="IS_PA_SOL_INVMT_REQ" />
+        <property name="status" column="STATUS" />
+        <set name="draftListSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+            <key column="TAT_ID" not-null="true" />
+            <one-to-many entity-name="actualTatDocDraft" />
+        </set>        
+    </class>
+
+
+  <class entity-name="stageTatDoc" name="OBTatDoc" table="CMS_STAGE_TAT_DOCUMENT" lazy="false">
+      <id name="tatDocID" type="long" column="TAT_ID" >
+          <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+              <param name="sequence">CMS_TAT_DOC_SEQ</param>
+          </generator>
+      </id>
+      <version name="versionTime" column="CMS_VERSION_TIME" type="long" />
+      <property name="limitProfileID" column="CMS_LSP_LMT_PROFILE_ID" type="long" />
+      <property name="solicitorInstructionDate" column="SOLICITOR_INSTRUCTION_DATE"  type="timestamp" />
+      <property name="fileReceivedFromBizCenter" column="FILE_FROM_BIZ_CENTER_DATE" type="timestamp" />
+      <property name="docReceviceForPADate" column="DOC_READY_FOR_PA_DATE" type="timestamp" />
+      <property name="docPAExcuteDate" column="PA_EXCEUTED_DATE" type="timestamp" />
+      <property name="preDisbursementRemarks" column="PRE_DISBURSE_REMARKS" />
+      <property name="solicitorAdviseReleaseDate" column="SOLICITOR_ADVISE_RELEASE_DATE" type="timestamp" />
+      <property name="disbursementDocCompletionDate" column="DISBURSMENT_DOC_COMPLETED_DATE" type="timestamp" />
+      <property name="disbursementDate" column="DISBURSEMENT_DATE" type="timestamp" />
+      <property name="disbursementRemarks" column="DISBURSEMENT_REMARKS" />
+      <property name="docCompletionDate" column="DOC_COMPLETION_DATE" type="timestamp" />
+      <property name="postDisbursementRemarks" column="POST_DISBURSEMENT_REMARKS" />
+	  <property name="isPAOrSolInvolvementReq" column="IS_PA_SOL_INVMT_REQ" />
+      <property name="status" column="STATUS" />
+
+      <set name="draftListSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+          <key column="TAT_ID" not-null="true" />
+          <one-to-many entity-name="stageTatDocDraft" />
+      </set>
+
+  </class>
+
+
+  <class entity-name="actualTatDocDraft" name="OBTatDocDraft" table="CMS_TAT_DOCUMENT_DRAFT">
+        <id name="draftID" type="long" column="DRAFT_ID" >
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_TAT_DOC_DRAFT_SEQ</param>
+            </generator>
+        </id>
+        <property name="docDraftStage" column="DOC_DRAFT_STAGE" />
+        <property name="draftNumber" column="DRAFT_NUMBER" type="short" />
+        <property name="draftDate" column="DRAFT_DATE" type="timestamp" />
+        <property name="status" column="STATUS" />
+        <property name="referenceID" column="REFERENCE_ID" type="long" />
+  </class>
+  
+
+
+  <class entity-name="stageTatDocDraft" name="OBTatDocDraft" table="CMS_STAGE_TAT_DOCUMENT_DRAFT">
+        <id name="draftID" type="long" column="DRAFT_ID" >
+            <generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+                <param name="sequence">CMS_TAT_DOC_DRAFT_SEQ</param>
+            </generator>
+        </id>
+        <property name="docDraftStage" column="DOC_DRAFT_STAGE" />
+        <property name="draftNumber" column="DRAFT_NUMBER" type="short" />
+        <property name="draftDate" column="DRAFT_DATE" type="timestamp" />
+        <property name="status" column="STATUS" />
+        <property name="referenceID" column="REFERENCE_ID" type="long" />
+  </class>
+  
+</hibernate-mapping>

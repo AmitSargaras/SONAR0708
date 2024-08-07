@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT 'CLIMS' AS APPLICATION_NAME,
+			DOCUMENT_CODE AS DOCUMENT_CODE,
+			DOCUMENT_DESCRIPTION AS DOCUMENT_DESCRIPTION,
+
+			CASE
+			WHEN
+			digilib.CLIMS_DOC_CATEGORY= 'CAM'
+			THEN
+			(
+			SELECT CCCE.ENTRY_NAME
+			FROM
+			CMS_DIGITAL_LIBRARY digilib , COMMON_CODE_CATEGORY_ENTRY CCCE where
+			CLIMS_DOC_CATEGORY='CAM' and
+			CCCE.ENTRY_CODE=digilib.DIGI_DOC_CATEGORY and
+			CCCE.CATEGORY_CODE='DIGITAL_LIBRARY_DOCUMENT_CATEGORY_CODE'
+			)
+			WHEN
+			digilib.CLIMS_DOC_CATEGORY= 'Other'
+			THEN
+			(
+			SELECT CCCE.ENTRY_NAME
+			FROM CMS_DIGITAL_LIBRARY digilib ,
+			COMMON_CODE_CATEGORY_ENTRY CCCE where CLIMS_DOC_CATEGORY='Other' and
+			CCCE.ENTRY_CODE=digilib.DIGI_DOC_CATEGORY and
+			CCCE.CATEGORY_CODE='DIGITAL_LIBRARY_DOCUMENT_CATEGORY_CODE'
+			)
+			WHEN
+			digilib.CLIMS_DOC_CATEGORY= 'Recurrent'
+			THEN
+			(
+			SELECT CCCE.ENTRY_NAME
+			FROM CMS_DIGITAL_LIBRARY digilib ,
+			COMMON_CODE_CATEGORY_ENTRY CCCE where CLIMS_DOC_CATEGORY='Recurrent'
+			and
+			CCCE.ENTRY_CODE=digilib.DIGI_DOC_CATEGORY and CCCE.CATEGORY_CODE='DIGITAL_LIBRARY_DOCUMENT_CATEGORY_CODE'
+			)
+			WHEN digilib.CLIMS_DOC_CATEGORY= 'Facility'
+			THEN
+			(
+			SELECT CCCE.ENTRY_NAME
+			FROM CMS_DIGITAL_LIBRARY digilib ,
+			COMMON_CODE_CATEGORY_ENTRY CCCE where CLIMS_DOC_CATEGORY='Facility'
+			and
+			CCCE.ENTRY_CODE=digilib.DIGI_DOC_CATEGORY and CCCE.CATEGORY_CODE='DIGITAL_LIBRARY_DOCUMENT_CATEGORY_CODE'
+			)
+			WHEN digilib.CLIMS_DOC_CATEGORY= 'Security'
+			THEN
+			(
+			SELECT CCCE.ENTRY_NAME
+			FROM CMS_DIGITAL_LIBRARY digilib ,
+			COMMON_CODE_CATEGORY_ENTRY CCCE where CLIMS_DOC_CATEGORY='Security'
+			and
+			CCCE.ENTRY_CODE=digilib.DIGI_DOC_CATEGORY and CCCE.CATEGORY_CODE='DIGITAL_LIBRARY_DOCUMENT_CATEGORY_CODE'
+			)
+			END
+			AS DOCUMENT_CATEGORY
+
+			FROM CMS_DOCUMENT_GLOBALLIST,
+			(select
+			DIGI_DOC_CATEGORY,CLIMS_DOC_CATEGORY,CMS_DIGITAL_LIBRARY.CLIMS_CATEGORY_CODE
+			from CMS_DIGITAL_LIBRARY) digilib
+		</query>
+		<whereClause>
+			<mandatoryClause>
+				digilib.CLIMS_CATEGORY_CODE=CMS_DOCUMENT_GLOBALLIST.CATEGORY
+			</mandatoryClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>APPLICATION NAME</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>DOCUMENT CODE</header>
+				</reportColumn>
+				<reportColumn>
+					<width>500</width>
+					<format>textFormat</format>
+					<header>DOCUMENT DESCRIPTION</header>
+				</reportColumn>
+				<reportColumn>
+					<width>200</width>
+					<format>textFormat</format>
+					<header>DOCUMENT CATEGORY</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>Digital Library Document Details</reportName>
+		</reportParamters>
+	</report>
+</reports>

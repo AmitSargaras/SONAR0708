@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<syncMasterTemplateOut>
+		<query>
+		SELECT document_id,document_description,document_code,tenure_count,tenure_type,
+        CRITICAL, mandatory, status,action
+		FROM(
+		SELECT cdg.document_id ,  cdg.document_description ,  cdg.document_code , 
+        decode(cdg.status,null,'N','DISABLE','N','ENABLE','Y') status, 
+        cdg.tenure_count, cdg.tenure_type, item.is_mandatory CRITICAL, 
+        item.is_mandatory_display mandatory, 
+		'I' AS action
+		FROM cms_document_globallist cdg, trans_history trah , TRANSACTION tra, cms_document_item item
+		WHERE cdg.document_id = tra.reference_id 
+		AND cdg.document_id = trah.reference_id  
+        AND item.document_code = cdg.document_code
+        AND item.masterlist_id = (SELECT MAX(masterlist_id) FROM cms_document_masterlist WHERE CATEGORY='O')
+        AND cdg.CATEGORY = 'O'
+		AND trah.transaction_type ='DOCITEM' 
+		AND trah.from_state = 'PENDING_CREATE' AND trah.status = 'ACTIVE'
+		AND tra.status != 'DELETED'
+		AND to_char(trah.transaction_date,'DD-MON-YY') = (SELECT TO_DATE(param_value,'DD-Mon-YYYY') FROM cms_general_param WHERE param_code = 'LAST_EOD_DATE')
+		UNION
+		SELECT cdg.document_id ,  cdg.document_description ,  cdg.document_code ,
+        decode(cdg.status,null,'N','DISABLE','N','ENABLE','Y') status, 
+        cdg.tenure_count, cdg.tenure_type, item.is_mandatory CRITICAL, 
+        item.is_mandatory_display mandatory, 
+		CASE
+	      WHEN UPPER(cdg.eod_sync_status) = 'INSERT_SENT' OR UPPER(cdg.eod_sync_status) = 'INSERT_FAILED' 
+	      THEN 'I'
+	      ELSE 'U'
+	    END AS action
+		FROM cms_document_globallist cdg, trans_history trah , TRANSACTION tra, cms_document_item item
+		WHERE cdg.document_id = tra.reference_id  
+        AND item.document_code = cdg.document_code
+        AND item.masterlist_id = (SELECT MAX(masterlist_id) FROM cms_document_masterlist WHERE CATEGORY='O')
+        AND cdg.CATEGORY = 'O'
+		AND trah.tr_history_id = tra.cur_trx_history_id
+		AND tra.transaction_type ='DOCITEM' 
+		AND tra.status = 'ACTIVE'
+		AND to_char(tra.transaction_date,'DD-MON-YY') = (SELECT TO_DATE(param_value,'DD-Mon-YYYY') FROM cms_general_param WHERE param_code = 'LAST_EOD_DATE')
+		AND cdg.document_id NOT IN(
+		    SELECT reference_id FROM trans_history 
+		    WHERE transaction_type ='DOCITEM' 
+		    AND from_state = 'PENDING_CREATE' AND status = 'ACTIVE'
+		    AND to_char(transaction_date,'DD-MON-YY') = (SELECT TO_DATE(param_value,'DD-Mon-YYYY') FROM cms_general_param WHERE param_code = 'LAST_EOD_DATE')
+		)
+		UNION 
+		SELECT cdg.document_id ,  cdg.document_description ,  cdg.document_code ,
+        decode(cdg.status,null,'N','DISABLE','N','ENABLE','Y') status,  
+        cdg.tenure_count, cdg.tenure_type, item.is_mandatory CRITICAL, 
+        item.is_mandatory_display mandatory,
+		'D' AS action
+		FROM cms_document_globallist cdg, TRANSACTION tra, cms_document_item item 
+		WHERE cdg.document_id = tra.reference_id 
+        AND item.document_code = cdg.document_code
+        AND item.masterlist_id = (SELECT MAX(masterlist_id) FROM cms_document_masterlist WHERE CATEGORY='O')
+        AND cdg.CATEGORY = 'O'
+		AND tra.transaction_type ='DOCITEM' 
+    	AND cdg.eod_sync_status  NOT IN ('INSERT_SENT','INSERT_FAILED')
+		AND tra.status = 'DELETED' 
+		AND to_char(tra.transaction_date,'DD-MON-YY') = (SELECT TO_DATE(param_value,'DD-Mon-YYYY') FROM cms_general_param WHERE param_code = 'LAST_EOD_DATE')
+		AND cdg.document_id NOT IN(
+		    SELECT reference_id FROM trans_history 
+		    WHERE transaction_type ='DOCITEM' 
+		    AND from_state = 'PENDING_CREATE' AND status = 'ACTIVE'
+		    AND to_char(transaction_date,'DD-MON-YY') = (SELECT TO_DATE(param_value,'DD-Mon-YYYY') FROM cms_general_param WHERE param_code = 'LAST_EOD_DATE')
+		)
+    	UNION 
+		SELECT cdg.document_id ,  cdg.document_description ,  cdg.document_code ,
+        decode(cdg.status,null,'N','DISABLE','N','ENABLE','Y') status,  
+        cdg.tenure_count, cdg.tenure_type, item.is_mandatory CRITICAL, 
+        item.is_mandatory_display mandatory,
+		CASE
+	      WHEN UPPER(cdg.eod_sync_status) = 'INSERT_SENT'
+	      THEN 'I'
+	      WHEN UPPER(cdg.eod_sync_status) = 'DELETE_SENT'
+	      	OR UPPER(cdg.eod_sync_status)   = 'DELETE_FAILED'
+	      	OR (UPPER(cdg.eod_sync_status)  = 'UPDATE_SENT' AND tra.status ='DELETED')
+	      THEN 'D'
+	      WHEN UPPER(cdg.eod_sync_status) = 'UPDATE_SENT'
+	      THEN 'U'
+	    END AS action
+		FROM cms_document_globallist cdg, TRANSACTION tra, cms_document_item item
+		WHERE cdg.document_id = tra.reference_id  
+        AND item.document_code = cdg.document_code
+        AND item.masterlist_id = (SELECT MAX(masterlist_id) FROM cms_document_masterlist WHERE CATEGORY='O')
+        AND cdg.CATEGORY = 'O'
+		AND tra.transaction_type ='DOCITEM' 
+    	AND((cdg.eod_sync_status         = 'INSERT_SENT' AND tra.status                  !='DELETED')
+    		OR cdg.eod_sync_status          IN ('UPDATE_SENT','DELETE_SENT','DELETE_FAILED') )
+		AND TRUNC(tra.transaction_date) != (SELECT TO_DATE(param_value,'DD-Mon-YYYY') FROM cms_general_param WHERE param_code = 'LAST_EOD_DATE')
+		)
+		</query>
+	<whereClause>
+		<mandatoryClause>
+				1=1
+		</mandatoryClause>
+	</whereClause>
+	<reportType>TXT</reportType>
+	<delimiter>|||</delimiter>
+	<secondaryDelimiter>~~~</secondaryDelimiter>
+	
+	<reportParamters>
+		<reportColumns>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>DOCUMENT_ID</header>
+			</reportColumn>
+			<reportColumn>
+				<width>25</width>
+				<format>textFormat</format>
+				<header>DOCUMENT_DESCRIPTION</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>DOCUMENT_CODE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>TENURE_VALUE</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>TENURE_FREQ</header>
+			</reportColumn>			
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>STATUS</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>CRITICAL</header>
+			</reportColumn>
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>MANDATORY</header>
+			</reportColumn>			
+			<reportColumn>
+				<width>50</width>
+				<format>textFormat</format>
+				<header>ACTION</header>
+			</reportColumn>
+		</reportColumns>
+		<reportName>CLIMS_Other_Mst</reportName>
+	</reportParamters>
+	</syncMasterTemplateOut>

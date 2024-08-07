@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+			SELECT   caseBase.EVENT,
+			caseBase.CATEGORY,
+			(select region_name from cms_region where id = caseBase.PARTY_REGION) as PARTY_REGION,
+			(select region_name from cms_region where id = caseBase.RM_REGION) as RM_REGION,
+			caseBase.LINE_NO,
+			caseBase.LIMIT_RELEASED_AMOUNT,
+			caseBase.SERIAL_NO,
+			(select user_name from cms_user where login_id = caseBase.CASE_RM) as CASE_RM,
+            (select rm_mgr_name from cms_relationship_mgr where id = caseBase.PARTY_RM) as PARTY_RM,
+			caseBase.CASE_NO,
+			caseBase.PARTY_NAME,
+			caseBase.PARTY_ID,
+			(SELECT entry_name FROM common_code_category_entry WHERE category_code = 'HDFC_SEGMENT' and entry_code = caseBase.CUSTOMER_SEGMENT)  as CUSTOMER_SEGMENT,
+			--caseBase.RM_DOCUMENT_SUBMITTED_DATE,
+			--caseBase.RM_DOCUMENT_SUBMITTED_TIME,
+			--caseBase.LIMIT_DOCUMENT_RECEIVED_DATE,
+			--caseBase.LIMIT_DOCUMENT_RECEIVED_TIME,
+			--caseBase.LIMIT_DOCUMENT_RECEIVED_TIME,
+			--caseBase.LIMIT_DOCUMENT_RECEIVED_DATE,
+			--caseBase.LIMIT_DOCUMENT_SCANNED_DATE,
+			--caseBase.LIMIT_DOCUMENT_SCANNED_TIME,
+			--caseBase.DEFERRAL_RAISED_DATE,
+			--caseBase.DEFERRAL_RAISED_TIME,
+			--caseBase.DEFERRAL_APPROVED_DATE,
+			--caseBase.DEFERRAL_APPROVED_TIME,
+			   trunc(TO_TIMESTAMP (caseBase.actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')) as RM_DOCUMENT_SUBMITTED_DATE,
+  to_char(TO_TIMESTAMP (caseBase.actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi') as RM_DOCUMENT_SUBMITTED_TIME,
+       trunc(TO_TIMESTAMP (caseBase.actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF')) as LIMIT_DOCUMENT_RECEIVED_DATE,
+  to_char(TO_TIMESTAMP (caseBase.actual_limit_doc_rec_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi') as LIMIT_DOCUMENT_RECEIVED_TIME,
+       trunc(TO_TIMESTAMP (caseBase.actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF')) as LIMIT_DOCUMENT_SCANNED_DATE,
+  to_char(TO_TIMESTAMP (caseBase.actual_limit_Doc_Scan_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi') as LIMIT_DOCUMENT_SCANNED_TIME,
+       trunc(TO_TIMESTAMP (caseBase.actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF')) as DEFERRAL_RAISED_DATE,
+  to_char(TO_TIMESTAMP (caseBase.actual_deferral_Raise_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi') as DEFERRAL_RAISED_TIME,
+       trunc(TO_TIMESTAMP (caseBase.actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF')) as DEFERRAL_APPROVED_DATE,
+  to_char(TO_TIMESTAMP (caseBase.actual_deferral_Approv_time, 'YYYY-MM-DD HH24:MI:SS.FF'), 'hh24:mi') as DEFERRAL_APPROVED_TIME,
+			(SELECT 
+  trunc(stg.actual_activity_time)
+FROM CMS_STAGE_NEW_TAT stg
+WHERE stg.deprecated='N'
+and stg.case_id= caseBase.case_no
+AND stg.STATUS      = 'DOCUMENT_RECEIVED' and ROWNUM &lt; 2) as firstReceiveDate,
+ (SELECT 
+  to_char(actual_activity_time, 'hh24:mi')
+FROM CMS_STAGE_NEW_TAT stg
+WHERE stg.deprecated='N'
+and stg.case_id= caseBase.case_no
+AND stg.STATUS      = 'DOCUMENT_RECEIVED' and ROWNUM &lt; 2) as firstReceiveTime,
+			
+			--caseBase.CPU_LIMIT_SET_CLIMS_DATE,
+			--caseBase.CPU_LIMIT_SET_CLIMS_TIME,
+			 trunc(TO_TIMESTAMP (caseBase.actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF')) as CPU_LIMIT_SET_CLIMS_DATE,
+  to_char(TO_TIMESTAMP (caseBase.actual_Limit_set_CLIMS_time, 'DD-MM-YYYY HH24:MI:SS.FF'), 'hh24:mi') as CPU_LIMIT_SET_CLIMS_TIME,
+			caseBase.TOTAL_TIME,
+			caseBase.TURN_AROUND_TIME
+			FROM CMS_NEW_TAT_REPORT_CASEBASE caseBase,
+			sci_le_sub_profile sp
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				sp.lsp_le_id= caseBase.party_id
+                and sp.status = 'ACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>segment</name>
+				<condition> AND CUSTOMER_SEGMENT = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND PARTY_ID = </condition>
+			</param>
+			<param>
+				<name>region</name>
+				<condition> AND RM_REGION = </condition>
+			</param>
+			<param>
+				<name>relationshipManager</name>
+				<condition> AND PARTY_RM = </condition>
+			</param>
+			<param>
+				<name>event</name>
+				<condition> AND EVENT = </condition>
+			</param>
+			<param>
+				<name>tatCriteria</name>
+				<condition> AND TURN_AROUND_TIME = </condition>
+			</param>
+			<param>
+				<name>category</name>
+				<condition> AND CATEGORY = </condition>
+			</param>
+			<param>
+				<name>caseId</name>
+				<condition> AND CASE_NO = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC((SELECT 
+ACTIVITY_TIME
+FROM CMS_STAGE_NEW_TAT
+WHERE deprecated='N'
+and case_id = CASE_NO and rownum = 1)) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Event</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Category</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Line no. </header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Released amount</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Serial no.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case Initiator RM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party RM</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Case No.</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Party ID</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Document Submitted Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RM Document Submitted Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Document received time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Document received date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit Document Scanned Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Limit document Scanned Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deferral Raised Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deferral Raised Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deferral Approved Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deferral Approved Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>First time Document received date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>First time Document received time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CPU Limit Setup Date / CLIMS Updated Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>CPU Limit Setup Time / CLIMS Updated Time</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Total Time ( Case TAT )</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Turn Around Time </header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>TAT Monitoring report for Case</reportName>
+		</reportParamters>
+	</report>
+</reports>

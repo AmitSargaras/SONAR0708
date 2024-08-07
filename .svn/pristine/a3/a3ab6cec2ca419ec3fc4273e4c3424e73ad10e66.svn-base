@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+				  SELECT 
+				  sp.lsp_le_id,
+				  sp.lsp_short_name,
+				(select entry_name from common_code_category_entry where entry_code=sp.lsp_sgmnt_code_value and category_code='HDFC_SEGMENT'  and ACTIVE_STATUS='1') as segmentvalue,
+				 -- sp.lsp_sgmnt_code_value AS segmentvalue,
+				  rm.rm_mgr_name          AS rmname,
+				  (select region_name from cms_region where id=sp.rm_region) as rm_region,  
+				  sys.cms_le_other_sys_cust_id AS systemid,
+				  (select entry_name from COMMON_CODE_CATEGORY_ENTRY where entry_code=sp.entity and category_code='Entity' and ACTIVE_STATUS='1') as entity,
+				  <!-- sp.banking_method, -->
+				  ( SELECT get_banking_method(SP.LSP_LE_ID) AS BANKING_METHOD
+     FROM   CMS_BANKING_METHOD_CUST WHERE ROWNUM = 1)  As BANKING_METHOD,
+				  -- sp.lsp_le_id,
+				  -- cc.entry_name,
+				  sp.total_funded_limit,
+				  sp.total_non_funded_limit,
+				  sp.memo_exposure,
+				  sp.total_sanctioned_limit,
+				  SP.MPBF,
+				  (select entry_name from common_code_category_entry where entry_code=cam.rbi_asset_classification
+				  AND CATEGORY_CODE='RBI_ASSET_ClASSIFICATION') as RBI_Classification,
+				--  sp.rbi_ind_code
+				--  ||'-'
+				--  || cc_rbi.entry_name       AS RBI_Classification,
+				  cam.CMS_APPR_OFFICER_GRADE AS RAMRating,     --AS riskGrade,
+				  lc.CUSTOMER_EXT_RATING     AS custExtRating, -- from CRI,
+				  sp.pan                     AS PAN,
+				 sp.rbi_ind_code
+				  ||'-'
+				  || cc_rbi.entry_name              AS rbiIndCode,
+				  <!-- (
+				  CASE
+				    WHEN bm.cms_le_lead='Y'
+				    THEN 'Yes'
+				    WHEN bm.cms_le_nodal='Y'
+				    THEN 'Yes'
+				    ELSE 'No'
+				  END) AS Nodal -->
+				  bm.cms_le_lead AS LEAD,
+				  bm.cms_le_nodal AS NODAL
+				FROM SCI_LE_SUB_PROFILE SP,
+				  COMMON_CODE_CATEGORY_ENTRY cc,
+				  common_code_category_entry cc_rbi,
+				  sci_lsp_lmt_profile cam,
+				  sci_le_other_system SYS,
+				  cms_relationship_mgr rm,
+				  SCI_LE_CRI lc,
+				  sci_le_banking_method bm
+				 
+			</query>
+		<whereClause>
+			<mandatoryClause>
+				-- SP.MPBF                   > 100000000 AND 
+				 sp.CMS_LE_MAIN_PROFILE_ID   = lc.CMS_LE_MAIN_PROFILE_ID(+)
+					AND sp.CMS_LE_MAIN_PROFILE_ID   = bm.CMS_LE_MAIN_PROFILE_ID(+)
+					AND cc.entry_code               = SP.ENTITY
+					AND rm.id(+)                    = sp.relation_mgr
+					AND sp.cms_le_sub_profile_id (+)= cam.cms_customer_id
+					AND SP.STATUS                   = 'ACTIVE'
+					AND cc.category_code            = 'Entity'
+					AND sys.cms_le_main_profile_id  = sp.cms_le_main_profile_id
+					AND cc_rbi.entry_code(+)        = sp.rbi_ind_code
+					AND (cc_rbi.category_code       = 'HDFC_RBI_CODE'
+					OR cc_rbi.category_code        IS NULL)
+			</mandatoryClause>	
+			<param>
+				<name>segment</name>
+				<condition> AND sp.LSP_SGMNT_CODE_value =  </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> AND SP.CMS_LE_SUB_PROFILE_ID = </condition>
+			</param>			
+			<param>
+				<name>fromDate</name>
+				<condition> AND TRUNC(trx.TRANSACTION_DATE) BETWEEN </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>	
+			    <reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Id</header>
+				</reportColumn>					
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header><!-- 1 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Segment</header><!-- 2 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Name</header><!-- 3 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>RM Region</header><!-- 4 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>System Id</header><!-- 5 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Entity</header><!-- 6 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Bank Method</header><!-- 7 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Funded Amount</header><!-- 8 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Non Funded</header><!-- 9 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Memo Exposure</header><!-- 10 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Total Sanction Amount </header><!-- 11 -->
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Total MPBF</header><!-- 12 -->
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RBI Classification</header><!-- 13 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RAM Rating</header><!-- 14 -->
+				</reportColumn>						
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Customer External Rating</header><!-- 15 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>PAN</header><!-- 16 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>RBI Industry Code</header><!-- 17 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>LEAD</header><!-- 18 -->
+				</reportColumn>	
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Nodal</header><!-- 19 -->
+				</reportColumn>	
+							
+			</reportColumns>
+			<reportName>Form A</reportName>
+		</reportParamters>
+	</report>
+</reports>

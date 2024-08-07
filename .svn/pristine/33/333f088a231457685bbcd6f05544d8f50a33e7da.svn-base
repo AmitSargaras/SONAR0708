@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+		<query>
+						SELECT 
+						sub_L.lsp_short_name as partyName,
+						to_char(TRANS_CAM.TRANSACTION_DATE,'DD/Mon/YYYY') AS dateOfUpdation,
+ 		 		   cc_segment.entry_name as segment,
+  				  (SELECT region_name FROM cms_region WHERE id=addr.lra_region
+  					) AS region,
+  				  cc_industry.ENTRY_NAME AS industryName, 				 
+ 				  cam.CMS_APPR_OFFICER_GRADE   AS grading,
+ 				   to_number(SUB_L.TOTAL_FUNDED_LIMIT)/1000000     AS fundedRsInMN, 
+				  to_number(SUB_L.TOTAL_NON_FUNDED_LIMIT)/1000000  AS nonFundedRsInMN, 
+				  to_number(SUB_L.MEMO_EXPOSURE)/1000000           AS memoExposureRsInMN, 
+				  to_number(SUB_L.Funded_INCRE_DECRE)/1000000      AS fundedIncreaseDecrease, 
+				  to_number(SUB_L.NonFunded_INCRE_DECRE)/1000000   AS nonFundedIncreaseDecrease, 
+				  to_number(SUB_L.MemoExpos_INCRE_DECRE)/1000000   AS memoexposureIncreaseDecrease,
+				  cam.CAM_TYPE AS camType 
+  
+  FROM 
+ 	(select * from TRANS_HISTORY where
+		 (SUBSTR(sysdate,4,3) IN('JAN','FEB','MAR') and  TRANSACTION_DATE BETWEEN ('01'||'-'||'JAN'||'-'||SUBSTR(sysdate,8,2))
+          AND ('31'||'-'||'MAR'||'-'||SUBSTR(sysdate,8,2)))
+          OR
+         (SUBSTR(sysdate,4,3) IN('APR','MAY','JUN') and  TRANSACTION_DATE BETWEEN ('01'||'-'||'APR'||'-'||SUBSTR(sysdate,8,2))
+         AND ('30'||'-'||'JUN'||'-'||SUBSTR(sysdate,8,2)))
+         OR
+         (SUBSTR(sysdate,4,3) IN('JUL','AUG','SEP') and  TRANSACTION_DATE BETWEEN ('01'||'-'||'JUL'||'-'||SUBSTR(sysdate,8,2))
+         AND ('30'||'-'||'SEP'||'-'||SUBSTR(sysdate,8,2)))
+         OR
+         (SUBSTR(sysdate,4,3) IN('OCT','NOV','DEC') and  TRANSACTION_DATE BETWEEN ('01'||'-'||'OCT'||'-'||SUBSTR(sysdate,8,2))
+         AND ('31'||'-'||'DEC'||'-'||SUBSTR(sysdate,8,2)))
+ ) tranh,
+  TRANSACTION TRANS,
+  STAGE_SCI_LE_SUB_PROFILE SUB_L, SCI_LSP_LMT_PROFILE cam,
+  SCI_LE_SUB_PROFILE SUB,
+  TRANSACTION TRANS_CAM,
+  common_code_category_entry cc_segment,
+  	common_code_category_entry cc_industry,
+    	SCI_LE_REG_ADDR addr
+  
+			</query>
+		<whereClause>
+			<mandatoryClause>
+                       TRANH.TRANSACTION_TYPE = 'CUSTOMER' 
+                  AND TRANS_CAM.TRANSACTION_TYPE = 'LIMITPROFILE'
+                  AND TRANH.TRANSACTION_ID = TRANS.TRANSACTION_ID(+)
+  				  AND TRANH.STATUS = 'ACTIVE' 
+  				  AND SUB_L.CMS_LE_SUB_PROFILE_ID(+) = TRANH.STAGING_REFERENCE_ID
+             AND SUB.CMS_LE_SUB_PROFILE_ID(+) = TRANH.REFERENCE_ID
+             AND SUB.cms_le_sub_profile_id  =  cam.cms_customer_id(+)
+             AND TRANS_CAM.CUSTOMER_ID(+) = cam.cms_customer_id
+             AND SUB.LSP_SGMNT_CODE_VALUE=cc_segment.entry_code(+)
+             AND sub.ind_nm =cc_industry.entry_code(+)
+             AND sub.CMS_LE_MAIN_PROFILE_ID  = addr.CMS_LE_MAIN_PROFILE_ID(+)
+             AND addr.lra_type_value = 'CORPORATE'
+             AND (cc_segment.category_code = 'HDFC_SEGMENT' OR cc_segment.category_code IS NULL)
+             AND (cc_industry.category_code = 'HDFC_INDUSTRY' OR cc_industry.category_code IS NULL)
+             AND SUB.status                 !=   'INACTIVE'
+			</mandatoryClause>
+			<param>
+				<name>segment</name>
+				<condition> and cc_segment.entry_code = </condition>
+			</param>
+			<param>
+				<name>party</name>
+				<condition> and SUB.cms_le_sub_profile_id = </condition>
+			</param>
+			<param>
+				<name>fromDate</name>
+				<condition> and trunc(TRANH.TRANSACTION_DATE) between </condition>
+			</param>
+			<param>
+				<name>toDate</name>
+				<condition> AND </condition>
+ 			</param>
+ 			<orderAndGroupByClause>
+ 				ORDER BY sub_L.lsp_short_name, TRANH.TR_HISTORY_ID
+ 			</orderAndGroupByClause>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Party Name</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Date of Updation</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Segment</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Region</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Industry</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Grading</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Funded Rs. in MN</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Non Funded Rs. in MN</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Memo Exposure Rs. In MN</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Funded Increase/ decrease</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Non Funded Increase/Decrease</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>amountFormat</format>
+					<header>Memo exposure increase/Decrease</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>CAM Type</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>CAMs Quarter Activity</reportName>
+		</reportParamters>
+	</report>
+</reports>

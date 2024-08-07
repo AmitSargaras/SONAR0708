@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+<struts-config>
+    <form-beans type="org.apache.struts.action.ActionFormBean">
+		<form-bean name="ImageTagForm" type="com.integrosys.cms.ui.imageTag.ImageTagForm">
+        </form-bean> 
+        <form-bean name="ImageTagAddForm" type="com.integrosys.cms.ui.imageTag.ImageTagAddForm">
+        </form-bean> 
+        <form-bean name="ImageTagMapForm" type="com.integrosys.cms.ui.imageTag.ImageTagMapForm">
+        </form-bean> 
+    </form-beans>
+<action-mappings type="com.integrosys.base.uiinfra.common.IntegroActionMapping">
+            <action path="/ImageTag" type="com.integrosys.cms.ui.imageTag.ImageTagAction" name="ImageTagForm" validate="false" scope="request">
+ 			<forward name="image_tag" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/image_tag.jsp"/>
+                 <set-property property="title" value="title.customer.search"/>
+            </forward>
+            <forward name="refresh_subtype" path="/imageTag/secsubtypelist.jsp" />
+            <forward name="after_list_image" path="/template/common_template.jsp">
+                <set-property property="title" value="title.customer.list"/>
+                <set-property property="rightFrame" value="/imageTag/ImageList.jsp"/>
+            </forward>
+            <forward name="downloadImage" path="/imageTag/popup.jsp" />
+            <forward name="list_tag_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/image_tag_page.jsp"/>
+                 <set-property property="title" value="title.image.tag"/>
+            </forward>
+           <!--<forward name="print_image" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/print_image_page.jsp"/>
+                 <set-property property="title" value="title.image.tag"/>
+                </forward>
+                  -->
+                
+            <forward name="checker_image_tag_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/checker_imageTag.jsp"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>
+            <forward name="maker_prepare_close" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/maker_close_imageTag.jsp"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>
+            <forward name="maker_prepare_resubmit_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/maker_resubmit_delete_imageTag.jsp"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>
+             <forward name="common_close_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/ack_close.jsp"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>
+            	<forward name="totrack_image_tag_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/totrack_imageTag.jsp"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>
+            <!-- Added by Anil -->
+            <forward name="prepare_list_tag_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/prepare_image_tag_page.jsp"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>
+            <forward name="refresh_cheklist"	path="/imageTag/documentItemList.jsp" />
+            <forward name="security_type_dropdown"	path="/imageTag/securityTypeDropdownList.jsp" />
+            <forward name="facility_dropdown"	path="/imageTag/customerFacilityDropdownList.jsp" />
+            <forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>
+            <forward name="untag_customer_search" path="/template/common_template.jsp">
+	                 <set-property property="rightFrame" value="/imageTag/untag_customer_search.jsp"/>
+    	             <set-property property="title" value="title.customer.search"/>
+			</forward>
+			<forward name="untag_customer_search_list" path="/template/common_template.jsp">
+	                 <set-property property="title" value="title.customer.list"/>
+                	 <set-property property="rightFrame" value="/imageTag/untag_customer_search_list.jsp"/>
+			</forward>
+			<forward name="get_filter_subfolder_name"	path="/imageTag/subfolderNameList.jsp" />
+			<forward name="get_filter_docname"	path="/imageTag/documentNameList.jsp" />
+			<forward name="retrive_cam_info" path="/imageTag/cam_info.jsp"/>
+            </action>
+            
+            
+        <action path="/ImageTagAdd" type="com.integrosys.cms.ui.imageTag.ImageTagAction" name="ImageTagAddForm" validate="false" scope="request">
+				<forward name="save_image_tag"
+					path="/template/common_template.jsp">
+					<set-property property="rightFrame"
+						value="/imageTag/view_image_list.jsp" />
+					<set-property property="title" value="title.image.tag" />
+				</forward>
+        </action>
+        <action path="/ImageTagMap" type="com.integrosys.cms.ui.imageTag.ImageTagAction" name="ImageTagMapForm" validate="false" scope="request">
+				<forward name="save_image_tag" path="/template/common_template.jsp">
+					 <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+					<set-property property="title" value="title.image.tag" />
+				</forward>
+				 <forward name="downloadImage" path="/imageTag/popup.jsp" />
+				<forward name="maker_confirm_resubmit" path="/template/common_template.jsp">
+					 <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+					<set-property property="title" value="title.image.tag" />
+				</forward>
+				<forward name="maker_prepare_resubmit_delete" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/maker_resubmit_delete_imageTag.jsp"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>
+				<forward name="totrack_image_tag_page" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/imageTag/totrack_imageTag.jsp"/>
+	                <set-property property="title" value="title.image.tag"/>
+	            </forward>
+				<forward name="refresh_security_id"	path="/imageTag/securityIdList.jsp" />
+				<forward name="refresh_cheklist"	path="/imageTag/documentItemList.jsp" />
+				<forward name="common_reject_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/common/ack_reject.jsp"/>
+                	<set-property property="title" value="title.image.tag"/>
+            	</forward>
+            	<forward name="list_tag_page" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/imageTag/image_tag_page.jsp"/>
+                 	<set-property property="title" value="title.image.tag"/>
+            	</forward><!--	  
+            	  <forward name="print_image" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/imageTag/print_image_page.jsp"/>
+                 <set-property property="title" value="title.image.tag"/>
+                </forward>
+                
+              
+            	-->
+            	  <forward name="print_image" path="/imageTag/print_image_page.jsp"/>
+            	   <forward name="view_image" path="/imageTag/view_image_page.jsp"/>
+            	<forward name="create_prepare_untag" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/imageTag/untag_image_form.jsp"/>
+                 	<set-property property="title" value="title.image.untag"/>
+            	</forward>	  
+            	<forward name="prepare_untag_image_list" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/imageTag/untag_image_form_list.jsp"/>
+                 	<set-property property="title" value="title.image.untag"/>
+            	</forward>
+            	<forward name="list_tag_page_view" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/imageTag/tag_view_image_form.jsp"/>
+                 	<set-property property="title" value="title.image.tag"/>
+            	</forward>	  
+            	<forward name="prepare_tag_view_image_list" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/imageTag/tag_view_image_list.jsp"/>
+                 	<set-property property="title" value="title.image.tag"/>
+            	</forward>
+            	<forward name="create_image_untag" path="/template/common_template.jsp">
+					 <set-property property="rightFrame" value="/common/ack_submit.jsp"/>
+					<set-property property="title" value="title.image.tag" />
+				</forward>
+				<forward name="checker_image_tag_page" path="/template/common_template.jsp">
+	                <set-property property="rightFrame" value="/imageTag/checker_imageTag.jsp"/>
+	                <set-property property="title" value="title.image.tag"/>
+	            </forward>
+	            
+	            <forward name="imagePath_WF" path="/imageTag/imagePath.jsp"/>
+	            
+	         	<forward name="image_gallary" path="/template/common_template.jsp">
+                	<set-property property="rightFrame" value="/imageTag/image_gallary.jsp"/>
+                 	<set-property property="title" value="title.image.tag"/>
+            	</forward>
+				<forward name="imagePath"	path="/imageTag/imagePath.jsp" />
+				<forward name="work_in_process_page" path="/template/common_template.jsp">
+                <set-property property="rightFrame" value="/common/wip.html"/>
+                <set-property property="title" value="title.image.tag"/>
+            </forward>	  
+              <forward name="refresh_status_date" path="/imageTag/image_status_date.jsp"/>
+              
+               <forward name="retrive_cam_info" path="/imageTag/cam_info.jsp"/>
+               <!-- Added by Uma Khot: Start: Phase 3 CR:tag scanned images of Annexure II  -->
+               <forward name="refresh_recc_doc_status_date" path="/imageTag/image_status_date_recurent_doc.jsp"/>
+			   <!-- Added by Uma Khot: End: Phase 3 CR:tag scanned images of Annexure II  -->
+        </action>
+    </action-mappings>
+    
+    
+    
+    <message-resources key="message-testmaster" parameter="ApplicationResources-image-tag"/>
+</struts-config>

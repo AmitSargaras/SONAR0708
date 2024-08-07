@@ -1,0 +1,18 @@
+--MV creation and refreshing for USer Admin Report as it is taking time for execution.
+CREATE MATERIALIZED VIEW Transaction_User
+AS
+(select * from transaction where transaction_type='USER');
+
+CREATE MATERIALIZED VIEW Trans_history_User
+AS
+(select * from trans_history where transaction_type='USER');
+
+create or replace
+PROCEDURE SP_User_transaction
+AS
+BEGIN
+
+dbms_mview.refresh( 'Transaction_User', atomic_refresh => true );
+dbms_mview.refresh( 'Trans_history_User', atomic_refresh => true );
+  
+END SP_User_transaction;

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reports>
+	<report>
+				<query>
+					SELECT uploaddata.deposit_reference_number,
+					 to_char(uploadData.issue_date,'DD-Mon-YYYY')  as issue_date, 
+					 to_char(uploaddata.deposit_maturity_date,'DD-Mon-YYYY')  as deposit_maturity_date ,
+					 uploaddata.deposit_interest_rate , 
+					  uploadData.status
+					  ||'' AS uploadStatus,
+					  uploaddata.reason
+					  ||'' AS reasonForFail
+					FROM cms_file_upload upload,
+					  CMS_FD_FILE_UPLOAD uploadData
+					WHERE upload.id = uploaddata.file_id
+					AND TO_CHAR(upload.uploadtime, 'dd-MON-yyyy')=
+					( select TO_CHAR(to_Date(param_value), 'dd-MON-yyyy') 
+					from cms_general_param where param_code = 'APPLICATION_DATE')
+				</query>
+		<whereClause>
+			<mandatoryClause>
+		</mandatoryClause>
+			<param>
+				<name></name>
+				<condition></condition>
+			</param>
+			<param>
+				<name></name>
+				<condition></condition>
+			</param>
+			<param>
+				<name></name>
+				<condition></condition>
+			</param>
+			<param>
+				<name></name>
+				<condition></condition>
+			</param>
+			<param>
+				<name></name>
+				<condition></condition>
+ 			</param>
+		</whereClause>
+		<reportParamters>
+			<reportColumns>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Deposit Number</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Deposit Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>50</width>
+					<format>textFormat</format>
+					<header>Maturity Date</header>
+				</reportColumn>
+				<reportColumn>
+					<width>10</width>
+					<format>textFormat</format>
+					<header>Interest Rate</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Status</header>
+				</reportColumn>
+				<reportColumn>
+					<width>25</width>
+					<format>textFormat</format>
+					<header>Reason</header>
+				</reportColumn>
+			</reportColumns>
+			<reportName>FD Upload recon Report</reportName>
+		</reportParamters>
+	</report>
+</reports>

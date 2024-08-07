@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.integrosys.cms.app.rbicategory.bus">
+	<class  entity-name="stageRbiCategory" name="OBRbiCategory" table="CMS_STAGE_RBI_CATEGORY" lazy="false">
+		<id name="id" column="STAGE_RBI_CATEGORY_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STAGE_RBI_CATEGORY_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="industryNameId" column="INDUSTRY_NAME_ID" />
+		<property name="status" column="STATUS" />
+		<property name="deprecated" column="DEPRECATED" />
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATE_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+        <set name="stageIndustryNameSet" cascade="save-update, delete-orphan" fetch="select" lazy="false">
+            <key column="STAGE_RBI_CATEGORY_ID" not-null="true" />
+            <one-to-many entity-name="codeCategoryMappingStage" />
+        </set>
+	</class>
+	
+	 <class entity-name="codeCategoryMappingStage" name="OBIndustryCodeCategory" table="CMS_STAGE_INDUSTRY_NAME" lazy="false" >
+        <id name="id" column="ID" type="long" >
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_STAGE_INDUSTRY_NAME_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+        <property name="rbiCategoryId" column="STAGE_RBI_CATEGORY_ID" insert="false" update="false"/>
+        <property name="rbiCodeCategoryId" column="RBI_CODE_CATEGORY_ID"/>
+    </class>
+	
+	
+	<class  entity-name="actualRbiCategory" name="OBRbiCategory" table="CMS_RBI_CATEGORY" lazy="false">
+		<id name="id" column="RBI_CATEGORY_ID" type="long">
+			<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_RBI_CATEGORY_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+		<property name="industryNameId" column="INDUSTRY_NAME_ID" />
+		<property name="status" column="STATUS" />
+		<property name="deprecated" column="DEPRECATED" />
+		<property name="creationDate" column="CREATION_DATE" />
+		<property name="createBy" column="CREATE_BY" />
+		<property name="lastUpdateDate" column="LAST_UPDATE_DATE" />
+		<property name="lastUpdateBy" column="LAST_UPDATE_BY" />
+		<set name="stageIndustryNameSet" cascade="save-update, all-delete-orphan" fetch="select" lazy="false">
+            <key column="RBI_CATEGORY_ID" not-null="true" />
+            <one-to-many entity-name="codeCategoryMappingActual" />
+        </set>
+	</class>
+	
+	<class entity-name="codeCategoryMappingActual" name="OBIndustryCodeCategory" table="CMS_INDUSTRY_NAME" lazy="false" >
+        <id name="id" column="ID" type="long">
+		<generator class="com.integrosys.base.techinfra.orm.DateAppendedSequenceGenerator">
+				<param name="sequence">CMS_INDUSTRY_NAME_SEQ</param>
+			</generator>
+		</id>
+		<version name="versionTime" column="VERSION_TIME" type="long"></version>
+        <property name="rbiCategoryId" column="RBI_CATEGORY_ID" insert="false" update="false"/>
+        <property name="rbiCodeCategoryId" column="RBI_CODE_CATEGORY_ID"/>
+    </class>
+</hibernate-mapping>

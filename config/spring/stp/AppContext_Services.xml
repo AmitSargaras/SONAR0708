@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<description>
+		To be used for proxy and bus manager, ie. 'bus' and 'proxy' package service bean.
+		bus manager injected ORM/JDBC Dao. (getting from DaoJdbc)
+		proxy injected bus manager and/or TrxControllerFactory. (getting from workflow)
+	</description>
+
+    <bean id="stpMsgAdapter" class="com.integrosys.cms.host.stp.adapter.MessageAdapter"/>
+    <bean id="socketMsgSender" class="com.integrosys.cms.host.stp.interfaces.StpMessageSender"/>
+
+    <bean id="stpMapper" class="com.integrosys.cms.host.stp.mapper.STPMapper">
+        <property name="stpDomParser" ref="stpDomParser"/>    
+    </bean>
+
+    <bean id="stpDomParser" class="com.integrosys.cms.host.stp.mapper.DomParser">
+        <constructor-arg>
+            <list>
+                <value>/collateralStp.xml</value>
+                <value>/facilityStp.xml</value>
+                <value>/otherStp.xml</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="stpTransBusManager" class="com.integrosys.cms.host.stp.bus.StpTransBusManagerImpl">
+		<property name="stpTransDao" ref="stpTransDao" />
+		<property name="stpTransJdbc" ref="stpTransJdbc" />
+    </bean>
+
+    <bean id="tradeTransBusManager" class="com.integrosys.cms.host.stp.trade.bus.TradeTransBusManagerImpl">
+		<property name="tradeTransDao" ref="tradeTransDao" />
+		<property name="tradeTransJdbc" ref="tradeTransJdbc" />
+    </bean>
+
+
+    <bean id="stpAsyncProxy" class="com.integrosys.cms.host.stp.proxy.StpAsyncProxyImpl">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpCatalogLoader" ref="stpCatalogLoader"/>
+        <property name="facilityProxy" ref="facilityProxy"/>
+        <property name="collateralProxy" ref="collateralProxy"/>
+        <property name="taskInterval" value="${stp.async.poller.interval}"/>
+    </bean>
+
+    <bean id="stpSyncProxy" class="com.integrosys.cms.host.stp.proxy.StpSyncProxyImpl" factory-method="getInstance">
+        <property name="stpTransBusManager" ref="stpTransBusManager"/>
+        <property name="stpMapper" ref="stpMapper"/>
+        <property name="stpMsgAdapter" ref="stpMsgAdapter"/>
+        <property name="stpMsgSender" ref="${stp.messageSender.proxy}"/>
+    </bean>
+
+    <!--<bean id="tradeAsyncProxy" class="com.integrosys.cms.host.stp.trade.proxy.TradeAsyncProxyImpl">
+        <property name="tradeTransBusManager" ref="tradeTransBusManager"/>
+        <property name="messageMarshallerFactory" ref="stpMessageMarshallerFactory"/>
+        <property name="facilityInfoMessageHandler" ref="tradeMessageHandler"/>
+        <property name="stpMessageManager" ref="tradeMessageManager"/>
+        <property name="taskInterval" value="${trade.async.poller.interval}"/>
+        <property name="stpMsgSender" ref="${trade.messageSender.proxy}"/>
+    </bean>-->
+
+    <!--<bean id="tradeSyncProxy" class="com.integrosys.cms.host.stp.trade.proxy.TradeSyncProxyImpl" factory-method="getInstance">
+        <property name="tradeTransBusManager" ref="tradeTransBusManager"/>
+       &lt;!&ndash; <property name="stpMsgAdapter" ref="stpMsgAdapter"/> &ndash;&gt;
+        <property name="messageMarshallerFactory" ref="stpMessageMarshallerFactory"/>
+        <property name="stpMessageManager" ref="tradeMessageManager"/>
+        <property name="facilityInfoMessageHandler" ref="tradeMessageHandler"/>
+        <property name="stpMsgSender" ref="${trade.messageSender.proxy}"/>
+    </bean>-->
+
+    <bean id="tradeMessageHandler" class="com.integrosys.cms.host.stp.trade.services.TradeMessageHandler">
+    </bean>
+
+    <bean id="stpErrCodeList" class="com.integrosys.cms.host.stp.common.StpErrorCodeList">
+		<property name="stpTransJdbc" ref="stpTransJdbc" />
+    </bean>
+
+    <bean id="stpTrxOpMethodInterceptor" class="com.integrosys.cms.host.stp.proxy.interceptor.TrxOperationMethodInterceptor">
+		<property name="stpProxy" ref="stpAsyncProxy" />
+	</bean>
+
+    <bean id="stpTrxHandlerMethodInterceptor" class="com.integrosys.cms.host.stp.proxy.interceptor.TrxHandlerMethodInterceptor">
+		<property name="stpProxy" ref="stpAsyncProxy" />
+        <property name="facilityStatusDirectStpList">
+			<list>
+				<value>R</value>
+        <value>C</value>
+			</list>
+		</property>
+        <property name="accessStpSystem" value="${has.access.stp.system}" />
+	</bean>
+
+    <bean id="stpErrorMessageFetcher" class="com.integrosys.cms.host.stp.common.StpErrorMessageFetcherImpl">
+        <property name="stpTransJdbc" ref="stpTransJdbc" />
+    </bean>
+    
+  <bean id="stpMessageFolder" class="com.integrosys.cms.host.stp.support.FileSystemMessageFolderImpl">
+		<property name="messageFolder" value="${stp.message.destination.temp.dir}" />
+		<property name="messageFileDateFormat" value="yyyyMMddHHmmss" />
+	</bean>
+
+  <bean id="stpMessageManager" class="com.integrosys.cms.host.stp.services.StpMessageManagerImpl">
+        <property name="logMessageJdbc" ref="stpLogMessageJdbc"/>
+         <property name="messageFolder" ref="stpMessageFolder"/>
+         <property name="messageTypesRequiredLogToFileSystem">
+			<value>CUSTOMER,LIMIT,SECURITY,DOCUMENT,COVENANT</value>
+		</property>
+    </bean>
+
+    <bean id="tradeMessageManager" class="com.integrosys.cms.host.stp.trade.services.TradeMessageManagerImpl">
+        <property name="logMessageJdbc" ref="tradeLogMessageJdbc"/>
+         <property name="messageFolder" ref="stpMessageFolder"/>
+         <property name="messageTypesRequiredLogToFileSystem">
+			<value>CUSTOMER,LIMIT,SECURITY,DOCUMENT,COVENANT</value>
+		</property>
+    </bean>
+</beans>
